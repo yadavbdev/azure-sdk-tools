@@ -12,7 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections;
@@ -21,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 
-namespace Microsoft.Azure.Commands.Resources
+namespace Microsoft.Azure.Commands.Resources.Models
 {
     public abstract class ResourceWithParameterBaseCmdlet : ResourceManagerBaseCmdlet
     {

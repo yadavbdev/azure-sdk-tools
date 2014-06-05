@@ -125,9 +125,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ExtensionsTests.cs" />
-    <Compile Include="Models\GalleryTemplatesClientTests.cs" />
-    <Compile Include="Models\ResourceIdentifierTests.cs" />
+    <Compile Include="Models.ResourceGroups\ExtensionsTests.cs" />
+    <Compile Include="Models.ResourceGroups\GalleryTemplatesClientTests.cs" />
+    <Compile Include="Models.ResourceGroups\ResourceIdentifierTests.cs" />
     <Compile Include="ResourceGroups\GetAzureResourceGroupLogCommandTests.cs" />
     <Compile Include="ResourceGroups\GetAzureLocationCommandTests.cs" />
     <Compile Include="Resources\GetAzureResourceCommandTests.cs" />
@@ -137,7 +137,7 @@
     <Compile Include="Templates\TestAzureResourceGroupTemplateCommandTests.cs" />
     <Compile Include="Templates\SaveAzureResourceGroupGalleryTemplateCommandTests.cs" />
     <Compile Include="Templates\GetAzureResourceGroupGalleryTemplateCommandTests.cs" />
-    <Compile Include="Models\ResourceClientTests.cs" />
+    <Compile Include="Models.ResourceGroups\ResourceClientTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

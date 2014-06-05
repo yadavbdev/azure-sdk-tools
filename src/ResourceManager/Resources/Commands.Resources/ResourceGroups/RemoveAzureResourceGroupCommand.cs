@@ -12,8 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
+using Microsoft.Azure.Commands.Resources.Models;
 using System.Management.Automation;
+using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources
 {
