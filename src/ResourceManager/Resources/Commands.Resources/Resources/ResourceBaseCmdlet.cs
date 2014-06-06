@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Resources.Models;
 using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.Resources
