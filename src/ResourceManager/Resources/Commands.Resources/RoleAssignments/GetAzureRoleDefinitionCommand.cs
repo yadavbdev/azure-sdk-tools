@@ -13,20 +13,25 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Policy.Models;
 using System.Collections.Generic;
 using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.Resources
 {
     /// <summary>
-    /// Get the available locations for certain resource types.
+    /// Get the available role Definitions for certain resource types.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureLocation"), OutputType(typeof(List<PSResourceProviderType>))]
-    public class GetAzureLocationCommand : ResourcesBaseCmdlet
+    [Cmdlet(VerbsCommon.Get, "AzureRoleDefinition"), OutputType(typeof(List<RoleDefinition>))]
+    public class GetAzureRoleDefinitionCommand : ResourcesBaseCmdlet
     {
+        [Parameter(Position = 0, Mandatory = false, HelpMessage = "Optional. The name of the role Definition.")]
+        [ValidateNotNullOrEmpty]
+        public string Name { get; set; }
+
         public override void ExecuteCmdlet()
         {
-            WriteObject(ResourcesClient.GetLocations(), true);
+            WriteObject(PoliciesClient.FilterRoleDefinitions(Name), true);
         }
     }
 }

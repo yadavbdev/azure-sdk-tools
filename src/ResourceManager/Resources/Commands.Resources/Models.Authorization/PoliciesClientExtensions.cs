@@ -12,21 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Policy.Models;
 using System.Collections.Generic;
-using System.Management.Automation;
+using System.Linq;
 
-namespace Microsoft.Azure.Commands.Resources
+namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
-    /// <summary>
-    /// Get the available locations for certain resource types.
-    /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureLocation"), OutputType(typeof(List<PSResourceProviderType>))]
-    public class GetAzureLocationCommand : ResourcesBaseCmdlet
+    internal static class PoliciesClientExtensions
     {
-        public override void ExecuteCmdlet()
+        public static PSRoleDefinition ToPSRoleDefinition(this RoleDefinition role)
         {
-            WriteObject(ResourcesClient.GetLocations(), true);
+            return new PSRoleDefinition()
+            {
+                Name = role.Name,
+                Permissions = new List<string>(role.Permissions.SelectMany(r => r.Actions)),
+                Id = role.RoleId
+            };
         }
     }
 }

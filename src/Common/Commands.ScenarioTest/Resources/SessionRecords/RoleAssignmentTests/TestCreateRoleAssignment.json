@@ -1,0 +1,84 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "/1eeeb395-21c8-4ae0-b145-2abd2dfe501d/roleDefinitions",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-version": [
+          "2014-05-21"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Policy.PolicyManagementClient/1.0.0.0",
+          "WindowsAzurePowershell/v0.8.3"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"odata.metadata\": \"https://aad-pas-nova-by1-001.cloudapp.net/1eeeb395-21c8-4ae0-b145-2abd2dfe501d/$metadata#roleDefinitions\",\r\n  \"value\": [\r\n    {\r\n      \"roleId\": \"be21d9e2-3caf-4ef2-a7b2-5339196d939b\",\r\n      \"appId\": \"6ead6d32-1d83-4559-bc85-d7b5b2a2f8e8\",\r\n      \"name\": \"Operator\",\r\n      \"description\": \"Operator role allowing reads, updates, and actions\",\r\n      \"scope\": \"/\",\r\n      \"permissions\": [\r\n        {\r\n          \"actions\": [\r\n            \"*/read\",\r\n            \"*/update\",\r\n            \"*/action\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"roleId\": \"acdd72a7-3385-48ef-bd42-f606fba81ae7\",\r\n      \"appId\": \"6ead6d32-1d83-4559-bc85-d7b5b2a2f8e8\",\r\n      \"name\": \"Reader\",\r\n      \"description\": \"Reader role allowing only read operations\",\r\n      \"scope\": \"/\",\r\n      \"permissions\": [\r\n        {\r\n          \"actions\": [\r\n            \"*/read\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"roleId\": \"b24988ac-6180-42a0-ab88-20f7382dd24c\",\r\n      \"appId\": \"80941f63-e69b-4695-ba71-3f8028ca1e5f\",\r\n      \"name\": \"Operator\",\r\n      \"description\": \"Operator role allowing reads, updates, and actions\",\r\n      \"scope\": \"/\",\r\n      \"permissions\": [\r\n        {\r\n          \"actions\": [\r\n            \"*/read\",\r\n            \"*/update\",\r\n            \"*/action\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"roleId\": \"7af85c43-6fb7-49f9-9ff6-f9ff20d7205c\",\r\n      \"appId\": \"80941f63-e69b-4695-ba71-3f8028ca1e5f\",\r\n      \"name\": \"Reader\",\r\n      \"description\": \"GETs allowed\",\r\n      \"scope\": \"/\",\r\n      \"permissions\": [\r\n        {\r\n          \"actions\": [\r\n            \"GET\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"roleId\": \"43137be5-c198-403e-8b8e-cfcb933bf291\",\r\n      \"appId\": \"80941f63-e69b-4695-ba71-3f8028ca1e5f\",\r\n      \"name\": \"Writer\",\r\n      \"description\": \"PUTs / POSTs allowed\",\r\n      \"scope\": \"/\",\r\n      \"permissions\": [\r\n        {\r\n          \"actions\": [\r\n            \"POST\",\r\n            \"PUT\"\r\n          ]\r\n        },\r\n        {\r\n          \"actions\": [\r\n            \"SomeRandomCondition\"\r\n          ]\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+      "ResponseHeaders": {
+        "Pragma": [
+          "no-cache"
+        ],
+        "DataServiceVersion": [
+          "3.0"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Sat, 07 Jun 2014 02:58:23 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-AspNet-Version": [
+          "4.0.30319"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/1eeeb395-21c8-4ae0-b145-2abd2dfe501d/roleDefinitions(guid'be21d9e2-3caf-4ef2-a7b2-5339196d939b')",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-version": [
+          "2014-05-21"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Policy.PolicyManagementClient/1.0.0.0",
+          "WindowsAzurePowershell/v0.8.3"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"odata.metadata\": \"https://aad-pas-nova-by1-001.cloudapp.net/1eeeb395-21c8-4ae0-b145-2abd2dfe501d/$metadata#roleDefinitions/@Element\",\r\n  \"roleId\": \"be21d9e2-3caf-4ef2-a7b2-5339196d939b\",\r\n  \"appId\": \"6ead6d32-1d83-4559-bc85-d7b5b2a2f8e8\",\r\n  \"name\": \"Operator\",\r\n  \"description\": \"Operator role allowing reads, updates, and actions\",\r\n  \"scope\": \"/\",\r\n  \"permissions\": [\r\n    {\r\n      \"actions\": [\r\n        \"*/read\",\r\n        \"*/update\",\r\n        \"*/action\"\r\n      ]\r\n    }\r\n  ]\r\n}",
+      "ResponseHeaders": {
+        "Pragma": [
+          "no-cache"
+        ],
+        "DataServiceVersion": [
+          "3.0"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Sat, 07 Jun 2014 02:58:23 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-AspNet-Version": [
+          "4.0.30319"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    }
+  ],
+  "Names": {},
+  "Variables": {}
+}

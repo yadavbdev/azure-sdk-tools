@@ -19,13 +19,13 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
     using VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class ResourceGroupTests : WindowsAzurePowerShellTokenTest
+    public class RoleAssignmentTests : WindowsAzurePowerShellTokenTest
     {
         private string currentDirectory;
 
-        public ResourceGroupTests()
+        public RoleAssignmentTests()
             : base("ResourceManager\\Common.ps1",
-                   "ResourceManager\\ResourceGroupTests.ps1")
+                   "ResourceManager\\RoleAssignmentTests.ps1")
         { }
 
         [TestInitialize]
@@ -46,45 +46,9 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
         [TestCategory(Category.All)]
         [TestCategory(Category.Resources)]
         [TestCategory(Category.CheckIn)]
-        public void TestCreatesNewSimpleResourceGroup()
+        public void TestCreateRoleAssignment()
         {
-            RunPowerShellTest("Test-CreatesNewSimpleResourceGroup");
-        }
-
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Resources)]
-        [TestCategory(Category.CheckIn)]
-        public void TestCreatesAndRemoveResourceGroupViaPiping()
-        {
-            RunPowerShellTest("Test-CreatesAndRemoveResourceGroupViaPiping");
-        }
-
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Resources)]
-        [TestCategory(Category.CheckIn)]
-        public void TestGetNonExistingResourceGroup()
-        {
-            RunPowerShellTest("Test-GetNonExistingResourceGroup");
-        }
-
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Resources)]
-        [TestCategory(Category.CheckIn)]
-        public void TestNewResourceGroupInNonExistingLocation()
-        {
-            RunPowerShellTest("Test-NewResourceGroupInNonExistingLocation");
-        }
-
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Resources)]
-        //[TestCategory(Category.CheckIn)]
-        public void TestRemoveNonExistingResourceGroup()
-        {
-            RunPowerShellTest("Test-RemoveNonExistingResourceGroup");
+            RunPowerShellTest("Test-CreateRoleAssignment");
         }
     }
 }

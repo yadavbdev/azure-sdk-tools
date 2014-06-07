@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         private void OnClientCreated(object sender, ClientCreatedArgs e)
         {
             e.AddHandlerToClient(HttpMockServer.CreateInstance());
-            bool runningMocked = (HttpMockServer.Mode == HttpRecorderMode.Playback);
+            bool runningMocked = (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback);
             TestMockSupport.RunningMocked = runningMocked;
             if (runningMocked)
             {
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         public override Collection<PSObject> RunPowerShellTest(params string[] scripts)
         {
-            HttpMockServer.Initialize(this.GetType(), Utilities.GetCurrentMethodName(2), recordingMode);
+            HttpMockServer.Initialize(this.GetType(), Utilities.GetCurrentMethodName(2));
             return base.RunPowerShellTest(scripts);
         }
 
@@ -122,7 +122,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 CurrentStorageAccountName = csmEnvironment.StorageAccount,
                 IsDefault = true
             };
-            if (HttpMockServer.Mode == HttpRecorderMode.Playback)
+            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
             {
                 newSubscription.SetAccessToken(new FakeAccessToken
                     {
