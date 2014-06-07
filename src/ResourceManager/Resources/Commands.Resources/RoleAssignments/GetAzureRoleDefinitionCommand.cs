@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.Azure.Policy.Models;
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.Resources
     /// <summary>
     /// Get the available role Definitions for certain resource types.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRoleDefinition"), OutputType(typeof(List<RoleDefinition>))]
+    [Cmdlet(VerbsCommon.Get, "AzureRoleDefinition"), OutputType(typeof(List<PSRoleDefinition>))]
     public class GetAzureRoleDefinitionCommand : ResourcesBaseCmdlet
     {
         [Parameter(Position = 0, Mandatory = false, HelpMessage = "Optional. The name of the role Definition.")]
