@@ -4,7 +4,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
     public class Category
     {
         // Service
-
         public const string All = "All";
 
         public const string Automation = "Automation";
@@ -34,16 +33,18 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         public const string ManagedCache = "ManagedCache";
 
         // Owners
-
         public const string OneSDK = "OneSDK";
 
         // Acceptance type
-
         public const string CIT = "CIT";
         public const string BVT = "BVT";
 
         // Environment
-
         public const string WAPack = "WAPack";
+    }
+
+    public class Variables
+    {
+        public const string SubscriptionId = "SubscriptionId";
     }
 }
