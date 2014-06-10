@@ -19,13 +19,13 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
     using VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class RoleAssignmentTests : WindowsAzurePowerShellTokenTest
+    public class RoleDefinitionTests : WindowsAzurePowerShellTokenTest
     {
         private string currentDirectory;
 
-        public RoleAssignmentTests()
+        public RoleDefinitionTests()
             : base("ResourceManager\\Common.ps1",
-                   "ResourceManager\\RoleAssignmentTests.ps1")
+                   "ResourceManager\\RoleDefinitionTests.ps1")
         { }
 
         [TestInitialize]
@@ -46,9 +46,9 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
         [TestCategory(Category.All)]
         [TestCategory(Category.Resources)]
         [TestCategory(Category.CheckIn)]
-        public void TestCreateRoleAssignment()
+        public void TestCreateRoleDefinition()
         {
-            RunPowerShellTest("Test-CreateRoleAssignment");
+            RunPowerShellTest("Test-CreateRoleDefinition");
         }
     }
 }

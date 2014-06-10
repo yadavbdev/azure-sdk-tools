@@ -14,9 +14,9 @@
 
 <#
 .SYNOPSIS
-Tests creating new simple role assignment.
+Tests getting role definitions.
 #>
-function Test-CreateRoleAssignment
+function Test-GetRoleDefinition
 {
 	$roleDefinitions = Get-AzureRoleDefinition
 	Assert-True { $roleDefinitions.Count -gt 0 }

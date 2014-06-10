@@ -171,7 +171,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ResourceManager\DeploymentTests.cs" />
-    <Compile Include="ResourceManager\RoleAssignmentTests.cs" />
+    <Compile Include="ResourceManager\RoleDefinitionTests.cs" />
     <Compile Include="ResourceManager\ResourceTests.cs" />
     <Compile Include="ResourceManager\ResourceGroupTests.cs" />
     <Compile Include="Resources\ResourceLocator.cs" />
@@ -239,7 +239,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\CsmTestDummySubscription.json" />
-    <Resource Include="Resources\ResourceManager\RoleAssignmentTests.ps1">
+    <Resource Include="Resources\ResourceManager\RoleDefinitionTests.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <None Include="Resources\TrafficManager\Common.ps1" />
