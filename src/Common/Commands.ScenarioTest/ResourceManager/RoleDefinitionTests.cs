@@ -46,9 +46,9 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
         [TestCategory(Category.All)]
         [TestCategory(Category.Resources)]
         [TestCategory(Category.CheckIn)]
-        public void TestCreateRoleDefinition()
+        public void TestGetRoleDefinition()
         {
-            RunPowerShellTest("Test-CreateRoleDefinition");
+            RunPowerShellTest("Test-GetRoleDefinition");
         }
     }
 }

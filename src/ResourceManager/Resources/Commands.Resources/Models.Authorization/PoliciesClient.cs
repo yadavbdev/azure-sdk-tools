@@ -45,19 +45,19 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// <summary>
         /// Filters the existing role Definitions.
         /// </summary>
-        /// <param name="role">The role name</param>
+        /// <param name="roleDefinitionName">The role name</param>
         /// <returns>The matched role Definitions</returns>
-        public List<PSRoleDefinition> FilterRoleDefinitions(string role)
+        public List<PSRoleDefinition> FilterRoleDefinitions(string roleDefinitionName)
         {
             List<PSRoleDefinition> result = new List<PSRoleDefinition>();
 
-            if (string.IsNullOrEmpty(role))
+            if (string.IsNullOrEmpty(roleDefinitionName))
             {
-                result.AddRange(PolicyClient.RoleDefinitions.List().RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
+                result.AddRange(PolicyClient.RoleDefinitions.List(null).RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
             }
             else
             {
-                result.Add(PolicyClient.RoleDefinitions.Get(role).RoleDefinition.ToPSRoleDefinition());
+                result.Add(PolicyClient.RoleDefinitions.List(roleDefinitionName).RoleDefinitions.Select(r => r.ToPSRoleDefinition()).FirstOrDefault());
             }
 
             return result;

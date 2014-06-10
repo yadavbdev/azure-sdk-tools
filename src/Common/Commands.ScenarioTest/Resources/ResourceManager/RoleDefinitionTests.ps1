@@ -21,6 +21,6 @@ function Test-GetRoleDefinition
 	$roleDefinitions = Get-AzureRoleDefinition
 	Assert-True { $roleDefinitions.Count -gt 0 }
 
-	$roleDefinition = Get-AzureRoleDefinition -Name $roleDefinitions[0].Id
+	$roleDefinition = Get-AzureRoleDefinition -Name $roleDefinitions[0].Name
 	Assert-AreEqual $roleDefinitions[0].Name $roleDefinition.Name
 }
