@@ -87,7 +87,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) =>
                 {
                     return true;
-                };            
+                };
             }
         }
 

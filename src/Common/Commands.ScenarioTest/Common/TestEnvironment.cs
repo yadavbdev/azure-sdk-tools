@@ -72,7 +72,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             set;
         }
 
-
         public bool UsesCustomUri()
         {
             return this.CustomUri;

@@ -330,7 +330,7 @@ function getAssetName
             $testName = $frame.Command
         }
     }
-	
+    
     $assetName = [Microsoft.Azure.Utilities.HttpRecorder.HttpMockServer]::GetAssetName($testName, "onesdk")
 
     return $assetName
