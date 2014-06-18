@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources.Models
@@ -112,8 +113,23 @@ namespace Microsoft.Azure.Commands.Resources.Models
             string provider = GetProviderFromResourceType(ResourceType);
             string type = GetTypeFromResourceType(ResourceType);
             string parentAndType = string.IsNullOrEmpty(ParentResource) ? type : ParentResource + "/" + type;
-            return string.Format("/subscriptions/{0}/resourceGroups/{1}/providers/{2}/{3}/{4}", Subscription, ResourceGroupName,
-                          provider, parentAndType, ResourceName);
+            StringBuilder resourceId = new StringBuilder();
+
+            AppendIfNotNull(ref resourceId, "/subscriptions/{0}", Subscription);
+            AppendIfNotNull(ref resourceId, "/resourceGroups/{0}", ResourceGroupName);
+            AppendIfNotNull(ref resourceId, "/providers/{0}", provider);
+            AppendIfNotNull(ref resourceId, "/{0}", parentAndType);
+            AppendIfNotNull(ref resourceId, "/{0}", ResourceName);
+
+            return resourceId.ToString();
+        }
+
+        private void AppendIfNotNull(ref StringBuilder resourceId, string format, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                resourceId.AppendFormat(format, value);
+            }
         }
     }
 }

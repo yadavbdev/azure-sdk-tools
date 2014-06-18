@@ -20,18 +20,29 @@ using System.Management.Automation;
 namespace Microsoft.Azure.Commands.Resources
 {
     /// <summary>
-    /// Get the available role Definitions for certain resource types.
+    /// Removes a given role assignment.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRoleDefinition"), OutputType(typeof(List<PSRoleDefinition>))]
-    public class GetAzureRoleDefinitionCommand : ResourcesBaseCmdlet
+    [Cmdlet(VerbsCommon.Remove, "AzureRoleAssignment"), OutputType(typeof(List<PSRoleAssignment>))]
+    public class RemoveAzureRoleAssignmentCommand : RoleAssignmentBaseCmdlet
     {
-        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Optional. The name of the role Definition.")]
-        [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
-
         public override void ExecuteCmdlet()
         {
-            WriteObject(PoliciesClient.FilterRoleDefinitions(Name), true);
+            FilterRoleAssignmentsOptions options = new FilterRoleAssignmentsOptions()
+            {
+                Scope = Scope,
+                ResourceIdentifier = new ResourceIdentifier()
+                {
+                    ParentResource = ParentResource,
+                    ResourceGroupName = ResourceGroupName,
+                    ResourceName = ResourceName,
+                    ResourceType = ResourceType,
+                    Subscription = CurrentSubscription.SubscriptionId
+                },
+                RoleDefinition = RoleDefinitionName,
+                PrincipalName = Principal
+            };
+
+            WriteObject(PoliciesClient.RemoveRoleAssignment(options));
         }
     }
 }

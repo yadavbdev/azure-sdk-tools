@@ -20,18 +20,33 @@ using System.Management.Automation;
 namespace Microsoft.Azure.Commands.Resources
 {
     /// <summary>
-    /// Get the available role Definitions for certain resource types.
+    /// Creates new role assignment.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRoleDefinition"), OutputType(typeof(List<PSRoleDefinition>))]
-    public class GetAzureRoleDefinitionCommand : ResourcesBaseCmdlet
+    [Cmdlet(VerbsCommon.New, "AzureRoleAssignment"), OutputType(typeof(PSRoleAssignment))]
+    public class NewAzureRoleAssignmentCommand : RoleAssignmentBaseCmdlet
     {
-        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Optional. The name of the role Definition.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Subscription id or name of where the role assignment will be created.")]
         [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
+        public string SubscriptionId { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            WriteObject(PoliciesClient.FilterRoleDefinitions(Name), true);
+            FilterRoleAssignmentsOptions parameters = new FilterRoleAssignmentsOptions()
+            {
+                Scope = Scope,
+                SubscriptionId = SubscriptionId,
+                ResourceIdentifier = new ResourceIdentifier()
+                {
+                    ParentResource = ParentResource,
+                    ResourceGroupName = ResourceGroupName,
+                    ResourceName = ResourceName,
+                    ResourceType = ResourceType,
+                    Subscription = CurrentSubscription.SubscriptionId
+                },
+                PrincipalName = Principal
+            };
+
+            WriteObject(PoliciesClient.CreateRoleAssignment(parameters));
         }
     }
 }

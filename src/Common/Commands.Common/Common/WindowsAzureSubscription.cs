@@ -221,7 +221,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public TClient CreateClientFromEndpoint<TClient>(Uri endpoint, bool registerProviders) where TClient : ServiceClient<TClient>
         {
             var credential = CreateCredentials();
-
+            
             if (!TestMockSupport.RunningMocked)
             {
                 if (registerProviders)

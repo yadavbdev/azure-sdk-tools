@@ -29,5 +29,18 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 Id = role.RoleId
             };
         }
+
+        public static PSRoleAssignment ToPSRoleAssignment(this RoleAssignment role, PoliciesClient policyClient, GraphClient graphClient)
+        {
+            PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.RoleId);
+            return new PSRoleAssignment()
+            {
+                Id = role.RoleAssignmentId,
+                Principal = graphClient.GetPrincipalId(role.PrincipalId).Principal,
+                Permissions = roleDefinition.Permissions,
+                Role = roleDefinition.Name,
+                Scope = role.Scope
+            };
+        }
     }
 }
