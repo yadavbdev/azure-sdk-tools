@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
@@ -31,5 +32,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
         public IDictionary Properties { get; set; }
 
         public string PropertiesText { get; set; }
+
+        public List<string> Permissions { get; set; }
+
+        public string ApiVersion { get; set; }
     }
 }

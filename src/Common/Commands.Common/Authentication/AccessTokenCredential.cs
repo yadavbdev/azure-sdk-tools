@@ -28,6 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             this.subscriptionId = subscriptionId;
             this.token = token;
+            this.TenantID = token.TenantID;
         }
         
         public override Task ProcessHttpRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -42,5 +43,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             get { return subscriptionId; }
         }
+
+        public string TenantID { get; set; }
     }
 }

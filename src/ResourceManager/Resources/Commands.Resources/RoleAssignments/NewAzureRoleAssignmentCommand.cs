@@ -25,25 +25,34 @@ namespace Microsoft.Azure.Commands.Resources
     [Cmdlet(VerbsCommon.New, "AzureRoleAssignment"), OutputType(typeof(PSRoleAssignment))]
     public class NewAzureRoleAssignmentCommand : RoleAssignmentBaseCmdlet
     {
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Subscription id or name of where the role assignment will be created.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the resource to assign the role to.")]
         [ValidateNotNullOrEmpty]
-        public string SubscriptionId { get; set; }
+        public string Principal { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Role to assign the principals with.")]
+        [ValidateNotNullOrEmpty]
+        public string RoleDefinitionName { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with \"/subscriptions/<id>\" or the part after that. If it's latter, the current subscription id will be used.")]
+        [ValidateNotNullOrEmpty]
+        public string Scope { get; set; }
 
         public override void ExecuteCmdlet()
         {
             FilterRoleAssignmentsOptions parameters = new FilterRoleAssignmentsOptions()
             {
                 Scope = Scope,
-                SubscriptionId = SubscriptionId,
+                Subscription = CurrentSubscription.SubscriptionId,
+                RoleDefinition = RoleDefinitionName,
+                PrincipalName = Principal,
                 ResourceIdentifier = new ResourceIdentifier()
                 {
                     ParentResource = ParentResource,
                     ResourceGroupName = ResourceGroupName,
                     ResourceName = ResourceName,
                     ResourceType = ResourceType,
-                    Subscription = CurrentSubscription.SubscriptionId
-                },
-                PrincipalName = Principal
+                    Subscription = CurrentSubscription.SubscriptionId,
+                }
             };
 
             WriteObject(PoliciesClient.CreateRoleAssignment(parameters));

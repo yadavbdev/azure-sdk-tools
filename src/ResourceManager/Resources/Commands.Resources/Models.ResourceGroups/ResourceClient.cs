@@ -383,5 +383,17 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             return errors;
         }
+
+        internal List<string> GetResourceGroupPermissions(string resourceGroup)
+        {
+            return ResourceManagementClient.ResourceGroups.GetPermissions(resourceGroup)
+                .PermittedActions.SelectMany(p => p.Actions).ToList();
+        }
+
+        internal List<string> GetResourcePermissions(ResourceIdentifier identity, string apiVersion)
+        {
+            return ResourceManagementClient.Resources.GetPermissions(identity.ResourceGroupName, identity.ToResourceIdentity(apiVersion))
+                .PermittedActions.SelectMany(p => p.Actions).ToList();
+        }
     }
 }

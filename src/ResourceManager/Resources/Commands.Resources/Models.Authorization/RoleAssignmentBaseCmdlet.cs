@@ -18,10 +18,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class RoleAssignmentBaseCmdlet : ResourcesBaseCmdlet
     {
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with \"/subscriptions/<id>\" or the part after that. If it's latter, the current subscription id will be used.")]
-        [ValidateNotNullOrEmpty]
-        public string Scope { get; set; }
-
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Resource group to assign the role to.")]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
@@ -37,13 +33,5 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Parent resource of the resource to assign the role to, if there is any.")]
         [ValidateNotNullOrEmpty]
         public string ParentResource { get; set; }
-
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Role to assign the principals with.")]
-        [ValidateNotNullOrEmpty]
-        public string RoleDefinitionName { get; set; }
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the resource to assign the role to.")]
-        [ValidateNotNullOrEmpty]
-        public string Principal { get; set; }
     }
 }

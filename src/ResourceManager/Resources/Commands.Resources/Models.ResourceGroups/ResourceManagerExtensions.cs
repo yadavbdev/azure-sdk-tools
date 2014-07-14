@@ -37,7 +37,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Location = resourceGroup.Location,
                 Resources = resources,
                 ResourcesTable = ConstructResourcesTable(resources),
-                ProvisioningState = resourceGroup.ProvisioningState
+                ProvisioningState = resourceGroup.ProvisioningState,
+                Permissions = client.GetResourceGroupPermissions(resourceGroup.Name)
             };
         }
 
@@ -88,8 +89,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public static PSResource ToPSResource(this Resource resource, ResourcesClient client)
         {
+            return ToPSResource(resource, null, client);
+        }
+
+        public static PSResource ToPSResource(this Resource resource, string apiVersion, ResourcesClient client)
+        {
             ResourceIdentifier identifier = new ResourceIdentifier(resource.Id);
-            return new PSResource()
+            
+            PSResource psResource = new PSResource()
             {
                 Name = identifier.ResourceName,
                 Location = resource.Location,
@@ -99,6 +106,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Properties = JsonUtilities.DeserializeJson(resource.Properties),
                 PropertiesText = resource.Properties
             };
+
+            if (!string.IsNullOrEmpty(apiVersion))
+            {
+                psResource.Permissions = client.GetResourcePermissions(identifier, apiVersion);
+                psResource.ApiVersion = apiVersion;
+            }
+
+            return psResource;
         }
 
         public static PSResourceProviderType ToPSResourceProviderType(this ProviderResourceType resourceType, string providerNamespace)

@@ -25,11 +25,25 @@ namespace Microsoft.Azure.Commands.Resources
     [Cmdlet(VerbsCommon.Get, "AzureRoleAssignment"), OutputType(typeof(List<PSRoleAssignment>))]
     public class GetAzureRoleAssignmentCommand : RoleAssignmentBaseCmdlet
     {
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the resource to assign the role to.")]
+        [ValidateNotNullOrEmpty]
+        public string Principal { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Role to assign the principals with.")]
+        [ValidateNotNullOrEmpty]
+        public string RoleDefinitionName { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with \"/subscriptions/<id>\" or the part after that. If it's latter, the current subscription id will be used.")]
+        [ValidateNotNullOrEmpty]
+        public string Scope { get; set; }
+
         public override void ExecuteCmdlet()
         {
             FilterRoleAssignmentsOptions options = new FilterRoleAssignmentsOptions()
             {
                 Scope = Scope,
+                RoleDefinition = RoleDefinitionName,
+                PrincipalName = Principal,
                 ResourceIdentifier = new ResourceIdentifier()
                 {
                     ParentResource = ParentResource,
@@ -37,9 +51,7 @@ namespace Microsoft.Azure.Commands.Resources
                     ResourceName = ResourceName,
                     ResourceType = ResourceType,
                     Subscription = CurrentSubscription.SubscriptionId
-                },
-                RoleDefinition = RoleDefinitionName,
-                PrincipalName = Principal
+                }
             };
 
             WriteObject(PoliciesClient.FilterRoleAssigbments(options), true);

@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.Resources.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -122,6 +123,29 @@ namespace Microsoft.Azure.Commands.Resources.Models
             AppendIfNotNull(ref resourceId, "/{0}", ResourceName);
 
             return resourceId.ToString();
+        }
+
+        public ResourceIdentity ToResourceIdentity(string apiVersion)
+        {
+            if (string.IsNullOrEmpty(ResourceType))
+            {
+                throw new ArgumentNullException("ResourceType");
+            }
+            if (ResourceType.IndexOf('/') < 0)
+            {
+                throw new ArgumentException(ProjectResources.ResourceTypeFormat, "ResourceType");
+            }
+
+            ResourceIdentity identity = new ResourceIdentity
+            {
+                ResourceName = ResourceName,
+                ParentResourcePath = ParentResource,
+                ResourceProviderNamespace = ResourceIdentifier.GetProviderFromResourceType(ResourceType),
+                ResourceType = ResourceIdentifier.GetTypeFromResourceType(ResourceType),
+                ResourceProviderApiVersion = apiVersion
+            };
+
+            return identity;
         }
 
         private void AppendIfNotNull(ref StringBuilder resourceId, string format, string value)

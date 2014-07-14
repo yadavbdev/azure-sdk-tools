@@ -15,6 +15,7 @@
 using Microsoft.Azure.Graph.RBAC;
 using Microsoft.Azure.Graph.RBAC.Models;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
@@ -29,31 +30,34 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public GraphRbacManagementClient GraphRbacClient { get; private set; }
 
-        public WindowsAzureSubscription Subscription { get; private set; }
-
         /// <summary>
         /// Creates new GraphClient using WindowsAzureSubscription.
         /// </summary>
         /// <param name="subscription">The WindowsAzureSubscription instance</param>
-        public GraphClient(WindowsAzureSubscription subscription)
+        public GraphClient(WindowsAzureSubscription subscription, 
+            string tenantId,
+            AccessTokenCredential creds)
         {
-            Subscription = subscription;
-
             // Create graph client
-            string CommonTenant = WindowsAzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud].ActiveDirectoryCommonTenantId;
-            string authority = subscription.ActiveDirectoryEndpoint + CommonTenant;
-            AuthenticationContext authContext = new AuthenticationContext(authority);
+            //string CommonTenant = WindowsAzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud].ActiveDirectoryCommonTenantId;
+            //string authority = subscription.ActiveDirectoryEndpoint + CommonTenant;
+            //AuthenticationContext authContext = new AuthenticationContext(authority);
 
-            AuthenticationResult result = authContext.AcquireToken(
-                GraphEndpoint,
-                GraphAppId,
-                AdalConfiguration.PowerShellRedirectUri,
-                PromptBehavior.Always);
+            //AuthenticationResult result = authContext.AcquireToken(
+            //    GraphEndpoint,
+            //    GraphAppId,
+            //    AdalConfiguration.PowerShellRedirectUri,
+            //    PromptBehavior.Always);
 
-            TenantCloudCredentials cred = new TenantCloudCredentials();
-            cred.TenantID = result.TenantId;
-            cred.Token = result.AccessToken;
-            GraphRbacClient = new GraphRbacManagementClient(result.TenantId, cred, new Uri(GraphEndpoint));
+            //TenantCloudCredentials cred = new TenantCloudCredentials();
+            //cred.TenantID = result.TenantId;
+            //cred.Token = result.AccessToken;
+
+            GraphRbacClient = subscription.CreateClient<GraphRbacManagementClient>(
+                false,
+                "7229458e-4e0e-459b-ab5e-f8639ee0737c" /*creds.TenantID*/,
+                creds,
+                new Uri(GraphEndpoint));
         }
 
         /// <summary>

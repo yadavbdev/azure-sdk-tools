@@ -198,4 +198,7 @@
   <data name="InvalidFormatOfResourceId" xml:space="preserve">
     <value>Invalid format of the resource identifier.</value>
   </data>
+  <data name="RemovingRoleAssignment" xml:space="preserve">
+    <value>Removing role assignment for principal '{0}' that uses role definition '{1}'.</value>
+  </data>
 </root>

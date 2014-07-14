@@ -32,25 +32,13 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public ResourceIdentity ToResourceIdentity()
         {
-            if (string.IsNullOrEmpty(ResourceType))
+            return new ResourceIdentifier()
             {
-                throw new ArgumentNullException("ResourceType");
-            }
-            if (ResourceType.IndexOf('/') < 0)
-            {
-                throw new ArgumentException(ProjectResources.ResourceTypeFormat, "ResourceType");
-            }
-
-            ResourceIdentity identity = new ResourceIdentity
-                {
-                    ResourceName = Name,
-                    ParentResourcePath = ParentResource,
-                    ResourceProviderNamespace = ResourceIdentifier.GetProviderFromResourceType(ResourceType),
-                    ResourceType = ResourceIdentifier.GetTypeFromResourceType(ResourceType),
-                    ResourceProviderApiVersion = ApiVersion
-                };
-
-            return identity;
+                ParentResource = ParentResource,
+                ResourceGroupName = ResourceGroupName,
+                ResourceName = Name,
+                ResourceType = ResourceType
+            }.ToResourceIdentity(ApiVersion);
         }
     }
 }

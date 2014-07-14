@@ -15,6 +15,7 @@
 using Microsoft.Azure.Policy;
 using Microsoft.Azure.Policy.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,26 +35,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// </summary>
         /// <param name="subscription">The WindowsAzureSubscription instance</param>
         public PoliciesClient(WindowsAzureSubscription subscription)
-            : this(subscription.CreateClientFromEndpoint<PolicyManagementClient>(new Uri("https://aad-pas-nova-by1-001.cloudapp.net/")))
         {
-            GraphClient = new GraphClient(subscription);
-        }
-
-        /// <summary>
-        /// Creates PoliciesClient using specified IPolicyManagementClient.
-        /// </summary>
-        /// <param name="policyClient">The IPolicyManagementClient instance</param>
-        public PoliciesClient(IPolicyManagementClient policyClient)
-        {
-            PolicyClient = policyClient;
-        }
-
-        /// <summary>
-        /// Parameterless constructor for mocking
-        /// </summary>
-        public PoliciesClient()
-        {
-
+            string tenantId = "1eeeb395-21c8-4ae0-b145-2abd2dfe501d";
+            AccessTokenCredential creds = subscription.CreateTokenCredentials();
+            GraphClient = new GraphClient(subscription, tenantId, creds);
+            PolicyClient = subscription.CreateClient<PolicyManagementClient>(
+                false,
+                tenantId,
+                creds,
+                new Uri("https://aad-pas-nova-by1-001.cloudapp.net/"));
         }
 
         public PSRoleDefinition GetRoleDefinition(string roleId)
@@ -138,16 +128,12 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// </summary>
         /// <param name="options">The role assignment filtering options</param>
         /// <returns>The deleted role assignments</returns>
-        public List<PSRoleAssignment> RemoveRoleAssignment(FilterRoleAssignmentsOptions options)
+        public PSRoleAssignment RemoveRoleAssignment(FilterRoleAssignmentsOptions options)
         {
-            List<PSRoleAssignment> roleAssignments = FilterRoleAssigbments(options);
+            PSRoleAssignment roleAssignment = FilterRoleAssigbments(options).FirstOrDefault();
+            PolicyClient.RoleAssignments.Delete(roleAssignment.Id);
 
-            foreach (PSRoleAssignment roleAssignment in roleAssignments)
-            {
-                PolicyClient.RoleAssignments.Delete(roleAssignment.Id);
-            }
-
-            return roleAssignments;
+            return roleAssignment;
         }
     }
 }

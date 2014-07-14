@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                     throw new ArgumentException(ProjectResources.ResourceDoesntExists);
                 }
 
-                resources.Add(getResult.Resource.ToPSResource(this));
+                resources.Add(getResult.Resource.ToPSResource(parameters.ApiVersion, this));
             }
             else
             {
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
                 if (listResult.Resources != null)
                 {
-                    resources.AddRange(listResult.Resources.Select(r => r.ToPSResource(this)));
+                    resources.AddRange(listResult.Resources.Select(r => r.ToPSResource(parameters.ApiVersion, this)));
                 }
             }
             return resources;
