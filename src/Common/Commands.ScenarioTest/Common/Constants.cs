@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         public const string Resources = "Resources";
 
-        public const string CheckIn = "CheckIn";
+        public const string Tags = "Tags";
 
         public const string TrafficManager = "TrafficManager";
 
@@ -39,7 +39,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         // Acceptance type
         public const string CIT = "CIT";
+
         public const string BVT = "BVT";
+
+        public const string CheckIn = "CheckIn";
 
         // Environment
         public const string WAPack = "WAPack";

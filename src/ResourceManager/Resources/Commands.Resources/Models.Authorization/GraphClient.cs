@@ -38,24 +38,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             string tenantId,
             AccessTokenCredential creds)
         {
-            // Create graph client
-            //string CommonTenant = WindowsAzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud].ActiveDirectoryCommonTenantId;
-            //string authority = subscription.ActiveDirectoryEndpoint + CommonTenant;
-            //AuthenticationContext authContext = new AuthenticationContext(authority);
-
-            //AuthenticationResult result = authContext.AcquireToken(
-            //    GraphEndpoint,
-            //    GraphAppId,
-            //    AdalConfiguration.PowerShellRedirectUri,
-            //    PromptBehavior.Always);
-
-            //TenantCloudCredentials cred = new TenantCloudCredentials();
-            //cred.TenantID = result.TenantId;
-            //cred.Token = result.AccessToken;
-
             GraphRbacClient = subscription.CreateClient<GraphRbacManagementClient>(
                 false,
-                "7229458e-4e0e-459b-ab5e-f8639ee0737c" /*creds.TenantID*/,
+                creds.TenantID,
                 creds,
                 new Uri(GraphEndpoint));
         }

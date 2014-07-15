@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Policy.Models;
+using Microsoft.Azure.Management.Authorization.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,22 +24,22 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         {
             return new PSRoleDefinition()
             {
-                Name = role.Name,
-                Permissions = new List<string>(role.Permissions.SelectMany(r => r.Actions)),
-                Id = role.RoleId
+                Name = role.Properties.Name,
+                Permissions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
+                Id = role.Id
             };
         }
 
         public static PSRoleAssignment ToPSRoleAssignment(this RoleAssignment role, PoliciesClient policyClient, GraphClient graphClient)
         {
-            PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.RoleId);
+            PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.Properties.RoleDefinitionId.Split('/').Last());
             return new PSRoleAssignment()
             {
-                Id = role.RoleAssignmentId,
-                Principal = graphClient.GetPrincipalId(role.PrincipalId).Principal,
+                Id = role.Id,
+                Principal = graphClient.GetPrincipalId(role.Properties.PrincipalId).Principal,
                 Permissions = roleDefinition.Permissions,
                 Role = roleDefinition.Name,
-                Scope = role.Scope
+                Scope = role.Properties.Scope
             };
         }
     }

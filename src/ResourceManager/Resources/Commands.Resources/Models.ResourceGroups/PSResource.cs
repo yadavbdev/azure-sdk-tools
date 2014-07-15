@@ -36,5 +36,12 @@ namespace Microsoft.Azure.Commands.Resources.Models
         public List<string> Permissions { get; set; }
 
         public string ApiVersion { get; set; }
+
+        public List<Hashtable> Tags { get; set; }
+
+        public string TagsTable
+        {
+            get { return ResourcesExtensions.ConstructTagsTable(Tags); }
+        }
     }
 }

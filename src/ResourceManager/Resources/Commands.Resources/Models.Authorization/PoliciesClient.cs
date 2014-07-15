@@ -12,8 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Policy;
-using Microsoft.Azure.Policy.Models;
+using Microsoft.Azure.Management.Authorization;
+using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
     {
         private const string ResourceManagerAppId = "797f4846-ba00-4fd7-ba43-dac1f8f63013";
 
-        public IPolicyManagementClient PolicyClient { get; set; }
+        public IAuthorizationManagementClient PolicyClient { get; set; }
 
         public GraphClient GraphClient { get; set; }
 
@@ -39,11 +39,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             string tenantId = "1eeeb395-21c8-4ae0-b145-2abd2dfe501d";
             AccessTokenCredential creds = subscription.CreateTokenCredentials();
             GraphClient = new GraphClient(subscription, tenantId, creds);
-            PolicyClient = subscription.CreateClient<PolicyManagementClient>(
-                false,
-                tenantId,
-                creds,
-                new Uri("https://aad-pas-nova-by1-001.cloudapp.net/"));
+            PolicyClient = subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>();
         }
 
         public PSRoleDefinition GetRoleDefinition(string roleId)
@@ -62,13 +58,12 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
             if (string.IsNullOrEmpty(roleDefinitionName))
             {
-                result.AddRange(PolicyClient.RoleDefinitions.List(null).RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
+                result.AddRange(PolicyClient.RoleDefinitions.List().RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
             }
             else
             {
-                var rd = PolicyClient.RoleDefinitions.List(roleDefinitionName).RoleDefinitions;
-                var test = rd.Select(r => r.ToPSRoleDefinition());
-                result.Add(PolicyClient.RoleDefinitions.List(roleDefinitionName).RoleDefinitions.Select(r => r.ToPSRoleDefinition()).FirstOrDefault());
+                var test = PolicyClient.RoleDefinitions.Get(roleDefinitionName).RoleDefinition.ToPSRoleDefinition();
+                result.Add(PolicyClient.RoleDefinitions.Get(roleDefinitionName).RoleDefinition.ToPSRoleDefinition());
             }
 
             return result;
@@ -85,20 +80,14 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             string roleAssignmentId = Guid.NewGuid().ToString();
             string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
 
-            RoleAssignmentCreateParameters createParameters = new RoleAssignmentCreateParameters()
+            RoleAssignmentCreateParameters createParameters = new RoleAssignmentCreateParameters
             {
-                RoleAssignment = new RoleAssignment()
-                {
-                    AppId = ResourceManagerAppId,
-                    PrincipalId = principalId,
-                    RoleAssignmentId = roleAssignmentId,
-                    RoleId = roleDefinitionId,
-                    Scope = parameters.Scope
-                }
+                PrincipalId = principalId,
+                RoleDefinitionId = roleDefinitionId
             };
 
-            PolicyClient.RoleAssignments.CreateOrUpdate(createParameters);
-            return PolicyClient.RoleAssignments.Get(roleAssignmentId).RoleAssignment.ToPSRoleAssignment(this, GraphClient);
+            PolicyClient.RoleAssignments.Create(parameters.Scope, roleAssignmentId, createParameters);
+            return PolicyClient.RoleAssignments.Get(parameters.Scope, roleAssignmentId).RoleAssignment.ToPSRoleAssignment(this, GraphClient);
         }
 
         /// <summary>
@@ -110,13 +99,12 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         {
             List<PSRoleAssignment> result = new List<PSRoleAssignment>();
 
-            RoleAssignmentAtScopeAndAboveParameters listAboveParams = new RoleAssignmentAtScopeAndAboveParameters()
+            ListAssignmentsFilterParameters listAboveParams = new ListAssignmentsFilterParameters
             {
-                AppId = ResourceManagerAppId,
-                Scope = options.Scope
+                PrincipalId = options.PrincipalName
             };
 
-            result.AddRange(PolicyClient.RoleAssignments.ListRoleAssignmentsAtScopeAndAbove(listAboveParams)
+            result.AddRange(PolicyClient.RoleAssignments.List(listAboveParams)
                 .RoleAssignments
                 .Select(r => r.ToPSRoleAssignment(this, GraphClient)));
 
@@ -131,7 +119,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         public PSRoleAssignment RemoveRoleAssignment(FilterRoleAssignmentsOptions options)
         {
             PSRoleAssignment roleAssignment = FilterRoleAssigbments(options).FirstOrDefault();
-            PolicyClient.RoleAssignments.Delete(roleAssignment.Id);
+            PolicyClient.RoleAssignments.Delete(options.Scope, roleAssignment.Id);
 
             return roleAssignment;
         }
