@@ -22,21 +22,21 @@ function Test-CreatesNewSimpleResourceGroup
     $rgname = Get-ResourceGroupName
     $location = Get-ProviderLocation ResourceManagement
 
-	try 
-	{
-		# Test
-		$actual = New-AzureResourceGroup -Name $rgname -Location $location -Tags @{Name = "testtag"; Value = "testval"} 
-		$expected = Get-AzureResourceGroup -Name $rgname
+    try 
+    {
+        # Test
+        $actual = New-AzureResourceGroup -Name $rgname -Location $location -Tags @{Name = "testtag"; Value = "testval"} 
+        $expected = Get-AzureResourceGroup -Name $rgname
 
-		# Assert
-		Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
-		Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
-	}
-	finally
-	{
-		# Cleanup
-		Clean-ResourceGroup $rgname
-	}
+        # Assert
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
+        Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
+    }
+    finally
+    {
+        # Cleanup
+        Clean-ResourceGroup $rgname
+    }
 }
 
 <#
@@ -49,31 +49,31 @@ function Test-UpdatesExistingResourceGroup
     $rgname = Get-ResourceGroupName
     $location = Get-ProviderLocation ResourceManagement
 
-	try 
-	{
-		# Test update without tag
-		Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "ResourceGroupNotFound: Resource group '$rgname' could not be found."
-		
-		$new = New-AzureResourceGroup -Name $rgname -Location $location
-		
-		# Test update with bad tag format
-		Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
-		# Test update with bad tag format
-		Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"}, @{Name = "testtag"; Value = "testval2"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
-			
-		$actual = Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"} 
-		$expected = Get-AzureResourceGroup -Name $rgname
+    try 
+    {
+        # Test update without tag
+        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "ResourceGroupNotFound: Resource group '$rgname' could not be found."
+        
+        $new = New-AzureResourceGroup -Name $rgname -Location $location
+        
+        # Test update with bad tag format
+        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
+        # Test update with bad tag format
+        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"}, @{Name = "testtag"; Value = "testval2"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
+            
+        $actual = Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"} 
+        $expected = Get-AzureResourceGroup -Name $rgname
 
-		# Assert
-		Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
-		Assert-AreEqual 0 $new.Tags.Count
-		Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
-	}
-	finally
-	{
-		# Cleanup
-		Clean-ResourceGroup $rgname
-	}
+        # Assert
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
+        Assert-AreEqual 0 $new.Tags.Count
+        Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
+    }
+    finally
+    {
+        # Cleanup
+        Clean-ResourceGroup $rgname
+    }
 }
 
 <#
@@ -143,7 +143,6 @@ function Test-AzureTagsEndToEnd
     # Setup
     $tag1 = getAssetName
     $tag2 = getAssetName
-    Clean-Tags
 
     # Create tag without values
     New-AzureTag $tag1
@@ -157,7 +156,7 @@ function Test-AzureTagsEndToEnd
     New-AzureTag $tag1 value2
 
     $tag = Get-AzureTag $tag1
-    Assert-AreEqual 2 $tag.Values.Count
+    Assert-True { $tag.Values.Count -ge 2 }
 
     # Create tag with values
     New-AzureTag $tag2 value1
@@ -165,7 +164,7 @@ function Test-AzureTagsEndToEnd
     New-AzureTag $tag2 value3
 
     $tags = Get-AzureTag
-    Assert-AreEqual 2 $tags.Count
+    Assert-True { $tags.Count -ge 2 }
 
     # Remove entire tag
     $tag = Remove-AzureTag $tag1 -Force -PassThru
@@ -176,11 +175,6 @@ function Test-AzureTagsEndToEnd
     # Remove tag value
     $tag = Remove-AzureTag $tag2 value1 -Force -PassThru
 
-    $tags = Get-AzureTag
-    Assert-AreEqual 0 $tags.Count
-
     # Get a non-existing tag
     Assert-Throws { Get-AzureTag "non-existing" }
-
-    Clean-Tags
 }
