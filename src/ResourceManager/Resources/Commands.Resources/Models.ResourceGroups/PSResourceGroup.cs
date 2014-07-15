@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public List<string> Permissions { get; set; }
 
-        public List<Hashtable> Tags { get; set; }
+        public Hashtable[] Tags { get; set; }
 
         public string TagsTable
         {
