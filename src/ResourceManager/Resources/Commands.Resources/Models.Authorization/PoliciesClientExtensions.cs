@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Policy.Models;
+using Microsoft.Azure.Management.Authorization.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,8 +25,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             return new PSRoleDefinition()
             {
                 Name = role.Name,
-                Permissions = new List<string>(role.Permissions.SelectMany(r => r.Actions)),
-                Id = role.RoleId
+                Permissions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
+                Id = role.Id
             };
         }
     }

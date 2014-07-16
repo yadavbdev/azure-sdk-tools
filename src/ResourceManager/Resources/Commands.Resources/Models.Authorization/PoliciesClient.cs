@@ -12,7 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Policy;
+using System;
+using Microsoft.Azure.Management.Authorization;
+using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +23,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class PoliciesClient
     {
-        public IPolicyManagementClient PolicyClient { get; set; }
+        public IAuthorizationManagementClient PolicyClient { get; set; }
 
         public PoliciesClient(WindowsAzureSubscription subscription)
-            : this(subscription.CreateClientFromResourceManagerEndpoint<PolicyManagementClient>())
+            : this(subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>())
         {
 
         }
 
-        public PoliciesClient(IPolicyManagementClient policyClient)
+        public PoliciesClient(IAuthorizationManagementClient policyClient)
         {
             PolicyClient = policyClient;
         }
@@ -51,13 +53,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         {
             List<PSRoleDefinition> result = new List<PSRoleDefinition>();
 
+            IList<RoleDefinition> roleDefinitionsFromServer = PolicyClient.RoleDefinitions.List().RoleDefinitions;
             if (string.IsNullOrEmpty(roleDefinitionName))
             {
-                result.AddRange(PolicyClient.RoleDefinitions.List(null).RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
+                result.AddRange(roleDefinitionsFromServer.Select(r => r.ToPSRoleDefinition()));
             }
             else
             {
-                result.Add(PolicyClient.RoleDefinitions.List(roleDefinitionName).RoleDefinitions.Select(r => r.ToPSRoleDefinition()).FirstOrDefault());
+                result.AddRange(roleDefinitionsFromServer.Where(r => r.Name.Equals(roleDefinitionName, StringComparison.OrdinalIgnoreCase))
+                    .Select(r => r.ToPSRoleDefinition()));
             }
 
             return result;
