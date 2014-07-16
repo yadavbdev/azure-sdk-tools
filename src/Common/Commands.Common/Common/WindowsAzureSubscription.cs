@@ -109,6 +109,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public ITokenProvider TokenProvider { get; set; }
 
         private IAccessToken accessToken;
+
+        public IAccessToken AccessToken { get { return accessToken; } set { accessToken = value; } }
         
         /// <summary>
         /// Set the access token to use for authentication

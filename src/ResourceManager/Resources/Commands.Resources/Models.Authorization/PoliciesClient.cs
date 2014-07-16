@@ -24,11 +24,20 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class PoliciesClient
     {
-        private const string ResourceManagerAppId = "797f4846-ba00-4fd7-ba43-dac1f8f63013";
+        /// <summary>
+        /// This queue is used by the tests to assign fixed role assignment
+        /// names every time the test runs.
+        /// </summary>
+        public static Queue<string> RoleAssignmentNames { get; set; }
 
         public IAuthorizationManagementClient PolicyClient { get; set; }
 
         public GraphClient GraphClient { get; set; }
+
+        static PoliciesClient()
+        {
+            RoleAssignmentNames = new Queue<string>();
+        }
 
         /// <summary>
         /// Creates PoliciesClient using WindowsAzureSubscription instance.
@@ -77,7 +86,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
         {
             string principalId = GraphClient.GetActiveDirectoryObject(parameters.PrincipalName).Id;
-            string roleAssignmentId = Guid.NewGuid().ToString();
+            string roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid().ToString() : RoleAssignmentNames.Dequeue();
             string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
 
             RoleAssignmentCreateParameters createParameters = new RoleAssignmentCreateParameters

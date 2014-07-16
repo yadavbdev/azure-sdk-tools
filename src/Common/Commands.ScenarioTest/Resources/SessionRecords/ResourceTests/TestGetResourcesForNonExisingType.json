@@ -16,22 +16,25 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31939"
+          "31966"
         ],
         "x-ms-request-id": [
-          "28316b9f-b357-4667-abf7-8aa1ef300fd1"
+          "4503097f-b303-492f-8ffc-60c74c291c1c"
         ],
         "x-ms-correlation-request-id": [
-          "28316b9f-b357-4667-abf7-8aa1ef300fd1"
+          "4503097f-b303-492f-8ffc-60c74c291c1c"
         ],
         "x-ms-routing-request-id": [
-          "WESTUS:20140702T233251Z:28316b9f-b357-4667-abf7-8aa1ef300fd1"
+          "WESTUS:20140716T233005Z:4503097f-b303-492f-8ffc-60c74c291c1c"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
         ],
         "Cache-Control": [
           "no-cache"
         ],
         "Date": [
-          "Wed, 02 Jul 2014 23:32:51 GMT"
+          "Wed, 16 Jul 2014 23:30:05 GMT"
         ]
       },
       "StatusCode": 200
@@ -39,6 +42,8 @@
   ],
   "Names": {},
   "Variables": {
-    "SubscriptionId": "2c224e7e-3ef5-431d-a57b-e71f4662e3a6"
+    "SubscriptionId": "2c224e7e-3ef5-431d-a57b-e71f4662e3a6",
+    "Username": "aogail@microsoft.com",
+    "Tenantd": null
   }
 }

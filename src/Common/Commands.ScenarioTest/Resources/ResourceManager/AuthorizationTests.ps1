@@ -22,42 +22,50 @@ Tests these features in the authorization:
 #>
 function Test-AuthorizationEndToEnd
 {
-	<# Role Definitions #>
+    <# Role Definitions #>
 
-	# Can list role definitions
-	$roleDefinitions = Get-AzureRoleDefinition
-	Assert-True { $roleDefinitions.Count -gt 0 }
+    # Can list role definitions
+    $roleDefinitions = Get-AzureRoleDefinition
+    Assert-True { $roleDefinitions.Count -gt 0 }
 
-	# Can get one role definition
-	$roleDefinition = Get-AzureRoleDefinition -Name $roleDefinitions[0].Name
-	Assert-AreEqual $roleDefinitions[0].Name $roleDefinition.Name
+    # Can get one role definition
+    $roleDefinition = Get-AzureRoleDefinition -Name $roleDefinitions[0].Name
+    Assert-AreEqual $roleDefinitions[0].Name $roleDefinition.Name
 
-	# Does not throw when getting a non-existing role definition
-	$roleDefinition = Get-AzureRoleDefinition -Name "not-there"
-	Assert-Null $roleDefinition
+    # Does not throw when getting a non-existing role definition
+    $roleDefinition = Get-AzureRoleDefinition -Name "not-there"
+    Assert-Null $roleDefinition
 
-	<# Role Assignments #>
-	$rg = Get-ResourceGroupName
-	$defaultSubscription = Get-AzureSubscription -Default
-	$principal = $defaultSubscription.ActiveDirectoryUserId
-	$roleDef = $(Get-AzureRoleDefinition)[0].Name
-	$expectedScope = "/subscriptions/" + $defaultSubscription.SubscriptionId
+    <# Role Assignments #>
+    $rg = Get-ResourceGroupName
+    $defaultSubscription = Get-AzureSubscription -Default
+    $principal = $defaultSubscription.ActiveDirectoryUserId
+    $roleDef = $(Get-AzureRoleDefinition)[0].Name
+    $expectedScope = "/subscriptions/" + $defaultSubscription.SubscriptionId
 
-	# Create role assignment with default scope
-	$roleAssignment = New-AzureRoleAssignment -Principal $principal -RoleDefinitionName $roleDef
-	Assert-AreEqual $principal $roleAssignment.Principal
-	Assert-AreEqual $expectedScope $roleAssignment.Scope
+    # List role assignments is piped to get remove role assignment
+    Get-AzureRoleAssignment | Remove-AzureRoleAssignment -Force
+    $roleAssignments = Get-AzureRoleAssignment
+    Assert-AreEqual 0 $roleAssignments.Count
 
-	$roleAssignment | Remove-AzureRoleAssignment -Force
+    # Create role assignment with default scope
+    [Microsoft.Azure.Commands.Resources.Models.Authorization.PoliciesClient]::RoleAssignmentNames.Enqueue("C6408EC2-C27D-49C3-87ED-F49AC8354B76")
+    $roleAssignment = New-AzureRoleAssignment -Principal $principal -RoleDefinitionName $roleDef
+    Assert-AreEqual $principal $roleAssignment.Principal
+    Assert-AreEqual $expectedScope $roleAssignment.Scope
 
-	# Create role assignment with resource group scope
-	$expectedScope = $expectedScope + "/resourceGroups/$rg"
-	$roleAssignment = New-AzureRoleAssignment -Principal $principal -RoleDefinitionName $roleDef -ResourceGroup $rg
-	Assert-AreEqual $principal $roleAssignment.Principal
-	Assert-AreEqual $expectedScope $roleAssignment.Scope
+    $roleAssignment | Remove-AzureRoleAssignment -Force
 
-	# Throws if trying to recreate an existing role assignment
-	Assert-Throws { New-AzureRoleAssignment -Principal $principal -RoleDefinitionName $roleDef -ResourceGroup $rg }
+    # Create role assignment with resource group scope
+    $expectedScope = $expectedScope + "/resourceGroups/$rg"
+    [Microsoft.Azure.Commands.Resources.Models.Authorization.PoliciesClient]::RoleAssignmentNames.Enqueue("6CAFE07B-DEA4-4097-A0DB-50E844D70615")
+    $roleAssignment = New-AzureRoleAssignment -Principal $principal -RoleDefinitionName $roleDef -ResourceGroup $rg
+    Assert-AreEqual $principal $roleAssignment.Principal
+    Assert-AreEqual $expectedScope $roleAssignment.Scope
 
-	$roleAssignment | Remove-AzureRoleAssignment -Force
+    # Throws if trying to recreate an existing role assignment
+    [Microsoft.Azure.Commands.Resources.Models.Authorization.PoliciesClient]::RoleAssignmentNames.Enqueue("0BD5EC77-F955-4470-83B9-582CED1EA177")
+    Assert-Throws { New-AzureRoleAssignment -Principal $principal -RoleDefinitionName $roleDef -ResourceGroup $rg }
+
+    $roleAssignment | Remove-AzureRoleAssignment -Force
 }

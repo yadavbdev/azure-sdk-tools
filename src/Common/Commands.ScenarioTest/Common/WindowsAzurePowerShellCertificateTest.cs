@@ -22,6 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
     using Commands.Common;
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
     using VisualStudio.TestTools.UnitTesting;
+    using Microsoft.WindowsAzure.Testing;
 
     [TestClass]
     public class WindowsAzurePowerShellCertificateTest : PowerShellTest
@@ -69,7 +70,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         public override Collection<PSObject> RunPowerShellTest(params string[] scripts)
         {
-            HttpMockServer.Initialize(this.GetType(), Utilities.GetCurrentMethodName(2));
+            HttpMockServer.Initialize(this.GetType(), TestUtilities.GetCurrentMethodName(2));
             return base.RunPowerShellTest(scripts);
         }
 

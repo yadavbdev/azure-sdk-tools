@@ -51,5 +51,9 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
     public class Variables
     {
         public const string SubscriptionId = "SubscriptionId";
+
+        public const string Username = "Username";
+
+        public const string Tenantd = "Tenantd";
     }
 }
