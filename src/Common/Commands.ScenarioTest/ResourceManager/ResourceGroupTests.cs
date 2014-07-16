@@ -55,6 +55,15 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
         [TestCategory(Category.All)]
         [TestCategory(Category.Resources)]
         [TestCategory(Category.CheckIn)]
+        public void TestUpdatesExistingResourceGroup()
+        {
+            RunPowerShellTest("Test-UpdatesExistingResourceGroup");
+        }
+
+        [TestMethod]
+        [TestCategory(Category.All)]
+        [TestCategory(Category.Resources)]
+        [TestCategory(Category.CheckIn)]
         public void TestCreatesAndRemoveResourceGroupViaPiping()
         {
             RunPowerShellTest("Test-CreatesAndRemoveResourceGroupViaPiping");
@@ -85,6 +94,15 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
         public void TestRemoveNonExistingResourceGroup()
         {
             RunPowerShellTest("Test-RemoveNonExistingResourceGroup");
+        }
+
+        [TestMethod]
+        [TestCategory(Category.All)]
+        [TestCategory(Category.Tags)]
+        [TestCategory(Category.CheckIn)]
+        public void TestAzureTagsEndToEnd()
+        {
+            RunPowerShellTest("Test-AzureTagsEndToEnd");
         }
     }
 }

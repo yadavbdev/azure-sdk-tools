@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Azure.Utilities.HttpRecorder;
-    using Commands.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
     using System;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Management.Automation;
+    using Azure.Utilities.HttpRecorder;
+    using Commands.Common;
+    using Microsoft.WindowsAzure.Commands.Utilities.Common;
     using VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -30,10 +29,12 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         protected TestCredentialHelper credentials;
         protected string credentialFile;
         protected string profileFile;
+
         // Location where test output will be written to e.g. C:\Temp
         private static string outputDirKey = "TEST_HTTPMOCK_OUTPUT";
 
         private bool runningMocked = false;
+
         private void OnClientCreated(object sender, ClientCreatedArgs e)
         {
             e.AddHandlerToClient(HttpMockServer.CreateInstance());
@@ -96,7 +97,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         {
             base.TestCleanup();
             WindowsAzureSubscription.OnClientCreated -= OnClientCreated;
-            HttpMockServer.Flush();
+            if (!this.runningMocked && HttpMockServer.CallerIdentity != null)
+            {
+                HttpMockServer.Flush();
+            }
         }
     }
 }

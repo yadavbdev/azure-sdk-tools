@@ -21,7 +21,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         void AuthorizeRequest(Action<string, string> authTokenSetter);
 
         string AccessToken { get; }
+
         string UserId { get; }
+
+        string TenantID { get; }
+        
         LoginType LoginType { get; }
     }
 }

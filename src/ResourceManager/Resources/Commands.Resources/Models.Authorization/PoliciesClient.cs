@@ -12,10 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
 using Microsoft.Azure.Management.Authorization;
 using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,48 +24,111 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class PoliciesClient
     {
+        private const string ResourceManagerAppId = "797f4846-ba00-4fd7-ba43-dac1f8f63013";
+
         public IAuthorizationManagementClient PolicyClient { get; set; }
 
-        public PoliciesClient(WindowsAzureSubscription subscription)
-            : this(subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>())
-        {
-
-        }
-
-        public PoliciesClient(IAuthorizationManagementClient policyClient)
-        {
-            PolicyClient = policyClient;
-        }
+        public GraphClient GraphClient { get; set; }
 
         /// <summary>
-        /// Parameterless constructor for mocking
+        /// Creates PoliciesClient using WindowsAzureSubscription instance.
         /// </summary>
-        public PoliciesClient()
+        /// <param name="subscription">The WindowsAzureSubscription instance</param>
+        public PoliciesClient(WindowsAzureSubscription subscription)
         {
+            AccessTokenCredential creds = subscription.CreateTokenCredentials();
+            GraphClient = new GraphClient(subscription, creds);
+            PolicyClient = subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>();
+        }
 
+        public PSRoleDefinition GetRoleDefinition(string roleId)
+        {
+            return PolicyClient.RoleDefinitions.Get(roleId).RoleDefinition.ToPSRoleDefinition();
         }
 
         /// <summary>
         /// Filters the existing role Definitions.
         /// </summary>
-        /// <param name="roleDefinitionName">The role name</param>
+        /// <param name="name">The role name</param>
         /// <returns>The matched role Definitions</returns>
-        public List<PSRoleDefinition> FilterRoleDefinitions(string roleDefinitionName)
+        public List<PSRoleDefinition> FilterRoleDefinitions(string name)
         {
             List<PSRoleDefinition> result = new List<PSRoleDefinition>();
 
-            IList<RoleDefinition> roleDefinitionsFromServer = PolicyClient.RoleDefinitions.List().RoleDefinitions;
-            if (string.IsNullOrEmpty(roleDefinitionName))
+            if (string.IsNullOrEmpty(name))
             {
-                result.AddRange(roleDefinitionsFromServer.Select(r => r.ToPSRoleDefinition()));
+                result.AddRange(PolicyClient.RoleDefinitions.List().RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
             }
             else
             {
-                result.AddRange(roleDefinitionsFromServer.Where(r => r.Name.Equals(roleDefinitionName, StringComparison.OrdinalIgnoreCase))
-                    .Select(r => r.ToPSRoleDefinition()));
+                result.Add(PolicyClient.RoleDefinitions.List().RoleDefinitions
+                    .FirstOrDefault(r => r.Properties.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    .ToPSRoleDefinition());
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Creates new role assignment.
+        /// </summary>
+        /// <param name="parameters">The create parameters</param>
+        /// <returns>The created role assignment object</returns>
+        public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
+        {
+            string principalId = GraphClient.GetActiveDirectoryObject(parameters.PrincipalName).Id;
+            string roleAssignmentId = Guid.NewGuid().ToString();
+            string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
+
+            RoleAssignmentCreateParameters createParameters = new RoleAssignmentCreateParameters
+            {
+                PrincipalId = principalId,
+                RoleDefinitionId = roleDefinitionId
+            };
+
+            PolicyClient.RoleAssignments.Create(parameters.Scope, roleAssignmentId, createParameters);
+            return PolicyClient.RoleAssignments.Get(parameters.Scope, roleAssignmentId).RoleAssignment.ToPSRoleAssignment(this, GraphClient);
+        }
+
+        /// <summary>
+        /// Filters role assignments based on the passed options.
+        /// </summary>
+        /// <param name="options">The filtering options</param>
+        /// <returns>The filtered role assignments</returns>
+        public List<PSRoleAssignment> FilterRoleAssigbments(FilterRoleAssignmentsOptions options)
+        {
+            List<PSRoleAssignment> result = new List<PSRoleAssignment>();
+            result.AddRange(PolicyClient.RoleAssignments.List(null)
+                .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, GraphClient)));
+
+            if (!string.IsNullOrEmpty(options.PrincipalName))
+            {
+                result = result.Where(r => r.Principal.Equals(options.PrincipalName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(options.RoleDefinition))
+            {
+                result = result.Where(r => r.RoleDefinitionName.Equals(options.RoleDefinition, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deletes a role assignments based on the used options.
+        /// </summary>
+        /// <param name="options">The role assignment filtering options</param>
+        /// <returns>The deleted role assignments</returns>
+        public PSRoleAssignment RemoveRoleAssignment(FilterRoleAssignmentsOptions options)
+        {
+            PSRoleAssignment roleAssignment = FilterRoleAssigbments(options).FirstOrDefault();
+
+            if (roleAssignment != null)
+            {
+                PolicyClient.RoleAssignments.Delete(options.Scope, roleAssignment.Id);                
+            }
+
+            return roleAssignment;
         }
     }
 }

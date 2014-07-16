@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections;
+using System.Linq;
 using Microsoft.Azure.Commands.Resources.Models;
 using System.Collections.Generic;
 using System.Management.Automation;
@@ -28,7 +30,7 @@ namespace Microsoft.Azure.Commands.Resources
         internal const string ParameterSetNameWithId = "Get a single resource";
 
         [Alias("ResourceName")]
-        [Parameter(ParameterSetName = ParameterSetNameWithId, Position=0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name.")]
+        [Parameter(ParameterSetName = ParameterSetNameWithId, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
@@ -41,6 +43,9 @@ namespace Microsoft.Azure.Commands.Resources
         [Parameter(ParameterSetName = BaseParameterSetName, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. In the format ResourceProvider/type.")]
         [ValidateNotNullOrEmpty]
         public string ResourceType { get; set; }
+
+        [Parameter(ParameterSetName = BaseParameterSetName, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource tags.")]
+        public Hashtable Tag { get; set; }
 
         [Parameter(ParameterSetName = ParameterSetNameWithId, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the parent resource if needed. In the format of greatgrandpa/grandpa/dad.")]
         public string ParentResource { get; set; }
@@ -57,7 +62,8 @@ namespace Microsoft.Azure.Commands.Resources
                 ResourceGroupName = ResourceGroupName,
                 ResourceType = ResourceType,
                 ParentResource = ParentResource,
-                ApiVersion = ApiVersion
+                ApiVersion = ApiVersion,
+                Tag = new[] { Tag }
             };
 
             List<PSResource> resourceList = ResourcesClient.FilterPSResources(parameters);
@@ -75,8 +81,9 @@ namespace Microsoft.Azure.Commands.Resources
                         "Name", r.Name,
                         "ResourceGroupName", r.ResourceGroupName,
                         "ResourceType", r.ResourceType,
+                        "ParentResource", r.ParentResource,
                         "Location", r.Location,
-                        "ParentResource", r.ParentResource)));
+                        "Permissions", r.Permissions)));
 
                     WriteObject(output, true);
                 }

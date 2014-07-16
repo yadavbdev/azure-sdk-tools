@@ -240,7 +240,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             }
 
             public string AccessToken { get { return AuthResult.AccessToken; } }
+            
             public string UserId { get { return AuthResult.UserInfo.UserId; } }
+
+            public string TenantID { get { return AuthResult.TenantId; } }
 
             public LoginType LoginType
             {

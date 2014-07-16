@@ -35,11 +35,25 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         
         private static string outputDirKey = "TEST_HTTPMOCK_OUTPUT";
         
-        private HttpRecorderMode recordingMode = HttpRecorderMode.Playback;
-
         private WindowsAzureSubscription testSubscrption;
 
         private TestEnvironment testEnvironment;
+
+        private AzureModule _moduleMode = AzureModule.AzureResourceManager;
+
+        public WindowsAzurePowerShellTokenTest(AzureModule mode, params string[] modules)
+            : base(mode, modules) 
+        {
+            _moduleMode = mode;
+            if (Environment.GetEnvironmentVariable(outputDirKey) != null) {
+                HttpMockServer.RecordsDirectory = Environment.GetEnvironmentVariable(outputDirKey);
+            }
+        }
+
+        public WindowsAzurePowerShellTokenTest(params string[] modules)
+            : this(AzureModule.AzureResourceManager, modules)
+        {
+        }
 
         private void OnClientCreated(object sender, ClientCreatedArgs e)
         {
@@ -62,15 +76,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 {
                     HttpMockServer.Variables.Add(Variables.SubscriptionId, testSubscrption.SubscriptionId);                    
                 }
-            }
-        }
-
-        public WindowsAzurePowerShellTokenTest(params string[] modules)
-            : base(AzureModule.AzureResourceManager, modules)
-        {
-            if (Environment.GetEnvironmentVariable(outputDirKey) != null)
-            {
-                HttpMockServer.RecordsDirectory = Environment.GetEnvironmentVariable(outputDirKey);
             }
         }
 
@@ -102,7 +107,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             {
                 WindowsAzureProfile.Instance.AddEnvironment(new WindowsAzureEnvironment { Name = testEnvironmentName });
             }
-            HttpMockServer.Mode = recordingMode;
+            
             SetupAzureEnvironmentFromEnvironmentVariables();
         }
 
@@ -112,10 +117,22 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             TestEnvironment rdfeEnvironment = serviceManagementTestEnvironmentFactory.GetTestEnvironment();
             ResourceManagerTestEnvironmentFactory resourceManagerTestEnvironmentFactory = new ResourceManagerTestEnvironmentFactory();
             TestEnvironment csmEnvironment = resourceManagerTestEnvironmentFactory.GetTestEnvironment();
-            string jwtToken = csmEnvironment.Credentials != null ? 
+            string jwtToken;
+            
+            if (_moduleMode == AzureModule.AzureResourceManager) 
+            {
+                jwtToken = csmEnvironment.Credentials != null ? 
                 ((TokenCloudCredentials)csmEnvironment.Credentials).Token : null;
+            } else if (_moduleMode == AzureModule.AzureServiceManagement) 
+            {
+                jwtToken = rdfeEnvironment.Credentials != null ?
+                ((TokenCloudCredentials)rdfeEnvironment.Credentials).Token : null;
+            } else 
+            {
+                throw new ArgumentException("Invalid module mode.");
+            }
 
-            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName);
+            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName, null);
             
             WindowsAzureProfile.Instance.CurrentEnvironment = WindowsAzureProfile.Instance.Environments[testEnvironmentName];
 
@@ -139,6 +156,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 ResourceManagerEndpoint = new Uri(WindowsAzureProfile.Instance.CurrentEnvironment.ResourceManagerEndpoint),
                 TokenProvider = WindowsAzureProfile.Instance.TokenProvider,
                 GalleryEndpoint = new Uri(WindowsAzureProfile.Instance.CurrentEnvironment.GalleryEndpoint),
+                SqlDatabaseDnsSuffix = WindowsAzureProfile.Instance.CurrentEnvironment.SqlDatabaseDnsSuffix,
                 CurrentStorageAccountName = csmEnvironment.StorageAccount,
                 IsDefault = true
             };

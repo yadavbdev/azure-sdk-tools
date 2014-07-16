@@ -12,8 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.Resources.Models;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources.Models
@@ -112,8 +114,46 @@ namespace Microsoft.Azure.Commands.Resources.Models
             string provider = GetProviderFromResourceType(ResourceType);
             string type = GetTypeFromResourceType(ResourceType);
             string parentAndType = string.IsNullOrEmpty(ParentResource) ? type : ParentResource + "/" + type;
-            return string.Format("/subscriptions/{0}/resourceGroups/{1}/providers/{2}/{3}/{4}", Subscription, ResourceGroupName,
-                          provider, parentAndType, ResourceName);
+            StringBuilder resourceId = new StringBuilder();
+
+            AppendIfNotNull(ref resourceId, "/subscriptions/{0}", Subscription);
+            AppendIfNotNull(ref resourceId, "/resourceGroups/{0}", ResourceGroupName);
+            AppendIfNotNull(ref resourceId, "/providers/{0}", provider);
+            AppendIfNotNull(ref resourceId, "/{0}", parentAndType);
+            AppendIfNotNull(ref resourceId, "/{0}", ResourceName);
+
+            return resourceId.ToString();
+        }
+
+        public ResourceIdentity ToResourceIdentity(string apiVersion)
+        {
+            if (string.IsNullOrEmpty(ResourceType))
+            {
+                throw new ArgumentNullException("ResourceType");
+            }
+            if (ResourceType.IndexOf('/') < 0)
+            {
+                throw new ArgumentException(ProjectResources.ResourceTypeFormat, "ResourceType");
+            }
+
+            ResourceIdentity identity = new ResourceIdentity
+            {
+                ResourceName = ResourceName,
+                ParentResourcePath = ParentResource,
+                ResourceProviderNamespace = ResourceIdentifier.GetProviderFromResourceType(ResourceType),
+                ResourceType = ResourceIdentifier.GetTypeFromResourceType(ResourceType),
+                ResourceProviderApiVersion = apiVersion
+            };
+
+            return identity;
+        }
+
+        private void AppendIfNotNull(ref StringBuilder resourceId, string format, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                resourceId.AppendFormat(format, value);
+            }
         }
     }
 }
