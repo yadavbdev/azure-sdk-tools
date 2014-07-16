@@ -370,21 +370,31 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         internal List<string> GetResourceGroupPermissions(string resourceGroup)
         {
-            return ResourceManagementClient.ResourceGroups.GetPermissions(resourceGroup)
-                .PermittedActions.SelectMany(p => p.Actions).ToList();
+            PermissionGetResult permissionsResult = ResourceManagementClient.ResourceGroups.GetPermissions(resourceGroup);
+
+            if (permissionsResult != null)
+            {
+                return permissionsResult.PermittedActions.SelectMany(p => p.Actions).ToList();
+            }
+
+            return null;
         }
 
         internal List<string> GetResourcePermissions(ResourceIdentifier identity, string apiVersion)
         {
             if (!string.IsNullOrEmpty(apiVersion))
             {
-                return ResourceManagementClient.Resources.GetPermissions(identity.ResourceGroupName, identity.ToResourceIdentity(apiVersion))
-                .PermittedActions.SelectMany(p => p.Actions).ToList();
+                PermissionGetResult permissionsResult = ResourceManagementClient.Resources.GetPermissions(
+                    identity.ResourceGroupName,
+                    identity.ToResourceIdentity(apiVersion));
+
+                if (permissionsResult != null)
+                {
+                    return permissionsResult.PermittedActions.SelectMany(p => p.Actions).ToList();
+                }
             }
-            else
-            {
-                return new List<string>();
-            }
+
+            return null;
         }
     }
 }
