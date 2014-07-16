@@ -24,8 +24,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class GraphClient
     {
-        private const string GraphAppId = "1950a258-227b-4e31-a9cf-717495945fc2";
-
         private const string GraphEndpoint = "https://graph.ppe.windows.net/";
 
         public GraphRbacManagementClient GraphRbacClient { get; private set; }
@@ -34,9 +32,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// Creates new GraphClient using WindowsAzureSubscription.
         /// </summary>
         /// <param name="subscription">The WindowsAzureSubscription instance</param>
-        public GraphClient(WindowsAzureSubscription subscription, 
-            string tenantId,
-            AccessTokenCredential creds)
+        public GraphClient(WindowsAzureSubscription subscription, AccessTokenCredential creds)
         {
             GraphRbacClient = subscription.CreateClient<GraphRbacManagementClient>(
                 false,
@@ -50,18 +46,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// </summary>
         /// <param name="options">The principal name options. Could be user, group or role</param>
         /// <returns>The AD object corresponding to the passed Id</returns>
-        public PSActiveDirectoryObject GetPrincipalId(string principal)
+        public PSActiveDirectoryObject GetActiveDirectoryObject(string principal)
         {
             PSActiveDirectoryObject userObject = new PSActiveDirectoryObject();
 
-            if (!string.IsNullOrEmpty(principal))
-            {
-                User user = GraphRbacClient.User.Get(principal).User;
-                userObject.DisplayName = user.DisplayName;
-                userObject.Id = user.ObjectId;
-                userObject.Principal = user.UserPrincipalName;
-                userObject.Type = user.ObjectType;
-            }
+            User user = GraphRbacClient.User.Get(principal).User;
+            userObject.DisplayName = user.DisplayName;
+            userObject.Id = user.ObjectId;
+            userObject.Principal = user.UserPrincipalName;
+            userObject.Type = user.ObjectType;
 
             return userObject;
         }

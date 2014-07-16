@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public string Principal { get; set; }
 
-        public string Role { get; set; }
+        public string RoleDefinitionName { get; set; }
 
         public List<string> Permissions { get; set; }
 

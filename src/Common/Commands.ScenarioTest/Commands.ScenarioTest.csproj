@@ -146,6 +146,9 @@
     <Compile Include="Common\TokenCloudCredentialsHelper.cs" />
     <Compile Include="Common\WindowsAzurePowerShellTokenTest.cs" />
     <None Include="packages.config" />
+    <Content Include="Resources\ResourceManager\AuthorizationTests.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Storage\StorageContext.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -157,7 +160,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ResourceManager\DeploymentTests.cs" />
-    <Compile Include="ResourceManager\RoleDefinitionTests.cs" />
+    <Compile Include="ResourceManager\AuthorizationTests.cs" />
     <Compile Include="ResourceManager\ResourceTests.cs" />
     <Compile Include="ResourceManager\ResourceGroupTests.cs" />
     <Compile Include="Resources\ResourceLocator.cs" />

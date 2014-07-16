@@ -136,8 +136,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 return new CertificateCloudCredentials(SubscriptionId, Certificate);
             }
-            
-            if (accessToken == null)
+
+            if (accessToken == null || string.IsNullOrEmpty(accessToken.TenantID))
             {
                 accessToken = TokenProvider.GetCachedToken(this, ActiveDirectoryUserId);
             }
@@ -147,7 +147,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public AccessTokenCredential CreateTokenCredentials()
         {
-            if (accessToken == null)
+            if (accessToken == null || string.IsNullOrEmpty(accessToken.TenantID))
             {
                 accessToken = TokenProvider.GetCachedToken(this, ActiveDirectoryUserId);
             }

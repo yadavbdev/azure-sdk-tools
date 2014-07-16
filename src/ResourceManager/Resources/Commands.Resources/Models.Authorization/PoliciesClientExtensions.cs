@@ -22,12 +22,19 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
     {
         public static PSRoleDefinition ToPSRoleDefinition(this RoleDefinition role)
         {
-            return new PSRoleDefinition()
+            PSRoleDefinition roleDefinition = null;
+
+            if (role != null)
             {
-                Name = role.Properties.Name,
-                Permissions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
-                Id = role.Id
-            };
+                roleDefinition = new PSRoleDefinition
+                {
+                    Name = role.Properties.Name,
+                    Permissions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
+                    Id = role.Id
+                };
+            }
+
+            return roleDefinition;
         }
 
         public static PSRoleAssignment ToPSRoleAssignment(this RoleAssignment role, PoliciesClient policyClient, GraphClient graphClient)
@@ -35,10 +42,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.Properties.RoleDefinitionId.Split('/').Last());
             return new PSRoleAssignment()
             {
-                Id = role.Id,
-                Principal = graphClient.GetPrincipalId(role.Properties.PrincipalId).Principal,
+                Id = role.Id.Split('/').Last(),
+                Principal = graphClient.GetActiveDirectoryObject(role.Properties.PrincipalId).Principal,
                 Permissions = roleDefinition.Permissions,
-                Role = roleDefinition.Name,
+                RoleDefinitionName = roleDefinition.Name,
                 Scope = role.Properties.Scope
             };
         }

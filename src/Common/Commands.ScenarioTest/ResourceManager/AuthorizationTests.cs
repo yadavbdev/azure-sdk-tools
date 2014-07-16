@@ -19,13 +19,13 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
     using VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class RoleDefinitionTests : WindowsAzurePowerShellTokenTest
+    public class AuthorizationTests : WindowsAzurePowerShellTokenTest
     {
         private string currentDirectory;
 
-        public RoleDefinitionTests()
+        public AuthorizationTests()
             : base("ResourceManager\\Common.ps1",
-                   "ResourceManager\\RoleDefinitionTests.ps1")
+                   "ResourceManager\\AuthorizationTests.ps1")
         { }
 
         [TestInitialize]
@@ -45,10 +45,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ResourceManagerTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.Resources)]
-        [TestCategory(Category.CheckIn)]
-        public void TestGetRoleDefinition()
+        //[TestCategory(Category.CheckIn)]
+        public void TestAuthorizationEndToEnd()
         {
-            RunPowerShellTest("Test-GetRoleDefinition");
+            RunPowerShellTest("Test-AuthorizationEndToEnd");
         }
     }
 }

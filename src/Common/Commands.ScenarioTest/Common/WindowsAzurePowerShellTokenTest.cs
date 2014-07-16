@@ -132,7 +132,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 throw new ArgumentException("Invalid module mode.");
             }
 
-            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName);
+            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName, null);
             
             WindowsAzureProfile.Instance.CurrentEnvironment = WindowsAzureProfile.Instance.Environments[testEnvironmentName];
 

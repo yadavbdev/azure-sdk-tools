@@ -99,13 +99,18 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 string tenant = authSettings.ContainsKey(AADTenant) ? authSettings[AADTenant] : AADTenantDefault;
                 string user = null;
 
+                if (authSettings.ContainsKey(AADUserIdKey))
+                {
+                    user = authSettings[AADUserIdKey];
+                }
+
                 // Preserve/restore subscription ID
                 if (HttpMockServer.Mode == HttpRecorderMode.Record)
                 {
                     HttpMockServer.Variables[SubscriptionIdKey] = subscription;
                     if (authSettings.ContainsKey(AADUserIdKey) && authSettings.ContainsKey(AADPasswordKey))
                     {
-                        user = authSettings[AADUserIdKey];
+                        
                         string password = authSettings[AADPasswordKey];
                         Tracing.Information("Using AAD auth with username and password combination");
                         token = TokenCloudCredentialsHelper.GetTokenFromBasicCredentials(user, password, authEndpoint, tenant);

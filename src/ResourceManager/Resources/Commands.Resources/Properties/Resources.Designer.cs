@@ -232,7 +232,7 @@ namespace Microsoft.Azure.Commands.Resources.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removing role assignment for principal &apos;{0}&apos; that uses role definition &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Removing role assignment for principal &apos;{0}&apos; that uses role definition &apos;{1}&apos;...
         /// </summary>
         internal static string RemovingRoleAssignment {
             get {

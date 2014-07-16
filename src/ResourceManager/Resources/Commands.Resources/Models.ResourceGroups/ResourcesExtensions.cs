@@ -39,6 +39,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Resources = resources,
                 ProvisioningState = resourceGroup.ProvisioningState,
                 Tags = TagsConversionHelper.CreateTagHashtable(resourceGroup.Tags),
+                Permissions = client.GetResourceGroupPermissions(resourceGroup.Name)
             };
         }
 
@@ -75,7 +76,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 };
         }
 
-        public static PSResource ToPSResource(this Resource resource, ResourcesClient client)
+        public static PSResource ToPSResource(this Resource resource, string apiVersion, ResourcesClient client)
         {
             ResourceIdentifier identifier = new ResourceIdentifier(resource.Id);
             return new PSResource
@@ -87,8 +88,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 ParentResource = identifier.ParentResource,
                 Properties = JsonUtilities.DeserializeJson(resource.Properties),
                 PropertiesText = resource.Properties,
-                Tags = TagsConversionHelper.CreateTagHashtable(resource.Tags)
+                Tags = TagsConversionHelper.CreateTagHashtable(resource.Tags),
+                Permissions = client.GetResourcePermissions(identifier, apiVersion)
             };
+        }
+
+        public static PSResource ToPSResource(this Resource resource, ResourcesClient client)
+        {
+            return ToPSResource(resource, null, client);
         }
 
         public static PSResourceProviderType ToPSResourceProviderType(this ProviderResourceType resourceType, string providerNamespace)
