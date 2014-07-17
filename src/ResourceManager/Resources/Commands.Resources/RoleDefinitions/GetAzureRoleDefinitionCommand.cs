@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Commands.Resources
     [Cmdlet(VerbsCommon.Get, "AzureRoleDefinition"), OutputType(typeof(List<PSRoleDefinition>))]
     public class GetAzureRoleDefinitionCommand : ResourcesBaseCmdlet
     {
-        [Parameter(Position = 0, Mandatory = false, HelpMessage = "Optional. The name of the role Definition.")]
+        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Optional. The name of the role Definition.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 

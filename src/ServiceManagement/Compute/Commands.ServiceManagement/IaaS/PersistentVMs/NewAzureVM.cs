@@ -14,18 +14,17 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
+    using AutoMapper;
+    using Helpers;
+    using Management.Compute.Models;
+    using Microsoft.WindowsAzure.Storage;
+    using Model;
+    using Properties;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Net;
-    using AutoMapper;
-    using DiskRepository;
-    using Helpers;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using Storage;
     using Utilities.Common;
 
     [Cmdlet(VerbsCommon.New, "AzureVM", DefaultParameterSetName = "ExistingService"), OutputType(typeof(ManagementOperationContext))]
@@ -61,6 +60,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "CreateService", HelpMessage = "The label may be up to 100 characters in length. Defaults to Service Name.")]
         [ValidateNotNullOrEmpty]
         public string ServiceLabel
+        {
+            get;
+            set;
+        }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "CreateService", HelpMessage = "Dns address to which the cloud service’s IP address resolves when queried using a reverse Dns query.")]
+        [ValidateNotNullOrEmpty]
+        public string ReverseDnsFqdn
         {
             get;
             set;
@@ -174,7 +181,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                         ServiceName = this.ServiceName,
                         Description = this.ServiceDescription ??
                                         String.Format("Implicitly created hosted service{0}",DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm")),
-                        Label = this.ServiceLabel ?? this.ServiceName
+                        Label = this.ServiceLabel ?? this.ServiceName,
+                        ReverseDnsFqdn = this.ReverseDnsFqdn
                     };
 
                     ExecuteClientActionNewSM(
@@ -439,6 +447,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 if (!string.IsNullOrEmpty(Location) && !string.IsNullOrEmpty(AffinityGroup))
                 {
                     throw new ArgumentException(Resources.LocationOrAffinityGroupCanOnlyBeSpecifiedWhenNewCloudService);
+                }
+                if (!string.IsNullOrEmpty(ReverseDnsFqdn))
+                {
+                    throw new ArgumentException(Resources.ReverseDnsFqdnCanOnlyBeSpecifiedWhenNewCloudService);
                 }
             }
 

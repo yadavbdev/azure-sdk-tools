@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourcegroups/onesdk2678?api-version=2014-04-01-preview",
+      "RequestUri": "/subscriptions/2c224e7e-3ef5-431d-a57b-e71f4662e3a6/resourcegroups/onesdk3308?api-version=2014-04-01-preview",
       "RequestMethod": "HEAD",
       "RequestBody": "",
       "RequestHeaders": {
         "User-Agent": [
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0",
-          "WindowsAzurePowershell/v0.8.3"
+          "WindowsAzurePowershell/v0.8.5"
         ]
       },
       "ResponseBody": "",
@@ -16,22 +16,25 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31945"
+          "31999"
         ],
         "x-ms-request-id": [
-          "510ad10f-5d6e-4ac8-9243-57f4cba59c6c"
+          "1f82db3b-f726-4000-b0f6-424fe6e14e50"
         ],
         "x-ms-correlation-request-id": [
-          "510ad10f-5d6e-4ac8-9243-57f4cba59c6c"
+          "1f82db3b-f726-4000-b0f6-424fe6e14e50"
         ],
         "x-ms-routing-request-id": [
-          "WESTUS:20140508T220806Z:510ad10f-5d6e-4ac8-9243-57f4cba59c6c"
+          "WESTUS:20140716T231835Z:1f82db3b-f726-4000-b0f6-424fe6e14e50"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
         ],
         "Cache-Control": [
           "no-cache"
         ],
         "Date": [
-          "Thu, 08 May 2014 22:08:06 GMT"
+          "Wed, 16 Jul 2014 23:18:34 GMT"
         ]
       },
       "StatusCode": 404
@@ -39,10 +42,12 @@
   ],
   "Names": {
     "Test-GetResourcesFromNonExisingGroup": [
-      "onesdk2678"
+      "onesdk3308"
     ]
   },
   "Variables": {
-    "SubscriptionId": "db1ab6f0-4769-4b27-930e-01e2ef9c123c"
+    "SubscriptionId": "2c224e7e-3ef5-431d-a57b-e71f4662e3a6",
+    "Username": "aogail@microsoft.com",
+    "Tenantd": null
   }
 }

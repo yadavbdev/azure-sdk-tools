@@ -19,6 +19,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
     using Commands.Common;
     using Commands.Common.Test.Common;
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Microsoft.WindowsAzure.Testing;
     using System;
     using System.Collections.ObjectModel;
     using System.Management.Automation;
@@ -35,11 +36,25 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         
         private static string outputDirKey = "TEST_HTTPMOCK_OUTPUT";
         
-        private HttpRecorderMode recordingMode = HttpRecorderMode.Playback;
-
         private WindowsAzureSubscription testSubscrption;
 
         private TestEnvironment testEnvironment;
+
+        private AzureModule _moduleMode = AzureModule.AzureResourceManager;
+
+        public WindowsAzurePowerShellTokenTest(AzureModule mode, params string[] modules)
+            : base(mode, modules) 
+        {
+            _moduleMode = mode;
+            if (Environment.GetEnvironmentVariable(outputDirKey) != null) {
+                HttpMockServer.RecordsDirectory = Environment.GetEnvironmentVariable(outputDirKey);
+            }
+        }
+
+        public WindowsAzurePowerShellTokenTest(params string[] modules)
+            : this(AzureModule.AzureResourceManager, modules)
+        {
+        }
 
         private void OnClientCreated(object sender, ClientCreatedArgs e)
         {
@@ -62,27 +77,39 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 {
                     HttpMockServer.Variables.Add(Variables.SubscriptionId, testSubscrption.SubscriptionId);                    
                 }
-            }
-        }
 
-        public WindowsAzurePowerShellTokenTest(params string[] modules)
-            : base(AzureModule.AzureResourceManager, modules)
-        {
-            if (Environment.GetEnvironmentVariable(outputDirKey) != null)
-            {
-                HttpMockServer.RecordsDirectory = Environment.GetEnvironmentVariable(outputDirKey);
+                if (!HttpMockServer.Variables.ContainsKey(Variables.Username))
+                {
+                    HttpMockServer.Variables.Add(Variables.Username, testSubscrption.AccessToken.UserId);
+                }
+
+                if (!HttpMockServer.Variables.ContainsKey(Variables.Tenantd))
+                {
+                    HttpMockServer.Variables.Add(Variables.Tenantd, testSubscrption.AccessToken.TenantID);
+                }
             }
         }
 
         public override Collection<PSObject> RunPowerShellTest(params string[] scripts)
         {
-            HttpMockServer.Initialize(this.GetType(), Utilities.GetCurrentMethodName(2));
+            HttpMockServer.Initialize(this.GetType(), TestUtilities.GetCurrentMethodName(2));
             if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
             {
-                string subscriptionId;
-                HttpMockServer.Variables.TryGetValue(Variables.SubscriptionId, out subscriptionId);
-                testSubscrption.SubscriptionId = string.IsNullOrEmpty(subscriptionId) ? testSubscrption.SubscriptionId : subscriptionId;
+                string value;
+                HttpMockServer.Variables.TryGetValue(Variables.SubscriptionId, out value);
+                testSubscrption.SubscriptionId = string.IsNullOrEmpty(value) ? testSubscrption.SubscriptionId : value;
+
+                value = null;
+                FakeAccessToken accessToken = (FakeAccessToken)testSubscrption.AccessToken;
+                HttpMockServer.Variables.TryGetValue(Variables.Username, out value);
+                testSubscrption.ActiveDirectoryUserId = string.IsNullOrEmpty(value) ? testSubscrption.ActiveDirectoryUserId : value;
+                accessToken.UserId = string.IsNullOrEmpty(value) ? accessToken.UserId : value;
+
+                value = null;
+                HttpMockServer.Variables.TryGetValue(Variables.Tenantd, out value);
+                accessToken.TenantID = string.IsNullOrEmpty(value) ? accessToken.TenantID : value;
             }
+
             return base.RunPowerShellTest(scripts);
         }
 
@@ -102,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             {
                 WindowsAzureProfile.Instance.AddEnvironment(new WindowsAzureEnvironment { Name = testEnvironmentName });
             }
-            HttpMockServer.Mode = recordingMode;
+            
             SetupAzureEnvironmentFromEnvironmentVariables();
         }
 
@@ -112,10 +139,25 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             TestEnvironment rdfeEnvironment = serviceManagementTestEnvironmentFactory.GetTestEnvironment();
             ResourceManagerTestEnvironmentFactory resourceManagerTestEnvironmentFactory = new ResourceManagerTestEnvironmentFactory();
             TestEnvironment csmEnvironment = resourceManagerTestEnvironmentFactory.GetTestEnvironment();
-            string jwtToken = csmEnvironment.Credentials != null ? 
+            string jwtToken;
+            
+            if (_moduleMode == AzureModule.AzureResourceManager) 
+            {
+                jwtToken = csmEnvironment.Credentials != null ? 
                 ((TokenCloudCredentials)csmEnvironment.Credentials).Token : null;
+            } else if (_moduleMode == AzureModule.AzureServiceManagement) 
+            {
+                jwtToken = rdfeEnvironment.Credentials != null ?
+                ((TokenCloudCredentials)rdfeEnvironment.Credentials).Token : null;
+            } else 
+            {
+                throw new ArgumentException("Invalid module mode.");
+            }
 
-            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName);
+            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(
+                jwtToken,
+                csmEnvironment.UserName,
+                csmEnvironment.AuthenticationResult != null ? csmEnvironment.AuthenticationResult.TenantId : null);
             
             WindowsAzureProfile.Instance.CurrentEnvironment = WindowsAzureProfile.Instance.Environments[testEnvironmentName];
 
@@ -139,6 +181,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 ResourceManagerEndpoint = new Uri(WindowsAzureProfile.Instance.CurrentEnvironment.ResourceManagerEndpoint),
                 TokenProvider = WindowsAzureProfile.Instance.TokenProvider,
                 GalleryEndpoint = new Uri(WindowsAzureProfile.Instance.CurrentEnvironment.GalleryEndpoint),
+                SqlDatabaseDnsSuffix = WindowsAzureProfile.Instance.CurrentEnvironment.SqlDatabaseDnsSuffix,
                 CurrentStorageAccountName = csmEnvironment.StorageAccount,
                 IsDefault = true
             };

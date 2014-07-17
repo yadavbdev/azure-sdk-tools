@@ -13,8 +13,11 @@
 // limitations under the License.
 //
 
+using Microsoft.Azure.Utilities.HttpRecorder;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
+    using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using Microsoft.WindowsAzure.Common.Internals;
     using Newtonsoft.Json.Linq;
     using System;
@@ -96,32 +99,55 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 string authEndpoint = authSettings.ContainsKey(AADAuthEndpoint) ? authSettings[AADAuthEndpoint] : AADAuthEndpointDefault;
                 string tenant = authSettings.ContainsKey(AADTenant) ? authSettings[AADTenant] : AADTenantDefault;
                 string user = null;
-                if (authSettings.ContainsKey(AADUserIdKey) && authSettings.ContainsKey(AADPasswordKey))
+                AuthenticationResult result = null;
+
+                if (authSettings.ContainsKey(AADUserIdKey))
                 {
                     user = authSettings[AADUserIdKey];
-                    string password = authSettings[AADPasswordKey];
-                    Tracing.Information("Using AAD auth with username and password combination");
-                    token = TokenCloudCredentialsHelper.GetTokenFromBasicCredentials(user, password, authEndpoint, tenant);
-                    Tracing.Information("Using token {0}", token);
                 }
-                else
+
+                // Preserve/restore subscription ID
+                if (HttpMockServer.Mode == HttpRecorderMode.Record)
                 {
-                    Tracing.Information("Using AAD auth with pop-up dialog");
-                    string clientId = authSettings.ContainsKey(ClientID) ? authSettings[ClientID] : ClientIdDefault;
-                    if (authSettings.ContainsKey(RawToken))
+                    HttpMockServer.Variables[SubscriptionIdKey] = subscription;
+                    if (authSettings.ContainsKey(AADUserIdKey) && authSettings.ContainsKey(AADPasswordKey))
                     {
-                        token = authSettings[RawToken];
+                        
+                        string password = authSettings[AADPasswordKey];
+                        Tracing.Information("Using AAD auth with username and password combination");
+                        token = TokenCloudCredentialsHelper.GetTokenFromBasicCredentials(user, password, authEndpoint, tenant);
+                        Tracing.Information("Using token {0}", token);
                     }
                     else
                     {
-                        token = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                        Tracing.Information("Using AAD auth with pop-up dialog");
+                        string clientId = authSettings.ContainsKey(ClientID) ? authSettings[ClientID] : ClientIdDefault;
+                        if (authSettings.ContainsKey(RawToken))
+                        {
+                            token = authSettings[RawToken];
+                        }
+                        else
+                        {
+                            result = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                            token = result.CreateAuthorizationHeader().Substring("Bearer ".Length);
+                        }
                     }
+                }
+
+                if (HttpMockServer.Mode == HttpRecorderMode.Playback)
+                {
+                    // playback mode but no stored credentials in mocks
+                    Tracing.Information("Using dummy token for playback");
+                    token = Guid.NewGuid().ToString();
+                    Tracing.Information("Using token {0}", token);
+
                 }
 
                 orgIdEnvironment = new TestEnvironment
                 {
                     Credentials = token == null ? null : new TokenCloudCredentials(subscription, token),
-                    UserName = user
+                    UserName = user,
+                    AuthenticationResult = result
                 };
 
                 if (authSettings.ContainsKey(BaseUriKey))
