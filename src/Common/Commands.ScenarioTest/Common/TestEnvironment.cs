@@ -15,6 +15,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
+    using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using System;
 
     public class TestEnvironment
@@ -76,5 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         {
             return this.CustomUri;
         }
+
+        public AuthenticationResult AuthenticationResult { get; set; } 
     }
 }

@@ -50,9 +50,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         {
             PSActiveDirectoryObject userObject = new PSActiveDirectoryObject();
 
-            User user = GraphRbacClient.User.Get(principal).User;
+            User user = GraphRbacClient.User.Get(principal.ToString()).User;
             userObject.DisplayName = user.DisplayName;
-            userObject.Id = user.ObjectId;
+            userObject.Id = new Guid(user.ObjectId);
             userObject.Principal = user.UserPrincipalName;
             userObject.Type = user.ObjectType;
 

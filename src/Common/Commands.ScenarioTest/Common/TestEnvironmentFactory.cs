@@ -17,6 +17,7 @@ using Microsoft.Azure.Utilities.HttpRecorder;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
+    using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using Microsoft.WindowsAzure.Common.Internals;
     using Newtonsoft.Json.Linq;
     using System;
@@ -98,6 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 string authEndpoint = authSettings.ContainsKey(AADAuthEndpoint) ? authSettings[AADAuthEndpoint] : AADAuthEndpointDefault;
                 string tenant = authSettings.ContainsKey(AADTenant) ? authSettings[AADTenant] : AADTenantDefault;
                 string user = null;
+                AuthenticationResult result = null;
 
                 if (authSettings.ContainsKey(AADUserIdKey))
                 {
@@ -126,7 +128,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                         }
                         else
                         {
-                            token = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                            result = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                            token = result.CreateAuthorizationHeader().Substring("Bearer ".Length);
                         }
                     }
                 }
@@ -143,7 +146,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 orgIdEnvironment = new TestEnvironment
                 {
                     Credentials = token == null ? null : new TokenCloudCredentials(subscription, token),
-                    UserName = user
+                    UserName = user,
+                    AuthenticationResult = result
                 };
 
                 if (authSettings.ContainsKey(BaseUriKey))

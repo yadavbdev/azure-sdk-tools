@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "/subscriptions/2c224e7e-3ef5-431d-a57b-e71f4662e3a6/resourcegroups/onesdk7423?api-version=2014-04-01-preview",
+      "RequestUri": "/subscriptions/2c224e7e-3ef5-431d-a57b-e71f4662e3a6/resourcegroups/onesdk2302?api-version=2014-04-01-preview",
       "RequestMethod": "HEAD",
       "RequestBody": "",
       "RequestHeaders": {
@@ -16,28 +16,31 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31980"
+          "31999"
         ],
         "x-ms-request-id": [
-          "63d89766-f816-4d99-a97b-b782df307489"
+          "6bd7b804-3762-4367-8a3b-7f238c1fbdf8"
         ],
         "x-ms-correlation-request-id": [
-          "63d89766-f816-4d99-a97b-b782df307489"
+          "6bd7b804-3762-4367-8a3b-7f238c1fbdf8"
         ],
         "x-ms-routing-request-id": [
-          "WESTUS:20140702T232227Z:63d89766-f816-4d99-a97b-b782df307489"
+          "WESTUS:20140716T231837Z:6bd7b804-3762-4367-8a3b-7f238c1fbdf8"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
         ],
         "Cache-Control": [
           "no-cache"
         ],
         "Date": [
-          "Wed, 02 Jul 2014 23:22:26 GMT"
+          "Wed, 16 Jul 2014 23:18:37 GMT"
         ]
       },
       "StatusCode": 404
     },
     {
-      "RequestUri": "/subscriptions/2c224e7e-3ef5-431d-a57b-e71f4662e3a6/resourcegroups/onesdk7423?api-version=2014-04-01-preview",
+      "RequestUri": "/subscriptions/2c224e7e-3ef5-431d-a57b-e71f4662e3a6/resourcegroups/onesdk2302?api-version=2014-04-01-preview",
       "RequestMethod": "PUT",
       "RequestBody": "{\r\n  \"location\": \"non-existing\",\r\n  \"tags\": {}\r\n}",
       "RequestHeaders": {
@@ -52,22 +55,25 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "1158"
+          "1199"
         ],
         "x-ms-request-id": [
-          "9b762b9d-2253-46f5-b3d2-1a52a204401d"
+          "b25b6aa6-a8e2-4062-9757-60c72e214ade"
         ],
         "x-ms-correlation-request-id": [
-          "9b762b9d-2253-46f5-b3d2-1a52a204401d"
+          "b25b6aa6-a8e2-4062-9757-60c72e214ade"
         ],
         "x-ms-routing-request-id": [
-          "WESTUS:20140702T232227Z:9b762b9d-2253-46f5-b3d2-1a52a204401d"
+          "WESTUS:20140716T231838Z:b25b6aa6-a8e2-4062-9757-60c72e214ade"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
         ],
         "Cache-Control": [
           "no-cache"
         ],
         "Date": [
-          "Wed, 02 Jul 2014 23:22:26 GMT"
+          "Wed, 16 Jul 2014 23:18:37 GMT"
         ]
       },
       "StatusCode": 400
@@ -75,10 +81,12 @@
   ],
   "Names": {
     "Test-NewResourceGroupInNonExistingLocation": [
-      "onesdk7423"
+      "onesdk2302"
     ]
   },
   "Variables": {
-    "SubscriptionId": "2c224e7e-3ef5-431d-a57b-e71f4662e3a6"
+    "SubscriptionId": "2c224e7e-3ef5-431d-a57b-e71f4662e3a6",
+    "Username": "aogail@microsoft.com",
+    "Tenantd": null
   }
 }

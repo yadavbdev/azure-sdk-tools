@@ -24,11 +24,20 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class PoliciesClient
     {
-        private const string ResourceManagerAppId = "797f4846-ba00-4fd7-ba43-dac1f8f63013";
+        /// <summary>
+        /// This queue is used by the tests to assign fixed role assignment
+        /// names every time the test runs.
+        /// </summary>
+        public static Queue<Guid> RoleAssignmentNames { get; set; }
 
         public IAuthorizationManagementClient PolicyClient { get; set; }
 
         public GraphClient GraphClient { get; set; }
+
+        static PoliciesClient()
+        {
+            RoleAssignmentNames = new Queue<Guid>();
+        }
 
         /// <summary>
         /// Creates PoliciesClient using WindowsAzureSubscription instance.
@@ -43,7 +52,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public PSRoleDefinition GetRoleDefinition(string roleId)
         {
-            return PolicyClient.RoleDefinitions.Get(roleId).RoleDefinition.ToPSRoleDefinition();
+            return PolicyClient.RoleDefinitions.GetById(roleId).RoleDefinition.ToPSRoleDefinition();
         }
 
         /// <summary>
@@ -62,7 +71,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             else
             {
                 result.Add(PolicyClient.RoleDefinitions.List().RoleDefinitions
-                    .FirstOrDefault(r => r.Properties.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    .FirstOrDefault(r => r.Properties.RoleName.Equals(name, StringComparison.OrdinalIgnoreCase))
                     .ToPSRoleDefinition());
             }
 
@@ -76,8 +85,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// <returns>The created role assignment object</returns>
         public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
         {
-            string principalId = GraphClient.GetActiveDirectoryObject(parameters.PrincipalName).Id;
-            string roleAssignmentId = Guid.NewGuid().ToString();
+            Guid principalId = GraphClient.GetActiveDirectoryObject(parameters.PrincipalName).Id;
+            Guid roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid() : RoleAssignmentNames.Dequeue();
             string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
 
             RoleAssignmentCreateParameters createParameters = new RoleAssignmentCreateParameters
@@ -125,7 +134,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
             if (roleAssignment != null)
             {
-                PolicyClient.RoleAssignments.Delete(options.Scope, roleAssignment.Id);                
+                PolicyClient.RoleAssignments.DeleteById(roleAssignment.Id);
             }
 
             return roleAssignment;

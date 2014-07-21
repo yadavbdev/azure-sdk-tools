@@ -96,3 +96,5 @@ if (!(Test-Path "$env:SystemDrive\Python27")) {
     Remove-Item "$tempFileShare\python-2.7.5.msi"
     Remove-Item "$tempFileShare\get-pip.py"
 }
+
+$env:AZURE_TEST_MODE="Playback"

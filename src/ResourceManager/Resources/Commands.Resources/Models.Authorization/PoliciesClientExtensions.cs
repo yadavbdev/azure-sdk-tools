@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             {
                 roleDefinition = new PSRoleDefinition
                 {
-                    Name = role.Properties.Name,
+                    Name = role.Properties.RoleName,
                     Permissions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
                     Id = role.Id
                 };
@@ -39,11 +39,11 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public static PSRoleAssignment ToPSRoleAssignment(this RoleAssignment role, PoliciesClient policyClient, GraphClient graphClient)
         {
-            PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.Properties.RoleDefinitionId.Split('/').Last());
+            PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.Properties.RoleDefinitionId);
             return new PSRoleAssignment()
             {
-                Id = role.Id.Split('/').Last(),
-                Principal = graphClient.GetActiveDirectoryObject(role.Properties.PrincipalId).Principal,
+                Id = role.Id,
+                Principal = graphClient.GetActiveDirectoryObject(role.Properties.PrincipalId.ToString()).Principal,
                 Permissions = roleDefinition.Permissions,
                 RoleDefinitionName = roleDefinition.Name,
                 Scope = role.Properties.Scope

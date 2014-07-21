@@ -19,6 +19,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
     using Commands.Common;
     using Commands.Common.Test.Common;
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Microsoft.WindowsAzure.Testing;
     using System;
     using System.Collections.ObjectModel;
     using System.Management.Automation;
@@ -76,18 +77,39 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 {
                     HttpMockServer.Variables.Add(Variables.SubscriptionId, testSubscrption.SubscriptionId);                    
                 }
+
+                if (!HttpMockServer.Variables.ContainsKey(Variables.Username))
+                {
+                    HttpMockServer.Variables.Add(Variables.Username, testSubscrption.AccessToken.UserId);
+                }
+
+                if (!HttpMockServer.Variables.ContainsKey(Variables.Tenantd))
+                {
+                    HttpMockServer.Variables.Add(Variables.Tenantd, testSubscrption.AccessToken.TenantID);
+                }
             }
         }
 
         public override Collection<PSObject> RunPowerShellTest(params string[] scripts)
         {
-            HttpMockServer.Initialize(this.GetType(), Utilities.GetCurrentMethodName(2));
+            HttpMockServer.Initialize(this.GetType(), TestUtilities.GetCurrentMethodName(2));
             if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
             {
-                string subscriptionId;
-                HttpMockServer.Variables.TryGetValue(Variables.SubscriptionId, out subscriptionId);
-                testSubscrption.SubscriptionId = string.IsNullOrEmpty(subscriptionId) ? testSubscrption.SubscriptionId : subscriptionId;
+                string value;
+                HttpMockServer.Variables.TryGetValue(Variables.SubscriptionId, out value);
+                testSubscrption.SubscriptionId = string.IsNullOrEmpty(value) ? testSubscrption.SubscriptionId : value;
+
+                value = null;
+                FakeAccessToken accessToken = (FakeAccessToken)testSubscrption.AccessToken;
+                HttpMockServer.Variables.TryGetValue(Variables.Username, out value);
+                testSubscrption.ActiveDirectoryUserId = string.IsNullOrEmpty(value) ? testSubscrption.ActiveDirectoryUserId : value;
+                accessToken.UserId = string.IsNullOrEmpty(value) ? accessToken.UserId : value;
+
+                value = null;
+                HttpMockServer.Variables.TryGetValue(Variables.Tenantd, out value);
+                accessToken.TenantID = string.IsNullOrEmpty(value) ? accessToken.TenantID : value;
             }
+
             return base.RunPowerShellTest(scripts);
         }
 
@@ -132,7 +154,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 throw new ArgumentException("Invalid module mode.");
             }
 
-            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName, null);
+            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(
+                jwtToken,
+                csmEnvironment.UserName,
+                csmEnvironment.AuthenticationResult != null ? csmEnvironment.AuthenticationResult.TenantId : null);
             
             WindowsAzureProfile.Instance.CurrentEnvironment = WindowsAzureProfile.Instance.Environments[testEnvironmentName];
 
