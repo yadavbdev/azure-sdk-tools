@@ -12,15 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
-
 namespace Microsoft.WindowsAzure.Commands.Utilities.Profile
 {
     using Common;
     using Azure.Subscriptions;
-    using WindowsAzure.Commands.Common.Properties;
+    using Commands.Common.Properties;
+    using System.Collections.Generic;
+    using System.Linq;
     using System;
     using System.IO;
     using System.Management.Automation;
