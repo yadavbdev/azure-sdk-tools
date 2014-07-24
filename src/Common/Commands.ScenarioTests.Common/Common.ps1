@@ -56,11 +56,11 @@ function Run-Test
 {
     param([scriptblock]$test, [string] $testName = $null, [string] $testScript = $null, [switch] $generate = $false)
     Test-Setup
-	$transFile = $testName + ".log"
+    $transFile = $testName + ".log"
     if ($testName -eq $null) 
-	{
-	  $transFile = Get-LogFile "."
-	}
+    {
+      $transFile = Get-LogFile "."
+    }
     if($testScript)
     {
         if ($generate)
@@ -79,8 +79,8 @@ function Run-Test
     }
         
     $oldPref = $ErrorActionPreference	 
-	$ErrorActionPreference = "SilentlyContinue"
-	#Start-Transcript -Path $transFile	
+    $ErrorActionPreference = "SilentlyContinue"
+    #Start-Transcript -Path $transFile	
     $success = $false;
     $ErrorActionPreference = $oldPref
     try 
@@ -92,7 +92,7 @@ function Run-Test
     {
         Test-Cleanup
         $oldPref = $ErrorActionPreference	 
-	    $ErrorActionPreference = "SilentlyContinue"
+        $ErrorActionPreference = "SilentlyContinue"
         #Stop-Transcript
         $ErrorActionPreference = $oldPref
         if ($testScript)
@@ -295,6 +295,22 @@ function Wait-Function
     }
 }
 
+
+<#
+.SYNOPSIS
+Waits for specified duration if not-mocked, otherwise skips wait.
+
+.PARAMETER timeout
+Timeout in seconds
+#>
+function Wait-Seconds
+{
+    param([int] $timeout)
+    
+    [Microsoft.WindowsAzure.Testing.TestUtilities]::Wait($timeout * 1000)
+}
+
+
 <#
 .SYNOPSIS
 Retires the specified job the given numer of times, waiting the given interval between tries
@@ -340,7 +356,7 @@ function getAssetName
             $testName = $frame.Command
         }
     }
-	
+    
     $assetName = [Microsoft.Azure.Utilities.HttpRecorder.HttpMockServer]::GetAssetName($testName, "onesdk")
 
     return $assetName

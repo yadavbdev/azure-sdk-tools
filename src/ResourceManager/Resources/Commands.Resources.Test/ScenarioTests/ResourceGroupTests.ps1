@@ -59,7 +59,7 @@ function Test-UpdatesExistingResourceGroup
         # Test update with bad tag format
         Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
         # Test update with bad tag format
-        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"}, @{Name = "testtag"; Value = "testval2"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
+        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"}, @{Name = "testtag"; Value = "testval2"} } "Invalid tag format. Ensure that each tag has a unique name. Example: @{Name = `"tagName1`"; Value = `"tagValue1`"}, @{Name = `"tagName2`"; Value = `"tagValue2`"}"
             
         $actual = Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"} 
         $expected = Get-AzureResourceGroup -Name $rgname
@@ -143,6 +143,7 @@ function Test-AzureTagsEndToEnd
     # Setup
     $tag1 = getAssetName
     $tag2 = getAssetName
+    Clean-Tags
 
     # Create tag without values
     New-AzureTag $tag1
@@ -156,7 +157,7 @@ function Test-AzureTagsEndToEnd
     New-AzureTag $tag1 value2
 
     $tag = Get-AzureTag $tag1
-    Assert-True { $tag.Values.Count -ge 2 }
+    Assert-AreEqual 2 $tag.Values.Count
 
     # Create tag with values
     New-AzureTag $tag2 value1
@@ -164,7 +165,7 @@ function Test-AzureTagsEndToEnd
     New-AzureTag $tag2 value3
 
     $tags = Get-AzureTag
-    Assert-True { $tags.Count -ge 2 }
+    Assert-AreEqual 2 $tags.Count
 
     # Remove entire tag
     $tag = Remove-AzureTag $tag1 -Force -PassThru
@@ -175,6 +176,11 @@ function Test-AzureTagsEndToEnd
     # Remove tag value
     $tag = Remove-AzureTag $tag2 value1 -Force -PassThru
 
+    $tags = Get-AzureTag
+    Assert-AreEqual 0 $tags.Count
+
     # Get a non-existing tag
     Assert-Throws { Get-AzureTag "non-existing" }
+
+    Clean-Tags
 }

@@ -29,6 +29,12 @@
                         <Component Id="cmp1B6C63CF8B463CAEE1556B5E75652E2C" Guid="*">
                             <File Id="filD2B71C2527565DFE5D95E2B3BFCC729D" KeyPath="yes" Source="$(var.sourceDir)\ResourceManager\AzureResourceManager\Resources\Microsoft.Azure.Gallery.dll" />
                         </Component>
+                        <Component Id="cmp317D72948C627EE46943444F82EE25DA" Guid="*">
+                            <File Id="fil158543F35C5C73810AE13F9D17F5D12E" KeyPath="yes" Source="$(var.sourceDir)\ResourceManager\AzureResourceManager\Resources\Microsoft.Azure.Graph.RBAC.dll" />
+                        </Component>
+                        <Component Id="cmp8FEE3315C970FDADD6195DE7DEC9F62C" Guid="*">
+                            <File Id="fil8AD6BBF17DBD67E48178440D5B81250E" KeyPath="yes" Source="$(var.sourceDir)\ResourceManager\AzureResourceManager\Resources\Microsoft.Azure.Management.Authorization.dll" />
+                        </Component>
                         <Component Id="cmpE663F01DCBA794BF32541E268FA26640" Guid="*">
                             <File Id="fil9278A1EB2FD4403777102262C0FD5C7D" KeyPath="yes" Source="$(var.sourceDir)\ResourceManager\AzureResourceManager\Resources\Microsoft.Azure.Monitoring.dll" />
                         </Component>
@@ -1556,6 +1562,8 @@
             <ComponentRef Id="cmp94FBFFF5E19FFFAE995EDD8FD6E47BDB" />
             <ComponentRef Id="cmp106E84D49572C18BADC96B258C409E0E" />
             <ComponentRef Id="cmp1B6C63CF8B463CAEE1556B5E75652E2C" />
+            <ComponentRef Id="cmp317D72948C627EE46943444F82EE25DA" />
+            <ComponentRef Id="cmp8FEE3315C970FDADD6195DE7DEC9F62C" />
             <ComponentRef Id="cmpE663F01DCBA794BF32541E268FA26640" />
             <ComponentRef Id="cmpBF4C7868DB8CE8B4B50CAF51B647E2B1" />
             <ComponentRef Id="cmpA937677C4B398F4B7A4CF18B5A1E292D" />
