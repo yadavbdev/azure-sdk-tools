@@ -62,6 +62,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             return new AdalAccessToken(AcquireToken(config, true, userId), this, config);
         }
 
+        public IAccessToken GetCachedToken(WindowsAzureEnvironment environment, string userId)
+        {
+            var config = new AdalConfiguration(environment);
+            return new AdalAccessToken(AcquireToken(config, true, userId), this, config);
+        }
+
         public IAccessToken GetNewToken(WindowsAzureEnvironment environment)
         {
             var config = new AdalConfiguration(environment);
