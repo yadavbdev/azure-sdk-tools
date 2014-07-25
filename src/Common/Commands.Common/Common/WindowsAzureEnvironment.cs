@@ -14,6 +14,7 @@
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using Authentication;
+    using System.Management.Automation;
     using Azure.Subscriptions;
     using Azure.Subscriptions.Models;
     using Commands.Common.Properties;
@@ -200,28 +201,28 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             return baseUrl;
         }
 
-        public IEnumerable<WindowsAzureSubscription> AddAccount(ITokenProvider tokenProvider)
+        public IEnumerable<WindowsAzureSubscription> AddAccount(ITokenProvider tokenProvider, PSCredential credential)
         {
             if (ActiveDirectoryEndpoint == null || ActiveDirectoryServiceEndpointResourceId == null)
             {
                 throw new Exception(string.Format(Resources.EnvironmentDoesNotSupportActiveDirectory, Name));
             }
 
-            return ListSubscriptions(tokenProvider, true);
-        }
-
-        public IEnumerable<WindowsAzureSubscription> ListSubscriptions(ITokenProvider tokenProvider, bool newAccount)
-        {
             IAccessToken mainToken;
-            if (newAccount)
+            if (credential != null)
             {
-                mainToken = tokenProvider.GetNewToken(this);
+                mainToken = tokenProvider.GetNewToken(this, credential.UserName, credential.Password);
             }
             else
             {
-                throw new NotImplementedException();
+                mainToken = tokenProvider.GetNewToken(this);
             }
 
+            return ListSubscriptions(tokenProvider, mainToken);
+        }
+
+        public IEnumerable<WindowsAzureSubscription> ListSubscriptions(ITokenProvider tokenProvider, IAccessToken mainToken)
+        {
             TenantListResult tenants;
             using (var subscriptionClient = new SubscriptionClient(new TokenCloudCredentials(mainToken.AccessToken), new Uri(ResourceManagerEndpoint)))
             {

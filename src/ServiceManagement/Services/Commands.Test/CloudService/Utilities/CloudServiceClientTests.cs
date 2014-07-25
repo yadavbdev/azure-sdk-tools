@@ -21,7 +21,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
     using Management.Storage;
     using Management.Storage.Models;
     using Moq;
-    using Storage.Blob;
     using System;
     using System.IO;
     using System.Net;
@@ -111,11 +110,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             };
 
             cloudBlobUtilityMock = new Mock<CloudBlobUtility>();
-            cloudBlobUtilityMock.Setup(f => f.UploadPackageToBlob(
-                It.IsAny<StorageManagementClient>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<BlobRequestOptions>())).Returns(new Uri("http://www.packageurl.azure.com"));
 
             clientMocks = new ClientMocks(subscription.SubscriptionId);
 
@@ -368,12 +362,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 subscription.CurrentStorageAccountName = storageName;
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService(location: "West US"));
-
-                cloudBlobUtilityMock.Verify(f => f.UploadPackageToBlob(
-                    clientMocks.StorageManagementClientMock.Object,
-                    subscription.CurrentStorageAccountName,
-                    It.IsAny<string>(),
-                    It.IsAny<BlobRequestOptions>()), Times.Once());
             }           
         }
 

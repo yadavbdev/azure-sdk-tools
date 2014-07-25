@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Security;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
     /// <summary>
@@ -31,6 +33,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         IAccessToken GetCachedToken(WindowsAzureSubscription subscription, string userId);
 
         /// <summary>
+        /// Get a token for the given userID and login type from the token cache.
+        /// Does not request token from underlying provider.
+        /// </summary>
+        /// <param name="environment">Environment to request a token for.</param>
+        /// <param name="userId">ID of user to retrieve token for. If null,
+        /// requests a whole new token, prompting user for credentials.</param>
+        /// <returns>An access token or null if authentication is canceled.</returns>
+        IAccessToken GetCachedToken(WindowsAzureEnvironment environment, string userId);
+
+        /// <summary>
         /// Get a new login token, prompting user for credentials.
         /// </summary>
         /// <param name="environment">Environment to request a token for.</param>
@@ -44,6 +56,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         /// <param name="userId">User ID to get the token for.</param>
         /// <returns>An access token.</returns>
         IAccessToken GetNewToken(WindowsAzureSubscription subscription, string userId);
+
+        /// <summary>
+        /// Get a new login token for the given environment and user credentials.
+        /// </summary>
+        /// <param name="environment">Environment to request a token for.</param>
+        /// <param name="userId">User ID to get the token for.</param>
+        /// <param name="password">Secure strings with password</param>
+        /// <returns>An access token.</returns>
+        IAccessToken GetNewToken(WindowsAzureEnvironment environment, string userId, SecureString password);
 
     }
 }

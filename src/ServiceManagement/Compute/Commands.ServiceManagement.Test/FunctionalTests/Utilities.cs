@@ -303,12 +303,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public const string RemoveAzureVMCustomScriptExtensionCmdletName = "Remove-AzureVMCustomScriptExtension";
 
         public const string PaaSDiagnosticsExtensionName = "PaaSDiagnostics";
-        #endregion
+
 
         // Custom script extension
         public const string SetAzureVMDscExtensionCmdletName = "Set-AzureVMDscExtension";
         public const string GetAzureVMDscExtensionCmdletName = "Get-AzureVMDscExtension";
         public const string RemoveAzureVMDscExtensionCmdletName = "Remove-AzureVMDscExtension";
+        #endregion
 
         private static ServiceManagementCmdletTestHelper vmPowershellCmdlets = new ServiceManagementCmdletTestHelper();
 
@@ -654,7 +655,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 throw;
             }
         }
-        public static X509Certificate2 CreateCertificate(string password, string issuer = "CN=Windows Azure Powershell Test", string friendlyName = "PSTest")
+        public static X509Certificate2 CreateCertificate(string password, string issuer = "CN=Microsoft Azure Powershell Test", string friendlyName = "PSTest")
         {
 
             var keyCreationParameters = new CngKeyCreationParameters

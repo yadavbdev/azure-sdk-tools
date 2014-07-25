@@ -15,10 +15,10 @@
 namespace Microsoft.WindowsAzure.Commands.Utilities.Profile
 {
     using Common;
+    using Common.Authentication;
     using Azure.Subscriptions;
     using Commands.Common.Properties;
     using System.Collections.Generic;
-    using System.Linq;
     using System;
     using System.IO;
     using System.Management.Automation;
@@ -34,8 +34,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Profile
         public string SubscriptionDataFile { get; set; }
 
         private WindowsAzureProfile loadedProfile;
-
-        private ISubscriptionClient subscriptionClient;
 
         private readonly bool createFileIfNotExists;
 
@@ -83,9 +81,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Profile
         protected IEnumerable<WindowsAzureSubscription> LoadSubscriptionsFromServer()
         {
             var currentSubscription = WindowsAzureProfile.Instance.CurrentSubscription;
-            if (currentSubscription.ActiveDirectoryUserId != null)
+            if (currentSubscription.ActiveDirectoryUserId != null && currentSubscription.TokenProvider != null)
             {
-                return WindowsAzureProfile.Instance.CurrentEnvironment.ListSubscriptions(currentSubscription.TokenProvider, false);
+                IAccessToken token = currentSubscription.AccessToken;
+                if (token == null || token.LoginType == LoginType.LiveId)
+                {
+                    token = currentSubscription.TokenProvider.GetCachedToken(WindowsAzureProfile.Instance.CurrentEnvironment, currentSubscription.ActiveDirectoryUserId);
+                }
+                return WindowsAzureProfile.Instance.CurrentEnvironment.ListSubscriptions(currentSubscription.TokenProvider, token);
             }
             else
             {
