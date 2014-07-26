@@ -29,7 +29,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 roleDefinition = new PSRoleDefinition
                 {
                     Name = role.Properties.RoleName,
-                    Permissions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
+                    Actions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
+                    NoActions = new List<string>(role.Properties.Permissions.SelectMany(r => r.NotActions)),
                     Id = role.Id
                 };
             }
@@ -44,7 +45,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             {
                 Id = role.Id,
                 Principal = graphClient.GetActiveDirectoryObject(role.Properties.PrincipalId.ToString()).Principal,
-                Permissions = roleDefinition.Permissions,
+                Actions = roleDefinition.Actions,
+                NoActions = roleDefinition.NoActions,
                 RoleDefinitionName = roleDefinition.Name,
                 Scope = role.Properties.Scope
             };

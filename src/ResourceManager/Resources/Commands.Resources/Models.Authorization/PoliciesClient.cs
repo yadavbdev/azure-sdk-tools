@@ -104,11 +104,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// </summary>
         /// <param name="options">The filtering options</param>
         /// <returns>The filtered role assignments</returns>
-        public List<PSRoleAssignment> FilterRoleAssigbments(FilterRoleAssignmentsOptions options)
+        public List<PSRoleAssignment> FilterRoleAssignments(FilterRoleAssignmentsOptions options)
         {
             List<PSRoleAssignment> result = new List<PSRoleAssignment>();
-            result.AddRange(PolicyClient.RoleAssignments.List(null)
-                .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, GraphClient)));
+            ListAssignmentsFilterParameters parameters = new ListAssignmentsFilterParameters
+            {
+                AtScope = true
+            };
+
+            result.AddRange(PolicyClient.RoleAssignments.ListForScope(options.Scope, parameters).RoleAssignments.Select(r => r.ToPSRoleAssignment(this, GraphClient)));
 
             if (!string.IsNullOrEmpty(options.PrincipalName))
             {
@@ -130,7 +134,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// <returns>The deleted role assignments</returns>
         public PSRoleAssignment RemoveRoleAssignment(FilterRoleAssignmentsOptions options)
         {
-            PSRoleAssignment roleAssignment = FilterRoleAssigbments(options).FirstOrDefault();
+            PSRoleAssignment roleAssignment = FilterRoleAssignments(options).FirstOrDefault();
 
             if (roleAssignment != null)
             {
