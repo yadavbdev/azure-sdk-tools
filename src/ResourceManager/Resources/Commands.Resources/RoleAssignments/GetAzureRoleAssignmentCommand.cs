@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Resources
                 }
             };
 
-            WriteObject(PoliciesClient.FilterRoleAssigbments(options), true);
+            WriteObject(PoliciesClient.FilterRoleAssignments(options), true);
         }
     }
 }

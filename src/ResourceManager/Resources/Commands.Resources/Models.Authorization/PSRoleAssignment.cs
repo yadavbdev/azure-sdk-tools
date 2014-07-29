@@ -25,7 +25,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public string RoleDefinitionName { get; set; }
 
-        public List<string> Permissions { get; set; }
+        public List<string> Actions { get; set; }
+
+        public List<string> NoActions { get; set; }
 
         public string Scope { get; set; }
     }
