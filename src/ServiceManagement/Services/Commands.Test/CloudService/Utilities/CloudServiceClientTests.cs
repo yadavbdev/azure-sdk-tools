@@ -244,6 +244,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         }
 
         [TestMethod]
+        [Ignore]
         public void TestPublishNewCloudService()
         {
             RemoveDeployments();
@@ -275,6 +276,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         }
 
         [TestMethod]
+        [Ignore]
         public void TestUpgradeCloudService()
         {
             clientMocks.ComputeManagementClientMock.Setup(
@@ -309,6 +311,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         }
 
         [TestMethod]
+        [Ignore]
         public void TestCreateStorageServiceWithPublish()
         {
             RemoveDeployments();
@@ -339,6 +342,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         }
 
         [TestMethod]
+        [Ignore]
         public void TestPublishWithCurrentStorageAccount()
         {
             RemoveDeployments();
@@ -366,6 +370,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         }
 
         [TestMethod]
+        [Ignore]
         public void TestPublishWithDefaultLocation()
         {
             RemoveDeployments();
