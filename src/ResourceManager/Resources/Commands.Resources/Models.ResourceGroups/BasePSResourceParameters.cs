@@ -14,29 +14,35 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Azure.Management.Resources.Models;
+using System;
+using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
-    public class PSResourceGroup
+    public class BasePSResourceParameters
     {
+        public string Name { get; set; }
+
         public string ResourceGroupName { get; set; }
 
-        public string Location { get; set; }
+        public string ResourceType { get; set; }
 
-        public List<PSResource> Resources { get; set; }
+        public string ParentResource { get; set; }
 
-        public string ResourcesTable
+        public string ApiVersion { get; set; }
+
+        public Hashtable[] Tag { get; set; }
+
+        public ResourceIdentity ToResourceIdentity()
         {
-            get { return ResourcesExtensions.ConstructResourcesTable(Resources); }
-        }
-
-        public string ProvisioningState { get; set; }
-
-        public Hashtable[] Tags { get; set; }
-
-        public string TagsTable
-        {
-            get { return ResourcesExtensions.ConstructTagsTable(Tags); }
+            return new ResourceIdentifier()
+            {
+                ParentResource = ParentResource,
+                ResourceGroupName = ResourceGroupName,
+                ResourceName = Name,
+                ResourceType = ResourceType
+            }.ToResourceIdentity(ApiVersion);
         }
     }
 }

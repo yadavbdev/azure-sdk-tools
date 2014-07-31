@@ -109,6 +109,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public ITokenProvider TokenProvider { get; set; }
 
         private IAccessToken accessToken;
+
+        public IAccessToken AccessToken { get { return accessToken; } set { accessToken = value; } }
         
         /// <summary>
         /// Set the access token to use for authentication
@@ -136,10 +138,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 return new CertificateCloudCredentials(SubscriptionId, Certificate);
             }
-            if (accessToken == null)
+
+            if (accessToken == null || string.IsNullOrEmpty(accessToken.TenantID))
             {
                 accessToken = TokenProvider.GetCachedToken(this, ActiveDirectoryUserId);
             }
+
+            return new AccessTokenCredential(SubscriptionId, accessToken);
+        }
+
+        public AccessTokenCredential CreateTokenCredentials()
+        {
+            if (accessToken == null || string.IsNullOrEmpty(accessToken.TenantID))
+            {
+                accessToken = TokenProvider.GetCachedToken(this, ActiveDirectoryUserId);
+            }
+
             return new AccessTokenCredential(SubscriptionId, accessToken);
         }
 
@@ -223,8 +237,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public TClient CreateClientFromEndpoint<TClient>(Uri endpoint, bool registerProviders) where TClient : ServiceClient<TClient>
         {
-            var credential = CreateCredentials();
-
+            SubscriptionCloudCredentials credential = CreateCredentials();
+            
             if (!TestMockSupport.RunningMocked)
             {
                 if (registerProviders)
@@ -315,6 +329,31 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     Save();
                 }
             }
+        }
+
+        public override int GetHashCode()
+        {
+            if (SubscriptionId != null)
+            {
+                return SubscriptionId.GetHashCode();
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var subscription = obj as WindowsAzureSubscription;
+            if (subscription != null)
+            {
+                if (subscription.SubscriptionId == this.SubscriptionId)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

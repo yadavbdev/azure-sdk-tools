@@ -12,32 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Azure.Commands.Resources.Models
+namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
-    public class PSResource
+    public class PSRoleAssignment
     {
-        public string Name { get; set; }
+        public string Id { get; set; }
 
-        public string ResourceGroupName { get; set; }
+        public string Principal { get; set; }
 
-        public string ResourceType { get; set; }
+        public string RoleDefinitionName { get; set; }
 
-        public string ParentResource { get; set; }
+        public List<string> Actions { get; set; }
 
-        public string Location { get; set; }
+        public List<string> NoActions { get; set; }
 
-        public IDictionary Properties { get; set; }
-
-        public string PropertiesText { get; set; }
-
-        public Hashtable[] Tags { get; set; }
-
-        public string TagsTable
-        {
-            get { return ResourcesExtensions.ConstructTagsTable(Tags); }
-        }
+        public string Scope { get; set; }
     }
 }

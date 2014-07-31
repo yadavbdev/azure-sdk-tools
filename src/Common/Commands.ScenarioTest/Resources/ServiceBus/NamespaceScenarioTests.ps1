@@ -20,13 +20,13 @@ Tests any cloud based cmdlet with invalid credentials and expect it'll throw an 
 #>
 function Test-WithInvalidCredentials
 {
-	param([ScriptBlock] $cloudCmdlet)
-	
-	# Setup
-	Remove-AllSubscriptions
+    param([ScriptBlock] $cloudCmdlet)
+    
+    # Setup
+    Remove-AllSubscriptions
 
-	# Test
-	Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current <subscriptionName> to set the current subscription."
+    # Test
+    Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current <subscriptionName> to set the current subscription."
 }
 
 ########################################################################### Get-AzureSBLocation Scenario Tests ###########################################################################
@@ -37,7 +37,7 @@ Tests using List-AzureSBLocation and make sure that it's contents are filled out
 #>
 function Test-ListAzureSBLocation
 {
-	Get-AzureSBLocation | % { Assert-NotNull $_.Code;Assert-NotNull $_.FullName }
+    Get-AzureSBLocation | % { Assert-NotNull $_.Code;Assert-NotNull $_.FullName }
 }
 
 <#
@@ -46,26 +46,26 @@ Tests using List-AzureSBLocation and piping it's output to New-AzureSBNamespace.
 #>
 function Test-ListAzureSBLocation1
 {
-	# Setup
-	$expectedName = Get-NamespaceName
-	$expectedLocation = Get-DefaultServiceBusLocation
+    # Setup
+    $expectedName = Get-NamespaceName
+    $expectedLocation = Get-DefaultServiceBusLocation
 
-	# Test
-	$namespace = Get-AzureSBLocation | 
-	Select @{Name="Location";Expression={$_."Code"}} | 
-	Where {$_.Location -eq $expectedLocation} | 
-	% { New-Object PSObject -Property @{Name=$expectedName;Location=$_.Location} } | 
-	New-AzureSBNamespace
+    # Test
+    $namespace = Get-AzureSBLocation | 
+    Select @{Name="Location";Expression={$_."Code"}} | 
+    Where {$_.Location -eq $expectedLocation} | 
+    % { New-Object PSObject -Property @{Name=$expectedName;Location=$_.Location} } | 
+    New-AzureSBNamespace
   
-	# Assert
-	$actualName = $namespace.Name
-	$actualLocation = $namespace.Region
-	Assert-AreEqual $expectedName $actualName
-	Assert-AreEqual $expectedLocation  $actualLocation
+    # Assert
+    $actualName = $namespace.Name
+    $actualLocation = $namespace.Region
+    Assert-AreEqual $expectedName $actualName
+    Assert-AreEqual $expectedLocation  $actualLocation
 
-	# Cleanup
-	$createdNamespaces += $expectedName
-	Test-CleanupServiceBus
+    # Cleanup
+    $createdNamespaces += $expectedName
+    Test-CleanupServiceBus
 }
 
 ########################################################################### Get-AzureSBNamespace Scenario Tests ###########################################################################
@@ -76,15 +76,15 @@ Tests running Get-AzureSBNamespace cmdlet and expects that no namespaces are ret
 #>
 function Test-GetAzureSBNamespaceWithEmptyNamespaces
 {
-	# Setup
-	Initialize-NamespaceTest
+    # Setup
+    Initialize-NamespaceTest
 
-	# Test
-	$namespaces = Get-AzureSBNamespace
+    # Test
+    $namespaces = Get-AzureSBNamespace
 
-	# Assert
-	$expectedCount = (Get-AzureSBNamespace).Count
-	Assert-AreEqual $namespaces.Count $expectedCount
+    # Assert
+    $expectedCount = (Get-AzureSBNamespace).Count
+    Assert-AreEqual $namespaces.Count $expectedCount
 }
 
 <#
@@ -93,19 +93,19 @@ Tests running Get-AzureSBNamespace cmdlet and expects that one namespace is retu
 #>
 function Test-GetAzureSBNamespaceWithOneNamespace
 {
-	# Setup
-	Initialize-NamespaceTest
-	New-Namespace 1
+    # Setup
+    Initialize-NamespaceTest
+    New-Namespace 1
 
-	# Test
-	$namespaces = Get-AzureSBNamespace
+    # Test
+    $namespaces = Get-AzureSBNamespace
 
-	# Assert
-	if ($namespaces.Count -gt 1) { Write-Warning "The test initialization did not succeed"; exit }
-	Assert-AreEqualArray $global:createdNamespaces $($namespaces | Select -ExpandProperty Name)
+    # Assert
+    if ($namespaces.Count -gt 1) { Write-Warning "The test initialization did not succeed"; exit }
+    Assert-AreEqualArray $global:createdNamespaces $($namespaces | Select -ExpandProperty Name)
 
-	# Cleanup
-	Test-CleanupServiceBus
+    # Cleanup
+    Test-CleanupServiceBus
 }
 
 <#
@@ -114,19 +114,19 @@ Tests running Get-AzureSBNamespace cmdlet and expects that multiple namespaces a
 #>
 function Test-GetAzureSBNamespaceWithMultipleNamespaces
 {
-	# Setup
-	Initialize-NamespaceTest
-	New-Namespace 3
+    # Setup
+    Initialize-NamespaceTest
+    New-Namespace 3
 
-	# Test
-	$namespaces = Get-AzureSBNamespace
+    # Test
+    $namespaces = Get-AzureSBNamespace
 
-	# Assert
-	if ($namespaces.Count -gt 3) { Write-Warning "The test initialization did not succeed"; exit }
-	Assert-AreEqualArray $global:createdNamespaces $($namespaces | Select -ExpandProperty Name)
+    # Assert
+    if ($namespaces.Count -gt 3) { Write-Warning "The test initialization did not succeed"; exit }
+    Assert-AreEqualArray $global:createdNamespaces $($namespaces | Select -ExpandProperty Name)
 
-	# Cleanup
-	Test-CleanupServiceBus
+    # Cleanup
+    Test-CleanupServiceBus
 }
 
 <#
@@ -135,21 +135,21 @@ Tests running Get-AzureSBNamespace cmdlet using a valid name and expects getting
 #>
 function Test-GetAzureSBNamespaceWithValidExisitingNamespace
 {
-	# Setup
-	Initialize-NamespaceTest
-	New-Namespace 1
-	$expectedName = $createdNamespaces[0]
+    # Setup
+    Initialize-NamespaceTest
+    New-Namespace 1
+    $expectedName = $createdNamespaces[0]
 
-	# Test
-	$namespace = Get-AzureSBNamespace $expectedName
+    # Test
+    $namespace = Get-AzureSBNamespace $expectedName
 
-	# Assert
-	Assert-NotNull $namespace
-	$actualName = $namespace.Name
-	Assert-AreEqual $expectedName $actualName
+    # Assert
+    Assert-NotNull $namespace
+    $actualName = $namespace.Name
+    Assert-AreEqual $expectedName $actualName
 
-	# Cleanup
-	Test-CleanupServiceBus
+    # Cleanup
+    Test-CleanupServiceBus
 }
 
 <#
@@ -158,11 +158,11 @@ Tests running Get-AzureSBNamespace cmdlet using a non-existing name and expects 
 #>
 function Test-GetAzureSBNamespaceWithValidNonExisitingNamespace
 {
-	# Setup
-	$invalidName = "OneSDKNotCreated"
+    # Setup
+    $invalidName = "OneSDKNotCreated"
 
-	# Test
-	Assert-Throws { Get-AzureSBNamespace $invalidName } "Internal Server Error. This could happen due to an incorrect/missing namespace"
+    # Test
+    Assert-Throws { Get-AzureSBNamespace $invalidName } "Internal Server Error. This could happen due to an incorrect/missing namespace"
 }
 
 <#
@@ -171,19 +171,19 @@ Tests running Get-AzureSBNamespace cmdlet and pipe it's result to Remove-AzureSB
 #>
 function Test-GetAzureSBNamespacePipedToRemoveAzureSBNamespace
 {
-	# Setup
-	Initialize-NamespaceTest
-	New-Namespace 2
-	$actual = $true
+    # Setup
+    Initialize-NamespaceTest
+    New-Namespace 2
+    $actual = $true
 
-	# Test
-	Get-AzureSBNamespace | Where {$_.Status -eq "Active"} | Remove-AzureSBNamespace -PassThru -Force | % {$actual = $actual -and $_}
+    # Test
+    Get-AzureSBNamespace | Where {$_.Status -eq "Active"} | Remove-AzureSBNamespace -PassThru -Force | % {$actual = $actual -and $_}
 
-	# Assert
-	Assert-True { $actual } "Piping Get-AzureSBNamespace into Remove-AzureSBNamespace failed"
+    # Assert
+    Assert-True { $actual } "Piping Get-AzureSBNamespace into Remove-AzureSBNamespace failed"
 
-	# Cleanup
-	Test-CleanupServiceBus
+    # Cleanup
+    Test-CleanupServiceBus
 }
 
 <#
@@ -192,27 +192,27 @@ Tests running Get-AzureSBNamespace cmdlet and pipe it's result to Set-AzureWebsi
 #>
 function Test-GetAzureSBNamespaceWithWebsites
 {
-	# Setup
-	Initialize-NamespaceTest
-	$namespaceName = Get-NamespaceName
-	New-AzureSBNamespace $namespaceName $(Get-DefaultServiceBusLocation)
-	Wait-NamespaceStatus $namespaceName "Active"
-	$websiteName = Get-NamespaceName
-	New-AzureWebsite $websiteName
-	$settingName = "NamespaceConnectionString"
+    # Setup
+    Initialize-NamespaceTest
+    $namespaceName = Get-NamespaceName
+    New-AzureSBNamespace $namespaceName $(Get-DefaultServiceBusLocation)
+    Wait-NamespaceStatus $namespaceName "Active"
+    $websiteName = Get-NamespaceName
+    New-AzureWebsite $websiteName
+    $settingName = "NamespaceConnectionString"
 
-	# Test
-	Get-AzureSBNamespace $namespaceName | % { Set-AzureWebsite $websiteName -AppSettings @{ $settingName = $_.ConnectionString } }
+    # Test
+    Get-AzureSBNamespace $namespaceName | % { Set-AzureWebsite $websiteName -AppSettings @{ $settingName = $_.ConnectionString } }
 
-	# Assert
-	$website = Get-AzureWebsite $websiteName
-	$namespace = Get-AzureSBNamespace $namespaceName
-	Assert-AreEqual $namespace.ConnectionString $website.AppSettings[$settingName]
+    # Assert
+    $website = Get-AzureWebsite $websiteName
+    $namespace = Get-AzureSBNamespace $namespaceName
+    Assert-AreEqual $namespace.ConnectionString $website.AppSettings[$settingName]
 
-	# Cleanup
-	$createdNamespaces += $namespaceName
-	Remove-AzureWebsite $websiteName -Force
-	Test-CleanupServiceBus
+    # Cleanup
+    $createdNamespaces += $namespaceName
+    Remove-AzureWebsite $websiteName -Force
+    Test-CleanupServiceBus
 }
 
 ########################################################################### New-AzureSBNamespace Scenario Tests ###########################################################################
@@ -223,20 +223,20 @@ Tests running New-AzureSBNamespace cmdlet and expects new namespace created.
 #>
 function Test-NewAzureSBNamespaceWithValidNewNamespace
 {
-	# Setup
-	$name = Get-NamespaceName
+    # Setup
+    $name = Get-NamespaceName
 
-	# Test
-	$actual = New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
+    # Test
+    $actual = New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
 
-	# Assert
-	Assert-AreEqual $name $actual.Name
-	Assert-AreEqual $(Get-DefaultServiceBusLocation) $actual.Region
-	Assert-True { "Activating" -eq $actual.Status -or "Active" -eq $actual.Status } "The namespace status does not equal to active or activating"
+    # Assert
+    Assert-AreEqual $name $actual.Name
+    Assert-AreEqual $(Get-DefaultServiceBusLocation) $actual.Region
+    Assert-True { "Activating" -eq $actual.Status -or "Active" -eq $actual.Status } "The namespace status does not equal to active or activating"
 
-	# Cleanup
-	$createdNamespaces += $name
-	Test-CleanupServiceBus
+    # Cleanup
+    $createdNamespaces += $name
+    Test-CleanupServiceBus
 }
 
 <#
@@ -245,16 +245,16 @@ Tests running New-AzureSBNamespace cmdlet on an existing namespace and expects e
 #>
 function Test-NewAzureSBNamespaceWithValidExistingNamespace
 {
-	# Setup
-	$name = Get-NamespaceName
-	New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
+    # Setup
+    $name = Get-NamespaceName
+    New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
 
-	# Test
-	Assert-Throws { New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation) } "Internal Server Error. This could happen because the namespace name is already used or due to an incorrect location name. Use Get-AzureSBLocation cmdlet to list valid names."
+    # Test
+    Assert-Throws { New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation) } "Internal Server Error. This could happen because the namespace name is already used or due to an incorrect location name. Use Get-AzureSBLocation cmdlet to list valid names."
 
-	# Cleanup
-	$createdNamespaces += $name
-	Test-CleanupServiceBus
+    # Cleanup
+    $createdNamespaces += $name
+    Test-CleanupServiceBus
 }
 
 <#
@@ -263,10 +263,10 @@ Tests running New-AzureSBNamespace cmdlet with an invalid location expects excep
 #>
 function Test-NewAzureSBNamespaceWithInvalidLocation
 {
-	# Setup
+    # Setup
 
-	# Test
-	Assert-Throws { New-AzureSBNamespace $(Get-NamespaceName) "Invalid Location" } "The provided location `"Invalid Location`" does not exist in the available locations use Get-AzureSBLocation for listing available locations.`r`nParameter name: Location"
+    # Test
+    Assert-Throws { New-AzureSBNamespace $(Get-NamespaceName) "Invalid Location" } "The provided location `"Invalid Location`" does not exist in the available locations use Get-AzureSBLocation for listing available locations.`r`nParameter name: Location"
 }
 
 <#
@@ -275,34 +275,34 @@ Tests running New-AzureSBNamespace cmdlet and pipe it's result to Set-AzureWebsi
 #>
 function Test-NewAzureSBNamespaceWithWebsite
 {
-	# Setup
-	$websiteName = Get-NamespaceName
-	New-AzureWebsite $websiteName
-	$settingName = "NamespaceConnectionString"
-	$namespaceName = Get-NamespaceName
+    # Setup
+    $websiteName = Get-NamespaceName
+    New-AzureWebsite $websiteName
+    $settingName = "NamespaceConnectionString"
+    $namespaceName = Get-NamespaceName
 
-	# Test
-	$used = Test-AzureName -ServiceBusNamespace $namespaceName
-	Assert-False { $used } "The service bus name '$namespaceName' is not available"
-	
-	Get-AzureSBLocation | Select @{Name="Location";Expression={$_."Code"}} | Where {$_.Location -eq $(Get-DefaultServiceBusLocation)} | New-AzureSBNamespace $namespaceName
-	
-	do
-	{
-		$namespace = Get-AzureSBNamespace $namespaceName
-		Wait-Seconds 5
-	} while ($namespace.Status -ne "Active")
+    # Test
+    $used = Test-AzureName -ServiceBusNamespace $namespaceName
+    Assert-False { $used } "The service bus name '$namespaceName' is not available"
+    
+    Get-AzureSBLocation | Select @{Name="Location";Expression={$_."Code"}} | Where {$_.Location -eq $(Get-DefaultServiceBusLocation)} | New-AzureSBNamespace $namespaceName
+    
+    do
+    {
+        $namespace = Get-AzureSBNamespace $namespaceName
+        Wait-Seconds 5
+    } while ($namespace.Status -ne "Active")
 
-	$namespace | % { Set-AzureWebsite $websiteName -AppSettings @{ $settingName = $_.ConnectionString } }
+    $namespace | % { Set-AzureWebsite $websiteName -AppSettings @{ $settingName = $_.ConnectionString } }
 
-	# Assert
-	$website = Get-AzureWebsite $websiteName
-	Assert-AreEqual $namespace.ConnectionString $website.AppSettings[$settingName]
+    # Assert
+    $website = Get-AzureWebsite $websiteName
+    Assert-AreEqual $namespace.ConnectionString $website.AppSettings[$settingName]
 
-	# Cleanup
-	$createdNamespaces += $namespaceName
-	Remove-AzureWebsite $websiteName -Force
-	Test-CleanupServiceBus
+    # Cleanup
+    $createdNamespaces += $namespaceName
+    Remove-AzureWebsite $websiteName -Force
+    Test-CleanupServiceBus
 }
 
 <#
@@ -311,20 +311,20 @@ Tests running New-AzureSBNamespace cmdlet without location and expects new names
 #>
 function Test-NewAzureSBNamespaceWithDefaultLocation
 {
-	# Setup
-	$name = Get-NamespaceName
+    # Setup
+    $name = Get-NamespaceName
 
-	# Test
-	$actual = New-AzureSBNamespace $name
+    # Test
+    $actual = New-AzureSBNamespace $name
 
-	# Assert
-	Assert-AreEqual $name $actual.Name
-	Assert-AreEqual $(Get-DefaultServiceBusLocation) $actual.Region
-	Assert-True { "Activating" -eq $actual.Status -or "Active" -eq $actual.Status } "The namespace status does not equal to active or activating"
+    # Assert
+    Assert-AreEqual $name $actual.Name
+    Assert-AreEqual $(Get-DefaultServiceBusLocation) $actual.Region
+    Assert-True { "Activating" -eq $actual.Status -or "Active" -eq $actual.Status } "The namespace status does not equal to active or activating"
 
-	# Cleanup
-	$createdNamespaces += $name
-	Test-CleanupServiceBus
+    # Cleanup
+    $createdNamespaces += $name
+    Test-CleanupServiceBus
 }
 
 ########################################################################### Remove-AzureSBNamespace Scenario Tests ###########################################################################
@@ -335,17 +335,17 @@ Tests running Remove-AzureSBNamespace cmdlet and expects to remove the namespace
 #>
 function Test-RemoveAzureSBNamespaceWithExistingNamespace
 {
-	# Setup
-	$name = Get-NamespaceName
-	New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
-	Wait-NamespaceStatus $name "Active"
+    # Setup
+    $name = Get-NamespaceName
+    New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
+    Wait-NamespaceStatus $name "Active"
 
-	# Test
-	Remove-AzureSBNamespace $name -Force
+    # Test
+    Remove-AzureSBNamespace $name -Force
 
-	# Assert
-	$namespace = Get-AzureSBNamespace $name
-	Assert-AreEqual "Removing" $namespace.Status
+    # Assert
+    $namespace = Get-AzureSBNamespace $name
+    Assert-AreEqual "Removing" $namespace.Status
 }
 
 <#
@@ -354,8 +354,8 @@ Tests running Remove-AzureSBNamespace cmdlet with non-existing namespace and exp
 #>
 function Test-RemoveAzureSBNamespaceWithNonExistingNamespace
 {
-	# Test
-	Assert-Throws { Remove-AzureSBNamespace "NonExistingOneSDKName" -Force } "Internal Server Error. This could happen because the namespace does not exist or it does not exist under your subscription."
+    # Test
+    Assert-Throws { Remove-AzureSBNamespace "NonExistingOneSDKName" -Force } "Internal Server Error. This could happen because the namespace does not exist or it does not exist under your subscription."
 }
 
 <#
@@ -364,29 +364,29 @@ Tests running Remove-AzureSBNamespace cmdlet pipe a namespace object into it.
 #>
 function Test-RemoveAzureSBNamespaceInputPiping
 {
-	# Setup
-	$name = Get-NamespaceName
+    # Setup
+    $name = Get-NamespaceName
 
-	# Test
-	$used = Test-AzureName -ServiceBusNamespace $name
-	Assert-False { $used } "The service bus name '$name' is not available"
+    # Test
+    $used = Test-AzureName -ServiceBusNamespace $name
+    Assert-False { $used } "The service bus name '$name' is not available"
 
-	New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
-	
-	Wait-NamespaceStatus $name "Active"
-	
-	Get-AzureSBNamespace $name | Remove-AzureSBNamespace -Force
+    New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
+    
+    Wait-NamespaceStatus $name "Active"
+    
+    Get-AzureSBNamespace $name | Remove-AzureSBNamespace -Force
 
-	# Assert
-	try
-	{ 
-		$namespace = Get-AzureSBNamespace $name
-		Assert-AreEqual "Removing" $namespace.Status
-	}
-	catch
-	{
-		# Succeed in case that the namespace was removed already.
-	}
+    # Assert
+    try
+    { 
+        $namespace = Get-AzureSBNamespace $name
+        Assert-AreEqual "Removing" $namespace.Status
+    }
+    catch
+    {
+        # Succeed in case that the namespace was removed already.
+    }
 }
 
 <#
@@ -395,18 +395,18 @@ Tests running Remove-AzureSBNamespace cmdlet with WhatIf parameter.
 #>
 function Test-RemoveAzureSBNamespaceWhatIf
 {
-	# Setup
-	Initialize-NamespaceTest
-	$name = Get-NamespaceName
-	New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
-	Wait-NamespaceStatus $name "Active"
+    # Setup
+    Initialize-NamespaceTest
+    $name = Get-NamespaceName
+    New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
+    Wait-NamespaceStatus $name "Active"
 
-	# Test
-	$message = Remove-AzureSBNamespace $name -WhatIf -Force
-	$removed = Remove-AzureSBNamespace $name -Force -PassThru
+    # Test
+    $message = Remove-AzureSBNamespace $name -WhatIf -Force
+    $removed = Remove-AzureSBNamespace $name -Force -PassThru
 
-	# Assert
-	Assert-True { $removed }
+    # Assert
+    Assert-True { $removed }
 }
 
 <#
@@ -415,6 +415,6 @@ Tests running Remove-AzureSBNamespace cmdlet with WhatIf parameter.
 #>
 function Test-RemoveAzureSBNamespaceWhatIfError
 {
-	# Test
-	Assert-Throws { Remove-AzureSBNamespace "123InvalidName" -WhatIf -Force } "The provided name `"123InvalidName`" does not match the service bus namespace naming rules.`r`nParameter name: Name"
+    # Test
+    Assert-Throws { Remove-AzureSBNamespace "123InvalidName" -WhatIf -Force } "The provided name `"123InvalidName`" does not match the service bus namespace naming rules.`r`nParameter name: Name"
 }

@@ -24,19 +24,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         private readonly IAccessToken accessToken;
 
         public FakeAccessTokenProvider(string token)
-            : this(token, "user@live.com")
+            : this(token, "user@live.com", null)
         { }
 
-        public FakeAccessTokenProvider(string token, string userId)
+        public FakeAccessTokenProvider(string token, string userId, string tenantID)
         {
             this.accessToken = new FakeAccessToken()
             {
                 AccessToken = token,
-                UserId = userId
+                UserId = userId,
+                TenantID = tenantID
             };
         }
 
         public IAccessToken GetCachedToken(WindowsAzureSubscription subscription, string userId)
+        {
+            return this.accessToken;
+        }
+
+        public IAccessToken GetCachedToken(WindowsAzureEnvironment environment, string userId)
         {
             return this.accessToken;
         }

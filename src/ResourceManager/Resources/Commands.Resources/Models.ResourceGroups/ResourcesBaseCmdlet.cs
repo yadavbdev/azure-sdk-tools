@@ -12,16 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
-namespace Microsoft.Azure.Commands.Resources
+namespace Microsoft.Azure.Commands.Resources.Models
 {
     public abstract class ResourcesBaseCmdlet : CmdletWithSubscriptionBase
     {
         private ResourcesClient resourcesClient;
 
         private GalleryTemplatesClient galleryTemplatesClient;
+
+        private PoliciesClient policiesClient;
 
         public ResourcesClient ResourcesClient
         {
@@ -53,6 +55,26 @@ namespace Microsoft.Azure.Commands.Resources
             }
 
             set { galleryTemplatesClient = value; }
+        }
+
+        public PoliciesClient PoliciesClient
+        {
+            get
+            {
+                // To do remove before going to production
+                System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) =>
+                {
+                    return true;
+                };
+
+                if (policiesClient == null)
+                {
+                    policiesClient = new PoliciesClient(CurrentSubscription);
+                }
+                return policiesClient;
+            }
+
+            set { policiesClient = value; }
         }
     }
 }

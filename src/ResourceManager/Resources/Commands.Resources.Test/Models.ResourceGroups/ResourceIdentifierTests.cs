@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         {
             ResourceIdentifier id = new ResourceIdentifier();
 
-            Assert.Equal("/subscriptions//resourceGroups//providers///", id.ToString());
+            Assert.True(string.IsNullOrEmpty(id.ToString()));
         }
 
         [Fact]

@@ -367,5 +367,34 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             return errors;
         }
+
+        internal List<string> GetResourceGroupPermissions(string resourceGroup)
+        {
+            PermissionGetResult permissionsResult = ResourceManagementClient.ResourceGroups.GetPermissions(resourceGroup);
+
+            if (permissionsResult != null)
+            {
+                return permissionsResult.PermittedActions.SelectMany(p => p.Actions).ToList();
+            }
+
+            return null;
+        }
+
+        internal List<string> GetResourcePermissions(ResourceIdentifier identity, string apiVersion)
+        {
+            if (!string.IsNullOrEmpty(apiVersion))
+            {
+                PermissionGetResult permissionsResult = ResourceManagementClient.Resources.GetPermissions(
+                    identity.ResourceGroupName,
+                    identity.ToResourceIdentity(apiVersion));
+
+                if (permissionsResult != null)
+                {
+                    return permissionsResult.PermittedActions.SelectMany(p => p.Actions).ToList();
+                }
+            }
+
+            return null;
+        }
     }
 }

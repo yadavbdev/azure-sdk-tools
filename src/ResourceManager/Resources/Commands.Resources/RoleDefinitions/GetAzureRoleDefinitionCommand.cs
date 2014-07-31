@@ -12,26 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using System.Collections.Generic;
 using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.Resources
 {
-    public abstract class ResourceBaseCmdlet : ResourcesBaseCmdlet
+    /// <summary>
+    /// Get the available role Definitions for certain resource types.
+    /// </summary>
+    [Cmdlet(VerbsCommon.Get, "AzureRoleDefinition"), OutputType(typeof(List<PSRoleDefinition>))]
+    public class GetAzureRoleDefinitionCommand : ResourcesBaseCmdlet
     {
-        [Alias("ResourceName")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name.")]
+        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Optional. The name of the role Definition.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group name.")]
-        [ValidateNotNullOrEmpty]
-        public string ResourceGroupName { get; set; }
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource type. In the format ResourceProvider/type.")]
-        [ValidateNotNullOrEmpty]
-        public string ResourceType { get; set; }
-
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the parent resource if needed. In the format of greatgranda/grandpa/dad.")]
-        public string ParentResource { get; set; }
+        public override void ExecuteCmdlet()
+        {
+            WriteObject(PoliciesClient.FilterRoleDefinitions(Name), true);
+        }
     }
 }

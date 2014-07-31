@@ -11,9 +11,10 @@
     <AssemblyName>Microsoft.Azure.Commands.Resources.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <SignAssembly>true</SignAssembly>
@@ -133,9 +134,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ExtensionsTests.cs" />
-    <Compile Include="Models\GalleryTemplatesClientTests.cs" />
-    <Compile Include="Models\ResourceIdentifierTests.cs" />
+    <Compile Include="Models.ResourceGroups\ExtensionsTests.cs" />
+    <Compile Include="Models.ResourceGroups\GalleryTemplatesClientTests.cs" />
+    <Compile Include="Models.ResourceGroups\ResourceIdentifierTests.cs" />
     <Compile Include="ResourceGroups\GetAzureResourceGroupLogCommandTests.cs" />
     <Compile Include="ResourceGroups\GetAzureLocationCommandTests.cs" />
     <Compile Include="ResourceGroups\SetAzureResourceGroupCommandTests.cs" />
@@ -150,7 +151,7 @@
     <Compile Include="Templates\TestAzureResourceGroupTemplateCommandTests.cs" />
     <Compile Include="Templates\SaveAzureResourceGroupGalleryTemplateCommandTests.cs" />
     <Compile Include="Templates\GetAzureResourceGroupGalleryTemplateCommandTests.cs" />
-    <Compile Include="Models\ResourceClientTests.cs" />
+    <Compile Include="Models.ResourceGroups\ResourceClientTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

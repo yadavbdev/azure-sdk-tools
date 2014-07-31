@@ -12,16 +12,36 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
-    public class UpdatePSResourceGroupParameters
+    public class PSResource
     {
+        public string Name { get; set; }
+
         public string ResourceGroupName { get; set; }
 
-        public Hashtable[] Tag { get; set; }
+        public string ResourceType { get; set; }
+
+        public string ParentResource { get; set; }
+
+        public string Location { get; set; }
+
+        public IDictionary Properties { get; set; }
+
+        public string PropertiesText { get; set; }
+
+        public List<string> Permissions { get; set; }
+
+        public string ApiVersion { get; set; }
+
+        public Hashtable[] Tags { get; set; }
+
+        public string TagsTable
+        {
+            get { return ResourcesExtensions.ConstructTagsTable(Tags); }
+        }
     }
 }

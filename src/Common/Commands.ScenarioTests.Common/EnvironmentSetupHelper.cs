@@ -97,7 +97,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             SetEndpointsToDefaults(rdfeEnvironment, csmEnvironment);
 
-            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName);
+            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(
+                jwtToken,
+                csmEnvironment.UserName,
+                csmEnvironment.AuthorizationContext == null ? null : csmEnvironment.AuthorizationContext.TenatId);
 
             WindowsAzureProfile.Instance.CurrentEnvironment = WindowsAzureProfile.Instance.Environments[testEnvironmentName];
 

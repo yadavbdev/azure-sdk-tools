@@ -116,6 +116,16 @@ namespace Microsoft.Azure.Commands.Tags.Model
         {
             PSTag tagObject = null;
 
+
+            if (values == null || values.Count != 1)
+            {
+                tagObject = GetTag(tag);
+                if (int.Parse(tagObject.Count) > 0)
+                {
+                    throw new Exception(Resources.CanNotDeleteTag);
+                }
+            }
+
             if (values == null || values.Count == 0)
             {
                 tagObject = GetTag(tag);

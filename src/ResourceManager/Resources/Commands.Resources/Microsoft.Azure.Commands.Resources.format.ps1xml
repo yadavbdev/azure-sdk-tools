@@ -60,6 +60,10 @@
                 <Label>Tags</Label>
                 <PropertyName>TagsTable</PropertyName>
               </ListItem>
+              <ListItem>
+                <Label>Permissions</Label>
+                <PropertyName>Permissions</PropertyName>
+              </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
@@ -89,6 +93,10 @@
               <ListItem>
                 <Label>Tags</Label>
                 <PropertyName>TagsTable</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Permissions</Label>
+                <PropertyName>Permissions</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>Resources</Label>
