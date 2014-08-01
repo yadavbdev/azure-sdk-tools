@@ -14,18 +14,18 @@
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using Authentication;
-    using System.Management.Automation;
     using Azure.Subscriptions;
     using Azure.Subscriptions.Models;
     using Commands.Common.Properties;
     using System;
     using System.Collections.Generic;
+    using System.Management.Automation;
 
     [Serializable]
     public class WindowsAzureEnvironment
     {
         /// <summary>
-        /// The Windows Azure environment name.
+        /// The Microsoft Azure environment name.
         /// </summary>
         public string Name { get; set; }
 
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public string ResourceManagerEndpoint { get; set; }
 
         /// <summary>
-        /// Url to the Windows Azure management portal.
+        /// Url to the Microsoft Azure management portal.
         /// </summary>
         public string ManagementPortalUrl { get; set; }
 
@@ -93,7 +93,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// <summary>
         /// The storage service blob endpoint format.
         /// </summary>
-        public string StorageBlobEndpointFormat { 
+        public string StorageBlobEndpointFormat
+        { 
             get { return EndpointFormatFor("blob"); }
         }
 
@@ -280,7 +281,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         }
 
         /// <summary>
-        /// Predefined Windows Azure environments
+        /// Predefined Microsoft Azure environments
         /// </summary>
         public static Dictionary<string, WindowsAzureEnvironment> PublicEnvironments
         {
