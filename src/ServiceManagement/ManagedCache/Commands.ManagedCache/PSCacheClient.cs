@@ -42,6 +42,11 @@ namespace Microsoft.Azure.Commands.ManagedCache
 
         public Action<string> ProgressRecorder { get; set; }
 
+        public List<RegionsResponse.Region> GetLocations()
+        {
+            return new List< RegionsResponse.Region >(client.CacheServices.GetRegions().Regions);
+        }
+
         public CloudServiceResource CreateCacheService (
             string subscriptionID,
             string cacheServiceName, 
@@ -257,7 +262,9 @@ namespace Microsoft.Azure.Commands.ManagedCache
                         bool nameMatched = string.IsNullOrEmpty(cacheServiceName)
                             || cacheServiceName.Equals(resource.Name, StringComparison.OrdinalIgnoreCase);
 
-                        if (nameMatched)
+                        //'unknown' is a bad caching entry due to service internal error, 
+                        // that we should not display; otherwise, it will screw up the displaying for missing some important fields.   
+                        if (nameMatched && string.Compare(resource.State, "Unknown",  StringComparison.OrdinalIgnoreCase)!=0)
                         {
                             services.Add(new PSCacheService(resource));
                         }
