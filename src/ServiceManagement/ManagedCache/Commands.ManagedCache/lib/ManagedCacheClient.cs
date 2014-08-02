@@ -1983,6 +1983,7 @@ namespace Microsoft.Azure.Management.ManagedCache
                 }
                 
                 requestContent = requestDoc.ToString();
+                requestContent = System.Text.RegularExpressions.Regex.Replace(requestContent, "<IntrinsicSettings>\\s*<CacheServiceInput", "<IntrinsicSettings><CacheServiceInput");
                 httpRequest.Content = new StringContent(requestContent, Encoding.UTF8);
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                 
@@ -3204,7 +3205,6 @@ namespace Microsoft.Azure.Management.ManagedCache
                 }
                 
                 requestContent = requestDoc.ToString();
-            requestContent = System.Text.RegularExpressions.Regex.Replace(requestContent, "<IntrinsicSettings>\\s*<CacheServiceInput", "<IntrinsicSettings><CacheServiceInput");
                 httpRequest.Content = new StringContent(requestContent, Encoding.UTF8);
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                 
