@@ -150,6 +150,7 @@
     <Compile Include="Models.Authorization\PSRoleAssignment.cs" />
     <Compile Include="Models.Authorization\PSRoleDefinition.cs" />
     <Compile Include="Models.Authorization\RoleAssignmentBaseCmdlet.cs" />
+    <Compile Include="Models.ResourceGroups\TemplateValidationInfo.cs" />
     <Compile Include="Models.ResourceGroups\PSGalleryItem.cs" />
     <Compile Include="Models.ResourceGroups\PSResourceManagerError.cs" />
     <Compile Include="Models.ResourceGroups\PSTagValuePair.cs" />
