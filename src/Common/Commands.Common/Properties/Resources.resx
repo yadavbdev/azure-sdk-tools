@@ -166,10 +166,10 @@
     <value>A role name '{0}' already exists</value>
   </data>
   <data name="AzureDirectory" xml:space="preserve">
-    <value>Azure Powershell\</value>
+    <value>Windows Azure Powershell\</value>
   </data>
   <data name="AzureDirectoryName" xml:space="preserve">
-    <value>Azure Powershell</value>
+    <value>Windows Azure Powershell</value>
   </data>
   <data name="AzureEmulatorDirectory" xml:space="preserve">
     <value>Emulator</value>
@@ -191,9 +191,6 @@
   </data>
   <data name="AzureSdkDirectory" xml:space="preserve">
     <value>Azure SDK\{0}\</value>
-  </data>
-  <data name="AzureSdkDirectoryName" xml:space="preserve">
-    <value>Azure SDK Deployment Cmdlets</value>
   </data>
   <data name="AzureSdkInstallPathRegistryKeyValue" xml:space="preserve">
     <value>InstallPath</value>
@@ -1609,5 +1606,8 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="UnableToDecodeBase64String" xml:space="preserve">
     <value>Unable to decode string from base 64. Please make sure the string is correctly encoded: {0}.</value>
     <comment>{0} is the string that is not in a valid base 64 format.</comment>
+  </data>
+  <data name="CredentialOrganizationIdMessage" xml:space="preserve">
+    <value>-Credential parameter can only be used with Organization ID credentials. For more information, please refer to http://go.microsoft.com/fwlink/?linkid=331007&amp;clcid=0x409 for more information about the difference between an organizational account and a Microsoft account.</value>
   </data>
 </root>

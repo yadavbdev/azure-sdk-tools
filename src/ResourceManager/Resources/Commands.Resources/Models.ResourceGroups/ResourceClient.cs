@@ -367,7 +367,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             if (permissionsResult != null)
             {
-                return permissionsResult.PermittedActions.SelectMany(p => p.Actions).ToList();
+                return permissionsResult.Permissions.SelectMany(p => p.Actions).ToList();
             }
 
             return null;
@@ -383,7 +383,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
                 if (permissionsResult != null)
                 {
-                    return permissionsResult.PermittedActions.SelectMany(p => p.Actions).ToList();
+                    return permissionsResult.Permissions.SelectMany(p => p.Actions).ToList();
                 }
             }
 
