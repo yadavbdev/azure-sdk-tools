@@ -42,6 +42,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             return this.accessToken;
         }
 
+        public IAccessToken GetCachedToken(WindowsAzureEnvironment environment, string userId)
+        {
+            return this.accessToken;
+        }
+
         public IAccessToken GetNewToken(WindowsAzureEnvironment environment)
         {
             return this.accessToken;

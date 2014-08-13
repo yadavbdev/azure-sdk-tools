@@ -15,7 +15,10 @@
 namespace Microsoft.WindowsAzure.Commands.Utilities.Profile
 {
     using Common;
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
+    using Common.Authentication;
+    using Azure.Subscriptions;
+    using Commands.Common.Properties;
+    using System.Collections.Generic;
     using System;
     using System.IO;
     using System.Management.Automation;
@@ -73,6 +76,25 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Profile
                 throw new Exception(string.Format(Resources.SubscriptionDataFileNotFound, SubscriptionDataFile));
             }
             return new WindowsAzureProfile(new PowershellProfileStore(path));
+        }
+
+        protected IEnumerable<WindowsAzureSubscription> LoadSubscriptionsFromServer()
+        {
+            var currentSubscription = WindowsAzureProfile.Instance.CurrentSubscription;
+            if (currentSubscription.ActiveDirectoryUserId != null && currentSubscription.TokenProvider != null)
+            {
+                IAccessToken token = currentSubscription.AccessToken;
+                if (token == null || token.LoginType == LoginType.LiveId)
+                {
+                    token = currentSubscription.TokenProvider.GetCachedToken(WindowsAzureProfile.Instance.CurrentEnvironment, currentSubscription.ActiveDirectoryUserId);
+                }
+                return WindowsAzureProfile.Instance.CurrentEnvironment.ListSubscriptions(currentSubscription.TokenProvider, token);
+            }
+            else
+            {
+                //throw new ApplicationException(Resources.InvalidSubscriptionState);
+                return new WindowsAzureSubscription[0];
+            }
         }
     }
 }

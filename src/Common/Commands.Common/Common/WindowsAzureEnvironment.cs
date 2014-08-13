@@ -14,12 +14,12 @@
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using Authentication;
-    using System.Management.Automation;
+    using Azure.Subscriptions;
+    using Azure.Subscriptions.Models;
     using Commands.Common.Properties;
-    using Subscriptions;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Management.Automation;
 
     [Serializable]
     public class WindowsAzureEnvironment
@@ -93,7 +93,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// <summary>
         /// The storage service blob endpoint format.
         /// </summary>
-        public string StorageBlobEndpointFormat { 
+        public string StorageBlobEndpointFormat
+        { 
             get { return EndpointFormatFor("blob"); }
         }
 
@@ -217,38 +218,64 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 mainToken = tokenProvider.GetNewToken(this);
             }
-            var credentials = new TokenCloudCredentials(mainToken.AccessToken);
 
-            using (var subscriptionClient = new SubscriptionClient(credentials, new Uri(ServiceEndpoint)))
+            return ListSubscriptions(tokenProvider, mainToken);
+        }
+
+        public IEnumerable<WindowsAzureSubscription> ListSubscriptions(ITokenProvider tokenProvider, IAccessToken mainToken)
+        {
+            TenantListResult tenants;
+            using (var subscriptionClient = new SubscriptionClient(new TokenCloudCredentials(mainToken.AccessToken), new Uri(ResourceManagerEndpoint)))
             {
-                var result = subscriptionClient.Subscriptions.List();
-                // Filter out subscriptions with no tenant, backfill's not done on them
-                foreach (var subscription in result.Subscriptions.Where(s => !string.IsNullOrEmpty(s.ActiveDirectoryTenantId)))
-                {
-                    var azureSubscription = new WindowsAzureSubscription
-                    {
-                        ActiveDirectoryEndpoint = ActiveDirectoryEndpoint,
-                        ActiveDirectoryTenantId = subscription.ActiveDirectoryTenantId,
-                        ActiveDirectoryUserId = mainToken.UserId,
-                        ActiveDirectoryServiceEndpointResourceId = ActiveDirectoryServiceEndpointResourceId,
-                        SubscriptionId = subscription.SubscriptionId,
-                        SubscriptionName = subscription.SubscriptionName,
-                        ServiceEndpoint = !string.IsNullOrEmpty(ServiceEndpoint) ? new Uri(ServiceEndpoint) : null,
-                        ResourceManagerEndpoint = !string.IsNullOrEmpty(ResourceManagerEndpoint) ? new Uri(ResourceManagerEndpoint) : null,
-                        TokenProvider = tokenProvider,
-                        GalleryEndpoint = !string.IsNullOrEmpty(GalleryEndpoint) ? new Uri(GalleryEndpoint) : null,
-                        SqlDatabaseDnsSuffix = SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
-                    };
+                tenants = subscriptionClient.Tenants.List();
+            }
 
-                    if (mainToken.LoginType == LoginType.LiveId)
+            foreach (var tenant in tenants.TenantIds)
+            {
+                var tempSubscription = new WindowsAzureSubscription
+                {
+                    ActiveDirectoryEndpoint = ActiveDirectoryEndpoint,
+                    ActiveDirectoryTenantId = tenant.TenantId,
+                    ActiveDirectoryUserId = mainToken.UserId,
+                    ActiveDirectoryServiceEndpointResourceId = ActiveDirectoryServiceEndpointResourceId,
+                };
+                var tenantToken = tokenProvider.GetNewToken(tempSubscription, mainToken.UserId);
+
+                using (
+                    var subscriptionClient = new SubscriptionClient(new TokenCloudCredentials(tenantToken.AccessToken),
+                        new Uri(ResourceManagerEndpoint)))
+                {
+                    var result = subscriptionClient.Subscriptions.List();
+                    foreach (var subscription in result.Subscriptions)
                     {
-                        azureSubscription.SetAccessToken(tokenProvider.GetNewToken(azureSubscription, mainToken.UserId));
+                        var azureSubscription = new WindowsAzureSubscription
+                        {
+                            ActiveDirectoryEndpoint = ActiveDirectoryEndpoint,
+                            ActiveDirectoryTenantId = tenant.TenantId,
+                            ActiveDirectoryUserId = tenantToken.UserId,
+                            ActiveDirectoryServiceEndpointResourceId = ActiveDirectoryServiceEndpointResourceId,
+                            SubscriptionId = subscription.SubscriptionId,
+                            SubscriptionName = subscription.DisplayName,
+                            ServiceEndpoint = !string.IsNullOrEmpty(ServiceEndpoint) ? new Uri(ServiceEndpoint) : null,
+                            ResourceManagerEndpoint =
+                                !string.IsNullOrEmpty(ResourceManagerEndpoint) ? new Uri(ResourceManagerEndpoint) : null,
+                            TokenProvider = tokenProvider,
+                            GalleryEndpoint = !string.IsNullOrEmpty(GalleryEndpoint) ? new Uri(GalleryEndpoint) : null,
+                            SqlDatabaseDnsSuffix =
+                                SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
+                        };
+
+                        if (mainToken.LoginType == LoginType.LiveId)
+                        {
+                            azureSubscription.SetAccessToken(tenantToken);
+                        }
+                        else
+                        {
+                            azureSubscription.SetAccessToken(mainToken);
+                        }
+
+                        yield return azureSubscription;
                     }
-                    else
-                    {
-                        azureSubscription.SetAccessToken(mainToken);
-                    }
-                    yield return azureSubscription;
                 }
             }
         }

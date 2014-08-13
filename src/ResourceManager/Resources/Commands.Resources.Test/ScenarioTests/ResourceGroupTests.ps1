@@ -22,21 +22,21 @@ function Test-CreatesNewSimpleResourceGroup
     $rgname = Get-ResourceGroupName
     $location = Get-ProviderLocation ResourceManagement
 
-    try 
-    {
-        # Test
-        $actual = New-AzureResourceGroup -Name $rgname -Location $location -Tags @{Name = "testtag"; Value = "testval"} 
-        $expected = Get-AzureResourceGroup -Name $rgname
+	try 
+	{
+		# Test
+		$actual = New-AzureResourceGroup -Name $rgname -Location $location -Tags @{Name = "testtag"; Value = "testval"} 
+		$expected = Get-AzureResourceGroup -Name $rgname
 
-        # Assert
-        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
-        Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
-    }
-    finally
-    {
-        # Cleanup
-        Clean-ResourceGroup $rgname
-    }
+		# Assert
+		Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
+		Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
+	}
+	finally
+	{
+		# Cleanup
+		Clean-ResourceGroup $rgname
+	}
 }
 
 <#
@@ -49,31 +49,31 @@ function Test-UpdatesExistingResourceGroup
     $rgname = Get-ResourceGroupName
     $location = Get-ProviderLocation ResourceManagement
 
-    try 
-    {
-        # Test update without tag
-        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "ResourceGroupNotFound: Resource group '$rgname' could not be found."
-        
-        $new = New-AzureResourceGroup -Name $rgname -Location $location
-        
-        # Test update with bad tag format
-        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
-        # Test update with bad tag format
-        Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"}, @{Name = "testtag"; Value = "testval2"} } "Invalid tag format. Ensure that each tag has a unique name. Example: @{Name = `"tagName1`"; Value = `"tagValue1`"}, @{Name = `"tagName2`"; Value = `"tagValue2`"}"
-            
-        $actual = Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"} 
-        $expected = Get-AzureResourceGroup -Name $rgname
+	try 
+	{
+		# Test update without tag
+		Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "ResourceGroupNotFound: Resource group '$rgname' could not be found."
+		
+		$new = New-AzureResourceGroup -Name $rgname -Location $location
+		
+		# Test update with bad tag format
+		Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{"testtag" = "testval"} } "Invalid tag format. Expect @{Name = `"tagName`"} or @{Name = `"tagName`"; Value = `"tagValue`"}"
+		# Test update with bad tag format
+		Assert-Throws { Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"}, @{Name = "testtag"; Value = "testval2"} } "Invalid tag format. Ensure that each tag has a unique name. Example: @{Name = `"tagName1`"; Value = `"tagValue1`"}, @{Name = `"tagName2`"; Value = `"tagValue2`"}"
+			
+		$actual = Set-AzureResourceGroup -Name $rgname -Tags @{Name = "testtag"; Value = "testval"} 
+		$expected = Get-AzureResourceGroup -Name $rgname
 
-        # Assert
-        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
-        Assert-AreEqual 0 $new.Tags.Count
-        Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
-    }
-    finally
-    {
-        # Cleanup
-        Clean-ResourceGroup $rgname
-    }
+		# Assert
+		Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
+		Assert-AreEqual 0 $new.Tags.Count
+		Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
+	}
+	finally
+	{
+		# Cleanup
+		Clean-ResourceGroup $rgname
+	}
 }
 
 <#
@@ -183,4 +183,47 @@ function Test-AzureTagsEndToEnd
     Assert-Throws { Get-AzureTag "non-existing" }
 
     Clean-Tags
+}
+
+<#
+.SYNOPSIS
+Tests registration of required template provider
+#>
+function Test-NewDeploymentAndProviderRegistration
+{
+	# Setup
+	$rgname = Get-ResourceGroupName
+	$rname = Get-ResourceName
+	$location = Get-ProviderLocation ResourceManagement
+	$template = "Microsoft.Cache.0.4.0-preview"
+	$provider = "microsoft.cache"
+
+	try 
+	{
+		# Unregistering microsoft.cache to have clean state
+		$subscription = [Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.CurrentSubscription
+		$client = New-Object Microsoft.Azure.Commands.Resources.Models.ResourcesClient $subscription
+	     
+		# Verify provider is registered
+		$providers = [Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.CurrentSubscription.RegisteredResourceProvidersList
+		if( $providers -Contains $provider )
+		{
+			$client.UnregisterProvider($provider) 
+		}
+
+		# Test
+		$deployment = New-AzureResourceGroup -Name $rgname -Location $location -GalleryTemplateIdentity $template -cacheName $rname -cacheLocation $location
+
+		# Assert
+		$client = New-Object Microsoft.Azure.Commands.Resources.Models.ResourcesClient $subscription
+		$providers = [Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.CurrentSubscription.RegisteredResourceProvidersList
+		
+		Assert-True { $providers -Contains $provider }
+
+	}
+	finally
+	{
+		# Cleanup
+		Clean-ResourceGroup $rgname
+	}
 }
