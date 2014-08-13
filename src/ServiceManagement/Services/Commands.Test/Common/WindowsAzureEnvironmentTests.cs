@@ -16,7 +16,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Common
 {
     using Commands.Utilities.Common;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+    using Microsoft.WindowsAzure.Subscriptions;
+    using Moq;
     using System;
+    using System.Security.Cryptography.X509Certificates;
 
     [TestClass]
     public class WindowsAzureEnvironmentTests
