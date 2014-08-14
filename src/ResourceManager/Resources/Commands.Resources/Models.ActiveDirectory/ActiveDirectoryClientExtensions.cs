@@ -37,5 +37,24 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 Id = new Guid(group.ObjectId)
             };
         }
+
+        public static PSADUser ToPSADUser(this AADObject obj)
+        {
+            return new PSADUser()
+            {
+                DisplayName = obj.DisplayName,
+                Id = new Guid(obj.ObjectId),
+                Principal = obj.UserPrincipalName
+            };
+        }
+
+        public static PSADGroup ToPSADGroup(this AADObject obj)
+        {
+            return new PSADGroup()
+            {
+                DisplayName = obj.DisplayName,
+                Id = new Guid(obj.ObjectId)
+            };
+        }
     }
 }

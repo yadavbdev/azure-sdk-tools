@@ -16,12 +16,8 @@ using System;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
-    public class PSADUser
+    public class PSADUser : PSADObject
     {
-        public Guid Id { get; set; }
-
         public string Principal { get; set; }
-
-        public string DisplayName { get; set; }
     }
 }

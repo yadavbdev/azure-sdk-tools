@@ -144,10 +144,13 @@
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveDirectory\GetAzureADGroupMemberCommand.cs" />
+    <Compile Include="ActiveDirectory\GetAzureADGroupCommand.cs" />
     <Compile Include="ActiveDirectory\GetAzureADUserCommand.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryBaseCmdlet.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryClientExtensions.cs" />
     <Compile Include="Models.ActiveDirectory\GroupFilterOptions.cs" />
+    <Compile Include="Models.ActiveDirectory\PSADObject.cs" />
     <Compile Include="Models.ActiveDirectory\UserFilterOptions.cs" />
     <Compile Include="Models.ActiveDirectory\PSADGroup.cs" />
     <Compile Include="Models.ActiveDirectory\PSADUser.cs" />

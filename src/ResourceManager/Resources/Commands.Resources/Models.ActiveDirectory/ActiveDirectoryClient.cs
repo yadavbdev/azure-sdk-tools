@@ -29,6 +29,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
     {
         private const string GraphEndpoint = "https://graph.ppe.windows.net/";
 
+        private const string GroupType = "Group";
+
+        private const string UserType = "User";
+
         public GraphRbacManagementClient GraphClient { get; private set; }
 
         /// <summary>
@@ -119,6 +123,31 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public List<PSADGroup> FilterGroups()
         {
             return FilterGroups(new GroupFilterOptions());
+        }
+
+        public List<PSADObject> GetGroupMembers(string groupName)
+        {
+            List<PSADObject> result = new List<PSADObject>();
+            PSADGroup group = FilterGroups(new GroupFilterOptions { DisplayName = groupName }).FirstOrDefault();
+
+            if (group != null)
+            {
+                var objects = GraphClient.Group.GetGroupMembers(group.Id.ToString()).AADObject;
+
+                foreach (var item in objects)
+                {
+                    if (item.ObjectType == GroupType)
+                    {
+                        result.Add(item.ToPSADGroup());
+                    }
+                    else if (item.ObjectType == UserType)
+                    {
+                        result.Add(item.ToPSADUser());
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
