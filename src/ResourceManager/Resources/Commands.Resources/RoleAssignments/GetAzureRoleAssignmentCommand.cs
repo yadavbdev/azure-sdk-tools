@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.Resources
             {
                 Scope = Scope,
                 RoleDefinition = RoleDefinitionName,
-                PrincipalName = Principal,
+                Principal = Principal,
                 ResourceIdentifier = new ResourceIdentifier()
                 {
                     ParentResource = ParentResource,

@@ -12,17 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Resources.Models.ActiveDirectory;
 using Microsoft.Azure.Management.Authorization;
 using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
-    public class PoliciesClient
+    public class AuthorizationClient
     {
         /// <summary>
         /// This queue is used by the tests to assign fixed role assignment
@@ -30,11 +32,85 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// </summary>
         public static Queue<Guid> RoleAssignmentNames { get; set; }
 
-        public IAuthorizationManagementClient PolicyClient { get; set; }
+        public IAuthorizationManagementClient AuthorizationManagementClient { get; set; }
 
-        public GraphClient GraphClient { get; set; }
+        public ActiveDirectoryClient ActiveDirectoryClient { get; set; }
 
-        static PoliciesClient()
+        private Guid GetPrincipalId(string principal)
+        {
+            Guid result;
+
+            if (Guid.TryParse(principal, out result))
+            {
+                // Input is GUID, just use it as is.
+                return result;
+            }
+
+            UserFilterOptions userOptions = new UserFilterOptions();
+            GroupFilterOptions groupOptions = new GroupFilterOptions();
+            bool filterUsers = false;
+            bool filterGroups = false;
+            string localPart = null;
+
+            if (principal.Contains(' '))
+            {
+                Debug.Assert(!principal.Contains('@'));
+                // The input is user/group display name
+                userOptions.DisplayName = principal;
+                groupOptions.DisplayName = principal;
+                filterUsers = true;
+                filterGroups = true;
+            }
+
+            if (principal.Contains('@'))
+            {
+                Debug.Assert(!principal.Contains(' '));
+                PSADUser user = ActiveDirectoryClient.GetUser(new UserFilterOptions() { Principal = principal });
+
+                if (user != null)
+                {
+                    return user.Id;
+                }
+
+                groupOptions.Mail = principal;
+                localPart = principal.Split('@').First();
+                filterGroups = true;
+            }
+
+            if (filterUsers)
+            {
+                var users = ActiveDirectoryClient.FilterUsers(userOptions);
+                if (users.Count > 0)
+                {
+                    return users.First().Id;
+                }
+            }
+
+            if (filterGroups)
+            {
+                var groups = ActiveDirectoryClient.FilterGroups(groupOptions);
+                if (groups.Count > 0)
+                {
+                    return groups.First().Id;
+                }
+            }
+
+            if (string.IsNullOrEmpty(localPart))
+            {
+                var users = ActiveDirectoryClient.FilterUsers();
+                var user = users.FirstOrDefault(u => u.Principal.StartsWith(localPart));
+
+                if (user != null)
+                {
+                    // The input is live id.
+                    return user.Id;
+                }
+            }
+
+            throw new KeyNotFoundException(string.Format("The user principal '{0}' can not be resolve", principal));
+        }
+
+        static AuthorizationClient()
         {
             RoleAssignmentNames = new Queue<Guid>();
         }
@@ -43,16 +119,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// Creates PoliciesClient using WindowsAzureSubscription instance.
         /// </summary>
         /// <param name="subscription">The WindowsAzureSubscription instance</param>
-        public PoliciesClient(WindowsAzureSubscription subscription)
+        public AuthorizationClient(WindowsAzureSubscription subscription)
         {
-            AccessTokenCredential creds = subscription.CreateTokenCredentials();
-            GraphClient = new GraphClient(subscription, creds);
-            PolicyClient = subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>();
+            ActiveDirectoryClient = new ActiveDirectoryClient(subscription);
+            AuthorizationManagementClient = subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>();
         }
 
         public PSRoleDefinition GetRoleDefinition(string roleId)
         {
-            return PolicyClient.RoleDefinitions.GetById(roleId).RoleDefinition.ToPSRoleDefinition();
+            return AuthorizationManagementClient.RoleDefinitions.GetById(roleId).RoleDefinition.ToPSRoleDefinition();
         }
 
         /// <summary>
@@ -66,11 +141,11 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
             if (string.IsNullOrEmpty(name))
             {
-                result.AddRange(PolicyClient.RoleDefinitions.List().RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
+                result.AddRange(AuthorizationManagementClient.RoleDefinitions.List().RoleDefinitions.Select(r => r.ToPSRoleDefinition()));
             }
             else
             {
-                result.Add(PolicyClient.RoleDefinitions.List().RoleDefinitions
+                result.Add(AuthorizationManagementClient.RoleDefinitions.List().RoleDefinitions
                     .FirstOrDefault(r => r.Properties.RoleName.Equals(name, StringComparison.OrdinalIgnoreCase))
                     .ToPSRoleDefinition());
             }
@@ -85,7 +160,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// <returns>The created role assignment object</returns>
         public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
         {
-            Guid principalId = GraphClient.GetActiveDirectoryObject(parameters.PrincipalName).Id;
+            Guid principalId = GetPrincipalId(parameters.Principal);
+
             Guid roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid() : RoleAssignmentNames.Dequeue();
             string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
 
@@ -95,8 +171,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 RoleDefinitionId = roleDefinitionId
             };
 
-            PolicyClient.RoleAssignments.Create(parameters.Scope, roleAssignmentId, createParameters);
-            return PolicyClient.RoleAssignments.Get(parameters.Scope, roleAssignmentId).RoleAssignment.ToPSRoleAssignment(this, GraphClient);
+            AuthorizationManagementClient.RoleAssignments.Create(parameters.Scope, roleAssignmentId, createParameters);
+            return AuthorizationManagementClient.RoleAssignments.Get(parameters.Scope, roleAssignmentId).RoleAssignment.ToPSRoleAssignment(this, ActiveDirectoryClient);
         }
 
         /// <summary>
@@ -112,11 +188,13 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 AtScope = true
             };
 
-            result.AddRange(PolicyClient.RoleAssignments.ListForScope(options.Scope, parameters).RoleAssignments.Select(r => r.ToPSRoleAssignment(this, GraphClient)));
+            result.AddRange(AuthorizationManagementClient.RoleAssignments
+                .ListForScope(options.Scope, parameters)
+                .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
 
-            if (!string.IsNullOrEmpty(options.PrincipalName))
+            if (!string.IsNullOrEmpty(options.Principal))
             {
-                result = result.Where(r => r.Principal.Equals(options.PrincipalName, StringComparison.OrdinalIgnoreCase)).ToList();
+                result = result.Where(r => r.Principal.Equals(options.Principal, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             if (!string.IsNullOrEmpty(options.RoleDefinition))
@@ -138,7 +216,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
             if (roleAssignment != null)
             {
-                PolicyClient.RoleAssignments.DeleteById(roleAssignment.Id);
+                AuthorizationManagementClient.RoleAssignments.DeleteById(roleAssignment.Id);
             }
 
             return roleAssignment;

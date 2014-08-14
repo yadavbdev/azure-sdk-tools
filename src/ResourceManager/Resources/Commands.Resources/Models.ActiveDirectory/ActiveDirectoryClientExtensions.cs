@@ -12,18 +12,30 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Graph.RBAC.Models;
 using System;
 
-namespace Microsoft.Azure.Commands.Resources.Models.Authorization
+namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
-    public class PSActiveDirectoryObject
+    internal static class ActiveDirectoryClientExtensions
     {
-        public Guid Id { get; set; }
+        public static PSADUser ToPSADUser(this User user)
+        {
+            return new PSADUser()
+            {
+                DisplayName = user.DisplayName,
+                Id = new Guid(user.ObjectId),
+                Principal = user.UserPrincipalName
+            };
+        }
 
-        public string Principal { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string Type { get; set; }
+        public static PSADGroup ToPSADGroup(this Group group)
+        {
+            return new PSADGroup()
+            {
+                DisplayName = group.DisplayName,
+                Id = new Guid(group.ObjectId)
+            };
+        }
     }
 }

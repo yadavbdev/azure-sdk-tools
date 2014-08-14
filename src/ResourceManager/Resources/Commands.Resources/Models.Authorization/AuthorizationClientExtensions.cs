@@ -12,13 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Resources.Models.ActiveDirectory;
 using Microsoft.Azure.Management.Authorization.Models;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
-    internal static class PoliciesClientExtensions
+    internal static class AuthorizationClientExtensions
     {
         public static PSRoleDefinition ToPSRoleDefinition(this RoleDefinition role)
         {
@@ -38,13 +39,14 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             return roleDefinition;
         }
 
-        public static PSRoleAssignment ToPSRoleAssignment(this RoleAssignment role, PoliciesClient policyClient, GraphClient graphClient)
+        public static PSRoleAssignment ToPSRoleAssignment(this RoleAssignment role, AuthorizationClient policyClient, ActiveDirectoryClient activeDirectoryClient)
         {
             PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.Properties.RoleDefinitionId);
             return new PSRoleAssignment()
             {
                 Id = role.Id,
-                Principal = graphClient.GetActiveDirectoryObject(role.Properties.PrincipalId.ToString()).Principal,
+                Principal = activeDirectoryClient.GetUser(
+                    new UserFilterOptions() { Id = role.Properties.PrincipalId.ToString() }).Principal,
                 Actions = roleDefinition.Actions,
                 NoActions = roleDefinition.NoActions,
                 RoleDefinitionName = roleDefinition.Name,

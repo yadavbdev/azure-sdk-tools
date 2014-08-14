@@ -83,12 +83,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Profile
             var currentSubscription = WindowsAzureProfile.Instance.CurrentSubscription;
             if (currentSubscription.ActiveDirectoryUserId != null && currentSubscription.TokenProvider != null)
             {
-                IAccessToken token = currentSubscription.AccessToken;
-                if (token == null || token.LoginType == LoginType.LiveId)
-                {
-                    token = currentSubscription.TokenProvider.GetCachedToken(WindowsAzureProfile.Instance.CurrentEnvironment, currentSubscription.ActiveDirectoryUserId);
-                }
-                return WindowsAzureProfile.Instance.CurrentEnvironment.ListSubscriptions(currentSubscription.TokenProvider, token);
+                //IAccessToken token = currentSubscription.AccessToken;
+                //if (token == null || token.LoginType == LoginType.LiveId)
+                //{
+                //    token = currentSubscription.TokenProvider.GetCachedToken(WindowsAzureProfile.Instance.CurrentEnvironment, currentSubscription.ActiveDirectoryUserId);
+                //}
+                //return WindowsAzureProfile.Instance.CurrentEnvironment.ListSubscriptions(currentSubscription.TokenProvider, token);
+                return new WindowsAzureSubscription[0];
             }
             else
             {
