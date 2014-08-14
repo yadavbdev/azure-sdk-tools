@@ -943,6 +943,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\nodiagpackage.csv", "nodiagpackage#csv", DataAccessMethod.Sequential)]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionConfigScenarioTest()
         {
 
@@ -998,6 +999,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((Get,Set,Remove)-AzureServiceRemoteDesktopExtension)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\nodiagpackage.csv", "nodiagpackage#csv", DataAccessMethod.Sequential)]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionTest()
         {
 

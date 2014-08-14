@@ -531,6 +531,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         ///
         /// </summary>
         [TestMethod(), TestCategory(Category.Functional), TestCategory(Category.BVT), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionConfigTest()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
