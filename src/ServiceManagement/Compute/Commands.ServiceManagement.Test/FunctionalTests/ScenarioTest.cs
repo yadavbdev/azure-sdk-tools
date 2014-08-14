@@ -182,7 +182,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 foreach (InputEndpointContext inputEndpointCtxt in vmPowershellCmdlets.GetAzureEndPoint(vmRoleCtxt))
                 {
-                    if (inputEndpointCtxt.Name.Equals("PowerShell"))
+                    if (inputEndpointCtxt.Name.Equals(WinRmEndpointName))
                     {
                         winRMEndpoint = inputEndpointCtxt;
                     }
@@ -642,7 +642,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             Console.WriteLine("InputEndpointContext Name: {0}", inputEndpointCtxt.Name);
             Console.WriteLine("InputEndpointContext port: {0}", inputEndpointCtxt.Port);
             Console.WriteLine("InputEndpointContext protocol: {0}", inputEndpointCtxt.Protocol);
-            Assert.AreEqual(inputEndpointCtxt.Name, "RemoteDesktop", true);
+            Assert.AreEqual(WinRmEndpointName, inputEndpointCtxt.Name, true);
 
             string path = ".\\myvmconnection.rdp";
             vmPowershellCmdlets.GetAzureRemoteDesktopFile(newAzureQuickVMName, serviceName, path, false); // Get-AzureRemoteDesktopFile

@@ -42,6 +42,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         protected const string testDataContainer = "testdata";
         protected const string osVhdName = "oneGBFixedWS2008R2.vhd";
 
+        protected const string WinRmEndpointName = "PowerShell";
+        protected const string RdpEndpointName = "RemoteDesktop";
+
         // Test cleanup settings
         protected const bool deleteDefaultStorageAccount = false; // Temporarily set to false
         protected bool cleanupIfPassed = true;
