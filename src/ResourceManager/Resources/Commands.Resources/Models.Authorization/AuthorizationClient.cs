@@ -36,80 +36,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public ActiveDirectoryClient ActiveDirectoryClient { get; set; }
 
-        private Guid GetPrincipalId(string principal)
-        {
-            Guid result;
-
-            if (Guid.TryParse(principal, out result))
-            {
-                // Input is GUID, just use it as is.
-                return result;
-            }
-
-            UserFilterOptions userOptions = new UserFilterOptions();
-            GroupFilterOptions groupOptions = new GroupFilterOptions();
-            bool filterUsers = false;
-            bool filterGroups = false;
-            string localPart = null;
-
-            if (principal.Contains(' '))
-            {
-                Debug.Assert(!principal.Contains('@'));
-                // The input is user/group display name
-                userOptions.DisplayName = principal;
-                groupOptions.DisplayName = principal;
-                filterUsers = true;
-                filterGroups = true;
-            }
-
-            if (principal.Contains('@'))
-            {
-                Debug.Assert(!principal.Contains(' '));
-                PSADUser user = ActiveDirectoryClient.GetUser(new UserFilterOptions() { Principal = principal });
-
-                if (user != null)
-                {
-                    return user.Id;
-                }
-
-                groupOptions.Mail = principal;
-                localPart = principal.Split('@').First();
-                filterGroups = true;
-            }
-
-            if (filterUsers)
-            {
-                var users = ActiveDirectoryClient.FilterUsers(userOptions);
-                if (users.Count > 0)
-                {
-                    return users.First().Id;
-                }
-            }
-
-            if (filterGroups)
-            {
-                var groups = ActiveDirectoryClient.FilterGroups(groupOptions);
-                if (groups.Count > 0)
-                {
-                    return groups.First().Id;
-                }
-            }
-
-            if (string.IsNullOrEmpty(localPart))
-            {
-                var users = ActiveDirectoryClient.FilterUsers();
-                var user = users.FirstOrDefault(u => u.Principal.StartsWith(localPart));
-
-                if (user != null)
-                {
-                    // The input is live id.
-                    return user.Id;
-                }
-            }
-
-            throw new KeyNotFoundException(string.Format("The user principal '{0}' can not be resolve", principal));
-        }
-
         static AuthorizationClient()
         {
             RoleAssignmentNames = new Queue<Guid>();
@@ -160,7 +86,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// <returns>The created role assignment object</returns>
         public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
         {
-            Guid principalId = GetPrincipalId(parameters.Principal);
+            Guid principalId = ActiveDirectoryClient.GetObjectId(parameters.Principal);
 
             Guid roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid() : RoleAssignmentNames.Dequeue();
             string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
@@ -183,18 +109,24 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         public List<PSRoleAssignment> FilterRoleAssignments(FilterRoleAssignmentsOptions options)
         {
             List<PSRoleAssignment> result = new List<PSRoleAssignment>();
-            ListAssignmentsFilterParameters parameters = new ListAssignmentsFilterParameters
-            {
-                AtScope = true
-            };
-
-            result.AddRange(AuthorizationManagementClient.RoleAssignments
-                .ListForScope(options.Scope, parameters)
-                .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
+            ListAssignmentsFilterParameters parameters = new ListAssignmentsFilterParameters();
 
             if (!string.IsNullOrEmpty(options.Principal))
             {
-                result = result.Where(r => r.Principal.Equals(options.Principal, StringComparison.OrdinalIgnoreCase)).ToList();
+                // Filter first by principal
+                parameters.PrincipalId = ActiveDirectoryClient.GetObjectId(options.Principal);
+                result.AddRange(AuthorizationManagementClient.RoleAssignments.List(parameters)
+                    .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
+
+                // Filter out by scope
+                result.RemoveAll(r => !options.Scope.StartsWith(r.Scope));
+            }
+            else
+            {
+                // Filter by scope and above directly
+                parameters.AtScope = true;
+                result.AddRange(AuthorizationManagementClient.RoleAssignments.ListForScope(options.Scope, parameters)
+                    .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
             }
 
             if (!string.IsNullOrEmpty(options.RoleDefinition))

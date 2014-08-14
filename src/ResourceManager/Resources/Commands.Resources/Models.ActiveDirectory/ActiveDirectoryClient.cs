@@ -52,33 +52,15 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public PSADUser GetUser(UserFilterOptions options)
         {
             PSADUser result = null;
+            string filter = string.IsNullOrEmpty(options.Id) ? options.Principal : options.Id;
 
-            if (!string.IsNullOrEmpty(options.Principal))
+            if (!string.IsNullOrEmpty(filter))
             {
-                User user = GraphClient.User.Get(options.Principal).User;
+                User user = GraphClient.User.Get(filter).User;
 
                 if (user != null)
                 {
                     result = user.ToPSADUser();
-                }
-            }
-
-            if (!string.IsNullOrEmpty(options.Id))
-            {
-                GetObjectsParameters parameters = new GetObjectsParameters
-                {
-                    Ids = new List<string> { options.Id }
-                };
-
-                var objects = GraphClient.Objects.GetObjectsByObjectIds(parameters).AADObject;
-
-                if (objects.Count > 0)
-                {
-                    AADObject first = objects.First();
-                    result = new PSADUser();
-                    result.DisplayName = first.DisplayName;
-                    result.Id = new Guid(first.ObjectId);
-                    result.Principal = first.UserPrincipalName;
                 }
             }
 
@@ -105,16 +87,41 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return FilterUsers(new UserFilterOptions());
         }
 
+        public List<PSADGroup> ListUserGroups(string principal)
+        {
+            List<PSADGroup> result = new List<PSADGroup>();
+            Guid objectId = GetObjectId(principal);
+            PSADUser user = GetUser(new UserFilterOptions { Id = objectId.ToString() });
+            var groupsIds = GraphClient.User.GetMemberGroups(new UserGetMemberGroupsParameters { ObjectId = user.Id.ToString() }).ObjectIds;
+            var groupsResult = GraphClient.Objects.GetObjectsByObjectIds(new GetObjectsParameters { Ids = groupsIds });
+            result.AddRange(groupsResult.AADObject.Select(g => g.ToPSADGroup()));
+
+            return result;
+        }
+
         public List<PSADGroup> FilterGroups(GroupFilterOptions options)
         {
             List<PSADGroup> groups = new List<PSADGroup>();
-            GroupListResult result = GraphClient.Group.List(options.UserPrincipal, options.DisplayName);
-            groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
 
-            while (!string.IsNullOrEmpty(result.NextLink))
+            if (!string.IsNullOrEmpty(options.UserPrincipal))
             {
-                result = GraphClient.Group.ListNext(result.NextLink);
+                groups.AddRange(ListUserGroups(options.UserPrincipal));
+
+                if (!string.IsNullOrEmpty(options.DisplayName))
+                {
+                    groups.RemoveAll(g => !g.DisplayName.Equals(options.DisplayName, StringComparison.OrdinalIgnoreCase));
+                }
+            }
+            else
+            {
+                GroupListResult result = GraphClient.Group.List(options.Mail, options.DisplayName);
                 groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
+
+                while (!string.IsNullOrEmpty(result.NextLink))
+                {
+                    result = GraphClient.Group.ListNext(result.NextLink);
+                    groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
+                }
             }
 
             return groups;
@@ -148,6 +155,80 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             }
 
             return result;
+        }
+
+        public Guid GetObjectId(string principal)
+        {
+            Guid result;
+
+            if (Guid.TryParse(principal, out result))
+            {
+                // Input is GUID, just use it as is.
+                return result;
+            }
+
+            UserFilterOptions userOptions = new UserFilterOptions();
+            GroupFilterOptions groupOptions = new GroupFilterOptions();
+            bool filterUsers = false;
+            bool filterGroups = false;
+            string localPart = null;
+
+            if (principal.Contains('@'))
+            {
+                try
+                {
+                    PSADUser user = GetUser(new UserFilterOptions() { Principal = principal });
+                    if (user != null)
+                    {
+                        return user.Id;
+                    }
+                }
+                catch { /* Unable to retrieve the user, skip */ }
+
+                groupOptions.Mail = principal;
+                localPart = principal.Split('@').First();
+                filterGroups = true;
+            }
+            else
+            {
+                // The input is user/group display name
+                userOptions.DisplayName = principal;
+                groupOptions.DisplayName = principal;
+                filterUsers = true;
+                filterGroups = true;
+            }
+
+            if (filterUsers)
+            {
+                var users = FilterUsers(userOptions);
+                if (users.Count > 0)
+                {
+                    return users.First().Id;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(localPart))
+            {
+                var users = FilterUsers();
+                var user = users.FirstOrDefault(u => u.Principal.StartsWith(localPart));
+
+                if (user != null)
+                {
+                    // The input is live id.
+                    return user.Id;
+                }
+            }
+
+            if (filterGroups)
+            {
+                var groups = FilterGroups(groupOptions);
+                if (groups.Count > 0)
+                {
+                    return groups.First().Id;
+                }
+            }
+
+            throw new KeyNotFoundException(string.Format("The user principal '{0}' can not be resolve", principal));
         }
     }
 }

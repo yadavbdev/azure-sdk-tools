@@ -31,16 +31,16 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of principle whose groups to return. If not specified, return all groups matching other filters.")]
+        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Principal whose groups to return, must be a user principal. If not specified, return all groups matching other filters.")]
         [ValidateNotNullOrEmpty]
-        public string Principle { get; set; }
+        public string Principal { get; set; }
 
         public override void ExecuteCmdlet()
         {
             GroupFilterOptions options = new GroupFilterOptions
             {
                 DisplayName = Name,
-                UserPrincipal = Principle
+                UserPrincipal = Principal
             };
 
             WriteObject(ActiveDirectoryClient.FilterGroups(options), true);
