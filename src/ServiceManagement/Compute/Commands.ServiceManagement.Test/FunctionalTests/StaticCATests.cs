@@ -301,6 +301,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Utilities.VerifyFailure(() => vmPowershellCmdlets.NewAzureVM(serviceName, new[] { vm }),IPUnavaialbleExceptionMessage);
                 Console.WriteLine("Deployment with Static CA {0} failed as expectd", nonStaticIpAddress);
 
+                Console.WriteLine("Waiting for 2 minutes...");
+                Thread.Sleep(TimeSpan.FromMinutes(2));
                 //Reserve the DIP of the VM1
                 vmRoleContext = vmPowershellCmdlets.GetAzureVM(vmName1,serviceName);
                 vm = vmPowershellCmdlets.SetAzureStaticVNetIP(nonStaticIpAddress, vmRoleContext.VM);
