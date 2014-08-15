@@ -133,13 +133,32 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             }
             else
             {
-                GroupListResult result = GraphClient.Group.List(options.Mail, options.DisplayName);
-                groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
+                GroupListResult result = new GroupListResult();
 
-                while (!string.IsNullOrEmpty(result.NextLink))
+                if (options.Paging)
                 {
-                    result = GraphClient.Group.ListNext(result.NextLink);
+                    if (string.IsNullOrEmpty(options.NextLink))
+                    {
+                        result = GraphClient.Group.List(options.Mail, options.DisplayName);
+                    }
+                    else
+                    {
+                        result = GraphClient.Group.ListNext(result.NextLink);
+                    }
+
                     groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
+                    options.NextLink = result.NextLink;
+                }
+                else
+                {
+                    result = GraphClient.Group.List(options.Mail, options.DisplayName);
+                    groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
+
+                    while (!string.IsNullOrEmpty(result.NextLink))
+                    {
+                        result = GraphClient.Group.ListNext(result.NextLink);
+                        groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
+                    }
                 }
             }
 

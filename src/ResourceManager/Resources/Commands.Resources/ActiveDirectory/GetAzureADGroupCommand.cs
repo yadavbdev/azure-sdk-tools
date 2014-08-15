@@ -40,10 +40,14 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
             GroupFilterOptions options = new GroupFilterOptions
             {
                 DisplayName = Name,
-                UserPrincipal = Principal
+                UserPrincipal = Principal,
+                Paging = true
             };
 
-            WriteObject(ActiveDirectoryClient.FilterGroups(options), true);
+            do
+            {
+                WriteObject(ActiveDirectoryClient.FilterGroups(options), true);
+            } while (!string.IsNullOrEmpty(options.NextLink));
         }
     }
 }

@@ -23,5 +23,12 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public string UserPrincipal { get; set; }
 
         public string Mail { get; set; }
+
+        public bool Paging { get; set; }
+
+        /// <summary>
+        /// Used internally to track the paging for the listing, do not change manually.
+        /// </summary>
+        public string NextLink { get; set; }
     }
 }
