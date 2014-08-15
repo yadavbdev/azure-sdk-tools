@@ -1593,4 +1593,21 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="SetTrafficManagerProfileAmbiguous" xml:space="preserve">
     <value>Ambiguous operation: the profile name specified doesn't match the name of the profile object.</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>&lt;NONE&gt;</value>
+  </data>
+  <data name="ServiceManagementClientExceptionStringFormat" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ServiceManagementClientExceptionStringFormat1" xml:space="preserve">
+    <value>"An exception occurred when calling the ServiceManagement API. HTTP Status Code: {0}. Service Management Error Code: {1}. Message: {2}. Operation Tracking ID: {3}."</value>
+    <comment>{0} is the HTTP status code. {1} is the Service Management Error Code. {2} is the Service Management Error message. {3} is the operation tracking ID.</comment>
+  </data>
+  <data name="UnableToDecodeBase64String" xml:space="preserve">
+    <value>Unable to decode string from base 64. Please make sure the string is correctly encoded: {0}.</value>
+    <comment>{0} is the string that is not in a valid base 64 format.</comment>
+  </data>
+  <data name="CredentialOrganizationIdMessage" xml:space="preserve">
+    <value>-Credential parameter can only be used with Organization ID credentials. For more information, please refer to http://go.microsoft.com/fwlink/?linkid=331007&amp;clcid=0x409 for more information about the difference between an organizational account and a Microsoft account.</value>
+  </data>
 </root>
