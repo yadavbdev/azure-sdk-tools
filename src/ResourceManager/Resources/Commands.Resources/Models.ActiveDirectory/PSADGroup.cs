@@ -12,18 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-
-namespace Microsoft.Azure.Commands.Resources.Models.Authorization
+namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
-    public class PSActiveDirectoryObject
+    public class PSADGroup : PSADObject
     {
-        public Guid Id { get; set; }
-
-        public string Principal { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string Type { get; set; }
     }
 }

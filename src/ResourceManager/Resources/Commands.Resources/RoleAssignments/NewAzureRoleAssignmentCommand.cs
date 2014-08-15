@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.Resources
                 Scope = Scope,
                 Subscription = CurrentSubscription.SubscriptionId,
                 RoleDefinition = RoleDefinitionName,
-                PrincipalName = Principal,
+                Principal = Principal,
                 ResourceIdentifier = new ResourceIdentifier()
                 {
                     ParentResource = ParentResource,

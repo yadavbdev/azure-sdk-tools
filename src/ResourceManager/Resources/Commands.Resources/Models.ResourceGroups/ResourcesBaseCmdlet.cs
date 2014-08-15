@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         private GalleryTemplatesClient galleryTemplatesClient;
 
-        private PoliciesClient policiesClient;
+        private AuthorizationClient policiesClient;
 
         public ResourcesClient ResourcesClient
         {
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             set { galleryTemplatesClient = value; }
         }
 
-        public PoliciesClient PoliciesClient
+        public AuthorizationClient PoliciesClient
         {
             get
             {
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
                 if (policiesClient == null)
                 {
-                    policiesClient = new PoliciesClient(CurrentSubscription);
+                    policiesClient = new AuthorizationClient(CurrentSubscription);
                 }
                 return policiesClient;
             }

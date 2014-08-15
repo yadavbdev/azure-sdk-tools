@@ -52,6 +52,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public ResourceIdentifier ResourceIdentifier { get; set; }
 
-        public string PrincipalName { get; set; }
+        public string Principal { get; set; }
     }
 }
