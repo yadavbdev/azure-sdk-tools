@@ -70,13 +70,32 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public List<PSADUser> FilterUsers(UserFilterOptions options)
         {
             List<PSADUser> users = new List<PSADUser>();
-            UserListResult result = GraphClient.User.List(null, options.DisplayName);
-            users.AddRange(result.Users.Select(u => u.ToPSADUser()));
-
-            while (!string.IsNullOrEmpty(result.NextLink))
+            UserListResult result = new UserListResult();
+            
+            if (options.Paging)
             {
-                result = GraphClient.User.ListNext(result.NextLink);
+                if (string.IsNullOrEmpty(options.NextLink))
+                {
+                    result = GraphClient.User.List(null, options.DisplayName);
+                }
+                else
+                {
+                    result = GraphClient.User.ListNext(options.NextLink);
+                }
+
                 users.AddRange(result.Users.Select(u => u.ToPSADUser()));
+                options.NextLink = result.NextLink;
+            }
+            else
+            {
+                result = GraphClient.User.List(null, options.DisplayName);
+                users.AddRange(result.Users.Select(u => u.ToPSADUser()));
+
+                while (!string.IsNullOrEmpty(result.NextLink))
+                {
+                    result = GraphClient.User.ListNext(result.NextLink);
+                    users.AddRange(result.Users.Select(u => u.ToPSADUser()));
+                }
             }
 
             return users;

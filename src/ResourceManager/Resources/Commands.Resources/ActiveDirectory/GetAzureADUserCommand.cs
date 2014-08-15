@@ -35,10 +35,15 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
         {
             UserFilterOptions options = new UserFilterOptions
             {
-                DisplayName = Name
+                DisplayName = Name,
+                Paging = true
             };
 
-            WriteObject(ActiveDirectoryClient.FilterUsers(options), true);
+            do
+            {
+                WriteObject(ActiveDirectoryClient.FilterUsers(options), true);
+
+            } while (!string.IsNullOrEmpty(options.NextLink));
         }
     }
 }
