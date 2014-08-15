@@ -326,7 +326,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             var newSubscriptions = environment.AddAccount(TokenProvider, credential).ToList();
             AddSubscriptions(newSubscriptions);
             Save();
-            return newSubscriptions[0].ActiveDirectoryUserId;
+            WindowsAzureSubscription subscription = newSubscriptions.FirstOrDefault();
+
+            if (subscription != null)
+            {
+                return subscription.ActiveDirectoryUserId;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private void AddSubscriptions(List<WindowsAzureSubscription> newSubscriptions)
