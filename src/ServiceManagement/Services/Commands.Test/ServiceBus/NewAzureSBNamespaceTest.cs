@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 Client = client.Object
             };
             ExtendedServiceBusNamespace expected = new ExtendedServiceBusNamespace { Name = name, Region = location };
-            client.Setup(f => f.CreateNamespace(name, location)).Returns(expected);
+            client.Setup(f => f.CreateNamespace(name, location, true)).Returns(expected);
             client.Setup(f => f.GetServiceBusRegions()).Returns(new List<ServiceBusLocation>()
             {
                 new ServiceBusLocation () { Code = location }
@@ -79,7 +79,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 Location = location
             };
             ExtendedServiceBusNamespace expected = new ExtendedServiceBusNamespace { Name = name, Region = location };
-            client.Setup(f => f.CreateNamespace(name, location)).Returns(expected);
+            client.Setup(f => f.CreateNamespace(name, location, true)).Returns(expected);
 
             // Test
             cmdlet.ExecuteCmdlet();
@@ -121,7 +121,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 Client = client.Object
             };
             ExtendedServiceBusNamespace expected = new ExtendedServiceBusNamespace { Name = name, Region = location };
-            client.Setup(f => f.CreateNamespace(name, location.ToLower())).Returns(expected);
+            client.Setup(f => f.CreateNamespace(name, location.ToLower(), true)).Returns(expected);
             client.Setup(f => f.GetServiceBusRegions()).Returns(new List<ServiceBusLocation>()
             {
                 new ServiceBusLocation () { Code = location }
