@@ -37,26 +37,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             };
         }
 
-        public IAccessToken GetCachedToken(WindowsAzureSubscription subscription, string userId)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureSubscription subscription, string userId)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment, string userId, SecureString password)
-        {
-            return this.accessToken;
-        }
-
         public IAccessToken GetNewToken(AdalConfiguration config, string userId, SecureString password)
         {
             return this.accessToken;

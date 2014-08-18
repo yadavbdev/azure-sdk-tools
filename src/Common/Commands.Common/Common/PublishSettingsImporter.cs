@@ -30,21 +30,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     /// </summary>
     public static class PublishSettingsImporter
     {
-        public static IEnumerable<WindowsAzureSubscription> ImportWindowsAzureSubscription(string filename)
-        {
-            using (var s = new FileStream(filename, FileMode.Open, FileAccess.Read))
-            {
-                return ImportWindowsAzureSubscription(s);
-            }
-        }
-
-        public static IEnumerable<WindowsAzureSubscription> ImportWindowsAzureSubscription(Stream stream)
-        {
-            var publishData = DeserializePublishData(stream);
-            PublishDataPublishProfile profile = publishData.Items.Single();
-            return profile.Subscription.Select(s => PublishSubscriptionToWindowsAzureSubscription(profile, s));
-        }
-
         public static IEnumerable<AzureSubscription> ImportAzureSubscription(Stream stream, string environment)
         {
             var publishData = DeserializePublishData(stream);
@@ -56,21 +41,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             var serializer = new XmlSerializer(typeof(PublishData));
             return (PublishData)serializer.Deserialize(stream);
-        }
-
-        private static WindowsAzureSubscription PublishSubscriptionToWindowsAzureSubscription(
-            PublishDataPublishProfile profile,
-            PublishDataPublishProfileSubscription s)
-        {
-            return new WindowsAzureSubscription
-            {
-                Certificate = GetCertificate(profile, s),
-                SubscriptionName = s.Name,
-                ServiceEndpoint = GetManagementUri(profile, s),
-                ResourceManagerEndpoint = null,
-                SubscriptionId = s.Id,
-                SqlDatabaseDnsSuffix = WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
-            };
         }
 
         private static AzureSubscription PublishSubscriptionToAzureSubscription(

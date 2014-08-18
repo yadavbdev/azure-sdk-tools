@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using System;
-    using System.Linq;
-
     /// <summary>
     /// Class storing the configuration information needed
     /// for ADAL to request token from the right AD tenant
@@ -63,22 +63,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             ClientId = powershellClientId;
             ClientRedirectUri = powershellRedirectUri;
-        }
-
-        public AdalConfiguration(WindowsAzureEnvironment environment)
-            : this()
-        {
-            AdEndpoint = environment.ActiveDirectoryEndpoint != null ? environment.ActiveDirectoryEndpoint.TrimEnd('/') + '/' : null;
-            AdDomain = environment.ActiveDirectoryCommonTenantId;
-            ResourceClientUri = environment.ActiveDirectoryServiceEndpointResourceId;
-        }
-
-        public AdalConfiguration(WindowsAzureSubscription subscription)
-            : this()
-        {
-            AdEndpoint = subscription.ActiveDirectoryEndpoint != null ? subscription.ActiveDirectoryEndpoint.TrimEnd('/') + '/' : null;
-            AdDomain = subscription.ActiveDirectoryTenantId;
-            ResourceClientUri = subscription.ActiveDirectoryServiceEndpointResourceId;
         }
     }
 }
