@@ -36,18 +36,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         private string serviceName;
 
         [ClassInitialize]
-        public static void SetAzureVNetConfig(TestContext context)
+        public static void ClassInitialize(TestContext context)
         {
             var vnetConfig = vmPowershellCmdlets.GetAzureVNetConfig(null);
-            if (vnetConfig.Count == 0)
+            if (vnetConfig.Count > 0)
             {
-                vmPowershellCmdlets.SetAzureVNetConfig(Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg");
+                vmPowershellCmdlets.RunPSScript("Get-AzureService | Remove-AzureService -Force");
+                vmPowershellCmdlets.RemoveAzureVNetConfig();
             }
+            vmPowershellCmdlets.SetAzureVNetConfig(Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg");
             var sites = vmPowershellCmdlets.GetAzureVNetSite(null);
             subNet = sites[0].Subnets.First().Name;
             vnetName = sites[0].Name;
-
-
         }
 
         [TestInitialize]
