@@ -120,11 +120,21 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             }
         };
 
-        public Uri GetEndpoint(AzureEnvironment.Endpoint endpoint)
+        public Uri GetEndpointAsUri(AzureEnvironment.Endpoint endpoint)
         {
             if (Endpoints.ContainsKey(endpoint))
             {
                 new Uri(Endpoints[endpoint]);
+            }
+
+            return null;
+        }
+
+        public string GetEndpoint(AzureEnvironment.Endpoint endpoint)
+        {
+            if (Endpoints.ContainsKey(endpoint))
+            {
+                return Endpoints[endpoint];
             }
 
             return null;
@@ -199,7 +209,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             {
                 realm = string.Empty;
             }
-            return GetEndpoint(Endpoint.ManagementPortalUrl) + realm;
+            return GetEndpointAsUri(Endpoint.ManagementPortalUrl) + realm;
         }
 
         /// <summary>
@@ -217,7 +227,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             {
                 realm = string.Empty;
             }
-            return GetEndpoint(Endpoint.PublishSettingsFileUrl) + realm;
+            return GetEndpointAsUri(Endpoint.PublishSettingsFileUrl) + realm;
         }
 
         public enum Endpoint

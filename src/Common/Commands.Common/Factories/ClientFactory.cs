@@ -32,7 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
         {
             SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(subscription);
-            Uri endpointUri = AzureSession.Environments[subscription.Environment].GetEndpoint(endpoint);
+            Uri endpointUri = AzureSession.Environments[subscription.Environment].GetEndpointAsUri(endpoint);
             return CreateClient<TClient>(creds, endpointUri);
         }
 

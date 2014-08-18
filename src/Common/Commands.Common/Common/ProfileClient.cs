@@ -465,7 +465,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             TenantListResult tenants;
             using (var subscriptionClient = AzureSession.ClientFactory.CreateClient<Azure.Subscriptions.SubscriptionClient>(
                 new TokenCloudCredentials(commonTenantToken.AccessToken),
-                environment.GetEndpoint(AzureEnvironment.Endpoint.ResourceManagerEndpoint)))
+                environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManagerEndpoint)))
             {
                 tenants = subscriptionClient.Tenants.List();
             }
@@ -478,7 +478,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
                 using (var subscriptionClient = AzureSession.ClientFactory.CreateClient<Azure.Subscriptions.SubscriptionClient>(
                         new TokenCloudCredentials(tenantToken.AccessToken),
-                        environment.GetEndpoint(AzureEnvironment.Endpoint.ResourceManagerEndpoint)))
+                        environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManagerEndpoint)))
                 {
                     var subscriptionListResult = subscriptionClient.Subscriptions.List();
                     foreach (var subscription in subscriptionListResult.Subscriptions)
@@ -513,7 +513,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             List<AzureSubscription> result = new List<AzureSubscription>();
             using (var subscriptionClient = AzureSession.ClientFactory.CreateClient<WindowsAzure.Subscriptions.SubscriptionClient>(
                         new TokenCloudCredentials(commonTenantToken.AccessToken),
-                        environment.GetEndpoint(AzureEnvironment.Endpoint.ServiceEndpoint)))
+                        environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint)))
             {
                 var subscriptionListResult = subscriptionClient.Subscriptions.List();
                 foreach (var subscription in subscriptionListResult.Subscriptions)

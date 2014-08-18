@@ -31,6 +31,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             AzureSession.Load(client.Profile.Environments, client.Profile.DefaultSubscription);
         }
 
+        public AzureSubscription CurrentSubscription
+        {
+            get { return AzureSession.CurrentSubscription; }
+            set { AzureSession.CurrentSubscription = value; }
+        }
+
+        public bool HasCurrentSubscription
+        {
+            get { return AzureSession.CurrentSubscription != null; }
+        }
+
         protected string CurrentPath()
         {
             // SessionState is only available within Powershell so default to

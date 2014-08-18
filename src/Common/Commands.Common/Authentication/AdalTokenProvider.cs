@@ -13,15 +13,16 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using System;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using Commands.Common.Properties;
-    using IdentityModel.Clients.ActiveDirectory;
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Threading;
-    using System.Windows.Forms;
+
 
     /// <summary>
     /// A token provider that uses ADAL to retrieve
@@ -41,18 +42,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             this.parentWindow = parentWindow;
         }
 
-        public IAccessToken GetNewToken(WindowsAzureSubscription subscription, string userId)
-        {
-            var config = new AdalConfiguration(subscription);
-            return new AdalAccessToken(AcquireToken(config, false, userId), this, config);
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment, string userId, SecureString password)
-        {
-            var config = new AdalConfiguration(environment);
-            return new AdalAccessToken(AcquireToken(config, false, userId, password), this, config);
-        }
-
         public IAccessToken GetNewToken(AdalConfiguration config, string userId, SecureString password)
         {
             return new AdalAccessToken(AcquireToken(config, false, userId, password), this, config);
@@ -61,18 +50,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         public IAccessToken GetCachedToken(AdalConfiguration config, string userId, SecureString password)
         {
             return new AdalAccessToken(AcquireToken(config, true, userId, password), this, config);
-        }
-
-        public IAccessToken GetCachedToken(WindowsAzureSubscription subscription, string userId)
-        {
-            var config = new AdalConfiguration(subscription);
-            return new AdalAccessToken(AcquireToken(config, true, userId), this, config);
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment)
-        {
-            var config = new AdalConfiguration(environment);
-            return new AdalAccessToken(AcquireToken(config, false), this, config);
         }
 
         private readonly static TimeSpan thresholdExpiration = new TimeSpan(0, 5, 0);

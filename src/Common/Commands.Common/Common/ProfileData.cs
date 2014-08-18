@@ -54,48 +54,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
         }
 
-        /// <summary>
-        /// Helper constructor for converting from in memory object
-        /// to serializable one.
-        /// </summary>
-        /// <param name="inMemoryEnvironment">Environment to serialize data from.</param>
-
-        public AzureEnvironmentData(WindowsAzureEnvironment inMemoryEnvironment)
-        {
-            Name = inMemoryEnvironment.Name;
-            PublishSettingsFileUrl = inMemoryEnvironment.PublishSettingsFileUrl;
-            ServiceEndpoint = inMemoryEnvironment.ServiceEndpoint;
-            ResourceManagerEndpoint = inMemoryEnvironment.ResourceManagerEndpoint;
-            ManagementPortalUrl = inMemoryEnvironment.ManagementPortalUrl;
-            StorageEndpointSuffix = inMemoryEnvironment.StorageEndpointSuffix;
-            AdTenantUrl = inMemoryEnvironment.ActiveDirectoryEndpoint;
-            CommonTenantId = inMemoryEnvironment.ActiveDirectoryCommonTenantId;
-            GalleryEndpoint = inMemoryEnvironment.GalleryEndpoint;
-            ActiveDirectoryServiceEndpointResourceId = inMemoryEnvironment.ActiveDirectoryServiceEndpointResourceId;
-            SqlDatabaseDnsSuffix = inMemoryEnvironment.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix;
-        }
-
-        /// <summary>
-        /// Helper method to convert to an in-memory environment object.
-        /// </summary>
-        public WindowsAzureEnvironment ToWindowsAzureEnvironment()
-        {
-            return new WindowsAzureEnvironment
-            {
-                Name = this.Name,
-                PublishSettingsFileUrl = this.PublishSettingsFileUrl,
-                ServiceEndpoint = this.ServiceEndpoint,
-                ResourceManagerEndpoint = this.ResourceManagerEndpoint,
-                ManagementPortalUrl = this.ManagementPortalUrl,
-                StorageEndpointSuffix = this.StorageEndpointSuffix,
-                ActiveDirectoryEndpoint = this.AdTenantUrl,
-                ActiveDirectoryCommonTenantId = this.CommonTenantId,
-                GalleryEndpoint = this.GalleryEndpoint,
-                ActiveDirectoryServiceEndpointResourceId = this.ActiveDirectoryServiceEndpointResourceId,
-                SqlDatabaseDnsSuffix = this.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
-            };
-        }
-
         public AzureEnvironment ToAzureEnvironment()
         {
             return new AzureEnvironment
@@ -162,58 +120,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// </summary>
         public AzureSubscriptionData()
         {
-        }
-
-        /// <summary>
-        /// Helper constructor to copy data from in memory to serialization format.
-        /// </summary>
-        /// <param name="inMemorySubscription">The subscription to serialize</param>
-        public AzureSubscriptionData(WindowsAzureSubscription inMemorySubscription)
-        {
-            Name = inMemorySubscription.SubscriptionName;
-            SubscriptionId = inMemorySubscription.SubscriptionId;
-            ManagementEndpoint = inMemorySubscription.ServiceEndpoint != null ? inMemorySubscription.ServiceEndpoint.ToString() : null;
-            ResourceManagerEndpoint = inMemorySubscription.ResourceManagerEndpoint != null ? inMemorySubscription.ResourceManagerEndpoint.ToString() : null;
-            ActiveDirectoryEndpoint = inMemorySubscription.ActiveDirectoryEndpoint;
-            ActiveDirectoryTenantId = inMemorySubscription.ActiveDirectoryTenantId;
-            ActiveDirectoryUserId = inMemorySubscription.ActiveDirectoryUserId;
-            ActiveDirectoryServiceEndpointResourceId = inMemorySubscription.ActiveDirectoryServiceEndpointResourceId;
-            IsDefault = inMemorySubscription.IsDefault;
-            ManagementCertificate = inMemorySubscription.Certificate != null ? inMemorySubscription.Certificate.Thumbprint : null;
-            CloudStorageAccount = inMemorySubscription.CurrentStorageAccountName;
-            RegisteredResourceProviders = inMemorySubscription.RegisteredResourceProviders;
-            GalleryEndpoint = inMemorySubscription.GalleryEndpoint != null ? inMemorySubscription.GalleryEndpoint.ToString() : null;
-            SqlDatabaseDnsSuffix = inMemorySubscription.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix;
-        }
-
-        /// <summary>
-        /// Helper method to convert to an in memory subscription object.
-        /// </summary>
-        /// <returns>The in memory subscription</returns>
-        public WindowsAzureSubscription ToWindowsAzureSubscription()
-        {
-            var result = new WindowsAzureSubscription
-            {
-                SubscriptionName = this.Name,
-                SubscriptionId = this.SubscriptionId,
-                ServiceEndpoint = !string.IsNullOrEmpty(ManagementEndpoint) ? new Uri(ManagementEndpoint) : null,
-                ResourceManagerEndpoint = !string.IsNullOrEmpty(ResourceManagerEndpoint) ? new Uri(ResourceManagerEndpoint) : null,
-                ActiveDirectoryEndpoint = ActiveDirectoryEndpoint,
-                ActiveDirectoryTenantId = ActiveDirectoryTenantId,
-                ActiveDirectoryUserId = ActiveDirectoryUserId,
-                ActiveDirectoryServiceEndpointResourceId = ActiveDirectoryServiceEndpointResourceId,
-                IsDefault = this.IsDefault,
-                Certificate = !string.IsNullOrEmpty(ManagementCertificate) ? WindowsAzureCertificate.FromThumbprint(ManagementCertificate) : null,
-                CurrentStorageAccountName = CloudStorageAccount,
-                GalleryEndpoint = !string.IsNullOrEmpty(GalleryEndpoint) ? new Uri(GalleryEndpoint) : null,
-                SqlDatabaseDnsSuffix = SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
-            };
-            RegisteredResourceProviders = RegisteredResourceProviders ?? new string[0];
-            foreach (var resource in RegisteredResourceProviders)
-            {
-                result.RegisteredResourceProviders.Add(resource);
-            }
-            return result;
         }
 
         public AzureSubscription ToAzureSubscription(List<AzureEnvironment> envs)
