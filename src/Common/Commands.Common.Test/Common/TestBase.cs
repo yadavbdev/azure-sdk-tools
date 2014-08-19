@@ -12,7 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
@@ -28,6 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         public TestBase()
         {
             TestingTracingInterceptor.AddToContext();
+            ProfileClient.DataStore = new MockDataStore();
         }
         /// <summary>
         /// Gets or sets a reference to the TestContext used for interacting
