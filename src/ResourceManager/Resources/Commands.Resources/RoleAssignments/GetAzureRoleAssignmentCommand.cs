@@ -117,6 +117,8 @@ namespace Microsoft.Azure.Commands.Resources
         public string ParentResource { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
+            HelpMessage = "Role to assign the principals with.")]
         [ValidateNotNullOrEmpty]
         public string RoleDefinitionName { get; set; }
 

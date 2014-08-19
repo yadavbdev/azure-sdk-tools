@@ -26,17 +26,6 @@ namespace Microsoft.Azure.Commands.Resources
     [Cmdlet(VerbsCommon.New, "AzureRoleAssignment", DefaultParameterSetName = ParameterSet.DefaultScopeWithEmail), OutputType(typeof(PSRoleAssignment))]
     public class NewAzureRoleAssignmentCommand : ResourcesBaseCmdlet
     {
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithDisplayName,
-            HelpMessage = "The user or group display name.")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithDisplayName,
-            HelpMessage = "The user or group display name.")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ScopeWithDisplayName,
-            HelpMessage = "The user or group display name.")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DefaultScopeWithDisplayName,
-            HelpMessage = "The user or group display name.")]
-        [ValidateNotNullOrEmpty]
-        public string DisplayName { get; set; }
-
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithObjectId,
             HelpMessage = "The user or group object id.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithObjectId,
@@ -61,21 +50,17 @@ namespace Microsoft.Azure.Commands.Resources
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithDisplayName,
             HelpMessage = "Resource group to assign the role to.")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithDisplayName,
-            HelpMessage = "Resource group to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithObjectId,
             HelpMessage = "Resource group to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithObjectId,
             HelpMessage = "Resource group to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithEmail,
-    HelpMessage = "Resource group to assign the role to.")]
+            HelpMessage = "Resource group to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithEmail,
             HelpMessage = "Resource group to assign the role to.")]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithDisplayName,
-            HelpMessage = "Resource to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithObjectId,
             HelpMessage = "Resource to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithEmail,
@@ -83,8 +68,6 @@ namespace Microsoft.Azure.Commands.Resources
         [ValidateNotNullOrEmpty]
         public string ResourceName { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithDisplayName,
-            HelpMessage = "Type of the resource to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithObjectId,
             HelpMessage = "Type of the resource to assign the role to.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithEmail,
@@ -92,8 +75,6 @@ namespace Microsoft.Azure.Commands.Resources
         [ValidateNotNullOrEmpty]
         public string ResourceType { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithDisplayName,
-            HelpMessage = "Parent resource of the resource to assign the role to, if there is any.")]
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithObjectId,
             HelpMessage = "Parent resource of the resource to assign the role to, if there is any.")]
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithEmail,
@@ -105,8 +86,6 @@ namespace Microsoft.Azure.Commands.Resources
         [ValidateNotNullOrEmpty]
         public string RoleDefinitionName { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ScopeWithDisplayName,
-            HelpMessage = "Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with \"/subscriptions/<id>\" or the part after that. If it's latter, the current subscription id will be used.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ScopeWithObjectId,
             HelpMessage = "Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with \"/subscriptions/<id>\" or the part after that. If it's latter, the current subscription id will be used.")]
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ScopeWithEmail,
@@ -123,7 +102,6 @@ namespace Microsoft.Azure.Commands.Resources
                 RoleDefinition = RoleDefinitionName,
                 FilterOptions = new ADObjectFilterOptions
                 {
-                    DisplayName = DisplayName,
                     Email = Email,
                     Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 },
