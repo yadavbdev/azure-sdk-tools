@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
@@ -35,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
     [TestClass]
     public class CloudServiceClientTests : TestBase
     {
-        private WindowsAzureSubscription subscription;
+        private AzureSubscription subscription;
 
         private ClientMocks clientMocks;
 
@@ -103,13 +105,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                     });
                 });
 
-            subscription = new WindowsAzureSubscription
+            subscription = new AzureSubscription
             {
-                Certificate = It.IsAny<X509Certificate2>(),
-                IsDefault = true,
-                ServiceEndpoint = new Uri("https://www.azure.com"),
-                SubscriptionId = Guid.NewGuid().ToString(),
-                SubscriptionName = Data.Subscription1,
+                Properties = new Dictionary<AzureSubscription.Property,string> {{AzureSubscription.Property.Default, "True"}},
+                Id = Guid.NewGuid(),
+                Name = Data.Subscription1,
             };
 
             cloudBlobUtilityMock = new Mock<CloudBlobUtility>();
@@ -119,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 It.IsAny<string>(),
                 It.IsAny<BlobRequestOptions>())).Returns(new Uri("http://www.packageurl.azure.com"));
 
-            clientMocks = new ClientMocks(subscription.SubscriptionId);
+            clientMocks = new ClientMocks(subscription.Id);
 
             services.InitializeMocks(clientMocks.ComputeManagementClientMock);
             storageService.InitializeMocks(clientMocks.StorageManagementClientMock);
@@ -371,13 +371,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 files.CreateAzureSdkDirectoryAndImportPublishSettings();
                 var cloudServiceProject = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
                 cloudServiceProject.AddWebRole(Data.NodeWebRoleScaffoldingPath);
-                subscription.CurrentStorageAccountName = storageName;
+                subscription.Properties[AzureSubscription.Property.CloudStorageAccount] = storageName;
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService(location: "West US"));
 
                 cloudBlobUtilityMock.Verify(f => f.UploadPackageToBlob(
                     clientMocks.StorageManagementClientMock.Object,
-                    subscription.CurrentStorageAccountName,
+                    subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount),
                     It.IsAny<string>(),
                     It.IsAny<BlobRequestOptions>()), Times.Once());
             }           

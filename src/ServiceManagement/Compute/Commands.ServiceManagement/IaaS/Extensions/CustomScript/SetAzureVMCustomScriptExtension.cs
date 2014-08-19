@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
     using Microsoft.WindowsAzure.Storage;
@@ -175,7 +178,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             if (string.Equals(this.ParameterSetName, SetCustomScriptExtensionByContainerBlobsParamSetName))
             {
                 this.StorageEndpointSuffix = string.IsNullOrEmpty(this.StorageEndpointSuffix) ?
-                    WindowsAzureProfile.Instance.CurrentEnvironment.StorageEndpointSuffix : this.StorageEndpointSuffix;
+                    AzureSession.CurrentEnvironment.GetEndpoint(AzureEnvironment.Endpoint.StorageEndpointSuffix) : this.StorageEndpointSuffix;
                 var sName = string.IsNullOrEmpty(this.StorageAccountName) ? GetStorageName() : this.StorageAccountName;
                 var sKey = string.IsNullOrEmpty(this.StorageAccountKey) ? GetStorageKey(sName) : this.StorageAccountKey;
 
@@ -200,7 +203,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
         protected string GetStorageName()
         {
-            return CurrentSubscription.CurrentStorageAccountName;
+            return CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
         }
 
         protected string GetStorageKey(string storageName)

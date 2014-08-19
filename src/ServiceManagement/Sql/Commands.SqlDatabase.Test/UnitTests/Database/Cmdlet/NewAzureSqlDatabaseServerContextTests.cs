@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
     using Commands.Test.Utilities.Common;
@@ -161,8 +163,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         [TestMethod]
         public void NewAzureSqlDatabaseServerContextWithCertAuth()
         {
-            WindowsAzureSubscription subscription = UnitTestHelper.CreateUnitTestSubscription();
-            subscription.ServiceEndpoint = new Uri(MockHttpServer.DefaultHttpsServerPrefixUri.AbsoluteUri);
+            AzureSubscription subscription = UnitTestHelper.CreateUnitTestSubscription();
 
             NewAzureSqlDatabaseServerContext serverContext = new NewAzureSqlDatabaseServerContext();
             ServerDataServiceCertAuth service = serverContext.GetServerDataServiceByCertAuth(

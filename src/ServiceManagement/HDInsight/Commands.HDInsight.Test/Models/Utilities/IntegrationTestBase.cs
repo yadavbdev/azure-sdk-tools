@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
     using Commands.Utilities.Common;
@@ -61,12 +63,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
             return TestManager.GetAllCredentials();
         }
 
-        public static WindowsAzureSubscription GetCurrentSubscription()
+        public static AzureSubscription GetCurrentSubscription()
         {
-            return new WindowsAzureSubscription()
+            return new AzureSubscription()
             {
-                Certificate = new X509Certificate2(Convert.FromBase64String(TestCredentials.Certificate), string.Empty),
-                SubscriptionId = IntegrationTestBase.TestCredentials.SubscriptionId.ToString()
+                Id = IntegrationTestBase.TestCredentials.SubscriptionId
             };
         }
 

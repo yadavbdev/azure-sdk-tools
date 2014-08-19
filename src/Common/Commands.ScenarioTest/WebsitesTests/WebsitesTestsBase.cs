@@ -23,7 +23,7 @@ using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
 {
-    public abstract class WebsitesTestsBase : IDisposable
+    public abstract class WebsitesTestsBase
     {
         private EnvironmentSetupHelper helper;
 
@@ -93,11 +93,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         protected ManagementClient GetManagementClient()
         {
             return TestBase.GetServiceClient<ManagementClient>(new RDFETestEnvironmentFactory());
-        }
-
-        public void Dispose()
-        {
-            helper.Dispose();
         }
     }
 }

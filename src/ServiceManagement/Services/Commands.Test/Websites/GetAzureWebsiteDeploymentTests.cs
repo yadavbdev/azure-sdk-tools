@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
@@ -72,8 +75,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId }
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(subscriptionId) }, null);
+
 
             getAzureWebsiteDeploymentCommand.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
@@ -126,8 +130,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 WebsitesClient = clientMock.Object,
                 Details = true,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId }
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(subscriptionId) }, null);
 
             getAzureWebsiteDeploymentCommand.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
@@ -179,9 +183,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 Slot = slot
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(subscriptionId) }, null);
 
             getAzureWebsiteDeploymentCommand.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);

@@ -13,6 +13,9 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
     using AzureTools;
@@ -50,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 
         internal ComputeManagementClient ComputeClient { get; set; }
 
-        public WindowsAzureSubscription Subscription { get; set; }
+        public AzureSubscription Subscription { get; set; }
 
         public Action<string> DebugStream { get; set; }
 
@@ -497,7 +500,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             // If there's no storage service provided, try using the default one
             if (string.IsNullOrEmpty(storageServiceName))
             {
-                storageServiceName = Subscription.CurrentStorageAccountName;
+                storageServiceName = Subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
             }
 
             ServiceSettings serviceSettings = ServiceSettings.LoadDefault(
@@ -505,7 +508,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
                 slot,
                 location,
                 affinityGroup,
-                Subscription.SubscriptionName,
+                Subscription.Name,
                 storageServiceName,
                 name,
                 cloudServiceProject.ServiceName,
@@ -539,7 +542,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         /// <param name="verboseStream">Action used to log detailed client progress</param>
         /// <param name="warningStream">Action used to log warning messages</param>
         public CloudServiceClient(
-            WindowsAzureSubscription subscription,
+            AzureSubscription subscription,
             string currentLocation = null,
             Action<string> debugStream = null,
             Action<string> verboseStream = null,
@@ -549,9 +552,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             Subscription = subscription;
             CloudBlobUtility = new CloudBlobUtility();
 
-            ManagementClient = subscription.CreateClient<ManagementClient>();
-            StorageClient = subscription.CreateClient<StorageManagementClient>();
-            ComputeClient = subscription.CreateClient<ComputeManagementClient>();
+            ManagementClient = AzureSession.ClientFactory.CreateClient<ManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
+            StorageClient = AzureSession.ClientFactory.CreateClient<StorageManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
+            ComputeClient = AzureSession.ClientFactory.CreateClient<ComputeManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
 
         private CloudServiceClient(string currentLocation, Action<string> debugStream, Action<string> verboseStream,
@@ -564,7 +567,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         }
 
         internal CloudServiceClient(
-            WindowsAzureSubscription subscription,
+            AzureSubscription subscription,
             ManagementClient managementClient,
             StorageManagementClient storageManagementClient,
             ComputeManagementClient computeManagementClient)
@@ -712,7 +715,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             WriteVerboseWithTimestamp(
                     Resources.PublishPreparingDeploymentMessage,
                     context.ServiceName,
-                    Subscription.SubscriptionId);
+                    Subscription.Id);
             UpdateCacheWorkerRolesCloudConfiguration(context);
 
             // Create cloud package

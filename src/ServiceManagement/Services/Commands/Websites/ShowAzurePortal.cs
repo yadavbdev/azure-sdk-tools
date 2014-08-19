@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -52,17 +55,17 @@ namespace Microsoft.WindowsAzure.Commands.Websites
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            WindowsAzureEnvironment environment;
+            AzureEnvironment environment;
             if (string.IsNullOrEmpty(Environment))
             {
-                environment = WindowsAzureProfile.Instance.CurrentEnvironment;
+                environment = AzureSession.CurrentEnvironment;
             }
             else
             {
-                environment = WindowsAzureProfile.Instance.Environments[Environment];
+                environment = profileClient.Profile.Environments[Environment];
             }
 
-            string managementPortalUrl = environment.ManagementPortalUrlWithRealm(Realm);
+            string managementPortalUrl = environment.GetManagementPortalUrlWithRealm(Realm);
 
             if (!string.IsNullOrEmpty(Name))
             {

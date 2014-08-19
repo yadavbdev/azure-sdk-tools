@@ -56,9 +56,29 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             return File.Exists(path);
         }
 
+        public void DeleteFile(string path)
+        {
+            File.Delete(path);
+        }
+
+        public void EmptyDirectory(string dirPath)
+        {
+            foreach (var filePath in Directory.GetFiles(dirPath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
         public X509Certificate2 GetCertificate(string thumbprint)
         {
-            return GeneralUtilities.GetCertificateFromStore(thumbprint);
+            if (thumbprint == null)
+            {
+                return null;
+            }
+            else
+            {
+                return GeneralUtilities.GetCertificateFromStore(thumbprint);
+            }
         }
 
         public void AddCertificate(X509Certificate2 cert)

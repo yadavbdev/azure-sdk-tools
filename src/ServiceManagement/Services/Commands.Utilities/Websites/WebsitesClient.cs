@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
     using CloudService;
@@ -52,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 
         private readonly CloudServiceClient cloudServiceClient;
 
-        private readonly WindowsAzureSubscription subscription;
+        private readonly AzureSubscription subscription;
 
         public static string SlotFormat = "{0}({1})";
 
@@ -65,11 +68,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="subscription">Subscription containing websites to manipulate</param>
         /// <param name="logger">The logger action</param>
-        public WebsitesClient(WindowsAzureSubscription subscription, Action<string> logger)
+        public WebsitesClient(AzureSubscription subscription, Action<string> logger)
         {
             Logger = logger;
             cloudServiceClient = new CloudServiceClient(subscription, debugStream: logger);
-            WebsiteManagementClient = subscription.CreateClient<WebSiteManagementClient>();
+            WebsiteManagementClient = AzureSession.ClientFactory.CreateClient<WebSiteManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
             this.subscription = subscription;
         }
 
@@ -213,7 +216,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         {
             Site website = GetWebsite(websiteName);
             Uri endpointUrl = new Uri("https://" + website.EnabledHostNames.First(url => url.Contains(".scm.")));
-            return subscription.CreateClient<WebSiteExtensionsClient>(false, new object[] { websiteName,
+            return AzureSession.ClientFactory.CreateClient<WebSiteExtensionsClient>(false, new object[] { websiteName,
                 GetWebSiteExtensionsCredentials(websiteName), endpointUrl });
         }
 

@@ -33,6 +33,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Interfaces
 
         bool FileExists(string path);
 
+        void DeleteFile(string path);
+
+        void EmptyDirectory(string dirPath);
+
         X509Certificate2 GetCertificate(string thumbprint);
 
         void AddCertificate(X509Certificate2 cert);

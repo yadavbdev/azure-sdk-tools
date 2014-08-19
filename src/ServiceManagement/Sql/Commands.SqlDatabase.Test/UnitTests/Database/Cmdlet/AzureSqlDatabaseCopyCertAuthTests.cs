@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -36,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
 
         private PowerShell PowerShell { get; set; }
 
-        WindowsAzureSubscription Subscription { get; set; }
+        AzureSubscription Subscription { get; set; }
 
         private AsyncExceptionManager ExceptionManager { get; set; }
         private MockHttpServer MockHttpServer { get; set; }

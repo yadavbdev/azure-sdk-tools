@@ -12,6 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
     using Commands.Utilities.CloudService;
@@ -50,14 +54,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             packagePath = service.Paths.CloudPackage;
             configPath = service.Paths.CloudConfiguration;
             settings = ServiceSettingsTestData.Instance.Data[ServiceSettingsState.Default];
-            WindowsAzureProfile.Instance = new WindowsAzureProfile(new Mock<IProfileStore>().Object);
-            WindowsAzureProfile.Instance.ImportPublishSettings(Data.ValidPublishSettings.First());
+            ProfileClient.DataStore = new MockDataStore();
+            ProfileClient client = new ProfileClient();
+            client.ImportPublishSettings(Data.ValidPublishSettings.First());
         }
 
         [TestCleanup()]
         public void TestCleanup()
         {
-            WindowsAzureProfile.ResetInstance();
+            ProfileClient.DataStore = new MockDataStore();
             if (Directory.Exists(Data.AzureSdkAppDir))
             {
                 new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(Data.AzureSdkAppDir);

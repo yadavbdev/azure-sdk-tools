@@ -24,7 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     /// <summary>
     /// This class provides the representation of
     /// data loaded and saved into data files
-    /// for WindowsAzureProfile.
+    /// for AzureProfile.
     /// </summary>
     [DataContract]
     public class ProfileData

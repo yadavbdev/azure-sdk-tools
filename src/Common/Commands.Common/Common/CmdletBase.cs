@@ -24,18 +24,24 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     public abstract class CmdletBase : PSCmdlet
     {
         private readonly RecordingTracingInterceptor httpTracingInterceptor = new RecordingTracingInterceptor();
+        protected ProfileClient profileClient;
 
         public CmdletBase()
         {
-            ProfileClient client = new ProfileClient();
-            AzureSession.Load(client.Profile.Environments, client.Profile.DefaultSubscription);
+            profileClient = new ProfileClient();
+            AzureSession.Load(profileClient.Profile.Environments, profileClient.Profile.DefaultSubscription);
         }
 
         public AzureSubscription CurrentSubscription
         {
             get { return AzureSession.CurrentSubscription; }
-            set { AzureSession.CurrentSubscription = value; }
         }
+
+        public AzureEnvironment CurrentEnvironment
+        {
+            get { return AzureSession.CurrentEnvironment; }
+        }
+
 
         public bool HasCurrentSubscription
         {

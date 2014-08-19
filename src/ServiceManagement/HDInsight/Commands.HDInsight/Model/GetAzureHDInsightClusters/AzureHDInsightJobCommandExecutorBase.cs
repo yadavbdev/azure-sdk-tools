@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
     using BaseInterfaces;
@@ -45,7 +47,8 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         {
             cluster.ArgumentNotNull("ClusterEndpoint");
             IJobSubmissionClient client = null;
-            var clientCredential = this.GetJobSubmissionClientCredentials(this.CurrentSubscription, cluster);
+            ProfileClient profileClient = new ProfileClient();
+            var clientCredential = this.GetJobSubmissionClientCredentials(this.CurrentSubscription, profileClient.GetAzureEnvironmentOrDefault(this.CurrentSubscription.Name), cluster);
             if (clientCredential != null)
             {
                 client = ServiceLocator.Instance.Locate<IAzureHDInsightJobSubmissionClientFactory>().Create(clientCredential);

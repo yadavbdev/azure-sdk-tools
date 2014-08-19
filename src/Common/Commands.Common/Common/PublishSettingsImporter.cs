@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
     /// <summary>
     /// Class that handles loading publishsettings files
-    /// and turning them into WindowsAzureSubscription objects.
+    /// and turning them into AzureSubscription objects.
     /// </summary>
     public static class PublishSettingsImporter
     {

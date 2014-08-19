@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Commands.Utilities.Common;
@@ -198,7 +201,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             try
             {
                 // Get the current subscription data.
-                WindowsAzureSubscription subscription = WindowsAzureProfile.Instance.CurrentSubscription;
+                AzureSubscription subscription = AzureSession.CurrentSubscription;
 
                 // Create a temporary context
                 ServerDataServiceCertAuth context =

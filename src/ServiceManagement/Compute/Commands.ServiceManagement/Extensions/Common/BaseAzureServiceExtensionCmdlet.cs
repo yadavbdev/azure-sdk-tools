@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
         {
             string serviceName;
             ServiceSettings settings = CommonUtilities.GetDefaultSettings(CommonUtilities.TryGetServiceRootPath(CurrentPath()),
-                ServiceName, null, null, null, null, CurrentSubscription.SubscriptionId, out serviceName);
+                ServiceName, null, null, null, null, CurrentSubscription.Id.ToString(), out serviceName);
 
             if (string.IsNullOrEmpty(serviceName))
             {

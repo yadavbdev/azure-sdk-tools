@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
 {
     using Commands.Utilities.Common;
@@ -34,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
     {
         private string subscriptionId;
 
-        public WindowsAzureSubscription Subscription { get; set; }
+        public AzureSubscription Subscription { get; set; }
 
         public ServiceBusManagementClient ServiceBusClient { get; internal set; }
 
@@ -286,12 +289,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
         /// Creates new instance from ServiceBusClientExtensions
         /// </summary>
         /// <param name="subscription"></param>
-        /// <param name="logger">The logger action</param>
-        public ServiceBusClientExtensions(WindowsAzureSubscription subscription)
+        public ServiceBusClientExtensions(AzureSubscription subscription)
         {
-            subscriptionId = subscription.SubscriptionId;
+            subscriptionId = subscription.Id.ToString();
             Subscription = subscription;
-            ServiceBusClient = Subscription.CreateClient<ServiceBusManagementClient>();
+            ServiceBusClient = AzureSession.ClientFactory.CreateClient<ServiceBusManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
 
         /// <summary>
@@ -314,7 +316,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
         /// Gets the connection string with the given name for the entity.
         /// </summary>
         /// <param name="namespaceName">The namespace name</param>
+        /// <param name="entityType"></param>
         /// <param name="keyName">The connection string key name</param>
+        /// <param name="entityName"></param>
         /// <returns>The connection string value</returns>
         public virtual string GetConnectionString(
             string namespaceName,
@@ -379,35 +383,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
                 .ToList();
 
         }
-
-        /// <summary>
-        /// Creates new Windows authorization rule for Service Bus. This works on Windows Azure Pack on prim only.
-        /// </summary>
-        /// <param name="namespaceName">The service bus namespace name</param>
-        /// <param name="ruleName">The authorization rule name</param>
-        /// <param name="username">The user principle name</param>
-        /// <param name="permissions">Set of permissions given to the rule</param>
-        /// <returns>The created Windows authorization rule</returns>
-        /// Comment for now we will need this part in the future when adding Katal Authentication Rules.
-        //public virtual AllowRule CreateWindowsAuthorization(
-        //    string namespaceName,
-        //    string ruleName,
-        //    string username,
-        //    params AccessRights[] permissions)
-        //{
-        //    AllowRule rule = new AllowRule(
-        //        string.Empty,
-        //        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn",
-        //        username,
-        //        permissions);
-
-        //    using (HttpClient client = CreateServiceBusHttpClient())
-        //    {
-        //        rule = client.PostJson(UriElement.GetNamespaceAuthorizationRulesPath(namespaceName), rule, Logger);
-        //    }
-
-        //    return rule;
-        //}
 
         /// <summary>
         /// Creates shared access signature authorization for the service bus namespace. This authorization works on

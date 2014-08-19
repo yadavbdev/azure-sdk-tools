@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
     using Commands.Utilities.CloudService;
@@ -286,11 +289,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(string.IsNullOrEmpty(AzureSdkPath));
 
             AzureSdkPath = CreateDirectory("AzureSdk");
-            var profile = new WindowsAzureProfile(new PowershellProfileStore(AzureSdkPath, "WindowsAzureProfile.xml"));
-            profile.ImportPublishSettings(publishSettingsPath);
-            WindowsAzureProfile.Instance = profile;
+            ProfileClient client = new ProfileClient(Path.Combine(AzureSdkPath, "AzureProfile.xml"));
+            client.ImportPublishSettings(publishSettingsPath);
 
-            GlobalPathInfo.GlobalSettingsDirectory = AzureSdkPath;
+            AzureSession.Load(client.Profile.Environments, client.Profile.DefaultSubscription);
 
             return AzureSdkPath;
         }

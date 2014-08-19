@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
     using Commands.Utilities.Common;
@@ -237,7 +239,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             //Storage Context is empty and have already set the current storage account in subscription
             if (Context == null && HasCurrentSubscription && CurrentSubscription != null &&
-                !String.IsNullOrEmpty(CurrentSubscription.CurrentStorageAccountName))
+                !String.IsNullOrEmpty(CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount)))
             {
                 return true;
             }
@@ -250,7 +252,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <summary>
         /// Output azure storage object with storage context
         /// </summary>
-        /// <param name="item">An enumerable collection fo azurestorage object</param>
+        /// <param name="itemList">An enumerable collection fo azurestorage object</param>
         internal void WriteObjectWithStorageContext(IEnumerable<AzureStorageBase> itemList)
         {
             if (null == itemList)
@@ -302,7 +304,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <returns>A storage account</returns>
         private CloudStorageAccount GetStorageAccountFromSubscription()
         {
-            string CurrentStorageAccountName = CurrentSubscription.CurrentStorageAccountName;
+            string CurrentStorageAccountName = CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
 
             if (string.IsNullOrEmpty(CurrentStorageAccountName))
             {
@@ -310,7 +312,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             }
             else
             {
-                WriteDebugLog(String.Format(Resources.UseCurrentStorageAccountFromSubscription, CurrentStorageAccountName, CurrentSubscription.SubscriptionName));
+                WriteDebugLog(String.Format(Resources.UseCurrentStorageAccountFromSubscription, CurrentStorageAccountName, CurrentSubscription.Name));
 
                 try
                 {
@@ -324,7 +326,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                     if (e.IsNotFoundException())
                     {
                         //Repack the 404 error
-                        string errorMessage = String.Format(Resources.CurrentStorageAccountNotFoundOnAzure, CurrentStorageAccountName, CurrentSubscription.SubscriptionName);
+                        string errorMessage = String.Format(Resources.CurrentStorageAccountNotFoundOnAzure, CurrentStorageAccountName, CurrentSubscription.Name);
                         ServiceModel.CommunicationException exception = new ServiceModel.CommunicationException(errorMessage, e);
                         throw exception;
                     }

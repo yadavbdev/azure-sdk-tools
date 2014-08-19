@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
     using Extensions;
@@ -109,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
             AssertNoPersistenVmRoleExistsInDeployment(PVM.DeploymentSlotType.Production);
             AssertNoPersistenVmRoleExistsInDeployment(PVM.DeploymentSlotType.Staging);
 
-            var storageName = CurrentSubscription.CurrentStorageAccountName;
+            var storageName = CurrentSubscription.GetProperty(Commands.Common.Models.AzureSubscription.Property.CloudStorageAccount);
 
             Uri packageUrl;
             if (this.Package.StartsWith(Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) ||
@@ -262,7 +264,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
                 this.Label = this.Name;
             }
 
-            if (string.IsNullOrEmpty(this.CurrentSubscription.CurrentStorageAccountName))
+            if (string.IsNullOrEmpty(this.CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount)))
             {
                 throw new ArgumentException(Resources.CurrentStorageAccountIsNotSet);
             }

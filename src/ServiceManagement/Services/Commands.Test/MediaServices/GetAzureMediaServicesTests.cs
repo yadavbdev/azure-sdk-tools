@@ -11,6 +11,8 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.MediaServices;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
@@ -68,11 +70,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             {
                 CommandRuntime = new MockCommandRuntime(),
                 MediaServicesClient = clientMock.Object,
-                CurrentSubscription = new WindowsAzureSubscription
-                {
-                    SubscriptionId = SubscriptionId
-                }
             };
+
+            AzureSession.SetCurrentSubscription(new AzureSubscription {Id = new Guid(SubscriptionId)}, null);
 
             getAzureMediaServiceCommand.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
@@ -103,12 +103,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             {
                 CommandRuntime = new MockCommandRuntime(),
                 MediaServicesClient = clientMock.Object,
-                CurrentSubscription = new WindowsAzureSubscription
-                {
-                    SubscriptionId = SubscriptionId
-                },
                 Name = expectedName
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(SubscriptionId) }, null);
             getAzureMediaServiceCommand.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
             MediaServiceAccountDetails accounts = (MediaServiceAccountDetails)((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
@@ -144,14 +141,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             {
                 CommandRuntime = new MockCommandRuntime(),
                 MediaServicesClient = clientMock.Object,
-                CurrentSubscription = new WindowsAzureSubscription
-                {
-                    SubscriptionId = SubscriptionId
-                },
                 Name = mediaServicesAccountName
             };
 
-
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(SubscriptionId) }, null);
             getAzureMediaServiceCommand.ExecuteCmdlet();
             Assert.AreEqual(0, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
         }

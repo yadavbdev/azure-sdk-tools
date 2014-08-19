@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -50,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
             using (PowerShell powershell = PowerShell.Create())
             {
                 // Setup the subscription used for the test
-                WindowsAzureSubscription subscription =
+                AzureSubscription subscription =
                     UnitTestHelper.SetupUnitTestSubscription(powershell);
 
                 powershell.Runspace.SessionStateProxy.SetVariable(
@@ -454,7 +456,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
             using (PowerShell powershell = PowerShell.Create())
             {
                 // Setup the subscription used for the test
-                WindowsAzureSubscription subscription =
+                AzureSubscription subscription =
                     UnitTestHelper.SetupUnitTestSubscription(powershell);
 
                 powershell.Runspace.SessionStateProxy.SetVariable(
@@ -690,7 +692,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
             using (PowerShell powershell = PowerShell.Create())
             {
                 // Setup the subscription used for the test
-                WindowsAzureSubscription subscription =
+                AzureSubscription subscription =
                     UnitTestHelper.SetupUnitTestSubscription(powershell);
 
                 powershell.Runspace.SessionStateProxy.SetVariable(

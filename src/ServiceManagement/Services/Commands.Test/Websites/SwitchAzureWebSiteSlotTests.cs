@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
@@ -53,9 +56,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 CommandRuntime = new MockCommandRuntime(),
                 WebsitesClient = mockClient.Object,
                 Name = "website1",
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 Force = true
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
 
             // Switch existing website
             switchAzureWebsiteCommand.ExecuteCmdlet();

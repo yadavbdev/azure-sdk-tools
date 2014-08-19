@@ -15,6 +15,8 @@
 using Microsoft.Azure.Gallery;
 using Microsoft.Azure.Gallery.Models;
 using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Common.OData;
 using Newtonsoft.Json;
@@ -35,8 +37,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
     {
         public IGalleryClient GalleryClient { get; set; }
 
-        public GalleryTemplatesClient(WindowsAzureSubscription subscription)
-            : this(subscription.CreateGalleryClientFromGalleryEndpoint<GalleryClient>())
+        public GalleryTemplatesClient(AzureSubscription subscription)
+            : this(AzureSession.ClientFactory.CreateClient<GalleryClient>(subscription, AzureEnvironment.Endpoint.GalleryEndpoint))
         {
 
         }

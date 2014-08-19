@@ -15,6 +15,8 @@
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
 using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Storage;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events;
@@ -54,12 +56,12 @@ namespace Microsoft.Azure.Commands.Resources.Models
         /// Creates new ResourceManagementClient
         /// </summary>
         /// <param name="subscription">Subscription containing resources to manipulate</param>
-        public ResourcesClient(WindowsAzureSubscription subscription)
+        public ResourcesClient(AzureSubscription subscription)
             : this(
-                subscription.CreateClientFromResourceManagerEndpoint<ResourceManagementClient>(),
-                new StorageClientWrapper(subscription.CreateClient<StorageManagementClient>()),
+                AzureSession.ClientFactory.CreateClient<ResourceManagementClient>(subscription, AzureEnvironment.Endpoint.ResourceManagerEndpoint),
+                new StorageClientWrapper(AzureSession.ClientFactory.CreateClient<StorageManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint)),
                 new GalleryTemplatesClient(subscription),
-                subscription.CreateClientFromResourceManagerEndpoint<EventsClient>())
+                AzureSession.ClientFactory.CreateClient<EventsClient>(subscription, AzureEnvironment.Endpoint.ResourceManagerEndpoint))
         {
 
         }
@@ -174,11 +176,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         private string GetStorageAccountName(string storageAccountName)
         {
-            string currentStorageName = null;
-            if (WindowsAzureProfile.Instance != null && WindowsAzureProfile.Instance.CurrentSubscription != null)
-            {
-                currentStorageName = WindowsAzureProfile.Instance.CurrentSubscription.CurrentStorageAccountName;
-            }
+            string currentStorageName = AzureSession.CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
 
             string storageName = string.IsNullOrEmpty(storageAccountName) ? currentStorageName : storageAccountName;
 

@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.Azure.Commands.Automation.Common
 {
     using Microsoft.Azure.Commands.Automation.Model;
@@ -36,15 +39,14 @@ namespace Microsoft.Azure.Commands.Automation.Common
         {
         }
 
-        public AutomationClient(WindowsAzureSubscription subscription)
-            : this(
-                subscription,
-                subscription.CreateClient<AutomationManagementClient>())
+        public AutomationClient(AzureSubscription subscription)
+            : this(subscription, 
+            AzureSession.ClientFactory.CreateClient<AutomationManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint))
         {
         }
 
         public AutomationClient(
-            WindowsAzureSubscription subscription,
+            AzureSubscription subscription,
             IAutomationManagementClient automationManagementClient)
         {
             Requires.Argument("automationManagementClient", automationManagementClient).NotNull();
@@ -53,7 +55,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             this.automationManagementClient = automationManagementClient;
         }
 
-        public WindowsAzureSubscription Subscription { get; private set; }
+        public AzureSubscription Subscription { get; private set; }
 
         #region Account Operations
 

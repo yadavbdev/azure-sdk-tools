@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
     using Management.Storage;
@@ -24,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
     public class StorageCredentialsFactory
     {
         private StorageManagementClient client;
-        private WindowsAzureSubscription currentSubscription;
+        private AzureSubscription currentSubscription;
 
         public static bool IsChannelRequired(Uri destination)
         {
@@ -35,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
         {
         }
 
-        public StorageCredentialsFactory(StorageManagementClient client, WindowsAzureSubscription currentSubscription)
+        public StorageCredentialsFactory(StorageManagementClient client, AzureSubscription currentSubscription)
         {
             this.client = client;
             this.currentSubscription = currentSubscription;

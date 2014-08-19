@@ -26,7 +26,7 @@ using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    public abstract class ResourcesTestsBase : IDisposable
+    public abstract class ResourcesTestsBase
     {
         private EnvironmentSetupHelper helper;
 
@@ -91,9 +91,5 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             return TestBase.GetServiceClient<EventsClient>(new CSMTestEnvironmentFactory());
         }
 
-        public void Dispose()
-        {
-            helper.Dispose();
-        }
     }
 }

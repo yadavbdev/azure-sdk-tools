@@ -13,6 +13,9 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
     using Model;
@@ -164,8 +167,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
         protected void ValidateParameters()
         {
-            var currentSubscription = WindowsAzureProfile.Instance.CurrentSubscription;
-            if ((currentSubscription == null || currentSubscription.CurrentStorageAccountName == null) && this.MediaLocation == null && string.Compare(this.ParameterSetName, "CreateNew", StringComparison.OrdinalIgnoreCase) == 0)
+            var currentSubscription = AzureSession.CurrentSubscription;
+            if ((currentSubscription == null || currentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount) == null) && this.MediaLocation == null && string.Compare(this.ParameterSetName, "CreateNew", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 throw new ArgumentException(Resources.MediaLocationOrDefaultStorageAccountMustBeSpecified);
             }

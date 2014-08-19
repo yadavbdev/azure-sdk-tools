@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
     using Commands.Utilities.Common;
@@ -131,8 +133,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
         protected void ValidateParameters()
         {
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
-            if ((currentSubscription == null || string.IsNullOrEmpty(currentSubscription.CurrentStorageAccountName)) && string.IsNullOrEmpty(MediaLocation))
+            AzureSubscription currentSubscription = CurrentSubscription;
+            if ((currentSubscription == null || string.IsNullOrEmpty(currentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount))) && string.IsNullOrEmpty(MediaLocation))
             {
                 throw new ArgumentException(Resources.MustSpecifyMediaLocationOrHaveCurrentStorageAccount);
             }

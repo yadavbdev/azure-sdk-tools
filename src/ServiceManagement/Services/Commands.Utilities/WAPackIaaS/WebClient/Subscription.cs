@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -48,17 +51,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
             this.Certificate = new X509Certificate2();
         }
 
-        internal Subscription(WindowsAzureSubscription azureSubscription)
+        internal Subscription(AzureSubscription azureSubscription)
         {
             if (azureSubscription == null)
             {
                 throw new ArgumentNullException();
             }
 
-            this.SubscriptionName = azureSubscription.SubscriptionName;
-            this.SubscriptionId = azureSubscription.SubscriptionId;
-            this.ServiceEndpoint = new Uri(String.Format("{0}/{1}/services/systemcenter/vmm", azureSubscription.ServiceEndpoint.ToString().TrimEnd(new[]{'/'}), SubscriptionId));
-            this.Certificate = azureSubscription.Certificate;
+            ProfileClient client = new ProfileClient();
+            var environment = client.GetAzureEnvironmentOrDefault(azureSubscription.Name);
+
+            this.SubscriptionName = azureSubscription.Name;
+            this.SubscriptionId = azureSubscription.Id.ToString();
+            this.ServiceEndpoint = new Uri(String.Format("{0}/{1}/services/systemcenter/vmm", environment.GetEndpoint(AzureEnvironment.Endpoint.ServiceEndpoint).TrimEnd(new[] { '/' }), SubscriptionId));
+            this.Certificate = ProfileClient.DataStore.GetCertificate(azureSubscription.GetProperty(AzureSubscription.Property.Thumbprint));
             this.CredentialType = CredentialType.UseCertificate;
         }
 

@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
             }
 
             Cmdlet = cmdlet;
-            SubscriptionId = cmdlet.CurrentSubscription.SubscriptionId;
+            SubscriptionId = cmdlet.CurrentSubscription.Id.ToString();
             ServiceName = serviceName;
         }
 

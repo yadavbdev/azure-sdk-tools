@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
     using CommandInterfaces;
@@ -49,7 +51,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
 
         public string StorageAccountName { get; set; }
 
-        public WindowsAzureSubscription CurrentSubscription { get; set; }
+        public AzureSubscription CurrentSubscription { get; set; }
 
         public void Cancel()
         {

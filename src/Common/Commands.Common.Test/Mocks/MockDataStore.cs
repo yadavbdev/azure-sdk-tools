@@ -14,6 +14,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
@@ -97,6 +98,29 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
         public bool FileExists(string path)
         {
             return VirtualStore.ContainsKey(path);
+        }
+
+        public void DeleteFile(string path)
+        {
+            if (VirtualStore.ContainsKey(path))
+            {
+                VirtualStore.Remove(path);
+            }
+            else
+            {
+                throw new IOException("File not found: " + path);
+            }
+        }
+
+        public void EmptyDirectory(string dirPath)
+        {
+            foreach (var key in VirtualStore.Keys.ToArray())
+            {
+                if (key.StartsWith(dirPath))
+                {
+                    VirtualStore.Remove(key);
+                }
+            }
         }
 
         public X509Certificate2 GetCertificate(string thumbprint)

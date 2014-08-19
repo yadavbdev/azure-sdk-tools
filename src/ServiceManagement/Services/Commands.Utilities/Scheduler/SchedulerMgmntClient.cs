@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
 {
     using Microsoft.WindowsAzure.Commands.Utilities.Properties;
@@ -30,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
     {
         private SchedulerManagementClient schedulerManagementClient;
         private CloudServiceManagementClient csmClient;
-        private WindowsAzureSubscription currentSubscription;
+        private AzureSubscription currentSubscription;
 
         private const string SupportedRegionsKey = "SupportedGeoRegions";
         private const string FreeMaxJobCountKey = "PlanDetail:Free:Quota:MaxJobCount";
@@ -52,11 +55,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
         /// Creates new Scheduler Management Convenience Client
         /// </summary>
         /// <param name="subscription">Subscription containing websites to manipulate</param>
-        public SchedulerMgmntClient(WindowsAzureSubscription subscription)
+        public SchedulerMgmntClient(AzureSubscription subscription)
         {
             currentSubscription = subscription;
-            csmClient = subscription.CreateClient<CloudServiceManagementClient>();
-            schedulerManagementClient = subscription.CreateClient<SchedulerManagementClient>();
+            csmClient = AzureSession.ClientFactory.CreateClient<CloudServiceManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
+            schedulerManagementClient = AzureSession.ClientFactory.CreateClient<SchedulerManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
 
             //Get RP properties
             IDictionary<string, string> dict = schedulerManagementClient.GetResourceProviderProperties().Properties;
@@ -215,7 +218,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             {
                 if (csRes.ResourceProviderNamespace.Equals(Constants.SchedulerRPNameProvider, StringComparison.OrdinalIgnoreCase) && csRes.Name.Equals(jobCollection, StringComparison.OrdinalIgnoreCase))
                 {
-                    SchedulerClient schedClient = this.currentSubscription.CreateClient<SchedulerClient>(false, cloudService, jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);                      
+                    SchedulerClient schedClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, cloudService, jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);                      
 
                     JobListResponse jobs = schedClient.Jobs.List(new JobListParameters
                     {
@@ -274,7 +277,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             {
                 if (csRes.ResourceProviderNamespace.Equals(Constants.SchedulerRPNameProvider, StringComparison.InvariantCultureIgnoreCase) && csRes.Name.Equals(jobCollection, StringComparison.OrdinalIgnoreCase))
                 {
-                    SchedulerClient schedClient = this.currentSubscription.CreateClient<SchedulerClient>(false, cloudService, jobCollection.Trim(), csmClient.Credentials, schedulerManagementClient.BaseUri);                   
+                    SchedulerClient schedClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, cloudService, jobCollection.Trim(), csmClient.Credentials, schedulerManagementClient.BaseUri);
 
                     List<JobGetHistoryResponse.JobHistoryEntry> lstHistory = new List<JobGetHistoryResponse.JobHistoryEntry>();
                     int currentTop = 100;
@@ -391,7 +394,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             {
                 if (csRes.ResourceProviderNamespace.Equals(Constants.SchedulerRPNameProvider, StringComparison.OrdinalIgnoreCase) && csRes.Name.Equals(jobCollection, StringComparison.OrdinalIgnoreCase))
                 {
-                    SchedulerClient schedClient = this.currentSubscription.CreateClient<SchedulerClient>(false, cloudService, jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);                  
+                    SchedulerClient schedClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, cloudService, jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);                  
 
                     JobListResponse jobs = schedClient.Jobs.List(new JobListParameters
                     {
@@ -464,7 +467,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
                 if (!this.AvailableRegions.Contains(region, StringComparer.OrdinalIgnoreCase))
                     throw new Exception(Resources.SchedulerInvalidLocation);
 
-                SchedulerClient schedClient = this.currentSubscription.CreateClient<SchedulerClient>(false, region.ToCloudServiceName(), jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);
+                SchedulerClient schedClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, region.ToCloudServiceName(), jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);
 
                 OperationResponse response = schedClient.Jobs.Delete(jobName);
                 return response.StatusCode == System.Net.HttpStatusCode.OK ? true : false;
@@ -485,7 +488,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
                                 {
                                     if (job.JobName.Equals(jobName, StringComparison.OrdinalIgnoreCase))
                                     {
-                                        SchedulerClient schedClient = this.currentSubscription.CreateClient<SchedulerClient>(false, cs.Name, jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);
+                                        SchedulerClient schedClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, cs.Name, jobCollection, csmClient.Credentials, schedulerManagementClient.BaseUri);
 
                                         OperationResponse response = schedClient.Jobs.Delete(jobName);
                                         return response.StatusCode == System.Net.HttpStatusCode.OK ? true : false;

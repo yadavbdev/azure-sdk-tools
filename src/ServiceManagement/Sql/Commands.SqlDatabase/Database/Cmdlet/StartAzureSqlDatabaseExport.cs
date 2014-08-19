@@ -11,6 +11,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Microsoft.WindowsAzure.Commands.Common.Storage;
@@ -208,7 +211,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 
                 // Retrieve the fully qualified server name
                 string fullyQualifiedServerName =
-                    this.SqlConnectionContext.ServerName + WindowsAzureProfile.Instance.CurrentSubscription.SqlDatabaseDnsSuffix;
+                    this.SqlConnectionContext.ServerName + AzureSession.CurrentEnvironment.GetEndpoint(AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix);
 
                 // Issue the request
                 ImportExportRequest context = this.ExportSqlAzureDatabaseProcess(

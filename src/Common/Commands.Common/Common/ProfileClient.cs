@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 // Save the profile to the disk
                 profile.Save();
 
-                // Rename WindowsAzureProfile.xml to AzureProfile.json
+                // Rename AzureProfile.xml to AzureProfile.json
                 DataStore.RenameFile(oldProfilePath,
                     System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.ProfileFile));
             }

@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using Microsoft.WindowsAzure.Commands.Common.Properties;
@@ -30,10 +33,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         where T : class
     {
         private Binding _serviceBinding;
-
-        private string _serviceEndpoint;
-
-        private string _resourceManagerEndpoint;
 
         public string CurrentServiceEndpoint { get; set; }
 
@@ -54,67 +53,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             set { _serviceBinding = value; }
         }
 
-        public string ServiceEndpoint
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(CurrentServiceEndpoint))
-                {
-                    _serviceEndpoint = CurrentServiceEndpoint;
-                }
-                else if (CurrentSubscription != null && CurrentSubscription.ServiceEndpoint != null)
-                {
-                    _serviceEndpoint = CurrentSubscription.ServiceEndpoint.ToString();
-                }
-                else
-                {
-                    // Use default endpoint
-                    _serviceEndpoint = Profile.CurrentEnvironment.ServiceEndpoint;
-                }
-
-                return _serviceEndpoint;
-            }
-
-            set
-            {
-                _serviceEndpoint = value;
-            }
-        }
-
-        public string ResourceManagerEndpoint
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(CurrentResourceManagerEndpoint))
-                {
-                    _resourceManagerEndpoint = CurrentResourceManagerEndpoint;
-                }
-                else if (CurrentSubscription != null && CurrentSubscription.ResourceManagerEndpoint != null)
-                {
-                    _resourceManagerEndpoint = CurrentSubscription.ResourceManagerEndpoint.ToString();
-                }
-                else
-                {
-                    // Use default endpoint
-                    _resourceManagerEndpoint = Profile.CurrentEnvironment.ResourceManagerEndpoint;
-                }
-
-                return _resourceManagerEndpoint;
-            }
-
-            set
-            {
-                _resourceManagerEndpoint = value;
-            }
-        }
-
         public T Channel
         {
             get;
             set;
         }
 
-        protected override void OnCurrentSubscriptionUpdated()
+        protected void OnCurrentSubscriptionUpdated()
         {
             // Recreate the channel if necessary
             if (!ShareChannel)
@@ -129,17 +74,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             set;
         }
 
-        /// <summary>
-        /// Sets the current subscription to the passed subscription name. If null, no changes.
-        /// </summary>
-        /// <param name="subscriptionName">The subscription name</param>
-        public void SetCurrentSubscription(string subscriptionName)
-        {
-            if (!string.IsNullOrEmpty(subscriptionName))
-            {
-                CurrentSubscription = Profile.Subscriptions.First(s => s.SubscriptionName == subscriptionName);
-            }
-        }
 
         protected void InitChannelCurrentSubscription()
         {
@@ -158,14 +92,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 throw new ArgumentException(Resources.InvalidCurrentSubscription);
             }
 
-            if (CurrentSubscription.Certificate == null)
+            if (CurrentSubscription.GetProperty(AzureSubscription.Property.Thumbprint) == null)
             {
                 throw new ArgumentException(Resources.InvalidCurrentSuscriptionCertificate);
-            }
-
-            if (string.IsNullOrEmpty(CurrentSubscription.SubscriptionId))
-            {
-                throw new ArgumentException(Resources.InvalidCurrentSubscriptionId);
             }
 
             if (Channel == null || force)
@@ -206,21 +135,21 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             
             return ChannelHelper.CreateServiceManagementChannel<T>(
                 ServiceBinding,
-                new Uri(ServiceEndpoint),
-                CurrentSubscription.Certificate,
+                CurrentEnvironment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint),
+                ProfileClient.DataStore.GetCertificate(CurrentSubscription.GetProperty(AzureSubscription.Property.Thumbprint)),
                 new HttpRestMessageInspector(WriteDebug));
         }
 
         protected void RetryCall(Action<string> call)
         {
-            RetryCall(CurrentSubscription.SubscriptionId, call);
+            RetryCall(CurrentSubscription.Id, call);
         }
 
-        protected void RetryCall(string subsId, Action<string> call)
+        protected void RetryCall(Guid subsId, Action<string> call)
         {
             try
             {
-                call(subsId);
+                call(subsId.ToString());
             }
             catch (MessageSecurityException ex)
             {
@@ -246,14 +175,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         protected TResult RetryCall<TResult>(Func<string, TResult> call)
         {
-            return RetryCall(CurrentSubscription.SubscriptionId, call);
+            return RetryCall(CurrentSubscription.Id, call);
         }
 
-        protected TResult RetryCall<TResult>(string subsId, Func<string, TResult> call)
+        protected TResult RetryCall<TResult>(Guid subsId, Func<string, TResult> call)
         {
             try
             {
-                return call(subsId);
+                return call(subsId.ToString());
             }
             catch (MessageSecurityException ex)
             {

@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
     using Commands.Utilities.Common;
@@ -818,36 +820,36 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         #region AzureSubscription
 
-        public Collection<WindowsAzureSubscription> GetAzureSubscription()
+        public Collection<AzureSubscription> GetAzureSubscription()
         {
-            return RunPSCmdletAndReturnAll<WindowsAzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, false, false));
+            return RunPSCmdletAndReturnAll<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, false, false));
         }
 
-        public WindowsAzureSubscription GetAzureSubscription(string subscriptionName)
+        public AzureSubscription GetAzureSubscription(string subscriptionName)
         {
-            return RunPSCmdletAndReturnFirst<WindowsAzureSubscription>(new GetAzureSubscriptionCmdletInfo(subscriptionName, null, false, false, false));
+            return RunPSCmdletAndReturnFirst<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(subscriptionName, null, false, false, false));
         }
 
-        public WindowsAzureSubscription GetCurrentAzureSubscription()
+        public AzureSubscription GetCurrentAzureSubscription()
         {
-            return RunPSCmdletAndReturnFirst<WindowsAzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, true, false));
+            return RunPSCmdletAndReturnFirst<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, true, false));
         }
 
-        public WindowsAzureSubscription GetDefaultAzureSubscription()
+        public AzureSubscription GetDefaultAzureSubscription()
         {
-            return RunPSCmdletAndReturnFirst<WindowsAzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, false, true));
+            return RunPSCmdletAndReturnFirst<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, false, true));
         }
 
-        public WindowsAzureSubscription SetAzureSubscription(string subscriptionName, string currentStorageAccountName, bool debug = false)
+        public AzureSubscription SetAzureSubscription(string subscriptionName, string currentStorageAccountName, bool debug = false)
         {
             var setAzureSubscriptionCmdlet = new SetAzureSubscriptionCmdletInfo(subscriptionName, currentStorageAccountName);
             var azurePowershellCmdlet = new WindowsAzurePowershellCmdlet(setAzureSubscriptionCmdlet);
             azurePowershellCmdlet.Run(debug);
 
-            Collection<WindowsAzureSubscription> subscriptions = GetAzureSubscription();
-            foreach (WindowsAzureSubscription subscription in subscriptions)
+            Collection<AzureSubscription> subscriptions = GetAzureSubscription();
+            foreach (AzureSubscription subscription in subscriptions)
             {
-                if (subscription.SubscriptionName == subscriptionName)
+                if (subscription.Name == subscriptionName)
                 {
                     return subscription;
                 }
@@ -855,14 +857,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return null;
         }
 
-        public WindowsAzureSubscription SetDefaultAzureSubscription(string subscriptionName, bool debug = false)
+        public AzureSubscription SetDefaultAzureSubscription(string subscriptionName, bool debug = false)
         {
             SelectAzureSubscription(subscriptionName);
 
-            Collection<WindowsAzureSubscription> subscriptions = GetAzureSubscription();
-            foreach (WindowsAzureSubscription subscription in subscriptions)
+            Collection<AzureSubscription> subscriptions = GetAzureSubscription();
+            foreach (AzureSubscription subscription in subscriptions)
             {
-                if (subscription.SubscriptionName == subscriptionName)
+                if (subscription.Name == subscriptionName)
                 {
                     return subscription;
                 }

@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
 {
     using Microsoft.WindowsAzure.Commands.Common.Storage;
@@ -184,6 +187,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// <param name="accountName">Storage account name</param>
         /// <param name="accountKey">Storage account key</param>
         /// <param name="useHttps">Use https or not</param>
+        /// <param name="storageEndpoint"></param>
         /// <returns>A storage account</returns>
         internal CloudStorageAccount GetStorageAccountByNameAndKey(string accountName, string accountKey,
             bool useHttps, string storageEndpoint = "")
@@ -213,6 +217,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// <param name="storageAccountName">Storage account name, it's used for build end point</param>
         /// <param name="sasToken">Sas token</param>
         /// <param name="useHttps">Use https or not</param>
+        /// <param name="storageEndpoint"></param>
         /// <returns>a storage account</returns>
         internal CloudStorageAccount GetStorageAccountBySasToken(string storageAccountName, string sasToken,
             bool useHttps, string storageEndpoint = "")
@@ -251,6 +256,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// Get anonymous storage account
         /// </summary>
         /// <param name="storageAccountName">Storage account name, it's used for build end point</param>
+        /// <param name="useHttps"></param>
+        /// <param name="storageEndpoint"></param>
         /// <returns>A storage account</returns>
         internal CloudStorageAccount GetAnonymousStorageAccount(string storageAccountName, bool useHttps, string storageEndpoint = "")
         {
@@ -262,6 +269,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// Get anonymous storage account
         /// </summary>
         /// <param name="storageAccountName">Storage account name, it's used for build end point</param>
+        /// <param name="useHttps"></param>
+        /// <param name="azureEnvironmentName"></param>
         /// <returns>A storage account</returns>
         internal CloudStorageAccount GetAnonymousStorageAccountFromAzureEnvironment(string storageAccountName,
             bool useHttps, string azureEnvironmentName = "")
@@ -275,6 +284,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// </summary>
         /// <param name="credential">Storage credentail</param>
         /// <param name="storageAccountName">Storage account name, it's used for build end point</param>
+        /// <param name="useHttps"></param>
+        /// <param name="endPoint"></param>
         /// <returns>A storage account</returns>
         internal CloudStorageAccount GetStorageAccountWithEndPoint(StorageCredentials credential,
             string storageAccountName, bool useHttps, string endPoint = "")
@@ -322,19 +333,21 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// </summary>
         /// <param name="credential">Storage credentail</param>
         /// <param name="storageAccountName">Storage account name, it's used for build end point</param>
+        /// <param name="useHttps">Use secure Http protocol</param>
+        /// <param name="azureEnvironmentName">Environment name</param>
         /// <returns>A storage account</returns>
         internal CloudStorageAccount GetStorageAccountWithAzureEnvironment(StorageCredentials credential,
             string storageAccountName, bool useHttps, string azureEnvironmentName = "")
         {
-            WindowsAzureEnvironment azureEnvironment = null;
-
+            AzureEnvironment azureEnvironment = null;
+            
             if (string.IsNullOrEmpty(azureEnvironmentName))
             {
-                azureEnvironment = WindowsAzureProfile.Instance.CurrentEnvironment;
+                azureEnvironment = AzureSession.CurrentEnvironment;
             }
             else
             {
-                azureEnvironment = WindowsAzureProfile.Instance.Environments[azureEnvironmentName];
+                azureEnvironment = profileClient.GetAzureEnvironmentOrDefault(azureEnvironmentName);
             }
 
             Uri blobEndPoint = azureEnvironment.GetStorageBlobEndpoint(storageAccountName, useHttps);

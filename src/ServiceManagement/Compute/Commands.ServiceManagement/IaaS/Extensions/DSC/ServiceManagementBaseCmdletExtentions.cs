@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
 {
     using System;
@@ -39,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             }
             else
             {
-                var storageAccountName = cmdlet.CurrentSubscription.CurrentStorageAccountName;
+                var storageAccountName = cmdlet.CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
                 
                 if (!string.IsNullOrEmpty(storageAccountName))
                 {

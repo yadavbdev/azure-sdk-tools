@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 {
     using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
@@ -26,9 +29,9 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
     {
         public TrafficManagerManagementClient Client { get; internal set; }
 
-        public TrafficManagerClient(WindowsAzureSubscription subscription)
+        public TrafficManagerClient(AzureSubscription subscription)
         {
-            this.Client = subscription.CreateClient<TrafficManagerManagementClient>();
+            this.Client = AzureSession.ClientFactory.CreateClient<TrafficManagerManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
 
         public TrafficManagerClient(TrafficManagerManagementClient client)

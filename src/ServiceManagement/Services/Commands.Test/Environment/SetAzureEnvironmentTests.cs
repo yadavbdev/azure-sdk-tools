@@ -12,6 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Environment
 {
     using Commands.Profile;
@@ -25,29 +30,28 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
     using VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class SetAzureEnvironmentTests : TestBase
+    public class SetAzureEnvironmentTests : TestBase, IDisposable
     {
-        private WindowsAzureProfile testProfile;
+        private MockDataStore dataStore;
 
-        [TestInitialize]
-        public void SetupTest()
+        public SetAzureEnvironmentTests()
         {
-            testProfile = new WindowsAzureProfile(new Mock<IProfileStore>().Object);
-            WindowsAzureProfile.Instance = testProfile;
+            dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
         }
 
-        [TestCleanup]
         public void Cleanup()
         {
-            WindowsAzureProfile.ResetInstance();
+            AzureSession.SetCurrentSubscription(null, null);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetsAzureEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             string name = "Katal";
-            testProfile.AddEnvironment(new WindowsAzureEnvironment { Name = name, PublishSettingsFileUrl = "publish file url"});
+            ProfileClient client = new ProfileClient();
+            client.AddAzureEnvironment(new AzureEnvironment { Name = name });
 
             SetAzureEnvironmentCommand cmdlet = new SetAzureEnvironmentCommand()
             {
@@ -62,19 +66,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
 
             cmdlet.ExecuteCmdlet();
 
-            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<WindowsAzureEnvironment>()), Times.Once());
-            WindowsAzureEnvironment env = WindowsAzureProfile.Instance.Environments["KaTaL"];
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
+            client = new ProfileClient();
+            AzureEnvironment env = client.Profile.Environments["KaTaL"];
             Assert.AreEqual(env.Name.ToLower(), cmdlet.Name.ToLower());
-            Assert.AreEqual(env.PublishSettingsFileUrl, cmdlet.PublishSettingsFileUrl);
-            Assert.AreEqual(env.ServiceEndpoint, cmdlet.ServiceEndpoint);
-            Assert.AreEqual(env.ManagementPortalUrl, cmdlet.ManagementPortalUrl);
-            Assert.AreEqual(env.StorageBlobEndpointFormat, "{0}://{1}.blob.endpoint.net/");
-            Assert.AreEqual(env.StorageQueueEndpointFormat, "{0}://{1}.queue.endpoint.net/");
-            Assert.AreEqual(env.StorageTableEndpointFormat, "{0}://{1}.table.endpoint.net/");
-            Assert.AreEqual(env.GalleryEndpoint, "galleryendpoint");
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ServiceEndpoint], cmdlet.ServiceEndpoint);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl], cmdlet.ManagementPortalUrl);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.GalleryEndpoint], "galleryendpoint");
         }
 
-        [TestMethod]
+        [Fact]
         public void FailsForNonExistingEnvironments()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -93,12 +95,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 string.Format(Resources.EnvironmentNotFound, "Katal"));
         }
 
-        [TestMethod]
+        [Fact]
         public void ThrowsWhenSettingPublicEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
 
-            foreach (string name in WindowsAzureEnvironment.PublicEnvironments.Keys)
+            foreach (string name in AzureEnvironment.PublicEnvironments.Keys)
             {
                 SetAzureEnvironmentCommand cmdlet = new SetAzureEnvironmentCommand()
                 {
@@ -111,6 +113,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                     () => cmdlet.ExecuteCmdlet(),
                     string.Format(Resources.ChangePublicEnvironmentMessage, name));
             }
+        }
+
+        public void Dispose()
+        {
+            Cleanup();
         }
     }
 }

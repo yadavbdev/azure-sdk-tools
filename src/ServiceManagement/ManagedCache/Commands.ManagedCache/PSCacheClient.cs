@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.Azure.Commands.ManagedCache
 {
     using Microsoft.Azure.Commands.ManagedCache.Models;
@@ -34,9 +37,9 @@ namespace Microsoft.Azure.Commands.ManagedCache
         private const string CacheServiceReadyState = "Active";
 
         private ManagedCacheClient client;
-        public PSCacheClient(WindowsAzureSubscription currentSubscription)
+        public PSCacheClient(AzureSubscription currentSubscription)
         {
-            client = currentSubscription.CreateClient<ManagedCacheClient>();
+            client = AzureSession.ClientFactory.CreateClient<ManagedCacheClient>(currentSubscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
         public PSCacheClient() { }
 

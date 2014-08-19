@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
     using ConfigDataInfo;
@@ -543,7 +545,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             // Create a certificate
             X509Certificate2 cert = Utilities.CreateCertificate(password);
 
-            string storage = defaultAzureSubscription.CurrentStorageAccountName;
+            string storage = defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
             XmlDocument daConfig = new XmlDocument();
             daConfig.Load(@".\da.xml");
 
@@ -876,11 +878,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             try
             {
-                StorageServiceKeyOperationContext key1 = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName); // Get-AzureStorageAccountKey
+                StorageServiceKeyOperationContext key1 = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount)); // Get-AzureStorageAccountKey
                 Console.WriteLine("Primary - {0}", key1.Primary);
                 Console.WriteLine("Secondary - {0}", key1.Secondary);
 
-                StorageServiceKeyOperationContext key2 = vmPowershellCmdlets.NewAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName, KeyType.Secondary);
+                StorageServiceKeyOperationContext key2 = vmPowershellCmdlets.NewAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount), KeyType.Secondary);
                 Console.WriteLine("Primary - {0}", key2.Primary);
                 Console.WriteLine("Secondary - {0}", key2.Secondary);
 

@@ -570,7 +570,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         private void SetMocks(List<WindowsAzure.Subscriptions.Models.SubscriptionListOperationResponse.Subscription> rdfeSubscriptions,
             List<Azure.Subscriptions.Models.Subscription> csmSubscriptions)
         {
-            ClientMocks clientMocks = new ClientMocks(defaultSubscription);
+            ClientMocks clientMocks = new ClientMocks(new Guid(defaultSubscription));
 
             clientMocks.LoadRdfeSubscriptions(rdfeSubscriptions);
             clientMocks.LoadCsmSubscriptions(csmSubscriptions);

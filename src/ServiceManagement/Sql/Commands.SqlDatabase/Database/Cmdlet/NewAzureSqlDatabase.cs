@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Commands.Utilities.Common;
@@ -162,13 +165,14 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// Process the request using the server name
         /// </summary>
         /// <param name="maxSizeGb">the maximum size of the database</param>
+        /// <param name="maxSizeBytes"></param>
         private void ProcessWithServerName(int? maxSizeGb, long? maxSizeBytes)
         {
             Func<string> GetClientRequestId = () => string.Empty;
             try
             {
                 // Get the current subscription data.
-                WindowsAzureSubscription subscription = WindowsAzureProfile.Instance.CurrentSubscription;
+                AzureSubscription subscription = AzureSession.CurrentSubscription;
 
                 // Create a temporary context
                 ServerDataServiceCertAuth context =
@@ -202,6 +206,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// Process the request using the connection context.
         /// </summary>
         /// <param name="maxSizeGb">the maximum size for the new database</param>
+        /// <param name="maxSizeBytes"></param>
         private void ProcessWithConnectionContext(int? maxSizeGb, long? maxSizeBytes)
         {
             try

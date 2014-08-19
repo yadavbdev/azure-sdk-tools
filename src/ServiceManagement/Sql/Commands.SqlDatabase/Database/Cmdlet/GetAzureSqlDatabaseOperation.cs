@@ -11,6 +11,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Commands.Utilities.Common;
@@ -109,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                     break;
 
                 case ByServerName:
-                    context = ServerDataServiceCertAuth.Create(this.ServerName, WindowsAzureProfile.Instance.CurrentSubscription);
+                    context = ServerDataServiceCertAuth.Create(this.ServerName, AzureSession.CurrentSubscription);
                     break;
             }
             ProcessWithContext(context);
@@ -135,7 +137,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// <summary>
         /// Process the request using the provided connection context
         /// </summary>
-        /// <param name="databaseName">the name of the database to retrieve</param>
+        /// <param name="context"></param>
         private void ProcessWithContext(IServerDataServiceContext context)
         {
             try

@@ -32,7 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public const string ProfileFile = "AzureProfile.json";
 
-        public const string OldProfileFile = "WindowsAzureProfile.xml";
+        public const string OldProfileFile = "AzureProfile.xml";
 
         public const string TokenCacheFile = "TokenCache.dat";
 

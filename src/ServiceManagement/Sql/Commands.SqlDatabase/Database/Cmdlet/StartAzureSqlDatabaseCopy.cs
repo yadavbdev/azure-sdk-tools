@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Commands.Utilities.Common;
@@ -185,7 +187,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             // Use the provided ServerDataServiceContext or create one from the
             // provided ServerName and the active subscription.
             IServerDataServiceContext context = ServerDataServiceCertAuth.Create(this.ServerName,
-                WindowsAzureProfile.Instance.CurrentSubscription);
+                AzureSession.CurrentSubscription);
 
             try
             {

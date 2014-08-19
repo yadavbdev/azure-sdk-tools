@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
 {
     using GetAzureHDInsightClusters.BaseInterfaces;
@@ -30,7 +33,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
     /// </summary>
     public abstract class AzureHDInsightCmdlet : AzurePSCmdlet
     {
-        internal static WindowsAzureSubscription testSubscription;
+        internal static AzureSubscription testSubscription;
 
         private ILogWriter logger;
 
@@ -109,17 +112,20 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
             }
         }
 
-        protected WindowsAzureSubscription GetCurrentSubscription(string Subscription, X509Certificate2 certificate)
+        protected AzureSubscription GetCurrentSubscription(string Subscription, X509Certificate2 certificate)
         {
             if (Subscription.IsNotNullOrEmpty())
             {
                 this.WriteWarning("The -Subscription parameter is deprecated, Please use Select-AzureSubscription -Current to select a subscription to use.");
+
+                ProfileClient client = new ProfileClient();
+
                 var subscriptionResolver =
-                    ServiceLocator.Instance.Locate<IAzureHDInsightSubscriptionResolverFactory>().Create(this.Profile);
+                    ServiceLocator.Instance.Locate<IAzureHDInsightSubscriptionResolverFactory>().Create(client.Profile);
                 var resolvedSubscription = subscriptionResolver.ResolveSubscription(Subscription);
-                if (certificate.IsNotNull() && resolvedSubscription.Certificate.Thumbprint != certificate.Thumbprint)
+                if (certificate.IsNotNull() && resolvedSubscription.GetProperty(AzureSubscription.Property.Thumbprint) != certificate.Thumbprint)
                 {
-                    resolvedSubscription.Certificate = certificate;
+                    ProfileClient.DataStore.AddCertificate(certificate);
                 }
 
                 if (resolvedSubscription.IsNull())
