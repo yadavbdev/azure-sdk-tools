@@ -55,26 +55,31 @@ namespace Microsoft.WindowsAzure.Commands.Common
         
         public static void SetCurrentSubscription(AzureSubscription subscription, AzureEnvironment environment)
         {
-            if (subscription == null)
-            {
-                CurrentSubscription = null;
-            }
-
             if (environment == null)
             {
-                CurrentEnvironment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
-            }
-
-            if (subscription != null && environment != null)
-            {
-                if (subscription.Environment != environment.Name)
+                if (subscription != null && CurrentEnvironment != null &&
+                    subscription.Environment == CurrentEnvironment.Name)
                 {
-                    throw new ArgumentException("Environment name doesn't match one in subscription.", "environment");
+                    environment = CurrentEnvironment;
+                }
+                else
+                {
+                    environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
                 }
 
-                CurrentSubscription = subscription;
-                CurrentEnvironment = environment;
+                if (subscription != null)
+                {
+                    subscription.Environment = environment.Name;
+                }
             }
+
+            if (subscription != null && subscription.Environment != environment.Name)
+            {
+                throw new ArgumentException("Environment name doesn't match one in subscription.", "environment");
+            }
+
+            CurrentSubscription = subscription;
+            CurrentEnvironment = environment;
         }
 
         public static IClientFactory ClientFactory { get; set; }
