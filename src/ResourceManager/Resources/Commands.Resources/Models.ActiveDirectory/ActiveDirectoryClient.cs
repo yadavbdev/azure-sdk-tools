@@ -14,24 +14,17 @@
 
 using Microsoft.Azure.Graph.RBAC;
 using Microsoft.Azure.Graph.RBAC.Models;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
     public class ActiveDirectoryClient
     {
         private const string GraphEndpoint = "https://graph.ppe.windows.net/";
-
-        private const string GroupType = "Group";
-
-        private const string UserType = "User";
 
         public GraphRbacManagementClient GraphClient { get; private set; }
 
@@ -49,10 +42,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 new Uri(GraphEndpoint));
         }
 
-        public PSADUser GetUser(UserFilterOptions options)
+        public PSADUser GetUser(ADObjectFilterOptions options)
         {
             PSADUser result = null;
-            string filter = string.IsNullOrEmpty(options.Id) ? options.Principal : options.Id;
+            string filter = string.IsNullOrEmpty(options.Id) ? options.Email : options.Id;
 
             if (!string.IsNullOrEmpty(filter))
             {
@@ -67,34 +60,41 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return result;
         }
 
-        public List<PSADUser> FilterUsers(UserFilterOptions options)
+        public List<PSADUser> FilterUsers(ADObjectFilterOptions options)
         {
             List<PSADUser> users = new List<PSADUser>();
             UserListResult result = new UserListResult();
-            
-            if (options.Paging)
-            {
-                if (string.IsNullOrEmpty(options.NextLink))
-                {
-                    result = GraphClient.User.List(null, options.DisplayName);
-                }
-                else
-                {
-                    result = GraphClient.User.ListNext(options.NextLink);
-                }
 
-                users.AddRange(result.Users.Select(u => u.ToPSADUser()));
-                options.NextLink = result.NextLink;
+            if (!string.IsNullOrEmpty(options.Id) || !string.IsNullOrEmpty(options.Email))
+            {
+                users.Add(GetUser(options));
             }
             else
             {
-                result = GraphClient.User.List(null, options.DisplayName);
-                users.AddRange(result.Users.Select(u => u.ToPSADUser()));
-
-                while (!string.IsNullOrEmpty(result.NextLink))
+                if (options.Paging)
                 {
-                    result = GraphClient.User.ListNext(result.NextLink);
+                    if (string.IsNullOrEmpty(options.NextLink))
+                    {
+                        result = GraphClient.User.List(null, options.DisplayName);
+                    }
+                    else
+                    {
+                        result = GraphClient.User.ListNext(options.NextLink);
+                    }
+
                     users.AddRange(result.Users.Select(u => u.ToPSADUser()));
+                    options.NextLink = result.NextLink;
+                }
+                else
+                {
+                    result = GraphClient.User.List(null, options.DisplayName);
+                    users.AddRange(result.Users.Select(u => u.ToPSADUser()));
+
+                    while (!string.IsNullOrEmpty(result.NextLink))
+                    {
+                        result = GraphClient.User.ListNext(result.NextLink);
+                        users.AddRange(result.Users.Select(u => u.ToPSADUser()));
+                    }
                 }
             }
 
@@ -103,14 +103,14 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public List<PSADUser> FilterUsers()
         {
-            return FilterUsers(new UserFilterOptions());
+            return FilterUsers(new ADObjectFilterOptions());
         }
 
         public List<PSADGroup> ListUserGroups(string principal)
         {
             List<PSADGroup> result = new List<PSADGroup>();
-            Guid objectId = GetObjectId(principal);
-            PSADUser user = GetUser(new UserFilterOptions { Id = objectId.ToString() });
+            Guid objectId = GetObjectId(new ADObjectFilterOptions { Email = principal });
+            PSADUser user = GetUser(new ADObjectFilterOptions { Id = objectId.ToString() });
             var groupsIds = GraphClient.User.GetMemberGroups(new UserGetMemberGroupsParameters { ObjectId = user.Id.ToString() }).ObjectIds;
             var groupsResult = GraphClient.Objects.GetObjectsByObjectIds(new GetObjectsParameters { Ids = groupsIds });
             result.AddRange(groupsResult.AADObject.Select(g => g.ToPSADGroup()));
@@ -118,13 +118,17 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return result;
         }
 
-        public List<PSADGroup> FilterGroups(GroupFilterOptions options)
+        public List<PSADGroup> FilterGroups(ADObjectFilterOptions options)
         {
             List<PSADGroup> groups = new List<PSADGroup>();
 
-            if (!string.IsNullOrEmpty(options.UserPrincipal))
+            if (!string.IsNullOrEmpty(options.Id))
             {
-                groups.AddRange(ListUserGroups(options.UserPrincipal));
+                groups.Add(GraphClient.Group.Get(options.Id).Group.ToPSADGroup());
+            }
+            else if (!string.IsNullOrEmpty(options.Email))
+            {
+                groups.AddRange(ListUserGroups(options.Email));
 
                 if (!string.IsNullOrEmpty(options.DisplayName))
                 {
@@ -139,7 +143,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 {
                     if (string.IsNullOrEmpty(options.NextLink))
                     {
-                        result = GraphClient.Group.List(options.Mail, options.DisplayName);
+                        result = GraphClient.Group.List(options.Email, options.DisplayName);
                     }
                     else
                     {
@@ -151,7 +155,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 }
                 else
                 {
-                    result = GraphClient.Group.List(options.Mail, options.DisplayName);
+                    result = GraphClient.Group.List(options.Email, options.DisplayName);
                     groups.AddRange(result.Groups.Select(u => u.ToPSADGroup()));
 
                     while (!string.IsNullOrEmpty(result.NextLink))
@@ -167,106 +171,127 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public List<PSADGroup> FilterGroups()
         {
-            return FilterGroups(new GroupFilterOptions());
+            return FilterGroups(new ADObjectFilterOptions());
         }
 
-        public List<PSADObject> GetGroupMembers(string groupName)
+        public List<PSADObject> GetGroupMembers(ADObjectFilterOptions options)
         {
-            List<PSADObject> result = new List<PSADObject>();
-            PSADGroup group = FilterGroups(new GroupFilterOptions { DisplayName = groupName }).FirstOrDefault();
+            List<PSADObject> members = new List<PSADObject>();
 
-            if (group != null)
+            if (!string.IsNullOrEmpty(options.Id))
             {
-                var objects = GraphClient.Group.GetGroupMembers(group.Id.ToString()).AADObject;
+                members.Add(GraphClient.Group.Get(options.Id).Group.ToPSADGroup());
+            }
+            else
+            {
+                PSADGroup group = FilterGroups(new ADObjectFilterOptions { DisplayName = options.DisplayName }).FirstOrDefault();
 
-                foreach (var item in objects)
+                if (group != null)
                 {
-                    if (item.ObjectType == GroupType)
+                    GetObjectsResult result = new GetObjectsResult();
+
+                    if (options.Paging)
                     {
-                        result.Add(item.ToPSADGroup());
+                        if (string.IsNullOrEmpty(options.NextLink))
+                        {
+                            result = GraphClient.Group.GetGroupMembers(group.Id.ToString());
+                        }
+                        else
+                        {
+                            result = GraphClient.Group.GetGroupMembersNext(result.NextLink);
+                        }
+
+                        members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
+                        options.NextLink = result.NextLink;
                     }
-                    else if (item.ObjectType == UserType)
+                    else
                     {
-                        result.Add(item.ToPSADUser());
+                        result = GraphClient.Group.GetGroupMembers(group.Id.ToString());
+                        members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
+
+                        while (!string.IsNullOrEmpty(result.NextLink))
+                        {
+                            result = GraphClient.Group.GetGroupMembersNext(result.NextLink);
+                            members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
+                        }
                     }
                 }
             }
-
-            return result;
+            return members;
         }
 
-        public Guid GetObjectId(string principal)
+        public Guid GetObjectId(ADObjectFilterOptions options)
         {
-            Guid result;
-
-            if (Guid.TryParse(principal, out result))
+            // Input is object id.
+            if (!string.IsNullOrEmpty(options.Id))
             {
-                // Input is GUID, just use it as is.
-                return result;
+                Guid result;
+                if (Guid.TryParse(options.Id, out result))
+                {
+                    // Input is GUID, just use it as is.
+                    return result;
+                }
+
+                throw new KeyNotFoundException(string.Format("The provided object id '{0}' can not be parsed", options.Id));
             }
 
-            UserFilterOptions userOptions = new UserFilterOptions();
-            GroupFilterOptions groupOptions = new GroupFilterOptions();
-            bool filterUsers = false;
-            bool filterGroups = false;
-            string localPart = null;
-
-            if (principal.Contains('@'))
+            // Input is principal org id, live id or group mail.
+            if (!string.IsNullOrEmpty(options.Email))
             {
                 try
                 {
-                    PSADUser user = GetUser(new UserFilterOptions() { Principal = principal });
+                    PSADUser user = GetUser(options);
                     if (user != null)
                     {
+                        // Input is OrgId principal
                         return user.Id;
                     }
                 }
                 catch { /* Unable to retrieve the user, skip */ }
 
-                groupOptions.Mail = principal;
-                localPart = principal.Split('@').First();
-                filterGroups = true;
-            }
-            else
-            {
-                // The input is user/group display name
-                userOptions.DisplayName = principal;
-                groupOptions.DisplayName = principal;
-                filterUsers = true;
-                filterGroups = true;
-            }
-
-            if (filterUsers)
-            {
-                var users = FilterUsers(userOptions);
-                if (users.Count > 0)
+                string localPart = options.Email.Split('@').First();
+                if (!string.IsNullOrEmpty(localPart))
                 {
-                    return users.First().Id;
+                    var users = FilterUsers();
+                    var user = users.FirstOrDefault(u => u.Principal.StartsWith(localPart));
+
+                    if (user != null)
+                    {
+                        // Input is live id.
+                        return user.Id;
+                    }
                 }
-            }
 
-            if (!string.IsNullOrEmpty(localPart))
-            {
-                var users = FilterUsers();
-                var user = users.FirstOrDefault(u => u.Principal.StartsWith(localPart));
-
-                if (user != null)
-                {
-                    // The input is live id.
-                    return user.Id;
-                }
-            }
-
-            if (filterGroups)
-            {
-                var groups = FilterGroups(groupOptions);
+                var groups = FilterGroups(options);
                 if (groups.Count > 0)
                 {
+                    // Input is group mail
                     return groups.First().Id;
                 }
+
+                throw new KeyNotFoundException(string.Format("The provided email '{0}' can not be resolved", options.Email));
             }
 
-            throw new KeyNotFoundException(string.Format("The user principal '{0}' can not be resolve", principal));
+            if (!string.IsNullOrEmpty(options.DisplayName))
+            {
+                var users = FilterUsers(options);
+                if (users.Count > 0)
+                {
+                    // Input is used display name.
+                    return users.First().Id;
+                }
+
+                var groups = FilterGroups(options);
+                if (groups.Count > 0)
+                {
+                    // Input is group display name
+                    return groups.First().Id;
+                }
+
+                throw new KeyNotFoundException(string.Format("The provided display name '{0}' can not be resolved", options.DisplayName));
+            }
+
+            throw new KeyNotFoundException("Please provide the object id, email or display name filter to resolve.");
         }
     }
 }

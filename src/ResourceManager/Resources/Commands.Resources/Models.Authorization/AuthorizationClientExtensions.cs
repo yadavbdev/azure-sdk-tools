@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             {
                 Id = role.Id,
                 Principal = activeDirectoryClient.GetUser(
-                    new UserFilterOptions() { Id = role.Properties.PrincipalId.ToString() }).Principal,
+                    new ADObjectFilterOptions() { Id = role.Properties.PrincipalId.ToString() }).Principal,
                 Actions = roleDefinition.Actions,
                 NoActions = roleDefinition.NoActions,
                 RoleDefinitionName = roleDefinition.Name,

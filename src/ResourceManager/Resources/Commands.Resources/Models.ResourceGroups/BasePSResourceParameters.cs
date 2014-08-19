@@ -12,11 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Collections.Generic;
 using Microsoft.Azure.Management.Resources.Models;
-using System;
-using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
+using System.Collections;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {

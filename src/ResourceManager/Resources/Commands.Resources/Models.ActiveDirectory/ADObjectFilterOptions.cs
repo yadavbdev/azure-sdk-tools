@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
-    public class GroupFilterOptions
+    public class ADObjectFilterOptions
     {
         public string DisplayName { get; set; }
 
-        public string UserPrincipal { get; set; }
+        public string Email { get; set; }
 
-        public string Mail { get; set; }
+        public string Id { get; set; }
 
         public bool Paging { get; set; }
 
@@ -30,5 +29,14 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         /// Used internally to track the paging for the listing, do not change manually.
         /// </summary>
         public string NextLink { get; set; }
+
+        public bool Filter {
+            get
+            {
+                return !string.IsNullOrEmpty(DisplayName) ||
+                       !string.IsNullOrEmpty(Email) ||
+                       !string.IsNullOrEmpty(Id);
+            }
+        }
     }
 }

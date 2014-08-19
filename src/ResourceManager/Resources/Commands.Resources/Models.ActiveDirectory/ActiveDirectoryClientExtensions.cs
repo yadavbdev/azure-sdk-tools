@@ -19,6 +19,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
     internal static class ActiveDirectoryClientExtensions
     {
+        private const string GroupType = "Group";
+
+        private const string UserType = "User";
+
         public static PSADUser ToPSADUser(this User user)
         {
             return new PSADUser()
@@ -55,6 +59,22 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 DisplayName = obj.DisplayName,
                 Id = new Guid(obj.ObjectId)
             };
+        }
+
+        public static PSADObject ToPSADObject(this AADObject obj)
+        {
+            if (obj.ObjectType == GroupType)
+            {
+                return obj.ToPSADGroup();
+            }
+            else if (obj.ObjectType == UserType)
+            {
+                return obj.ToPSADUser();
+            }
+            else
+            {
+                throw new InvalidCastException();
+            }
         }
     }
 }

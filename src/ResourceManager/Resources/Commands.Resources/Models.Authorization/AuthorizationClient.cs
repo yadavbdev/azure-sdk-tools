@@ -16,10 +16,8 @@ using Microsoft.Azure.Commands.Resources.Models.ActiveDirectory;
 using Microsoft.Azure.Management.Authorization;
 using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.Authorization
@@ -86,7 +84,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// <returns>The created role assignment object</returns>
         public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
         {
-            Guid principalId = ActiveDirectoryClient.GetObjectId(parameters.Principal);
+            Guid principalId = ActiveDirectoryClient.GetObjectId(parameters.FilterOptions);
 
             Guid roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid() : RoleAssignmentNames.Dequeue();
             string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
@@ -111,10 +109,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             List<PSRoleAssignment> result = new List<PSRoleAssignment>();
             ListAssignmentsFilterParameters parameters = new ListAssignmentsFilterParameters();
 
-            if (!string.IsNullOrEmpty(options.Principal))
+            if (options.FilterOptions.Filter)
             {
                 // Filter first by principal
-                parameters.PrincipalId = ActiveDirectoryClient.GetObjectId(options.Principal);
+                parameters.PrincipalId = ActiveDirectoryClient.GetObjectId(options.FilterOptions);
                 result.AddRange(AuthorizationManagementClient.RoleAssignments.List(parameters)
                     .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
 

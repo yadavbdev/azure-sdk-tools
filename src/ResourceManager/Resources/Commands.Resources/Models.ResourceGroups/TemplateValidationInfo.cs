@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Management.Resources.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.Resources.Models

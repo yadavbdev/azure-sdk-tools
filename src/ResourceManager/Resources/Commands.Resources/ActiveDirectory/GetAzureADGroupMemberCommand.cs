@@ -13,9 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.ActiveDirectory.Models;
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Commands.Resources.Models.ActiveDirectory;
-using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -24,16 +23,40 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
     /// <summary>
     /// Get AD groups members.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureADGroupMember"), OutputType(typeof(List<PSADObject>))]
+    [Cmdlet(VerbsCommon.Get, "AzureADGroupMember", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADObject>))]
     public class GetAzureADGroupMemberCommand : ActiveDirectoryBaseCmdlet
     {
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of group whose members to return.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DisplayName,
+            HelpMessage = "The user display name.")]
         [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
+            HelpMessage = "The user object id.")]
+        [ValidateNotNullOrEmpty]
+        public Guid ObjectId { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
+            HelpMessage = "The user email address.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Email,
+            HelpMessage = "The user email address.")]
+        [ValidateNotNullOrEmpty]
+        public string Email { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            WriteObject(ActiveDirectoryClient.GetGroupMembers(Name), true);
+            ADObjectFilterOptions options = new ADObjectFilterOptions
+            {
+                DisplayName = DisplayName,
+                Email = Email,
+                Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
+                Paging = true
+            };
+
+            do
+            {
+                WriteObject(ActiveDirectoryClient.GetGroupMembers(options), true);
+            } while (!string.IsNullOrEmpty(options.NextLink));
         }
     }
 }
