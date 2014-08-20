@@ -51,20 +51,5 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(TestContext != null);
             TestContext.WriteLine(format, args);
         }
-
-        protected static int AnyIpPort()
-        {
-            return new Random().Next(ushort.MaxValue);
-        }
-
-        public static Uri AnyUrl()
-        {
-            return new Uri("http://www.microsoft.com");
-        }
-
-        public static string AnyString()
-        {
-            return "RandomStringForTestPurposes";
-        }
     }
 }
