@@ -289,7 +289,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(string.IsNullOrEmpty(AzureSdkPath));
 
             AzureSdkPath = CreateDirectory("AzureSdk");
-            ProfileClient client = new ProfileClient(Path.Combine(AzureSdkPath, "AzureProfile.xml"));
+            ProfileClient client = new ProfileClient(Path.Combine(AzureSdkPath, "WindowsAzureProfile.xml"));
             ProfileClient.DataStore.WriteFile(publishSettingsPath, File.ReadAllText(publishSettingsPath));
             client.ImportPublishSettings(publishSettingsPath);
 
