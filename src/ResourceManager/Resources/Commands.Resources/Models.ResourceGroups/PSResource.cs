@@ -43,5 +43,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             get { return ResourcesExtensions.ConstructTagsTable(Tags); }
         }
+
+        public string ResourceId { get; set; }
     }
 }

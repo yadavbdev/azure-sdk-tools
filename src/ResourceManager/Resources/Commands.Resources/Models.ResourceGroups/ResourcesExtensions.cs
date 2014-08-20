@@ -40,7 +40,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Resources = resources,
                 ProvisioningState = resourceGroup.ProvisioningState,
                 Tags = TagsConversionHelper.CreateTagHashtable(resourceGroup.Tags),
-                Permissions = client.GetResourceGroupPermissions(resourceGroup.Name)
+                Permissions = client.GetResourceGroupPermissions(resourceGroup.Name),
+                ResourceId = resourceGroup.Id
             };
         }
 
@@ -90,7 +91,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Properties = JsonUtilities.DeserializeJson(resource.Properties),
                 PropertiesText = resource.Properties,
                 Tags = TagsConversionHelper.CreateTagHashtable(resource.Tags),
-                Permissions = client.GetResourcePermissions(identifier, apiVersion)
+                Permissions = client.GetResourcePermissions(identifier, apiVersion),
+                ResourceId = identifier.ToString()
             };
         }
 
@@ -379,7 +381,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                     PropertiesText = string.Empty,
                     ResourceGroupName = string.Empty,
                     Properties = new Dictionary<string, string>(),
-                    ResourceType = string.Empty
+                    ResourceType = string.Empty,
+                    ResourceId = string.Empty
                 };
             }
         }

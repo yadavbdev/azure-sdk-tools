@@ -64,6 +64,10 @@
                 <Label>Permissions</Label>
                 <PropertyName>Permissions</PropertyName>
               </ListItem>
+              <ListItem>
+                <Label>ResourceId</Label>
+                <PropertyName>ResourceId</PropertyName>
+              </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
@@ -101,6 +105,10 @@
               <ListItem>
                 <Label>Resources</Label>
                 <PropertyName>ResourcesTable</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ResourceId</Label>
+                <PropertyName>ResourceId</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
