@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
     using ConfigDataInfo;
@@ -960,7 +962,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             string deploymentName = "deployment1";
             string deploymentLabel = "label1";
             DeploymentInfoContext result;
-            string storage = defaultAzureSubscription.CurrentStorageAccountName;
+            string storage = defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
             string daConfig = @".\da.xml";
 
             try
@@ -1016,7 +1018,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             string deploymentLabel = "label1";
             DeploymentInfoContext result;
 
-            string storage = defaultAzureSubscription.CurrentStorageAccountName;
+            string storage = defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
             string daConfig = @".\da.xml";
 
             string defaultExtensionId = string.Format("Default-{0}-Production-Ext-0", Utilities.PaaSDiagnosticsExtensionName);

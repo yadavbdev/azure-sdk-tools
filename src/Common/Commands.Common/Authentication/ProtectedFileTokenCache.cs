@@ -12,9 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
+using System.IO;
 using System.Security.Cryptography;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
@@ -24,6 +26,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     /// </summary>
     public class ProtectedFileTokenCache : TokenCache
     {
+        private static readonly string CacheFileName = Path.Combine(AzurePowerShell.ProfileDirectory, "TokenCache.dat");
+
         private static readonly object fileLock = new object();
 
         private static readonly Lazy<ProtectedFileTokenCache> instance =
@@ -45,10 +49,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             this.BeforeAccess = BeforeAccessNotification;
             lock (fileLock)
             {
-                var existingData = WindowsAzureProfile.Instance.ProfileStore.LoadTokenCache();
-                if (existingData != null)
+                if (ProfileClient.DataStore.FileExists(CacheFileName))
                 {
-                    this.Deserialize(ProtectedData.Unprotect(existingData, null, DataProtectionScope.CurrentUser));
+                    var existingData = ProfileClient.DataStore.ReadFileAsBytes(CacheFileName);
+                    if (existingData != null)
+                    {
+                        this.Deserialize(ProtectedData.Unprotect(existingData, null, DataProtectionScope.CurrentUser));
+                    }
                 }
             }
         }
@@ -57,7 +64,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         public override void Clear()
         {
             base.Clear();
-            WindowsAzureProfile.Instance.ProfileStore.DestroyTokenCache();
+            if (ProfileClient.DataStore.FileExists(CacheFileName))
+            {
+                ProfileClient.DataStore.DeleteFile(CacheFileName);
+            }
         }
 
         // Triggered right before ADAL needs to access the cache.
@@ -66,10 +76,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             lock (fileLock)
             {
-                var existingData = WindowsAzureProfile.Instance.ProfileStore.LoadTokenCache();
-                if (existingData != null)
+                if (ProfileClient.DataStore.FileExists(CacheFileName))
                 {
-                    this.Deserialize(ProtectedData.Unprotect(existingData, null, DataProtectionScope.CurrentUser));
+                    var existingData = ProfileClient.DataStore.ReadFileAsBytes(CacheFileName);
+                    if (existingData != null)
+                    {
+                        this.Deserialize(ProtectedData.Unprotect(existingData, null, DataProtectionScope.CurrentUser));
+                    }
                 }
             }
         }
@@ -83,7 +96,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                 lock (fileLock)
                 {
                     // reflect changes in the persistent store
-                    WindowsAzureProfile.Instance.ProfileStore.SaveTokenCache(
+                    ProfileClient.DataStore.WriteFile(CacheFileName,
                         ProtectedData.Protect(this.Serialize(), null, DataProtectionScope.CurrentUser));
                     // once the write operation took place, restore the HasStateChanged bit to false
                     this.HasStateChanged = false;

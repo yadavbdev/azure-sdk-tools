@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
     using AutoMapper;
@@ -51,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
             base.ExecuteCommand();
 
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
+            AzureSubscription currentSubscription = CurrentSubscription;
             if (CurrentDeploymentNewSM == null)
             {
                 throw new ApplicationException(String.Format(Resources.CouldNotFindDeployment, ServiceName, Model.DeploymentSlotType.Production));

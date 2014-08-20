@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
     using System.Collections.Generic;
@@ -55,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites
             else if (Storage.IsPresent)
             {
                 string storageName = string.IsNullOrEmpty(StorageAccountName) ?
-                    CurrentSubscription.CurrentStorageAccountName : StorageAccountName;
+                    CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount) : StorageAccountName;
                 properties[DiagnosticProperties.StorageAccountName] = storageName;
                 WebsitesClient.EnableApplicationDiagnostic(Name, WebsiteDiagnosticOutput.StorageTable, properties, Slot);
             }

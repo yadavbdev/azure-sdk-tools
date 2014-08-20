@@ -31,7 +31,29 @@ namespace Microsoft.WindowsAzure.Commands.Common.Interfaces
 
         void RenameFile(string oldPath, string newPath);
 
+        void CopyFile(string oldPath, string newPath);
+
         bool FileExists(string path);
+
+        void DeleteFile(string path);
+
+        void DeleteDirectory(string dir);
+
+        void EmptyDirectory(string dirPath);
+
+        bool DirectoryExists(string path);
+
+        void CreateDirectory(string path);
+
+        string[] GetDirectories(string sourceDirName);
+
+        string[] GetDirectories(string startDirectory, string filePattern, SearchOption options);
+
+        string[] GetFiles(string sourceDirName);
+
+        string[] GetFiles(string startDirectory, string filePattern, SearchOption options);
+
+        FileAttributes GetFileAttributes(string path);
 
         X509Certificate2 GetCertificate(string thumbprint);
 

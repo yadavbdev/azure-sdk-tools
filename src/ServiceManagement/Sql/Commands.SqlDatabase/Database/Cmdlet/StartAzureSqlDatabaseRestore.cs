@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -197,7 +199,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             {
                 string serverName = this.SourceServerName ?? connectionContext.ServerName;
 
-                connectionContext = ServerDataServiceCertAuth.Create(serverName, WindowsAzureProfile.Instance.CurrentSubscription);
+                connectionContext = ServerDataServiceCertAuth.Create(serverName, AzureSession.CurrentSubscription);
             }
 
             string clientRequestId = connectionContext.ClientRequestId;

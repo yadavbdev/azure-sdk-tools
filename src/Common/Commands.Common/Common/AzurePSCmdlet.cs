@@ -12,10 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using System;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using System;
+
 
     /// <summary>
     /// Base class for cmdlets that need the current subscription but don't
@@ -24,44 +28,5 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
     public abstract class AzurePSCmdlet : CmdletBase
     {
-        private WindowsAzureProfile profile;
-
-        protected virtual void OnCurrentSubscriptionUpdated()
-        {
-
-        }
-
-        public virtual WindowsAzureProfile Profile
-        {
-            get { return profile ?? WindowsAzureProfile.Instance; }
-
-            set { profile = value; }
-        }
-
-        private WindowsAzureSubscription currentSubscription;
-
-        public WindowsAzureSubscription CurrentSubscription
-        {
-            get { return ThrowIfNull(currentSubscription ?? Profile.CurrentSubscription); }
-            set
-            {
-                if (currentSubscription != value)
-                {
-                    currentSubscription = value;
-                    OnCurrentSubscriptionUpdated();
-                }
-            }
-        }
-
-        public bool HasCurrentSubscription
-        {
-            get { return currentSubscription != null || Profile.CurrentSubscription != null; }
-        }
-
-        private WindowsAzureSubscription ThrowIfNull(WindowsAzureSubscription subscription)
-        {
-            if (subscription != null) return subscription;
-            throw new Exception(Resources.InvalidCurrentSubscription);
-        }
     }
 }

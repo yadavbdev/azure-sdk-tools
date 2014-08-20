@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase
 {
     using Microsoft.WindowsAzure.Commands.SqlDatabase.Services;
@@ -58,9 +61,9 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase
         protected SqlManagementClient GetCurrentSqlClient()
         {
             // Get the SQL management client for the current subscription
-            WindowsAzureSubscription subscription = WindowsAzureProfile.Instance.CurrentSubscription;
+            AzureSubscription subscription = AzureSession.CurrentSubscription;
             SqlDatabaseCmdletBase.ValidateSubscription(subscription);
-            SqlManagementClient client = subscription.CreateClient<SqlManagementClient>();
+            SqlManagementClient client = AzureSession.ClientFactory.CreateClient<SqlManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint);
             client.HttpClient.DefaultRequestHeaders.Add(Constants.ClientSessionIdHeaderName, clientSessionId);
             client.HttpClient.DefaultRequestHeaders.Add(Constants.ClientRequestIdHeaderName, clientRequestId);
             return client;
@@ -69,19 +72,13 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase
         /// <summary>
         /// Validates that the given subscription is valid.
         /// </summary>
-        /// <param name="subscription">The <see cref="WindowsAzureSubscription"/> to validate.</param>
-        public static void ValidateSubscription(WindowsAzureSubscription subscription)
+        /// <param name="subscription">The <see cref="AzureSubscription"/> to validate.</param>
+        public static void ValidateSubscription(AzureSubscription subscription)
         {
             if (subscription == null)
             {
                 throw new ArgumentException(
                     Common.Properties.Resources.InvalidCurrentSubscription);
-            }
-
-            if (string.IsNullOrEmpty(subscription.SubscriptionId))
-            {
-                throw new ArgumentException(
-                    Common.Properties.Resources.InvalidCurrentSubscriptionId);
             }
         }
 

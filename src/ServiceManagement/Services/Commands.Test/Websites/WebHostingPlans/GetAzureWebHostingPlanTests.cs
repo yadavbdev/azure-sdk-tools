@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites.WebHostingPlans
@@ -53,9 +55,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.WebHostingPlans
             var command = new GetAzureWebHostingPlanCommand
             {
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = subscriptionId },
                 WebsitesClient = clientMock.Object
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(subscriptionId) }, null);
 
             command.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
@@ -81,9 +83,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.WebHostingPlans
             {
                 WebSpaceName = "webspace1",
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = subscriptionId },
                 WebsitesClient = clientMock.Object
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(subscriptionId) }, null);
 
             command.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);

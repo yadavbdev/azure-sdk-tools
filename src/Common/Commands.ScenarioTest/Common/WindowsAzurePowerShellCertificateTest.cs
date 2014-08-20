@@ -52,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 string dummyCredentialFile = Path.Combine(Environment.CurrentDirectory, TestCredentialHelper.DefaultCredentialFile);
                 if (!File.Exists(dummyCredentialFile))
                 {
-                    File.WriteAllText(dummyCredentialFile, Properties.Resources.RdfeTestDummy);
+                    ProfileClient.DataStore.WriteFile(dummyCredentialFile, Properties.Resources.RdfeTestDummy);
                 }
                 this.credentialFile = dummyCredentialFile;
             }

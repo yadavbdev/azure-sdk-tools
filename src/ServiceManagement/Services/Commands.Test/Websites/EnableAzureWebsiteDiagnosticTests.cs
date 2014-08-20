@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
     using Commands.Utilities.Common;
@@ -59,11 +62,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 File = true,
                 LogLevel = LogEntryType.Information
             };
+
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -92,12 +96,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 Storage = true,
                 LogLevel = LogEntryType.Information,
                 StorageAccountName = storageName
             };
+
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -126,15 +131,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription
-                {
-                    SubscriptionId = base.subscriptionId,
-                    CurrentStorageAccountName = storageName
-                },
                 WebsitesClient = websitesClientMock.Object,
                 Storage = true,
                 LogLevel = LogEntryType.Information,
             };
+
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
+            AzureSession.CurrentSubscription.Properties[AzureSubscription.Property.CloudStorageAccount] = storageName;
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -163,12 +166,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 File = true,
                 LogLevel = LogEntryType.Information,
                 Slot = slot
             };
+
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();

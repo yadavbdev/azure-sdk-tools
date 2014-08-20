@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
     using Commands.Utilities.Common;
@@ -75,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 }
 
                 JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-                List<Site> sites = javaScriptSerializer.Deserialize<List<Site>>(File.ReadAllText(sitesFile));
+                List<Site> sites = javaScriptSerializer.Deserialize<List<Site>>(FileUtilities.DataStore.ReadFileAsText(sitesFile));
                 return new Sites(sites);
             }
             catch
@@ -94,7 +96,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 
                 // Make sure path exists
                 Directory.CreateDirectory(GlobalPathInfo.GlobalSettingsDirectory);
-                File.WriteAllText(sitesFile, javaScriptSerializer.Serialize(sites));
+                FileUtilities.DataStore.WriteFile(sitesFile, javaScriptSerializer.Serialize(sites));
             }
             catch
             {

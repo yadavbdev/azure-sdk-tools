@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
 {
     using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
@@ -103,13 +106,12 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
             }
         }
 
-        public static WindowsAzureSubscription CreateUnitTestSubscription()
+        public static AzureSubscription CreateUnitTestSubscription()
         {
-            return new WindowsAzureSubscription
+            return new AzureSubscription
             {
-                SubscriptionName = "TestSubscription",
-                SubscriptionId = "00000000-0000-0000-0000-000000000000",
-                Certificate = new X509Certificate2()
+                Name = "TestSubscription",
+                Id = new Guid("00000000-0000-0000-0000-000000000000")
             };
         }
 
@@ -277,7 +279,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// that connects to the mock server.
         /// </summary>
         /// <param name="powershell">The powershell instance used for the test.</param>
-        public static WindowsAzureSubscription SetupUnitTestSubscription(PowerShell powershell)
+        public static AzureSubscription SetupUnitTestSubscription(PowerShell powershell)
         {
             UnitTestHelper.ImportAzureModule(powershell);
 
@@ -314,9 +316,9 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
             powershell.Streams.ClearStreams();
 
             PSObject subscriptionPsObject = subscriptionResult.Single();
-            WindowsAzureSubscription subscription =
-                subscriptionPsObject.BaseObject as WindowsAzureSubscription;
-            Assert.IsTrue(subscription != null, "Expecting a WindowsAzureSubscription object");
+            AzureSubscription subscription =
+                subscriptionPsObject.BaseObject as AzureSubscription;
+            Assert.IsTrue(subscription != null, "Expecting a AzureSubscription object");
 
             return subscription;
         }

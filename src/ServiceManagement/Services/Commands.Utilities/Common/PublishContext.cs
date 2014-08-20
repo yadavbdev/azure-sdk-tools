@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
     using Commands.Common.Properties;
@@ -66,9 +69,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             {
                 try
                 {
+                    ProfileClient client = new ProfileClient();
                     SubscriptionId =
-                        WindowsAzureProfile.Instance.Subscriptions.Where(s => s.SubscriptionName == settings.Subscription)
-                            .Select(s => s.SubscriptionId)
+                        client.Profile.Subscriptions.Values.Where(s => s.Name == settings.Subscription)
+                            .Select(s => s.Id.ToString())
                             .First();
                 }
                 catch (Exception)

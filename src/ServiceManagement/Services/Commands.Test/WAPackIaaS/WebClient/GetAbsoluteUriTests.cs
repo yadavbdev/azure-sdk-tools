@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,9 +30,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
         [TestInitialize]
         public void Initialize()
         {
-            var azureSub = new WindowsAzureSubscription();
-            azureSub.ServiceEndpoint = new Uri("https://localhost:8090/");
-            azureSub.SubscriptionId = Guid.NewGuid().ToString();
+            var azureSub = new AzureSubscription();
+            azureSub.Id = Guid.NewGuid();
             this.subscription = new Subscription(azureSub);
         }
 

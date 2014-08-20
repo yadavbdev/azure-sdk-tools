@@ -22,7 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
     /// <summary>
     /// This class provides the serialization for the
-    /// WindowsAzureProfile information to and from
+    /// AzureProfile information to and from
     /// the Powershell credentials directory.
     /// </summary>
     public class PowershellProfileStore : IProfileStore
@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         private readonly string settingsDirectory;
         private readonly string profileFileName;
 
-        public const string DefaultProfileName = "WindowsAzureProfile.xml";
+        public const string DefaultProfileName = "AzureProfile.xml";
         public const string TokenCacheFileName = "TokenCache.dat";
 
         private string FullProfilePath
@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// <param name="settingsDirectory">Directory to store / load information from.
         /// If null or blank, uses the current directory.</param>
         /// <param name="fileName">Filename to read from / write to. If null or
-        /// blank, uses the default WindowsAzureProfile.xml file.</param>
+        /// blank, uses the default AzureProfile.xml file.</param>
         public PowershellProfileStore(string settingsDirectory, string fileName)
         {
             if (string.IsNullOrEmpty(settingsDirectory))

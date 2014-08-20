@@ -27,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 {
     /// <summary>
     /// Implementation of the get-azuresubscription cmdlet that works against
-    /// the WindowsAzureProfile layer.
+    /// the AzureProfile layer.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSubscription", DefaultParameterSetName = "ByName")]
     [OutputType(typeof(AzureSubscription))]
@@ -165,8 +165,8 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     SubscriptionStatus = response.SubscriptionStatus.ToString(),
                     Name = subscription.Name,
                     Id = subscription.Id,
-                    ServiceEndpoint = environment.GetEndpoint(AzureEnvironment.Endpoint.ServiceEndpoint).ToString(),
-                    ResourceManagerEndpoint = environment.GetEndpoint(AzureEnvironment.Endpoint.ResourceManagerEndpoint).ToString(),
+                    ServiceEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint).ToString(),
+                    ResourceManagerEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManagerEndpoint).ToString(),
                     IsDefault = subscription.GetProperty(AzureSubscription.Property.Default) != null,
                     Certificate = WindowsAzureCertificate.FromThumbprint(subscription.GetProperty(AzureSubscription.Property.Thumbprint)),
                     CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount)

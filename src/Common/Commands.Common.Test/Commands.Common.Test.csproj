@@ -168,7 +168,6 @@
     <Compile Include="Common\RemoveAzurePublishSettings.cs" />
     <Compile Include="Common\SimpleServiceManagementAsyncResult.cs" />
     <Compile Include="Common\TestBase.cs" />
-    <Compile Include="Common\TestDirBuilder.cs" />
     <Compile Include="Common\ConversionUtilitiesTests.cs" />
     <Compile Include="Common\Testing.cs" />
     <Compile Include="Common\TestingTracingInterceptor.cs" />

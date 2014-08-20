@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
 
@@ -52,12 +54,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             javaScriptSerializer.MaxJsonLength = Int32.MaxValue;
-            File.WriteAllText(path, TryFormatJson(javaScriptSerializer.Serialize(data)));
+            FileUtilities.DataStore.WriteFile(path, TryFormatJson(javaScriptSerializer.Serialize(data)));
         }
 
         public static T DeserializeJsonFile<T>(string path)
         {
-            string json = File.ReadAllText(path);
+            string json = FileUtilities.DataStore.ReadFileAsText(path);
             JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
             javaScriptSerializer.MaxJsonLength = Int32.MaxValue;
             return javaScriptSerializer.Deserialize<T>(json);

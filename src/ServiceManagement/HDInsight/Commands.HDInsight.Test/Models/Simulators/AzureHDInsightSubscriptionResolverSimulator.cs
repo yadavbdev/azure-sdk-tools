@@ -12,36 +12,47 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Commands.Utilities.Common;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities;
-
     internal class AzureHDInsightSubscriptionResolverSimulator : IAzureHDInsightSubscriptionResolver
     {
-        private IEnumerable<WindowsAzureSubscription> knownSubscriptions;
+        private IEnumerable<AzureSubscription> knownSubscriptions;
 
         internal AzureHDInsightSubscriptionResolverSimulator()
         {
-            this.knownSubscriptions = new WindowsAzureSubscription[]
+            var certificate = new X509Certificate2(Convert.FromBase64String(IntegrationTestBase.TestCredentials.Certificate), string.Empty);
+            ProfileClient.DataStore.AddCertificate(certificate);
+
+            this.knownSubscriptions = new AzureSubscription[]
                 {
-                    new WindowsAzureSubscription()
+                    new AzureSubscription()
                         {
-                            Certificate = new X509Certificate2(Convert.FromBase64String(IntegrationTestBase.TestCredentials.Certificate), string.Empty),
-                            SubscriptionId = IntegrationTestBase.TestCredentials.SubscriptionId.ToString()
+                            Id = IntegrationTestBase.TestCredentials.SubscriptionId,
+                            Properties = new Dictionary<AzureSubscription.Property,string> { { AzureSubscription.Property.Thumbprint, certificate.Thumbprint } }
                         }, 
                 };
         }
 
-        public WindowsAzureSubscription ResolveSubscription(string subscription)
+        public AzureSubscription ResolveSubscription(string subscription)
         {
-            return this.knownSubscriptions.FirstOrDefault(s => s.SubscriptionId == subscription)
-                   ?? this.knownSubscriptions.FirstOrDefault(s => s.SubscriptionName == subscription);
+            Guid subId;
+            if (Guid.TryParse(subscription, out subId))
+            {
+                return this.knownSubscriptions.FirstOrDefault(s => s.Id == subId);
+            }
+            else
+            {
+                return this.knownSubscriptions.FirstOrDefault(s => s.Name == subscription);   
+            }
         }
     }
 }

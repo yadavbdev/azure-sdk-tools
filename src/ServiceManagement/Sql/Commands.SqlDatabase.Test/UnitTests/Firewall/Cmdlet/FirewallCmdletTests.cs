@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Firewall.Cmdlet
 {
     using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
@@ -45,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Firewall.Cm
             using (PowerShell powershell = PowerShell.Create())
             {
                 // Setup the subscription used for the test
-                WindowsAzureSubscription subscription =
+                AzureSubscription subscription =
                     UnitTestHelper.SetupUnitTestSubscription(powershell);
 
                 powershell.Runspace.SessionStateProxy.SetVariable(

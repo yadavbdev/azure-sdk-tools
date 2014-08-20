@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription);    
             }
 
-            Uri endpointUri = AzureSession.Environments[subscription.Environment].GetEndpoint(endpoint);
+            Uri endpointUri = AzureSession.Environments[subscription.Environment].GetEndpointAsUri(endpoint);
             return CreateClient<TClient>(creds, endpointUri);
         }
 

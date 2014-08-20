@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -36,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
         public Mock<Azure.Subscriptions.SubscriptionClient> CsmSubscriptionClientMock { get; private set; }
         public Mock<WindowsAzure.Subscriptions.SubscriptionClient> RdfeSubscriptionClientMock { get; private set; }
 
-        public ClientMocks(string subscriptionId)
+        public ClientMocks(Guid subscriptionId)
         {
             repository = new MockRepository(MockBehavior.Default) {DefaultValue = DefaultValue.Mock};
 
@@ -49,10 +50,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             CsmSubscriptionClientMock = repository.Create<Azure.Subscriptions.SubscriptionClient>(creds);
         }
 
-        private SubscriptionCloudCredentials CreateCredentials(string subscriptionId)
+        private SubscriptionCloudCredentials CreateCredentials(Guid subscriptionId)
         {
             var mockCreds = repository.Create<SubscriptionCloudCredentials>(MockBehavior.Loose);
-            mockCreds.SetupGet(c => c.SubscriptionId).Returns(subscriptionId);
+            mockCreds.SetupGet(c => c.SubscriptionId).Returns(subscriptionId.ToString());
             return mockCreds.Object;
         }
 

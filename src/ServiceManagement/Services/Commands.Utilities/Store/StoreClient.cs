@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Store
 {
     using Commands.Utilities.Common;
@@ -134,28 +137,23 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Store
         /// <summary>
         /// Creates new instance from the store client.
         /// </summary>
-        /// <param name="subscriptionId">The Microsoft Azure subscription id</param>
-        /// <param name="storeEndpointUri">The service management endpoint uri</param>
-        /// <param name="cert">The authentication certificate</param>
-        /// <param name="logger">The logger for http request/response</param>
-        /// <param name="serviceManagementChannel">The service management channel</param>
-        public StoreClient(WindowsAzureSubscription subscription)
+        /// <param name="subscription">The Microsoft Azure subscription</param>
+        public StoreClient(AzureSubscription subscription)
             : this(
                 subscription,
-                subscription.CreateClient<ComputeManagementClient>(),
-                subscription.CreateClient<StoreManagementClient>(),
+                AzureSession.ClientFactory.CreateClient<ComputeManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint),
+                AzureSession.ClientFactory.CreateClient<StoreManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint),
                 new MarketplaceClient(),
-                subscription.CreateClient<ManagementClient>()) { }
+                AzureSession.ClientFactory.CreateClient<ManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint)) { }
 
         public StoreClient(
-            WindowsAzureSubscription subscription,
+            AzureSubscription subscription,
             ComputeManagementClient compute,
             StoreManagementClient store,
             MarketplaceClient marketplace,
             ManagementClient management)
         {
-            Validate.ValidateStringIsNullOrEmpty(subscription.SubscriptionId, null, true);
-            this.subscriptionId = subscription.SubscriptionId;
+            this.subscriptionId = subscription.Id.ToString();
 
             computeClient = compute;
             storeClient = store;

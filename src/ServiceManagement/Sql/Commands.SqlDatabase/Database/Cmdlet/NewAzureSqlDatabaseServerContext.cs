@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Commands.Utilities.Common;
@@ -142,17 +145,19 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 
         #region Current Subscription Management
 
-        private WindowsAzureSubscription CurrentSubscription
+        private new AzureSubscription CurrentSubscription
         {
             get
             {
                 if (string.IsNullOrEmpty(SubscriptionName))
                 {
-                    return WindowsAzureProfile.Instance.CurrentSubscription;
+                    return AzureSession.CurrentSubscription;
                 }
-                return
-                    WindowsAzureProfile.Instance.Subscriptions.First(
-                        s => SubscriptionName == s.SubscriptionName);
+
+                ProfileClient client = new ProfileClient();
+
+                return client.Profile.Subscriptions.Values.First(
+                        s => SubscriptionName == s.Name);
             }
         }
 
@@ -219,7 +224,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// or <c>null</c> if an error occurred.</returns>
         internal ServerDataServiceCertAuth GetServerDataServiceByCertAuth(
             string serverName,
-            WindowsAzureSubscription subscription)
+            AzureSubscription subscription)
         {
             ServerDataServiceCertAuth context = null;
             SqlDatabaseCmdletBase.ValidateSubscription(subscription);
@@ -263,7 +268,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                 case FullyQualifiedServerNameWithCertAuthParamSet:
                 case ServerNameWithCertAuthParamSet:
                     // Get the current subscription data.
-                    WindowsAzureSubscription subscription = CurrentSubscription;
+                    AzureSubscription subscription = CurrentSubscription;
 
                     // Create a context using the subscription datat
                     return this.GetServerDataServiceByCertAuth(
@@ -319,7 +324,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                     // and append the azure database DNS suffix.
                     return new Uri(
                         Uri.UriSchemeHttps + Uri.SchemeDelimiter +
-                        this.ServerName + WindowsAzureProfile.Instance.CurrentSubscription.SqlDatabaseDnsSuffix);
+                        this.ServerName + AzureSession.CurrentEnvironment.GetEndpoint(AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix));
                 case FullyQualifiedServerNameWithSqlAuthParamSet:
                 case FullyQualifiedServerNameWithCertAuthParamSet:
                     // The fully qualified server name was specified, 

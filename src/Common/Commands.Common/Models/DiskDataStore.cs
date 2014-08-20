@@ -51,19 +51,84 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             File.Move(oldPath, newPath);
         }
 
+        public void CopyFile(string oldPath, string newPath)
+        {
+            File.Copy(oldPath, newPath, true);
+        }
+
         public bool FileExists(string path)
         {
             return File.Exists(path);
         }
 
+        public void DeleteFile(string path)
+        {
+            File.Delete(path);
+        }
+
+        public void DeleteDirectory(string dir)
+        {
+            Directory.Delete(dir, true);
+        }
+
+        public void EmptyDirectory(string dirPath)
+        {
+            foreach (var filePath in Directory.GetFiles(dirPath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
+        public string[] GetFiles(string sourceDirName)
+        {
+            return Directory.GetFiles(sourceDirName);
+        }
+
+        public string[] GetFiles(string startDirectory, string filePattern, SearchOption options)
+        {
+            return Directory.GetFiles(startDirectory, filePattern, options);
+        }
+
+        public FileAttributes GetFileAttributes(string path)
+        {
+            return File.GetAttributes(path);
+        }
+
         public X509Certificate2 GetCertificate(string thumbprint)
         {
-            return GeneralUtilities.GetCertificateFromStore(thumbprint);
+            if (thumbprint == null)
+            {
+                return null;
+            }
+            else
+            {
+                return GeneralUtilities.GetCertificateFromStore(thumbprint);
+            }
         }
 
         public void AddCertificate(X509Certificate2 cert)
         {
             GeneralUtilities.AddCertificateToStore(cert);
+        }
+
+        public bool DirectoryExists(string path)
+        {
+            return Directory.Exists(path);
+        }
+
+        public void CreateDirectory(string path)
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        public string[] GetDirectories(string sourceDirName)
+        {
+            return Directory.GetDirectories(sourceDirName);
+        }
+
+        public string[] GetDirectories(string startDirectory, string filePattern, SearchOption options)
+        {
+            return Directory.GetDirectories(startDirectory, filePattern, options);
         }
     }
 }

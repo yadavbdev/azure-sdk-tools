@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
     using Sync.Download;
@@ -80,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             pass = true;
             testStartTime = DateTime.Now;
-            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName);  
+            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount));  
 
             // Set the source blob
             blobHandle = Utilities.GetBlobHandle(vhdBlobLocation, storageAccountKey.Primary);            

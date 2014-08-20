@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.FunctionalTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.FunctionalTests
             // These dynamic data will be replaced with xxxxxxxxxx.
             string dynamicContentLine = File.ReadAllLines(fileName)[0];
             string[] dynamicContents = dynamicContentLine.Split('#');
-            string data = File.ReadAllText(fileName);
+            string data = FileUtilities.DataStore.ReadFileAsText(fileName);
 
             foreach (string dynamicContent in dynamicContents)
             {

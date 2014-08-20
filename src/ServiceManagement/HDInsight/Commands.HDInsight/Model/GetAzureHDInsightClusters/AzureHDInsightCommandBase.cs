@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
     using Framework.Core;
@@ -39,7 +41,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
         public string Subscription { get; set; }
 
-        public WindowsAzureSubscription CurrentSubscription { get; set; }
+        public AzureSubscription CurrentSubscription { get; set; }
 
         public virtual void Cancel()
         {

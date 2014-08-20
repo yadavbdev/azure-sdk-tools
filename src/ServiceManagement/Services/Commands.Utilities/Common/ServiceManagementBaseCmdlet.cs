@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using System;
@@ -49,22 +52,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public ManagementClient CreateClient()
         {
-            return this.CurrentSubscription.CreateClient<ManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
 
         public ComputeManagementClient CreateComputeClient()
         {
-            return this.CurrentSubscription.CreateClient<ComputeManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ComputeManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
 
         public StorageManagementClient CreateStorageClient()
         {
-            return this.CurrentSubscription.CreateClient<StorageManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<StorageManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
 
         public NetworkManagementClient CreateNetworkClient()
         {
-            return this.CurrentSubscription.CreateClient<NetworkManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<NetworkManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceEndpoint);
         }
 
         private void LogDebug(string message)

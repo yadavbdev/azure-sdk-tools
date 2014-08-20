@@ -12,11 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using WindowsAzure.Commands.Utilities.Common;
 
     internal interface IAzureHDInsightCommandBase
     {
@@ -26,6 +27,6 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
         Task EndProcessing();
 
-        WindowsAzureSubscription CurrentSubscription { get; set; }
+        AzureSubscription CurrentSubscription { get; set; }
     }
 }

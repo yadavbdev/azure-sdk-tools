@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService
 {
     using Commands.Utilities.Common;
@@ -47,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudService
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        public bool IsDNSAvailable(WindowsAzureSubscription subscription, string name)
+        public bool IsDNSAvailable(AzureSubscription subscription, string name)
         {
             EnsureCloudServiceClientInitialized(subscription);
             bool available = this.CloudServiceClient.CheckHostedServiceNameAvailability(name);
@@ -55,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudService
             return available;
         }
 
-        public bool IsStorageServiceAvailable(WindowsAzureSubscription subscription, string name)
+        public bool IsStorageServiceAvailable(AzureSubscription subscription, string name)
         {
             EnsureCloudServiceClientInitialized(subscription);
             bool available = this.CloudServiceClient.CheckStorageServiceAvailability(name);
@@ -72,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudService
             return result;
         }
 
-        private void EnsureCloudServiceClientInitialized(WindowsAzureSubscription subscription)
+        private void EnsureCloudServiceClientInitialized(AzureSubscription subscription)
         {
             this.CloudServiceClient = this.CloudServiceClient ?? new CloudServiceClient(
                 subscription,
@@ -109,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudService
             else
             {
                 ServiceBusClient = ServiceBusClient ?? new ServiceBusClientExtensions(CurrentSubscription);
-                IsServiceBusNamespaceAvailable(CurrentSubscription.SubscriptionId, Name);
+                IsServiceBusNamespaceAvailable(CurrentSubscription.Id.ToString(), Name);
             }
         }
 

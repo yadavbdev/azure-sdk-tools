@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
     using AutoMapper;
@@ -167,7 +169,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 
         public void NewAzureVMProcess()
         {
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
+            AzureSubscription currentSubscription = CurrentSubscription;
             CloudStorageAccount currentStorage = null;
             try
             {

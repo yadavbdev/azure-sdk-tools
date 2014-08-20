@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
     using Extensions;
@@ -186,7 +188,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
             if (string.Compare(ParameterSetName, "Upgrade", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 bool removePackage = false;
-                var storageName = CurrentSubscription.CurrentStorageAccountName;
+                var storageName = CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
 
                 Uri packageUrl = null;
                 if (Package.StartsWith(Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) ||

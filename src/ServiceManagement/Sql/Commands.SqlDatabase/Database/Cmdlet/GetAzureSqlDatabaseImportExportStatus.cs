@@ -11,6 +11,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.ImportExport;
@@ -172,7 +174,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 
                 var status = this.GetAzureSqlDatabaseImportExportStatusProcess(
                     serverName,
-                    serverName + WindowsAzureProfile.Instance.CurrentSubscription.SqlDatabaseDnsSuffix,
+                    serverName + AzureSession.CurrentEnvironment.GetEndpoint(Common.Models.AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix),
                     userName,
                     password,
                     requestId);

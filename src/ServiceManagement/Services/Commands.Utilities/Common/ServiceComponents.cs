@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
     using Commands.Common.Properties;
@@ -56,7 +58,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             catch (FileNotFoundException)
             {
                 // Try recreating the settings file
-                File.WriteAllText(paths.Settings, Resources.SettingsFileEmptyContent);
+                FileUtilities.DataStore.WriteFile(paths.Settings, Resources.SettingsFileEmptyContent);
             }
 
             Definition = XmlUtilities.DeserializeXmlFile<ServiceDefinition>(paths.Definition);

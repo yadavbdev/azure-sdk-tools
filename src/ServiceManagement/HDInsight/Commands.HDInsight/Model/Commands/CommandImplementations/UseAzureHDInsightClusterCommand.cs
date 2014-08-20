@@ -11,6 +11,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
     using CommandInterfaces;
@@ -31,7 +34,8 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
             IHDInsightClient client = this.GetClient();
             var cluster = await client.GetClusterAsync(this.Name);
             var connection = new AzureHDInsightClusterConnection();
-            connection.Credential = this.GetSubscriptionCertificateCredentials(this.CurrentSubscription);
+            ProfileClient profileClient = new ProfileClient();
+            connection.Credential = this.GetSubscriptionCertificateCredentials(this.CurrentSubscription, profileClient.GetAzureEnvironmentOrDefault(this.CurrentSubscription.Name));
 
             if (cluster == null)
             {

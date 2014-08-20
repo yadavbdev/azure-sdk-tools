@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
@@ -70,9 +73,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 CommandRuntime = mockRuntime,
                 Name = websiteName,
                 Location = webspaceName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = clientMock.Object
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription {Id = new Guid(base.subscriptionId)}, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
             Assert.AreEqual(websiteName, createdSiteName);
@@ -116,9 +119,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 CommandRuntime = mockRuntime,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = clientMock.Object
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
             Assert.IsTrue(created);
@@ -159,10 +162,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 CommandRuntime = mockRuntime,
                 Name = websiteName,
                 Location = webspaceName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = clientMock.Object,
                 Slot = slot
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
             clientMock.Verify(c => c.CreateWebsite(webspaceName, It.IsAny<SiteWithWebSpace>(), slot), Times.Once());

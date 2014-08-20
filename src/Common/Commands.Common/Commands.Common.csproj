@@ -133,7 +133,9 @@
     <Compile Include="Authentication\AccessTokenCredential.cs" />
     <Compile Include="Authentication\UserCredentials.cs" />
     <Compile Include="Authentication\AdalConfiguration.cs" />
-    <Compile Include="Authentication\ProtectedFileTokenCache.cs" />
+    <Compile Include="Authentication\ProtectedFileTokenCache.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Authentication\AdalTokenProvider.cs" />
     <Compile Include="Authentication\ConsoleParentWindow.cs" />
     <Compile Include="Authentication\IAccessToken.cs" />
@@ -178,9 +180,6 @@
     <Compile Include="Common\Tasks.cs" />
     <Compile Include="Common\Validate.cs" />
     <Compile Include="Common\WindowsAzureCertificate.cs" />
-    <Compile Include="Common\WindowsAzureEnvironment.cs" />
-    <Compile Include="Common\WindowsAzureProfile.cs" />
-    <Compile Include="Common\WindowsAzureSubscription.cs" />
     <Compile Include="Interfaces\IProfileSerializer.cs" />
     <Compile Include="Interfaces\IClientFactory.cs" />
     <Compile Include="Interfaces\IAuthenticationFactory.cs" />

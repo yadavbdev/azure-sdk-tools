@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -319,8 +322,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             privateConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PrivateConfig.xml");
             publicConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PublicConfig.xml");
-            privateConfiguration = File.ReadAllText(privateConfigPath);
-            publicConfiguration = File.ReadAllText(publicConfigPath);
+            privateConfiguration = FileUtilities.DataStore.ReadFileAsText(privateConfigPath);
+            publicConfiguration = FileUtilities.DataStore.ReadFileAsText(publicConfigPath);
             
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(publicConfiguration);

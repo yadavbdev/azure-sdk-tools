@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
     using Helpers;
@@ -208,7 +211,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
             if (!string.IsNullOrEmpty(this.PublicConfigPath))
             {
-                this.PublicConfiguration = File.ReadAllText(this.PublicConfigPath);
+                this.PublicConfiguration = FileUtilities.DataStore.ReadFileAsText(this.PublicConfigPath);
             }
 
             if (!string.IsNullOrEmpty(this.PublicConfiguration))
@@ -224,7 +227,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
             if (!string.IsNullOrEmpty(this.PrivateConfigPath))
             {
-                this.PrivateConfiguration = File.ReadAllText(this.PrivateConfigPath);
+                this.PrivateConfiguration = FileUtilities.DataStore.ReadFileAsText(this.PrivateConfigPath);
             }
 
             if (!string.IsNullOrEmpty(this.PrivateConfiguration))

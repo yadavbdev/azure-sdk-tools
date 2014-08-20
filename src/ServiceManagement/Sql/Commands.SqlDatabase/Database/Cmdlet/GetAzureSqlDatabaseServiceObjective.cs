@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -96,7 +98,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                     break;
 
                 case ByServerName:
-                    context = ServerDataServiceCertAuth.Create(this.ServerName, WindowsAzureProfile.Instance.CurrentSubscription);
+                    context = ServerDataServiceCertAuth.Create(this.ServerName, AzureSession.CurrentSubscription);
                     break;
 
                 default:

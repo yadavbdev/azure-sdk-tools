@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             {
                 string dest = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory, profile);
                 powerShell.AddScript(string.Format("Copy-Item -Path '{0}' -Destination '{1}' -Force", profileFile, dest));
-                powerShell.AddScript("[Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.Load()");
+                powerShell.AddScript("[Microsoft.WindowsAzure.Commands.Utilities.Common.AzureProfile]::Instance.Load()");
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
 using Microsoft.WindowsAzure.Management.MediaServices;
@@ -258,13 +259,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
 
         #region Helper  Methods
 
-        private static WindowsAzureSubscription GetWindowsAzureSubscription()
+        private static AzureSubscription GetWindowsAzureSubscription()
         {
-            WindowsAzureSubscription windowsAzureSubscription = new WindowsAzureSubscription
+            AzureSubscription windowsAzureSubscription = new AzureSubscription
             {
-                SubscriptionId = SubscriptionId,
-                Certificate = new X509Certificate2(new byte[] {}),
-                ServiceEndpoint = new Uri("http://someValue")
+                Id = new Guid(SubscriptionId),
             };
             return windowsAzureSubscription;
         }

@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
@@ -41,9 +44,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = new MockCommandRuntime(),
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
 
             startAzureWebsiteCommand.ExecuteCmdlet();
 
@@ -65,10 +68,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = new MockCommandRuntime(),
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 Slot = slot
             };
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
 
             startAzureWebsiteCommand.ExecuteCmdlet();
 
