@@ -19,62 +19,42 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
     internal static class ActiveDirectoryClientExtensions
     {
-        private const string GroupType = "Group";
-
-        private const string UserType = "User";
-
-        public static PSADUser ToPSADUser(this User user)
+        public static PSADObject ToPSADObject(this User user)
         {
-            return new PSADUser()
+            return new PSADObject()
             {
                 DisplayName = user.DisplayName,
                 Id = new Guid(user.ObjectId),
-                Principal = user.UserPrincipalName
+                Email = user.UserPrincipalName
             };
         }
 
-        public static PSADGroup ToPSADGroup(this Group group)
+        public static PSADObject ToPSADObject(this Group group)
         {
-            return new PSADGroup()
+            return new PSADObject()
             {
                 DisplayName = group.DisplayName,
                 Id = new Guid(group.ObjectId)
             };
         }
 
-        public static PSADUser ToPSADUser(this AADObject obj)
+        public static PSADObject ToPSADObject(this AADObject obj)
         {
-            return new PSADUser()
+            return new PSADObject()
             {
                 DisplayName = obj.DisplayName,
                 Id = new Guid(obj.ObjectId),
-                Principal = obj.UserPrincipalName
+                Email = obj.UserPrincipalName
             };
         }
 
-        public static PSADGroup ToPSADGroup(this AADObject obj)
+        public static PSADObject ToPSADGroup(this AADObject obj)
         {
-            return new PSADGroup()
+            return new PSADObject()
             {
                 DisplayName = obj.DisplayName,
                 Id = new Guid(obj.ObjectId)
             };
-        }
-
-        public static PSADObject ToPSADObject(this AADObject obj)
-        {
-            if (obj.ObjectType == GroupType)
-            {
-                return obj.ToPSADGroup();
-            }
-            else if (obj.ObjectType == UserType)
-            {
-                return obj.ToPSADUser();
-            }
-            else
-            {
-                throw new InvalidCastException();
-            }
         }
     }
 }

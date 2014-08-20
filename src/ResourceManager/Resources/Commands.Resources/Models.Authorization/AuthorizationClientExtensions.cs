@@ -42,11 +42,12 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         public static PSRoleAssignment ToPSRoleAssignment(this RoleAssignment role, AuthorizationClient policyClient, ActiveDirectoryClient activeDirectoryClient)
         {
             PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.Properties.RoleDefinitionId);
+            PSADObject adObject = activeDirectoryClient.GetADObject(new ADObjectFilterOptions { Id = role.Properties.PrincipalId.ToString() }) ?? new PSADObject();
             return new PSRoleAssignment()
             {
                 Id = role.Id,
-                Principal = activeDirectoryClient.GetUser(
-                    new ADObjectFilterOptions() { Id = role.Properties.PrincipalId.ToString() }).Principal,
+                Email = adObject.Email,
+                DisplayName = adObject.DisplayName,
                 Actions = roleDefinition.Actions,
                 NoActions = roleDefinition.NoActions,
                 RoleDefinitionName = roleDefinition.Name,

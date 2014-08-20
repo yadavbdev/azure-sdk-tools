@@ -20,7 +20,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
     {
         public string Id { get; set; }
 
-        public string Principal { get; set; }
+        public string Email { get; set; }
+
+        public string DisplayName { get; set; }
 
         public string RoleDefinitionName { get; set; }
 

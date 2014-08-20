@@ -152,8 +152,6 @@
     <Compile Include="Models.ActiveDirectory\ADObjectFilterOptions.cs" />
     <Compile Include="Models.ActiveDirectory\ParameterSet.cs" />
     <Compile Include="Models.ActiveDirectory\PSADObject.cs" />
-    <Compile Include="Models.ActiveDirectory\PSADGroup.cs" />
-    <Compile Include="Models.ActiveDirectory\PSADUser.cs" />
     <Compile Include="Models.Authorization\FilterRoleAssignmentsOptions.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryClient.cs" />
     <Compile Include="Models.Authorization\AuthorizationClientExtensions.cs" />
