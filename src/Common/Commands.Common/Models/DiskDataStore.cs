@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public void CopyFile(string oldPath, string newPath)
         {
-            File.Copy(oldPath, newPath);
+            File.Copy(oldPath, newPath, true);
         }
 
         public bool FileExists(string path)
@@ -66,9 +66,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             File.Delete(path);
         }
 
-        public void DeleteDirectory(string dir, bool recursive)
+        public void DeleteDirectory(string dir)
         {
-            Directory.Delete(dir, recursive);
+            Directory.Delete(dir, true);
         }
 
         public void EmptyDirectory(string dirPath)

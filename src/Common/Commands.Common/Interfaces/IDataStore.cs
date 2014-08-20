@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Interfaces
 
         void DeleteFile(string path);
 
-        void DeleteDirectory(string dir, bool recursive);
+        void DeleteDirectory(string dir);
 
         void EmptyDirectory(string dirPath);
 

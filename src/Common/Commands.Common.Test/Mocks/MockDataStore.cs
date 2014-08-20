@@ -127,7 +127,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             }
         }
 
-        public void DeleteDirectory(string dir, bool recursive)
+        public void DeleteDirectory(string dir)
         {
             foreach (var key in VirtualStore.Keys.ToArray())
             {

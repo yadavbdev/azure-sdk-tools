@@ -255,7 +255,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             if (FileUtilities.DataStore.DirectoryExists(dir))
             {
-                FileUtilities.DataStore.DeleteDirectory(dir, true);
+                FileUtilities.DataStore.DeleteDirectory(dir);
             }
 
             FileUtilities.DataStore.CreateDirectory(dir);
