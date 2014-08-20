@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.Resources
     /// <summary>
     /// Filters role assignments
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureRoleAssignment"), OutputType(typeof(List<PSRoleAssignment>))]
+    [Cmdlet(VerbsCommon.Get, "AzureRoleAssignment", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSRoleAssignment>))]
     public class GetAzureRoleAssignmentCommand : ResourcesBaseCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DisplayName,
@@ -116,8 +116,37 @@ namespace Microsoft.Azure.Commands.Resources
         [ValidateNotNullOrEmpty]
         public string ParentResource { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Role to assign the principals with.")]
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DisplayName,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Email,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Scope,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ScopeWithDisplayName,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ScopeWithEmail,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ScopeWithObjectId,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroup,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithDisplayName,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithEmail,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceGroupWithObjectId,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Resource,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithDisplayName,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithEmail,
+            HelpMessage = "Role to assign the principals with.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ResourceWithObjectId,
             HelpMessage = "Role to assign the principals with.")]
         [ValidateNotNullOrEmpty]
         public string RoleDefinitionName { get; set; }
