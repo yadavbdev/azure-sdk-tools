@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
     using Commands.Common.Test.Properties;
@@ -29,7 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 string path = files.CreateEmptyFile("Scaffold.xml");
-                File.WriteAllText(path, Resources.ValidScaffoldXml);
+                ProfileClient.DataStore.WriteFile(path, Resources.ValidScaffoldXml);
 
                 Scaffold scaffold = Scaffold.Parse(path);
 

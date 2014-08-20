@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
@@ -331,7 +332,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
 
         private static void AssertWebConfig(string webCloudConfigPath)
         {
-            string webCloudCloudConfigContents = File.ReadAllText(webCloudConfigPath);
+            string webCloudCloudConfigContents = ProfileClient.DataStore.ReadFileAsText(webCloudConfigPath);
             Assert.IsTrue(webCloudCloudConfigContents.Contains("configSections"));
             Assert.IsTrue(webCloudCloudConfigContents.Contains("dataCacheClients"));
         }

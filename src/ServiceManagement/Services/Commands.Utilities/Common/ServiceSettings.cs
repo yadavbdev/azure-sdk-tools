@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
     using Commands.Common.Properties;
@@ -136,7 +138,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         {
             Validate.ValidateFileFull(path, Resources.ServiceSettings);
 
-            string text = File.ReadAllText(path);
+            string text = ProfileClient.DataStore.ReadFileAsText(path);
             ServiceSettings settings = new JavaScriptSerializer().Deserialize<ServiceSettings>(text);
             settings._shouldValidate = true;
             
@@ -358,7 +360,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             Validate.ValidateStringIsNullOrEmpty(path, Resources.ServiceSettings);
             Validate.ValidateDirectoryFull(Path.GetDirectoryName(path), Resources.ServiceSettings);
 
-            File.WriteAllText(path, new JavaScriptSerializer().Serialize(this));
+            ProfileClient.DataStore.WriteFile(path, new JavaScriptSerializer().Serialize(this));
         }
         
         public override bool Equals(object obj)

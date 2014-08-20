@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
@@ -24,15 +26,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     {
         private static string FindServiceRootDirectory(string path)
         {
-            if (Directory.GetFiles(path, Resources.ServiceDefinitionFileName).Length == 1)
+            if (ProfileClient.DataStore.GetFiles(path, Resources.ServiceDefinitionFileName, SearchOption.TopDirectoryOnly).Length == 1)
             {
                 return path;
             }
-            else if (Directory.GetFiles(path, "*.sln").Length == 1)
+            else if (ProfileClient.DataStore.GetFiles(path, "*.sln", SearchOption.TopDirectoryOnly).Length == 1)
             {
-                foreach (string dirName in Directory.GetDirectories(path))
+                foreach (string dirName in ProfileClient.DataStore.GetDirectories(path))
                 {
-                    if (Directory.GetFiles(dirName, Resources.ServiceDefinitionFileName).Length == 1)
+                    if (ProfileClient.DataStore.GetFiles(dirName, Resources.ServiceDefinitionFileName, SearchOption.TopDirectoryOnly).Length == 1)
                     {
                         return dirName;
                     }
@@ -130,7 +132,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 {
                     string roleDirectory = Path.Combine(service.Paths.RolesPath, role.name);
 
-                    if (!Directory.Exists(roleDirectory))
+                    if (!ProfileClient.DataStore.DirectoryExists(roleDirectory))
                     {
                         throw new InvalidOperationException(Resources.CannotFindServiceRoot);
                     }

@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using Commands.Common.Properties;
@@ -32,7 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             T item = default(T);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            using (TextReader reader = new StreamReader(fileName, true))
+            using (TextReader reader = new StreamReader(ProfileClient.DataStore.ReadFileAsStream(fileName)))
             {
                 try { item = (T)xmlSerializer.Deserialize(reader); }
                 catch
@@ -57,11 +59,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             Validate.ValidateStringIsNullOrEmpty(fileName, String.Empty);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            Encoding encoding = FileUtilities.GetFileEncoding(fileName);
-            using (TextWriter writer = new StreamWriter(new FileStream(fileName, FileMode.Create), encoding))
+            StringBuilder sBuilder = new StringBuilder();
+            using (StringWriter writer = new StringWriter(sBuilder))
             {
                 xmlSerializer.Serialize(writer, obj);
             }
+            ProfileClient.DataStore.WriteFile(fileName, sBuilder.ToString());
         }
 
         public static string SerializeXmlString<T>(T obj)

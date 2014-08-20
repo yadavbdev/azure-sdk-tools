@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
     using Commands.Common.Properties;
@@ -91,7 +93,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public static void ValidateFileExists(string filePath, string exceptionMessage)
         {
-            if (!File.Exists(filePath))
+            if (!ProfileClient.DataStore.FileExists(filePath))
             {
                 throw new FileNotFoundException(exceptionMessage);
             }
@@ -101,7 +103,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             string msg = string.Format(Resources.PathDoesNotExist, directory);
 
-            if (!Directory.Exists(directory))
+            if (!ProfileClient.DataStore.DirectoryExists(directory))
             {
                 if (!string.IsNullOrEmpty(exceptionMessage))
                 {

@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
     using System;
@@ -37,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         public TestDirBuilder AddFile(string sourceFileName, string destFileName)
         {
             string filePath = Path.Combine(directoryName, destFileName);
-            File.WriteAllText(filePath, File.ReadAllText(sourceFileName));
+            ProfileClient.DataStore.WriteFile(filePath, ProfileClient.DataStore.ReadFileAsText(sourceFileName));
             fileNames.Add(destFileName);
             filePaths.Add(filePath);
             return this;

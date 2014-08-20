@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 }
             }
 
-            Action saveFile = () => File.WriteAllText(finalOutputPath.ToString(), contents);
+            Action saveFile = () => ProfileClient.DataStore.WriteFile(finalOutputPath.ToString(), contents);
 
             if (File.Exists(finalOutputPath.ToString()) && confirmAction != null)
             {
