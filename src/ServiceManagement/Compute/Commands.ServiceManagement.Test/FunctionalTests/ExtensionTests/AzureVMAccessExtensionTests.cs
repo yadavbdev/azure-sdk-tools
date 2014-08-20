@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ExtensionTests
 {
@@ -201,8 +202,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             privateConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PrivateConfig.xml");
             publicConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PublicConfig.xml");
-            privateConfiguration = ProfileClient.DataStore.ReadFileAsText(privateConfigPath);
-            publicConfiguration = ProfileClient.DataStore.ReadFileAsText(publicConfigPath);
+            privateConfiguration = FileUtilities.DataStore.ReadFileAsText(privateConfigPath);
+            publicConfiguration = FileUtilities.DataStore.ReadFileAsText(publicConfigPath);
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(publicConfiguration);

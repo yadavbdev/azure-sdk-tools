@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
@@ -31,7 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 string path = files.CreateEmptyFile("Scaffold.xml");
-                ProfileClient.DataStore.WriteFile(path, Resources.ValidScaffoldXml);
+                FileUtilities.DataStore.WriteFile(path, Resources.ValidScaffoldXml);
 
                 Scaffold scaffold = Scaffold.Parse(path);
 

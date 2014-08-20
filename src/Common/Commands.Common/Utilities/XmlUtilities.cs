@@ -34,7 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             T item = default(T);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            using (TextReader reader = new StreamReader(ProfileClient.DataStore.ReadFileAsStream(fileName)))
+            using (TextReader reader = new StreamReader(FileUtilities.DataStore.ReadFileAsStream(fileName)))
             {
                 try { item = (T)xmlSerializer.Deserialize(reader); }
                 catch
@@ -64,7 +64,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 xmlSerializer.Serialize(writer, obj);
             }
-            ProfileClient.DataStore.WriteFile(fileName, sBuilder.ToString());
+            FileUtilities.DataStore.WriteFile(fileName, sBuilder.ToString());
         }
 
         public static string SerializeXmlString<T>(T obj)

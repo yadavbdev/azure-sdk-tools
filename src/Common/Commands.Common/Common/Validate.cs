@@ -93,7 +93,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public static void ValidateFileExists(string filePath, string exceptionMessage)
         {
-            if (!ProfileClient.DataStore.FileExists(filePath))
+            if (!FileUtilities.DataStore.FileExists(filePath))
             {
                 throw new FileNotFoundException(exceptionMessage);
             }
@@ -103,7 +103,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             string msg = string.Format(Resources.PathDoesNotExist, directory);
 
-            if (!ProfileClient.DataStore.DirectoryExists(directory))
+            if (!FileUtilities.DataStore.DirectoryExists(directory))
             {
                 if (!string.IsNullOrEmpty(exceptionMessage))
                 {

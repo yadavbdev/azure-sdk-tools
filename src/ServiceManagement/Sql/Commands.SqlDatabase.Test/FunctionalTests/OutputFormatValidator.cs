@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.FunctionalTests
 {
@@ -37,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.FunctionalTests
             // These dynamic data will be replaced with xxxxxxxxxx.
             string dynamicContentLine = File.ReadAllLines(fileName)[0];
             string[] dynamicContents = dynamicContentLine.Split('#');
-            string data = ProfileClient.DataStore.ReadFileAsText(fileName);
+            string data = FileUtilities.DataStore.ReadFileAsText(fileName);
 
             foreach (string dynamicContent in dynamicContents)
             {

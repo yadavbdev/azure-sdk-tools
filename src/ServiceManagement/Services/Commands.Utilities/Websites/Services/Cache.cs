@@ -77,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 }
 
                 JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-                List<Site> sites = javaScriptSerializer.Deserialize<List<Site>>(ProfileClient.DataStore.ReadFileAsText(sitesFile));
+                List<Site> sites = javaScriptSerializer.Deserialize<List<Site>>(FileUtilities.DataStore.ReadFileAsText(sitesFile));
                 return new Sites(sites);
             }
             catch
@@ -96,7 +96,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 
                 // Make sure path exists
                 Directory.CreateDirectory(GlobalPathInfo.GlobalSettingsDirectory);
-                ProfileClient.DataStore.WriteFile(sitesFile, javaScriptSerializer.Serialize(sites));
+                FileUtilities.DataStore.WriteFile(sitesFile, javaScriptSerializer.Serialize(sites));
             }
             catch
             {

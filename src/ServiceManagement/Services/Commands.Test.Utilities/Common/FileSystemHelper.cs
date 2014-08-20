@@ -114,10 +114,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 
             // Set the directory and create it if necessary.
             RootPath = rootPath;
-            if (!ProfileClient.DataStore.DirectoryExists(rootPath))
+            if (!FileUtilities.DataStore.DirectoryExists(rootPath))
             {
                 Log("Creating directory {0}", rootPath);
-                ProfileClient.DataStore.CreateDirectory(rootPath);
+                FileUtilities.DataStore.CreateDirectory(rootPath);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
                     }
 
                     Log("Deleting directory {0}", RootPath);
-                    ProfileClient.DataStore.EmptyDirectory(RootPath);
+                    FileUtilities.DataStore.DeleteDirectory(RootPath, true);
 
                     DisposeWatcher();
 
@@ -238,10 +238,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(!string.IsNullOrEmpty(relativePath));
 
             string path = Path.Combine(RootPath, relativePath);
-            if (!ProfileClient.DataStore.DirectoryExists(path))
+            if (!FileUtilities.DataStore.DirectoryExists(path))
             {
                 Log("Creating directory {0}", path);
-                ProfileClient.DataStore.CreateDirectory(path);
+                FileUtilities.DataStore.CreateDirectory(path);
             }
 
             return path;
@@ -257,10 +257,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(!string.IsNullOrEmpty(relativePath));
 
             string path = Path.Combine(RootPath, relativePath);
-            if (!ProfileClient.DataStore.FileExists(path))
+            if (!FileUtilities.DataStore.FileExists(path))
             {
                 Log("Creating empty file {0}", path);
-                ProfileClient.DataStore.WriteFile(path, "");
+                FileUtilities.DataStore.WriteFile(path, "");
             }
 
             return path;
@@ -306,21 +306,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         /// <returns>Directory created for the service.</returns>
         public string CreateNewService(string serviceName)
         {
-            foreach (var file in Directory.GetFiles(FileUtilities.GetAssemblyDirectory(), "*", SearchOption.AllDirectories))
-            {
-                if (!file.EndsWith(".dll"))
-                {
-                    ProfileClient.DataStore.WriteFile(file, File.ReadAllText(file));
-                }
-                else
-                {
-                    ProfileClient.DataStore.WriteFile(file, "");
-                }
-            }
             CloudServiceProject newService = new CloudServiceProject(RootPath, serviceName, FileUtilities.GetContentFilePath("Services"));
             string path = Path.Combine(RootPath, serviceName);
             _previousDirectory = Environment.CurrentDirectory;
-            //Environment.CurrentDirectory = path;
+            Environment.CurrentDirectory = path;
 
             return path;
         }
@@ -329,14 +318,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         {
             string serviceName = packageName;
             package = Path.Combine(RootPath, packageName + ".cspkg");
-            ProfileClient.DataStore.WriteFile(package, "does not matter");
+            FileUtilities.DataStore.WriteFile(package, "does not matter");
             configuration = Path.Combine(RootPath, "ServiceConfiguration.Cloud.cscfg");
             string template = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" 
                 + Environment.NewLine
                 + "<ServiceConfiguration serviceName=\"" + serviceName + "\" " 
                 + "xmlns=\"http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration\" " 
                 + "osFamily=\"2\" osVersion=\"*\" />";
-            ProfileClient.DataStore.WriteFile(configuration, template);
+            FileUtilities.DataStore.WriteFile(configuration, template);
             _previousDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = RootPath;
         }

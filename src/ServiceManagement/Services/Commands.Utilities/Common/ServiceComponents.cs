@@ -58,7 +58,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             catch (FileNotFoundException)
             {
                 // Try recreating the settings file
-                ProfileClient.DataStore.WriteFile(paths.Settings, Resources.SettingsFileEmptyContent);
+                FileUtilities.DataStore.WriteFile(paths.Settings, Resources.SettingsFileEmptyContent);
             }
 
             Definition = XmlUtilities.DeserializeXmlFile<ServiceDefinition>(paths.Definition);

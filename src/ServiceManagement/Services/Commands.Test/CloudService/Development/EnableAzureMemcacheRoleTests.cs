@@ -332,7 +332,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
 
         private static void AssertWebConfig(string webCloudConfigPath)
         {
-            string webCloudCloudConfigContents = ProfileClient.DataStore.ReadFileAsText(webCloudConfigPath);
+            string webCloudCloudConfigContents = FileUtilities.DataStore.ReadFileAsText(webCloudConfigPath);
             Assert.IsTrue(webCloudCloudConfigContents.Contains("configSections"));
             Assert.IsTrue(webCloudCloudConfigContents.Contains("dataCacheClients"));
         }

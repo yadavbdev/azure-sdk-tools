@@ -20,6 +20,7 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 {
@@ -34,11 +35,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 
         public static void ReplaceParameterRule(string path, Dictionary<string, object> parameters)
         {
-            string contents = ProfileClient.DataStore.ReadFileAsText(path);
+            string contents = FileUtilities.DataStore.ReadFileAsText(path);
 
             contents = ReplaceParameter(contents, parameters);
 
-            ProfileClient.DataStore.WriteFile(path, contents);
+            FileUtilities.DataStore.WriteFile(path, contents);
         }
 
         public static string ReplaceParameter(string text, Dictionary<string, object> parameters)
@@ -90,9 +91,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
                     }
 
                     tempPath = Path.Combine(destPath, tempPath);
-                    ProfileClient.DataStore.CreateDirectory(Path.GetDirectoryName(tempPath));
+                    FileUtilities.DataStore.CreateDirectory(Path.GetDirectoryName(tempPath));
 
-                    ProfileClient.DataStore.CopyFile(path, tempPath);
+                    FileUtilities.DataStore.CopyFile(path, tempPath);
 
                     foreach (ScaffoldRule rule in file.Rules)
                     {
@@ -101,7 +102,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 
                     if (!file.Copy)
                     {
-                        ProfileClient.DataStore.DeleteFile(tempPath);
+                        FileUtilities.DataStore.DeleteFile(tempPath);
                     }
                 }
             }
@@ -112,7 +113,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
             List<string> paths = new List<string>();
             if (!string.IsNullOrEmpty(file.PathExpression))
             {
-                foreach (string fullPath in ProfileClient.DataStore.GetFiles(sourcePath, "*", SearchOption.AllDirectories))
+                foreach (string fullPath in FileUtilities.DataStore.GetFiles(sourcePath, "*", SearchOption.AllDirectories))
                 {
                     string relativePath = GetRelativePath(sourcePath, fullPath);
                     if (Regex.IsMatch(relativePath, file.PathExpression))
@@ -137,7 +138,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 
         public static Scaffold Parse(string path)
         {
-            XDocument document = XDocument.Parse(ProfileClient.DataStore.ReadFileAsText(path));
+            XDocument document = XDocument.Parse(FileUtilities.DataStore.ReadFileAsText(path));
             Scaffold scaffold = new Scaffold();
 
             foreach (XElement fileElement in document.Root.Elements(XName.Get("ScaffoldFile")))

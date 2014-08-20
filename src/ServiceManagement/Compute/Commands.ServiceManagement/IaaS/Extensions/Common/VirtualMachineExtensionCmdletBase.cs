@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
@@ -210,7 +211,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
             if (!string.IsNullOrEmpty(this.PublicConfigPath))
             {
-                this.PublicConfiguration = ProfileClient.DataStore.ReadFileAsText(this.PublicConfigPath);
+                this.PublicConfiguration = FileUtilities.DataStore.ReadFileAsText(this.PublicConfigPath);
             }
 
             if (!string.IsNullOrEmpty(this.PublicConfiguration))
@@ -226,7 +227,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
             if (!string.IsNullOrEmpty(this.PrivateConfigPath))
             {
-                this.PrivateConfiguration = ProfileClient.DataStore.ReadFileAsText(this.PrivateConfigPath);
+                this.PrivateConfiguration = FileUtilities.DataStore.ReadFileAsText(this.PrivateConfigPath);
             }
 
             if (!string.IsNullOrEmpty(this.PrivateConfiguration))

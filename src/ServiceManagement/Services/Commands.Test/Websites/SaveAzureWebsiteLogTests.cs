@@ -92,7 +92,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test", ProfileClient.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
+            Assert.AreEqual("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test with no extension", ProfileClient.DataStore.ReadFileAsText(expectedOutput));
+            Assert.AreEqual("test with no extension", FileUtilities.DataStore.ReadFileAsText(expectedOutput));
         }
 
         [TestMethod]
@@ -144,7 +144,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test", ProfileClient.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
+            Assert.AreEqual("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
         }
     }
 }

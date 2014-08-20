@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
@@ -35,10 +36,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             string fileName = Path.Combine(directoryPath, Resources.PackageJsonFileName);
             if (!File.Exists(fileName))
             {
-                ProfileClient.DataStore.WriteFile(fileName, string.Format(Resources.PackageJsonDefaultFile, applicationName));
+                FileUtilities.DataStore.WriteFile(fileName, string.Format(Resources.PackageJsonDefaultFile, applicationName));
             }
 
-            return ProfileClient.DataStore.FileExists(fileName);
+            return FileUtilities.DataStore.FileExists(fileName);
         }
 
         /// <summary>
