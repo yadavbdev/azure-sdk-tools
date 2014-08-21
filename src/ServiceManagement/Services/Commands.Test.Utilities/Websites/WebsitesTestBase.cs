@@ -22,7 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Websites
     [TestClass]
     public class WebsitesTestBase : TestBase
     {
-        protected string subscriptionId = "foo";
+        protected string subscriptionId = "035B9E16-BA8E-40A3-BEEA-4998F452C203";
 
         [TestInitialize]
         public virtual void SetupTest()

@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
@@ -43,6 +44,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 CommandRuntime = mockCommandRuntime,
                 Client = client.Object
             };
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
         }
 
         [TestMethod]

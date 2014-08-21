@@ -56,7 +56,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             settings = ServiceSettingsTestData.Instance.Data[ServiceSettingsState.Default];
             ProfileClient.DataStore = new MockDataStore();
             ProfileClient client = new ProfileClient();
+            ProfileClient.DataStore.WriteFile(Data.ValidPublishSettings.First(),
+                File.ReadAllText(Data.ValidPublishSettings.First()));
             client.ImportPublishSettings(Data.ValidPublishSettings.First());
+            client.Profile.Save();
         }
 
         [TestCleanup()]

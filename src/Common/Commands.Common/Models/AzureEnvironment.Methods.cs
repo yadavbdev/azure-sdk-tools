@@ -124,7 +124,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
         {
             if (Endpoints.ContainsKey(endpoint))
             {
-                new Uri(Endpoints[endpoint]);
+                return new Uri(Endpoints[endpoint]);
             }
 
             return null;

@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
     [TestClass]
     public class GetAzureMediaServicesTests : TestBase
     {
-        protected string SubscriptionId = "foo";
+        protected string SubscriptionId = "DE8C2681-0BCD-47DB-A8A6-A103D2D4A1B9";
 
         [TestInitialize]
         public virtual void SetupTest()

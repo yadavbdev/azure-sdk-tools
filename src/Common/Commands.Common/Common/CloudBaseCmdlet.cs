@@ -34,10 +34,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     {
         private Binding _serviceBinding;
 
-        public string CurrentServiceEndpoint { get; set; }
-
-        public string CurrentResourceManagerEndpoint { get; set; }
-
         public Binding ServiceBinding
         {
             get
