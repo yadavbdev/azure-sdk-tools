@@ -18,6 +18,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
     using Microsoft.Azure.Commands.Automation.Properties;
     using Microsoft.Azure.Management.Automation;
     using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Newtonsoft.Json;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -888,7 +889,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
                         new AutomationManagement.Models.NameValuePair
                         {
                             Name = runbookParameter.Name,
-                            Value = paramValue.ToString()
+                            Value = JsonConvert.SerializeObject(paramValue, new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat })
                         });
                 }
                 else if (runbookParameter.IsMandatory)
