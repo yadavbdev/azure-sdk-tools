@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using Microsoft.WindowsAzure.Commands.Common.Models;
 using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
 

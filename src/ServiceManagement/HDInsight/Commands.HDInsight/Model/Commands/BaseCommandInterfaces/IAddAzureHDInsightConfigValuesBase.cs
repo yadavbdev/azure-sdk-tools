@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces
 {
-    using DataObjects;
-    using System.Collections;
-
     /// <summary>
     ///     Represents a command to set custom configuration values for Hadoop services.
     /// </summary>

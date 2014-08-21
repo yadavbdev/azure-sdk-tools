@@ -12,15 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common;
+using System;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.FunctionalTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
-    using System.IO;
-
     public class OutputFormatValidator
     {
         public static void ValidateOutputFormat(string actualFileName, string expectedFileName)

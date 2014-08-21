@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using Commands.Common.Models;
-    using Microsoft.WindowsAzure.Commands.Common;
-    using System;
-    using System.Diagnostics;
-    using System.Management.Automation;
-
     public abstract class CmdletBase : PSCmdlet
     {
         private readonly RecordingTracingInterceptor httpTracingInterceptor = new RecordingTracingInterceptor();

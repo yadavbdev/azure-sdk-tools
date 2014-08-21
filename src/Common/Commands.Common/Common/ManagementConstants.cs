@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net.Http.Headers;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Microsoft.WindowsAzure.Commands.Common;
-    using System.Net.Http.Headers;
-
     public static class ApiConstants
     {
         public const string AuthorizationHeaderName = "Authorization";

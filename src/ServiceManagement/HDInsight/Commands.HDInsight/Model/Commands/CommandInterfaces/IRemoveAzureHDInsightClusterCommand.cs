@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    using GetAzureHDInsightClusters;
-
     internal interface IRemoveAzureHDInsightClusterCommand : IAzureHDInsightClusterCommandBase, IAzureHDInsightCommandBase
     {
     }

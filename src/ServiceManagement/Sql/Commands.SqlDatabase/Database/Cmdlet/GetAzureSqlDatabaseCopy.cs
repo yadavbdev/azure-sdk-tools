@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Management.Automation;
-    using DatabaseCopyModel = Microsoft.WindowsAzure.Commands.SqlDatabase.Model.DatabaseCopy;
+    using DatabaseCopyModel = Model.DatabaseCopy;
 
     /// <summary>
     /// Retrieves a list of all ongoing Microsoft Azure SQL Database copy operations in the given
@@ -66,7 +66,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = ByDatabase,
             ValueFromPipeline = true, HelpMessage = "The database object for the copy operation.")]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Name of a database to filter copies by.

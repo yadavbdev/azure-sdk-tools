@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Newtonsoft.Json;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Linq;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Gets the settings of the DSC extension on a particular VM.
     /// </summary>

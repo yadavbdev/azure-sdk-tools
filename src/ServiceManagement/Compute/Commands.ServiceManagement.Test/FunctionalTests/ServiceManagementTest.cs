@@ -12,22 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.Properties;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Sync.Download;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Linq;
-    using VisualStudio.TestTools.UnitTesting;
-    using WindowsAzure.Commands.ServiceManagement;
-
     [TestClass]
     public class ServiceManagementTest
     {

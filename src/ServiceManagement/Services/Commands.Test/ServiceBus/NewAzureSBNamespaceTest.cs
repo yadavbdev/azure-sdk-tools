@@ -12,20 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ServiceBus;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
+using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    using Commands.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Management.ServiceBus.Models;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class NewAzureSBNamespaceTests : TestBase
     {

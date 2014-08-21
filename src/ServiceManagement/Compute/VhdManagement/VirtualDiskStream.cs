@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using Vhd.Model;
-    using Vhd.Model.Persistence;
-
     /// <summary>
     /// Provides a logical stream over a virtual hard disk (VHD).
     /// </summary>

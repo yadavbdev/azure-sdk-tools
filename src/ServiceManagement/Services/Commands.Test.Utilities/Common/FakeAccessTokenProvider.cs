@@ -14,12 +14,10 @@
 
 using System.Security;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.Authentication;
-
     public class FakeAccessTokenProvider : ITokenProvider
     {
         private readonly IAccessToken accessToken;

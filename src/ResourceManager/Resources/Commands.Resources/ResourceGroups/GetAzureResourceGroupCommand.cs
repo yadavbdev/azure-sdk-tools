@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------------------
 
 using System.Collections;
-using Microsoft.Azure.Commands.Resources.Models;
 using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources
 {

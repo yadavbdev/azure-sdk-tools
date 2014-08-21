@@ -12,12 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Gallery;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Subscriptions;
-using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events;

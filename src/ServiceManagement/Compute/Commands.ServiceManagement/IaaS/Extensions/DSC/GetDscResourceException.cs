@@ -12,17 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
-    using System.Globalization;
-
-
     public class GetDscResourceException : UnauthorizedAccessException
     {
         public GetDscResourceException(string resourceName, Exception e) :

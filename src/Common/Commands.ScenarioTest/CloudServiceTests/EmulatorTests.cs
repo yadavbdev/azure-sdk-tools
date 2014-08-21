@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
-    using Common;
-    using System.Management.Automation;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class EmulatorTests : WindowsAzurePowerShellCertificateTest
     {

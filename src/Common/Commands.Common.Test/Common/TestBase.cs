@@ -12,7 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.IO;
+using System;
+using System.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Common;
@@ -20,10 +22,6 @@ using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using System;
-    using System.Diagnostics;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Base class for Microsoft Azure PowerShell unit tests.
     /// </summary>

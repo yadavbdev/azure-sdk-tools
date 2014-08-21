@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Security.Permissions;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using System.Security.Permissions;
-
     public class GitWebsite
     {
         public string Name { get; set; }

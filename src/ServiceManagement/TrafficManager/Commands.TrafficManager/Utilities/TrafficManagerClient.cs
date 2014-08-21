@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
+using Microsoft.WindowsAzure.Management.TrafficManager;
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
 
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 {
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.TrafficManager;
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public class TrafficManagerClient : ITrafficManagerClient
     {
         public TrafficManagerManagementClient Client { get; internal set; }
@@ -79,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 
         public ProfileWithDefinition GetTrafficManagerProfileWithDefinition(string profileName)
         {
-            Profile profile = this.GetProfile(profileName).Profile;
+            Management.TrafficManager.Models.Profile profile = this.GetProfile(profileName).Profile;
             Definition definition = null;
             try
             {
@@ -213,7 +211,7 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 
         public IEnumerable<SimpleProfile> ListProfiles()
         {
-            IList<Profile> respProfiles = this.Client.Profiles.List().Profiles;
+            IList<Management.TrafficManager.Models.Profile> respProfiles = this.Client.Profiles.List().Profiles;
 
             IEnumerable<SimpleProfile> resultProfiles =
                 respProfiles.Select(respProfile => new SimpleProfile(respProfile));

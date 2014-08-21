@@ -12,28 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Microsoft.WindowsAzure.Management.Models;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Moq;
+using MockStorageService = Microsoft.WindowsAzure.Commands.Test.Utilities.Common.MockStorageService;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Management.Compute.Models;
-    using Management.Models;
-    using Management.Storage;
-    using Management.Storage.Models;
-    using Moq;
-    using Storage.Blob;
-    using System;
-    using System.IO;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class CloudServiceClientTests : TestBase
     {
@@ -54,16 +53,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         private void ExecuteInTempCurrentDirectory(string path, Action action)
         {
-            string currentDirectory = Environment.CurrentDirectory;
+            string currentDirectory = System.Environment.CurrentDirectory;
 
             try
             {
-                Environment.CurrentDirectory = path;
+                System.Environment.CurrentDirectory = path;
                 action();
             }
             catch
             {
-                Environment.CurrentDirectory = currentDirectory;
+                System.Environment.CurrentDirectory = currentDirectory;
                 throw;
             }
         }
@@ -88,7 +87,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         [TestInitialize]
         public void TestSetup()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            GlobalPathInfo.GlobalSettingsDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
 
             storageService = new MockStorageService()
                 .Add(a => SetupStorage(serviceName.ToLowerInvariant(), a))
@@ -109,7 +108,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             {
                 Properties = new Dictionary<AzureSubscription.Property,string> {{AzureSubscription.Property.Default, "True"}},
                 Id = Guid.NewGuid(),
-                Name = Data.Subscription1,
+                Name = Test.Utilities.Common.Data.Subscription1,
             };
 
             cloudBlobUtilityMock = new Mock<CloudBlobUtility>();
@@ -272,7 +271,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 string rootPath = files.CreateNewService(serviceName);
                 files.CreateAzureSdkDirectoryAndImportPublishSettings();
                 var cloudServiceProject = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                cloudServiceProject.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                cloudServiceProject.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService(location: "West US"));
@@ -309,7 +308,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 string rootPath = files.CreateNewService(serviceName);
                 files.CreateAzureSdkDirectoryAndImportPublishSettings();
                 var cloudServiceProject = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                cloudServiceProject.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                cloudServiceProject.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService(location: "West US"));
 
@@ -341,7 +340,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 string rootPath = files.CreateNewService(serviceName);
                 files.CreateAzureSdkDirectoryAndImportPublishSettings();
                 var cloudServiceProject = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                cloudServiceProject.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                cloudServiceProject.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService(location: "West US"));
 
@@ -370,7 +369,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 string rootPath = files.CreateNewService(serviceName);
                 files.CreateAzureSdkDirectoryAndImportPublishSettings();
                 var cloudServiceProject = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                cloudServiceProject.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                cloudServiceProject.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                 subscription.Properties[AzureSubscription.Property.CloudStorageAccount] = storageName;
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService(location: "West US"));
@@ -413,7 +412,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 string rootPath = files.CreateNewService(serviceName);
                 files.CreateAzureSdkDirectoryAndImportPublishSettings();
                 var cloudServiceProject = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                cloudServiceProject.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                cloudServiceProject.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService());
 

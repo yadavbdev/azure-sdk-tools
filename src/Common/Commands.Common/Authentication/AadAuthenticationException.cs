@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using System;
-
     /// <summary>
     /// Base class representing an exception that occurs when
     /// authenticating against Azure Active Directory

@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
 {
-    using System;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-
     /// <summary>
     /// A mock server implementation for capturing and replaying Http Web Requests.
     /// </summary>

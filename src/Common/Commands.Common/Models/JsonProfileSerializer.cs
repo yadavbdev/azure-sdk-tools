@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Newtonsoft.Json;
-using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models

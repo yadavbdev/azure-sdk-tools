@@ -13,19 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using ConfigDataInfo;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Model;
-    using PlatformImageRepository.Model;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Reflection;
-    using System.Threading;
-
-
     [TestClass]
     public class PIRTest : ServiceManagementTest
     {

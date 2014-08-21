@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Management.Automation;
-
     /// <summary>
     /// Switches between ServiceManagement and ResourceManager modes.
     /// </summary>

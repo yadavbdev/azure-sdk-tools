@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.Threading;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Management.Compute.Models;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Threading;
-    using Utilities.Common;
-
     public class IaaSDeploymentManagementCmdletBase : ServiceManagementBaseCmdlet
     {
         private static IList<string> TerminalStates = new List<string>

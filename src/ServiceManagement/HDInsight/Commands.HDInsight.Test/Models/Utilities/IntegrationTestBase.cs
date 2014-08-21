@@ -12,32 +12,30 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Management.Automation;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Concretes;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators;
+using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+using Microsoft.WindowsAzure.Management.HDInsight.Framework.Core;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
-    using Commands.Utilities.Common;
-    using Management.HDInsight;
-    using Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
-    using Management.HDInsight.Cmdlet.Commands.CommandImplementations;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
-    using Management.HDInsight.Cmdlet.ServiceLocation;
-    using Management.HDInsight.Framework.Core;
-    using Management.HDInsight.Logging;
-    using PowerShellTestAbstraction.Concretes;
-    using PowerShellTestAbstraction.Interfaces;
-    using Simulators;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security;
-    using System.Security.Cryptography.X509Certificates;
-    using VisualStudio.TestTools.UnitTesting;
-
     public class IntegrationTestBase : DisposableObject
     {
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes",

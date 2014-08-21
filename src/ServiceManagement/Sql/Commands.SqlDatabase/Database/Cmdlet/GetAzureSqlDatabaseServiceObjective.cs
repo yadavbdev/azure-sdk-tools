@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Management.Automation;
-
     /// <summary>
     /// Retrieves a list of Microsoft Azure SQL Databases in the given server context.
     /// </summary>

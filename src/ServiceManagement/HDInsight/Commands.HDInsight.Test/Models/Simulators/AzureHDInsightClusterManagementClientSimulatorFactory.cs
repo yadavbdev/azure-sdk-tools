@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Management.HDInsight;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
-
     public class AzureHDInsightClusterManagementClientSimulatorFactory : IAzureHDInsightClusterManagementClientFactory
     {
         public IHDInsightClient Create(IHDInsightSubscriptionCredentials credentials)

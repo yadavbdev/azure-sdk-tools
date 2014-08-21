@@ -13,35 +13,34 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Management;
+using Microsoft.WindowsAzure.Management.Compute;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+using Microsoft.WindowsAzure.Storage.Blob;
+using DeploymentStatus = Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model.DeploymentStatus;
+using RoleInstance = Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model.RoleInstance;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using AzureTools;
-    using Common;
-    using Management;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Management.Storage;
-    using Management.Storage.Models;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Model;
-    using Properties;
-    using Storage.Blob;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
     using ConfigCertificate = Common.XmlSchema.ServiceConfigurationSchema.Certificate;
     using ConfigConfigurationSetting = Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
-    using DeploymentStatus = Model.DeploymentStatus;
-    using RoleInstance = Model.RoleInstance;
-    using RoleInstanceStatus = Management.Compute.Models.RoleInstanceStatus;
 
     public class CloudServiceClient : ICloudServiceClient
     {

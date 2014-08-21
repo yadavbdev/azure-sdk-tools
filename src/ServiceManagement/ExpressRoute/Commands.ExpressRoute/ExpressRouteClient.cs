@@ -12,19 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Net;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.ExpressRoute;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
 
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-    using Microsoft.WindowsAzure.Management.ExpressRoute;
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using Utilities.Common;
-    
-   
     public class ExpressRouteClient
     {
         public ExpressRouteManagementClient Client { get; internal set; }

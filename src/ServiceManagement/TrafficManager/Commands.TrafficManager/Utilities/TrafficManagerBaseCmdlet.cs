@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
     public abstract class TrafficManagerBaseCmdlet : AzurePSCmdlet
     {
         private ITrafficManagerClient trafficManagerClient;

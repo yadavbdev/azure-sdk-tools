@@ -13,12 +13,9 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.Common;
-using Microsoft.WindowsAzure.Commands.Common.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.Common;
-
     public class RemoveAzurePublishSettingsCommand
     {
         public void RemovePublishSettingsProcess(string azureSdkDirPath)

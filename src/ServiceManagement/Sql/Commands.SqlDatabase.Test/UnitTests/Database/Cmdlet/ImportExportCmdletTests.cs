@@ -11,22 +11,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Text.RegularExpressions;
-
     /// <summary>
     /// Test class for testing the Import-/Export-AzureSqlDatabase and 
     /// Get-AzureSqlDatabaseImportExportStatus cmdlet.
@@ -48,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         [TestMethod]
         public void ImportExportAzureSqlDatabaseTests()
         {
-            using (PowerShell powershell = PowerShell.Create())
+            using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
             {
                 // Setup the subscription used for the test
                 AzureSubscription subscription =

@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.ServiceModel.Channels;
+using Microsoft.WindowsAzure.Commands.Sync.Threading;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Download
 {
-    using Sync.Threading;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.ServiceModel.Channels;
-    using Tools.Vhd.Model;
-
     public class Downloader
     {
         private const int DefaultConnectionLimit = 24;

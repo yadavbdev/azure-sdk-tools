@@ -12,19 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.Azure.Utilities.HttpRecorder;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Management.Automation;
-    using Azure.Utilities.HttpRecorder;
-    using Commands.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class WindowsAzurePowerShellCertificateTest : PowerShellTest
     {

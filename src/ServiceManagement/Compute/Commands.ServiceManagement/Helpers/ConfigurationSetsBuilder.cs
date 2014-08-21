@@ -13,14 +13,14 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
 {
-    using IaaS;
-    using Model;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-
     public class ConfigurationSetsBuilder
     {
         private ConfigurationSetBuilder<WindowsProvisioningConfigurationSet> windowsBuilder;

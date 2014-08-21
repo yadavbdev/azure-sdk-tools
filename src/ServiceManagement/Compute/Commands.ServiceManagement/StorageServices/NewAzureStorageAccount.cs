@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using Management.Storage.Models;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Creates a new storage account in Microsoft Azure.
     /// </summary>

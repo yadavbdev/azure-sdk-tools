@@ -12,19 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffolding.Cmdlet
 {
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Properties;
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class NewAzureServiceTests : TestBase
     {
@@ -70,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
-                foreach (string name in Data.InvalidServiceNames)
+                foreach (string name in Test.Utilities.Common.Data.InvalidServiceNames)
                 {
                     cmdlet.ServiceName = name;
                     Testing.AssertThrows<ArgumentException>(() => cmdlet.ExecuteCmdlet());

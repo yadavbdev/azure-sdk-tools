@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.ServiceBus;
-    using System.Management.Automation;
-
     /// <summary>
     /// Removes new service bus authorization rule.
     /// </summary>

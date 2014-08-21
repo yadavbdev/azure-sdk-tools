@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// Body of the error response returned from the API.
     /// </summary>

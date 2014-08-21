@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
 {
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-
     public class SimpleProfile
     {
-        private Profile profile { get; set; }
+        private Management.TrafficManager.Models.Profile profile { get; set; }
 
-        public SimpleProfile(Profile profile)
+        public SimpleProfile(Management.TrafficManager.Models.Profile profile)
         {
             this.profile = profile;
         }

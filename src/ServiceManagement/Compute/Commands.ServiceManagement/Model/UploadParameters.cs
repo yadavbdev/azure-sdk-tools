@@ -13,12 +13,12 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.IO;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using StorageServices;
-    using Sync.Download;
-    using System.IO;
-
     public class UploadParameters
     {
         public UploadParameters(BlobUri destinationUri, BlobUri baseImageUri, FileInfo localFilePath, bool overWrite, int numberOfUploaderThreads)

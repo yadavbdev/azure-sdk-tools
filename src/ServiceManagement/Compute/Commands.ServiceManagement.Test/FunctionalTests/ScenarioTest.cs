@@ -13,35 +13,28 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.Net.Cache;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.Xml.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Service.Gateway;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using ConfigDataInfo;
-    using Extensions;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs;
-    using Model;
-    using Properties;
-    using Service.Gateway;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Net.Cache;
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.Xml.Linq;
-    using VisualStudio.TestTools.UnitTesting;
-    using WindowsAzure.Commands.ServiceManagement;
-
-
-
     [TestClass]
     public class ScenarioTest : ServiceManagementTest
     {

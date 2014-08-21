@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.TrafficManager;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.TrafficManager;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
-    using Moq;
-    using System.Management.Automation;
-
     [TestClass]
     public class TestTrafficManagerDomainNameTests
     {

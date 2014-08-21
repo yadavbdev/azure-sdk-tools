@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Scheduler;
+using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Scheduler
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Scheduler;
-    using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model;
-    using System;
-    using System.Collections;
-    using System.Management.Automation;
-
     /// <summary>
     /// Cmdlet to patch HttpJob
     /// </summary>

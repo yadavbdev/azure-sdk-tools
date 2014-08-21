@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
 
 namespace Microsoft.WindowsAzure.Commands.CloudService
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using System.IO;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsDiagnostic.Test, "AzureName"), OutputType(typeof(bool))]
     public class TestAzureNameCommand : AzurePSCmdlet, IModuleAssemblyInitializer
     {
@@ -117,7 +116,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudService
 
         public void OnImport()
         {
-            PowerShell invoker = null;
+            System.Management.Automation.PowerShell invoker = null;
             invoker = System.Management.Automation.PowerShell.Create(RunspaceMode.CurrentRunspace);
             invoker.AddScript(File.ReadAllText(FileUtilities.GetContentFilePath("ServiceManagementStartup.ps1")));
             invoker.Invoke();

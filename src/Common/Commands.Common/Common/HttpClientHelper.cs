@@ -12,14 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net;
+using System.Net.Http;
 using Microsoft.WindowsAzure.Commands.Common.Factories;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Net;
-    using System.Net.Http;
-    using Commands.Common;
-
     public static class HttpClientHelper
     {
         public static HttpClient CreateClient(string serviceUrl, ICredentials credentials = null, HttpMessageHandler handler = null)

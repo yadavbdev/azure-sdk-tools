@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Newtonsoft.Json;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Xml.Linq;
-
     /// <summary>
     /// Implementation of <see cref="IProfileStore"/> that reads
     /// the settings from the old formats used in azure powershell

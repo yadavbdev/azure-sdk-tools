@@ -19,11 +19,11 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Azure.Subscriptions;
 using Microsoft.Azure.Subscriptions.Models;
+using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
-using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 
 namespace Microsoft.WindowsAzure.Commands.Common
 {

@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.GeoEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using GeoEntities;
-    using System.Linq;
-    using WebEntities;
-
     public static class WebsitesExtensionMethods
     {
         public static WebSpaces GetWebSpaces(this IWebsitesServiceManagement proxy, string subscriptionId)

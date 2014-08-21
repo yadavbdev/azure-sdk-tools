@@ -12,22 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.IO;
+using System.Management.Automation;
+using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Xml.Linq;
+using Microsoft.Azure.Commands.Automation.Common;
+using Microsoft.Azure.Commands.Automation.DataContract;
+using Microsoft.Azure.Commands.Automation.Properties;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using Microsoft.Azure.Commands.Automation.Common;
-    using Microsoft.Azure.Commands.Automation.DataContract;
-    using Microsoft.Azure.Commands.Automation.Properties;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Globalization;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Runtime.Serialization.Json;
-    using System.Text;
-    using System.Xml.Linq;
-
     /// <summary>
     /// The azure automation base cmdlet.
     /// </summary>

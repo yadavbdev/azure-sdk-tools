@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Sync
 {
-    using System.Collections.Generic;
-
     public class ComputeStats
     {
         IList<double> history;

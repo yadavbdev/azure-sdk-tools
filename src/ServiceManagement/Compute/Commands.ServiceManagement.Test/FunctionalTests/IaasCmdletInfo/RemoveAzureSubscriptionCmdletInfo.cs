@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class RemoveAzureSubscriptionCmdletInfo : CmdletsInfo
     {
         public RemoveAzureSubscriptionCmdletInfo(string subscriptionName, string dataFile, bool force = false)

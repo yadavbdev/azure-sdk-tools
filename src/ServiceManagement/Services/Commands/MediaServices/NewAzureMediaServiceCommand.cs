@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 using Microsoft.WindowsAzure.Management.MediaServices.Models;
 using Microsoft.WindowsAzure.Management.Storage.Models;
 
 namespace Microsoft.WindowsAzure.Commands.MediaServices
 {
-    using System;
-    using System.Management.Automation;
-    using Utilities.MediaServices;
-    using Utilities.MediaServices.Services.Entities;
-    using Utilities.Properties;
-
     /// <summary>
     ///     Creates new Azure Media Services account.
     /// </summary>

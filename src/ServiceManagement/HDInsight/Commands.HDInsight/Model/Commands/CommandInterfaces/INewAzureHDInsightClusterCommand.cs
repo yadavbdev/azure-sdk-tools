@@ -11,14 +11,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Management.HDInsight.ClusterProvisioning.Data;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    using BaseCommandInterfaces;
-    using ClusterProvisioning.Data;
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-    using System.Collections.Generic;
-
     /// <summary>
     ///     Worker object for creating a cluster via PowerShell.
     /// </summary>

@@ -1,16 +1,16 @@
-﻿namespace Microsoft.WindowsAzure.Commands.Test.Websites
-{
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using Microsoft.WindowsAzure.Commands.Websites;
-    using Microsoft.WindowsAzure.Management.WebSites.Models;
-    using Moq;
-    using System.Collections;
-    using System.IO;
-    using System.Management.Automation;
+﻿using System.Collections;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+using Moq;
 
+namespace Microsoft.WindowsAzure.Commands.Test.Websites
+{
     [TestClass]
     public class PublishAzureWebsiteProjectTests : WebsitesTestBase
     {

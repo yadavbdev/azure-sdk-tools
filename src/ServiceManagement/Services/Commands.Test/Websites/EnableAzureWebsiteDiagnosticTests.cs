@@ -12,21 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Services.DeploymentEntities;
-    using Commands.Websites;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Websites;
-
     [TestClass]
     public class EnableAzureWebsiteApplicationDiagnosticTests : WebsitesTestBase
     {

@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Commands.Test.Utilities.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using MockServer;
-    using Services.Server;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-
     [TestClass]
     public class GetRestorableDroppedDatabaseSqlAuthTests : TestBase
     {
@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         [TestMethod]
         public void GetRestorableDroppedDatabaseWithSqlAuth()
         {
-            using (var powershell = PowerShell.Create())
+            using (var powershell = System.Management.Automation.PowerShell.Create())
             {
                 // Create a context
                 NewAzureSqlDatabaseServerContextTests.CreateServerContextSqlAuth(powershell, "$context");
@@ -149,7 +149,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         [TestMethod]
         public void GetRestorableDroppedDatabaseWithSqlAuthByPipe()
         {
-            using (var powershell = PowerShell.Create())
+            using (var powershell = System.Management.Automation.PowerShell.Create())
             {
                 // Create a context
                 NewAzureSqlDatabaseServerContextTests.CreateServerContextSqlAuth(powershell, "$context");
@@ -257,7 +257,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         [TestMethod]
         public void GetRestorableDroppedDatabaseWithSqlAuthNonExistentDb()
         {
-            using (var powershell = PowerShell.Create())
+            using (var powershell = System.Management.Automation.PowerShell.Create())
             {
                 // Create a context
                 NewAzureSqlDatabaseServerContextTests.CreateServerContextSqlAuth(powershell, "$context");

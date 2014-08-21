@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.ExtensionPublishing
 {
-    using Model;
-    using System.Management.Automation;
-
     /// <summary>
     /// Create a New Extension Local Resource Config Set.
     /// </summary>

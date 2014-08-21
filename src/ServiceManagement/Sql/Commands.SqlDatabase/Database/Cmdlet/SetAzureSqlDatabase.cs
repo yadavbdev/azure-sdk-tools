@@ -12,19 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-
     /// <summary>
     /// Update settings for an existing Microsoft Azure SQL Database in the given server context.
     /// </summary>
@@ -101,7 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             ParameterSetName = ByObjectWithServerName,
             ValueFromPipeline = true)]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the database name.
@@ -289,7 +288,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                 GetClientRequestId = () => context.ClientRequestId;
 
                 // Remove the database with the specified name
-                Database database = context.UpdateDatabase(
+                Services.Server.Database database = context.UpdateDatabase(
                     databaseName,
                     this.NewDatabaseName,
                     maxSizeGb,
@@ -337,7 +336,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             try
             {
                 // Update the database with the specified name
-                Database database = this.ConnectionContext.UpdateDatabase(
+                Services.Server.Database database = this.ConnectionContext.UpdateDatabase(
                     databaseName,
                     this.NewDatabaseName,
                     maxSizeGb,

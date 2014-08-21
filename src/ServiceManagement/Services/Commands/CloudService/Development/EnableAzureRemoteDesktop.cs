@@ -12,27 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Cryptography.Pkcs;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Permissions;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Certificate = Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.Certificate;
+using ConfigurationSetting = Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Security.Cryptography.Pkcs;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Security.Permissions;
-    using System.Text;
-    using Utilities.CloudService;
-    using Utilities.CloudService.AzureTools;
-    using Utilities.Common;
-    using Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using Utilities.Properties;
-    using Certificate = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.Certificate;
-    using ConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
-
     /// <summary>
     /// Enable Remote Desktop by adding appropriate imports and settings to
     /// ServiceDefinition.csdef and ServiceConfiguration.*.cscfg

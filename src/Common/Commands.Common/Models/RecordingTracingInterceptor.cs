@@ -17,8 +17,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Common;
-using Microsoft.WindowsAzure.Common.Internals;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {

@@ -11,22 +11,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Management.Sql;
+using Microsoft.WindowsAzure.Management.Sql.Models;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.Sql;
-    using Microsoft.WindowsAzure.Management.Sql.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using DatabaseCopyModel = Microsoft.WindowsAzure.Commands.SqlDatabase.Model.DatabaseCopy;
-    using WamlDatabaseCopy = Microsoft.WindowsAzure.Management.Sql.Models.DatabaseCopy;
+    using DatabaseCopyModel = Model.DatabaseCopy;
+    using WamlDatabaseCopy = Management.Sql.Models.DatabaseCopy;
 
     /// <summary>
     /// Implementation of the <see cref="IServerDataServiceContext"/> with Certificate authentication.

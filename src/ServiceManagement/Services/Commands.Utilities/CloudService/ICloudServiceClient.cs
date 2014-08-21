@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Model;
-
     public interface ICloudServiceClient
     {
         /// <summary>

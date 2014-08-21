@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Security;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication

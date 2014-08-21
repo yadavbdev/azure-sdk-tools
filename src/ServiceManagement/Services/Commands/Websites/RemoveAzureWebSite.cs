@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using System.Management.Automation;
-    using Utilities.Properties;
-    using Utilities.Websites.Common;
-    using Utilities.Websites.Services;
-    using Utilities.Websites.Services.WebEntities;
-
     /// <summary>
     /// Removes an azure website.
     /// </summary>

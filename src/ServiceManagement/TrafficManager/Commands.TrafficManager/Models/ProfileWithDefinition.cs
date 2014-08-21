@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
 {
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Class that will be exposed to PowerShell to interact with profiles
     /// This class will be piped between cmdlets.
@@ -104,13 +104,13 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
             return this;
         }
 
-        public ProfileWithDefinition(Profile profile, Definition definition) : base(profile)
+        public ProfileWithDefinition(Management.TrafficManager.Models.Profile profile, Definition definition) : base(profile)
         {
             this.endpoints = null;
             this.definition = definition;
         }
 
-        public ProfileWithDefinition() : base(new Profile())
+        public ProfileWithDefinition() : base(new Management.TrafficManager.Models.Profile())
         {
             this.endpoints = null;
             this.definition = new Definition()

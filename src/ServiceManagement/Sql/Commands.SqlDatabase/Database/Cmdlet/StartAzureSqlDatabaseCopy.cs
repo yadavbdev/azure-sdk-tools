@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-    using DatabaseCopyModel = Microsoft.WindowsAzure.Commands.SqlDatabase.Model.DatabaseCopy;
+    using DatabaseCopyModel = Model.DatabaseCopy;
 
     /// <summary>
     /// Start a copy operation for a Microsoft Azure SQL Database in the given server context.
@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = ByInputObjectContinuous,
             ValueFromPipeline = true, HelpMessage = "The database object to copy.")]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the database to copy.

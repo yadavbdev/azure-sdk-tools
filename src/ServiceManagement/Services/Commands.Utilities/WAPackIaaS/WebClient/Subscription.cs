@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Net;
-    using System.Security;
-    using System.Security.Cryptography.X509Certificates;
-
     internal enum CredentialType
     {
         None = 0,

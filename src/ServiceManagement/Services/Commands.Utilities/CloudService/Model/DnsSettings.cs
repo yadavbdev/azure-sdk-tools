@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Net;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model
 {
-    using System.Collections.Generic;
-    using System.Net;
-
     public class DnsSettings
     {
         public DnsSettings()

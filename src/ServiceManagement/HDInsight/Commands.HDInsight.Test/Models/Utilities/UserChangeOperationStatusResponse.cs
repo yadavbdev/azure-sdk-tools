@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.Serialization;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators.Types;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
-    using Simulators.Types;
-    using System;
-    using System.Runtime.Serialization;
-
     [DataContract(Namespace = "http://schemas.microsoft.com/hdinsight/2013/05/management")]
     public class UserChangeOperationStatusResponse
     {
