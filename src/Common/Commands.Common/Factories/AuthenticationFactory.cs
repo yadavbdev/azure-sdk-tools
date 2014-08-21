@@ -53,7 +53,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureSubscription subscription)
         {
-            var environment = AzureSession.Environments[subscription.Environment];
+            if (subscription == null)
+            {
+                throw new ApplicationException(Resources.InvalidCurrentSubscription);
+            }
+
             var userId = subscription.GetProperty(AzureSubscription.Property.UserAccount);
             var certificate = WindowsAzureCertificate.FromThumbprint(subscription.GetProperty(AzureSubscription.Property.Thumbprint));
 
@@ -81,6 +85,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         private AdalConfiguration GetAdalConfiguration(AzureEnvironment environment, string tenantId)
         {
+            if (environment == null)
+            {
+                throw new ArgumentNullException("environment");
+            }
             var adEndpoint = environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectoryEndpoint];
             var adResourceId = environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId];
 

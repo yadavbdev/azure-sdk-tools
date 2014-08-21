@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Profile
 {
     using Commands.Profile;
@@ -27,6 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Profile
         public void GetsPublishSettingsFileUrl()
         {
             // Setup
+            ProfileClient.DataStore = new MockDataStore();
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             GetAzurePublishSettingsFileCommand cmdlet = new GetAzurePublishSettingsFileCommand()
             {
@@ -35,6 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Profile
                 Environment = EnvironmentName.AzureCloud,
                 Realm = "microsoft.com"
             };
+            cmdlet.ProfileClient = new ProfileClient();
 
             // Test
             cmdlet.ExecuteCmdlet();
