@@ -13,15 +13,14 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
 using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities;
 
 namespace Microsoft.WindowsAzure.Commands.MediaServices
 {
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.MediaServices;
-    using Utilities.MediaServices.Services.Entities;
-
     /// <summary>
     ///     Gets an Azure Media Services account.
     /// </summary>

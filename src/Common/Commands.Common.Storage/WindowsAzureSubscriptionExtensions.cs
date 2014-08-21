@@ -16,13 +16,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Storage;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Management.Storage;
-    using Microsoft.WindowsAzure.Storage;
-
     public static class WindowsAzureSubscriptionExtensions
     {
         private static Dictionary<Guid, CloudStorageAccount> storageAccountCache = new Dictionary<Guid,CloudStorageAccount>();

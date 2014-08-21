@@ -11,15 +11,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Threading.Tasks;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    using BaseCommandInterfaces;
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-    using Hadoop.Client;
-    using System;
-    using System.Threading.Tasks;
-
     internal interface IWaitAzureHDInsightJobCommand : IAzureHDInsightCommand<AzureHDInsightJob>, IWaitAzureHDInsightJobBase
     {
         /// <summary>

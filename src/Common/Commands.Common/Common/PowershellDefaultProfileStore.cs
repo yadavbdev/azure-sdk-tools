@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.IO;
-
     /// <summary>
     /// A profile store that reads and writes to the default
     /// profile storage. If the new profile store file does

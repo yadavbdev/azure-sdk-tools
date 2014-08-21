@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Security.Permissions;
-
     /// <summary>
     /// This class encapsulates the details of creating and
     /// reloading certificates from various sources.

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System;
-
     /// <summary>
     /// Options for joining a computer to a domain
     /// </summary>

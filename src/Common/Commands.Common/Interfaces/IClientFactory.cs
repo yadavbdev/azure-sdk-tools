@@ -12,11 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Common;
 using System.Net;
 using System.Net.Http;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Common
 {

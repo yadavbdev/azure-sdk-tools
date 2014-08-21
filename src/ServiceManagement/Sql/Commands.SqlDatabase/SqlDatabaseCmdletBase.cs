@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Sql;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.Sql;
-    using System;
-    using System.Globalization;
-
     /// <summary>
     /// The base class for all Microsoft Azure Sql Database Management Cmdlets
     /// </summary>

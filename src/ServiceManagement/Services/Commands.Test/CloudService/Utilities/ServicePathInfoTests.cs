@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Properties;
-    using System;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class ServicePathInfoTests
     {
@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         [TestMethod]
         public void ServicePathInfoTestInvalidRootPathFail()
         {
-            foreach (string invalidDirectoryName in Data.InvalidServiceRootName)
+            foreach (string invalidDirectoryName in Test.Utilities.Common.Data.InvalidServiceRootName)
             {
                 try
                 {

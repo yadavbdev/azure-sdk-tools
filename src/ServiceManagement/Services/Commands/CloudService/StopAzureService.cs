@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService
 {
-    using System.Management.Automation;
-    using Utilities.CloudService;
-    using Utilities.Common;
-
     /// <summary>
     /// Stops the deployment of specified slot in the azure service
     /// </summary>

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Threading;
-
     /// <summary>
     /// Simple IAsyncResult implementation that can be used to cache all the
     /// parameters to the BeginFoo call and then passed to the FooThunk

@@ -13,19 +13,17 @@
 // ----------------------------------------------------------------------------------
 
 
-using Microsoft.WindowsAzure.Commands.Common;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using Common;
-    using Common.XmlSchema.ServiceConfigurationSchema;
-    using Common.XmlSchema.ServiceDefinitionSchema;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-
     public class ServiceComponents
     {
         public ServiceDefinition Definition { get; private set; }

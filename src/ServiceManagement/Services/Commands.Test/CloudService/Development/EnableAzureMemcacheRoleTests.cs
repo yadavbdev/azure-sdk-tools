@@ -12,25 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common;
+using System;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
 {
-    using Commands.CloudService.Development;
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
     using ConfigConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
     using DefinitionConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema.ConfigurationSetting;
     using TestResources = Commands.Common.Test.Properties.Resources;
@@ -52,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         public void SetupTest()
         {
             AzureTool.IgnoreMissingSDKError = true;
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            GlobalPathInfo.GlobalSettingsDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             enableCacheCmdlet = new EnableAzureMemcacheRoleCommand();

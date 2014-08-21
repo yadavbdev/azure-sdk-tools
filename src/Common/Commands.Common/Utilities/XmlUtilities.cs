@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common;
+using System;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.Linq;
-    using System.Xml.Serialization;
-
     public static class XmlUtilities
     {
         public static T DeserializeXmlFile<T>(string fileName, string exceptionMessage = null)

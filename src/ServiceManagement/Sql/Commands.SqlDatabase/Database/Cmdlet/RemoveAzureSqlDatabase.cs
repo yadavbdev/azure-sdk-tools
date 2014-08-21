@@ -12,19 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-
     /// <summary>
     /// Update settings for an existing Microsoft Azure SQL Database in the given server context.
     /// </summary>
@@ -104,7 +103,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             ParameterSetName = ByObjectWithServerName,
             HelpMessage = "The database object you want to remove")]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the database name.

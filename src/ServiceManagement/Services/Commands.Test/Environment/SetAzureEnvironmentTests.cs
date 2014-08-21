@@ -12,23 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Profile;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Moq;
 using Xunit;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Environment
 {
-    using Commands.Profile;
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class SetAzureEnvironmentTests : TestBase, IDisposable
     {

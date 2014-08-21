@@ -12,17 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
 using Microsoft.WindowsAzure.Commands.Common;
-using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using Common;
-    using System;
-    using System.IO;
-    using System.Linq;
-
     public class PublishContext
     {
         public ServiceSettings ServiceSettings { get; private set; }

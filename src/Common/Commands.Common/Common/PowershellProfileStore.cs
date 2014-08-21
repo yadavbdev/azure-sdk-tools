@@ -13,13 +13,13 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Xml;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.IO;
-    using System.Runtime.Serialization;
-    using System.Xml;
-
     /// <summary>
     /// This class provides the serialization for the
     /// AzureProfile information to and from

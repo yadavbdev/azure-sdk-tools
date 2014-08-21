@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.Azure.Commands.Automation.Properties;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using Microsoft.Azure.Commands.Automation.Properties;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Removes an azure automation runbook.
     /// </summary>

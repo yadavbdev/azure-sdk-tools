@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.SchedulerTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
-
     [TestClass]
     public class SchedulerTests : WindowsAzurePowerShellCertificateTest
     {

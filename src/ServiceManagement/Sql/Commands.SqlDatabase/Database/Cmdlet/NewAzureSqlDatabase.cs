@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Management.Automation;
-    using System.Threading;
-
     /// <summary>
     /// Creates a new Microsoft Azure SQL Databases in the given server context.
     /// </summary>
@@ -180,7 +178,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 
                 GetClientRequestId = () => context.ClientRequestId;
                 
-                Database response = context.CreateNewDatabase(
+                Services.Server.Database response = context.CreateNewDatabase(
                     this.DatabaseName,
                     maxSizeGb,
                     maxSizeBytes,
@@ -211,7 +209,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         {
             try
             {
-                Database database = this.ConnectionContext.CreateNewDatabase(
+                Services.Server.Database database = this.ConnectionContext.CreateNewDatabase(
                     this.DatabaseName,
                     maxSizeGb,
                     maxSizeBytes,

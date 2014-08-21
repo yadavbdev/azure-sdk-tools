@@ -12,23 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using System.Net;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using ServiceManagement.Model;
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.ServiceModel.Web;
-
     public abstract class CloudBaseCmdlet<T> : AzurePSCmdlet
         where T : class
     {

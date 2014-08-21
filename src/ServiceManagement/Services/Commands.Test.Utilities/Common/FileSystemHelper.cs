@@ -12,17 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.WindowsAzure.Commands.Common;
-using Microsoft.WindowsAzure.Commands.Common.Interfaces;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-
     /// <summary>
     /// Utility used to create files and directories and clean them up when
     /// complete.

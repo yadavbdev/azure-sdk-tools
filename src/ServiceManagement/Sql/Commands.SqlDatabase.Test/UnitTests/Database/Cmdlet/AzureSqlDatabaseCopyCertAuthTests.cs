@@ -12,22 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Threading;
-
     [TestClass]
     public class AzureSqlDatabaseCopyCertAuthTests : TestBase
     {
@@ -36,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         // Change this if you wish to run against OneBox.
         private bool IsRunningAgainstOneBox { get { return false; } }
 
-        private PowerShell PowerShell { get; set; }
+        private System.Management.Automation.PowerShell PowerShell { get; set; }
 
         AzureSubscription Subscription { get; set; }
 
@@ -53,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
 
             // This test uses the https endpoint, setup the certificates.
             MockHttpServer.SetupCertificates();
-            PowerShell = PowerShell.Create();
+            PowerShell = System.Management.Automation.PowerShell.Create();
             Subscription = UnitTestHelper.SetupUnitTestSubscription(PowerShell);
 
             // Set names for the servers we'll use in PowerShell.

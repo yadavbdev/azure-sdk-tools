@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Common;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsLifecycle.Disable, "AzureWebsiteApplicationDiagnostic"), OutputType(typeof(bool))]
     public class DisableAzureWebsiteApplicationDiagnosticCommand : WebsiteContextBaseCmdlet
     {

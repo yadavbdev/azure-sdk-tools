@@ -11,20 +11,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using Microsoft.Hadoop.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
 {
-    using CmdLetTests;
-    using Hadoop.Client;
-    using Management.HDInsight;
-    using Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
-    using Management.HDInsight.Cmdlet.DataObjects;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
-    using Management.HDInsight.Cmdlet.ServiceLocation;
-    using System;
-    using System.Linq;
-    using Utilities.HDInsight.Utilities;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class StartAzureHDInsightJobCommandTests : HDInsightTestCaseBase
     {

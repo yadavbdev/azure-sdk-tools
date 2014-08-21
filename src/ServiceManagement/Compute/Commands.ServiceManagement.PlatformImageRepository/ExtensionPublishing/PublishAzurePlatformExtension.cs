@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.ExtensionPublishing
 {
-    using AutoMapper;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Publish a Platform Extension Image.
     /// </summary>

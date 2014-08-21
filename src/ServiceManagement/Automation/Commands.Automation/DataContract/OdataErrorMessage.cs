@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace Microsoft.Azure.Commands.Automation.DataContract
 {
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// The odata error message.
     /// </summary>

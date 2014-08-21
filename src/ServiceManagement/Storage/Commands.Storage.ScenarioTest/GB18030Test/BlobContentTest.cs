@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Commands.Storage.ScenarioTest.Common;
+using Commands.Storage.ScenarioTest.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Blob;
 using MS.Test.Common.MsTestLib;
 using StorageTestLib;
-using System.IO;
 using StorageBlob = Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Commands.Storage.ScenarioTest.GB18030Test.Blob
 {
-    using Common;
-    using Util;
-
     /// <summary>
     /// Functional tests for blob content with GB18030 encoding
     /// </summary>
@@ -94,7 +92,7 @@ namespace Commands.Storage.ScenarioTest.GB18030Test.Blob
             string blobName = Path.GetFileName(uploadFilePath);
 
             // create the container
-            CloudBlobContainer container = blobUtil.CreateContainer(containerName);
+            StorageBlob.CloudBlobContainer container = blobUtil.CreateContainer(containerName);
 
             // Generate a 512 bytes file which contains GB18030 characters
             File.WriteAllText(uploadFilePath, GB18030String);
@@ -105,7 +103,7 @@ namespace Commands.Storage.ScenarioTest.GB18030Test.Blob
                 Test.Assert(agent.SetAzureStorageBlobContent(uploadFilePath, containerName, blobType), 
                     Utility.GenComparisonData("SendAzureStorageBlob", true));
 
-                ICloudBlob blob = CloudBlobUtil.GetBlob(container, blobName, blobType);
+                StorageBlob.ICloudBlob blob = CloudBlobUtil.GetBlob(container, blobName, blobType);
                 Test.Assert(blob != null && blob.Exists(), "blob " + blobName + " should exist!");
 
                 // Check MD5
@@ -130,7 +128,7 @@ namespace Commands.Storage.ScenarioTest.GB18030Test.Blob
             string blobName = Path.GetFileName(uploadFilePath);
 
             // create the container
-            CloudBlobContainer container = blobUtil.CreateContainer(containerName);
+            StorageBlob.CloudBlobContainer container = blobUtil.CreateContainer(containerName);
 
             // Generate a 512 bytes file which contains GB18030 characters
             File.WriteAllText(uploadFilePath, GB18030String);
@@ -138,7 +136,7 @@ namespace Commands.Storage.ScenarioTest.GB18030Test.Blob
             try
             {
                 // create source blob
-                ICloudBlob blob = CloudBlobUtil.GetBlob(container, blobName, blobType);
+                StorageBlob.ICloudBlob blob = CloudBlobUtil.GetBlob(container, blobName, blobType);
 
                 // upload file data
                 using (var fileStream = System.IO.File.OpenRead(uploadFilePath))
@@ -172,8 +170,8 @@ namespace Commands.Storage.ScenarioTest.GB18030Test.Blob
             string blobName = Path.GetFileName(uploadFilePath);
 
             // create the container
-            CloudBlobContainer srcContainer = blobUtil.CreateContainer(srcContainerName);
-            CloudBlobContainer destContainer = blobUtil.CreateContainer(destContainerName);
+            StorageBlob.CloudBlobContainer srcContainer = blobUtil.CreateContainer(srcContainerName);
+            StorageBlob.CloudBlobContainer destContainer = blobUtil.CreateContainer(destContainerName);
 
             // Generate a 512 bytes file which contains GB18030 characters
             File.WriteAllText(uploadFilePath, GB18030String);
@@ -183,7 +181,7 @@ namespace Commands.Storage.ScenarioTest.GB18030Test.Blob
             try
             {
                 // create source blob
-                ICloudBlob blob = CloudBlobUtil.GetBlob(srcContainer, blobName, blobType);
+                StorageBlob.ICloudBlob blob = CloudBlobUtil.GetBlob(srcContainer, blobName, blobType);
 
                 // upload file data
                 using (var fileStream = System.IO.File.OpenRead(uploadFilePath))

@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService.AzureTools;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Moq;
-    using System;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class CsRunTests : TestBase
     {
@@ -67,7 +66,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             string testRoleUrl = "http://127.0.0.1:8080/";
             int testDeploymentId = 58;
             string testOutput = string.Format("Started: deployment23({0}) Role is running at " + testRoleUrl + ".", testDeploymentId.ToString());
-            string expectedRoleRunningMessage = string.Format(Resources.EmulatorRoleRunningMessage, testRoleUrl) + Environment.NewLine; 
+            string expectedRoleRunningMessage = string.Format(Resources.EmulatorRoleRunningMessage, testRoleUrl) + System.Environment.NewLine; 
 
             CsRun csRun = new CsRun(testEmulatorFolder);
             Mock<ProcessHelper> commandRunner = new Mock<ProcessHelper>();

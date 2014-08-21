@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [TestClass]
     public class LogicalNetworkOperationsTests
     {

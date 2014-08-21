@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using System;
-
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The runbook parameter.

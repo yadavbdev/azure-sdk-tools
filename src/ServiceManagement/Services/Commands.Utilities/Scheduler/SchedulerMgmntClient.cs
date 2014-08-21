@@ -12,23 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model;
+using Microsoft.WindowsAzure.Management.Scheduler;
+using Microsoft.WindowsAzure.Management.Scheduler.Models;
+using Microsoft.WindowsAzure.Scheduler;
+using Microsoft.WindowsAzure.Scheduler.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model;
-    using Microsoft.WindowsAzure.Management.Scheduler;
-    using Microsoft.WindowsAzure.Management.Scheduler.Models;
-    using Microsoft.WindowsAzure.Scheduler;
-    using Microsoft.WindowsAzure.Scheduler.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Utilities.Common;
-
     public partial class SchedulerMgmntClient
     {
         private SchedulerManagementClient schedulerManagementClient;

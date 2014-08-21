@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Security.Permissions;
-
     public abstract class IaaSCmdletBase : AzurePSCmdlet, ILogger
     {
         private IRequestChannel requestChannel;

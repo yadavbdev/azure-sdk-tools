@@ -14,10 +14,10 @@
 
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
 using Microsoft.WindowsAzure.Management.HDInsight.Logging;
-using System.Threading.Tasks;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {

@@ -13,17 +13,16 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 {
-    using IaaS;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Remove, "AzureEndpoint"), OutputType(typeof(IPersistentVM))]
     public class RemoveAzureInputEndpointCommand : VirtualMachineConfigurationCmdletBase
     {

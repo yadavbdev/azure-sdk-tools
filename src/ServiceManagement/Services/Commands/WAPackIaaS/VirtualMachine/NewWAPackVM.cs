@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "WAPackVM", DefaultParameterSetName = WAPackCmdletParameterSets.CreateWindowsVMFromTemplate)]
     public class NewWAPackVM : IaaSCmdletBase
     {
@@ -115,7 +114,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 
         public override void ExecuteCmdlet()
         {
-            VirtualMachine newVirtualMachine = null;
+            Utilities.WAPackIaaS.DataContract.VirtualMachine newVirtualMachine = null;
             var virtualMachineOperations = new VirtualMachineOperations(this.WebClientFactory);
             Guid? jobId = Guid.Empty;
             
@@ -123,7 +122,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 
             if (this.ParameterSetName == WAPackCmdletParameterSets.CreateWindowsVMFromTemplate)
             {
-                newVirtualMachine = new VirtualMachine()
+                newVirtualMachine = new Utilities.WAPackIaaS.DataContract.VirtualMachine()
                 {
                     Name = Name,
                     VMTemplateId = Template.ID,
@@ -135,7 +134,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
             }
             else if (this.ParameterSetName == WAPackCmdletParameterSets.CreateLinuxVMFromTemplate)
             {
-                newVirtualMachine = new VirtualMachine()
+                newVirtualMachine = new Utilities.WAPackIaaS.DataContract.VirtualMachine()
                 {
                     Name = Name,
                     VMTemplateId = Template.ID,
@@ -147,7 +146,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
             }
             else if (this.ParameterSetName == WAPackCmdletParameterSets.CreateVMFromOSDisks)
             {
-                newVirtualMachine = new VirtualMachine()
+                newVirtualMachine = new Utilities.WAPackIaaS.DataContract.VirtualMachine()
                 {
                     Name = Name,
                     HardwareProfileId = VMSizeProfile.ID,

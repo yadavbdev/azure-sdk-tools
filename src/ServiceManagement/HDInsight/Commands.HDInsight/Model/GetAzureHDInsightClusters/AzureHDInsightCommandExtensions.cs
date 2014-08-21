@@ -12,20 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.Hadoop.Client;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using BaseInterfaces;
-    using Commands.CommandImplementations;
-    using Extensions;
-    using Hadoop.Client;
-    using System;
-    using System.Linq;
-    using WindowsAzure.Commands.Utilities.Common;
-
     internal static class AzureHDInsightCommandExtensions
     {
         public static IHDInsightSubscriptionCredentials GetSubscriptionCredentials(this IAzureHDInsightCommonCommandBase command, AzureSubscription currentSubscription, AzureEnvironment environment)

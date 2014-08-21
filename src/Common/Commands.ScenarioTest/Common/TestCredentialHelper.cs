@@ -12,20 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.IO;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Text.RegularExpressions;
-
     public class TestCredentialHelper
     {
         public static string EnvironmentPathFormat = "testcredentials-{0}";
@@ -72,12 +71,12 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             AddEnvironmentVariables(environmentFile);
         }
 
-        public void SetupPowerShellEnvironment(PowerShell powerShell)
+        public void SetupPowerShellEnvironment(System.Management.Automation.PowerShell powerShell)
         {
             this.SetupPowerShellEnvironment(powerShell, DefaultCredentialFile, WindowsAzureProfileFile);
         }
 
-        public void SetupPowerShellEnvironment(PowerShell powerShell, string credentials, string profile)
+        public void SetupPowerShellEnvironment(System.Management.Automation.PowerShell powerShell, string credentials, string profile)
         {
             powerShell.RemoveCredentials();
             string profileFile = Path.Combine(this.downloadDirectoryPath, profile);
@@ -100,7 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             foreach (string key in this.PowerShellVariables.Keys) powerShell.SetVariable(key, PowerShellVariables[key]);
         }
 
-        public static void ImportCredentails(PowerShell powerShell, string credentialFile)
+        public static void ImportCredentails(System.Management.Automation.PowerShell powerShell, string credentialFile)
         {
             powerShell.RemoveCredentials();
             powerShell.ImportCredentials(credentialFile);

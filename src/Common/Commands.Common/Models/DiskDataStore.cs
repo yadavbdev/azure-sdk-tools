@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common.Interfaces;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.Common.Interfaces;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {

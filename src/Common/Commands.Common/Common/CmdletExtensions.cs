@@ -12,19 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Services.Client;
+using System.IO;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Data.Services.Client;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Runtime.Serialization;
-    using System.Xml;
-    using System.Xml.Linq;
-
     public static class CmdletExtensions
     {
         public static string TryResolvePath(this PSCmdlet psCmdlet, string path)
@@ -77,7 +73,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             List<T> output = new List<T>();
 
-            using (PowerShell powershell = PowerShell.Create(RunspaceMode.CurrentRunspace))
+            using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create(RunspaceMode.CurrentRunspace))
             {
                 powershell.AddScript(contents);
                 Collection<T> result = powershell.Invoke<T>();

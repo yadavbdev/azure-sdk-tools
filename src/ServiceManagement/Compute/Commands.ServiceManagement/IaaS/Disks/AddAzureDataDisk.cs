@@ -13,20 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Add, "AzureDataDisk", DefaultParameterSetName = "CreateNew"), OutputType(typeof(IPersistentVM))]
     public class AddAzureDataDiskCommand : VirtualMachineConfigurationCmdletBase
     {

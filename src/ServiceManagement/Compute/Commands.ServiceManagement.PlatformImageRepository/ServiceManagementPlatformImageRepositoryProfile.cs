@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.ExtensionPublishing;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository
 {
-    using AutoMapper;
-    using ExtensionPublishing;
-    using Management.Compute.Models;
-    using Model;
-    using System;
-
     public class ServiceManagementPlatformImageRepositoryProfile : Profile
     {
         private static readonly Lazy<bool> initialize;

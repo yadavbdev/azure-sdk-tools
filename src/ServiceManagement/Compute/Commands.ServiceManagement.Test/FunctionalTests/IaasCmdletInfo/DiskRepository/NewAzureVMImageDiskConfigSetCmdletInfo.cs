@@ -15,17 +15,10 @@
 //TODO: When transition to SM.NET is completed, rename the namespace to "Microsoft.WindowsAzure.ServiceManagement"
 
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.DiskRepository
 {
-
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
-
     public class NewAzureVMImageDiskConfigSetCmdletInfo : CmdletsInfo
     {
         public NewAzureVMImageDiskConfigSetCmdletInfo()

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Websites
 {
-    using Commands.Test.Utilities.Common;
-    using Commands.Utilities.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
-
     [TestClass]
     public class WebsitesTestBase : TestBase
     {

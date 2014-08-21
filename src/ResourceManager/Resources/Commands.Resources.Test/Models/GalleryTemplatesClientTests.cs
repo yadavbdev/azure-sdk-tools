@@ -12,13 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.Azure.Gallery;
-using Microsoft.Azure.Gallery.Models;
-using Microsoft.WindowsAzure.Commands.ScenarioTest;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-using Microsoft.WindowsAzure.Common.OData;
-using Moq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +20,13 @@ using System.Management.Automation;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Gallery;
+using Microsoft.Azure.Gallery.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Common.OData;
+using Moq;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.Models

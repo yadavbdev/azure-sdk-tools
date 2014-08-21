@@ -12,20 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MS.Test.Common.MsTestLib;
-using StorageTestLib;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using Commands.Storage.ScenarioTest.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MS.Test.Common.MsTestLib;
+using StorageTestLib;
 using StorageBlob = Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Commands.Storage.ScenarioTest
 {
-    using Util;
-
     /// <summary>
     /// this class contains all the account related functional test cases for PowerShell cmdlets
     /// </summary>
@@ -184,11 +182,11 @@ namespace Commands.Storage.ScenarioTest
             CheckErrorOutput(agent);
 
             //--------------Set operation-------------- 
-            Test.Assert(!agent.SetAzureStorageContainerACL(NEW_CONTAINER_NAME, BlobContainerPublicAccessType.Blob),
+            Test.Assert(!agent.SetAzureStorageContainerACL(NEW_CONTAINER_NAME, StorageBlob.BlobContainerPublicAccessType.Blob),
                 "SetAzureStorageContainerACL operation should fail");
             CheckErrorOutput(agent);
 
-            Test.Assert(!agent.SetAzureStorageContainerACL(NEW_CONTAINER_NAME, BlobContainerPublicAccessType.Container),
+            Test.Assert(!agent.SetAzureStorageContainerACL(NEW_CONTAINER_NAME, StorageBlob.BlobContainerPublicAccessType.Container),
                 "SetAzureStorageContainerACL operation should fail");
             CheckErrorOutput(agent);
         }

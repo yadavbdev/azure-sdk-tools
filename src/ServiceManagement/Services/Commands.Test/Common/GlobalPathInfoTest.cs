@@ -12,22 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Common
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System.IO;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class GlobalPathInfoTest
     {
         [TestMethod]
         public void GlobalPathInfoTests()
         {
-            GlobalPathInfo pathInfo = new GlobalPathInfo(Data.AzureAppDir);
-            string azureSdkPath = Data.AzureAppDir;
+            GlobalPathInfo pathInfo = new GlobalPathInfo(Utilities.Common.Data.AzureAppDir);
+            string azureSdkPath = Utilities.Common.Data.AzureAppDir;
             AzureAssert.AreEqualGlobalPathInfo(azureSdkPath, Path.Combine(azureSdkPath, Resources.PublishSettingsFileName), pathInfo);
         }
     }

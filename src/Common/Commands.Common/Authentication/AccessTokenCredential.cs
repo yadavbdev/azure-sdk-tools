@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class AccessTokenCredential : SubscriptionCloudCredentials
     {
         private readonly string subscriptionId;

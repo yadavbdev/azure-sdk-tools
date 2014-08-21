@@ -12,11 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
 {
-    using Common;
-    using Xunit;
-
     public class WebsitesTests : WebsitesTestsBase
     {
         #region Remove-AzureWebsite Scenario Tests

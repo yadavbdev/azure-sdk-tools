@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
 {
-    using System;
-
     public class MockServerHelper
     {
         /// <summary>

@@ -12,29 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Management.Automation;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.Storage.File;
+using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.File;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.Storage.File;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.File;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using Model.ResourceModel;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using ServiceModel = System.ServiceModel;
-
     /// <summary>
     /// Base cmdlet for all storage cmdlet that works with cloud
     /// </summary>
@@ -319,7 +317,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                     //The service channel initialized by subscription
                     return CurrentSubscription.GetCloudStorageAccount();
                 }
-                catch (ServiceModel.CommunicationException e)
+                catch (System.ServiceModel.CommunicationException e)
                 {
                     WriteVerboseWithTimestamp(Resources.CannotGetSotrageAccountFromSubscription);
 
@@ -327,7 +325,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                     {
                         //Repack the 404 error
                         string errorMessage = String.Format(Resources.CurrentStorageAccountNotFoundOnAzure, CurrentStorageAccountName, CurrentSubscription.Name);
-                        ServiceModel.CommunicationException exception = new ServiceModel.CommunicationException(errorMessage, e);
+                        System.ServiceModel.CommunicationException exception = new System.ServiceModel.CommunicationException(errorMessage, e);
                         throw exception;
                     }
                     else

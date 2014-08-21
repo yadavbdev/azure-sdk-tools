@@ -12,22 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class ServerCmdletTests : TestBase
     {
@@ -58,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdl
             // This test uses the https endpoint, setup the certificates.
             MockHttpServer.SetupCertificates();
 
-            using (PowerShell powershell = PowerShell.Create())
+            using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
             {
                 // Setup the subscription used for the test
                 AzureSubscription subscription =
@@ -181,7 +180,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdl
             // This test uses the https endpoint, setup the certificates.
             MockHttpServer.SetupCertificates();
 
-            using (PowerShell powershell = PowerShell.Create())
+            using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
             {
                 // Setup the subscription used for the test
                 AzureSubscription subscription =

@@ -12,21 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 {
-    using Commands.CloudService.Development;
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Properties;
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Basic unit tests for the Enable-AzureServiceProjectRemoteDesktop enableRDCmdlet.
     /// </summary>
@@ -45,7 +44,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         [TestInitialize]
         public void SetupTest()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            GlobalPathInfo.GlobalSettingsDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             addNodeWebCmdlet = new AddAzureNodeWebRoleCommand();
@@ -68,7 +67,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 string packagePath = Path.Combine(rootPath, Resources.CloudPackageFileName);
 
                 CloudServiceProject service = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
                 cmdlet.ExecuteCmdlet();
 
@@ -109,10 +108,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 string packagePath = Path.Combine(rootPath, Resources.CloudPackageFileName);
 
                 CloudServiceProject service = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
-                service.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
-                service.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
                 cmdlet.ExecuteCmdlet();
 
@@ -144,7 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 };
 
                 CloudServiceProject service = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                 addCacheWorkerCmdlet.AddAzureCacheWorkerRoleProcess(cacheRoleName, 1, rootPath);
                 enableCacheCmdlet.EnableAzureMemcacheRoleProcess("WebRole1", cacheRoleName, rootPath);
 

@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Net;
-    using System.Net.Http;
-
     internal class WAPackIaaSRequestChannel : IRequestChannel
     {
         private readonly ILogger logger;

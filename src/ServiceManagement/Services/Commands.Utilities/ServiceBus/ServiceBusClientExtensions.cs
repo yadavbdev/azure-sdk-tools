@@ -12,26 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using Microsoft.ServiceBus.Notifications;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Management.ServiceBus;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using Microsoft.ServiceBus;
-    using Microsoft.ServiceBus.Messaging;
-    using Microsoft.ServiceBus.Notifications;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Management.ServiceBus;
-    using Microsoft.WindowsAzure.Management.ServiceBus.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Threading;
-    using AuthorizationRule = Microsoft.ServiceBus.Messaging.AuthorizationRule;
-    using ServiceBusNamespaceDescription = Microsoft.WindowsAzure.Management.ServiceBus.Models.NamespaceDescription;
+    using ServiceBusNamespaceDescription = Management.ServiceBus.Models.NamespaceDescription;
 
     public class ServiceBusClientExtensions
     {

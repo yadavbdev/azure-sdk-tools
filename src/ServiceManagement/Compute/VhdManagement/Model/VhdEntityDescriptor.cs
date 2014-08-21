@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
     public class VhdEntityDescriptor<T>
     {
         public VhdEntityDescriptor()

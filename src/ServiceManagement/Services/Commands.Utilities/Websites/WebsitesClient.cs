@@ -12,41 +12,38 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Xml.Linq;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Logging;
+using Microsoft.Web.Deployment;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
+using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
+using Microsoft.WindowsAzure.Management.WebSites;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+using Microsoft.WindowsAzure.WebSitesExtensions;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
-    using CloudService;
-    using Management.WebSites;
-    using Management.WebSites.Models;
-    using Microsoft.Build.Evaluation;
-    using Microsoft.Build.Framework;
-    using Microsoft.Build.Logging;
-    using Microsoft.Web.Deployment;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
-    using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
-    using Microsoft.WindowsAzure.WebSitesExtensions;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-    using Newtonsoft.Json.Linq;
-    using Properties;
-    using Services;
-    using Services.DeploymentEntities;
-    using Services.WebEntities;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading;
-    using System.Web;
-    using System.Xml.Linq;
-    using Utilities.Common;
-    using Utilities = Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
-    using Models = Management.WebSites.Models;
+    using Utilities = Services.WebEntities;
 
 
     public class WebsitesClient : IWebsitesClient
@@ -87,7 +84,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 
         private Repository GetRepository(string websiteName)
         {
-            Site site = WebsiteManagementClient.GetSiteWithCache(websiteName);
+            Utilities.Site site = WebsiteManagementClient.GetSiteWithCache(websiteName);
 
             if (site != null)
             {
@@ -142,7 +139,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
             bool setFlag,
             Dictionary<DiagnosticProperties, object> properties = null)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
 
             using (HttpClient client = CreateDeploymentHttpClient(website.Name))
             {
@@ -164,7 +161,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
                             string storageAccountName = (string)properties[DiagnosticProperties.StorageAccountName];
                             string connectionString = cloudServiceClient.GetStorageServiceConnectionString(
                                 storageAccountName);
-                            SetConnectionString(website.Name, storageTableName, connectionString, DatabaseType.Custom);
+                            SetConnectionString(website.Name, storageTableName, connectionString, Utilities.DatabaseType.Custom);
 
                             diagnosticsSettings.AzureTableTraceLevel = setFlag ?
                                 (Services.DeploymentEntities.LogEntryType)properties[DiagnosticProperties.LogLevel] :
@@ -196,7 +193,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
             bool failedRequestTracing,
             bool setFlag)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
 
             var update = WebsiteManagementClient.WebSites.GetConfiguration(website.WebSpace, website.Name).ToUpdate();
             update.HttpLoggingEnabled = webServerLogging ? setFlag : update.HttpLoggingEnabled;
@@ -214,7 +211,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 
         private IWebSiteExtensionsClient GetWebSiteExtensionsClient(string websiteName)
         {
-            Site website = GetWebsite(websiteName);
+            Utilities.Site website = GetWebsite(websiteName);
             Uri endpointUrl = new Uri("https://" + website.EnabledHostNames.First(url => url.Contains(".scm.")));
             return AzureSession.ClientFactory.CreateClient<WebSiteExtensionsClient>(false, new object[] { websiteName,
                 GetWebSiteExtensionsCredentials(websiteName), endpointUrl });
@@ -356,7 +353,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         public void RestartWebsite(string name)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Stopped);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Running);
         }
@@ -367,7 +364,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         public void StartWebsite(string name)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Running);
         }
 
@@ -377,7 +374,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         public void StopWebsite(string name)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Stopped);
         }
 
@@ -388,7 +385,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slot">The website slot name</param>
         public void RestartWebsite(string name, string slot)
         {
-            Site website = GetWebsite(name, slot);
+            Utilities.Site website = GetWebsite(name, slot);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Stopped);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Running);
         }
@@ -400,7 +397,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slot">The website slot name</param>
         public void StartWebsite(string name, string slot)
         {
-            Site website = GetWebsite(name, slot);
+            Utilities.Site website = GetWebsite(name, slot);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Running);
         }
 
@@ -411,7 +408,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slot">The website slot name</param>
         public void StopWebsite(string name, string slot)
         {
-            Site website = GetWebsite(name, slot);
+            Utilities.Site website = GetWebsite(name, slot);
             ChangeWebsiteState(website.Name, website.WebSpace, WebsiteState.Stopped);
         }
 
@@ -427,7 +424,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         /// <param name="slot">The slot name</param>
         /// <returns>The website instance</returns>
-        public Site GetWebsite(string name, string slot)
+        public Utilities.Site GetWebsite(string name, string slot)
         {
             name = SetWebsiteName(name, slot);
             return GetWebsite(name);
@@ -438,11 +435,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="name">The website name</param>
         /// <returns>The website instance</returns>
-        public Site GetWebsite(string name)
+        public Utilities.Site GetWebsite(string name)
         {
             name = SetWebsiteName(name, null);
 
-            Site website = WebsiteManagementClient.GetSiteWithCache(name);
+            Utilities.Site website = WebsiteManagementClient.GetSiteWithCache(name);
 
             if (website == null)
             {
@@ -457,7 +454,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="name">The website name</param>
         /// <returns>The website slots list</returns>
-        public List<Site> GetWebsiteSlots(string name)
+        public List<Utilities.Site> GetWebsiteSlots(string name)
         {
             name = SetWebsiteName(name, null);
             return ListWebsites()
@@ -471,7 +468,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// Lists all websites under the current subscription
         /// </summary>
         /// <returns>List of websites</returns>
-        public List<Site> ListWebsites()
+        public List<Utilities.Site> ListWebsites()
         {
             return ListWebSpaces().SelectMany(space => ListSitesInWebSpace(space.Name)).ToList();
         }
@@ -481,7 +478,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="slot">The slot name</param>
         /// <returns>The list if websites</returns>
-        public List<Site> ListWebsites(string slot)
+        public List<Utilities.Site> ListWebsites(string slot)
         {
             return ListWebsites().Where(s => s.Name.Contains(string.Format("({0})", slot))).ToList();
         }
@@ -519,7 +516,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="siteToCreate">Details about the site to create.</param>
         /// <param name="slot">The slot name.</param>
         /// <returns>The created site object</returns>
-        public Site CreateWebsite(string webspaceName, SiteWithWebSpace siteToCreate, string slot)
+        public Utilities.Site CreateWebsite(string webspaceName, Utilities.SiteWithWebSpace siteToCreate, string slot)
         {
             siteToCreate.Name = SetWebsiteName(siteToCreate.Name, slot);
             string[] hostNames = { GetHostName(siteToCreate.Name, slot) };
@@ -533,7 +530,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="webspaceName">Web space to create site in.</param>
         /// <param name="siteToCreate">Details about the site to create.</param>
         /// <returns>The created site object</returns>
-        private Site CreateWebsite(string webspaceName, SiteWithWebSpace siteToCreate)
+        private Utilities.Site CreateWebsite(string webspaceName, Utilities.SiteWithWebSpace siteToCreate)
         {
             var options = new WebSiteCreateParameters
             {
@@ -558,7 +555,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="site">The site name.</param>
         /// <param name="hostNames">The new host names.</param>
-        public void UpdateWebsiteHostNames(Site site, IEnumerable<string> hostNames)
+        public void UpdateWebsiteHostNames(Utilities.Site site, IEnumerable<string> hostNames)
         {
             var update = new WebSiteUpdateParameters();
             foreach (var name in hostNames)
@@ -575,7 +572,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="site">The website name.</param>
         /// <param name="hostNames">The new host names.</param>
         /// <param name="slot">The website slot name.</param>
-        public void UpdateWebsiteHostNames(Site site, IEnumerable<string> hostNames, string slot)
+        public void UpdateWebsiteHostNames(Utilities.Site site, IEnumerable<string> hostNames, string slot)
         {
             site.Name = SetWebsiteName(site.Name, slot);
 
@@ -587,10 +584,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="name">The website name</param>
         /// <returns>The website configuration object</returns>
-        public SiteConfig GetWebsiteConfiguration(string name)
+        public Utilities.SiteConfig GetWebsiteConfiguration(string name)
         {
-            Site website = GetWebsite(name);
-            SiteConfig configuration =
+            Utilities.Site website = GetWebsite(name);
+            Utilities.SiteConfig configuration =
                 WebsiteManagementClient.WebSites.GetConfiguration(website.WebSpace, website.Name).ToSiteConfig();
 
             return configuration;
@@ -602,9 +599,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         /// <param name="slot">The website slot name</param>
         /// <returns>The website cobfiguration object</returns>
-        public SiteConfig GetWebsiteConfiguration(string name, string slot)
+        public Utilities.SiteConfig GetWebsiteConfiguration(string name, string slot)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
             website.Name = SetWebsiteName(website.Name, slot);
             return GetWebsiteConfiguration(website.Name);
         }
@@ -666,9 +663,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="name">The website name</param>
         /// <param name="newConfiguration">The website configuration object containing updates.</param>
-        public void UpdateWebsiteConfiguration(string name, SiteConfig newConfiguration)
+        public void UpdateWebsiteConfiguration(string name, Utilities.SiteConfig newConfiguration)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
             WebsiteManagementClient.WebSites.UpdateConfiguration(website.WebSpace, name,
                 newConfiguration.ToConfigUpdateParameters());
         }
@@ -679,7 +676,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         /// <param name="newConfiguration">The website configuration object containing updates.</param>
         /// <param name="slot">The website slot name</param>
-        public void UpdateWebsiteConfiguration(string name, SiteConfig newConfiguration, string slot)
+        public void UpdateWebsiteConfiguration(string name, Utilities.SiteConfig newConfiguration, string slot)
         {
             name = SetWebsiteName(name, slot);
             UpdateWebsiteConfiguration(name, newConfiguration);
@@ -741,7 +738,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// Get the WebSpaces.
         /// </summary>
         /// <returns>Collection of WebSpace objects</returns>
-        public IList<WebSpace> ListWebSpaces()
+        public IList<Utilities.WebSpace> ListWebSpaces()
         {
             return WebsiteManagementClient.WebSpaces.List().WebSpaces.Select(ws => ws.ToWebSpace()).ToList();
         }
@@ -751,7 +748,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="spaceName">Name of webspace</param>
         /// <returns>The sites</returns>
-        public IList<Site> ListSitesInWebSpace(string spaceName)
+        public IList<Utilities.Site> ListSitesInWebSpace(string spaceName)
         {
             WebSiteListParameters input = new WebSiteListParameters();
             input.PropertiesToInclude.Add("repositoryuri");
@@ -768,7 +765,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="value">The app setting value</param>
         public void SetAppSetting(string name, string key, string value)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
             var update = WebsiteManagementClient.WebSites.GetConfiguration(website.WebSpace, website.Name).ToUpdate();
 
             update.AppSettings[name] = key;
@@ -783,9 +780,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="key">Connection string key.</param>
         /// <param name="value">Value for the connection string.</param>
         /// <param name="connectionStringType">Type of connection string.</param>
-        public void SetConnectionString(string name, string key, string value, DatabaseType connectionStringType)
+        public void SetConnectionString(string name, string key, string value, Utilities.DatabaseType connectionStringType)
         {
-            Site website = GetWebsite(name);
+            Utilities.Site website = GetWebsite(name);
 
             var update = WebsiteManagementClient.WebSites.GetConfiguration(website.WebSpace, website.Name).ToUpdate();
 
@@ -948,10 +945,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slotView">Represent the metrics for the hostnames that receive the traffic at the current slot. 
         /// If swap occured in the middle of the period mereics will be merged</param>
         /// <returns>The list of site metrics for the specified period.</returns>
-        public IList<MetricResponse> GetHistoricalUsageMetrics(string siteName, string slot, IList<string> metricNames,
+        public IList<Utilities.MetricResponse> GetHistoricalUsageMetrics(string siteName, string slot, IList<string> metricNames,
             DateTime? starTime, DateTime? endTime, string timeGrain, bool instanceDetails, bool slotView)
         {
-            Site website = null;
+            Utilities.Site website = null;
 
             if (!string.IsNullOrEmpty(slot))
             {
@@ -981,7 +978,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <returns>True if exists, false otherwise</returns>
         public bool WebsiteExists(string name)
         {
-            Site website = null;
+            Utilities.Site website = null;
 
             try
             {
@@ -1003,7 +1000,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <returns>True if exists, false otherwise</returns>
         public bool WebsiteExists(string name, string slot)
         {
-            Site website = null;
+            Utilities.Site website = null;
 
             try
             {
@@ -1021,7 +1018,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// Updates a website compute mode.
         /// </summary>
         /// <param name="websiteToUpdate">The website to update</param>
-        public void UpdateWebsiteComputeMode(Site websiteToUpdate)
+        public void UpdateWebsiteComputeMode(Utilities.Site websiteToUpdate)
         {
             WebsiteManagementClient.WebSites.Update(
                 websiteToUpdate.WebSpace,
@@ -1641,7 +1638,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="timeGrain">Time grains for the metrics.</param>
         /// <param name="instanceDetails">Include details for the server instances in which the site is running.</param>
         /// <returns>The list of site metrics for the specified period.</returns>
-        public IList<MetricResponse> GetPlanHistoricalUsageMetrics(string webSpaceName, string planName, IList<string> metricNames, 
+        public IList<Utilities.MetricResponse> GetPlanHistoricalUsageMetrics(string webSpaceName, string planName, IList<string> metricNames, 
             DateTime? starTime, DateTime? endTime, string timeGrain, bool instanceDetails)
         {
             Utilities.WebHostingPlan plan = GetWebHostingPlan(webSpaceName, planName);

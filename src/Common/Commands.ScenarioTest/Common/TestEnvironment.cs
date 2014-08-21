@@ -13,10 +13,10 @@
 // limitations under the License.
 //
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using System;
-
     public class TestEnvironment
     {
         private bool CustomUri = false;

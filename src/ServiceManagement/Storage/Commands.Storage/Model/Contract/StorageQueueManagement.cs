@@ -12,14 +12,14 @@
 // limitations under the License.
 // ---------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.WindowsAzure.Storage.Queue.Protocol;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Queue.Protocol;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Storage Queue management
     /// </summary>

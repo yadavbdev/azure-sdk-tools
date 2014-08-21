@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Hadoop.Client;
-    using Management.HDInsight;
-    using Management.HDInsight.Logging;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Utilities;
-
     internal class AzureHDInsightClusterManagementClientSimulator : IHDInsightClient
     {
         internal static ClusterCreateParameters LastCreateRequest;

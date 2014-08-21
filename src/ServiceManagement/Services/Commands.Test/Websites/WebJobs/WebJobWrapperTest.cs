@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using System;
-    using System.ComponentModel;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-
     [TestClass]
     public class WebJobWrapperTest
     {

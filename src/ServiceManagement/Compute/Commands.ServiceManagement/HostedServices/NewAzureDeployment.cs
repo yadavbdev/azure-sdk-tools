@@ -13,18 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Management.Automation;
+using System.Net;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using Extensions;
-    using Helpers;
-    using Management.Compute.Models;
-    using Properties;
-    using System;
-    using System.Management.Automation;
-    using System.Net;
-    using Utilities.Common;
     using PVM = Model;
 
     /// <summary>

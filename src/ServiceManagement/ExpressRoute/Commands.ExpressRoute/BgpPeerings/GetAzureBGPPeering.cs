@@ -12,13 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.ComponentModel;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using System.ComponentModel;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Get, "AzureBGPPeering"), OutputType(typeof(AzureBgpPeering))]
     public class GetAzureBGPPeeringCommand : ExpressRouteBaseCmdlet
     {

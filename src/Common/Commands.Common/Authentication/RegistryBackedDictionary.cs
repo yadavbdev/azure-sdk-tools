@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Win32;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Win32;
-
     /// <summary>
     /// Class that implements <see cref="System.Collections.Generic.IDictionary{String,String}"/>
     /// while storing the actual data in a Windows Registry hive.

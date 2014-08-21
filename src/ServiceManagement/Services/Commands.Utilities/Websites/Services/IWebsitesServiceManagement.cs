@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Xml.Serialization;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.GeoEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using GeoEntities;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ServiceModel;
-    using System.ServiceModel.Web;
-    using System.Xml.Serialization;
-    using WebEntities;
-
     [XmlRoot(ElementName = "Error", Namespace = UriElements.ServiceNamespace)]
     public class ServiceError
     {

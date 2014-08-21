@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ExpressRoute.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-    using Properties;
-    using System;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Remove, "AzureDedicatedCircuit"),OutputType(typeof(bool))]
     public class RemoveAzureDedicatedCircuitCommand : ExpressRouteBaseCmdlet
     {

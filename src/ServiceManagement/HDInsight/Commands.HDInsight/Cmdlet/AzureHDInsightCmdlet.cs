@@ -12,22 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Logging;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
 {
-    using GetAzureHDInsightClusters.BaseInterfaces;
-    using GetAzureHDInsightClusters.Extensions;
-    using HDInsight.Logging;
-    using Logging;
-    using ServiceLocation;
-    using System;
-    using System.Globalization;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using WindowsAzure.Commands.Utilities.Common;
-
     /// <summary>
     ///     The base class for HDInsight Cmdlets.
     /// </summary>

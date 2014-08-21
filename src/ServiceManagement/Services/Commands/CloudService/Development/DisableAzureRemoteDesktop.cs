@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using ConfigurationSetting = Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development
 {
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.CloudService;
-    using Utilities.CloudService.AzureTools;
-    using Utilities.Common;
-    using Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using ConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
-
     /// <summary>
     /// Enable Remote Desktop by adding appropriate imports and settings to
     /// ServiceDefinition.csdef and ServiceConfiguration.*.cscfg

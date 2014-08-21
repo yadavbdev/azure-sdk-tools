@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Properties;
-    using Utilities.Websites.Common;
-    using Utilities.Websites.Services;
-    using Utilities.Websites.Services.DeploymentEntities;
-    using Utilities.Websites.Services.WebEntities;
-
     /// <summary>
     /// Gets an azure website.
     /// </summary>

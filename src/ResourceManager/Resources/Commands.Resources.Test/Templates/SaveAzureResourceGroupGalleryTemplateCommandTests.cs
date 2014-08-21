@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.Azure.Commands.Resources.Templates;
-using Moq;
 using System;
 using System.IO;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Commands.Resources.Templates;
+using Moq;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.Resources

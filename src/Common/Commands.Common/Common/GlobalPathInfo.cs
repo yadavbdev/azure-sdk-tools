@@ -13,12 +13,12 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.IO;
-
     public class GlobalPathInfo
     {
         public string PublishSettingsFile { get; private set; }

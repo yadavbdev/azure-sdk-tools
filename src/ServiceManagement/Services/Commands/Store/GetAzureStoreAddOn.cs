@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Store;
+
 namespace Microsoft.WindowsAzure.Commands.Store
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Store;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Gets all available Microsoft Azure add-ons from Marketplace and gets user purchased add-ons.
     /// </summary>

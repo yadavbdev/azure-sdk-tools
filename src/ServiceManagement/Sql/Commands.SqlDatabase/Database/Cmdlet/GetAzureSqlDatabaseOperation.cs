@@ -11,17 +11,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Management.Automation;
-
     /// <summary>
     /// Retrieves a list of Microsoft Azure SQL Database's Operations in the given server context.
     /// </summary>
@@ -75,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             ValueFromPipeline = true, 
             HelpMessage = "The database object to retrieve operations.")]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the database to retrieve operations.

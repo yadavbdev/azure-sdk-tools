@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MS.Test.Common.MsTestLib
 {

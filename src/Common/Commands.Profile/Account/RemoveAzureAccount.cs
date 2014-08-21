@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
-using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
 
 namespace Microsoft.WindowsAzure.Commands.Profile

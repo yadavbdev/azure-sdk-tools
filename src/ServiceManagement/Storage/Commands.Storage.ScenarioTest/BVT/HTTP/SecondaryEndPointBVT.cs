@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Commands.Storage.ScenarioTest.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MS.Test.Common.MsTestLib;
+
 namespace Commands.Storage.ScenarioTest.BVT.HTTP
 {
-    using Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using MS.Test.Common.MsTestLib;
-
     /// <summary>
     /// BVT test case for secondary end point with http protocol
     /// </summary>

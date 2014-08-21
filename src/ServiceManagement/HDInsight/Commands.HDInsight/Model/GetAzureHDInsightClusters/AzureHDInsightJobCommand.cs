@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
     internal abstract class AzureHDInsightJobCommand<T> : AzureHDInsightJobCommandBase, IAzureHDInsightCommand<T>
     {
         public AzureHDInsightJobCommand()

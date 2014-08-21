@@ -12,27 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.Azure.Commands.Automation.Model;
+using Microsoft.Azure.Commands.Automation.Properties;
+using Microsoft.Azure.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 
 namespace Microsoft.Azure.Commands.Automation.Common
 {
-    using Microsoft.Azure.Commands.Automation.Model;
-    using Microsoft.Azure.Commands.Automation.Properties;
-    using Microsoft.Azure.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     public class AutomationClient : IAutomationClient
     {
-        private readonly IAutomationManagementClient automationManagementClient;
+        private readonly AutomationManagement.IAutomationManagementClient automationManagementClient;
 
         // Injection point for unit tests
         public AutomationClient()
@@ -41,13 +40,13 @@ namespace Microsoft.Azure.Commands.Automation.Common
 
         public AutomationClient(AzureSubscription subscription)
             : this(subscription, 
-            AzureSession.ClientFactory.CreateClient<AutomationManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint))
+            AzureSession.ClientFactory.CreateClient<AutomationManagement.AutomationManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint))
         {
         }
 
         public AutomationClient(
             AzureSubscription subscription,
-            IAutomationManagementClient automationManagementClient)
+            AutomationManagement.IAutomationManagementClient automationManagementClient)
         {
             Requires.Argument("automationManagementClient", automationManagementClient).NotNull();
 

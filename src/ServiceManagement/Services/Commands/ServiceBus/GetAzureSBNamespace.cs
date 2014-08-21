@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.ServiceBus;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     /// <summary>
     /// Lists all service bus namespaces associated with a subscription
     /// </summary>

@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+using System.Management.Automation.Runspaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Disposable;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Concretes
 {
-    using Disposable;
-    using Interfaces;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Management.Automation.Runspaces;
-
     [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly",
         Justification = "Anything derived from Disposable Object is correct. [tgs]")]
     public class RunspaceAbstraction : DisposableObject, IRunspace

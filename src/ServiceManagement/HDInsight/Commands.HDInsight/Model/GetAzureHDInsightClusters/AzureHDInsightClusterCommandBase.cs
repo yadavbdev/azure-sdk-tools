@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Threading;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using BaseInterfaces;
-    using Extensions;
-    using ServiceLocation;
-    using System.Threading;
-
     internal abstract class AzureHDInsightClusterCommandBase : AzureHDInsightCommandBase, IAzureHDInsightClusterCommandBase
     {
         private readonly CancellationTokenSource tokenSource = new CancellationTokenSource();

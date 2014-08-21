@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Tools.Vhd.Model;
-    using Tools.Vhd.Model.Persistence;
-
     internal static class CloudPageBlobExtensions
     {
         public static void SetUploadMetaData(this CloudPageBlob blob, LocalMetaData metaData)

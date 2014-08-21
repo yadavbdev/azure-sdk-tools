@@ -12,9 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.Resources.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using Microsoft.Azure.Management.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {

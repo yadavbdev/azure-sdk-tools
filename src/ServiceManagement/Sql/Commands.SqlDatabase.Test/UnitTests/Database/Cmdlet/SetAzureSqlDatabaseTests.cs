@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Commands.Test.Utilities.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using MockServer;
-    using Services.Server;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-
     [TestClass]
     public class SetAzureSqlDatabaseTests : TestBase
     {
@@ -110,7 +109,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                     Assert.AreEqual(0, powershell.Streams.Warning.Count, "Warnings during run!");
                     powershell.Streams.ClearStreams();
 
-                    Database database = database1.Single().BaseObject as Services.Server.Database;
+                    Services.Server.Database database = database1.Single().BaseObject as Services.Server.Database;
                     Assert.IsTrue(database != null, "Expecting a Database object");
                     DatabaseTestHelper.ValidateDatabaseProperties(database, "testdb1", "Web", 5, 5368709120L, "SQL_Latin1_General_CP1_CI_AS", "Shared", false, DatabaseTestHelper.SharedSloGuid);
 

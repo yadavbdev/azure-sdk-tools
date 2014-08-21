@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Collections.Generic;
-    using WindowsAzure.Common;
-
     /// <summary>
     /// This class handles mapping management client types
     /// to the corresponding required resource provider names.

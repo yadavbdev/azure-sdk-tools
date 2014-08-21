@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// Class that represents a Web Hosting Plan.
     /// </summary>

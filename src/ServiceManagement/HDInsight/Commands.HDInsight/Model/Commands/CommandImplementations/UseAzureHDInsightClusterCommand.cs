@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
-    using CommandInterfaces;
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-    using GetAzureHDInsightClusters.Extensions;
-    using System;
-    using System.Globalization;
-    using System.Threading.Tasks;
-
     internal class UseAzureHDInsightClusterCommand : AzureHDInsightClusterCommand<AzureHDInsightClusterConnection>, IUseAzureHDInsightClusterCommand
     {
         private const string GrantHttpAccessCmdletName = "Grant Azure HDInsight Http Services Access";

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using System.Management.Automation;
-    using WebEntities;
-
     public class GitClient : LinkedRevisionControl
     {
         public GitClient(PSCmdlet pscmdlet)
