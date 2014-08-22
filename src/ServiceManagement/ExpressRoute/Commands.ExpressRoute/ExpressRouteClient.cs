@@ -50,11 +50,11 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         {
             return Client.BorderGatewayProtocolPeerings.New(serviceKey, accessType, new BorderGatewayProtocolPeeringNewParameters()
             {
-                PeerAsn = peerAsn,
+                PeerAutonomousSystemNumber = peerAsn,
                 PrimaryPeerSubnet = primaryPeerSubnet,
                 SecondaryPeerSubnet = secondaryPeerSubnet,
                 SharedKey = sharedKey,
-                VlanId = vlanId
+                VirtualLanId = vlanId
             }).BgpPeering;
         }
 
@@ -71,11 +71,11 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
             return
                (Client.BorderGatewayProtocolPeerings.Update(serviceKey, accessType, new BorderGatewayProtocolPeeringUpdateParameters()
                 {
-                    PeerAsn = peerAsn,
+                    PeerAutonomousSystemNumber = peerAsn,
                     PrimaryPeerSubnet = primaryPeerSubnet,
                     SecondaryPeerSubnet = secondaryPeerSubnet,
                     SharedKey = sharedKey,
-                    VlanId = vlanId,
+                    VirtualLanId = vlanId,
                 })).BgpPeering;
         }
         
