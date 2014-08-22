@@ -31,6 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         private AzureSubscription testSubscription;
         private TestEnvironment testEnvironment;
         protected List<string> modules;
+        ProfileClient client = new ProfileClient();
 
         /// <summary>
         /// Loads DummyManagementClientHelper with clients and throws exception if any client is missing.
@@ -60,9 +61,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             {
                 TestMockSupport.RunningMocked = true;
             }
-
-            ProfileClient.DataStore = new MockDataStore();
-            ProfileClient client = new ProfileClient();
 
             if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
             {
@@ -123,6 +121,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             testSubscription = new AzureSubscription()
             {
                 Id = new Guid(currentEnvironment.SubscriptionId),
+                Environment = testEnvironmentName,
                 Properties = new Dictionary<AzureSubscription.Property,string> 
                 {
                      { AzureSubscription.Property.Default, "True"},
@@ -134,9 +133,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             testEnvironment = currentEnvironment;
 
-            ProfileClient client = new ProfileClient();
-            client.AddAzureSubscription(testSubscription);
-            client.Profile.Save();
+            client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)

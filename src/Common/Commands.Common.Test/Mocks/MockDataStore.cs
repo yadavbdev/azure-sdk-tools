@@ -257,12 +257,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public X509Certificate2 GetCertificate(string thumbprint)
         {
-            throw new System.NotImplementedException();
+            return new X509Certificate2();
         }
 
         public void AddCertificate(X509Certificate2 cert)
         {
-            throw new System.NotImplementedException();
+            // Do nothing
         }
 
         /// <summary>
