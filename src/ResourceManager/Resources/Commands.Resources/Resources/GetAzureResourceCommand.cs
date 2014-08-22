@@ -12,9 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Linq;
 using Microsoft.Azure.Commands.Resources.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -83,7 +82,7 @@ namespace Microsoft.Azure.Commands.Resources
                         "ResourceType", r.ResourceType,
                         "ParentResource", r.ParentResource,
                         "Location", r.Location,
-                        "Permissions", r.Permissions)));
+                        "Permissions", r.PermissionsTable)));
 
                     WriteObject(output, true);
                 }

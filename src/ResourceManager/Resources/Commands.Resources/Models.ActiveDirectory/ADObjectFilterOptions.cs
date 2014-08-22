@@ -12,9 +12,31 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
-    public class PSADGroup : PSADObject
+    public class ADObjectFilterOptions
     {
+        public string DisplayName { get; set; }
+
+        public string Email { get; set; }
+
+        public string Id { get; set; }
+
+        public bool Paging { get; set; }
+
+        /// <summary>
+        /// Used internally to track the paging for the listing, do not change manually.
+        /// </summary>
+        public string NextLink { get; set; }
+
+        public bool HasFilter {
+            get
+            {
+                return !string.IsNullOrEmpty(DisplayName) ||
+                       !string.IsNullOrEmpty(Email) ||
+                       !string.IsNullOrEmpty(Id);
+            }
+        }
     }
 }

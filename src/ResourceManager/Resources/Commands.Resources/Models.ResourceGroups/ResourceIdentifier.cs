@@ -12,11 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.Resources.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AuthorizationResourceIdentity = Microsoft.Azure.Management.Authorization.Models.ResourceIdentity;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
+using ResourcesResourceIdentity = Microsoft.Azure.Management.Resources.Models.ResourceIdentity;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
@@ -125,7 +126,25 @@ namespace Microsoft.Azure.Commands.Resources.Models
             return resourceId.ToString();
         }
 
-        public ResourceIdentity ToResourceIdentity(string apiVersion)
+        public AuthorizationResourceIdentity ToResourceIdentity()
+        {
+            AuthorizationResourceIdentity identity = null;
+
+            if (!string.IsNullOrEmpty(ResourceType) && ResourceType.IndexOf('/') > 0)
+            {
+                identity = new AuthorizationResourceIdentity
+                {
+                    ResourceName = ResourceName,
+                    ParentResourcePath = ParentResource,
+                    ResourceProviderNamespace = ResourceIdentifier.GetProviderFromResourceType(ResourceType),
+                    ResourceType = ResourceIdentifier.GetTypeFromResourceType(ResourceType)
+                };
+            }
+
+            return identity;
+        }
+
+        public ResourcesResourceIdentity ToResourceIdentity(string apiVersion)
         {
             if (string.IsNullOrEmpty(ResourceType))
             {
@@ -136,7 +155,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 throw new ArgumentException(ProjectResources.ResourceTypeFormat, "ResourceType");
             }
 
-            ResourceIdentity identity = new ResourceIdentity
+            ResourcesResourceIdentity identity = new ResourcesResourceIdentity
             {
                 ResourceName = ResourceName,
                 ParentResourcePath = ParentResource,

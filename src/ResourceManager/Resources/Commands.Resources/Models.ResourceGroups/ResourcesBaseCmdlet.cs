@@ -61,12 +61,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             get
             {
-                // To do remove before going to production
-                System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) =>
-                {
-                    return true;
-                };
-
                 if (policiesClient == null)
                 {
                     policiesClient = new AuthorizationClient(CurrentSubscription);

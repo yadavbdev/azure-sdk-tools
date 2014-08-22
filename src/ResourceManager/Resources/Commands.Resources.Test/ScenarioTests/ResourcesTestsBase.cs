@@ -23,6 +23,7 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events;
 using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Testing;
+using Microsoft.Azure.Management.Authorization;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
@@ -42,12 +43,19 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var storageClient = GetStorageManagementClient();
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
+            var authorizationManagementClient = GetAuthorizationManagementClient();
 
             helper.SetupManagementClients(resourceManagementClient,
                 subscriptionsClient,
                 storageClient,
                 galleryClient,
-                eventsClient);
+                eventsClient,
+                authorizationManagementClient);
+        }
+
+        protected AuthorizationManagementClient GetAuthorizationManagementClient()
+        {
+            return TestBase.GetServiceClient<AuthorizationManagementClient>(new CSMTestEnvironmentFactory());
         }
 
         protected void RunPowerShellTest(params string[] scripts)

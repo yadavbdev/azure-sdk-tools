@@ -12,8 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Azure.Commands.Resources.Models;
 using System.Collections;
 using System.Management.Automation;

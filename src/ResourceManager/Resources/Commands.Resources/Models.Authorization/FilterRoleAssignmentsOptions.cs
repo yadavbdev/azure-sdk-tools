@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Resources.Models.ActiveDirectory;
+
 namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class FilterRoleAssignmentsOptions
@@ -52,6 +54,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public ResourceIdentifier ResourceIdentifier { get; set; }
 
-        public string Principal { get; set; }
+        public ADObjectFilterOptions FilterOptions { get; set; }
     }
 }

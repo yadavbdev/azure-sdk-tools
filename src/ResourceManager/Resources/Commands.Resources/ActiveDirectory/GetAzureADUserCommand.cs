@@ -13,9 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.ActiveDirectory.Models;
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Commands.Resources.Models.ActiveDirectory;
-using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -24,18 +23,33 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
     /// <summary>
     /// Get AD users.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureADUser"), OutputType(typeof(List<PSADUser>))]
+    [Cmdlet(VerbsCommon.Get, "AzureADUser", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADObject>))]
     public class GetAzureADUserCommand : ActiveDirectoryBaseCmdlet
     {
-        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of user to return. If not specified, return all users matching other filters.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DisplayName,
+            HelpMessage = "The user display name.")]
         [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
+            HelpMessage = "The user object id.")]
+        [ValidateNotNullOrEmpty]
+        public Guid ObjectId { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
+            HelpMessage = "The user email address.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Mail,
+            HelpMessage = "The user email address.")]
+        [ValidateNotNullOrEmpty]
+        public string Email { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            UserFilterOptions options = new UserFilterOptions
+            ADObjectFilterOptions options = new ADObjectFilterOptions
             {
-                DisplayName = Name,
+                DisplayName = DisplayName,
+                Email = Email,
+                Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 Paging = true
             };
 

@@ -12,14 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections;
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
 using Microsoft.Azure.Commands.Tags.Model;
 using Microsoft.Azure.Gallery;
+using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.Azure.Management.Resources.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -40,7 +42,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Resources = resources,
                 ProvisioningState = resourceGroup.ProvisioningState,
                 Tags = TagsConversionHelper.CreateTagHashtable(resourceGroup.Tags),
-                Permissions = client.GetResourceGroupPermissions(resourceGroup.Name)
+                Permissions = client.GetResourceGroupPermissions(resourceGroup.Name),
+                ResourceId = resourceGroup.Id
             };
         }
 
@@ -90,7 +93,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Properties = JsonUtilities.DeserializeJson(resource.Properties),
                 PropertiesText = resource.Properties,
                 Tags = TagsConversionHelper.CreateTagHashtable(resource.Tags),
-                Permissions = client.GetResourcePermissions(identifier, apiVersion)
+                Permissions = client.GetResourcePermissions(identifier),
+                ResourceId = identifier.ToString()
             };
         }
 
@@ -379,9 +383,56 @@ namespace Microsoft.Azure.Commands.Resources.Models
                     PropertiesText = string.Empty,
                     ResourceGroupName = string.Empty,
                     Properties = new Dictionary<string, string>(),
-                    ResourceType = string.Empty
+                    ResourceType = string.Empty,
+                    ResourceId = string.Empty
                 };
             }
+        }
+
+        private static PSPermission EmptyPermission
+        {
+            get
+            {
+                return new PSPermission()
+                {
+                    Actions = new List<string>(),
+                    NoActions = new List<string>()
+                };
+            }
+        }
+
+        public static string ConstructPermissionsTable(List<PSPermission> permissions)
+        {
+            StringBuilder permissionsTable = new StringBuilder();
+
+            if (permissions != null && permissions.Count > 0)
+            {
+                int maxActionsLength = Math.Max("Actions".Length, permissions.Where(p => p.Actions != null).DefaultIfEmpty(EmptyPermission).Max(p => p.ActionsString.Length));
+                int maxNoActionsLength = Math.Max("NoActions".Length, permissions.Where(p => p.NoActions != null).DefaultIfEmpty(EmptyPermission).Max(p => p.NoActionsString.Length));
+
+                string rowFormat = "{0, -" + maxActionsLength + "}  {1, -" + maxNoActionsLength + "}\r\n";
+                permissionsTable.AppendLine();
+                permissionsTable.AppendFormat(rowFormat, "Actions", "NoActions");
+                permissionsTable.AppendFormat(rowFormat,
+                    GeneralUtilities.GenerateSeparator(maxActionsLength, "="),
+                    GeneralUtilities.GenerateSeparator(maxNoActionsLength, "="));
+
+                foreach (PSPermission permission in permissions)
+                {
+                    permissionsTable.AppendFormat(rowFormat, permission.ActionsString, permission.NoActionsString);
+                }
+            }
+
+            return permissionsTable.ToString();
+        }
+
+        public static PSPermission ToPSPermission(this Permission permission)
+        {
+            return new PSPermission()
+            {
+                Actions = new List<string>(permission.Actions),
+                NoActions = new List<string>(permission.NotActions)
+            };
         }
     }
 }

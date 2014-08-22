@@ -13,9 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.ActiveDirectory.Models;
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Commands.Resources.Models.ActiveDirectory;
-using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -24,23 +23,33 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
     /// <summary>
     /// Get AD groups.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureADGroup"), OutputType(typeof(List<PSADGroup>))]
+    [Cmdlet(VerbsCommon.Get, "AzureADGroup", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADObject>))]
     public class GetAzureADGroupCommand : ActiveDirectoryBaseCmdlet
     {
-        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of groups to return. If not specified, return all groups matching other filters.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DisplayName,
+            HelpMessage = "The user or group name.")]
         [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Principal whose groups to return, must be a user principal. If not specified, return all groups matching other filters.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
+            HelpMessage = "The user or group id.")]
         [ValidateNotNullOrEmpty]
-        public string Principal { get; set; }
+        public Guid ObjectId { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
+            HelpMessage = "The Use email address.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Mail,
+            HelpMessage = "The Use email address.")]
+        [ValidateNotNullOrEmpty]
+        public string Email { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            GroupFilterOptions options = new GroupFilterOptions
+            ADObjectFilterOptions options = new ADObjectFilterOptions
             {
-                DisplayName = Name,
-                UserPrincipal = Principal,
+                DisplayName = DisplayName,
+                Email = Email,
+                Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 Paging = true
             };
 

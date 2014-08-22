@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Management.Authorization;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
 using Microsoft.WindowsAzure;
@@ -44,7 +45,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 {
     public class ResourceClientTests : TestBase
     {
-        private Mock<IResourceManagementClient> ResourceManagementClientMock;
+        private Mock<IResourceManagementClient> resourceManagementClientMock;
+
+        private Mock<IAuthorizationManagementClient> authorizationManagementClientMock;
 
         private Mock<IStorageClientWrapper> storageClientWrapperMock;
 
@@ -63,6 +66,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         private Mock<IEventDataOperations> eventDataOperationsMock;
 
         private Mock<IProviderOperations> providersMock;
+
+        private Mock<IPermissionOperations> permissionOperationsMock;
 
         private Mock<Action<string>> progressLoggerMock;
 
@@ -130,7 +135,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         
         public ResourceClientTests()
         {
-            ResourceManagementClientMock = new Mock<IResourceManagementClient>();
+            resourceManagementClientMock = new Mock<IResourceManagementClient>();
+            authorizationManagementClientMock = new Mock<IAuthorizationManagementClient>();
             deploymentsMock = new Mock<IDeploymentOperations>();
             resourceGroupMock = new Mock<IResourceGroupOperations>();
             resourceOperationsMock = new Mock<IResourceOperations>();
@@ -146,18 +152,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 }));
             progressLoggerMock = new Mock<Action<string>>();
             errorLoggerMock = new Mock<Action<string>>();
-            ResourceManagementClientMock.Setup(f => f.Deployments).Returns(deploymentsMock.Object);
-            ResourceManagementClientMock.Setup(f => f.ResourceGroups).Returns(resourceGroupMock.Object);
-            ResourceManagementClientMock.Setup(f => f.Resources).Returns(resourceOperationsMock.Object);
-            ResourceManagementClientMock.Setup(f => f.DeploymentOperations).Returns(deploymentOperationsMock.Object);
-            ResourceManagementClientMock.Setup(f => f.Providers).Returns(providersMock.Object);
-            eventsClientMock.Setup(f => f.EventData).Returns(eventDataOperationsMock.Object);
+            permissionOperationsMock = new Mock<IPermissionOperations>();
             storageClientWrapperMock = new Mock<IStorageClientWrapper>();
+            resourceManagementClientMock.Setup(f => f.Deployments).Returns(deploymentsMock.Object);
+            resourceManagementClientMock.Setup(f => f.ResourceGroups).Returns(resourceGroupMock.Object);
+            resourceManagementClientMock.Setup(f => f.Resources).Returns(resourceOperationsMock.Object);
+            resourceManagementClientMock.Setup(f => f.DeploymentOperations).Returns(deploymentOperationsMock.Object);
+            resourceManagementClientMock.Setup(f => f.Providers).Returns(providersMock.Object);
+            eventsClientMock.Setup(f => f.EventData).Returns(eventDataOperationsMock.Object);
+            authorizationManagementClientMock.Setup(f => f.Permissions).Returns(permissionOperationsMock.Object);
             resourcesClient = new ResourcesClient(
-                ResourceManagementClientMock.Object,
+                resourceManagementClientMock.Object,
                 storageClientWrapperMock.Object,
                 galleryTemplatesClientMock.Object,
-                eventsClientMock.Object)
+                eventsClientMock.Object,
+                authorizationManagementClientMock.Object)
                 {
                     VerboseLogger = progressLoggerMock.Object,
                     ErrorLogger = errorLoggerMock.Object

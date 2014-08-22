@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using Microsoft.Azure.Management.Authorization;
+using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Management.Resources.Models;
 using Microsoft.WindowsAzure;
@@ -39,6 +42,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
         private List<DeploymentOperation> operations;
 
         public IResourceManagementClient ResourceManagementClient { get; set; }
+
+        public IAuthorizationManagementClient AuthorizationManagementClient { get; set; }
         
         public IStorageClientWrapper StorageClientWrapper { get; set; }
 
@@ -59,7 +64,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 subscription.CreateClientFromResourceManagerEndpoint<ResourceManagementClient>(),
                 new StorageClientWrapper(subscription.CreateClient<StorageManagementClient>()),
                 new GalleryTemplatesClient(subscription),
-                subscription.CreateClientFromResourceManagerEndpoint<EventsClient>())
+                subscription.CreateClientFromResourceManagerEndpoint<EventsClient>(),
+                subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>())
         {
 
         }
@@ -75,12 +81,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
             IResourceManagementClient resourceManagementClient,
             IStorageClientWrapper storageClientWrapper,
             GalleryTemplatesClient galleryTemplatesClient,
-            IEventsClient eventsClient)
+            IEventsClient eventsClient,
+            IAuthorizationManagementClient authorizationManagementClient)
         {
             ResourceManagementClient = resourceManagementClient;
             StorageClientWrapper = storageClientWrapper;
             GalleryTemplatesClient = galleryTemplatesClient;
             EventsClient = eventsClient;
+            AuthorizationManagementClient = authorizationManagementClient;
         }
 
         /// <summary>
@@ -361,30 +369,27 @@ namespace Microsoft.Azure.Commands.Resources.Models
             return new TemplateValidationInfo(validationResult);
         }
 
-        internal List<string> GetResourceGroupPermissions(string resourceGroup)
+        internal List<PSPermission> GetResourceGroupPermissions(string resourceGroup)
         {
-            PermissionGetResult permissionsResult = ResourceManagementClient.ResourceGroups.GetPermissions(resourceGroup);
+            PermissionGetResult permissionsResult = AuthorizationManagementClient.Permissions.ListForResourceGroup(resourceGroup);
 
             if (permissionsResult != null)
             {
-                return permissionsResult.Permissions.SelectMany(p => p.Actions).ToList();
+                return permissionsResult.Permissions.Select(p => p.ToPSPermission()).ToList();
             }
 
             return null;
         }
 
-        internal List<string> GetResourcePermissions(ResourceIdentifier identity, string apiVersion)
+        internal List<PSPermission> GetResourcePermissions(ResourceIdentifier identity)
         {
-            if (!string.IsNullOrEmpty(apiVersion))
-            {
-                PermissionGetResult permissionsResult = ResourceManagementClient.Resources.GetPermissions(
+            PermissionGetResult permissionsResult = AuthorizationManagementClient.Permissions.ListForResource(
                     identity.ResourceGroupName,
-                    identity.ToResourceIdentity(apiVersion));
+                    identity.ToResourceIdentity());
 
-                if (permissionsResult != null)
-                {
-                    return permissionsResult.Permissions.SelectMany(p => p.Actions).ToList();
-                }
+            if (permissionsResult != null)
+            {
+                return permissionsResult.Permissions.Select(p => p.ToPSPermission()).ToList();
             }
 
             return null;
