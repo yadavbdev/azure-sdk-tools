@@ -65,14 +65,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                 {
                     BgpPeering = new AzureBgpPeering()
                     {
-                        AzureAsn = azureAsn,
-                        PeerAsn = peerAsn,
+                        AzureAutonomousSystemNumber = azureAsn,
+                        PeerAutonomousSystemNumber = peerAsn,
                         PrimaryAzurePort = primaryAzurePort,
                         PrimaryPeerSubnet = primaryPeerSubnet,   
                         SecondaryAzurePort = secondaryAzurePort,
                         SecondaryPeerSubnet = secondayPeerSubnet,
                         State = state,         
-                        VlanId = vlanId
+                        VirtualLanId = vlanId
                     },
                     RequestId = "",
                     StatusCode = new HttpStatusCode()
@@ -87,8 +87,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                             y => y == accessType),
                         It.Is<BorderGatewayProtocolPeeringNewParameters>(
                             z =>
-                                z.PeerAsn == peerAsn && z.PrimaryPeerSubnet == primaryPeerSubnet &&
-                                z.SecondaryPeerSubnet == secondayPeerSubnet && z.VlanId == vlanId),
+                                z.PeerAutonomousSystemNumber == peerAsn && z.PrimaryPeerSubnet == primaryPeerSubnet &&
+                                z.SecondaryPeerSubnet == secondayPeerSubnet && z.VirtualLanId == vlanId),
                         It.IsAny<CancellationToken>()))
                 .Returns((string sKey, BgpPeeringAccessType atype, BorderGatewayProtocolPeeringNewParameters param, CancellationToken cancellation) => t);
             client.SetupGet(f => f.BorderGatewayProtocolPeerings).Returns(bgpMock.Object);
@@ -139,14 +139,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                 {
                     BgpPeering = new AzureBgpPeering()
                     {
-                        AzureAsn = azureAsn,
-                        PeerAsn = peerAsn,
+                        AzureAutonomousSystemNumber = azureAsn,
+                        PeerAutonomousSystemNumber = peerAsn,
                         PrimaryAzurePort = primaryAzurePort,
                         PrimaryPeerSubnet = primaryPeerSubnet,
                         SecondaryAzurePort = secondaryAzurePort,
                         SecondaryPeerSubnet = secondayPeerSubnet,
                         State = state,
-                        VlanId = vlanId
+                        VirtualLanId = vlanId
                     },
                     RequestId = "",
                     StatusCode = new HttpStatusCode()
@@ -246,14 +246,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                 {
                     BgpPeering = new AzureBgpPeering()
                     {
-                        AzureAsn = azureAsn,
-                        PeerAsn = peerAsn,
+                        AzureAutonomousSystemNumber = azureAsn,
+                        PeerAutonomousSystemNumber = peerAsn,
                         PrimaryAzurePort = primaryAzurePort,
                         PrimaryPeerSubnet = primaryPeerSubnet,
                         SecondaryAzurePort = secondaryAzurePort,
                         SecondaryPeerSubnet = secondayPeerSubnet,
                         State = state,
-                        VlanId = vlanId
+                        VirtualLanId = vlanId
                     },
                     RequestId = "",
                     StatusCode = new HttpStatusCode()
@@ -266,14 +266,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                {
                    BgpPeering = new AzureBgpPeering()
                    {
-                       AzureAsn = azureAsn,
-                       PeerAsn = peerAsn,
+                       AzureAutonomousSystemNumber = azureAsn,
+                       PeerAutonomousSystemNumber = peerAsn,
                        PrimaryAzurePort = primaryAzurePort,
                        PrimaryPeerSubnet = newPrimaryPeerSubnet,
                        SecondaryAzurePort = secondaryAzurePort,
                        SecondaryPeerSubnet = secondayPeerSubnet,
                        State = state,
-                       VlanId = vlanId
+                       VirtualLanId = vlanId
                    },
                    RequestId = "",
                    StatusCode = new HttpStatusCode()
