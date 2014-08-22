@@ -1,3 +1,8 @@
+2014.08.22 Version 0.8.7.1
+* AzureResourceManager
+    * Update Gallery and Monitoring management clients to fix Gallery commands
+*HDInsight
+    * Update Microsoft.Net API for Hadoop
 2014.08.18 Version 0.8.7
 * Update Newtonsoft.Json dependency to 6.0.4
 * Compute 
@@ -6,6 +11,9 @@
         * Get-AzureVMDiagnosticsExtension
         * Set-AzureServiceDiagnosticsExtension
         * Get-AzureServiceDiagnosticsExtension
+    * Get-AzureDeployment: added CreatedTime and LastModifiedTime to output
+    * Get-AzureVM: added Hostname property
+    * Implemented CustomData support for Azure VMs
 * Websites
     * Added RoutingRules parameter to Set-AzureWebsite to expose Testing in Production (TiP) and returned from Get-AzureWebsite
     * Get-AzureWebsiteMetric to return web site metrics
