@@ -12,31 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 
-namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
+namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
-    public class ADObjectFilterOptions
+    public class PSPermission
     {
-        public string DisplayName { get; set; }
+        public List<string> Actions { get; set; }
 
-        public string Email { get; set; }
+        public string ActionsString { get { return string.Join(", ", Actions); } }
 
-        public string Id { get; set; }
+        public List<string> NoActions { get; set; }
 
-        public bool Paging { get; set; }
-
-        /// <summary>
-        /// Used internally to track the paging for the listing, do not change manually.
-        /// </summary>
-        public string NextLink { get; set; }
-
-        public bool HasFilter {
-            get
-            {
-                return !string.IsNullOrEmpty(DisplayName) ||
-                       !string.IsNullOrEmpty(Email) ||
-                       !string.IsNullOrEmpty(Id);
-            }
-        }
+        public string NoActionsString { get { return string.Join(", ", NoActions); } }
     }
 }

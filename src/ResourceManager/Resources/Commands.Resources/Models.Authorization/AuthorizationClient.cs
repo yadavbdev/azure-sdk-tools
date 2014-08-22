@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             List<PSRoleAssignment> result = new List<PSRoleAssignment>();
             ListAssignmentsFilterParameters parameters = new ListAssignmentsFilterParameters();
 
-            if (options.FilterOptions.Filter)
+            if (options.FilterOptions.HasFilter)
             {
                 // Filter first by principal
                 parameters.PrincipalId = ActiveDirectoryClient.GetObjectId(options.FilterOptions);

@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
     internal static class ParameterSet
     {
-        public const string Email = "EmailParameterSet";
+        public const string Mail = "MailParameterSet";
 
         public const string DisplayName = "DisplayNameParameterSet";
 
@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public const string Scope = "ScopeParameterSet";
 
-        public const string ScopeWithEmail = "ScopeWithEmailParameterSet";
+        public const string ScopeWithMail = "ScopeWithMailParameterSet";
 
         public const string ScopeWithDisplayName = "ScopeWithDisplayNameParameterSet";
 
@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public const string ResourceGroup = "ResourceGroupParameterSet";
 
-        public const string ResourceGroupWithEmail = "ResourceGroupWithEmailParameterSet";
+        public const string ResourceGroupWithMail = "ResourceGroupWithMailParameterSet";
 
         public const string ResourceGroupWithDisplayName = "ResourceGroupWithDisplayNameParameterSet";
 
@@ -40,17 +40,11 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public const string Resource = "ResourceParameterSet";
 
-        public const string ResourceWithEmail = "ResourceWithEmailParameterSet";
+        public const string ResourceWithMail = "ResourceWithMailParameterSet";
 
         public const string ResourceWithDisplayName = "ResourceWithDisplayNameParameterSet";
 
         public const string ResourceWithObjectId = "ResourceWithObjectIdParameterSet";
-
-        public const string DefaultScopeWithEmail = "DefaultScopeWithEmailParameterSet";
-
-        public const string DefaultScopeWithDisplayName = "DefaultScopeWithDisplayNameParameterSet";
-
-        public const string DefaultScopeWithObjectId = "DefaultScopeWithObjectIdParameterSet";
 
         public const string Empty = "EmptyParameterSet";
     }

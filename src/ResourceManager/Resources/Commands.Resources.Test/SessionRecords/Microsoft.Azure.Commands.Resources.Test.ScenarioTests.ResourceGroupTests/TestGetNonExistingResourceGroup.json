@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "/subscriptions/2c224e7e-3ef5-431d-a57b-e71f4662e3a6/resourcegroups/onesdk8123?api-version=2014-04-01-preview",
+      "RequestUri": "/subscriptions/1165e0f9-4535-44ce-bc6b-c73c00b5fb2c/resourcegroups/onesdk3165?api-version=2014-04-01-preview",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -9,22 +9,22 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ]
       },
-      "ResponseBody": "{\r\n  \"error\": {\r\n    \"code\": \"ResourceGroupNotFound\",\r\n    \"message\": \"Resource group 'onesdk8123' could not be found.\"\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"error\": {\r\n    \"code\": \"ResourceGroupNotFound\",\r\n    \"message\": \"Resource group 'onesdk3165' could not be found.\"\r\n  }\r\n}",
       "ResponseHeaders": {
         "Pragma": [
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31999"
+          "31971"
         ],
         "x-ms-request-id": [
-          "fc268353-942a-4e2b-b054-e3179f70a060"
+          "d4949ef2-338e-4a24-a1f7-360c696a78e4"
         ],
         "x-ms-correlation-request-id": [
-          "fc268353-942a-4e2b-b054-e3179f70a060"
+          "d4949ef2-338e-4a24-a1f7-360c696a78e4"
         ],
         "x-ms-routing-request-id": [
-          "WESTUS:20140724T210838Z:fc268353-942a-4e2b-b054-e3179f70a060"
+          "CENTRALUS:20140822T001159Z:d4949ef2-338e-4a24-a1f7-360c696a78e4"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -33,7 +33,7 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 24 Jul 2014 21:08:37 GMT"
+          "Fri, 22 Aug 2014 00:11:59 GMT"
         ]
       },
       "StatusCode": 404
@@ -41,10 +41,10 @@
   ],
   "Names": {
     "Test-GetNonExistingResourceGroup": [
-      "onesdk8123"
+      "onesdk3165"
     ]
   },
   "Variables": {
-    "SubscriptionId": "2c224e7e-3ef5-431d-a57b-e71f4662e3a6"
+    "SubscriptionId": "1165e0f9-4535-44ce-bc6b-c73c00b5fb2c"
   }
 }

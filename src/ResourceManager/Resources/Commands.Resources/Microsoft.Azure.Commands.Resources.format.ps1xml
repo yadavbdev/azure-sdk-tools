@@ -62,7 +62,7 @@
               </ListItem>
               <ListItem>
                 <Label>Permissions</Label>
-                <PropertyName>Permissions</PropertyName>
+                <PropertyName>PermissionsTable</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>ResourceId</Label>
@@ -100,7 +100,7 @@
               </ListItem>
               <ListItem>
                 <Label>Permissions</Label>
-                <PropertyName>Permissions</PropertyName>
+                <PropertyName>PermissionsTable</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>Resources</Label>

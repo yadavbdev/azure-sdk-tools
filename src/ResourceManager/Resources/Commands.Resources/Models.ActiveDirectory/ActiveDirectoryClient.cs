@@ -45,13 +45,12 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public PSADObject GetADObject(ADObjectFilterOptions options)
         {
             PSADObject result = null;
-            string filter = string.IsNullOrEmpty(options.Id) ? options.Email : options.Id;
 
-            if (!string.IsNullOrEmpty(filter))
+            if (!string.IsNullOrEmpty(options.Id))
             {
                 try
                 {
-                    User user = GraphClient.User.Get(filter).User;
+                    User user = GraphClient.User.Get(options.Id).User;
 
                     if (user != null)
                     {
@@ -62,7 +61,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
                 try
                 {
-                    Group group = GraphClient.Group.Get(filter).Group;
+                    Group group = GraphClient.Group.Get(options.Id).Group;
 
                     if (group != null)
                     {
@@ -70,6 +69,20 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                     }
                 }
                 catch { /* The group was not found, ignore the exception */ }
+            }
+
+            if (!string.IsNullOrEmpty(options.Email))
+            {
+                try
+                {
+                    User user = GraphClient.User.GetBySignInName(options.Email).Users.FirstOrDefault();
+
+                    if (user != null)
+                    {
+                        result = user.ToPSADObject();
+                    }
+                }
+                catch { /* The user was not found, ignore the exception */ }
             }
 
             return result;
@@ -263,19 +276,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                     }
                 }
                 catch { /* Unable to retrieve the user, skip */ }
-
-                string localPart = options.Email.Split('@').First();
-                if (!string.IsNullOrEmpty(localPart))
-                {
-                    var users = FilterUsers();
-                    var user = users.FirstOrDefault(u => u.Email.StartsWith(localPart));
-
-                    if (user != null)
-                    {
-                        // Input is live id.
-                        return user.Id;
-                    }
-                }
 
                 var groups = FilterGroups(options);
                 if (groups.Count > 0)
