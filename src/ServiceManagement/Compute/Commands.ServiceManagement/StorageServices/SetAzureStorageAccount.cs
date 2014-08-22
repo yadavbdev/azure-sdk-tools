@@ -21,9 +21,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
     /// <summary>
     /// Updates the label and/or the description for a storage account in Microsoft Azure.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureStorageAccount"), OutputType(typeof(ManagementOperationContext))]
+    [Cmdlet(VerbsCommon.Set, "AzureStorageAccount", DefaultParameterSetName = GeoReplicationEnabledParamSet), OutputType(typeof(ManagementOperationContext))]
     public class SetAzureStorageAccountCommand : ServiceManagementBaseCmdlet
     {
+        protected const string AccountTypeParamSet = "AccountType";
+        protected const string GeoReplicationEnabledParamSet = "GeoReplicationEnabled";
+
         /// <summary>
         /// The name for the storage account. (Required)
         /// </summary>
@@ -58,8 +61,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
             set;
         }
 
-        [Parameter(HelpMessage = "Enable or Disable Geo Replication")]
+        [Parameter(ParameterSetName = GeoReplicationEnabledParamSet, HelpMessage = "Enable or Disable Geo Replication")]
         public bool? GeoReplicationEnabled
+        {
+            get;
+            set;
+        }
+
+        [Parameter(ParameterSetName = AccountTypeParamSet, HelpMessage = "Type of the storage account.")]
+        [ValidateNotNullOrEmpty]
+        public string AccountType
         {
             get;
             set;
@@ -69,7 +80,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
         {
             var upstorageinput = new StorageAccountUpdateParameters
             {
-                GeoReplicationEnabled = GeoReplicationEnabled,
+                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardZRS : this.AccountType,
                 Description = this.Description,
                 Label = this.Label
             };
