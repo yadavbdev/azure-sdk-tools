@@ -18,7 +18,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
     public class NewAzureStorageAccountCmdletInfo : CmdletsInfo
     {
-        public NewAzureStorageAccountCmdletInfo(string storageAccountName, string location, string affinity, string label, string description)
+        public NewAzureStorageAccountCmdletInfo(string storageAccountName, string location, string affinity, string label, string description, string accountType)
         {
             this.cmdletName = Utilities.NewAzureStorageAccountCmdletName;
 
@@ -38,6 +38,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             if (description != null)
             {
                 this.cmdletParams.Add(new CmdletParam("Description", description));
+            }
+
+            if (!string.IsNullOrEmpty(accountType))
+            {
+                this.cmdletParams.Add(new CmdletParam("AccountType", accountType));
             }
         }
     }

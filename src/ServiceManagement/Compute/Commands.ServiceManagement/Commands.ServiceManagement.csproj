@@ -107,7 +107,7 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.1.2.1.9\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.1.2.1.10\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -171,6 +171,7 @@
     <Compile Include="Extensions\MicrosoftAntimalware\RemoveAzureServiceAntimalwareExtension.cs" />
     <Compile Include="Extensions\MicrosoftAntimalware\SetAzureServiceAntimalwareExtension.cs" />
     <Compile Include="Helpers\SecureStringHelper.cs" />
+    <Compile Include="IaaS\AvailabilitySets\RemoveAzureAvailabilitySet.cs" />
     <Compile Include="IaaS\DiskRepository\GetAzureVMImageDiskConfigSet.cs" />
     <Compile Include="IaaS\DiskRepository\RemoveAzureVMImageDataDiskConfig.cs" />
     <Compile Include="IaaS\DiskRepository\RemoveAzureVMImageOSDiskConfig.cs" />
