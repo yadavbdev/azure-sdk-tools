@@ -19,6 +19,7 @@ using System.Management.Automation;
 using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Testing;
 
@@ -48,6 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             TestMockSupport.RunningMocked = this.runningMocked;
             if (this.runningMocked)
             {
+                AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
                 string dummyCredentialFile = Path.Combine(Environment.CurrentDirectory, TestCredentialHelper.DefaultCredentialFile);
                 if (!File.Exists(dummyCredentialFile))
                 {
@@ -61,6 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 this.credentialFile = TestCredentialHelper.DefaultCredentialFile;
                 this.profileFile = TestCredentialHelper.WindowsAzureProfileFile;
             }
+            ProfileClient.DataStore = new MockDataStore();
 
             if (Environment.GetEnvironmentVariable(outputDirKey) != null)
             {

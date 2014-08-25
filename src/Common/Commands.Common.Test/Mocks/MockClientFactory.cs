@@ -73,8 +73,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 {
                     IClientFactory realHelper = new ClientFactory();
                     var realClient = realHelper.CreateClient<TClient>(parameters);
-                    realClient.WithHandler(HttpMockServer.CreateInstance());
-                    return realClient;
+                    var newRealClient = realClient.WithHandler(HttpMockServer.CreateInstance());
+                    realClient.Dispose();
+                    return newRealClient;
                 }
             }
 

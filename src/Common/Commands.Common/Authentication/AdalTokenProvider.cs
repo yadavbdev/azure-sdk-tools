@@ -106,7 +106,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                 }
                 catch (AdalException adalEx)
                 {
-                    if (adalEx.ErrorCode == AdalError.UserInteractionRequired)
+                    if (adalEx.ErrorCode == AdalError.UserInteractionRequired ||
+                        adalEx.ErrorCode == AdalError.MultipleTokensMatched)
                     {
                         try
                         {

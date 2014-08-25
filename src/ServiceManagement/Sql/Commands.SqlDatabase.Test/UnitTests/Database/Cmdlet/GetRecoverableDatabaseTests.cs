@@ -74,9 +74,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())
@@ -159,9 +156,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())
@@ -252,9 +246,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())

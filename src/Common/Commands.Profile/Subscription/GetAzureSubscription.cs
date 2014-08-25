@@ -142,7 +142,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     {
         internal static SubscriptionDataExtended ToExtendedData(this AzureSubscription subscription, IClientFactory clientFactory, AzureProfile azureProfile)
         {
-            using (var client = clientFactory.CreateClient<ManagementClient>())
+            using (var client = clientFactory.CreateClient<ManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint))
             {
                 var response = client.Subscriptions.Get();
                 var environment = azureProfile.Environments[subscription.Environment];

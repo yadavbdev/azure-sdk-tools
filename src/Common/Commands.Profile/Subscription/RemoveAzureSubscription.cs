@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
@@ -22,17 +23,23 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     /// <summary>
     /// Removes a previously imported subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureSubscription", SupportsShouldProcess = true), OutputType(typeof(AzureSubscription))]
+    [Cmdlet(VerbsCommon.Remove, "AzureSubscription", SupportsShouldProcess = true, DefaultParameterSetName = "Name")]
+    [OutputType(typeof(AzureSubscription))]
     public class RemoveAzureSubscriptionCommand : SubscriptionCmdletBase
     {
-        public RemoveAzureSubscriptionCommand() : base(false)
+        public RemoveAzureSubscriptionCommand() : base(true)
         {
         }
 
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "Name")]
         [ValidateNotNullOrEmpty]
         [Alias("Name")]
         public string SubscriptionName { get; set; }
+
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "Id")]
+        [ValidateNotNullOrEmpty]
+        [Alias("Id")]
+        public string SubscriptionId { get; set; }
 
         [Parameter(Position = 2, HelpMessage = "Do not confirm deletion of subscription")]
         public SwitchParameter Force { get; set; }
@@ -42,14 +49,21 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public void RemoveSubscriptionProcess()
         {
-            ProfileClient.RemoveAzureSubscription(SubscriptionName);
+            if (SubscriptionName != null)
+            {
+                ProfileClient.RemoveAzureSubscription(SubscriptionName);
+            }
+            else
+            {
+                ProfileClient.RemoveAzureSubscription(new Guid(SubscriptionId));
+            }
         }
 
         public override void ExecuteCmdlet()
         {
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Resources.RemoveSubscriptionConfirmation, SubscriptionName),
+                string.Format(Resources.RemoveSubscriptionConfirmation, SubscriptionName ?? SubscriptionId),
                 Resources.RemoveSubscriptionMessage,
                 SubscriptionName,
                 RemoveSubscriptionProcess);

@@ -20,7 +20,9 @@ using System.Management.Automation;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Concretes;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators;
@@ -65,7 +67,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
         {
             return new AzureSubscription()
             {
-                Id = IntegrationTestBase.TestCredentials.SubscriptionId
+                Id = IntegrationTestBase.TestCredentials.SubscriptionId,
+                Properties = new Dictionary<AzureSubscription.Property, string> { { AzureSubscription.Property.Thumbprint, "" } }
             };
         }
 
@@ -167,6 +170,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
             WaitAzureHDInsightJobCommand.ReduceWaitTime = true;
             var cmdletManager = ServiceLocator.Instance.Locate<IServiceLocationSimulationManager>();
             cmdletManager.MockingLevel = ServiceLocationMockingLevel.ApplyFullMocking;
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+            ProfileClient.DataStore = new MockDataStore();
         }
 
         public void ApplyIndividualTestMockingOnly()

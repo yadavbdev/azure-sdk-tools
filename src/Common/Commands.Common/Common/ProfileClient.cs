@@ -40,18 +40,34 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         private static void UpgradeProfile()
         {
-            if (DataStore.FileExists(System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFile)))
+            string oldProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFile);
+            string newProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.ProfileFile);
+            if (DataStore.FileExists(oldProfileFilePath))
             {
                 string oldProfilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory,
                     AzurePowerShell.OldProfileFile);
-                AzureProfile profile = new AzureProfile(DataStore, oldProfilePath);
+                AzureProfile oldProfile = new AzureProfile(DataStore, oldProfilePath);
+
+                if (DataStore.FileExists(newProfileFilePath))
+                {
+                    // Merge profile files
+                    AzureProfile newProfile = new AzureProfile(DataStore, newProfileFilePath);
+                    foreach (var environment in newProfile.Environments.Values)
+                    {
+                        oldProfile.Environments[environment.Name] = environment;
+                    }
+                    foreach (var subscription in newProfile.Subscriptions.Values)
+                    {
+                        oldProfile.Subscriptions[subscription.Id] = subscription;
+                    }
+                    DataStore.DeleteFile(newProfileFilePath);
+                }
 
                 // Save the profile to the disk
-                profile.Save();
-
-                // Rename AzureProfile.xml to AzureProfile.json
-                DataStore.RenameFile(oldProfilePath,
-                    System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.ProfileFile));
+                oldProfile.Save();
+                
+                // Rename WindowsAzureProfile.xml to WindowsAzureProfile.json
+                DataStore.RenameFile(oldProfilePath, newProfileFilePath);
             }
         }
 
@@ -188,44 +204,27 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             foreach (var subscription in subscriptions)
             {
-                AddAzureSubscription(subscription);
+                AddOrSetAzureSubscription(subscription);
             }
         }
 
-        public AzureSubscription AddAzureSubscription(AzureSubscription subscription)
+        public AzureSubscription AddOrSetAzureSubscription(AzureSubscription subscription)
         {
             if (subscription == null)
             {
                 throw new ArgumentNullException("Subscription needs to be specified.", "subscription");
             }
-
-            if (!Profile.Subscriptions.ContainsKey(subscription.Id))
+            if (subscription.Environment == null)
             {
-                Profile.Subscriptions[subscription.Id] = subscription;
-                return subscription;
+                throw new ArgumentNullException("Environment needs to be specified.", "subscription.Environment");
             }
-            else
+            if (!Profile.Environments.ContainsKey(subscription.Environment))
             {
-                throw new ArgumentException(string.Format(Resources.SubscriptionAlreadyExists, subscription.Name), "subscription");
-            }
-        }
-
-        public AzureSubscription SetAzureSubscription(AzureSubscription subscription)
-        {
-            if (subscription == null)
-            {
-                throw new ArgumentNullException("Subscription needs to be specified.", "subscription");
+                throw new ArgumentException("Environment name is invalid.", "subscription.Environment");
             }
 
-            if (Profile.Subscriptions.ContainsKey(subscription.Id))
-            {
-                Profile.Subscriptions[subscription.Id] = subscription;
-                return subscription;
-            }
-            else
-            {
-                throw new ArgumentException(string.Format(Resources.SubscriptionNameNotFoundMessage, subscription.Name), "subscription");
-            }
+            Profile.Subscriptions[subscription.Id] = subscription;
+            return subscription;
         }
 
         public AzureSubscription RemoveAzureSubscription(string name)
@@ -264,6 +263,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (AzureSession.CurrentSubscription != null && subscription.Id == AzureSession.CurrentSubscription.Id)
             {
                 WarningLog(Resources.RemoveCurrentSubscription);
+                AzureSession.SetCurrentSubscription(null, null);
             }
 
             Profile.Subscriptions.Remove(id);
@@ -378,7 +378,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 // Get all AD accounts and iterate
                 var userIds = Profile.Subscriptions.Values
-                    .Select(s => s.Properties[AzureSubscription.Property.UserAccount]).Distinct();
+                    .Select(s => s.GetProperty(AzureSubscription.Property.UserAccount)).Distinct();
 
                 List<AzureSubscription> subscriptions = new List<AzureSubscription>();
                 foreach (var userId in userIds)

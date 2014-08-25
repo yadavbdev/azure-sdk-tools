@@ -82,7 +82,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             if (!this.AvailableRegions.Contains(jobRequest.Region, StringComparer.OrdinalIgnoreCase))
                 throw new Exception(Resources.SchedulerInvalidLocation);
 
-            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
+            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
          
             JobCreateOrUpdateParameters jobCreateParams = new JobCreateOrUpdateParameters
             {
@@ -143,7 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             if (!this.AvailableRegions.Contains(jobRequest.Region, StringComparer.OrdinalIgnoreCase))
                 throw new Exception(Resources.SchedulerInvalidLocation);
 
-            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
+            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
 
             JobCreateOrUpdateParameters jobCreateParams = new JobCreateOrUpdateParameters
             {
@@ -201,7 +201,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             if (!this.AvailableRegions.Contains(jobRequest.Region, StringComparer.OrdinalIgnoreCase))
                 throw new Exception(Resources.SchedulerInvalidLocation);
 
-            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
+            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
 
             //Get Existing job
             Job job = schedulerClient.Jobs.Get(jobRequest.JobName).Job;
@@ -435,7 +435,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             if (!this.AvailableRegions.Contains(jobRequest.Region, StringComparer.OrdinalIgnoreCase))
                 throw new Exception(Resources.SchedulerInvalidLocation);
 
-            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(false, jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
+            SchedulerClient schedulerClient = AzureSession.ClientFactory.CreateClient<SchedulerClient>(jobRequest.Region.ToCloudServiceName(), jobRequest.JobCollectionName, csmClient.Credentials, schedulerManagementClient.BaseUri);
 
             //Get Existing job
             Job job = schedulerClient.Jobs.Get(jobRequest.JobName).Job;

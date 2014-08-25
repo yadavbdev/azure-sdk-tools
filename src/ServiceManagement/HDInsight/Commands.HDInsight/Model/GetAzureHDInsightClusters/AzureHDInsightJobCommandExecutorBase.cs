@@ -18,6 +18,7 @@ using System.Management.Automation;
 using System.Threading;
 using Microsoft.Hadoop.Client;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
@@ -47,7 +48,10 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             cluster.ArgumentNotNull("ClusterEndpoint");
             IJobSubmissionClient client = null;
             ProfileClient profileClient = new ProfileClient();
-            var clientCredential = this.GetJobSubmissionClientCredentials(this.CurrentSubscription, profileClient.GetAzureEnvironmentOrDefault(this.CurrentSubscription.Name), cluster);
+
+            string currentEnvironmentName = this.CurrentSubscription == null ? null : this.CurrentSubscription.Name;
+
+            var clientCredential = this.GetJobSubmissionClientCredentials(this.CurrentSubscription, profileClient.GetAzureEnvironmentOrDefault(currentEnvironmentName), cluster);
             if (clientCredential != null)
             {
                 client = ServiceLocator.Instance.Locate<IAzureHDInsightJobSubmissionClientFactory>().Create(clientCredential);

@@ -28,9 +28,24 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
     public class EnvironmentSetupHelper
     {
         private static string testEnvironmentName = "__test-environment";
+        private static string testSubscriptionName = "__test-subscriptions";
         private AzureSubscription testSubscription;
-        private TestEnvironment testEnvironment;
         protected List<string> modules;
+        private ProfileClient client;
+
+        public EnvironmentSetupHelper()
+        {
+            ProfileClient.DataStore = new MockDataStore();
+            client = new ProfileClient();
+
+            // Ignore SSL errors
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) => true;
+            // Set RunningMocked
+            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
+            {
+                TestMockSupport.RunningMocked = true;
+            }
+        }
 
         /// <summary>
         /// Loads DummyManagementClientHelper with clients and throws exception if any client is missing.
@@ -52,23 +67,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
         public void SetupEnvironment(AzureModule mode)
         {
-            // Ignore SSL errors
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) => true;
-
-            // Set RunningMocked
-            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
-            {
-                TestMockSupport.RunningMocked = true;
-            }
-
-            ProfileClient.DataStore = new MockDataStore();
-            ProfileClient client = new ProfileClient();
-
-            if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
-            {
-                client.AddAzureEnvironment(new AzureEnvironment { Name = testEnvironmentName });
-            }
-
             SetupAzureEnvironmentFromEnvironmentVariables(mode);
 
             client.Profile.Save();
@@ -106,13 +104,15 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
             }
 
-            AzureSession.CurrentEnvironment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectoryEndpoint] =
+            AzureEnvironment environment = new AzureEnvironment {Name = testEnvironmentName};
+
+            environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectoryEndpoint] =
                 currentEnvironment.ActiveDirectoryEndpoint.AbsoluteUri;
-            AzureSession.CurrentEnvironment.Endpoints[AzureEnvironment.Endpoint.GalleryEndpoint] =
+            environment.Endpoints[AzureEnvironment.Endpoint.GalleryEndpoint] =
                 currentEnvironment.GalleryUri.AbsoluteUri;
-            AzureSession.CurrentEnvironment.Endpoints[AzureEnvironment.Endpoint.ResourceManagerEndpoint] =
+            environment.Endpoints[AzureEnvironment.Endpoint.ResourceManagerEndpoint] =
                 csmEnvironment.BaseUri.AbsoluteUri;
-            AzureSession.CurrentEnvironment.Endpoints[AzureEnvironment.Endpoint.ServiceEndpoint] =
+            environment.Endpoints[AzureEnvironment.Endpoint.ServiceEndpoint] =
                 rdfeEnvironment.BaseUri.AbsoluteUri;
 
             if (currentEnvironment.UserName == null)
@@ -120,9 +120,16 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 currentEnvironment.UserName = "fakeuser@microsoft.com";
             }
 
+            if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
+            {
+                client.AddAzureEnvironment(environment);
+            }
+
             testSubscription = new AzureSubscription()
             {
                 Id = new Guid(currentEnvironment.SubscriptionId),
+                Name = testSubscriptionName,
+                Environment = testEnvironmentName,
                 Properties = new Dictionary<AzureSubscription.Property,string> 
                 {
                      { AzureSubscription.Property.Default, "True"},
@@ -130,13 +137,9 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                      { AzureSubscription.Property.CloudStorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
                 }
             };
-
-
-            testEnvironment = currentEnvironment;
-
-            ProfileClient client = new ProfileClient();
-            client.AddAzureSubscription(testSubscription);
-            client.Profile.Save();
+            
+            client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
+            client.SetAzureSubscriptionAsCurrent(testSubscription.Name);
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)

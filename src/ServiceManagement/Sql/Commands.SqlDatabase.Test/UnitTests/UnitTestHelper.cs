@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
@@ -21,6 +22,7 @@ using System.Management.Automation;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
 
@@ -35,6 +37,11 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// Manifest file for SqlDatabase Tests.
         /// </summary>
         private static readonly string SqlDatabaseTestManifest = @".\ServiceManagement\Azure\Azure.psd1";
+
+        /// <summary>
+        /// The subscription name used in the unit tests.
+        /// </summary>
+        private static readonly string UnitTestEnvironmentName = "SqlUnitTestEnvironment";
 
         /// <summary>
         /// The subscription name used in the unit tests.
@@ -285,38 +292,26 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
                 "clientCertificate",
                 UnitTestHelper.GetUnitTestClientCertificate());
 
-            powershell.InvokeBatchScript(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    @"Set-AzureSubscription" +
-                    @" -SubscriptionName {0}" +
-                    @" -SubscriptionId {1}" +
-                    @" -Certificate $clientCertificate" +
-                    @" -ServiceEndpoint {2}",
-                    UnitTestSubscriptionName,
-                    UnitTestSubscriptionId,
-                    MockHttpServer.DefaultHttpsServerPrefixUri.AbsoluteUri));
-            powershell.InvokeBatchScript(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    @"Select-AzureSubscription" +
-                    @" -SubscriptionName {0}",
-                    UnitTestSubscriptionName));
-            Collection<PSObject> subscriptionResult = powershell.InvokeBatchScript(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    @"Get-AzureSubscription" +
-                    @" -Current"));
-
-            Assert.AreEqual(0, powershell.Streams.Error.Count, "Errors during run!");
-            Assert.AreEqual(0, powershell.Streams.Warning.Count, "Warnings during run!");
-            powershell.Streams.ClearStreams();
-
-            PSObject subscriptionPsObject = subscriptionResult.Single();
-            AzureSubscription subscription =
-                subscriptionPsObject.BaseObject as AzureSubscription;
-            Assert.IsTrue(subscription != null, "Expecting a AzureSubscription object");
-
+            ProfileClient client = new ProfileClient();
+            client.Profile.Environments[UnitTestEnvironmentName] = new AzureEnvironment
+                {
+                    Name = UnitTestEnvironmentName,
+                    Endpoints = new Dictionary<AzureEnvironment.Endpoint, string>
+                    {
+                        {AzureEnvironment.Endpoint.ServiceEndpoint, MockHttpServer.DefaultHttpsServerPrefixUri.AbsoluteUri},
+                        {AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, ".database.windows.net"}
+                    }
+                };
+            var subscription = new AzureSubscription
+            {
+                Id = new Guid(UnitTestSubscriptionId),
+                Name = UnitTestSubscriptionName,
+                Environment = UnitTestEnvironmentName
+            };
+            client.AddOrSetAzureSubscription(subscription);
+            client.SetAzureSubscriptionAsCurrent(UnitTestSubscriptionName);
+            client.Profile.Save();
+            
             return subscription;
         }
 

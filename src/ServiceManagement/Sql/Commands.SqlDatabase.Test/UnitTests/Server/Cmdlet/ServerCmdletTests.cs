@@ -75,9 +75,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdl
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
                 powershell.Runspace.SessionStateProxy.SetVariable("login", "mylogin");
@@ -198,9 +195,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdl
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
                 powershell.Runspace.SessionStateProxy.SetVariable("login", "mylogin");

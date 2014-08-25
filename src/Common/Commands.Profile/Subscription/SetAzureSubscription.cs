@@ -13,9 +13,11 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Management.Automation;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
 
 namespace Microsoft.WindowsAzure.Commands.Profile
@@ -53,6 +55,10 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [ValidateNotNullOrEmpty]
         public string CurrentStorageAccountName { get; set; }
 
+        [Parameter(Mandatory = false, HelpMessage = "Environment name.", ParameterSetName = "CommonSettings")]
+        [ValidateNotNullOrEmpty]
+        public string Environment { get; set; }
+
         [Parameter(Mandatory = false)]
         public SwitchParameter PassThru { get; set; }
 
@@ -77,7 +83,31 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 subscription.Properties[AzureSubscription.Property.Thumbprint] = Certificate.Thumbprint;
             }
 
-            WriteObject(ProfileClient.SetAzureSubscription(subscription));
+            AzureEnvironment environment = ProfileClient.GetAzureEnvironmentOrDefault(Environment);
+
+            if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
+            {
+                if (Environment == null)
+                {
+                    WriteWarning(
+                        "Please use Environment parameter to specify subscription environment. This warning will be converted into an error in the upcoming release.");
+                }
+                else
+                {
+                    environment = ProfileClient.Profile.Environments.Values
+                        .FirstOrDefault(e => e.GetEndpoint(AzureEnvironment.Endpoint.ServiceEndpoint) == ServiceEndpoint 
+                            && e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManagerEndpoint) == ResourceManagerEndpoint);
+
+                    if (environment == null)
+                    {
+                        throw new Exception("ServiceEndpoint and ResourceManagerEndpoint values do not match existing environment. Please use Environment parameter.");
+                    }
+                }
+            }
+           
+            subscription.Environment = environment.Name;
+
+            WriteObject(ProfileClient.AddOrSetAzureSubscription(subscription));
         }
     }
 }
