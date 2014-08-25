@@ -263,6 +263,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (AzureSession.CurrentSubscription != null && subscription.Id == AzureSession.CurrentSubscription.Id)
             {
                 WarningLog(Resources.RemoveCurrentSubscription);
+                AzureSession.SetCurrentSubscription(null, null);
             }
 
             Profile.Subscriptions.Remove(id);
@@ -377,7 +378,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 // Get all AD accounts and iterate
                 var userIds = Profile.Subscriptions.Values
-                    .Select(s => s.Properties[AzureSubscription.Property.UserAccount]).Distinct();
+                    .Select(s => s.GetProperty(AzureSubscription.Property.UserAccount)).Distinct();
 
                 List<AzureSubscription> subscriptions = new List<AzureSubscription>();
                 foreach (var userId in userIds)
