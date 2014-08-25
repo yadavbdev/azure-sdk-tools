@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
             if (AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))
             {
-                return new AccessTokenCredential(subscription.ToString(), AzureSession.SubscriptionTokenCache[subscription.Id]);
+                return new AccessTokenCredential(subscription.Id, AzureSession.SubscriptionTokenCache[subscription.Id]);
             }
             else if (userId != null)
             {
@@ -71,11 +71,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 {
                     throw new ArgumentException(Resources.InvalidSubscriptionState);
                 }
-                return new AccessTokenCredential(subscription.ToString(), AzureSession.SubscriptionTokenCache[subscription.Id]);
+                return new AccessTokenCredential(subscription.Id, AzureSession.SubscriptionTokenCache[subscription.Id]);
             }
             else if (certificate != null)
             {
-                return new CertificateCloudCredentials(subscription.ToString(), certificate);
+                return new CertificateCloudCredentials(subscription.Id.ToString(), certificate);
             }
             else
             {

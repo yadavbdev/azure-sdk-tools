@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -21,10 +22,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
     public class AccessTokenCredential : SubscriptionCloudCredentials
     {
-        private readonly string subscriptionId;
+        private readonly Guid subscriptionId;
         private readonly IAccessToken token;
 
-        public AccessTokenCredential(string subscriptionId, IAccessToken token)
+        public AccessTokenCredential(Guid subscriptionId, IAccessToken token)
         {
             this.subscriptionId = subscriptionId;
             this.token = token;
@@ -40,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         public override string SubscriptionId
         {
-            get { return subscriptionId; }
+            get { return subscriptionId.ToString(); }
         }
     }
 }
