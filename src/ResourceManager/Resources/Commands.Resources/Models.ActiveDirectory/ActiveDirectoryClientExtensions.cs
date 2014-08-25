@@ -24,8 +24,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return new PSADObject()
             {
                 DisplayName = user.DisplayName,
-                Id = new Guid(user.ObjectId),
-                Email = user.UserPrincipalName
+                Id = new Guid(user.ObjectId)
             };
         }
 
@@ -43,8 +42,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return new PSADObject()
             {
                 DisplayName = obj.DisplayName,
-                Id = new Guid(obj.ObjectId),
-                Email = obj.UserPrincipalName
+                Id = new Guid(obj.ObjectId)
             };
         }
 
@@ -54,6 +52,25 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             {
                 DisplayName = obj.DisplayName,
                 Id = new Guid(obj.ObjectId)
+            };
+        }
+
+        public static PSADUser ToPSADUser(this User user)
+        {
+            return new PSADUser()
+            {
+                DisplayName = user.DisplayName,
+                Id = new Guid(user.ObjectId),
+                UserPrincipalName = user.UserPrincipalName
+            };
+        }
+
+        public static PSADGroup ToPSADGroup(this Group group)
+        {
+            return new PSADGroup()
+            {
+                DisplayName = group.DisplayName,
+                Id = new Guid(group.ObjectId)
             };
         }
     }

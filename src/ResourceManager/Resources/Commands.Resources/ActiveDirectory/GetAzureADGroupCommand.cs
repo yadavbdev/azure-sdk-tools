@@ -23,32 +23,26 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
     /// <summary>
     /// Get AD groups.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureADGroup", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADObject>))]
+    [Cmdlet(VerbsCommon.Get, "AzureADGroup", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADGroup>))]
     public class GetAzureADGroupCommand : ActiveDirectoryBaseCmdlet
     {
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DisplayName,
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.SearchString,
             HelpMessage = "The user or group name.")]
         [ValidateNotNullOrEmpty]
-        public string DisplayName { get; set; }
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
-            HelpMessage = "The user or group id.")]
-        [ValidateNotNullOrEmpty]
-        public Guid ObjectId { get; set; }
+        public string SearchString { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
-            HelpMessage = "The Use email address.")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Mail,
-            HelpMessage = "The Use email address.")]
+            HelpMessage = "The group id.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
+            HelpMessage = "The group id.")]
         [ValidateNotNullOrEmpty]
-        public string Email { get; set; }
+        public Guid ObjectId { get; set; }
 
         public override void ExecuteCmdlet()
         {
             ADObjectFilterOptions options = new ADObjectFilterOptions
             {
-                DisplayName = DisplayName,
-                Email = Email,
+                SearchString = SearchString,
                 Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 Paging = true
             };

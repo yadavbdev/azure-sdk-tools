@@ -16,18 +16,10 @@ using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
-    public class PSRoleAssignment
+    public class PSUserRoleAssignment : PSRoleAssignment
     {
-        public string Id { get; set; }
+        public string UserPrincipalName { get; set; }
 
-        public string DisplayName { get; set; }
-
-        public string RoleDefinitionName { get; set; }
-
-        public List<string> Actions { get; set; }
-
-        public List<string> NoActions { get; set; }
-
-        public string Scope { get; set; }
+        public string SignInName { get; set; }
     }
 }

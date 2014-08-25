@@ -18,7 +18,11 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
     {
         public const string Mail = "MailParameterSet";
 
-        public const string DisplayName = "DisplayNameParameterSet";
+        public const string UPN = "UPNParameterSet";
+
+        public const string SPN = "SPNParameterSet";
+
+        public const string SearchString = "SearchStringParameterSet";
 
         public const string ObjectId = "ObjectIdParameterSet";
 
@@ -26,7 +30,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public const string ScopeWithMail = "ScopeWithMailParameterSet";
 
-        public const string ScopeWithDisplayName = "ScopeWithDisplayNameParameterSet";
+        public const string ScopeWithUPN = "ScopeWithUPNParameterSet";
+
+        public const string ScopeWithSPN = "ScopeWithSPNParameterSet";
 
         public const string ScopeWithObjectId = "ScopeWithObjectIdParameterSet";
 
@@ -34,7 +40,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public const string ResourceGroupWithMail = "ResourceGroupWithMailParameterSet";
 
-        public const string ResourceGroupWithDisplayName = "ResourceGroupWithDisplayNameParameterSet";
+        public const string ResourceGroupWithUPN = "ResourceGroupWithUPNParameterSet";
+
+        public const string ResourceGroupWithSPN = "ResourceGroupWithSPNParameterSet";
 
         public const string ResourceGroupWithObjectId = "ResourceGroupWithObjectIdParameterSet";
 
@@ -42,7 +50,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public const string ResourceWithMail = "ResourceWithMailParameterSet";
 
-        public const string ResourceWithDisplayName = "ResourceWithDisplayNameParameterSet";
+        public const string ResourceWithUPN = "ResourceWithUPNParameterSet";
+
+        public const string ResourceWithSPN = "ResourceWithSPNParameterSet";
 
         public const string ResourceWithObjectId = "ResourceWithObjectIdParameterSet";
 

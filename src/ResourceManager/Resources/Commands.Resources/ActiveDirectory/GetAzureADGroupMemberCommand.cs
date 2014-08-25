@@ -26,30 +26,15 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
     [Cmdlet(VerbsCommon.Get, "AzureADGroupMember", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADObject>))]
     public class GetAzureADGroupMemberCommand : ActiveDirectoryBaseCmdlet
     {
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.DisplayName,
-            HelpMessage = "The user display name.")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The user email address.")]
         [ValidateNotNullOrEmpty]
-        public string DisplayName { get; set; }
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
-            HelpMessage = "The user object id.")]
-        [ValidateNotNullOrEmpty]
-        public Guid ObjectId { get; set; }
-
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
-            HelpMessage = "The user email address.")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Mail,
-            HelpMessage = "The user email address.")]
-        [ValidateNotNullOrEmpty]
-        public string Email { get; set; }
+        public Guid GroupObjectId { get; set; }
 
         public override void ExecuteCmdlet()
         {
             ADObjectFilterOptions options = new ADObjectFilterOptions
             {
-                DisplayName = DisplayName,
-                Email = Email,
-                Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
+                Id = GroupObjectId == Guid.Empty ? null : GroupObjectId.ToString(),
                 Paging = true
             };
 

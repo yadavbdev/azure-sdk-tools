@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 }
                 else
                 {
-                    result = new ResourceIdentifier() { Subscription = Subscription }.ToString();
+                    result = null;
                 }
 
                 return result;
@@ -50,10 +50,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             }
         }
 
-        public string Subscription { get; set; }
-
         public ResourceIdentifier ResourceIdentifier { get; set; }
 
-        public ADObjectFilterOptions FilterOptions { get; set; }
+        public ADObjectFilterOptions ADObjectFilter { get; set; }
     }
 }
