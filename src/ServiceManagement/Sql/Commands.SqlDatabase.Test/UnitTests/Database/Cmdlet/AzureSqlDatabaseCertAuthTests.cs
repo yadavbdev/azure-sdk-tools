@@ -71,9 +71,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                             Assert.IsTrue(
                                 actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                                 "Missing proper UserAgent string.");
-                            Assert.IsTrue(
-                                UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                                "Expected correct client certificate");
                         });
 
                 Collection<PSObject> newDatabaseResult1 = MockServerHelper.ExecuteWithMock(
@@ -475,9 +472,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                             Assert.IsTrue(
                                 actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                                 "Missing proper UserAgent string.");
-                            Assert.IsTrue(
-                                UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                                "Expected correct client certificate");
                         });
 
                 Collection<PSObject> newDatabaseResult1 = MockServerHelper.ExecuteWithMock(
@@ -711,9 +705,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                             Assert.IsTrue(
                                 actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                                 "Missing proper UserAgent string.");
-                            Assert.IsTrue(
-                                UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                                "Expected correct client certificate");
                         });
 
                 Collection<PSObject> getQuota1 = MockServerHelper.ExecuteWithMock(

@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
@@ -29,10 +30,28 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
     {
         public TestBase()
         {
-            TestingTracingInterceptor.AddToContext();
-            ProfileClient.DataStore = new MockDataStore();
-            AzureSession.SetCurrentSubscription(new AzureSubscription {Id = Guid.NewGuid(), Name = "test"}, null);
+            BaseSetup();
         }
+
+        /// <summary>
+        /// Initialize the necessary environment for the tests.
+        /// </summary>
+        [TestInitialize]
+        public void BaseSetup()
+        {
+            if (ProfileClient.DataStore != null && !(ProfileClient.DataStore is MockDataStore))
+            {
+                ProfileClient.DataStore = new MockDataStore();
+            }
+            if (AzureSession.CurrentSubscription == null)
+            {
+                AzureSession.SetCurrentSubscription(
+                    new AzureSubscription { Id = Guid.NewGuid(), Name = "test", Environment = EnvironmentName.AzureCloud },
+                    null);
+            }
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+        }
+
         /// <summary>
         /// Gets or sets a reference to the TestContext used for interacting
         /// with the test framework.

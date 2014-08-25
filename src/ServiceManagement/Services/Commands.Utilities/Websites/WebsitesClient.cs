@@ -213,7 +213,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         {
             Utilities.Site website = GetWebsite(websiteName);
             Uri endpointUrl = new Uri("https://" + website.EnabledHostNames.First(url => url.Contains(".scm.")));
-            return AzureSession.ClientFactory.CreateClient<WebSiteExtensionsClient>(false, new object[] { websiteName,
+            return AzureSession.ClientFactory.CreateClient<WebSiteExtensionsClient>(new object[] { websiteName,
                 GetWebSiteExtensionsCredentials(websiteName), endpointUrl });
         }
 
