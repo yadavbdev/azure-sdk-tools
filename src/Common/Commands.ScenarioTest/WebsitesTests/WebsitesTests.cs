@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
@@ -26,6 +27,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureWebsiteWithInvalidCredentials()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-WithInvalidCredentials {Remove-AzureWebsite $(Get-WebsiteName) -Force }} 'TestRemoveAzureWebsiteWithInvalidCredentials'");
         }
 
@@ -36,6 +39,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureServiceWithValidName()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureServiceWithValidName} 'TestRemoveAzureServiceWithValidName'");
         }
 
@@ -46,6 +51,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureServiceWithNonExistingName()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureServiceWithNonExistingName} 'TestRemoveAzureServiceWithNonExistingName'");
         }
 
@@ -56,6 +63,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureServiceWithWhatIf()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureServiceWithWhatIf} 'TestRemoveAzureServiceWithWhatIf'");
         }
 
@@ -69,6 +78,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogWithInvalidCredentials()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-WithInvalidCredentials { Get-AzureWebsiteLog -Tail -Name $(Get-WebsiteName) }} 'TestGetAzureWebsiteLogWithInvalidCredentials'");
         }
 
@@ -77,6 +88,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTail()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Test-GetAzureWebsiteLogTail");
         }
 
@@ -85,6 +98,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTailPath()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Test-GetAzureWebsiteLogTailPath");
         }
 
@@ -93,6 +108,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTailUriEncoding()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Test-GetAzureWebsiteLogTailUriEncoding");
         }
 
@@ -101,6 +118,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogListPath()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Test-GetAzureWebsiteLogListPath");
         }
 
@@ -115,6 +134,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsite()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebsite} 'TestGetAzureWebsite'");
         }
 
@@ -125,6 +146,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteWithStoppedSite()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebsiteWithStoppedSite} 'TestGetAzureWebsiteWithStoppedSite'");
         }
 
@@ -139,6 +162,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestStartAzureWebsite()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-StartAzureWebsite} 'TestStartAzureWebsite'");
         }
 
@@ -153,6 +178,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestStopAzureWebsite()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-StopAzureWebsite} 'TestStopAzureWebsite'");
         }
 
@@ -167,6 +194,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestRestartAzureWebsite()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-RestartAzureWebsite} 'TestRestartAzureWebsite'");
         }
 
@@ -179,6 +208,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestEnableApplicationDiagnosticOnTableStorage()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-EnableApplicationDiagnosticOnTableStorage} 'TestEnableApplicationDiagnosticOnTableStorage'");
         }
 
@@ -188,6 +219,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestEnableApplicationDiagnosticOnFileSystem()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-EnableApplicationDiagnosticOnFileSystem} 'TestEnableApplicationDiagnosticOnFileSystem'");
         }
 
@@ -197,6 +230,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestUpdateTheDiagnositicLogLevel()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-UpdateTheDiagnositicLogLevel} 'TestUpdateTheDiagnositicLogLevel'");
         }
         [Fact]
@@ -204,6 +239,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestReconfigureStorageAppDiagnostics()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-ReconfigureStorageAppDiagnostics} 'TestReconfigureStorageAppDiagnostics'");
         }
 
@@ -213,6 +250,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestThrowsForInvalidStorageAccountName()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-ThrowsForInvalidStorageAccountName} 'TestThrowsForInvalidStorageAccountName'");
         }
 
@@ -225,6 +264,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestDisableApplicationDiagnosticOnTableStorage()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-DisableApplicationDiagnosticOnTableStorage} 'TestDisableApplicationDiagnosticOnTableStorage'");
         }
 
@@ -234,6 +275,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestDisableApplicationDiagnosticOnFileSystem()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-DisableApplicationDiagnosticOnFileSystem} 'TestDisableApplicationDiagnosticOnFileSystem'");
         }
 
@@ -242,6 +285,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestDisableApplicationDiagnosticOnTableStorageAndFile()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-DisableApplicationDiagnosticOnTableStorageAndFile} 'TestDisableApplicationDiagnosticOnTableStorageAndFile'");
         }
 
@@ -250,6 +295,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestDisablesFileOnly()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-DisablesFileOnly} 'TestDisablesFileOnly'");
         }
 
@@ -258,6 +305,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestDisablesStorageOnly()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-DisablesStorageOnly} 'TestDisablesStorageOnly'");
         }
 
@@ -266,6 +315,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestDisablesBothByDefault()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-DisablesBothByDefault} 'TestDisablesBothByDefault'");
         }
 
@@ -280,6 +331,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLocation()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebsiteLocation} 'TestGetAzureWebsiteLocation'");
         }
 
@@ -289,6 +342,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestKuduAppsExpressApp()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-KuduAppsExpressApp} 'TestKuduAppsExpressApp'");
         }
 
@@ -299,6 +354,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebSiteListNone()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebSiteListNone} 'TestGetAzureWebSiteListNone'");
         }
 
@@ -309,6 +366,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestAzureWebSiteListAll()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-AzureWebSiteListAll} 'TestAzureWebSiteListAll'");
         }
 
@@ -319,6 +378,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestAzureWebSiteShowSingleSite()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-AzureWebSiteShowSingleSite} 'TestAzureWebSiteShowSingleSite'");
         }
 
@@ -332,6 +393,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestNewAzureWebSiteMultipleCreds()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-NewAzureWebSiteMultipleCreds} 'TestNewAzureWebSiteMultipleCreds'");
         }
 
@@ -340,6 +403,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestNewAzureWebSiteGitHubAllParms()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Test-NewAzureWebSiteGitHubAllParms");
         }
 
@@ -349,6 +414,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestNewAzureWebSiteUpdateGit()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-NewAzureWebSiteUpdateGit} 'TestNewAzureWebSiteUpdateGit'");
         }
         #endregion
@@ -362,6 +429,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Environment, Category.WAPack)]
         public void TestSetAzureWebsite()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-SetAzureWebsite} 'TestSetAzureWebsite'");
         }
 
@@ -374,6 +443,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestRemoveAzureWebsiteTriggeredJob()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureWebsiteTriggeredJob} 'TestRemoveAzureWebsiteTriggeredJob'");
         }
 
@@ -382,6 +453,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestRemoveAzureWebsiteContinuousJob()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureWebsiteContinuousJob} 'TestRemoveAzureWebsiteContinuousJob'");
         }
 
@@ -390,6 +463,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestRemoveNonExistingAzureWebsiteJob()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-RemoveNonExistingAzureWebsiteJob} 'TestRemoveNonExistingAzureWebsiteJob'");
         }
 
@@ -398,6 +473,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestStartAzureWebsiteTriggeredJob()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-StartAzureWebsiteTriggeredJob} 'TestStartAzureWebsiteTriggeredJob'");
         }
 
@@ -406,6 +483,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestStartAndStopAzureWebsiteContinuousJob()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-StartAndStopAzureWebsiteContinuousJob} 'TestStartAndStopAzureWebsiteContinuousJob'");
         }
 
@@ -414,6 +493,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void GettingWebsiteJobs()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-GettingWebsiteJobs} 'GettingWebsiteJobs'");
         }
 
@@ -422,6 +503,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         [Trait(Category.Service, Category.Websites)]
         public void TestGetsJobHistory()
         {
+            if (XUnitHelper.IsCheckin()) return;
+
             RunPowerShellTest("Run-WebsiteTest {Test-GettingJobHistory} 'TestGetsJobHistory'");
         }
 
