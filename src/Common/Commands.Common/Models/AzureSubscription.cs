@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             /// <summary>
             /// Comma separated mode names that this subscription supports, i.e.: AzureResourceManager,AzureServiceManagement
             /// </summary>
-            AzureMode,
+            SupportedModes,
 
             /// <summary>
             /// If this property existed on the subscription indicates that it's default one.
@@ -51,7 +51,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
             CloudStorageAccount,
 
-            UserAccount,
+            DefaultPrincipalName,
+
+            AvailablePrincipalNames,
 
             Thumbprint
         }
@@ -69,6 +71,31 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             }
 
             return null;
+        }
+
+        public string[] GetPropertyAsArray(Property property)
+        {
+            if (Properties.ContainsKey(property))
+            {
+                return Properties[property].Split(',');
+            }
+
+            return new string[0];
+        }
+
+        public void SetProperty(Property property, params string[] values)
+        {
+            if (values == null || values.Length == 0)
+            {
+                if (Properties.ContainsKey(property))
+                {
+                    Properties.Remove(property);
+                }
+            }
+            else
+            {
+                Properties[property] = string.Join(",", values);
+            }
         }
 
         public override bool Equals(object obj)

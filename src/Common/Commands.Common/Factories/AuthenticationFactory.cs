@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Security;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
@@ -58,7 +59,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
             }
 
-            var userId = subscription.GetProperty(AzureSubscription.Property.UserAccount);
+            var userId = subscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName) ??
+                subscription.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).FirstOrDefault();
+
             var certificate = WindowsAzureCertificate.FromThumbprint(subscription.GetProperty(AzureSubscription.Property.Thumbprint));
 
             if (AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))

@@ -119,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
                 {
                     Id = IntegrationTestBase.TestCredentials.SubscriptionId,
                 };
-            waSubscription.Properties[AzureSubscription.Property.UserAccount] = "test";
+            waSubscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = "test";
             var accessTokenCreds = getClustersCommand.GetSubscriptionCredentials(waSubscription, AzureSession.CurrentEnvironment);
             Assert.IsInstanceOfType(accessTokenCreds, typeof(HDInsightAccessTokenCredential));
             var asAccessTokenCreds = accessTokenCreds as HDInsightAccessTokenCredential;
@@ -150,7 +150,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
             {
                 Id = IntegrationTestBase.TestCredentials.SubscriptionId,
             };
-            waSubscription.Properties[AzureSubscription.Property.UserAccount] = "test";
+            waSubscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = "test";
             var accessTokenCreds = getClustersCommand.GetJobSubmissionClientCredentials(waSubscription, AzureSession.CurrentEnvironment, IntegrationTestBase.TestCredentials.WellKnownCluster.DnsName);
             Assert.IsInstanceOfType(accessTokenCreds, typeof(HDInsightAccessTokenCredential));
             var asTokenCreds = accessTokenCreds as HDInsightAccessTokenCredential;
@@ -168,7 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
             {
                 Id = IntegrationTestBase.TestCredentials.SubscriptionId,
             };
-            waSubscription.Properties[AzureSubscription.Property.UserAccount] = "test";
+            waSubscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = "test";
 
             var accessTokenCreds = getClustersCommand.GetJobSubmissionClientCredentials(waSubscription, AzureSession.CurrentEnvironment, IntegrationTestBase.TestCredentials.WellKnownCluster.DnsName);
             Assert.IsInstanceOfType(accessTokenCreds, typeof(BasicAuthCredential));
