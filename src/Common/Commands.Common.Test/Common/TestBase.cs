@@ -21,13 +21,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Base class for Windows Azure PowerShell unit tests.
+    /// Base class for Microsoft Azure PowerShell unit tests.
     /// </summary>
     public abstract class TestBase
     {
         public TestBase()
         {
-            CloudContext.Configuration.Tracing.AddTracingInterceptor(new TestingTracingInterceptor());
+            TestingTracingInterceptor.AddToContext();
         }
         /// <summary>
         /// Gets or sets a reference to the TestContext used for interacting

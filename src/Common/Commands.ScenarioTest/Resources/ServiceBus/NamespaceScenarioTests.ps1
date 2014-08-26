@@ -26,7 +26,7 @@ function Test-WithInvalidCredentials
 	Remove-AllSubscriptions
 
 	# Test
-	Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current &lt;subscriptionName&gt; to set the current subscription."
+	Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current <subscriptionName> to set the current subscription."
 }
 
 ########################################################################### Get-AzureSBLocation Scenario Tests ###########################################################################
@@ -290,7 +290,7 @@ function Test-NewAzureSBNamespaceWithWebsite
 	do
 	{
 		$namespace = Get-AzureSBNamespace $namespaceName
-		Start-Sleep -s 5
+		Wait-Seconds 5
 	} while ($namespace.Status -ne "Active")
 
 	$namespace | % { Set-AzureWebsite $websiteName -AppSettings @{ $settingName = $_.ConnectionString } }

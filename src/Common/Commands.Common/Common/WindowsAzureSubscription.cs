@@ -24,7 +24,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
     using System.Security.Cryptography.X509Certificates;
     using WindowsAzure.Common;
 
@@ -61,6 +60,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public string ActiveDirectoryServiceEndpointResourceId { get; set; }
 
+        public string SqlDatabaseDnsSuffix { get; set; }
+
         public bool IsDefault { get; set; }
         
         public X509Certificate2 Certificate { get; set; }
@@ -86,6 +87,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// Event that's trigged when a new client has been created.
         /// </summary>
         public static event EventHandler<ClientCreatedArgs> OnClientCreated;
+
+        public IReadOnlyCollection<string> RegisteredResourceProvidersList
+        {
+            get { return RegisteredResourceProviders.AsReadOnly(); }
+        }
 
         public string CurrentStorageAccountName
         {
@@ -176,6 +182,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             ResourceManagerEndpoint = newSubscription.ResourceManagerEndpoint;
             SubscriptionName = newSubscription.SubscriptionName;
             GalleryEndpoint = newSubscription.GalleryEndpoint;
+            SqlDatabaseDnsSuffix = newSubscription.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix;
         }
 
         /// <summary>
@@ -206,7 +213,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public TClient CreateClientFromResourceManagerEndpoint<TClient>() where TClient : ServiceClient<TClient>
         {
-            if (ResourceManagerEndpoint == null)
+            if (ResourceManagerEndpoint == null || string.IsNullOrEmpty(ActiveDirectoryUserId))
             {
                 throw new ArgumentException(Resources.InvalidSubscriptionState);
             }
@@ -230,35 +237,38 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 }
             }
 
-            var constructor = typeof(TClient).GetConstructor(new[] { typeof(SubscriptionCloudCredentials), typeof(Uri) });
-            if (constructor == null)
-            {
-                throw new InvalidOperationException(string.Format(Resources.InvalidManagementClientType, typeof(TClient).Name));
-            }
+            return CreateClient<TClient>(registerProviders, credential, endpoint);
+        }
 
-            TClient client = (TClient)constructor.Invoke(new object[] { credential, endpoint });
-            client.UserAgent.Add(ApiConstants.UserAgentValue);
-            EventHandler<ClientCreatedArgs> clientCreatedHandler = OnClientCreated;
-            if (clientCreatedHandler != null)
-            {
-                ClientCreatedArgs args = new ClientCreatedArgs { CreatedClient = client, ClientType = typeof(TClient) };
-                clientCreatedHandler(this, args);
-                client = (TClient)args.CreatedClient;
-            }
+        public TClient CreateClient<TClient>(bool registerProviders, params object[] parameters) where TClient : ServiceClient<TClient>
+        {
+            return AzureSession.Current.ManagementClientHelper.CreateClient<TClient>(addRestLogHandlerToAllClients, OnClientCreated, parameters);
+        }
 
-            if (addRestLogHandlerToAllClients)
-            {
-                // Add the logging handler
-                var withHandlerMethod = typeof (TClient).GetMethod("WithHandler", new[] {typeof (DelegatingHandler)});
-                TClient finalClient =
-                    (TClient) withHandlerMethod.Invoke(client, new object[] {new HttpRestCallLogger()});
-                client.Dispose();
+        public void RegisterCustomProviders(IEnumerable<Provider> providers)
+        {
+            var requiredProviders = providers.Select(p => p.Namespace.ToLower())
+                                              .Where(p => !RegisteredResourceProviders.Contains(p))
+                                             .ToList();
 
-                return finalClient;
-            }
-            else
+            if (requiredProviders.Count > 0)
             {
-                return client;
+                var credentials = CreateCredentials();
+                using (IResourceManagementClient client = new ResourceManagementClient(credentials, ResourceManagerEndpoint))
+                {
+                    foreach (var provider in requiredProviders)
+                    {
+                        try
+                        {
+                            client.Providers.Register(provider);
+                            RegisteredResourceProviders.Add(provider);
+                        }
+                        catch
+                        {
+                            // Ignore this as the user may not have access to Sparta endpoint or the provider is already registered
+                        }
+                    }
+                }
             }
         }
 

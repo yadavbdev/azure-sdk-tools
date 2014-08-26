@@ -14,13 +14,12 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
+    using Model;
     using System.Linq;
     using System.Management.Automation;
-    using Management.Compute;
-    using Model.PersistentVMModel;
 
     /// <summary>
-    /// Get Windows Azure Service ADDomain Extension.
+    /// Get Microsoft Azure Service ADDomain Extension.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, ADDomainExtensionNoun), OutputType(typeof(ADDomainExtensionContext))]
     public class GetAzureServiceADDomainExtensionCommand : BaseAzureServiceADDomainExtensionCmdlet

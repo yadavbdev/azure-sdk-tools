@@ -26,7 +26,7 @@ function Test-WithInvalidCredentials
 	Remove-AllSubscriptions
 
 	# Test
-	Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current &lt;subscriptionName&gt; to set the current subscription."
+	Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current <subscriptionName> to set the current subscription."
 }
 
 ########################################################################### Publish-AzureServiceProject Scenario Tests ###################################################################
@@ -213,7 +213,7 @@ function Test-StartAzureServiceWithProductionDeployment
 	New-CloudService 1
 	$name = $global:createdCloudServices[0]
 	Stop-AzureService $name
-	Start-Sleep -Second 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
+	Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
 
 	# Test
 	$started = Get-AzureService $name | Start-AzureService -PassThru
@@ -232,7 +232,7 @@ function Test-StartAzureServiceWithStagingDeployment
 	New-CloudService 1 $null Staging
 	$name = $global:createdCloudServices[0]
 	Stop-AzureService $name -Slot Staging
-	Start-Sleep -Second 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
+	Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
 
 	# Test
 	$started = Start-AzureService $name -Slot Staging -PassThru
@@ -250,7 +250,7 @@ function Test-StartAzureServiceWithoutName
 	# Setup
 	New-CloudService 1
 	Stop-AzureService
-	Start-Sleep -Second 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
+	Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
 
 	# Test
 	$started = Start-AzureService -PassThru
@@ -503,5 +503,71 @@ function Test-StartAzureEmulatorExpress
     
     # Assert
     Assert-NotNull $service
+}
+
+########################################################################### Cloud Service ReverseDnsFqdn Scenario Tests ###################################################################
+
+<#
+.SYNOPSIS
+Executes New-AzureService using the ReverseDnsFqdn parameter.
+#>
+function Test-NewAzureServiceWithReverseDnsFqdn
+{
+    # Setup
+	$name = Get-CloudServiceName
+	$reverseFqdn = "$name.cloudapp.net."
+	
+    # Test
+	New-AzureService $name -Location $(Get-DefaultLocation) -ReverseDnsFqdn $reverseFqdn
+	$service = Get-AzureService $name
+   
+    # Assert
+    Assert-AreEqual $reverseFqdn $service.ReverseDnsFqdn
+}
+
+<#
+.SYNOPSIS
+Executes Set-AzureService using the ReverseDnsFqdn parameter.
+#>
+function Test-SetAzureServiceWithReverseDnsFqdn
+{
+    # Setup
+	$name = Get-CloudServiceName
+	$reverseFqdn = "$name.cloudapp.net."
+	
+	New-AzureService $name -Location $(Get-DefaultLocation)
+	$service = Get-AzureService $name
+   
+    Assert-Null $service.ReverseDnsFqdn
+	
+	# Test
+	Set-AzureService $name -ReverseDnsFqdn $reverseFqdn
+	$service = Get-AzureService $name
+	
+	# Assert
+    Assert-AreEqual $reverseFqdn $service.ReverseDnsFqdn
+}
+
+<#
+.SYNOPSIS
+Executes Set-AzureService using the ReverseDnsFqdn parameter setting it to empty string.
+#>
+function Test-SetAzureServiceWithEmptyReverseDnsFqdn
+{
+    # Setup
+	$name = Get-CloudServiceName
+	$reverseFqdn = "$name.cloudapp.net."
+	
+	New-AzureService $name -Location $(Get-DefaultLocation) -ReverseDnsFqdn $reverseFqdn
+	$service = Get-AzureService $name
+   
+    Assert-AreEqual $reverseFqdn $service.ReverseDnsFqdn
+
+	# Test
+	Set-AzureService $name -ReverseDnsFqdn ''
+	$service = Get-AzureService $name
+	
+	# Assert
+    Assert-AreEqual '' $service.ReverseDnsFqdn
 }
 

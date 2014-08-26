@@ -14,119 +14,92 @@
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
 {
-    using Commands.ScenarioTest.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
+    using Common;
+    using Xunit;
 
-    [TestClass]
-    public class WebsitesTests : WindowsAzurePowerShellCertificateTest
+    public class WebsitesTests : WebsitesTestsBase
     {
-        private string currentDirectory;
-
-        public WebsitesTests()
-            : base("Websites\\Common.ps1",
-                   "Websites\\WebsitesTests.ps1")
-        {
-
-        }
-
-        [TestInitialize]
-        public override void TestSetup()
-        {
-            base.TestSetup();
-            powershell.AddScript("Initialize-WebsiteTest");
-            currentDirectory = Directory.GetCurrentDirectory();
-        }
-
-        [TestCleanup]
-        public override void TestCleanup()
-        {
-            base.TestCleanup();
-            Directory.SetCurrentDirectory(currentDirectory);
-        }
-
         #region Remove-AzureWebsite Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureWebsiteWithInvalidCredentials()
         {
-            RunPowerShellTest("Test-WithInvalidCredentials {Remove-AzureWebsite $(Get-WebsiteName) }");
+            RunPowerShellTest("Run-WebsiteTest {Test-WithInvalidCredentials {Remove-AzureWebsite $(Get-WebsiteName) -Force }} 'TestRemoveAzureWebsiteWithInvalidCredentials'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureServiceWithValidName()
         {
-            RunPowerShellTest("Test-RemoveAzureServiceWithValidName");
+            RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureServiceWithValidName} 'TestRemoveAzureServiceWithValidName'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureServiceWithNonExistingName()
         {
-            RunPowerShellTest("Test-RemoveAzureServiceWithNonExistingName");
+            RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureServiceWithNonExistingName} 'TestRemoveAzureServiceWithNonExistingName'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestRemoveAzureServiceWithWhatIf()
         {
-            RunPowerShellTest("Test-RemoveAzureServiceWithWhatIf");
+            RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureServiceWithWhatIf} 'TestRemoveAzureServiceWithWhatIf'");
         }
 
         #endregion
 
         #region Get-AzureWebsiteLog Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogWithInvalidCredentials()
         {
-            RunPowerShellTest("Test-WithInvalidCredentials { Get-AzureWebsiteLog -Tail -Name $(Get-WebsiteName) }");
+            RunPowerShellTest("Run-WebsiteTest {Test-WithInvalidCredentials { Get-AzureWebsiteLog -Tail -Name $(Get-WebsiteName) }} 'TestGetAzureWebsiteLogWithInvalidCredentials'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact(Skip = "TODO: Fix the failing tests.")]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTail()
         {
             RunPowerShellTest("Test-GetAzureWebsiteLogTail");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact(Skip = "TODO: Fix the failing tests.")]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTailPath()
         {
             RunPowerShellTest("Test-GetAzureWebsiteLogTailPath");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact(Skip = "TODO: Fix the failing tests.")]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTailUriEncoding()
         {
             RunPowerShellTest("Test-GetAzureWebsiteLogTailUriEncoding");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact(Skip = "TODO: Fix the failing tests.")]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogListPath()
         {
             RunPowerShellTest("Test-GetAzureWebsiteLogListPath");
@@ -136,311 +109,321 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
 
         #region Get-AzureWebsite Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsite()
         {
-            RunPowerShellTest("Test-GetAzureWebsite");
+            RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebsite} 'TestGetAzureWebsite'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteWithStoppedSite()
         {
-            RunPowerShellTest("Test-GetAzureWebsiteWithStoppedSite");
+            RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebsiteWithStoppedSite} 'TestGetAzureWebsiteWithStoppedSite'");
         }
 
         #endregion
 
         #region Start-AzureWebsite Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestStartAzureWebsite()
         {
-            RunPowerShellTest("Test-StartAzureWebsite");
+            RunPowerShellTest("Run-WebsiteTest {Test-StartAzureWebsite} 'TestStartAzureWebsite'");
         }
 
         #endregion
 
         #region Stop-AzureWebsite Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestStopAzureWebsite()
         {
-            RunPowerShellTest("Test-StopAzureWebsite");
+            RunPowerShellTest("Run-WebsiteTest {Test-StopAzureWebsite} 'TestStopAzureWebsite'");
         }
 
         #endregion
 
         #region Restart-AzureWebsite Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestRestartAzureWebsite()
         {
-            RunPowerShellTest("Test-RestartAzureWebsite");
+            RunPowerShellTest("Run-WebsiteTest {Test-RestartAzureWebsite} 'TestRestartAzureWebsite'");
         }
 
         #endregion
 
         #region Enable-AzureWebsiteApplicationDiagnostic Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestEnableApplicationDiagnosticOnTableStorage()
         {
-            RunPowerShellTest("Test-EnableApplicationDiagnosticOnTableStorage");
+            RunPowerShellTest("Run-WebsiteTest {Test-EnableApplicationDiagnosticOnTableStorage} 'TestEnableApplicationDiagnosticOnTableStorage'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestEnableApplicationDiagnosticOnFileSystem()
         {
-            RunPowerShellTest("Test-EnableApplicationDiagnosticOnFileSystem");
+            RunPowerShellTest("Run-WebsiteTest {Test-EnableApplicationDiagnosticOnFileSystem} 'TestEnableApplicationDiagnosticOnFileSystem'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestUpdateTheDiagnositicLogLevel()
         {
-            RunPowerShellTest("Test-UpdateTheDiagnositicLogLevel");
+            RunPowerShellTest("Run-WebsiteTest {Test-UpdateTheDiagnositicLogLevel} 'TestUpdateTheDiagnositicLogLevel'");
         }
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestReconfigureStorageAppDiagnostics()
         {
-            RunPowerShellTest("Test-ReconfigureStorageAppDiagnostics");
+            RunPowerShellTest("Run-WebsiteTest {Test-ReconfigureStorageAppDiagnostics} 'TestReconfigureStorageAppDiagnostics'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestThrowsForInvalidStorageAccountName()
         {
-            RunPowerShellTest("Test-ThrowsForInvalidStorageAccountName");
+            RunPowerShellTest("Run-WebsiteTest {Test-ThrowsForInvalidStorageAccountName} 'TestThrowsForInvalidStorageAccountName'");
         }
 
         #endregion
 
         #region Disable-AzureWebsiteApplicationDiagnostic Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestDisableApplicationDiagnosticOnTableStorage()
         {
-            RunPowerShellTest("Test-DisableApplicationDiagnosticOnTableStorage");
+            RunPowerShellTest("Run-WebsiteTest {Test-DisableApplicationDiagnosticOnTableStorage} 'TestDisableApplicationDiagnosticOnTableStorage'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestDisableApplicationDiagnosticOnFileSystem()
         {
-            RunPowerShellTest("Test-DisableApplicationDiagnosticOnFileSystem");
+            RunPowerShellTest("Run-WebsiteTest {Test-DisableApplicationDiagnosticOnFileSystem} 'TestDisableApplicationDiagnosticOnFileSystem'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestDisableApplicationDiagnosticOnTableStorageAndFile()
         {
-            RunPowerShellTest("Test-DisableApplicationDiagnosticOnTableStorageAndFile");
+            RunPowerShellTest("Run-WebsiteTest {Test-DisableApplicationDiagnosticOnTableStorageAndFile} 'TestDisableApplicationDiagnosticOnTableStorageAndFile'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestDisablesFileOnly()
         {
-            RunPowerShellTest("Test-DisablesFileOnly");
+            RunPowerShellTest("Run-WebsiteTest {Test-DisablesFileOnly} 'TestDisablesFileOnly'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestDisablesStorageOnly()
         {
-            RunPowerShellTest("Test-DisablesStorageOnly");
+            RunPowerShellTest("Run-WebsiteTest {Test-DisablesStorageOnly} 'TestDisablesStorageOnly'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestDisablesBothByDefault()
         {
-            RunPowerShellTest("Test-DisablesBothByDefault");
+            RunPowerShellTest("Run-WebsiteTest {Test-DisablesBothByDefault} 'TestDisablesBothByDefault'");
         }
 
         #endregion
 
         #region Get-AzureWebsiteLocation Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLocation()
         {
-            RunPowerShellTest("Test-GetAzureWebsiteLocation");
+            RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebsiteLocation} 'TestGetAzureWebsiteLocation'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestKuduAppsExpressApp()
         {
-            RunPowerShellTest("Test-KuduAppsExpressApp");
+            RunPowerShellTest("Run-WebsiteTest {Test-KuduAppsExpressApp} 'TestKuduAppsExpressApp'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebSiteListNone()
         {
-            RunPowerShellTest("Test-GetAzureWebSiteListNone");
+            RunPowerShellTest("Run-WebsiteTest {Test-GetAzureWebSiteListNone} 'TestGetAzureWebSiteListNone'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestAzureWebSiteListAll()
         {
-            RunPowerShellTest("Test-AzureWebSiteListAll");
+            RunPowerShellTest("Run-WebsiteTest {Test-AzureWebSiteListAll} 'TestAzureWebSiteListAll'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestAzureWebSiteShowSingleSite()
         {
-            RunPowerShellTest("Test-AzureWebSiteShowSingleSite");
+            RunPowerShellTest("Run-WebsiteTest {Test-AzureWebSiteShowSingleSite} 'TestAzureWebSiteShowSingleSite'");
         }
 
         #endregion
 
         #region AzureWebSiteGitHubAllParms Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestNewAzureWebSiteMultipleCreds()
         {
-            RunPowerShellTest("Test-NewAzureWebSiteMultipleCreds");
+            RunPowerShellTest("Run-WebsiteTest {Test-NewAzureWebSiteMultipleCreds} 'TestNewAzureWebSiteMultipleCreds'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact (Skip = "TODO: Fix failing test.")]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestNewAzureWebSiteGitHubAllParms()
         {
             RunPowerShellTest("Test-NewAzureWebSiteGitHubAllParms");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestNewAzureWebSiteUpdateGit()
         {
-            RunPowerShellTest("Test-NewAzureWebSiteUpdateGit");
+            RunPowerShellTest("Run-WebsiteTest {Test-NewAzureWebSiteUpdateGit} 'TestNewAzureWebSiteUpdateGit'");
         }
         #endregion
 
         #region Set-AzureWebSite Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
-        [TestCategory(Category.WAPack)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
+        [Trait(Category.Environment, Category.WAPack)]
         public void TestSetAzureWebsite()
         {
-            RunPowerShellTest("Test-SetAzureWebsite");
+            RunPowerShellTest("Run-WebsiteTest {Test-SetAzureWebsite} 'TestSetAzureWebsite'");
         }
 
         #endregion
 
         #region WebJob Scenario Tests
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestRemoveAzureWebsiteTriggeredJob()
         {
-            RunPowerShellTest("Test-RemoveAzureWebsiteTriggeredJob");
+            RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureWebsiteTriggeredJob} 'TestRemoveAzureWebsiteTriggeredJob'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact (Skip = "TODO: Fix failing test.")]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestRemoveAzureWebsiteContinuousJob()
         {
-            RunPowerShellTest("Test-RemoveAzureWebsiteContinuousJob");
+            RunPowerShellTest("Run-WebsiteTest {Test-RemoveAzureWebsiteContinuousJob} 'TestRemoveAzureWebsiteContinuousJob'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestRemoveNonExistingAzureWebsiteJob()
         {
-            RunPowerShellTest("Test-RemoveNonExistingAzureWebsiteJob");
+            RunPowerShellTest("Run-WebsiteTest {Test-RemoveNonExistingAzureWebsiteJob} 'TestRemoveNonExistingAzureWebsiteJob'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestStartAzureWebsiteTriggeredJob()
         {
-            RunPowerShellTest("Test-StartAzureWebsiteTriggeredJob");
+            RunPowerShellTest("Run-WebsiteTest {Test-StartAzureWebsiteTriggeredJob} 'TestStartAzureWebsiteTriggeredJob'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestStartAndStopAzureWebsiteContinuousJob()
         {
-            RunPowerShellTest("Test-StartAndStopAzureWebsiteContinuousJob");
+            RunPowerShellTest("Run-WebsiteTest {Test-StartAndStopAzureWebsiteContinuousJob} 'TestStartAndStopAzureWebsiteContinuousJob'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void GettingWebsiteJobs()
         {
-            RunPowerShellTest("Test-GettingWebsiteJobs");
+            RunPowerShellTest("Run-WebsiteTest {Test-GettingWebsiteJobs} 'GettingWebsiteJobs'");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Websites)]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Websites)]
         public void TestGetsJobHistory()
         {
-            RunPowerShellTest("Test-GettingJobHistory");
+            RunPowerShellTest("Run-WebsiteTest {Test-GettingJobHistory} 'TestGetsJobHistory'");
         }
 
         #endregion

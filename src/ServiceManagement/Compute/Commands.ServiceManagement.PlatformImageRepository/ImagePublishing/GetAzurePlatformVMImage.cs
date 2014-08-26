@@ -14,11 +14,11 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.ImagePublishing
 {
-    using System.Linq;
-    using System.Management.Automation;
     using Helpers;
     using Model;
     using ServiceManagement.Model;
+    using System.Linq;
+    using System.Management.Automation;
     using Utilities.Common;
 
     [Cmdlet(VerbsCommon.Get, "AzurePlatformVMImage"), OutputType(typeof(OSImageDetailsContext))]
@@ -27,11 +27,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageReposit
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the image in the image library.")]
         [ValidateNotNullOrEmpty]
         public string ImageName { get; set; }
-
-        protected override void InitChannelCurrentSubscription(bool force)
-        {
-            DoInitChannelCurrentSubscription(force);
-        }
 
         protected override void OnProcessRecord()
         {

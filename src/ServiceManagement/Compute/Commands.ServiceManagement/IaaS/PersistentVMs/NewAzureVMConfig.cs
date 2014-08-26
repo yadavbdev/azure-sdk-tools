@@ -15,13 +15,12 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
+    using Commands.Utilities.Common;
+    using Model;
+    using Properties;
     using System;
     using System.Collections.ObjectModel;
     using System.Management.Automation;
-    using Commands.Utilities.Common;
-    using Model;
-    using Model.PersistentVMModel;
-    using Properties;
 
     [Cmdlet(VerbsCommon.New, "AzureVMConfig", DefaultParameterSetName = "ImageName"), OutputType(typeof(PersistentVM))]
     public class NewAzureVMConfigCommand : ServiceManagementBaseCmdlet

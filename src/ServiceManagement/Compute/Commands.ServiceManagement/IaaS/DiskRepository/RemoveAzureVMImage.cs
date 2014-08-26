@@ -64,14 +64,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.DiskRepository
                         }
                         else if (isVMImage)
                         {
-                            if (this.DeleteVHD.IsPresent)
-                            {
-                                op = this.ComputeClient.VirtualMachineVMImages.Delete(this.ImageName, true);
-                            }
-                            else
-                            {
-                                WriteErrorWithTimestamp(Resources.VMImageDeletionMustSpecifyDeleteVhdParameter);
-                            }
+                            op = this.ComputeClient.VirtualMachineVMImages.Delete(this.ImageName, this.DeleteVHD.IsPresent);
                         }
                         else
                         {

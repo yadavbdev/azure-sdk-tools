@@ -17,14 +17,13 @@ using System.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
     using System;
     using System.IO;
     using System.Management.Automation;
     using System.Reflection;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using Model.PersistentVMModel;
     using System.Security.Cryptography.X509Certificates;
 
     [TestClass]
@@ -43,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// BVT test for IaaS cmdlets.
         /// </summary>
-        [TestMethod(), TestCategory("BVT"), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("BVT Test for IaaS")]
+        [TestMethod(), TestCategory(Category.BVT), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("BVT Test for IaaS")]
         public void AzureIaaSBVT()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);

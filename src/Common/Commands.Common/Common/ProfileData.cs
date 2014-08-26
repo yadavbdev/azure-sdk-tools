@@ -14,9 +14,12 @@
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
+    using Microsoft.WindowsAzure.Commands.Common.Models;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
+    using System.Text;
 
     /// <summary>
     /// This class provides the representation of
@@ -69,12 +72,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             CommonTenantId = inMemoryEnvironment.ActiveDirectoryCommonTenantId;
             GalleryEndpoint = inMemoryEnvironment.GalleryEndpoint;
             ActiveDirectoryServiceEndpointResourceId = inMemoryEnvironment.ActiveDirectoryServiceEndpointResourceId;
+            SqlDatabaseDnsSuffix = inMemoryEnvironment.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix;
         }
 
         /// <summary>
         /// Helper method to convert to an in-memory environment object.
         /// </summary>
-        public WindowsAzureEnvironment ToAzureEnvironment()
+        public WindowsAzureEnvironment ToWindowsAzureEnvironment()
         {
             return new WindowsAzureEnvironment
             {
@@ -87,7 +91,28 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 ActiveDirectoryEndpoint = this.AdTenantUrl,
                 ActiveDirectoryCommonTenantId = this.CommonTenantId,
                 GalleryEndpoint = this.GalleryEndpoint,
-                ActiveDirectoryServiceEndpointResourceId = this.ActiveDirectoryServiceEndpointResourceId
+                ActiveDirectoryServiceEndpointResourceId = this.ActiveDirectoryServiceEndpointResourceId,
+                SqlDatabaseDnsSuffix = this.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
+            };
+        }
+
+        public AzureEnvironment ToAzureEnvironment()
+        {
+            return new AzureEnvironment
+            {
+                Name = this.Name,
+                Endpoints = new Dictionary<AzureEnvironment.Endpoint, string>
+                {
+                    { AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId, this.ActiveDirectoryServiceEndpointResourceId },
+                    { AzureEnvironment.Endpoint.AdTenantUrl, this.AdTenantUrl },
+                    { AzureEnvironment.Endpoint.GalleryEndpoint, this.GalleryEndpoint },
+                    { AzureEnvironment.Endpoint.ManagementPortalUrl, this.ManagementPortalUrl },
+                    { AzureEnvironment.Endpoint.PublishSettingsFileUrl, this.PublishSettingsFileUrl },
+                    { AzureEnvironment.Endpoint.ResourceManagerEndpoint, this.ResourceManagerEndpoint },
+                    { AzureEnvironment.Endpoint.ServiceEndpoint, this.ServiceEndpoint },
+                    { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, this.SqlDatabaseDnsSuffix },
+                    { AzureEnvironment.Endpoint.StorageEndpointSuffix, this.StorageEndpointSuffix }
+                }
             };
         }
 
@@ -120,6 +145,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         [DataMember]
         public string ActiveDirectoryServiceEndpointResourceId { get; set; }
+
+        [DataMember]
+        public string SqlDatabaseDnsSuffix { get; set; }
     }
 
     /// <summary>
@@ -155,13 +183,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             CloudStorageAccount = inMemorySubscription.CurrentStorageAccountName;
             RegisteredResourceProviders = inMemorySubscription.RegisteredResourceProviders;
             GalleryEndpoint = inMemorySubscription.GalleryEndpoint != null ? inMemorySubscription.GalleryEndpoint.ToString() : null;
+            SqlDatabaseDnsSuffix = inMemorySubscription.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix;
         }
 
         /// <summary>
         /// Helper method to convert to an in memory subscription object.
         /// </summary>
         /// <returns>The in memory subscription</returns>
-        public WindowsAzureSubscription ToAzureSubscription()
+        public WindowsAzureSubscription ToWindowsAzureSubscription()
         {
             var result = new WindowsAzureSubscription
             {
@@ -177,6 +206,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 Certificate = !string.IsNullOrEmpty(ManagementCertificate) ? WindowsAzureCertificate.FromThumbprint(ManagementCertificate) : null,
                 CurrentStorageAccountName = CloudStorageAccount,
                 GalleryEndpoint = !string.IsNullOrEmpty(GalleryEndpoint) ? new Uri(GalleryEndpoint) : null,
+                SqlDatabaseDnsSuffix = SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
             };
             RegisteredResourceProviders = RegisteredResourceProviders ?? new string[0];
             foreach (var resource in RegisteredResourceProviders)
@@ -184,6 +214,52 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 result.RegisteredResourceProviders.Add(resource);
             }
             return result;
+        }
+
+        public AzureSubscription ToAzureSubscription(List<AzureEnvironment> envs)
+        {
+            AzureSubscription subscription = new AzureSubscription()
+            {
+                Id = new Guid(this.SubscriptionId),
+                Name = Name
+            };
+
+            // Logic to detect what is the subscription environment rely's on having ManagementEndpoint (i.e. RDFE endpoint) set already on the subscription
+            AzureEnvironment env = envs.FirstOrDefault(e => e.Endpoints[AzureEnvironment.Endpoint.ServiceEndpoint].Equals(this.ManagementEndpoint));
+
+            if (env != null)
+            {
+                subscription.Environment = env.Name;
+            }
+            else
+            {
+                subscription.Environment = EnvironmentName.AzureCloud;
+            }
+
+            if (!string.IsNullOrEmpty(this.ActiveDirectoryUserId))
+            {
+                subscription.Properties.Add(AzureSubscription.Property.UserAccount, this.ActiveDirectoryUserId);
+            }
+
+            if (!string.IsNullOrEmpty(this.ManagementCertificate))
+            {
+                subscription.Properties.Add(AzureSubscription.Property.Thumbprint, this.ManagementCertificate);
+                subscription.Properties.Add(AzureSubscription.Property.AzureMode, AzureModule.AzureServiceManagement.ToString());
+            }
+
+            if (!string.IsNullOrEmpty(this.CloudStorageAccount))
+            {
+                subscription.Properties.Add(AzureSubscription.Property.CloudStorageAccount, this.CloudStorageAccount);
+            }
+
+            if (this.RegisteredResourceProviders.Count() > 0)
+            {
+                StringBuilder providers = new StringBuilder();
+                subscription.Properties.Add(AzureSubscription.Property.RegisteredResourceProviders,
+                    string.Join(",", RegisteredResourceProviders));
+            }
+
+            return subscription;
         }
 
         [DataMember]
@@ -227,5 +303,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         [DataMember]
         public string ActiveDirectoryServiceEndpointResourceId { get; set; }
+
+        [DataMember]
+        public string SqlDatabaseDnsSuffix { get; set; }
     }
 }

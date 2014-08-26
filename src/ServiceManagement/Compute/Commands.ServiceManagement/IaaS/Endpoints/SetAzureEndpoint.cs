@@ -14,15 +14,14 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 {
+    using IaaS;
+    using Model;
+    using Properties;
     using System;
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
-    using IaaS;
-    using Model;
-    using Model.PersistentVMModel;
-    using Properties;
 
     [Cmdlet(VerbsCommon.Set, "AzureEndpoint"), OutputType(typeof(IPersistentVM))]
     public class SetAzureEndpoint : VirtualMachineConfigurationCmdletBase
@@ -85,6 +84,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
             set;
         }
 
+        [Parameter(Mandatory = false, HelpMessage = "Idle Timeout.")]
+        public int IdleTimeoutInMinutes
+        {
+            get; 
+            set;
+        }
+
         internal void ExecuteCommand()
         {
             ValidateParameters();
@@ -130,6 +136,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
             if (!string.IsNullOrEmpty(this.InternalLoadBalancerName))
             {
                 endpoint.LoadBalancerName = this.InternalLoadBalancerName;
+            }
+
+            if (this.ParameterSpecified("IdleTimeoutInMinutes"))
+            {
+                endpoint.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
             }
 
             WriteObject(VM, true);

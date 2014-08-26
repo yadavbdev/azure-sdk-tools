@@ -16,6 +16,9 @@
 .SYNOPSIS
 Checks whether the first string contains the second one
 #>
+
+$accountName='AutomationAccount'
+
 function AssertContains
 {
 	param([string] $str, [string] $substr, [string] $message)
@@ -75,7 +78,7 @@ function WaitForJobStatus
 	$endStatus = @('completed','failed')
 	while($timeElapse -lt $numOfSeconds)
 	{
-		Start-Sleep -s $interval
+		Wait-Seconds $interval
 		$timeElapse = $timeElapse + $interval
 		$job = Get-AzureAutomationJob -AutomationAccount $accountName -Id $Id
 		if($job.Status -eq $Status)
@@ -100,7 +103,6 @@ function Test-RunbookWithParameter
     param([string] $runbookPath, [HashTable] $parameters, [int]$expectedResult)
 
     #Setup
-    Select-AzureSubscription -SubscriptionName $subscriptionName
     $automationAccount = Get-AzureAutomationAccount -Name $accountName
     Assert-NotNull $automationAccount "Automation account $accountName does not exist."
 
@@ -125,7 +127,6 @@ function Test-AutomationStartAndStopRunbook
     param([string] $runbookPath)
 	    
     #Setup
-	Select-AzureSubscription $subscriptionName
 	$automationAccount = Get-AzureAutomationAccount -Name $accountName
 	Assert-NotNull $automationAccount "Automation account $accountName does not exist."
 
@@ -150,7 +151,6 @@ function Test-AutomationPublishAndEditRunbook
 {
 	param([string] $runbookPath, [string] $editRunbookPath)
 	
-	Select-AzureSubscription $subscriptionName
 	$runbook = CreateRunbook $runbookPath $true
 
     #Test
@@ -190,7 +190,6 @@ function Test-AutomationConfigureRunbook
 	param([string] $runbookPath)
 	
     #Setup
-	Select-AzureSubscription $subscriptionName
 	$automationAccount = Get-AzureAutomationAccount -Name $accountName
 	Assert-NotNull $automationAccount "Automation account $accountName does not exist."
 	$runbook = CreateRunbook $runbookPath
@@ -258,7 +257,6 @@ function Test-AutomationSuspendAndResumeJob
 	param([string] $runbookPath)
 	
     #Setup
-	Select-AzureSubscription $subscriptionName
 	$automationAccount = Get-AzureAutomationAccount $accountName
 	Assert-NotNull $automationAccount "Automation account $accountName does not exist."
 	$runbook = CreateRunbook $runbookPath
@@ -288,7 +286,6 @@ function Test-AutomationStartRunbookOnASchedule
 	param([string] $runbookPath)
 	
     #Setup
-	Select-AzureSubscription $subscriptionName
 	$automationAccount = Get-AzureAutomationAccount -Name $accountName
 	$runbook = CreateRunbook $runbookPath
 	Publish-AzureAutomationRunbook $accountName -Name $runbook.Name
@@ -326,7 +323,7 @@ function Test-AutomationStartRunbookOnASchedule
     Assert-True { $runbook.ScheduleNames -Contains $dailyScheName} "The runbook should be associated with $dailyScheName"
    
     #waiting for seven minutes
-    Start-Sleep -s 420 
+    Wait-Seconds 420 
     $job = Get-AzureAutomationJob $accountName -RunbookId $runbook.Id | where {$_.ScheduleName -eq $oneTimeScheName}
     Assert-AreEqual 1 $job.Count
 	WaitForJobStatus -Id $job.Id -Status "Completed"
@@ -356,8 +353,6 @@ Tests starting an unpublished runbook
 function Test-AutomationStartUnpublishedRunbook
 {
 	param([string] $runbookPath)
-	
-	Select-AzureSubscription $subscriptionName
 	
     $tags = @("tag1","tag2")
     $description = "Runbook Description"

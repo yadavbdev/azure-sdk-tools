@@ -14,12 +14,11 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
+    using Model;
+    using Properties;
     using System;
     using System.Linq;
     using System.Management.Automation;
-    using Model;
-    using Model.PersistentVMModel;
-    using Properties;
 
     [Cmdlet(VerbsCommon.Set, PublicIPNoun), OutputType(typeof(IPersistentVM))]
     public class SetAzurePublicIPCommand : VirtualMachineConfigurationCmdletBase
@@ -27,6 +26,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
         [Parameter(Position = 1, Mandatory = true, HelpMessage = "The Public IP Name.")]
         [ValidateNotNullOrEmpty]
         public string PublicIPName { get; set; }
+
+        [Parameter(Position = 2, Mandatory = false, HelpMessage = "Idle Timeout.")]
+        [ValidateNotNullOrEmpty]
+        public int? IdleTimeoutInMinutes { get; set; }
 
         protected override void ProcessRecord()
         {
@@ -46,17 +49,29 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             if (networkConfiguration.PublicIPs.Any())
             {
                 networkConfiguration.PublicIPs.First().Name = this.PublicIPName;
+                if (this.ParameterSpecified("IdleTimeoutInMinutes"))
+                {
+                    networkConfiguration.PublicIPs.First().IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+                }
             }
             else
             {
                 networkConfiguration.PublicIPs.Add(
                     new AssignPublicIP
                     {
-                        Name = this.PublicIPName
+                        Name = this.PublicIPName,
+                        IdleTimeoutInMinutes = this.ParameterSpecified("IdleTimeoutInMinutes") ? this.IdleTimeoutInMinutes : null,
                     });
             }
 
             WriteObject(VM);
+        }
+        
+        private bool ParameterSpecified(string parameterName)
+        {
+            // Check for parameters by name so we can tell the difference between 
+            // the user not specifying them, and the user specifying null/empty.
+            return this.MyInvocation.BoundParameters.ContainsKey(parameterName);
         }
     }
 }

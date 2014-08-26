@@ -15,11 +15,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
+    using Model;
+    using Properties;
     using System;
     using System.Management.Automation;
-    using Model;
-    using Model.PersistentVMModel;
-    using Properties;
 
     [Cmdlet(VerbsCommon.Set, "AzureOSDisk"), OutputType(typeof(IPersistentVM))]
     public class SetAzureOSDiskCommand : VirtualMachineConfigurationCmdletBase
