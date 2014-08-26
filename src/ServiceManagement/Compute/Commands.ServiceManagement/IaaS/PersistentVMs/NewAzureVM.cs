@@ -17,6 +17,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
     using AutoMapper;
     using Helpers;
     using Management.Compute.Models;
+    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
     using Microsoft.WindowsAzure.Storage;
     using Properties;
     using System;
@@ -464,6 +465,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 if (this.DnsSettings != null && string.IsNullOrEmpty(this.VNetName))
                 {
                     throw new ArgumentException(Resources.VNetNameRequiredWhenSpecifyingDNSSettings);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(this.VNetName))
+            {
+                foreach (PersistentVM VM in this.VMs)
+                {
+                    NetworkConfigurationSet networkConfig = VM.ConfigurationSets.OfType<NetworkConfigurationSet>().SingleOrDefault();
+                    if (networkConfig == null || networkConfig.SubnetNames == null ||
+                        networkConfig.SubnetNames.Count == 0)
+                    {
+                        WriteWarning(Resources.SubnetShouldBeSpecifiedIfVnetPresent);
+                    }
                 }
             }
 
