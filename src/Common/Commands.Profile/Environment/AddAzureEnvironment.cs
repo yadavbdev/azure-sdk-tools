@@ -70,7 +70,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId] = ActiveDirectoryServiceEndpointResourceId;
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.GalleryEndpoint] = GalleryEndpoint;
 
-            ProfileClient.AddAzureEnvironment(newEnvironment);
+            ProfileClient.AddEnvironment(newEnvironment);
             WriteObject(newEnvironment);
         }
     }

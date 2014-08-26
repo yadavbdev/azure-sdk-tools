@@ -292,8 +292,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             client.ImportPublishSettings(publishSettingsPath);
             client.Profile.Save();
 
-            AzureSession.Load(client.Profile.Environments, client.Profile.DefaultSubscription);
-
             return AzureSdkPath;
         }
 

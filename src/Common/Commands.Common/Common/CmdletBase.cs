@@ -29,7 +29,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public CmdletBase()
         {
             profileClient = new ProfileClient();
-            AzureSession.Load(profileClient.Profile.Environments, profileClient.Profile.DefaultSubscription);
         }
 
         public AzureSubscription CurrentSubscription

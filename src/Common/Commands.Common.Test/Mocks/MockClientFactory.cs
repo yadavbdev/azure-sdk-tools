@@ -46,15 +46,37 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             throwWhenNotAvailable = throwIfClientNotSpecified;
         }
 
+        public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint) where TClient : ServiceClient<TClient>
+        {
+            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id.ToString(), "fake_token");
+            if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
+            {
+                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription);
+            }
+
+            return CreateClient<TClient>(creds, endpoint);
+        }
+
+        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureProfile profile) where TClient : ServiceClient<TClient>
+        {
+            return CreateClient<TClient>(subscription, endpointName, profile.Environments[subscription.Environment]);
+        }
+
+        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureEnvironment environment) where TClient : ServiceClient<TClient>
+        {
+            Uri endpoint = environment.GetEndpointAsUri(endpointName);
+            return CreateClient<TClient>(subscription, endpoint);
+        }
+
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
         {
             SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id.ToString(), "fake_token");
             if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
             {
-                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription);    
+                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription);
             }
 
-            Uri endpointUri = AzureSession.Environments[subscription.Environment].GetEndpointAsUri(endpoint);
+            Uri endpointUri = profile.Environments[subscription.Environment].GetEndpointAsUri(endpoint);
             return CreateClient<TClient>(creds, endpointUri);
         }
 

@@ -83,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 subscription.Properties[AzureSubscription.Property.Thumbprint] = Certificate.Thumbprint;
             }
 
-            AzureEnvironment environment = ProfileClient.GetAzureEnvironmentOrDefault(Environment);
+            AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);
 
             if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
             {
@@ -107,7 +107,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
            
             subscription.Environment = environment.Name;
 
-            WriteObject(ProfileClient.AddOrSetAzureSubscription(subscription));
+            WriteObject(ProfileClient.AddOrSetSubscription(subscription));
         }
     }
 }

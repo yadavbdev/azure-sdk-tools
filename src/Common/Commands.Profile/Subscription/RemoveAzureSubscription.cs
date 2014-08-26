@@ -51,11 +51,11 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         {
             if (SubscriptionName != null)
             {
-                ProfileClient.RemoveAzureSubscription(SubscriptionName);
+                ProfileClient.RemoveSubscription(SubscriptionName);
             }
             else
             {
-                ProfileClient.RemoveAzureSubscription(new Guid(SubscriptionId));
+                ProfileClient.RemoveSubscription(new Guid(SubscriptionId));
             }
         }
 

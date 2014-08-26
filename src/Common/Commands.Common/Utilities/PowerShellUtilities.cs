@@ -107,14 +107,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             string PSModulePathEnv = Environment.GetEnvironmentVariable(PSModulePathName);
 
-            if (string.IsNullOrEmpty(PSModulePathEnv) || PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureServiceManagement)))
+            if (PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureResourceManager)))
             {
-                return AzureModule.AzureServiceManagement;
+                return AzureModule.AzureResourceManager;
             }
             else
             {
-                Debug.Assert(PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureResourceManager)));
-                return AzureModule.AzureResourceManager;
+                return AzureModule.AzureServiceManagement;                
             }
         }
 

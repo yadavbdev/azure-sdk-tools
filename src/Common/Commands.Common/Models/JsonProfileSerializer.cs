@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             {
                 Environments = profile.Environments.Values.ToList(),
                 Subscriptions = profile.Subscriptions.Values.ToList()
-            });
+            }, Formatting.Indented);
         }
 
         public void Deserialize(string contents, AzureProfile profile)

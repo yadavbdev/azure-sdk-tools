@@ -308,8 +308,8 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
                 Name = UnitTestSubscriptionName,
                 Environment = UnitTestEnvironmentName
             };
-            client.AddOrSetAzureSubscription(subscription);
-            client.SetAzureSubscriptionAsCurrent(UnitTestSubscriptionName);
+            client.AddOrSetSubscription(subscription);
+            client.SetSubscriptionAsCurrent(UnitTestSubscriptionName);
             client.Profile.Save();
             
             return subscription;

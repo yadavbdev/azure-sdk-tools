@@ -47,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 userCredentials.NoPrompt = false;
             }
 
-            var account = ProfileClient.AddAzureAccount(userCredentials, Environment);
+            var account = ProfileClient.AddAccount(userCredentials, Environment);
 
             WriteVerbose(string.Format(Resources.AddAccountAdded, userCredentials.UserName));
             WriteVerbose(string.Format(Resources.AddAccountShowDefaultSubscription, ProfileClient.Profile.DefaultSubscription.Name));

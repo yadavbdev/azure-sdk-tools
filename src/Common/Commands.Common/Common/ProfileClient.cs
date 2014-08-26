@@ -93,7 +93,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         #region Account management
 
-        public AzureAccount AddAzureAccount(UserCredentials credentials, string environment)
+        public AzureAccount AddAccount(UserCredentials credentials, string environment)
         {
             if (string.IsNullOrEmpty(environment))
             {
@@ -111,11 +111,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 Profile.DefaultSubscription = subscriptions[0];
             }
-            AddAzureSubscriptions(subscriptions);
+            AddSubscriptions(subscriptions);
             return new AzureAccount {UserName = credentials.UserName, Subscriptions = subscriptions };
         }
 
-        public IEnumerable<AzureAccount> ListAzureAccounts(string userName, string environment)
+        public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
         {
             List<AzureSubscription> subscriptions = Profile.Subscriptions.Values.ToList();
             if (environment != null)
@@ -152,9 +152,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureAccount RemoveAzureAccount(string userName)
+        public AzureAccount RemoveAccount(string userName)
         {
-            var userAccounts = ListAzureAccounts(userName, null);
+            var userAccounts = ListAccounts(userName, null);
 
             if (string.IsNullOrEmpty(userName))
             {
@@ -200,15 +200,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         #region Subscripton management
 
-        public void AddAzureSubscriptions(IEnumerable<AzureSubscription> subscriptions)
+        public void AddSubscriptions(IEnumerable<AzureSubscription> subscriptions)
         {
             foreach (var subscription in subscriptions)
             {
-                AddOrSetAzureSubscription(subscription);
+                AddOrSetSubscription(subscription);
             }
         }
 
-        public AzureSubscription AddOrSetAzureSubscription(AzureSubscription subscription)
+        public AzureSubscription AddOrSetSubscription(AzureSubscription subscription)
         {
             if (subscription == null)
             {
@@ -227,7 +227,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return subscription;
         }
 
-        public AzureSubscription RemoveAzureSubscription(string name)
+        public AzureSubscription RemoveSubscription(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -242,11 +242,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             else
             {
-                return RemoveAzureSubscription(subscription.Id);
+                return RemoveSubscription(subscription.Id);
             }
         }
 
-        public AzureSubscription RemoveAzureSubscription(Guid id)
+        public AzureSubscription RemoveSubscription(Guid id)
         {
             if (!Profile.Subscriptions.ContainsKey(id))
             {
@@ -271,7 +271,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return subscription;
         }
 
-        public List<AzureSubscription> ListAzureSubscriptionsFromServer(string name)
+        public List<AzureSubscription> RefreshSubscriptions(string name)
         {
             UserCredentials credentials = new UserCredentials { NoPrompt = true };
             IEnumerable<AzureSubscription> subscriptions = Profile.Subscriptions.Values.Union(LoadSubscriptionsFromServer(ref credentials));
@@ -279,10 +279,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 subscriptions = subscriptions.Where(s => s.Name == name);
             }
+
+            // Save before returning the list.
+
             return subscriptions.ToList();
         }
 
-        public AzureSubscription GetAzureSubscriptionById(Guid id)
+        public AzureSubscription GetSubscriptionById(Guid id)
         {
             if (Profile.Subscriptions.ContainsKey(id))
             {
@@ -294,7 +297,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureSubscription SetAzureSubscriptionAsCurrent(string name)
+        public AzureSubscription SetSubscriptionAsCurrent(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -309,14 +312,14 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             else
             {
-                var environment = GetAzureEnvironmentOrDefault(subscription.Environment);
+                var environment = GetEnvironmentOrDefault(subscription.Environment);
                 AzureSession.SetCurrentSubscription(subscription, environment);
             }
 
             return subscription;
         }
 
-        public AzureSubscription SetAzureSubscriptionAsDefault(string name)
+        public AzureSubscription SetSubscriptionAsDefault(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -337,7 +340,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return subscription;
         }
 
-        public void ClearDefaultAzureSubscription()
+        public void ClearDefaultSubscription()
         {
             Profile.DefaultSubscription = null;
         }
@@ -350,7 +353,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         public List<AzureSubscription> ImportPublishSettings(string filePath)
         {
             var subscriptions = LoadSubscriptionsFromPublishSettingsFile(filePath);
-            AddAzureSubscriptions(subscriptions);
+            AddSubscriptions(subscriptions);
             return subscriptions;
         }
 
@@ -538,11 +541,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             return result;
         }
+
         #endregion
 
         #region Environment management
 
-        public AzureEnvironment AddAzureEnvironment(AzureEnvironment environment)
+        public AzureEnvironment AddEnvironment(AzureEnvironment environment)
         {
             if (environment == null)
             {
@@ -560,7 +564,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureEnvironment GetAzureEnvironmentOrDefault(string name)
+        public AzureEnvironment GetEnvironmentOrDefault(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -580,7 +584,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public List<AzureEnvironment> ListAzureEnvironments(string name)
+        public List<AzureEnvironment> ListEnvironments(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -596,7 +600,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureEnvironment RemoveAzureEnvironment(string name)
+        public AzureEnvironment RemoveEnvironment(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -615,7 +619,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureEnvironment SetAzureEnvironment(AzureEnvironment environment)
+        public AzureEnvironment SetEnvironment(AzureEnvironment environment)
         {
             if (environment == null)
             {

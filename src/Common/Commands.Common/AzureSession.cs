@@ -26,23 +26,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
         static AzureSession()
         {
             SubscriptionTokenCache = new Dictionary<Guid, IAccessToken>();
-            Environments = new Dictionary<string, AzureEnvironment>();
             ClientFactory = new ClientFactory();
             AuthenticationFactory = new AuthenticationFactory();
             CurrentEnvironment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
         }
-
-        public static void Load(Dictionary<string, AzureEnvironment> envs, AzureSubscription defaultSubscription)
-        {
-            envs.ForEach(e => Environments[e.Key] = e.Value);
-
-            if (CurrentSubscription == null)
-            {
-                CurrentSubscription = defaultSubscription;
-            }
-        }
-
-        public static Dictionary<string, AzureEnvironment> Environments { get; set; }
 
         public static IDictionary<Guid, IAccessToken> SubscriptionTokenCache { get; set; }
 
