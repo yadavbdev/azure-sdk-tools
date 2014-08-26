@@ -33,6 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
     using ConfigConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
     using DefinitionConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema.ConfigurationSetting;
     using TestResources = Commands.Common.Test.Properties.Resources;
+    using Microsoft.WindowsAzure.Commands.Common;
 
     [TestClass]
     public class EnableAzureMemcacheRoleTests : TestBase
@@ -51,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         public void SetupTest()
         {
             AzureTool.IgnoreMissingSDKError = true;
-            GlobalPathInfo.GlobalSettingsDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             enableCacheCmdlet = new EnableAzureMemcacheRoleCommand();

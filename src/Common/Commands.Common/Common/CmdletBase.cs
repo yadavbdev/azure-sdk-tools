@@ -29,6 +29,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public CmdletBase()
         {
             profileClient = new ProfileClient();
+            if (AzureSession.CurrentSubscription == null &&
+                profileClient.Profile.DefaultSubscription != null)
+            {
+                AzureSession.SetCurrentSubscription(
+                    profileClient.Profile.DefaultSubscription,
+                    profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment));
+            }
         }
 
         public AzureSubscription CurrentSubscription
@@ -40,7 +47,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             get { return AzureSession.CurrentEnvironment; }
         }
-
 
         public bool HasCurrentSubscription
         {

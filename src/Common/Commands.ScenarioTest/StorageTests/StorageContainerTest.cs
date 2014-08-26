@@ -18,7 +18,7 @@ using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.StorageTests
 {
     [TestClass]
-    public class StorageContainerTest : WindowsAzurePowerShellCertificateTest
+    public class StorageContainerTest : AzurePowerShellCertificateTest
     {
         public StorageContainerTest()
             : base("Storage\\StorageContainer.ps1")

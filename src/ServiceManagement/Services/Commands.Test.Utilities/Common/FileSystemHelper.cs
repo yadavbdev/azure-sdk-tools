@@ -140,7 +140,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
                         try { new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(AzureSdkPath); }
                         catch { /* Cleanup failed, ignore*/ }
                         
-                        GlobalPathInfo.GlobalSettingsDirectory = null;
+                        AzurePowerShell.ProfileDirectory = null;
                         AzureSdkPath = null;
                     }
 

@@ -29,17 +29,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 
     public static class AzureAssert
     {
-        public static void AreEqualGlobalPathInfo(GlobalPathInfo expected, GlobalPathInfo actual)
-        {
-            AreEqualGlobalPathInfo(expected.AzureDirectory, expected.PublishSettingsFile, actual);
-        }
-
-        public static void AreEqualGlobalPathInfo(string azureSdkPath, string publishSettings, GlobalPathInfo actual)
-        {
-            Assert.AreEqual(publishSettings, actual.PublishSettingsFile);
-            Assert.AreEqual(azureSdkPath, actual.AzureDirectory);
-        }
-
         public static void AreEqualServiceSettings(ServiceSettings expected, ServiceSettings actual)
         {
             AreEqualServiceSettings(expected.Location, expected.Slot, expected.StorageServiceName, expected.Subscription, actual);

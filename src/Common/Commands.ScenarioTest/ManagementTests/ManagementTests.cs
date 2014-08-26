@@ -18,7 +18,7 @@ using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ManagementTests
 {
     [TestClass]
-    public class ManagementTests : WindowsAzurePowerShellCertificateTest
+    public class ManagementTests : AzurePowerShellCertificateTest
     {
         public ManagementTests()
             : base("Management\\ManagementTests.ps1")

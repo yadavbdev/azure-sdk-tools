@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             var userId = subscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName) ??
                 subscription.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).FirstOrDefault();
 
-            var certificate = WindowsAzureCertificate.FromThumbprint(subscription.GetProperty(AzureSubscription.Property.Thumbprint));
+            var certificate = ProfileClient.DataStore.GetCertificate(subscription.GetProperty(AzureSubscription.Property.Thumbprint));
 
             if (AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))
             {

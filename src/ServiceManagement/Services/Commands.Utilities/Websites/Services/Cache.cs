@@ -18,6 +18,7 @@ using System.Linq;
 using System.Web.Script.Serialization;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
@@ -67,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
         {
             try
             {
-                string sitesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+                string sitesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                 string.Format("sites.{0}.json", subscriptionId));
                 if (!File.Exists(sitesFile))
                 {
@@ -88,12 +89,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
         {
             try
             {
-                string sitesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+                string sitesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                 string.Format("sites.{0}.json", subscriptionId));
                 JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
 
                 // Make sure path exists
-                Directory.CreateDirectory(GlobalPathInfo.GlobalSettingsDirectory);
+                Directory.CreateDirectory(AzurePowerShell.ProfileDirectory);
                 FileUtilities.DataStore.WriteFile(sitesFile, javaScriptSerializer.Serialize(sites));
             }
             catch

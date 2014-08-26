@@ -18,7 +18,7 @@ using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
     [TestClass]
-    public class PublishAzureServiceScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class PublishAzureServiceScenarioTests : AzurePowerShellCertificateTest
     {
         public PublishAzureServiceScenarioTests()
             : base("CloudService\\Common.ps1",

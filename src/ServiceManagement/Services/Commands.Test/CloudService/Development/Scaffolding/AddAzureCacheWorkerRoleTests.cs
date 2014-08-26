@@ -29,6 +29,7 @@ using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffolding
 {
     using ConfigConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
+    using Microsoft.WindowsAzure.Commands.Common;
 
     [TestClass]
     public class AddAzureCacheWorkerRoleTests : TestBase
@@ -43,7 +44,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
         public void SetupTest()
         {
             AzureTool.IgnoreMissingSDKError = true;
-            GlobalPathInfo.GlobalSettingsDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             newServiceCmdlet = new NewAzureServiceProjectCommand();
