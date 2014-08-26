@@ -28,6 +28,23 @@ namespace Microsoft.Azure.Commands.Automation.Common
     using System.Text;
     using AutomationManagement = Microsoft.Azure.Management.Automation;
 
+    public class Question
+    {
+        public int QuestionId { get; set; }
+        public string Title { get; set; }
+
+        public Answer answer { get; set; }
+        public  IList<Answer> Answers { get; set; }
+    }
+
+    public class Answer
+    {
+        public int AnswerId { get; set; }
+        public string Text { get; set; }
+        public int QuestionId { get; set; }
+        public virtual Question Question { get; set; }
+    }
+
     public class AutomationClient : IAutomationClient
     {
         private readonly IAutomationManagementClient automationManagementClient;
@@ -541,6 +558,34 @@ namespace Microsoft.Azure.Commands.Automation.Common
             return this.GetSchedule(automationAccountName, new Guid(scheduleCreateResponse.Schedule.Id));
         }
 
+        public Schedule CreateSchedule(string automationAccountName, HourlySchedule schedule)
+        {
+            this.ValidateScheduleName(automationAccountName, schedule.Name);
+
+            var scheduleModel = new AutomationManagement.Models.Schedule
+            {
+                Name = schedule.Name,
+                StartTime = schedule.StartTime.ToUniversalTime(),
+                ExpiryTime = schedule.ExpiryTime.ToUniversalTime(),
+                Description = schedule.Description,
+                HourInterval = schedule.HourInterval,
+                ScheduleType =
+                    AutomationManagement.Models.ScheduleType
+                                        .HourlySchedule
+            };
+
+            var scheduleCreateParameters = new AutomationManagement.Models.ScheduleCreateParameters
+            {
+                Schedule = scheduleModel
+            };
+
+            var scheduleCreateResponse = this.automationManagementClient.Schedules.Create(
+                automationAccountName,
+                scheduleCreateParameters);
+
+            return this.GetSchedule(automationAccountName, new Guid(scheduleCreateResponse.Schedule.Id));
+        }
+
         public void DeleteSchedule(string automationAccountName, Guid scheduleId)
         {
             this.automationManagementClient.Schedules.Delete(
@@ -630,6 +675,10 @@ namespace Microsoft.Azure.Commands.Automation.Common
             if (schedule.ScheduleType == AutomationManagement.Models.ScheduleType.DailySchedule)
             {
                 return new DailySchedule(schedule);
+            }
+            else if (schedule.ScheduleType == AutomationManagement.Models.ScheduleType.HourlySchedule)
+            {
+                return new HourlySchedule(schedule);
             }
             else
             {
@@ -879,7 +928,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             parameters = parameters ?? new Dictionary<string, string>();
             IEnumerable<RunbookParameter> runbookParameters = this.ListRunbookParameters(automationAccountName, runbookId);
             var filteredParameters = new List<AutomationManagement.Models.NameValuePair>();
-
+           
             foreach (var runbookParameter in runbookParameters)
             {
                 if (parameters.Contains(runbookParameter.Name))

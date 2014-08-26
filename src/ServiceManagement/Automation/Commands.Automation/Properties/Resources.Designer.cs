@@ -86,6 +86,17 @@ namespace Microsoft.Azure.Commands.Automation.Properties
                 return ResourceManager.GetString("InvalidDailyScheduleModel", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The hourly schedule model is not valid. Schedule name: {0}..
+        /// </summary>
+        internal static string InvalidHourlyScheduleModel
+        {
+            get
+            {
+                return ResourceManager.GetString("InvalidHourlyScheduleModel", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to The job model is not valid..

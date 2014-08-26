@@ -132,6 +132,7 @@
     <Compile Include="DataContract\OdataErrorMessage.cs" />
     <Compile Include="Model\AutomationAccount.cs" />
     <Compile Include="Model\DailySchedule.cs" />
+    <Compile Include="Model\HourlySchedule.cs" />
     <Compile Include="Model\Job.cs" />
     <Compile Include="Model\JobParameter.cs" />
     <Compile Include="Model\JobStreamItem.cs" />
@@ -154,6 +155,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="MSSharedLibKey.snk" />
     <None Include="packages.config" />
   </ItemGroup>
