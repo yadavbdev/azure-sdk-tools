@@ -125,11 +125,11 @@ namespace Microsoft.Azure.Commands.Automation.Test.UnitTests
             Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
             var schedule = (DailySchedule)((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.FirstOrDefault();
             Assert.IsNotNull(schedule);
-            Assert.IsTrue(schedule.Name == scheduleName);
+            Assert.AreEqual(scheduleName, schedule.Name, "Schedule name shouldn't be {0}", schedule.Name);
 
             // Test for default values
-            Assert.IsTrue(schedule.ExpiryTime == Constants.DefaultScheduleExpiryTime);
-            Assert.IsTrue(schedule.DayInterval == dayInterval);
+            Assert.AreEqual(Constants.DefaultScheduleExpiryTime, schedule.ExpiryTime, "Expiry time shouldn't be {0}", schedule.ExpiryTime);
+            Assert.AreEqual(dayInterval, schedule.DayInterval, "Day Interval shouldn't be {0}", schedule.DayInterval);
         }
 
         [TestMethod]
@@ -154,11 +154,11 @@ namespace Microsoft.Azure.Commands.Automation.Test.UnitTests
             Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
             var schedule = (HourlySchedule)((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.FirstOrDefault();
             Assert.IsNotNull(schedule);
-            Assert.IsTrue(schedule.Name == scheduleName);
+            Assert.AreEqual(scheduleName, schedule.Name, "Schedule name shouldn't be {0}", schedule.Name);
 
             // Test for default values
-            Assert.IsTrue(schedule.ExpiryTime == Constants.DefaultScheduleExpiryTime);
-            Assert.IsTrue(schedule.HourInterval == hourInterval);
+            Assert.AreEqual(Constants.DefaultScheduleExpiryTime, schedule.ExpiryTime, "Expiry time shouldn't be {0}", schedule.ExpiryTime);
+            Assert.AreEqual(hourInterval, schedule.HourInterval, "Hour Interval shouldn't be {0}", schedule.HourInterval);
         }
 
         [TestMethod]
@@ -186,11 +186,11 @@ namespace Microsoft.Azure.Commands.Automation.Test.UnitTests
             Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
             var schedule = (DailySchedule)((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.FirstOrDefault();
             Assert.IsNotNull(schedule);
-            Assert.IsTrue(schedule.Name == scheduleName);
+            Assert.AreEqual(scheduleName, schedule.Name, "Schedule name shouldn't be {0}", schedule.Name);
 
             // If startTime or expiryTime is unspecified DateTimeKind, we assume they are local time
-            Assert.IsTrue(schedule.StartTime.Kind == DateTimeKind.Local);
-            Assert.IsTrue(schedule.ExpiryTime.Kind == DateTimeKind.Local);
+            Assert.AreEqual(DateTimeKind.Local, schedule.StartTime.Kind, "DateTimeKind of start time shouldn't be {0}", schedule.StartTime.Kind);
+            Assert.AreEqual(DateTimeKind.Local, schedule.ExpiryTime.Kind, "DateTimeKind of expiry time shouldn't be {0}", schedule.ExpiryTime.Kind);
         }
 
         [TestMethod]
@@ -218,11 +218,11 @@ namespace Microsoft.Azure.Commands.Automation.Test.UnitTests
             Assert.AreEqual<int>(1, ((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.Count);
             var schedule = (HourlySchedule)((MockCommandRuntime)this.cmdlet.CommandRuntime).OutputPipeline.FirstOrDefault();
             Assert.IsNotNull(schedule);
-            Assert.IsTrue(schedule.Name == scheduleName);
+            Assert.AreEqual(scheduleName, schedule.Name, "Schedule name shouldn't be {0}", schedule.Name);
 
             // If startTime or expiryTime is unspecified DateTimeKind, we assume they are local time
-            Assert.IsTrue(schedule.StartTime.Kind == DateTimeKind.Local);
-            Assert.IsTrue(schedule.ExpiryTime.Kind == DateTimeKind.Local);
+            Assert.AreEqual(DateTimeKind.Local, schedule.StartTime.Kind, "DateTimeKind of start time shouldn't be {0}", schedule.StartTime.Kind);
+            Assert.AreEqual(DateTimeKind.Local, schedule.ExpiryTime.Kind, "DateTimeKind of expiry time shouldn't be {0}", schedule.ExpiryTime.Kind);
         }
     }
 }
