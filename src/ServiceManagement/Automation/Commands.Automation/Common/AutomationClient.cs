@@ -28,23 +28,6 @@ namespace Microsoft.Azure.Commands.Automation.Common
     using System.Text;
     using AutomationManagement = Microsoft.Azure.Management.Automation;
 
-    public class Question
-    {
-        public int QuestionId { get; set; }
-        public string Title { get; set; }
-
-        public Answer answer { get; set; }
-        public  IList<Answer> Answers { get; set; }
-    }
-
-    public class Answer
-    {
-        public int AnswerId { get; set; }
-        public string Text { get; set; }
-        public int QuestionId { get; set; }
-        public virtual Question Question { get; set; }
-    }
-
     public class AutomationClient : IAutomationClient
     {
         private readonly IAutomationManagementClient automationManagementClient;
