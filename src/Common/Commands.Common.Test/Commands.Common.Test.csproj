@@ -162,7 +162,6 @@
     <Compile Include="Mocks\MockDataStore.cs" />
     <Compile Include="Mocks\MockClientFactory.cs" />
     <Compile Include="Mocks\MockAccessToken.cs" />
-    <Compile Include="Mocks\MockProfileStore.cs" />
     <Compile Include="Mocks\MockStorageService.cs" />
     <Compile Include="Common\PSObjectExtensions.cs" />
     <Compile Include="Common\RemoveAzurePublishSettings.cs" />

@@ -26,7 +26,7 @@ using Microsoft.WindowsAzure.Testing;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
     [TestClass]
-    public class WindowsAzurePowerShellCertificateTest : PowerShellTest
+    public class AzurePowerShellCertificateTest : PowerShellTest
     {
         protected TestCredentialHelper credentials;
         protected string credentialFile;
@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             e.AddHandlerToClient(HttpMockServer.CreateInstance());
         }
 
-        public WindowsAzurePowerShellCertificateTest(params string[] modules)
+        public AzurePowerShellCertificateTest(params string[] modules)
             : base(AzureModule.AzureServiceManagement, modules)
         {
             this.runningMocked = (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback);

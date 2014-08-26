@@ -20,6 +20,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema;
+using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
@@ -73,7 +74,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 certificateString = profile.ManagementCertificate;
             }
-            return WindowsAzureCertificate.FromPublishSettingsString(certificateString);
+
+            X509Certificate2 certificate = new X509Certificate2(Convert.FromBase64String(certificateString), string.Empty);
+            ProfileClient.DataStore.AddCertificate(certificate);
+            
+            return certificate;
         }
 
         private static Uri GetManagementUri(PublishDataPublishProfile profile, PublishDataPublishProfileSubscription s)

@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
 {
@@ -39,10 +40,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
             helper = new FileSystemHelper(this);
             helper.CreateAzureSdkDirectoryAndImportPublishSettings();
 
-            WebSpacesFile =  Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+            WebSpacesFile =  Path.Combine(AzurePowerShell.ProfileDirectory,
                                                           string.Format("spaces.{0}.json", SubscriptionName));
 
-            SitesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+            SitesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                           string.Format("sites.{0}.json", SubscriptionName));
             
             if (File.Exists(WebSpacesFile))

@@ -224,7 +224,6 @@
     <Compile Include="Profile\GetAzurePublishSettingsFileTests.cs" />
     <Compile Include="Common\CmdletExtensionsTest.cs" />
     <Compile Include="Common\GeneralTest.cs" />
-    <Compile Include="Common\GlobalPathInfoTest.cs" />
     <Compile Include="WAPackIaaS\Common\WebClientFactoryTests.cs" />
     <Compile Include="WAPackIaaS\Mocks\MockLogger.cs" />
     <Compile Include="WAPackIaaS\Mocks\MockRequestChannel.cs" />

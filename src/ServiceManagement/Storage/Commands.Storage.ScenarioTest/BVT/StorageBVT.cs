@@ -35,7 +35,7 @@ namespace Commands.Storage.ScenarioTest.BVT
     /// this class contain all the bvt cases for the full functional storage context such as local/connectionstring/namekey, anonymous and sas token are excluded.
     /// </summary>
     [TestClass]
-    public class StorageBVT: WindowsAzurePowerShellCertificateTest
+    public class StorageBVT: AzurePowerShellCertificateTest
     {
         private static CloudBlobHelper CommonBlobHelper;
         private static CloudStorageAccount CommonStorageAccount;

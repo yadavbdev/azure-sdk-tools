@@ -22,7 +22,7 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.Properties;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ServiceManagemenet
 {
     [TestClass]
-    public class VMProvisionScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class VMProvisionScenarioTests : AzurePowerShellCertificateTest
     {
         public VMProvisionScenarioTests()
             : base("CloudService\\Common.ps1",
