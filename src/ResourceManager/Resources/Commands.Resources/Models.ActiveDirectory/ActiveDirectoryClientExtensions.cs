@@ -14,6 +14,7 @@
 
 using Microsoft.Azure.Graph.RBAC.Models;
 using System;
+using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
@@ -71,6 +72,16 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             {
                 DisplayName = group.DisplayName,
                 Id = new Guid(group.ObjectId)
+            };
+        }
+
+        public static PSADServicePrincipal ToPSADServicePrincipal(this ServicePrincipal servicePrincipal)
+        {
+            return new PSADServicePrincipal()
+            {
+                DisplayName = servicePrincipal.DisplayName,
+                Id = new Guid(servicePrincipal.ObjectId),
+                ServicePrincipalName = servicePrincipal.ServicePrincipalNames.FirstOrDefault()
             };
         }
     }

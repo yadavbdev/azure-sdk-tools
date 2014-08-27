@@ -146,7 +146,7 @@
   <ItemGroup>
     <Compile Include="ActiveDirectory\GetAzureADGroupMemberCommand.cs" />
     <Compile Include="ActiveDirectory\GetAzureADGroupCommand.cs" />
-    <Compile Include="ActiveDirectory\GetAzureADServiceCommand.cs" />
+    <Compile Include="ActiveDirectory\GetAzureADServicePrincipalCommand.cs" />
     <Compile Include="ActiveDirectory\GetAzureADUserCommand.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryBaseCmdlet.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryClientExtensions.cs" />
