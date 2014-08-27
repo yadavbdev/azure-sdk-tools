@@ -16,12 +16,19 @@ using System.Net;
 using System.Net.Http;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Common;
+using System;
 
 namespace Microsoft.WindowsAzure.Commands.Common
 {
     public interface IClientFactory
     {
-        TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>;
+        TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint) where TClient : ServiceClient<TClient>;
+
+        TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureProfile profile) where TClient : ServiceClient<TClient>;
+
+        TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureEnvironment environment) where TClient : ServiceClient<TClient>;
+
+        TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>;
 
         TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
 

@@ -36,7 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            WriteObject(ProfileClient.RemoveAzureEnvironment(Name));
+            WriteObject(ProfileClient.RemoveEnvironment(Name));
         }
     }
 }

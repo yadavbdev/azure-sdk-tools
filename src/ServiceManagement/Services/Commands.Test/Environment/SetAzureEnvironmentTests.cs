@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             string name = "Katal";
             ProfileClient client = new ProfileClient();
-            client.AddAzureEnvironment(new AzureEnvironment { Name = name });
+            client.AddEnvironment(new AzureEnvironment { Name = name });
 
             SetAzureEnvironmentCommand cmdlet = new SetAzureEnvironmentCommand()
             {

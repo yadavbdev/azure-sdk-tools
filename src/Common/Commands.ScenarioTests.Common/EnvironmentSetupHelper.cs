@@ -122,7 +122,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
             {
-                client.AddAzureEnvironment(environment);
+                client.AddEnvironment(environment);
             }
 
             testSubscription = new AzureSubscription()
@@ -139,7 +139,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             };
             
             client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
-            client.SetAzureSubscriptionAsCurrent(testSubscription.Name);
+            client.SetSubscriptionAsCurrent(testSubscription.Name);
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
@@ -147,19 +147,19 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             // Set endpoints to default
             if (rdfeEnvironment.BaseUri == null)
             {
-                rdfeEnvironment.BaseUri = new Uri(WindowsAzureEnvironmentConstants.AzureServiceEndpoint);
+                rdfeEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureServiceEndpoint);
             }
             if (csmEnvironment.BaseUri == null)
             {
-                csmEnvironment.BaseUri = new Uri(WindowsAzureEnvironmentConstants.AzureResourceManagerEndpoint);
+                csmEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureResourceManagerEndpoint);
             }
             if (rdfeEnvironment.GalleryUri == null)
             {
-                rdfeEnvironment.GalleryUri = new Uri(WindowsAzureEnvironmentConstants.GalleryEndpoint);
+                rdfeEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
             }
             if (csmEnvironment.GalleryUri == null)
             {
-                csmEnvironment.GalleryUri = new Uri(WindowsAzureEnvironmentConstants.GalleryEndpoint);
+                csmEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
             }
             if (rdfeEnvironment.ActiveDirectoryEndpoint == null)
             {

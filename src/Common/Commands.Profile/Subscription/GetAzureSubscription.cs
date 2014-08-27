@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [OutputType(typeof(AzureSubscription))]
     public class GetAzureSubscriptionCommand : SubscriptionCmdletBase
     {
-        public GetAzureSubscriptionCommand() : base(false)
+        public GetAzureSubscriptionCommand() : base(true)
         {
 
         }
@@ -62,10 +62,10 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "ByName":
-                    WriteSubscriptions(ProfileClient.ListAzureSubscriptionsFromServer(SubscriptionName));
+                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(SubscriptionName));
                     break;
                 case "ById":
-                    WriteSubscriptions(ProfileClient.GetAzureSubscriptionById(new Guid(SubscriptionId)));
+                    WriteSubscriptions(ProfileClient.GetSubscriptionById(new Guid(SubscriptionId)));
                     break;
                 case "Default":
                     GetDefault();
@@ -168,7 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     ServiceEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint).ToString(),
                     ResourceManagerEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManagerEndpoint).ToString(),
                     IsDefault = subscription.GetProperty(AzureSubscription.Property.Default) != null,
-                    Certificate = WindowsAzureCertificate.FromThumbprint(subscription.GetProperty(AzureSubscription.Property.Thumbprint)),
+                    Certificate = ProfileClient.DataStore.GetCertificate(subscription.GetProperty(AzureSubscription.Property.Thumbprint)),
                     CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount)
                 };
                 

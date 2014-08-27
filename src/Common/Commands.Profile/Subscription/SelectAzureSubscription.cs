@@ -55,11 +55,11 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "Current":
-                    WriteObject(ProfileClient.SetAzureSubscriptionAsCurrent(SubscriptionName));
+                    WriteObject(ProfileClient.SetSubscriptionAsCurrent(SubscriptionName));
                     break;
 
                 case "Default":
-                    WriteObject(ProfileClient.SetAzureSubscriptionAsDefault(SubscriptionName));
+                    WriteObject(ProfileClient.SetSubscriptionAsDefault(SubscriptionName));
                     break;
 
                 case "NoCurrent":
@@ -67,7 +67,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     break;
 
                 case "NoDefault":
-                    ProfileClient.ClearDefaultAzureSubscription();
+                    ProfileClient.ClearDefaultSubscription();
                     break;
             }
 

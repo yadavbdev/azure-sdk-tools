@@ -18,7 +18,7 @@ using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
     [TestClass]
-    public class RemoveAzureServiceScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class RemoveAzureServiceScenarioTests : AzurePowerShellCertificateTest
     {
         public RemoveAzureServiceScenarioTests()
             : base("CloudService\\Common.ps1",

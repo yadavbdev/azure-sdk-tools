@@ -18,7 +18,7 @@ using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ServiceBusTests
 {
     [TestClass]
-    public class ServiceBusNamespaceTests : WindowsAzurePowerShellCertificateTest
+    public class ServiceBusNamespaceTests : AzurePowerShellCertificateTest
     {
         public ServiceBusNamespaceTests()
             : base("ServiceBus\\Common.ps1",

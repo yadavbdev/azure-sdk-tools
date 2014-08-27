@@ -22,6 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
@@ -83,7 +84,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
             if (File.Exists(profileFile))
             {
-                string dest = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory, profile);
+                string dest = Path.Combine(AzurePowerShell.ProfileDirectory, profile);
                 powerShell.AddScript(string.Format("Copy-Item -Path '{0}' -Destination '{1}' -Force", profileFile, dest));
                 powerShell.AddScript("[Microsoft.WindowsAzure.Commands.Utilities.Common.AzureProfile]::Instance.Load()");
             }

@@ -18,7 +18,7 @@ using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
     [TestClass]
-    public class ReverseDnsFqdnAzureServiceScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class ReverseDnsFqdnAzureServiceScenarioTests : AzurePowerShellCertificateTest
     {
         public ReverseDnsFqdnAzureServiceScenarioTests()
             : base("CloudService\\Common.ps1",

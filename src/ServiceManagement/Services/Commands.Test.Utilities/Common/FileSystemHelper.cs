@@ -140,7 +140,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
                         try { new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(AzureSdkPath); }
                         catch { /* Cleanup failed, ignore*/ }
                         
-                        GlobalPathInfo.GlobalSettingsDirectory = null;
+                        AzurePowerShell.ProfileDirectory = null;
                         AzureSdkPath = null;
                     }
 
@@ -291,8 +291,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             ProfileClient.DataStore.WriteFile(publishSettingsPath, File.ReadAllText(publishSettingsPath));
             client.ImportPublishSettings(publishSettingsPath);
             client.Profile.Save();
-
-            AzureSession.Load(client.Profile.Environments, client.Profile.DefaultSubscription);
 
             return AzureSdkPath;
         }

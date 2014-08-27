@@ -85,15 +85,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                     Name = EnvironmentName.AzureCloud,
                     Endpoints = new Dictionary<AzureEnvironment.Endpoint, string>
                     {
-                        { AzureEnvironment.Endpoint.PublishSettingsFileUrl, WindowsAzureEnvironmentConstants.AzurePublishSettingsFileUrl },
-                        { AzureEnvironment.Endpoint.ServiceEndpoint, WindowsAzureEnvironmentConstants.AzureServiceEndpoint },
-                        { AzureEnvironment.Endpoint.ResourceManagerEndpoint, WindowsAzureEnvironmentConstants.AzureResourceManagerEndpoint },
-                        { AzureEnvironment.Endpoint.ManagementPortalUrl, WindowsAzureEnvironmentConstants.AzureManagementPortalUrl },
-                        { AzureEnvironment.Endpoint.ActiveDirectoryEndpoint, WindowsAzureEnvironmentConstants.AzureActiveDirectoryEndpoint },
-                        { AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId, WindowsAzureEnvironmentConstants.AzureServiceEndpoint },
-                        { AzureEnvironment.Endpoint.StorageEndpointSuffix, WindowsAzureEnvironmentConstants.AzureStorageEndpointSuffix },
-                        { AzureEnvironment.Endpoint.GalleryEndpoint, WindowsAzureEnvironmentConstants.GalleryEndpoint },
-                        { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix },
+                        { AzureEnvironment.Endpoint.PublishSettingsFileUrl, AzureEnvironmentConstants.AzurePublishSettingsFileUrl },
+                        { AzureEnvironment.Endpoint.ServiceEndpoint, AzureEnvironmentConstants.AzureServiceEndpoint },
+                        { AzureEnvironment.Endpoint.ResourceManagerEndpoint, AzureEnvironmentConstants.AzureResourceManagerEndpoint },
+                        { AzureEnvironment.Endpoint.ManagementPortalUrl, AzureEnvironmentConstants.AzureManagementPortalUrl },
+                        { AzureEnvironment.Endpoint.ActiveDirectoryEndpoint, AzureEnvironmentConstants.AzureActiveDirectoryEndpoint },
+                        { AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId, AzureEnvironmentConstants.AzureServiceEndpoint },
+                        { AzureEnvironment.Endpoint.StorageEndpointSuffix, AzureEnvironmentConstants.AzureStorageEndpointSuffix },
+                        { AzureEnvironment.Endpoint.GalleryEndpoint, AzureEnvironmentConstants.GalleryEndpoint },
+                        { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, AzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix },
                     }
                 }
             },
@@ -104,15 +104,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                     Name = EnvironmentName.AzureChinaCloud,
                     Endpoints = new Dictionary<AzureEnvironment.Endpoint, string>
                     {
-                        { AzureEnvironment.Endpoint.PublishSettingsFileUrl, WindowsAzureEnvironmentConstants.ChinaPublishSettingsFileUrl },
-                        { AzureEnvironment.Endpoint.ServiceEndpoint, WindowsAzureEnvironmentConstants.ChinaServiceEndpoint },
+                        { AzureEnvironment.Endpoint.PublishSettingsFileUrl, AzureEnvironmentConstants.ChinaPublishSettingsFileUrl },
+                        { AzureEnvironment.Endpoint.ServiceEndpoint, AzureEnvironmentConstants.ChinaServiceEndpoint },
                         { AzureEnvironment.Endpoint.ResourceManagerEndpoint, null },
-                        { AzureEnvironment.Endpoint.ManagementPortalUrl, WindowsAzureEnvironmentConstants.ChinaManagementPortalUrl },
-                        { AzureEnvironment.Endpoint.ActiveDirectoryEndpoint, WindowsAzureEnvironmentConstants.ChinaActiveDirectoryEndpoint },
-                        { AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId, WindowsAzureEnvironmentConstants.ChinaServiceEndpoint },
-                        { AzureEnvironment.Endpoint.StorageEndpointSuffix, WindowsAzureEnvironmentConstants.ChinaStorageEndpointSuffix },
+                        { AzureEnvironment.Endpoint.ManagementPortalUrl, AzureEnvironmentConstants.ChinaManagementPortalUrl },
+                        { AzureEnvironment.Endpoint.ActiveDirectoryEndpoint, AzureEnvironmentConstants.ChinaActiveDirectoryEndpoint },
+                        { AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId, AzureEnvironmentConstants.ChinaServiceEndpoint },
+                        { AzureEnvironment.Endpoint.StorageEndpointSuffix, AzureEnvironmentConstants.ChinaStorageEndpointSuffix },
                         { AzureEnvironment.Endpoint.GalleryEndpoint, null },
-                        { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, WindowsAzureEnvironmentConstants.ChinaSqlDatabaseDnsSuffix },
+                        { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, AzureEnvironmentConstants.ChinaSqlDatabaseDnsSuffix },
                     }
                 }
             }

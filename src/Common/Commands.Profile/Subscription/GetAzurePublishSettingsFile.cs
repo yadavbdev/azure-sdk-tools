@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            AzureEnvironment environment = ProfileClient.GetAzureEnvironmentOrDefault(Environment);
+            AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);
             string url = environment.GetPublishSettingsFileUrlWithRealm(Realm);
             GeneralUtilities.LaunchWebPage(url);
 

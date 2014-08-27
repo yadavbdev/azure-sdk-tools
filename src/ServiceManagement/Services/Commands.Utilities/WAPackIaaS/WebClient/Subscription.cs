@@ -58,7 +58,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
             }
 
             ProfileClient client = new ProfileClient();
-            var environment = client.GetAzureEnvironmentOrDefault(azureSubscription.Name);
+            var environment = client.GetEnvironmentOrDefault(azureSubscription.Name);
 
             this.SubscriptionName = azureSubscription.Name;
             this.SubscriptionId = azureSubscription.Id.ToString();

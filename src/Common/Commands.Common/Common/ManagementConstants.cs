@@ -88,7 +88,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public const string AzureChinaCloud = "AzureChinaCloud";
     }
 
-    public static class WindowsAzureEnvironmentConstants
+    public static class AzureEnvironmentConstants
     {
         public const string AzureServiceEndpoint = "https://management.core.windows.net/";
 

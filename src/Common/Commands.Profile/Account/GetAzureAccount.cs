@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            WriteObject(ProfileClient.ListAzureAccounts(Name, Environment), true);
+            WriteObject(ProfileClient.ListAccounts(Name, Environment), true);
         }
     }
 }

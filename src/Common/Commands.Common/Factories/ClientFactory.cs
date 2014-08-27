@@ -20,6 +20,7 @@ using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Common;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Factories
 {
@@ -29,15 +30,41 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public event EventHandler<ClientCreatedArgs> OnClientCreated;
 
-        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
+        public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint) where TClient : ServiceClient<TClient>
         {
+            Debug.Assert(endpoint != null);
+
             if (subscription == null)
             {
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
             }
+
             SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(subscription);
-            Uri endpointUri = AzureSession.Environments[subscription.Environment].GetEndpointAsUri(endpoint);
-            return CreateClient<TClient>(creds, endpointUri);
+            return CreateClient<TClient>(creds, endpoint);
+        }
+
+        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureProfile profile) where TClient : ServiceClient<TClient>
+        {
+            Debug.Assert(profile != null);
+            Debug.Assert(profile.Environments != null);
+            Debug.Assert(profile.Environments.ContainsKey(subscription.Environment));
+
+            return CreateClient<TClient>(subscription, endpointName, profile.Environments[subscription.Environment]);
+        }
+
+        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureEnvironment environment) where TClient : ServiceClient<TClient>
+        {
+            Debug.Assert(environment != null);
+            Debug.Assert(environment.Endpoints.ContainsKey(endpointName));
+
+            Uri endpoint = environment.GetEndpointAsUri(endpointName);
+            return CreateClient<TClient>(subscription, endpoint);
+        }
+
+        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
+        {
+            ProfileClient profileClient = new ProfileClient();
+            return CreateClient<TClient>(subscription, endpointName, profileClient.Profile);
         }
 
         TClient IClientFactory.CreateClient<TClient>(params object[] parameters)
