@@ -40,6 +40,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public Action<string> WarningLog;
 
+        public Action<string> DebugLog;
+
         private static void UpgradeProfile()
         {
             string oldProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFile);
@@ -95,11 +97,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         #region Account management
 
-        public AzureAccount AddAccount(UserCredentials credentials, string environment)
+        public AzureAccount AddAccount(UserCredentials credentials, AzureEnvironment environment)
         {
+            if (environment == null)
+            {
+                throw new ArgumentNullException("environment");
+            }
+
             credentials.ShowDialog = ShowDialog.Always;
 
-            var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment);
+            var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
             var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment);
             var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
 
@@ -286,9 +293,14 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return subscription;
         }
 
-        public List<AzureSubscription> RefreshSubscriptions(string environment)
+        public List<AzureSubscription> RefreshSubscriptions(AzureEnvironment environment)
         {
-            var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment);
+            if (environment == null)
+            {
+                throw new ArgumentNullException("environment");
+            }
+
+            var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
             var subscriptionsFromServer = ListSubscriptionsFromServerForAllAccounts(environment);
             var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
 
@@ -388,11 +400,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), currentEnvironment.Name).ToList();
         }
 
-        private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(string environment)
+        private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(AzureEnvironment environment)
         {
             // Get all AD accounts and iterate
             var principalNames = Profile.Subscriptions.Values
-                .Where(s => s.Environment == environment)
+                .Where(s => s.Environment == environment.Name)
                 .SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames))
                 .Where(name => name != null)
                 .Distinct().ToList();
@@ -420,18 +432,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(ref UserCredentials credentials, string environment)
+        private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(ref UserCredentials credentials, AzureEnvironment environment)
         {
-            var currentEnvironment = GetEnvironmentOrDefault(environment);
-
             List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
-                    GetServiceManagementSubscriptions(currentEnvironment, ref credentials).ToList(),
-                    GetResourceManagerSubscriptions(currentEnvironment, ref credentials).ToList());
+                    GetServiceManagementSubscriptions(environment, ref credentials).ToList(),
+                    GetResourceManagerSubscriptions(environment, ref credentials).ToList());
 
             // Set user ID
             foreach (var subscription in mergedSubscriptions)
             {
-                subscription.Environment = currentEnvironment.Name;
+                subscription.Environment = environment.Name;
                 subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
                 subscription.Properties[AzureSubscription.Property.AvailablePrincipalNames] = credentials.UserName;
             }
@@ -568,7 +578,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                WarningLog(aadEx.Message);
+                if (DebugLog != null)
+                {
+                    DebugLog(aadEx.Message);
+                }
             }
 
             return result;
@@ -585,8 +598,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
                 using (var subscriptionClient = AzureSession.ClientFactory
                     .CreateClient<WindowsAzure.Subscriptions.SubscriptionClient>(
-                            new TokenCloudCredentials(commonTenantToken.AccessToken),
-                            environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint)))
+                        new TokenCloudCredentials(commonTenantToken.AccessToken),
+                        environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint)))
                 {
                     var subscriptionListResult = subscriptionClient.Subscriptions.List();
                     foreach (var subscription in subscriptionListResult.Subscriptions)
@@ -597,10 +610,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             Name = subscription.SubscriptionName,
                             Environment = environment.Name
                         };
-                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
+                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] =
+                            AzureModule.AzureServiceManagement.ToString();
                         if (commonTenantToken.LoginType == LoginType.LiveId)
                         {
-                            AzureSession.SubscriptionTokenCache[psSubscription.Id] = AzureSession.AuthenticationFactory.Authenticate(environment,
+                            AzureSession.SubscriptionTokenCache[psSubscription.Id] =
+                                AzureSession.AuthenticationFactory.Authenticate(environment,
                                     subscription.ActiveDirectoryTenantId, ref credentials);
                         }
                         else
@@ -614,7 +629,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                WarningLog(aadEx.Message);
+                if (DebugLog != null)
+                {
+                    DebugLog(aadEx.Message);
+                }
             }
 
             return result;

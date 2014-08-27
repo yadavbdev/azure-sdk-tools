@@ -108,7 +108,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureServiceManagement;
 
-            var account = client.AddAccount(new Utilities.Common.Authentication.UserCredentials { UserName = "test" }, EnvironmentName.AzureCloud);
+            var account = client.AddAccount(new Utilities.Common.Authentication.UserCredentials { UserName = "test" }, AzureEnvironment.PublicEnvironments[ EnvironmentName.AzureCloud]);
 
             Assert.Equal("test", account.UserName);
             Assert.Equal(3, account.Subscriptions.Count);
@@ -127,7 +127,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.AddAccount(new Utilities.Common.Authentication.UserCredentials { UserName = "test" }, EnvironmentName.AzureCloud);
+            var account = client.AddAccount(new Utilities.Common.Authentication.UserCredentials { UserName = "test" }, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud]);
 
             Assert.Equal("test", account.UserName);
             Assert.Equal(3, account.Subscriptions.Count);
@@ -437,7 +437,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.AddEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
 
-            var subscriptions = client.RefreshSubscriptions("Test");
+            var subscriptions = client.RefreshSubscriptions(azureEnvironment);
 
             Assert.Equal(4, subscriptions.Count);
             Assert.Equal(4, subscriptions.Count(s => s.Properties[AzureSubscription.Property.DefaultPrincipalName] == "test"));
@@ -460,7 +460,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.AddOrSetSubscription(azureSubscription1);
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureServiceManagement;
 
-            var subscriptions = client.RefreshSubscriptions("Test");
+            var subscriptions = client.RefreshSubscriptions(azureEnvironment);
 
             Assert.Equal(4, subscriptions.Count);
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)));
