@@ -19,8 +19,21 @@ namespace Microsoft.WindowsAzure.Commands.Common
 {
     public interface IAuthenticationFactory
     {
+        /// <summary>
+        /// Returns IAccessToken if authentication succeeds or throws an exception if authentication fails.
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         IAccessToken Authenticate(AzureEnvironment environment, ref UserCredentials credentials);
 
+        /// <summary>
+        /// Returns IAccessToken using specified tenant if authentication succeeds or throws an exception if authentication fails.
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <param name="tenant"></param>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         IAccessToken Authenticate(AzureEnvironment environment, string tenant, ref UserCredentials credentials);
         
         SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureSubscription subscription);

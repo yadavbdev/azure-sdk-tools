@@ -109,18 +109,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                     if (adalEx.ErrorCode == AdalError.UserInteractionRequired ||
                         adalEx.ErrorCode == AdalError.MultipleTokensMatched)
                     {
-                        try
-                        {
-                            result = AquireToken(config, false, userId, password);
-                        }
-                        catch (Exception threadEx)
-                        {
-                            ex = threadEx;
-                        }
+                        ex = new AadAuthenticationFailedWithoutPopupException(Resources.InvalidSubscriptionState, adalEx);
                     }
                     else if (adalEx.ErrorCode == AdalError.MissingFederationMetadataUrl)
                     {
-                        ex = new Exception(Resources.CredentialOrganizationIdMessage, adalEx);
+                        ex = new AadAuthenticationFailedException(Resources.CredentialOrganizationIdMessage, adalEx);
                     }
                     else
                     {
@@ -146,6 +139,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                     {
                         throw new AadAuthenticationCanceledException(adex.Message, adex);
                     }
+                }
+                if (ex is AadAuthenticationException)
+                {
+                    throw ex;
                 }
                 throw new AadAuthenticationFailedException(GetExceptionMessage(ex), ex);
             }

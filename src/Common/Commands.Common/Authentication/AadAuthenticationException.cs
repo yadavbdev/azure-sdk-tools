@@ -49,6 +49,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     }
 
     /// <summary>
+    /// Exception that gets thrown when the ADAL library
+    /// is unable to authenticate without a popup dialog.
+    /// </summary>
+    [Serializable]
+    public class AadAuthenticationFailedWithoutPopupException : AadAuthenticationException
+    {
+        public AadAuthenticationFailedWithoutPopupException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+    }
+
+    /// <summary>
     /// Exception that gets thrown if an authentication operation
     /// fails on the server.
     /// </summary>

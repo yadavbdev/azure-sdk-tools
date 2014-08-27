@@ -63,7 +63,8 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "ByName":
-                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(new UserCredentials{ NoPrompt = true }, AzureSession.CurrentEnvironment.Name, SubscriptionName));
+                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(new UserCredentials{ NoPrompt = true }, AzureSession.CurrentEnvironment.Name)
+                        .Where(s => s.Name.Equals(SubscriptionName, StringComparison.InvariantCultureIgnoreCase)));
                     break;
                 case "ById":
                     WriteSubscriptions(ProfileClient.GetSubscriptionById(new Guid(SubscriptionId)));
