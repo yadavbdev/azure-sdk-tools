@@ -26,18 +26,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         /// Get a new login token for the given environment and user credentials.
         /// </summary>
         /// <param name="config">Configuration.</param>
+        /// <param name="promptBehavior">Prompt behavior.</param>
         /// <param name="userId">User ID to get the token for.</param>
         /// <param name="password">Secure strings with password</param>
         /// <returns>An access token.</returns>
-        IAccessToken GetNewToken(AdalConfiguration config, string userId, SecureString password);
-
-        /// <summary>
-        /// Get an existing token for the given environment and user credentials.
-        /// </summary>
-        /// <param name="config">Configuration.</param>
-        /// <param name="userId">User ID to get the token for.</param>
-        /// <param name="password">Secure strings with password</param>
-        /// <returns>An access token.</returns>
-        IAccessToken GetCachedToken(AdalConfiguration config, string userId, SecureString password);
+        IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password);
     }
 }

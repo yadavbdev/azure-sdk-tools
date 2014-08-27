@@ -21,7 +21,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         public string UserName { get; set; }
 
         public SecureString Password { get; set; }
-        
-        public bool NoPrompt { get; set; }
+
+        public ShowDialog ShowDialog { get; set; }
+    }
+
+    public enum ShowDialog
+    {
+        Auto,
+        Always,
+        Never
     }
 }

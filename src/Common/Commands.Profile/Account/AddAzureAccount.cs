@@ -44,7 +44,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             {
                 userCredentials.UserName = Credential.UserName;
                 userCredentials.Password = Credential.Password;
-                userCredentials.NoPrompt = false;
+                userCredentials.ShowDialog = ShowDialog.Always;
             }
 
             var account = ProfileClient.AddAccount(userCredentials, Environment);

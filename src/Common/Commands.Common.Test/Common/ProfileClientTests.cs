@@ -99,7 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
-        public void AddAzureAccountReturnsAccountWithSubscriptionsInRdfeMode()
+        public void AddAzureAccountReturnsAccountWithAllSubscriptionsInRdfeMode()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1 }.ToList());
             MockDataStore dataStore = new MockDataStore();
@@ -111,13 +111,14 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             var account = client.AddAccount(new Utilities.Common.Authentication.UserCredentials { UserName = "test" }, EnvironmentName.AzureCloud);
 
             Assert.Equal("test", account.UserName);
-            Assert.Equal(2, account.Subscriptions.Count);
+            Assert.Equal(3, account.Subscriptions.Count);
             Assert.True(account.Subscriptions.Any(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)));
             Assert.True(account.Subscriptions.Any(s => s.Id == new Guid(rdfeSubscription2.SubscriptionId)));
+            Assert.True(account.Subscriptions.Any(s => s.Id == new Guid(csmSubscription1.SubscriptionId)));
         }
 
         [Fact]
-        public void AddAzureAccountReturnsAccountWithSubscriptionsInCsmMode()
+        public void AddAzureAccountReturnsAccountWithAllSubscriptionsInCsmMode()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1 }.ToList());
             MockDataStore dataStore = new MockDataStore();
@@ -436,7 +437,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.AddEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
 
-            var subscriptions = client.RefreshSubscriptions(new UserCredentials { NoPrompt = true }, "Test");
+            var subscriptions = client.RefreshSubscriptions("Test");
 
             Assert.Equal(4, subscriptions.Count);
             Assert.Equal(4, subscriptions.Count(s => s.Properties[AzureSubscription.Property.DefaultPrincipalName] == "test"));
@@ -449,22 +450,25 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
-        public void ListAzureSubscriptionsListsOnlyRdfeSubscriptions()
+        public void ListAzureSubscriptionsListsAllSubscriptions()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.AddEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureServiceManagement;
 
-            var subscriptions = client.RefreshSubscriptions(new UserCredentials{ NoPrompt = true, UserName = "foo" }, "Test");
+            var subscriptions = client.RefreshSubscriptions("Test");
 
-            Assert.Equal(2, subscriptions.Count);
+            Assert.Equal(4, subscriptions.Count);
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)));
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription2.SubscriptionId)));
+            Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(csmSubscription1.SubscriptionId)));
             Assert.True(subscriptions.All(s => s.Environment == "Test"));
-            Assert.True(subscriptions.All(s => s.GetProperty(AzureSubscription.Property.DefaultPrincipalName) == "foo"));
-            Assert.True(subscriptions.All(s => s.GetProperty(AzureSubscription.Property.AvailablePrincipalNames) == "foo"));
+            Assert.True(subscriptions.All(s => s.GetProperty(AzureSubscription.Property.DefaultPrincipalName) == "test"));
+            Assert.True(subscriptions.All(s => s.GetProperty(AzureSubscription.Property.AvailablePrincipalNames) == "test"));
         }
 
         [Fact]
@@ -614,14 +618,23 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 Id = new Guid("56E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"),
                 Name = "LocalSub1",
                 Environment = "Test",
-                Properties = new Dictionary<AzureSubscription.Property, string> { { AzureSubscription.Property.AvailablePrincipalNames, "test" }, { AzureSubscription.Property.Default, "True" } }
+                Properties = new Dictionary<AzureSubscription.Property, string>
+                {
+                    { AzureSubscription.Property.AvailablePrincipalNames, "test" }, 
+                    { AzureSubscription.Property.DefaultPrincipalName, "test" }, 
+                    { AzureSubscription.Property.Default, "True" } 
+                }
             };
             azureSubscription2 = new AzureSubscription
             {
                 Id = new Guid("66E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"),
                 Name = "LocalSub2",
                 Environment = "Test",
-                Properties = new Dictionary<AzureSubscription.Property, string> { { AzureSubscription.Property.AvailablePrincipalNames, "test" } }
+                Properties = new Dictionary<AzureSubscription.Property, string>
+                {
+                    { AzureSubscription.Property.AvailablePrincipalNames, "test" },
+                    { AzureSubscription.Property.DefaultPrincipalName, "test" }
+                }
             };
             azureSubscription3withoutUser = new AzureSubscription
             {

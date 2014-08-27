@@ -58,7 +58,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             UserCredentials credentials = new UserCredentials
             {
                 UserName = currentSubscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName),
-                NoPrompt = true
+                ShowDialog = ShowDialog.Auto
             };
             var accessToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
             return new HDInsightAccessTokenCredential()

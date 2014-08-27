@@ -97,28 +97,23 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public AzureAccount AddAccount(UserCredentials credentials, string environment)
         {
-            if (string.IsNullOrEmpty(environment))
+            credentials.ShowDialog = ShowDialog.Always;
+
+            var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment);
+            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment);
+            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
+
+            // Update back Profile.Subscriptions
+            foreach (var subscription in mergedSubscriptions)
             {
-                environment = AzureSession.CurrentEnvironment.Name;
+                Profile.Subscriptions[subscription.Id] = subscription;
             }
-
-            if (!Profile.Environments.ContainsKey(environment))
-            {
-                throw new Exception(string.Format(Resources.EnvironmentNotFound, environment));
-            }
-
-            credentials.NoPrompt = false;
-
-            RefreshSubscriptions(credentials, environment);
-
-            var subscriptions = Profile.Subscriptions.Values
-                .Where(s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).Contains(credentials.UserName))
-                .Select(s => s);
 
             // Update DefaultPrincipalName
-            foreach (var subscription in subscriptions)
+            foreach (var subscription in Profile.Subscriptions.Values)
             {
-                if (credentials.UserName != null)
+                if (credentials.UserName != null && 
+                    subscription.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).Contains(credentials.UserName))
                 {
                     subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
                 }
@@ -129,7 +124,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 Profile.DefaultSubscription = Profile.Subscriptions.Values.FirstOrDefault();
             }
 
-            return new AzureAccount {UserName = credentials.UserName, Subscriptions = subscriptions.ToList() };
+            return new AzureAccount
+            {
+                UserName = credentials.UserName,
+                Subscriptions = Profile.Subscriptions.Values.Where(
+                        s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames)
+                                .Contains(credentials.UserName)).ToList()
+            };
         }
 
         public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
@@ -234,11 +235,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 throw new ArgumentNullException("Environment needs to be specified.", "subscription.Environment");
             }
-            if (!Profile.Environments.ContainsKey(subscription.Environment))
-            {
-                throw new ArgumentException("Environment name is invalid.", "subscription.Environment");
-            }
-
+            // Validate environment
+            GetEnvironmentOrDefault(subscription.Environment);
+            
             Profile.Subscriptions[subscription.Id] = subscription;
             return subscription;
         }
@@ -287,10 +286,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return subscription;
         }
 
-        public List<AzureSubscription> RefreshSubscriptions(UserCredentials credentials, string environment)
+        public List<AzureSubscription> RefreshSubscriptions(string environment)
         {
             var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment);
-            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment);
+            var subscriptionsFromServer = ListSubscriptionsFromServerForAllAccounts(environment);
             var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
 
             // Update back Profile.Subscriptions
@@ -389,31 +388,26 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), currentEnvironment.Name).ToList();
         }
 
-        private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(ref UserCredentials credentials, string environment)
+        private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(string environment)
         {
-            var currentEnvironment = Profile.Environments[environment];
             // Get all AD accounts and iterate
             var principalNames = Profile.Subscriptions.Values
+                .Where(s => s.Environment == environment)
                 .SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames))
-                .Concat(new[] { credentials.UserName })
-                .Distinct();
+                .Where(name => name != null)
+                .Distinct().ToList();
 
             List<AzureSubscription> subscriptions = new List<AzureSubscription>();
+
             foreach (var principal in principalNames)
             {
-                credentials.UserName = principal;
-                var mergedSubscriptions = MergeSubscriptions(
-                    GetServiceManagementSubscriptions(currentEnvironment, ref credentials).ToList(),
-                    GetResourceManagerSubscriptions(currentEnvironment, ref credentials).ToList());
-                subscriptions.AddRange(mergedSubscriptions);
-            }
+                UserCredentials credentials = new UserCredentials
+                {
+                    UserName = principal,
+                    ShowDialog = ShowDialog.Never
+                };
 
-            // Set user ID
-            foreach (var subscription in subscriptions)
-            {
-                subscription.Environment = environment;
-                subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
-                subscription.Properties[AzureSubscription.Property.AvailablePrincipalNames] = credentials.UserName;
+                subscriptions.AddRange(ListSubscriptionsFromServer(ref credentials, environment));
             }
 
             if (subscriptions.Any())
@@ -426,7 +420,33 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        private IEnumerable<AzureSubscription> MergeSubscriptions(List<AzureSubscription> subscriptionsList1,
+        private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(ref UserCredentials credentials, string environment)
+        {
+            var currentEnvironment = GetEnvironmentOrDefault(environment);
+
+            List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
+                    GetServiceManagementSubscriptions(currentEnvironment, ref credentials).ToList(),
+                    GetResourceManagerSubscriptions(currentEnvironment, ref credentials).ToList());
+
+            // Set user ID
+            foreach (var subscription in mergedSubscriptions)
+            {
+                subscription.Environment = currentEnvironment.Name;
+                subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
+                subscription.Properties[AzureSubscription.Property.AvailablePrincipalNames] = credentials.UserName;
+            }
+
+            if (mergedSubscriptions.Any())
+            {
+                return mergedSubscriptions;
+            }
+            else
+            {
+                return new AzureSubscription[0];
+            }
+        }
+
+        private List<AzureSubscription> MergeSubscriptions(List<AzureSubscription> subscriptionsList1,
             List<AzureSubscription> subscriptionsList2)
         {
             if (subscriptionsList1 == null)
