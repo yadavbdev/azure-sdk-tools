@@ -113,7 +113,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (Profile.DefaultSubscription == null)
             {
-                Profile.DefaultSubscription = subscriptions.FirstOrDefault();
+                Profile.DefaultSubscription = Profile.Subscriptions.Values.FirstOrDefault();
             }
             return new AzureAccount {UserName = credentials.UserName, Subscriptions = subscriptions.ToList() };
         }
