@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using Microsoft.Hadoop.Client;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
@@ -27,11 +28,14 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
     {
         public static IHDInsightSubscriptionCredentials GetSubscriptionCredentials(this IAzureHDInsightCommonCommandBase command, AzureSubscription currentSubscription, AzureEnvironment environment)
         {
+            var userId = currentSubscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName) ??
+                currentSubscription.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).FirstOrDefault();
+
             if (currentSubscription.GetProperty(AzureSubscription.Property.Thumbprint) != null)
             {
                 return GetSubscriptionCertificateCredentials(command, currentSubscription, environment);
             }
-            else if (currentSubscription.GetProperty(AzureSubscription.Property.UserAccount) != null)
+            else if (userId != null)
             {
                 return GetAccessTokenCredentials(command, currentSubscription, environment);
             }
@@ -53,7 +57,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         {
             UserCredentials credentials = new UserCredentials
             {
-                UserName = currentSubscription.GetProperty(AzureSubscription.Property.UserAccount),
+                UserName = currentSubscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName),
                 NoPrompt = true
             };
             var accessToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);

@@ -43,14 +43,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     [Serializable]
     public class AadAuthenticationCanceledException : AadAuthenticationException
     {
-        public AadAuthenticationCanceledException()
-        {
-        }
-
-        public AadAuthenticationCanceledException(string message) : base(message)
-        {
-        }
-
         public AadAuthenticationCanceledException(string message, Exception innerException) : base(message, innerException)
         {
         }
@@ -63,14 +55,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     [Serializable]
     public class AadAuthenticationFailedException : AadAuthenticationException
     {
-        public AadAuthenticationFailedException()
-        {
-        }
-
-        public AadAuthenticationFailedException(string message) : base(message)
-        {
-        }
-
         public AadAuthenticationFailedException(string message, Exception innerException) : base(message, innerException)
         {
         }

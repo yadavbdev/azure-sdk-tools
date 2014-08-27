@@ -20,6 +20,7 @@ using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
 using Microsoft.WindowsAzure.Management;
 
@@ -62,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "ByName":
-                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(SubscriptionName));
+                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(new UserCredentials{ NoPrompt = true }, AzureSession.CurrentEnvironment.Name, SubscriptionName));
                     break;
                 case "ById":
                     WriteSubscriptions(ProfileClient.GetSubscriptionById(new Guid(SubscriptionId)));
@@ -150,7 +151,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 SubscriptionDataExtended result = new SubscriptionDataExtended
                 {
                     AccountAdminLiveEmailId = response.AccountAdminLiveEmailId,
-                    ActiveDirectoryUserId = subscription.GetProperty(AzureSubscription.Property.UserAccount),
+                    ActiveDirectoryUserId = subscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName),
                     CurrentCoreCount = response.CurrentCoreCount,
                     CurrentHostedServices = response.CurrentHostedServices,
                     CurrentDnsServers = 0, // TODO: Add to spec
