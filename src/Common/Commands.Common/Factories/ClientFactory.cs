@@ -32,12 +32,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint) where TClient : ServiceClient<TClient>
         {
-            Debug.Assert(endpoint != null);
-
             if (subscription == null)
             {
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
             }
+
+            Debug.Assert(endpoint != null);
 
             SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(subscription);
             return CreateClient<TClient>(creds, endpoint);
@@ -45,6 +45,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureProfile profile) where TClient : ServiceClient<TClient>
         {
+            if (subscription == null)
+            {
+                throw new ApplicationException(Resources.InvalidCurrentSubscription);
+            }
+
             Debug.Assert(profile != null);
             Debug.Assert(profile.Environments != null);
             Debug.Assert(profile.Environments.ContainsKey(subscription.Environment));
@@ -54,6 +59,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureEnvironment environment) where TClient : ServiceClient<TClient>
         {
+            if (subscription == null)
+            {
+                throw new ApplicationException(Resources.InvalidCurrentSubscription);
+            }
+
             Debug.Assert(environment != null);
             Debug.Assert(environment.Endpoints.ContainsKey(endpointName));
 
@@ -63,21 +73,16 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
         {
+            if (subscription == null)
+            {
+                throw new ApplicationException(Resources.InvalidCurrentSubscription);
+            }
+
             ProfileClient profileClient = new ProfileClient();
             return CreateClient<TClient>(subscription, endpointName, profileClient.Profile);
         }
 
-        TClient IClientFactory.CreateClient<TClient>(params object[] parameters)
-        {
-            var client = CreateClient<TClient>(parameters);
-            if (client != null && OnClientCreated != null)
-            {
-                OnClientCreated(this, new ClientCreatedArgs {CreatedClient = client, ClientType = client.GetType()});
-            }
-            return client;
-        }
-
-        public static TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        public TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
         {
             List<Type> types = new List<Type>();
             foreach (object obj in parameters)
@@ -94,6 +99,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
             TClient client = (TClient)constructor.Invoke(parameters);
             client.UserAgent.Add(ApiConstants.UserAgentValue);
+
+            if (OnClientCreated != null)
+            {
+                OnClientCreated(this, new ClientCreatedArgs { CreatedClient = client, ClientType = client.GetType() });
+            }
             
             return client;
         }
