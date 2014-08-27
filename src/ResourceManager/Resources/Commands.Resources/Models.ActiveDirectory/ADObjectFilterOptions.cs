@@ -17,9 +17,13 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
     public class ADObjectFilterOptions
     {
-        public string DisplayName { get; set; }
+        public string SearchString { get; set; }
 
-        public string Email { get; set; }
+        public string Mail { get; set; }
+
+        public string UPN { get; set; }
+
+        public string SPN { get; set; }
 
         public string Id { get; set; }
 
@@ -33,8 +37,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public bool HasFilter {
             get
             {
-                return !string.IsNullOrEmpty(DisplayName) ||
-                       !string.IsNullOrEmpty(Email) ||
+                return !string.IsNullOrEmpty(SearchString) ||
+                       !string.IsNullOrEmpty(Mail) ||
+                       !string.IsNullOrEmpty(UPN) ||
+                       !string.IsNullOrEmpty(SPN) ||
                        !string.IsNullOrEmpty(Id);
             }
         }

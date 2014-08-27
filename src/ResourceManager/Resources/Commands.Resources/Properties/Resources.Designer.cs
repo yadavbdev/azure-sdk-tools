@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Resources.Properties
-{
-
-
+namespace Microsoft.Azure.Commands.Resources.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -241,7 +241,7 @@ namespace Microsoft.Azure.Commands.Resources.Properties
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removing role assignment...
+        ///   Looks up a localized string similar to Removing role assignment on scope &apos;{0}&apos;...
         /// </summary>
         internal static string RemovingRoleAssignment {
             get {

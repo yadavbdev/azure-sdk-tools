@@ -146,15 +146,22 @@
   <ItemGroup>
     <Compile Include="ActiveDirectory\GetAzureADGroupMemberCommand.cs" />
     <Compile Include="ActiveDirectory\GetAzureADGroupCommand.cs" />
+    <Compile Include="ActiveDirectory\GetAzureADServiceCommand.cs" />
     <Compile Include="ActiveDirectory\GetAzureADUserCommand.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryBaseCmdlet.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryClientExtensions.cs" />
     <Compile Include="Models.ActiveDirectory\ADObjectFilterOptions.cs" />
     <Compile Include="Models.ActiveDirectory\ParameterSet.cs" />
+    <Compile Include="Models.ActiveDirectory\PSADServicePrincipal.cs" />
+    <Compile Include="Models.ActiveDirectory\PSADGroup.cs" />
+    <Compile Include="Models.ActiveDirectory\PSADUser.cs" />
     <Compile Include="Models.ActiveDirectory\PSADObject.cs" />
     <Compile Include="Models.Authorization\FilterRoleAssignmentsOptions.cs" />
     <Compile Include="Models.ActiveDirectory\ActiveDirectoryClient.cs" />
     <Compile Include="Models.Authorization\AuthorizationClientExtensions.cs" />
+    <Compile Include="Models.Authorization\PSGroupRoleAssignment.cs" />
+    <Compile Include="Models.Authorization\PSServiceRoleAssignment.cs" />
+    <Compile Include="Models.Authorization\PSUserRoleAssignment.cs" />
     <Compile Include="Models.Authorization\PSRoleAssignment.cs" />
     <Compile Include="Models.Authorization\PSRoleDefinition.cs" />
     <Compile Include="Models.Authorization\PSPermission.cs" />

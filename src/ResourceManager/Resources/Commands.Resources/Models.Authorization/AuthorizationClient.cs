@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// <returns>The created role assignment object</returns>
         public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
         {
-            Guid principalId = ActiveDirectoryClient.GetObjectId(parameters.FilterOptions);
+            Guid principalId = ActiveDirectoryClient.GetObjectId(parameters.ADObjectFilter);
 
             Guid roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid() : RoleAssignmentNames.Dequeue();
             string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
@@ -109,21 +109,29 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             List<PSRoleAssignment> result = new List<PSRoleAssignment>();
             ListAssignmentsFilterParameters parameters = new ListAssignmentsFilterParameters();
 
-            if (options.FilterOptions.HasFilter)
+            if (options.ADObjectFilter.HasFilter)
             {
                 // Filter first by principal
-                parameters.PrincipalId = ActiveDirectoryClient.GetObjectId(options.FilterOptions);
+                parameters.PrincipalId = ActiveDirectoryClient.GetObjectId(options.ADObjectFilter);
                 result.AddRange(AuthorizationManagementClient.RoleAssignments.List(parameters)
                     .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
 
                 // Filter out by scope
-                result.RemoveAll(r => !options.Scope.StartsWith(r.Scope));
+                if (!string.IsNullOrEmpty(options.Scope))
+                {
+                    result.RemoveAll(r => !options.Scope.StartsWith(r.Scope));                    
+                }
             }
-            else
+            else if (!string.IsNullOrEmpty(options.Scope))
             {
                 // Filter by scope and above directly
                 parameters.AtScope = true;
                 result.AddRange(AuthorizationManagementClient.RoleAssignments.ListForScope(options.Scope, parameters)
+                    .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
+            }
+            else
+            {
+                result.AddRange(AuthorizationManagementClient.RoleAssignments.List(parameters)
                     .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
             }
 
