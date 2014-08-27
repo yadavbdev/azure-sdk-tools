@@ -24,6 +24,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public List<string> Actions { get; set; }
 
-        public List<string> NoActions { get; set; }
+        public List<string> NotActions { get; set; }
     }
 }

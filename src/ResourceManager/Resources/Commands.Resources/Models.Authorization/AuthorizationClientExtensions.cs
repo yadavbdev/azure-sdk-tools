@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 {
                     Name = role.Properties.RoleName,
                     Actions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
-                    NoActions = new List<string>(role.Properties.Permissions.SelectMany(r => r.NotActions)),
+                    NotActions = new List<string>(role.Properties.Permissions.SelectMany(r => r.NotActions)),
                     Id = role.Id
                 };
             }
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                     Id = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
-                    NoActions = roleDefinition.NoActions,
+                    NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope,
                     UserPrincipalName = ((PSADUser)adObject).UserPrincipalName/*,
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                     Id = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
-                    NoActions = roleDefinition.NoActions,
+                    NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope,
                     Mail = ((PSADGroup)adObject).Mail
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                     Id = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
-                    NoActions = roleDefinition.NoActions,
+                    NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope,
                     ServicePrincipalName = ((PSADServicePrincipal)adObject).ServicePrincipalName
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                     Id = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
-                    NoActions = roleDefinition.NoActions,
+                    NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope
                 };
