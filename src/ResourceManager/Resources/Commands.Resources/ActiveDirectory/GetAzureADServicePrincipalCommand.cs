@@ -24,15 +24,15 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
     /// Get AD users.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureADServicePrincipal", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADServicePrincipal>))]
-    public class GetAzureADServiceCommand : ActiveDirectoryBaseCmdlet
+    public class GetAzureADServicePrincipalCommand : ActiveDirectoryBaseCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.SearchString,
-            HelpMessage = "The service search string.")]
+            HelpMessage = "The service principal search string.")]
         [ValidateNotNullOrEmpty]
         public string SearchString { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
-            HelpMessage = "The service object id.")]
+            HelpMessage = "The service principal object id.")]
         [ValidateNotNullOrEmpty]
         public Guid ObjectId { get; set; }
 
@@ -49,14 +49,14 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
             ADObjectFilterOptions options = new ADObjectFilterOptions
             {
                 SearchString = SearchString,
-                UPN = ServicePrinciplaName,
+                SPN = ServicePrinciplaName,
                 Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 Paging = true
             };
 
             do
             {
-                WriteObject(ActiveDirectoryClient.FilterServices(options), true);
+                WriteObject(ActiveDirectoryClient.FilterServicePrincipals(options), true);
 
             } while (!string.IsNullOrEmpty(options.NextLink));
         }
