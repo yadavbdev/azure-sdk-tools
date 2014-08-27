@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
             //if (result == null)
             //{
-            //    result = FilterServices(options).FirstOrDefault();
+            //    result = FilterServicePrincipals(options).FirstOrDefault();
             //}
 
             if (result == null)
@@ -59,36 +59,36 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return result;
         }
 
-        public List<PSADServicePrincipal> FilterServices(ADObjectFilterOptions options)
+        public List<PSADServicePrincipal> FilterServicePrincipals(ADObjectFilterOptions options)
         {
-            List<PSADServicePrincipal> services = new List<PSADServicePrincipal>();
+            List<PSADServicePrincipal> servicePrincipals = new List<PSADServicePrincipal>();
             ServicePrincipalListResult result = new ServicePrincipalListResult();
-            ServicePrincipal service = null;
+            ServicePrincipal servicePrincipal = null;
 
-            if (!string.IsNullOrEmpty(options.Id) || !string.IsNullOrEmpty(options.UPN))
+            if (!string.IsNullOrEmpty(options.Id))
             {
                 try
                 {
-                    service = GraphClient.ServicePrincipal.Get(options.Id).ServicePrincipal;
+                    servicePrincipal = GraphClient.ServicePrincipal.Get(options.Id).ServicePrincipal;
                 }
                 catch {  /* The user does not exist, ignore the exception. */ }
 
-                if (service != null)
+                if (servicePrincipal != null)
                 {
-                    services.Add(service.ToPSADServicePrincipal());
+                    servicePrincipals.Add(servicePrincipal.ToPSADServicePrincipal());
                 }
             }
             else if (!string.IsNullOrEmpty(options.SPN))
             {
                 try
                 {
-                    service = GraphClient.ServicePrincipal.GetByServicePrincipalName(options.SPN).ServicePrincipals.FirstOrDefault();
+                    servicePrincipal = GraphClient.ServicePrincipal.GetByServicePrincipalName(options.SPN).ServicePrincipals.FirstOrDefault();
                 }
                 catch {  /* The user does not exist, ignore the exception. */ }
 
-                if (service != null)
+                if (servicePrincipal != null)
                 {
-                    services.Add(service.ToPSADServicePrincipal());
+                    servicePrincipals.Add(servicePrincipal.ToPSADServicePrincipal());
                 }
             }
             else
@@ -104,28 +104,28 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                         result = GraphClient.ServicePrincipal.ListNext(options.NextLink);
                     }
 
-                    services.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+                    servicePrincipals.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
                     options.NextLink = result.NextLink;
                 }
                 else
                 {
                     result = GraphClient.ServicePrincipal.List(options.SearchString);
-                    services.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+                    servicePrincipals.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
 
                     while (!string.IsNullOrEmpty(result.NextLink))
                     {
                         result = GraphClient.ServicePrincipal.ListNext(result.NextLink);
-                        services.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+                        servicePrincipals.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
                     }
                 }
             }
 
-            return services;
+            return servicePrincipals;
         }
 
         public List<PSADServicePrincipal> FilterServices()
         {
-            return FilterServices(new ADObjectFilterOptions());
+            return FilterServicePrincipals(new ADObjectFilterOptions());
         }
 
         public List<PSADUser> FilterUsers(ADObjectFilterOptions options)
