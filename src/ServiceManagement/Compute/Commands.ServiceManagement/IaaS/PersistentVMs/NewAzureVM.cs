@@ -469,14 +469,20 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 
             if (!string.IsNullOrEmpty(this.VNetName))
             {
+                List<string> vmNames = new List<string>();
                 foreach (Model.PersistentVM VM in this.VMs)
                 {
                     Model.NetworkConfigurationSet networkConfig = VM.ConfigurationSets.OfType<Model.NetworkConfigurationSet>().SingleOrDefault();
                     if (networkConfig == null || networkConfig.SubnetNames == null ||
                         networkConfig.SubnetNames.Count == 0)
                     {
-                        WriteWarning(Resources.SubnetShouldBeSpecifiedIfVnetPresent);
+                        vmNames.Add(VM.RoleName);
                     }
+                }
+
+                if (vmNames.Count != 0)
+                {
+                    WriteWarning(string.Format(Resources.SubnetShouldBeSpecifiedIfVnetPresent, string.Join(", ", vmNames)));
                 }
             }
 

@@ -1823,7 +1823,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subnet should be specified when deploying a VM in a VNET..
+        ///   Looks up a localized string similar to Subnet should be specified when deploying VMs in a VNET: {0}.
         /// </summary>
         public static string SubnetShouldBeSpecifiedIfVnetPresent {
             get {

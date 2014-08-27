@@ -777,6 +777,6 @@ The file needs to be a PowerShell script (.ps1 or .psm1).</value>
     <comment>{0} is an URI</comment>
   </data>
   <data name="SubnetShouldBeSpecifiedIfVnetPresent" xml:space="preserve">
-    <value>Subnet should be specified when deploying a VM in a VNET.</value>
+    <value>Subnet should be specified when deploying VMs in a VNET: {0}</value>
   </data>
 </root>
