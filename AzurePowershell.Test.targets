@@ -11,6 +11,7 @@
     <StorageScenarioTestDebug>src\ServiceManagement\Storage\Commands.Storage.ScenarioTest\bin\Debug\CLITest.dll</StorageScenarioTestDebug>
     <ManagementTestDebug>.\src\ServiceManagement\Services\Commands.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Test.dll</ManagementTestDebug>
     <ResourceManagerTestDebug>.\src\ResourceManager\Resources\Commands.Resources.Test\bin\Debug\Microsoft.Azure.Commands.Resources.Test.dll</ResourceManagerTestDebug>
+    <DataFactoryManagerTestDebug>.\src\ResourceManager\DataFactories\Commands.DataFactories.Test\bin\Debug\Microsoft.Azure.Commands.DataFactories.Test.dll</DataFactoryManagerTestDebug>
     <ServiceManagementTestDebug>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Test.dll</ServiceManagementTestDebug>
     <SqlDatabaseTestDebug>.\src\ServiceManagement\Sql\Commands.SqlDatabase.Test\bin\Debug\Microsoft.WindowsAzure.Commands.SqlDatabase.Test.dll</SqlDatabaseTestDebug>
     <HDInsightTestDebug>.\src\ServiceManagement\HDInsight\Commands.HDInsight.Test\bin\Debug\Microsoft.WindowsAzure.Commands.HDInsight.Test.dll</HDInsightTestDebug>
@@ -57,6 +58,10 @@
 
   <Target Name="TestResourceManager">
     <Xunit.Runner.MSBuild.xunit Assembly="$(ResourceManagerTestDebug)" Html="$(TestOutputDirectory)\ResourceManagerTestDebug.xunit.dll.html" Verbose="true"/>
+  </Target>
+
+  <Target Name="TestDataFactoryManager">
+    <Xunit.Runner.MSBuild.xunit Assembly="$(DataFactoryManagerTestDebug)" Html="$(TestOutputDirectory)\DataFactoryManagerTestDebug.xunit.dll.html" Verbose="true"/>
   </Target>
 
   <Target Name="TestServiceManagement">
