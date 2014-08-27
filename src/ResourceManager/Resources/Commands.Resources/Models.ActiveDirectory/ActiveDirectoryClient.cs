@@ -61,68 +61,66 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public List<PSADServicePrincipal> FilterServices(ADObjectFilterOptions options)
         {
-            throw new NotImplementedException();
+            List<PSADServicePrincipal> services = new List<PSADServicePrincipal>();
+            ServicePrincipalListResult result = new ServicePrincipalListResult();
+            ServicePrincipal service = null;
 
-            //List<PSADService> services = new List<PSADService>();
-            //ServiceListResult result = new ServiceListResult();
-            //Service services = null;
+            if (!string.IsNullOrEmpty(options.Id) || !string.IsNullOrEmpty(options.UPN))
+            {
+                try
+                {
+                    service = GraphClient.ServicePrincipal.Get(options.Id).ServicePrincipal;
+                }
+                catch {  /* The user does not exist, ignore the exception. */ }
 
-            //if (!string.IsNullOrEmpty(options.Id) || !string.IsNullOrEmpty(options.UPN))
-            //{
-            //    try
-            //    {
-            //        services = GraphClient.Service.Get(options.Id).Service;
-            //    }
-            //    catch {  /* The user does not exist, ignore the exception. */ }
+                if (service != null)
+                {
+                    services.Add(service.ToPSADServicePrincipal());
+                }
+            }
+            else if (!string.IsNullOrEmpty(options.SPN))
+            {
+                try
+                {
+                    service = GraphClient.ServicePrincipal.GetByServicePrincipalName(options.SPN).ServicePrincipals.FirstOrDefault();
+                }
+                catch {  /* The user does not exist, ignore the exception. */ }
 
-            //    if (services != null)
-            //    {
-            //        services.Add(services.ToPSADService());
-            //    }
-            //}
-            //else if (!string.IsNullOrEmpty(options.Mail))
-            //{
-            //    try
-            //    {
-            //        services = GraphClient.Service.GetBySignInName(options.Mail).Services.FirstOrDefault();
-            //    }
-            //    catch {  /* The user does not exist, ignore the exception. */ }
+                if (service != null)
+                {
+                    services.Add(service.ToPSADServicePrincipal());
+                }
+            }
+            else
+            {
+                if (options.Paging)
+                {
+                    if (string.IsNullOrEmpty(options.NextLink))
+                    {
+                        result = GraphClient.ServicePrincipal.List(options.SearchString);
+                    }
+                    else
+                    {
+                        result = GraphClient.ServicePrincipal.ListNext(options.NextLink);
+                    }
 
-            //    if (services != null)
-            //    {
-            //        services.Add(services.ToPSADService());
-            //    }
-            //}
-            //else
-            //{
-            //    if (options.Paging)
-            //    {
-            //        if (string.IsNullOrEmpty(options.NextLink))
-            //        {
-            //            result = GraphClient.Service.List(null, options.SearchString);
-            //        }
-            //        else
-            //        {
-            //            result = GraphClient.Service.ListNext(options.NextLink);
-            //        }
+                    services.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+                    options.NextLink = result.NextLink;
+                }
+                else
+                {
+                    result = GraphClient.ServicePrincipal.List(options.SearchString);
+                    services.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
 
-            //        services.AddRange(result.Services.Select(u => u.ToPSADService()));
-            //        options.NextLink = result.NextLink;
-            //    }
-            //    else
-            //    {
-            //        result = GraphClient.Service.List(null, options.SearchString);
-            //        services.AddRange(result.Services.Select(u => u.ToPSADService()));
+                    while (!string.IsNullOrEmpty(result.NextLink))
+                    {
+                        result = GraphClient.ServicePrincipal.ListNext(result.NextLink);
+                        services.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+                    }
+                }
+            }
 
-            //        while (!string.IsNullOrEmpty(result.NextLink))
-            //        {
-            //            result = GraphClient.Service.ListNext(result.NextLink);
-            //            services.AddRange(result.Services.Select(u => u.ToPSADService()));
-            //        }
-            //    }
-            //}
-
-            //return services;
+            return services;
         }
 
         public List<PSADServicePrincipal> FilterServices()
