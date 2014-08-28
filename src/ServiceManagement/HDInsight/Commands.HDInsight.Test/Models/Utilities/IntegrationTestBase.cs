@@ -67,12 +67,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
         {
             string certificateThumbprint1 = "jb245f1d1257fw27dfc402e9ecde37e400g0176r";
             ProfileClient profileClient = new ProfileClient();
-            profileClient.Profile.Accounts.Add(certificateThumbprint1,
+            profileClient.Profile.Accounts[certificateThumbprint1] = 
                 new AzureAccount()
                 {
                     Id = certificateThumbprint1,
                     Type = AzureAccount.AccountType.Certificate
-                });
+                };
 
             profileClient.Profile.Save();
 

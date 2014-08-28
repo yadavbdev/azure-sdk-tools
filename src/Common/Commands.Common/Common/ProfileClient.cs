@@ -122,7 +122,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
             // Update AzureAccount
             foreach (var subscription in mergedSubscriptions)
             {
-                subscription.SetProperty(AzureSubscription.Property.AzureAccount, credentials.UserName);
                 Profile.Subscriptions[subscription.Id] = subscription;
             }
 
@@ -137,7 +136,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 Type = AzureAccount.AccountType.User,
                 Environment = environment.Name
             };
-            account.SetSubscriptions(mergedSubscriptions);
+            account.SetSubscriptions(
+                Profile.Subscriptions.Values.Where(
+                    s => s.GetProperty(AzureSubscription.Property.AzureAccount) == credentials.UserName)
+                    .ToList());
 
             // Add the account to the profile
             Profile.Accounts[account.Id] = account;
@@ -147,27 +149,23 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
         {
-            List<AzureSubscription> subscriptions = Profile.Subscriptions.Values.ToList();
-            if (environment != null)
-            {
-                subscriptions = subscriptions.Where(s => s.Environment == environment).ToList();
-            }
-
             List<AzureAccount> accounts = new List<AzureAccount>();
             if (!string.IsNullOrEmpty(userName))
             {
-                Debug.Assert(Profile.Accounts.ContainsKey(userName));
-                accounts.Add(Profile.Accounts[userName]);
+                if (Profile.Accounts.ContainsKey(userName))
+                {
+                    if (environment == null || Profile.Accounts[userName].Environment == environment)
+                    {
+                        accounts.Add(Profile.Accounts[userName]);
+                    }
+                }
             }
             else
             {
-                accounts = Profile.Accounts.Values.ToList();
+                accounts = Profile.Accounts.Values.Where(a => environment == null || a.Environment == environment).ToList();
             }
 
-            foreach (var account in accounts)
-            {
-                yield return account;
-            }
+            return accounts;
         }
 
         public AzureAccount RemoveAccount(string accountId)
