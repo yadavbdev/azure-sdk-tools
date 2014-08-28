@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             pass = false;
             testStartTime = DateTime.Now;
-            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount));
+            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
 
             try
             {

@@ -371,13 +371,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 files.CreateAzureSdkDirectoryAndImportPublishSettings();
                 var cloudServiceProject = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
                 cloudServiceProject.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
-                subscription.Properties[AzureSubscription.Property.CloudStorageAccount] = storageName;
+                subscription.Properties[AzureSubscription.Property.StorageAccount] = storageName;
 
                 ExecuteInTempCurrentDirectory(rootPath, () => client.PublishCloudService(location: "West US"));
 
                 cloudBlobUtilityMock.Verify(f => f.UploadPackageToBlob(
                     clientMocks.StorageManagementClientMock.Object,
-                    subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount),
+                    subscription.GetProperty(AzureSubscription.Property.StorageAccount),
                     It.IsAny<string>(),
                     It.IsAny<BlobRequestOptions>()), Times.Once());
             }           

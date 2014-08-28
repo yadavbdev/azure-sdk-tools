@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Factories
 {
@@ -45,33 +46,39 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             return token;
         }
 
-        public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureSubscription subscription)
+        public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureSubscription subscription, AzureProfile profile)
         {
             if (subscription == null)
             {
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
             }
 
-            var userId = subscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName) ??
-                subscription.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).FirstOrDefault();
-
-            var certificate = ProfileClient.DataStore.GetCertificate(subscription.GetProperty(AzureSubscription.Property.Thumbprint));
+            var accountId = subscription.GetProperty(AzureSubscription.Property.AzureAccount);
 
             if (AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))
             {
                 return new AccessTokenCredential(subscription.Id, AzureSession.SubscriptionTokenCache[subscription.Id]);
             }
-            else if (userId != null)
+            else if (accountId != null)
             {
-                if (!AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))
+                Debug.Assert(profile.Accounts.ContainsKey(accountId));
+
+                switch (profile.Accounts[accountId].Type)
                 {
-                    throw new ArgumentException(Resources.InvalidSubscriptionState);
+                    case AzureAccount.AccountType.User:
+                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))
+                        {
+                            throw new ArgumentException(Resources.InvalidSubscriptionState);
+                        }
+                        return new AccessTokenCredential(subscription.Id, AzureSession.SubscriptionTokenCache[subscription.Id]);
+
+                    case AzureAccount.AccountType.Certificate:
+                        var certificate = ProfileClient.DataStore.GetCertificate(accountId);
+                        return new CertificateCloudCredentials(subscription.Id.ToString(), certificate);
+
+                    default:
+                        throw new NotImplementedException();
                 }
-                return new AccessTokenCredential(subscription.Id, AzureSession.SubscriptionTokenCache[subscription.Id]);
-            }
-            else if (certificate != null)
-            {
-                return new CertificateCloudCredentials(subscription.Id.ToString(), certificate);
             }
             else
             {

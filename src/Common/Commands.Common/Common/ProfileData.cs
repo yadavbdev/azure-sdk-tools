@@ -142,21 +142,21 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 subscription.Environment = EnvironmentName.AzureCloud;
             }
 
-            if (!string.IsNullOrEmpty(this.ActiveDirectoryUserId))
-            {
-                subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = this.ActiveDirectoryUserId;
-                subscription.Properties[AzureSubscription.Property.AvailablePrincipalNames] = this.ActiveDirectoryUserId;
-            }
-
             if (!string.IsNullOrEmpty(this.ManagementCertificate))
             {
-                subscription.Properties.Add(AzureSubscription.Property.Thumbprint, this.ManagementCertificate);
-                subscription.Properties.Add(AzureSubscription.Property.SupportedModes, AzureModule.AzureServiceManagement.ToString());
+                subscription.Properties.Add(AzureSubscription.Property.AzureAccount, this.ManagementCertificate);
+                subscription.SetProperty(AzureSubscription.Property.SupportedModes,
+                    AzureModule.AzureServiceManagement.ToString());
+            }
+
+            if (!string.IsNullOrEmpty(this.ActiveDirectoryUserId))
+            {
+                subscription.Properties[AzureSubscription.Property.AzureAccount] = this.ActiveDirectoryUserId;
             }
 
             if (!string.IsNullOrEmpty(this.CloudStorageAccount))
             {
-                subscription.Properties.Add(AzureSubscription.Property.CloudStorageAccount, this.CloudStorageAccount);
+                subscription.Properties.Add(AzureSubscription.Property.StorageAccount, this.CloudStorageAccount);
             }
 
             if (this.RegisteredResourceProviders.Count() > 0)

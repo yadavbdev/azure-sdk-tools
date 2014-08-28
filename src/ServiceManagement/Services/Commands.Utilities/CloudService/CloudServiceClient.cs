@@ -499,7 +499,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             // If there's no storage service provided, try using the default one
             if (string.IsNullOrEmpty(storageServiceName))
             {
-                storageServiceName = Subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
+                storageServiceName = Subscription.GetProperty(AzureSubscription.Property.StorageAccount);
             }
 
             ServiceSettings serviceSettings = ServiceSettings.LoadDefault(

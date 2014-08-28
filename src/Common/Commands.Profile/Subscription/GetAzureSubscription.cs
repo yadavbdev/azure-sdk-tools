@@ -152,7 +152,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 SubscriptionDataExtended result = new SubscriptionDataExtended
                 {
                     AccountAdminLiveEmailId = response.AccountAdminLiveEmailId,
-                    ActiveDirectoryUserId = subscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName),
+                    ActiveDirectoryUserId = subscription.GetProperty(AzureSubscription.Property.AzureAccount),
                     CurrentCoreCount = response.CurrentCoreCount,
                     CurrentHostedServices = response.CurrentHostedServices,
                     CurrentDnsServers = 0, // TODO: Add to spec
@@ -170,8 +170,8 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     ServiceEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint).ToString(),
                     ResourceManagerEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManagerEndpoint).ToString(),
                     IsDefault = subscription.GetProperty(AzureSubscription.Property.Default) != null,
-                    Certificate = ProfileClient.DataStore.GetCertificate(subscription.GetProperty(AzureSubscription.Property.Thumbprint)),
-                    CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount)
+                    Certificate = ProfileClient.DataStore.GetCertificate(subscription.GetProperty(AzureSubscription.Property.AzureAccount)),
+                    CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.StorageAccount)
                 };
                 
                 return result;

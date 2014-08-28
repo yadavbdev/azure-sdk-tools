@@ -133,7 +133,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
         protected void ValidateParameters()
         {
             AzureSubscription currentSubscription = CurrentSubscription;
-            if ((currentSubscription == null || string.IsNullOrEmpty(currentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount))) && string.IsNullOrEmpty(MediaLocation))
+            if ((currentSubscription == null || string.IsNullOrEmpty(currentSubscription.GetProperty(AzureSubscription.Property.StorageAccount))) && string.IsNullOrEmpty(MediaLocation))
             {
                 throw new ArgumentException(Resources.MustSpecifyMediaLocationOrHaveCurrentStorageAccount);
             }

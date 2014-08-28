@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 using (var storageClient = AzureSession.ClientFactory.CreateClient<StorageManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceEndpoint))
                 {
                     storageAccountCache[subscription.Id] = StorageUtilities.GenerateCloudStorageAccount(
-                        storageClient, subscription.GetProperty(AzureSubscription.Property.CloudStorageAccount));
+                        storageClient, subscription.GetProperty(AzureSubscription.Property.StorageAccount));
 
                     return storageAccountCache[subscription.Id];
                 }

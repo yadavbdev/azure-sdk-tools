@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public event EventHandler<ClientCreatedArgs> OnClientCreated;
 
-        public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint) where TClient : ServiceClient<TClient>
+        public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint, AzureProfile profile) where TClient : ServiceClient<TClient>
         {
             if (subscription == null)
             {
@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
             Debug.Assert(endpoint != null);
 
-            SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(subscription);
+            SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(subscription, profile);
             return CreateClient<TClient>(creds, endpoint);
         }
 

@@ -122,7 +122,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
                 var subscriptionResolver =
                     ServiceLocator.Instance.Locate<IAzureHDInsightSubscriptionResolverFactory>().Create(client.Profile);
                 var resolvedSubscription = subscriptionResolver.ResolveSubscription(Subscription);
-                if (certificate.IsNotNull() && resolvedSubscription.GetProperty(AzureSubscription.Property.Thumbprint) != certificate.Thumbprint)
+                if (certificate.IsNotNull() && resolvedSubscription.GetProperty(AzureSubscription.Property.AzureAccount) != certificate.Thumbprint)
                 {
                     ProfileClient.DataStore.AddCertificate(certificate);
                 }

@@ -33,6 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
         {
             Environments = new Dictionary<string, AzureEnvironment>();
             Subscriptions = new Dictionary<Guid, AzureSubscription>();
+            Accounts = new Dictionary<string, AzureAccount>();
         }
 
         public AzureProfile(IDataStore store, string profilePath)
@@ -49,6 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
         {
             Environments = new Dictionary<string, AzureEnvironment>();
             Subscriptions = new Dictionary<Guid, AzureSubscription>();
+            Accounts = new Dictionary<string, AzureAccount>();
 
             if (store.FileExists(profilePath))
             {
@@ -102,6 +104,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
         public Dictionary<string, AzureEnvironment> Environments { get; set; }
 
         public Dictionary<Guid, AzureSubscription> Subscriptions { get; set; }
+
+        public Dictionary<string, AzureAccount> Accounts { get; set; }
 
         public AzureSubscription DefaultSubscription
         {

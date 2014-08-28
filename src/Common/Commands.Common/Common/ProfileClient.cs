@@ -73,6 +73,14 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
+        private void WriteWarning(string msg)
+        {
+            if (WarningLog != null)
+            {
+                WarningLog(msg);
+            }
+        }
+
         static ProfileClient()
         {
             DataStore = new DiskDataStore();
@@ -104,19 +112,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
 
             // Update back Profile.Subscriptions
+            // Update AzureAccount
             foreach (var subscription in mergedSubscriptions)
             {
+                subscription.SetProperty(AzureSubscription.Property.AzureAccount, credentials.UserName);
                 Profile.Subscriptions[subscription.Id] = subscription;
-            }
-
-            // Update DefaultPrincipalName
-            foreach (var subscription in Profile.Subscriptions.Values)
-            {
-                if (credentials.UserName != null && 
-                    subscription.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).Contains(credentials.UserName))
-                {
-                    subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
-                }
             }
 
             if (Profile.DefaultSubscription == null)
@@ -124,13 +124,18 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 Profile.DefaultSubscription = Profile.Subscriptions.Values.FirstOrDefault();
             }
 
-            return new AzureAccount
+            AzureAccount account = new AzureAccount
             {
-                UserName = credentials.UserName,
-                Subscriptions = Profile.Subscriptions.Values.Where(
-                        s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames)
-                                .Contains(credentials.UserName)).ToList()
+                Id = credentials.UserName,
+                Type = AzureAccount.AccountType.User,
+                Environment = environment
             };
+            account.SetSubscriptions(mergedSubscriptions);
+
+            // Add the account to the profile
+            Profile.Accounts[account.Id] = account;
+
+            return account;
         }
 
         public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
@@ -141,76 +146,82 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 subscriptions = subscriptions.Where(s => s.Environment == environment).ToList();
             }
 
-            List<string> names = new List<string>();
+            List<AzureAccount> accounts = new List<AzureAccount>();
             if (!string.IsNullOrEmpty(userName))
             {
-                names.Add(userName);
+                Debug.Assert(Profile.Accounts.ContainsKey(userName));
+                accounts.Add(Profile.Accounts[userName]);
             }
             else
             {
-                names = subscriptions
-                    .SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames))
-                    .Distinct().ToList();
+                accounts = Profile.Accounts.Values.ToList();
             }
 
-            foreach (var name in names)
+            foreach (var account in accounts)
             {
-                AzureAccount account = new AzureAccount();
-                account.UserName = name;
-                account.Subscriptions = subscriptions
-                    .Where(s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).Contains(name)).ToList();
-
-                if (account.Subscriptions.Count == 0)
-                {
-                    continue;
-                }
-
                 yield return account;
             }
         }
 
-        public AzureAccount RemoveAccount(string userName)
+        public AzureAccount RemoveAccount(string accountId)
         {
-            var userAccounts = ListAccounts(userName, null);
-
-            if (string.IsNullOrEmpty(userName))
+            if (string.IsNullOrEmpty(accountId))
             {
                 throw new ArgumentNullException("User name needs to be specified.", "userName");
             }
 
-            if (!userAccounts.Any())
+            if (!Profile.Accounts.ContainsKey(accountId))
             {
                 throw new ArgumentException("User name is not valid.", "userName");
             }
 
-            var userAccount = userAccounts.First();
+            AzureAccount account = Profile.Accounts[accountId];
+            Profile.Accounts.Remove(account.Id);
 
-            foreach (var subscriptionFromAccount in userAccount.Subscriptions)
+            foreach (AzureSubscription subscription in account.GetSubscriptions(Profile))
             {
-                var subscription = Profile.Subscriptions[subscriptionFromAccount.Id];
-
-                // Warn the user if the removed subscription is the default one.
-                if (subscription.GetProperty(AzureSubscription.Property.Default) != null)
+                if (subscription.GetProperty(AzureSubscription.Property.AzureAccount) == accountId)
                 {
-                    if (WarningLog != null)
+                    AzureAccount defaultAccount = GetDefaultAccount(subscription.Id);
+
+                    // There's no default account to use, remove the subscription.
+                    if (defaultAccount == null)
                     {
-                        WarningLog(Resources.RemoveDefaultSubscription);
+                        // Warn the user if the removed subscription is the default one.
+                        if (subscription.IsPropertySet(AzureSubscription.Property.Default))
+                        {
+                            WriteWarning(Resources.RemoveDefaultSubscription);
+                        }
+
+                        // Warn the user if the removed subscription is the current one.
+                        if (subscription.Equals(AzureSession.CurrentSubscription))
+                        {
+                            WriteWarning(Resources.RemoveCurrentSubscription);
+                        }
+
+                        Profile.Subscriptions.Remove(subscription.Id);
                     }
                 }
-
-                // Warn the user if the removed subscription is the current one.
-                if (subscription.Equals(AzureSession.CurrentSubscription))
-                {
-                    if (WarningLog != null)
-                    {
-                        WarningLog(Resources.RemoveCurrentSubscription);
-                    }
-                }
-
-                Profile.Subscriptions.Remove(subscription.Id);
             }
 
-            return userAccount;
+            return account;
+        }
+
+        private AzureAccount GetDefaultAccount(Guid subscriptionId)
+        {
+            List<AzureAccount> accounts = ListSubscriptionAccounts(subscriptionId);
+            AzureAccount account = accounts.FirstOrDefault(a => a.Type != AzureAccount.AccountType.Certificate);
+
+            if (account != null)
+            {
+                // Found a non-certificate account.
+                return account;
+            }
+
+            // Use certificate account if its there.
+            account = accounts.FirstOrDefault();
+
+            return account;
         }
 
         #endregion
@@ -269,19 +280,32 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
 
             var subscription = Profile.Subscriptions[id];
-            if (subscription.Properties.ContainsKey(AzureSubscription.Property.Default))
+
+            if (subscription.IsPropertySet(AzureSubscription.Property.Default))
             {
-                WarningLog(Resources.RemoveDefaultSubscription);
+                WriteWarning(Resources.RemoveDefaultSubscription);
             }
 
             // Warn the user if the removed subscription is the current one.
             if (AzureSession.CurrentSubscription != null && subscription.Id == AzureSession.CurrentSubscription.Id)
             {
-                WarningLog(Resources.RemoveCurrentSubscription);
+                WriteWarning(Resources.RemoveCurrentSubscription);
                 AzureSession.SetCurrentSubscription(null, null);
             }
 
             Profile.Subscriptions.Remove(id);
+
+            // Remove this subscription from its associated AzureAccounts
+            List<AzureAccount> accounts = ListSubscriptionAccounts(id);
+
+            foreach (AzureAccount account in accounts)
+            {
+                account.RemoveSubscription(id);
+                if (!account.IsPropertySet(AzureAccount.Property.Subscriptions))
+                {
+                    Profile.Accounts.Remove(account.Id);
+                }
+            }
 
             return subscription;
         }
@@ -366,6 +390,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
             DataStore.AddCertificate(certificate);
         }
 
+        public List<AzureAccount> ListSubscriptionAccounts(Guid subscriptionId)
+        {
+            return Profile.Accounts.Where(a => a.Value.HasSubscription(subscriptionId))
+                .Select(a => a.Value).ToList();
+        }
+
         public List<AzureSubscription> ImportPublishSettings(string filePath)
         {
             var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath);
@@ -391,11 +421,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(string environment)
         {
             // Get all AD accounts and iterate
-            var principalNames = Profile.Subscriptions.Values
-                .Where(s => s.Environment == environment)
-                .SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames))
-                .Where(name => name != null)
-                .Distinct().ToList();
+            var principalNames = Profile.Accounts.Keys;
 
             List<AzureSubscription> subscriptions = new List<AzureSubscription>();
 
@@ -432,8 +458,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             foreach (var subscription in mergedSubscriptions)
             {
                 subscription.Environment = currentEnvironment.Name;
-                subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
-                subscription.Properties[AzureSubscription.Property.AvailablePrincipalNames] = credentials.UserName;
+                subscription.Properties[AzureSubscription.Property.AzureAccount] = credentials.UserName;
             }
 
             if (mergedSubscriptions.Any())
@@ -506,12 +531,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.SupportedModes));
 
             mergedSubscription.SetProperty(AzureSubscription.Property.SupportedModes, supportedModes.ToArray());
-
-            // Merge AvailablePrincipalNames
-            var principalNames = subscription1.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames)
-                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames));
-
-            mergedSubscription.SetProperty(AzureSubscription.Property.AvailablePrincipalNames, principalNames.ToArray());
 
             return mergedSubscription;
         }

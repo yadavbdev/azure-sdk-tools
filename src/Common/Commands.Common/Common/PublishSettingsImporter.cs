@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 Environment = environment,
                 Properties = new Dictionary<AzureSubscription.Property,string>
                 {
-                    { AzureSubscription.Property.Thumbprint, certificate.Thumbprint },
+                    { AzureSubscription.Property.AzureAccount, certificate.Thumbprint },
                 }
             };
         }

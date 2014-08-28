@@ -12,14 +12,36 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public class AzureAccount
+    public partial class AzureAccount
     {
-        public string UserName { get; set; }
+        public string Id { get; set; }
 
-        public List<AzureSubscription> Subscriptions { get; set; }
+        public string Environment { get; set; }
+
+        public AccountType Type { get; set; }
+
+        public Dictionary<Property, string> Properties { get; set; }
+
+        public enum AccountType
+        {
+            Certificate,
+            User,
+            ServicePrincipal
+        }
+
+        public enum Property
+        {
+            /// <summary>
+            /// Comma separated list of subscription ids on this account.
+            /// </summary>
+            Subscriptions
+        }
     }
 }

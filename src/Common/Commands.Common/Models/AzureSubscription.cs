@@ -17,13 +17,8 @@ using System.Collections.Generic;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public class AzureSubscription
+    public partial class AzureSubscription
     {
-        public AzureSubscription()
-        {
-            Properties = new Dictionary<Property,string>();
-        }
-
         public Guid Id { get; set; }
 
         public string Name { get; set; }
@@ -49,66 +44,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             /// </summary>
             Default,
 
-            CloudStorageAccount,
+            StorageAccount,
 
-            DefaultPrincipalName,
-
-            AvailablePrincipalNames,
-
-            Thumbprint
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
-
-        public string GetProperty(Property property)
-        {
-            if (Properties.ContainsKey(property))
-            {
-                return Properties[property];
-            }
-
-            return null;
-        }
-
-        public string[] GetPropertyAsArray(Property property)
-        {
-            if (Properties.ContainsKey(property))
-            {
-                return Properties[property].Split(',');
-            }
-
-            return new string[0];
-        }
-
-        public void SetProperty(Property property, params string[] values)
-        {
-            if (values == null || values.Length == 0)
-            {
-                if (Properties.ContainsKey(property))
-                {
-                    Properties.Remove(property);
-                }
-            }
-            else
-            {
-                Properties[property] = string.Join(",", values);
-            }
-        }
-
-        public override bool Equals(object obj)
-        {
-            var anotherSubscription = obj as AzureSubscription;
-            if (anotherSubscription == null)
-            {
-                return false;
-            }
-            else
-            {
-                return anotherSubscription.Id == Id;
-            }
+            AzureAccount
         }
     }
 }

@@ -43,12 +43,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             throwWhenNotAvailable = throwIfClientNotSpecified;
         }
 
-        public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint) where TClient : ServiceClient<TClient>
+        public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint, AzureProfile profile) where TClient : ServiceClient<TClient>
         {
             SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id.ToString(), "fake_token");
             if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
             {
-                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription);
+                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription, profile);
             }
 
             return CreateClient<TClient>(creds, endpoint);
@@ -70,7 +70,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id.ToString(), "fake_token");
             if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
             {
-                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription);
+                ProfileClient profileClient = new ProfileClient();
+                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription, profileClient.Profile);
             }
 
             Uri endpointUri = (new ProfileClient()).Profile.Environments[subscription.Environment].GetEndpointAsUri(endpoint);

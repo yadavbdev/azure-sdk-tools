@@ -23,6 +23,7 @@ using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
@@ -85,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 throw new ArgumentException(Resources.InvalidCurrentSubscription);
             }
 
-            if (CurrentSubscription.GetProperty(AzureSubscription.Property.Thumbprint) == null)
+            if (!CurrentSubscription.IsPropertySet(AzureSubscription.Property.AzureAccount))
             {
                 throw new ArgumentException(Resources.InvalidCurrentSuscriptionCertificate);
             }
@@ -125,11 +126,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 return Channel;
             }
-            
+
+            string certificateThumbprint = CurrentSubscription.GetProperty(AzureSubscription.Property.AzureAccount);
+            Debug.Assert(profileClient.Profile.Accounts[certificateThumbprint].Type == AzureAccount.AccountType.Certificate);
+
             return ChannelHelper.CreateServiceManagementChannel<T>(
                 ServiceBinding,
                 CurrentEnvironment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint),
-                ProfileClient.DataStore.GetCertificate(CurrentSubscription.GetProperty(AzureSubscription.Property.Thumbprint)),
+                ProfileClient.DataStore.GetCertificate(certificateThumbprint),
                 new HttpRestMessageInspector(WriteDebug));
         }
 

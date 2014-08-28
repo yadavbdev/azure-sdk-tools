@@ -51,7 +51,11 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
             string currentEnvironmentName = this.CurrentSubscription == null ? null : this.CurrentSubscription.Name;
 
-            var clientCredential = this.GetJobSubmissionClientCredentials(this.CurrentSubscription, profileClient.GetEnvironmentOrDefault(currentEnvironmentName), cluster);
+            var clientCredential = this.GetJobSubmissionClientCredentials(
+                this.CurrentSubscription,
+                profileClient.GetEnvironmentOrDefault(currentEnvironmentName),
+                cluster,
+                profileClient.Profile);
             if (clientCredential != null)
             {
                 client = ServiceLocator.Instance.Locate<IAzureHDInsightJobSubmissionClientFactory>().Create(clientCredential);

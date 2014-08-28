@@ -21,21 +21,26 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
     internal static class AzureHDInsightCommandExtensions
     {
-        public static IHDInsightSubscriptionCredentials GetSubscriptionCredentials(this IAzureHDInsightCommonCommandBase command, AzureSubscription currentSubscription, AzureEnvironment environment)
+        public static IHDInsightSubscriptionCredentials GetSubscriptionCredentials(
+            this IAzureHDInsightCommonCommandBase command,
+            AzureSubscription currentSubscription,
+            AzureEnvironment environment,
+            AzureProfile profile)
         {
-            var userId = currentSubscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName) ??
-                currentSubscription.GetPropertyAsArray(AzureSubscription.Property.AvailablePrincipalNames).FirstOrDefault();
+            var accountId = currentSubscription.GetProperty(AzureSubscription.Property.AzureAccount);
+            Debug.Assert(profile.Accounts.ContainsKey(accountId));
 
-            if (currentSubscription.GetProperty(AzureSubscription.Property.Thumbprint) != null)
+            if (profile.Accounts[accountId].Type == AzureAccount.AccountType.Certificate)
             {
                 return GetSubscriptionCertificateCredentials(command, currentSubscription, environment);
             }
-            else if (userId != null)
+            else if (profile.Accounts[accountId].Type == AzureAccount.AccountType.User)
             {
                 return GetAccessTokenCredentials(command, currentSubscription, environment);
             }
@@ -48,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             return new HDInsightCertificateCredential
             {
                 SubscriptionId = currentSubscription.Id,
-                Certificate = ProfileClient.DataStore.GetCertificate(currentSubscription.GetProperty(AzureSubscription.Property.Thumbprint)),
+                Certificate = ProfileClient.DataStore.GetCertificate(currentSubscription.GetProperty(AzureSubscription.Property.AzureAccount)),
                 Endpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceEndpoint),
             };
         }
@@ -57,7 +62,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         {
             UserCredentials credentials = new UserCredentials
             {
-                UserName = currentSubscription.GetProperty(AzureSubscription.Property.DefaultPrincipalName),
+                UserName = currentSubscription.GetProperty(AzureSubscription.Property.AzureAccount),
                 ShowDialog = ShowDialog.Auto
             };
             var accessToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
@@ -68,7 +73,11 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             };
         }
 
-        public static IJobSubmissionClientCredential GetJobSubmissionClientCredentials(this IAzureHDInsightJobCommandCredentialsBase command, AzureSubscription currentSubscription, AzureEnvironment environment, string cluster)
+        public static IJobSubmissionClientCredential GetJobSubmissionClientCredentials(
+            this IAzureHDInsightJobCommandCredentialsBase command,
+            AzureSubscription currentSubscription,
+            AzureEnvironment environment, string cluster,
+            AzureProfile profile)
         {
             IJobSubmissionClientCredential clientCredential = null;
             if (command.Credential != null)
@@ -82,7 +91,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             }
             else if (currentSubscription.IsNotNull())
             {
-                var subscriptionCredentials = GetSubscriptionCredentials(command, currentSubscription, environment);
+                var subscriptionCredentials = GetSubscriptionCredentials(command, currentSubscription, environment, profile);
                 var asCertificateCredentials = subscriptionCredentials as HDInsightCertificateCredential;
                 var asTokenCredentials = subscriptionCredentials as HDInsightAccessTokenCredential;
                 if (asCertificateCredentials.IsNotNull())

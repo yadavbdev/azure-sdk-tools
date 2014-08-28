@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
             this.SubscriptionName = azureSubscription.Name;
             this.SubscriptionId = azureSubscription.Id.ToString();
             this.ServiceEndpoint = new Uri(String.Format("{0}/{1}/services/systemcenter/vmm", environment.GetEndpoint(AzureEnvironment.Endpoint.ServiceEndpoint).TrimEnd(new[] { '/' }), SubscriptionId));
-            this.Certificate = FileUtilities.DataStore.GetCertificate(azureSubscription.GetProperty(AzureSubscription.Property.Thumbprint));
+            this.Certificate = FileUtilities.DataStore.GetCertificate(azureSubscription.GetProperty(AzureSubscription.Property.AzureAccount));
             this.CredentialType = CredentialType.UseCertificate;
         }
 

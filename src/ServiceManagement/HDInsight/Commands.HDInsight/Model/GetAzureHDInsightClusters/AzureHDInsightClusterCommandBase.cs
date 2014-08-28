@@ -42,7 +42,10 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
             ProfileClient client = new ProfileClient();
 
-            var subscriptionCredentials = this.GetSubscriptionCredentials(this.CurrentSubscription, client.GetEnvironmentOrDefault(this.CurrentSubscription.Environment));
+            var subscriptionCredentials = this.GetSubscriptionCredentials(
+                this.CurrentSubscription,
+                client.GetEnvironmentOrDefault(this.CurrentSubscription.Environment),
+                client.Profile);
             var clientInstance = ServiceLocator.Instance.Locate<IAzureHDInsightClusterManagementClientFactory>().Create(subscriptionCredentials);
             clientInstance.SetCancellationSource(this.tokenSource);
             if (this.Logger.IsNotNull())

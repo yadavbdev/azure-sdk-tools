@@ -27,7 +27,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             return JsonConvert.SerializeObject(new
             {
                 Environments = profile.Environments.Values.ToList(),
-                Subscriptions = profile.Subscriptions.Values.ToList()
+                Subscriptions = profile.Subscriptions.Values.ToList(),
+                Accounts = profile.Accounts.Values.ToList()
             }, Formatting.Indented);
         }
 
@@ -43,6 +44,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             foreach (var subscription in jsonProfile["Subscriptions"])
             {
                 profile.Subscriptions[new Guid((string)subscription["Id"])] = JsonConvert.DeserializeObject<AzureSubscription>(subscription.ToString());
+            }
+
+            foreach (var account in jsonProfile["Accounts"])
+            {
+                profile.Accounts[(string)account["Id"]] = JsonConvert.DeserializeObject<AzureAccount>(account.ToString());
             }
         }
     }

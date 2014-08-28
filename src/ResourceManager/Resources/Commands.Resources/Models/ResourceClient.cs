@@ -176,7 +176,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         private string GetStorageAccountName(string storageAccountName)
         {
-            string currentStorageName = AzureSession.CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
+            string currentStorageName = AzureSession.CurrentSubscription.GetProperty(AzureSubscription.Property.StorageAccount);
 
             string storageName = string.IsNullOrEmpty(storageAccountName) ? currentStorageName : storageAccountName;
 

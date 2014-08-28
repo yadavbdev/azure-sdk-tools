@@ -135,7 +135,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             };
 
             AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
-            AzureSession.CurrentSubscription.Properties[AzureSubscription.Property.CloudStorageAccount] = storageName;
+            AzureSession.CurrentSubscription.Properties[AzureSubscription.Property.StorageAccount] = storageName;
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();

@@ -75,12 +75,12 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
             if (CurrentStorageAccountName != null)
             {
-                subscription.Properties[AzureSubscription.Property.CloudStorageAccount] = CurrentStorageAccountName;
+                subscription.Properties[AzureSubscription.Property.StorageAccount] = CurrentStorageAccountName;
             }
             if (Certificate != null)
             {
                 ProfileClient.ImportCertificate(Certificate);
-                subscription.Properties[AzureSubscription.Property.Thumbprint] = Certificate.Thumbprint;
+                subscription.Properties[AzureSubscription.Property.AzureAccount] = Certificate.Thumbprint;
             }
 
             AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);

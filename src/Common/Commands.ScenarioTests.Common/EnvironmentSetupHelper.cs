@@ -133,8 +133,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 Properties = new Dictionary<AzureSubscription.Property,string> 
                 {
                      { AzureSubscription.Property.Default, "True"},
-                     { AzureSubscription.Property.DefaultPrincipalName, currentEnvironment.UserName},
-                     { AzureSubscription.Property.CloudStorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
+                     { AzureSubscription.Property.AzureAccount, currentEnvironment.UserName},
+                     { AzureSubscription.Property.StorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
                 }
             };
             

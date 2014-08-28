@@ -237,7 +237,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         {
             //Storage Context is empty and have already set the current storage account in subscription
             if (Context == null && HasCurrentSubscription && CurrentSubscription != null &&
-                !String.IsNullOrEmpty(CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount)))
+                !String.IsNullOrEmpty(CurrentSubscription.GetProperty(AzureSubscription.Property.StorageAccount)))
             {
                 return true;
             }
@@ -302,7 +302,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <returns>A storage account</returns>
         private CloudStorageAccount GetStorageAccountFromSubscription()
         {
-            string CurrentStorageAccountName = CurrentSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount);
+            string CurrentStorageAccountName = CurrentSubscription.GetProperty(AzureSubscription.Property.StorageAccount);
 
             if (string.IsNullOrEmpty(CurrentStorageAccountName))
             {

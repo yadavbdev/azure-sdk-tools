@@ -96,9 +96,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             {
                 defaultAzureSubscription = vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.Name, CredentialHelper.DefaultStorageName);
 
-                storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount));
-                Assert.AreEqual(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount), storageAccountKey.StorageAccountName);
-                blobUrlRoot = (vmPowershellCmdlets.GetAzureStorageAccount(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount))[0].Endpoints.ToArray())[0];
+                storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
+                Assert.AreEqual(defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount), storageAccountKey.StorageAccountName);
+                blobUrlRoot = (vmPowershellCmdlets.GetAzureStorageAccount(defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount))[0].Endpoints.ToArray())[0];
             }
             else
             {
@@ -175,7 +175,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
             Console.WriteLine("Location Name: {0}", locationName);
 
-            if (defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount) == null && !string.IsNullOrEmpty(CredentialHelper.DefaultStorageName))
+            if (defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount) == null && !string.IsNullOrEmpty(CredentialHelper.DefaultStorageName))
             {
                 SetDefaultStorage();
             }
@@ -292,7 +292,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             // Re-import the subscription.
             vmPowershellCmdlets.ImportAzurePublishSettingsFile();
             vmPowershellCmdlets.SetDefaultAzureSubscription(CredentialHelper.DefaultSubscriptionName);
-            vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.Name, defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount));
+            vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.Name, defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
         }
 
         protected static void CleanupService(string svcName)
@@ -302,7 +302,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         protected static void DownloadVhds()
         {
-            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.CloudStorageAccount));
+            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
 
             foreach (var vhdFile in VhdFiles)
             {
