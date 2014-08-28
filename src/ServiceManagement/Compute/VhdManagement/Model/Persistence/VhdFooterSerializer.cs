@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Text;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 {
-    using System.IO;
-    using System.Text;
-
     public class VhdFooterSerializer
     {
         private readonly VhdFooter vhdFooter;

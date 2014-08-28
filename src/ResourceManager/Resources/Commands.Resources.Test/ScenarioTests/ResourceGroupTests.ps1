@@ -201,11 +201,11 @@ function Test-NewDeploymentAndProviderRegistration
 	try 
 	{
 		# Unregistering microsoft.cache to have clean state
-		$subscription = [Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.CurrentSubscription
+		$subscription = [Microsoft.WindowsAzure.Commands.Utilities.Common.AzureProfile]::Instance.CurrentSubscription
 		$client = New-Object Microsoft.Azure.Commands.Resources.Models.ResourcesClient $subscription
 	     
 		# Verify provider is registered
-		$providers = [Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.CurrentSubscription.RegisteredResourceProvidersList
+		$providers = [Microsoft.WindowsAzure.Commands.Utilities.Common.AzureProfile]::Instance.CurrentSubscription.RegisteredResourceProvidersList
 		if( $providers -Contains $provider )
 		{
 			$client.UnregisterProvider($provider) 
@@ -216,7 +216,7 @@ function Test-NewDeploymentAndProviderRegistration
 
 		# Assert
 		$client = New-Object Microsoft.Azure.Commands.Resources.Models.ResourcesClient $subscription
-		$providers = [Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.CurrentSubscription.RegisteredResourceProvidersList
+		$providers = [Microsoft.WindowsAzure.Commands.Utilities.Common.AzureProfile]::Instance.CurrentSubscription.RegisteredResourceProvidersList
 		
 		Assert-True { $providers -Contains $provider }
 

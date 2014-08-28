@@ -13,19 +13,19 @@
 // limitations under the License.
 //
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Packaging;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.IdentityModel.Clients.ActiveDirectory.Internal;
+using Microsoft.WindowsAzure.Common.Internals;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.IdentityModel.Clients.ActiveDirectory;
-    using Microsoft.IdentityModel.Clients.ActiveDirectory.Internal;
-    using Microsoft.WindowsAzure.Common.Internals;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.IO.Packaging;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-
     /// <summary>
     /// Helper for TokenCloudCredentials
     /// </summary>

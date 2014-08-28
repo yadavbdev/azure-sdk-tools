@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.Generic;
-    using Utilities.Common;
-
     public class VirtualNetworkStaticIPAvailabilityContext : ManagementOperationContext
     {
         public bool IsAvailable { get; set; }

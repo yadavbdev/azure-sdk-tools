@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Net;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Dispatcher;
-
     public class HeadersInspector : IClientMessageInspector, IEndpointBehavior
     {
         public Dictionary<string, string> RequestHeaders { get; set; }

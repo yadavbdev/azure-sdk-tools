@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Profile;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Profile
 {
-    using Commands.Profile;
-    using Moq;
-    using System.Management.Automation;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class SelectAzureSubscriptionTests
     {

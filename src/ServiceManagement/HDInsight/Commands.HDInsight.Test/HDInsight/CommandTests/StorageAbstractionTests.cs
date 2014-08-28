@@ -11,18 +11,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
 {
-    using CmdLetTests;
-    using Management.HDInsight.Cmdlet.Commands.CommandImplementations;
-    using System;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using Utilities.HDInsight.Utilities;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class StorageAbstractionTests : HDInsightTestCaseBase
     {

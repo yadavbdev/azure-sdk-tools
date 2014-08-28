@@ -17,7 +17,7 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
-    public abstract class ResourcesBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class ResourcesBaseCmdlet : AzurePSCmdlet
     {
         private ResourcesClient resourcesClient;
 
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 if (policiesClient == null)
                 {
-                    policiesClient = new AuthorizationClient(CurrentSubscription);
+                    policiesClient = new AuthorizationClient(CurrentSubscription, profileClient.Profile);
                 }
                 return policiesClient;
             }

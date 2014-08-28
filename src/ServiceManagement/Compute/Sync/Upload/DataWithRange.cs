@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.ServiceModel.Channels;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using System;
-    using System.ServiceModel.Channels;
-    using Tools.Vhd.Model;
-
     public class DataWithRange : IDisposable
     {
         private readonly BufferManager manager;

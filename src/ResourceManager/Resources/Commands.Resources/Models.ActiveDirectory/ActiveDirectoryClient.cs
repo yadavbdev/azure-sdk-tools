@@ -14,6 +14,8 @@
 
 using Microsoft.Azure.Graph.RBAC;
 using Microsoft.Azure.Graph.RBAC.Models;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
@@ -24,22 +26,19 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
     public class ActiveDirectoryClient
     {
-        private const string GraphEndpoint = "https://graph.ppe.windows.net/";
-
         public GraphRbacManagementClient GraphClient { get; private set; }
 
         /// <summary>
         /// Creates new ActiveDirectoryClient using WindowsAzureSubscription.
         /// </summary>
         /// <param name="subscription">The WindowsAzureSubscription instance</param>
-        public ActiveDirectoryClient(WindowsAzureSubscription subscription)
+        public ActiveDirectoryClient(AzureSubscription subscription, AzureProfile profile)
         {
-            AccessTokenCredential creds = subscription.CreateTokenCredentials();
-            GraphClient = subscription.CreateClient<GraphRbacManagementClient>(
-                false,
+            AccessTokenCredential creds = (AccessTokenCredential)AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(subscription, profile);
+            GraphClient = AzureSession.ClientFactory.CreateClient<GraphRbacManagementClient>(
                 creds.TenantID,
                 creds,
-                new Uri(GraphEndpoint));
+                profile.Environments[subscription.Environment].GetEndpointAsUri(AzureEnvironment.Endpoint.Graph));
         }
 
         public PSADObject GetADObject(ADObjectFilterOptions options)

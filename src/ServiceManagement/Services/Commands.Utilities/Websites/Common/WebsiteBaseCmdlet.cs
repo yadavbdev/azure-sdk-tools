@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Common
 {
-    using Utilities.Common;
-
-    public abstract class WebsiteBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class WebsiteBaseCmdlet : AzurePSCmdlet
     {
         private IWebsitesClient websitesClient;
 

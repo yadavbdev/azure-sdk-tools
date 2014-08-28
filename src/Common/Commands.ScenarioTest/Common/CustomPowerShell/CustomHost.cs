@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation.Host;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common.CustomPowerShell
 {
-    using System;
-    using System.Globalization;
-    using System.Management.Automation.Host;
-
     /// <summary>
     /// This is a sample implementation of the PSHost abstract class for 
     /// console applications. Not all members are implemented. Those that 

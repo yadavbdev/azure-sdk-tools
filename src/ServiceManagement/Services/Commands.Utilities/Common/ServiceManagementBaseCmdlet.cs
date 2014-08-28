@@ -12,24 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using System.ServiceModel;
+using System.ServiceModel.Dispatcher;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Management;
+using Microsoft.WindowsAzure.Management.Compute;
+using Microsoft.WindowsAzure.Management.Network;
+using Microsoft.WindowsAzure.Management.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-    using System.ServiceModel;
-    using System.ServiceModel.Dispatcher;
-    using AutoMapper;
-    using Management;
-    using Management.Compute;
-    using Management.Network;
-    using Management.Storage;
-    using Properties;
-    using ServiceManagement.Model;
-    using WindowsAzure;
-
     public abstract class ServiceManagementBaseCmdlet : CloudBaseCmdlet<IServiceManagement>
     {
         private Lazy<Runspace> runspace;
@@ -49,22 +50,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public ManagementClient CreateClient()
         {
-            return this.CurrentSubscription.CreateClient<ManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public ComputeManagementClient CreateComputeClient()
         {
-            return this.CurrentSubscription.CreateClient<ComputeManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ComputeManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public StorageManagementClient CreateStorageClient()
         {
-            return this.CurrentSubscription.CreateClient<StorageManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<StorageManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public NetworkManagementClient CreateNetworkClient()
         {
-            return this.CurrentSubscription.CreateClient<NetworkManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<NetworkManagementClient>(CurrentSubscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         private void LogDebug(string message)

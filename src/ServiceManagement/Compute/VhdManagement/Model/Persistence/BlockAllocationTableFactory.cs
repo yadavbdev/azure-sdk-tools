@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Tools.Common.General;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 {
-    using Commands.Tools.Common.General;
-    using System;
-    using System.Collections.Generic;
-
     public class BlockAllocationTableFactory
     {
         private readonly VhdDataReader dataReader;

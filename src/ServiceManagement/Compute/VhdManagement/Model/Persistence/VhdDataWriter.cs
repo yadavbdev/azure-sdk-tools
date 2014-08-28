@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Net;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 {
-    using System;
-    using System.IO;
-    using System.Net;
-
     public class VhdDataWriter
     {
         private readonly BinaryWriter writer;

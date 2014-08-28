@@ -12,17 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models.Authorization;
-using Microsoft.Azure.Management.Authorization;
-using Microsoft.Azure.Management.Authorization.Models;
-using Microsoft.Azure.Management.Resources;
-using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Commands.Common.Storage;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Management.Monitoring.Events;
-using Microsoft.WindowsAzure.Management.Storage;
-using Newtonsoft.Json;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +20,20 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
+using Microsoft.Azure.Management.Resources;
+using Microsoft.Azure.Management.Resources.Models;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Monitoring.Events;
+using Microsoft.WindowsAzure.Management.Storage;
+using Newtonsoft.Json;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
+using Microsoft.Azure.Management.Authorization;
+using Microsoft.Azure.Management.Authorization.Models;
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
@@ -59,13 +62,13 @@ namespace Microsoft.Azure.Commands.Resources.Models
         /// Creates new ResourceManagementClient
         /// </summary>
         /// <param name="subscription">Subscription containing resources to manipulate</param>
-        public ResourcesClient(WindowsAzureSubscription subscription)
+        public ResourcesClient(AzureSubscription subscription)
             : this(
-                subscription.CreateClientFromResourceManagerEndpoint<ResourceManagementClient>(),
-                new StorageClientWrapper(subscription.CreateClient<StorageManagementClient>()),
+                AzureSession.ClientFactory.CreateClient<ResourceManagementClient>(subscription, AzureEnvironment.Endpoint.ResourceManager),
+                new StorageClientWrapper(AzureSession.ClientFactory.CreateClient<StorageManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement)),
                 new GalleryTemplatesClient(subscription),
-                subscription.CreateClientFromResourceManagerEndpoint<EventsClient>(),
-                subscription.CreateClientFromResourceManagerEndpoint<AuthorizationManagementClient>())
+                AzureSession.ClientFactory.CreateClient<EventsClient>(subscription, AzureEnvironment.Endpoint.ResourceManager),
+                AzureSession.ClientFactory.CreateClient<AuthorizationManagementClient>(subscription, AzureEnvironment.Endpoint.ResourceManager))
         {
 
         }

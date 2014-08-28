@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Unit test for sas token helper
     /// </summary>

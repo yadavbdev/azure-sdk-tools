@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Management.Automation;
-
     public static class PowerShellUtilities
     {
         public const string PSModulePathName = "PSModulePath";
@@ -100,17 +100,23 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// <returns>Returns AzureServiceManagement if in RDFE and AzureResourceManager if in CSM</returns>
         public static AzureModule GetCurrentMode()
         {
+            return GetCurrentModeOverride();
+        }
+
+        private static AzureModule GetCurrentModuleFromEnvironment()
+        {
             string PSModulePathEnv = Environment.GetEnvironmentVariable(PSModulePathName);
 
-            if (string.IsNullOrEmpty(PSModulePathEnv) || PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureServiceManagement)))
+            if (PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureResourceManager)))
             {
-                return AzureModule.AzureServiceManagement;
+                return AzureModule.AzureResourceManager;
             }
             else
             {
-                Debug.Assert(PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureResourceManager)));
-                return AzureModule.AzureResourceManager;
+                return AzureModule.AzureServiceManagement;                
             }
         }
+
+        public static Func<AzureModule> GetCurrentModeOverride = GetCurrentModuleFromEnvironment;
     }
 }

@@ -12,21 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.Azure.Commands.Automation.Common;
+using Microsoft.Azure.Commands.Automation.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using Microsoft.Azure.Commands.Automation.Common;
-    using Microsoft.Azure.Commands.Automation.Model;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Gets azure automation accounts, filterd by automation account name and location.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureAutomationAccount")]
     [OutputType(typeof(AutomationAccount))]
-    public class GetAzureAutomationAccount : CmdletWithSubscriptionBase
+    public class GetAzureAutomationAccount : AzurePSCmdlet
     {
         /// <summary>
         /// The automation client.

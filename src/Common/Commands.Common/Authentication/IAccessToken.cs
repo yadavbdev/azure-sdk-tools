@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using System;
-
     public interface IAccessToken
     {
         void AuthorizeRequest(Action<string, string> authTokenSetter);
@@ -24,7 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         string UserId { get; }
 
-        string TenantID { get; }
+        string TenantId { get; }
         
         LoginType LoginType { get; }
     }

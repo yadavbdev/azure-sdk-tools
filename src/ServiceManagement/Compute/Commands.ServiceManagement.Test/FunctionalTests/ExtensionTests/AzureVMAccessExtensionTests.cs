@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Threading;
+using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ExtensionTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using System;
-    using System.IO;
-    using System.Threading;
-    using System.Xml;
-
     [TestClass]
     public class AzureVMAccessExtensionTests: ServiceManagementTest
     {
@@ -199,8 +200,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             privateConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PrivateConfig.xml");
             publicConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PublicConfig.xml");
-            privateConfiguration = File.ReadAllText(privateConfigPath);
-            publicConfiguration = File.ReadAllText(publicConfigPath);
+            privateConfiguration = FileUtilities.DataStore.ReadFileAsText(privateConfigPath);
+            publicConfiguration = FileUtilities.DataStore.ReadFileAsText(publicConfigPath);
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(publicConfiguration);

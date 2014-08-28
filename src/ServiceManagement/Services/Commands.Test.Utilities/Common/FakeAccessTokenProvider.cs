@@ -13,51 +13,30 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.Authentication;
-
     public class FakeAccessTokenProvider : ITokenProvider
     {
         private readonly IAccessToken accessToken;
 
         public FakeAccessTokenProvider(string token)
-            : this(token, "user@live.com", null)
+            : this(token, "user@live.com")
         { }
 
-        public FakeAccessTokenProvider(string token, string userId, string tenantID)
+        public FakeAccessTokenProvider(string token, string userId)
         {
-            this.accessToken = new FakeAccessToken()
+            this.accessToken = new MockAccessToken()
             {
                 AccessToken = token,
-                UserId = userId,
-                TenantID = tenantID
+                UserId = userId
             };
         }
 
-        public IAccessToken GetCachedToken(WindowsAzureSubscription subscription, string userId)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetCachedToken(WindowsAzureEnvironment environment, string userId)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureSubscription subscription, string userId)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment, string userId, SecureString password)
+        public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId,
+            SecureString password)
         {
             return this.accessToken;
         }

@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System;
-    using System.Collections.Generic;
-    using Utilities.Common;
-
     public class AffinityGroupContext : ManagementOperationContext
     {
         public AffinityGroupContext()

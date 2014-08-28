@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces
 {
-    using System.Collections;
-
     internal interface INewAzureHDInsightJobWithDefinesConfigBase : INewAzureHDInsightJobConfigBase
     {
         /// <summary>

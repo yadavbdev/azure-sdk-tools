@@ -12,17 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ServiceBus;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    using Commands.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class GetAzureSBNamespaceTests : TestBase
     {
@@ -41,6 +43,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 CommandRuntime = mockCommandRuntime,
                 Client = client.Object
             };
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
         }
 
         [TestMethod]
@@ -88,14 +91,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
         {
             // Setup
             string[] invalidNames = { "1test", "test#", "test invaid", "-test", "_test" };
+            Mock<ServiceBusClientExtensions> client = new Mock<ServiceBusClientExtensions>();
 
             foreach (string invalidName in invalidNames)
             {
                 MockCommandRuntime mockCommandRuntime = new MockCommandRuntime();
-                GetAzureSBNamespaceCommand cmdlet = new GetAzureSBNamespaceCommand() { Name = invalidName, CommandRuntime = mockCommandRuntime };
+                GetAzureSBNamespaceCommand cmdlet = new GetAzureSBNamespaceCommand()
+                {
+                    Name = invalidName,
+                    CommandRuntime = mockCommandRuntime,
+                    Client = client.Object
+                };
                 string expected = string.Format("{0}\r\nParameter name: Name", string.Format(Resources.InvalidNamespaceName, invalidName));
+                client.Setup(f => f.GetNamespace(invalidName)).Throws(new InvalidOperationException(expected));
 
-                Testing.AssertThrows<ArgumentException>(() => cmdlet.ExecuteCmdlet(), expected);
+                Testing.AssertThrows<InvalidOperationException>(() => cmdlet.ExecuteCmdlet(), expected);
             }
         }
     }

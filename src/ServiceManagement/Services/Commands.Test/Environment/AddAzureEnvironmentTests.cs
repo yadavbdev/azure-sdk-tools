@@ -12,35 +12,36 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Profile;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Moq;
+using Xunit;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Environment
 {
-    using Commands.Profile;
-    using Commands.Utilities.Common;
-    using Moq;
-    using System;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
-    public class AddAzureEnvironmentTests : TestBase
+    public class AddAzureEnvironmentTests : TestBase, IDisposable
     {
-        private WindowsAzureProfile testProfile;
+        private MockDataStore dataStore;
 
-        [TestInitialize]
-        public void SetupTest()
+        public AddAzureEnvironmentTests()
         {
-            testProfile = new WindowsAzureProfile(new Mock<IProfileStore>().Object);
-            WindowsAzureProfile.Instance = testProfile;
+            dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
         }
 
-        [TestCleanup]
         public void Cleanup()
         {
-            WindowsAzureProfile.ResetInstance();
+            AzureSession.SetCurrentSubscription(null, null);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddsAzureEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -57,19 +58,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
 
             cmdlet.ExecuteCmdlet();
 
-            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<WindowsAzureEnvironment>()), Times.Once());
-            WindowsAzureEnvironment env = WindowsAzureProfile.Instance.Environments["KaTaL"];
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
+            ProfileClient client = new ProfileClient();
+            AzureEnvironment env = client.Profile.Environments["KaTaL"];
             Assert.AreEqual(env.Name, cmdlet.Name);
-            Assert.AreEqual(env.PublishSettingsFileUrl, cmdlet.PublishSettingsFileUrl);
-            Assert.AreEqual(env.ServiceEndpoint, cmdlet.ServiceEndpoint);
-            Assert.AreEqual(env.ManagementPortalUrl, cmdlet.ManagementPortalUrl);
-            Assert.AreEqual(env.StorageBlobEndpointFormat, "{0}://{1}.blob.endpoint.net/");
-            Assert.AreEqual(env.StorageQueueEndpointFormat, "{0}://{1}.queue.endpoint.net/");
-            Assert.AreEqual(env.StorageTableEndpointFormat, "{0}://{1}.table.endpoint.net/");
-            Assert.AreEqual(env.GalleryEndpoint, "http://galleryendpoint.com");
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ServiceManagement], cmdlet.ServiceEndpoint);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl], cmdlet.ManagementPortalUrl);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.Gallery], "http://galleryendpoint.com");
         }
 
-        [TestMethod]
+        [Fact]
         public void AddsEnvironmentWithMinimumInformation()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -82,13 +81,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
 
             cmdlet.ExecuteCmdlet();
 
-            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<WindowsAzureEnvironment>()), Times.Once());
-            WindowsAzureEnvironment env = WindowsAzureProfile.Instance.Environments["KaTaL"];
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
+            ProfileClient client = new ProfileClient();
+            AzureEnvironment env = client.Profile.Environments["KaTaL"];
             Assert.AreEqual(env.Name, cmdlet.Name);
-            Assert.AreEqual(env.PublishSettingsFileUrl, cmdlet.PublishSettingsFileUrl);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
         }
 
-        [TestMethod]
+        [Fact]
         public void IgnoresAddingDuplicatedEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -102,14 +102,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 StorageEndpoint = "endpoint.net"
             };
             cmdlet.ExecuteCmdlet();
-            int count = WindowsAzureProfile.Instance.Environments.Count;
+            ProfileClient client = new ProfileClient();
+            int count = client.Profile.Environments.Count;
 
             // Add again
             cmdlet.Name = "kAtAl";
             Testing.AssertThrows<Exception>(() => cmdlet.ExecuteCmdlet());
         }
 
-        [TestMethod]
+        [Fact]
         public void IgnoresAddingPublicEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -123,13 +124,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
             Testing.AssertThrows<Exception>(() => cmdlet.ExecuteCmdlet());
         }
 
-        [TestMethod]
+        [Fact]
         public void AddsEnvironmentWithStorageEndpoint()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
-            WindowsAzureEnvironment actual = null;
+            AzureEnvironment actual = null;
             commandRuntimeMock.Setup(f => f.WriteObject(It.IsAny<object>()))
-                .Callback((object output) => actual = (WindowsAzureEnvironment)output);
+                .Callback((object output) => actual = (AzureEnvironment)output);
             AddAzureEnvironmentCommand cmdlet = new AddAzureEnvironmentCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
@@ -140,45 +141,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
 
             cmdlet.ExecuteCmdlet();
 
-            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<WindowsAzureEnvironment>()), Times.Once());
-            WindowsAzureEnvironment env = WindowsAzureProfile.Instance.Environments["KaTaL"];
+            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
+            ProfileClient client = new ProfileClient();
+            AzureEnvironment env = client.Profile.Environments["KaTaL"];
             Assert.AreEqual(env.Name, cmdlet.Name);
-            Assert.AreEqual(env.PublishSettingsFileUrl, actual.PublishSettingsFileUrl);
-            Assert.AreEqual(
-                WindowsAzureEnvironmentConstants.AzureStorageBlobEndpointFormat,
-                actual.StorageBlobEndpointFormat);
-            Assert.AreEqual(
-                WindowsAzureEnvironmentConstants.AzureStorageQueueEndpointFormat,
-                actual.StorageQueueEndpointFormat);
-            Assert.AreEqual(
-                WindowsAzureEnvironmentConstants.AzureStorageTableEndpointFormat,
-                actual.StorageTableEndpointFormat);
+            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], actual.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl]);
         }
 
-        [TestMethod]
-        public void AddsEnvironmentWithEmptyStorageEndpoint()
+        public void Dispose()
         {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
-            WindowsAzureEnvironment actual = null;
-            commandRuntimeMock.Setup(f => f.WriteObject(It.IsAny<object>()))
-                .Callback((object output) => actual = (WindowsAzureEnvironment)output);
-            AddAzureEnvironmentCommand cmdlet = new AddAzureEnvironmentCommand()
-            {
-                CommandRuntime = commandRuntimeMock.Object,
-                Name = "Katal",
-                PublishSettingsFileUrl = "http://microsoft.com",
-                StorageEndpoint = null
-            };
-
-            cmdlet.ExecuteCmdlet();
-
-            commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<WindowsAzureEnvironment>()), Times.Once());
-            WindowsAzureEnvironment env = WindowsAzureProfile.Instance.Environments["KaTaL"];
-            Assert.AreEqual(env.Name, cmdlet.Name);
-            Assert.AreEqual(env.PublishSettingsFileUrl, actual.PublishSettingsFileUrl);
-            Assert.IsTrue(string.IsNullOrEmpty(actual.StorageBlobEndpointFormat));
-            Assert.IsTrue(string.IsNullOrEmpty(actual.StorageQueueEndpointFormat));
-            Assert.IsTrue(string.IsNullOrEmpty(actual.StorageTableEndpointFormat));
+            Cleanup();
         }
     }
 }

@@ -12,17 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
 {
-    using System;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-
     /// <summary>
     /// A mock server implementation for capturing and replaying Http Web Requests.
     /// </summary>
@@ -163,6 +167,11 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
         /// </summary>
         public static void SetupCertificates()
         {
+            TestingTracingInterceptor.AddToContext();
+            ProfileClient.DataStore = new MockDataStore();
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = Guid.NewGuid(), Name = "test" }, null);
+
             // Check if the cert has been installed 
             Process proc = ExecuteProcess(
                 "netsh",

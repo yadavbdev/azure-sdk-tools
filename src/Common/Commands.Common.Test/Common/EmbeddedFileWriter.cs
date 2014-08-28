@@ -11,10 +11,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using System.IO;
-
     /// <summary>
     /// A helper class to pull files out of embedded resources and drop them
     /// onto disk. Helps ensure that needed files are present without having

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.ComponentModel;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.PowerShell
 {
-    using System.ComponentModel;
-    using System.Management.Automation;
-
     /// <summary>
     /// Installer class for the Microsoft Azure Platform PowerShell Cmdlets
     /// Windows Powershell v2.0 snap-in.

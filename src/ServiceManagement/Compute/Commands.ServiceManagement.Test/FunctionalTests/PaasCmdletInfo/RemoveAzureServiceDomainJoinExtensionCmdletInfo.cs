@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    using PowershellCore;
-
     public class RemoveAzureServiceDomainJoinExtensionCmdletInfo:CmdletsInfo
     {
         public RemoveAzureServiceDomainJoinExtensionCmdletInfo(string serviceName, string slot, string[] role, bool uninstallConfiguration)

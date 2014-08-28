@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.Generic;
-    using Utilities.Common;
-
     public class VirtualNetworkSiteContext : ManagementOperationContext
     {
         public IEnumerable<string> AddressSpacePrefixes { get; set; }

@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.GeoEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Websites
 {
-    using Commands.Test.Utilities.Common;
-    using Commands.Utilities.Websites.Services;
-    using Commands.Utilities.Websites.Services.GeoEntities;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using System;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Simple implementation of the <see cref="IWebsitesServiceManagement"/> interface that can be
     /// used for mocking basic interactions without involving Azure directly.

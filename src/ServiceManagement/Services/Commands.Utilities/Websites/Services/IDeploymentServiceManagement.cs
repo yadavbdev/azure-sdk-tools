@@ -13,16 +13,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using DeploymentEntities;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.IO;
-    using System.ServiceModel;
-    using System.ServiceModel.Web;
-
     /// <summary>
     /// Provides the Microsoft Azure Service Management Api for Microsoft Azure Websites Deployment. 
     /// </summary>

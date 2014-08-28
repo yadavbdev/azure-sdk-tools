@@ -12,35 +12,29 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Xml.Serialization;
-    using XmlSchema;
-
     /// <summary>
     /// Class that handles loading publishsettings files
-    /// and turning them into WindowsAzureSubscription objects.
+    /// and turning them into AzureSubscription objects.
     /// </summary>
     public static class PublishSettingsImporter
     {
-        public static IEnumerable<WindowsAzureSubscription> Import(string filename)
-        {
-            using (var s = new FileStream(filename, FileMode.Open, FileAccess.Read))
-            {
-                return Import(s);
-            }
-        }
-
-        public static IEnumerable<WindowsAzureSubscription> Import(Stream stream)
+        public static IEnumerable<AzureSubscription> ImportAzureSubscription(Stream stream, string environment)
         {
             var publishData = DeserializePublishData(stream);
             PublishDataPublishProfile profile = publishData.Items.Single();
-            return profile.Subscription.Select(s => PublishSubscriptionToAzureSubscription(profile, s));
+            return profile.Subscription.Select(s => PublishSubscriptionToAzureSubscription(profile, s, environment));
         }
 
         private static PublishData DeserializePublishData(Stream stream)
@@ -49,18 +43,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             return (PublishData)serializer.Deserialize(stream);
         }
 
-        private static WindowsAzureSubscription PublishSubscriptionToAzureSubscription(
+        private static AzureSubscription PublishSubscriptionToAzureSubscription(
             PublishDataPublishProfile profile,
-            PublishDataPublishProfileSubscription s)
+            PublishDataPublishProfileSubscription s,
+            string environment)
         {
-            return new WindowsAzureSubscription
+            var certificate = GetCertificate(profile, s);
+            
+            return new AzureSubscription
             {
-                Certificate = GetCertificate(profile, s),
-                SubscriptionName = s.Name,
-                ServiceEndpoint = GetManagementUri(profile, s),
-                ResourceManagerEndpoint = null,
-                SubscriptionId = s.Id,
-                SqlDatabaseDnsSuffix = WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix,
+                Id = new Guid(s.Id),
+                Name = s.Name,
+                Environment = environment,
+                Properties = new Dictionary<AzureSubscription.Property,string>
+                {
+                    { AzureSubscription.Property.AzureAccount, certificate.Thumbprint },
+                }
             };
         }
 
@@ -76,7 +74,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 certificateString = profile.ManagementCertificate;
             }
-            return WindowsAzureCertificate.FromPublishSettingsString(certificateString);
+
+            X509Certificate2 certificate = new X509Certificate2(Convert.FromBase64String(certificateString), string.Empty);
+            ProfileClient.DataStore.AddCertificate(certificate);
+            
+            return certificate;
         }
 
         private static Uri GetManagementUri(PublishDataPublishProfile profile, PublishDataPublishProfileSubscription s)
