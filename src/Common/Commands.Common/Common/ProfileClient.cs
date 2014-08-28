@@ -130,21 +130,28 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 Profile.DefaultSubscription = Profile.Subscriptions.Values.FirstOrDefault();
             }
 
-            AzureAccount account = new AzureAccount
+            if (credentials.UserName != null)
             {
-                Id = credentials.UserName,
-                Type = AzureAccount.AccountType.User,
-                Environment = environment.Name
-            };
-            account.SetSubscriptions(
-                Profile.Subscriptions.Values.Where(
-                    s => s.GetProperty(AzureSubscription.Property.AzureAccount) == credentials.UserName)
-                    .ToList());
+                AzureAccount account = new AzureAccount
+                {
+                    Id = credentials.UserName,
+                    Type = AzureAccount.AccountType.User,
+                    Environment = environment.Name
+                };
+                account.SetSubscriptions(
+                    Profile.Subscriptions.Values.Where(
+                        s => s.GetProperty(AzureSubscription.Property.AzureAccount) == credentials.UserName)
+                        .ToList());
 
-            // Add the account to the profile
-            Profile.Accounts[account.Id] = account;
+                // Add the account to the profile
+                Profile.Accounts[account.Id] = account;
 
-            return account;
+                return account;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
