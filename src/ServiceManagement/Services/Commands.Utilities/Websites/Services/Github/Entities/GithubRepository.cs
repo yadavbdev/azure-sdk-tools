@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github.Entities
 {
-    using System;
-    using System.Runtime.Serialization;
-
     [DataContract]
     public class GithubPermissions
     {

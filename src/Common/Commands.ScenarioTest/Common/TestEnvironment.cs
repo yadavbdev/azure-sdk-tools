@@ -13,11 +13,12 @@
 // limitations under the License.
 //
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using System;
-
     public class TestEnvironment
     {
         private bool CustomUri = false;

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Store
 {
-    using Commands.Utilities.Common;
-
     /// <summary>
     /// Search options for getting Microsoft Azure add on.
     /// </summary>

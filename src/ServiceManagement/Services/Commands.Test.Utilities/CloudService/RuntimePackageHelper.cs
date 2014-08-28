@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using Common;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Xml;
-    using VisualStudio.TestTools.UnitTesting;
     using TestResources = Commands.Common.Test.Properties.Resources;
 
     public class RuntimePackageHelper

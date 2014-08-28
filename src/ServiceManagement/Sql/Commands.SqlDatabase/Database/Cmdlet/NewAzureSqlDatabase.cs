@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Management.Automation;
-    using System.Threading;
-
     /// <summary>
     /// Creates a new Microsoft Azure SQL Databases in the given server context.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "AzureSqlDatabase", SupportsShouldProcess = true,
         ConfirmImpact = ConfirmImpact.Low)]
-    public class NewAzureSqlDatabase : CmdletBase
+    public class NewAzureSqlDatabase : AzurePSCmdlet
     {
         #region Parameter Sets
 
@@ -162,13 +163,14 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// Process the request using the server name
         /// </summary>
         /// <param name="maxSizeGb">the maximum size of the database</param>
+        /// <param name="maxSizeBytes"></param>
         private void ProcessWithServerName(int? maxSizeGb, long? maxSizeBytes)
         {
             Func<string> GetClientRequestId = () => string.Empty;
             try
             {
                 // Get the current subscription data.
-                WindowsAzureSubscription subscription = WindowsAzureProfile.Instance.CurrentSubscription;
+                AzureSubscription subscription = AzureSession.CurrentContext.Subscription;
 
                 // Create a temporary context
                 ServerDataServiceCertAuth context =
@@ -176,7 +178,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 
                 GetClientRequestId = () => context.ClientRequestId;
                 
-                Database response = context.CreateNewDatabase(
+                Services.Server.Database response = context.CreateNewDatabase(
                     this.DatabaseName,
                     maxSizeGb,
                     maxSizeBytes,
@@ -202,11 +204,12 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// Process the request using the connection context.
         /// </summary>
         /// <param name="maxSizeGb">the maximum size for the new database</param>
+        /// <param name="maxSizeBytes"></param>
         private void ProcessWithConnectionContext(int? maxSizeGb, long? maxSizeBytes)
         {
             try
             {
-                Database database = this.ConnectionContext.CreateNewDatabase(
+                Services.Server.Database database = this.ConnectionContext.CreateNewDatabase(
                     this.DatabaseName,
                     maxSizeGb,
                     maxSizeBytes,

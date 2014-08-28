@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache.Models;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.ManagedCache.Test
 {
-    using Management.ManagedCache.Models;
-    using Microsoft.Azure.Commands.ManagedCache.Models;
-    using System.Management.Automation;
-    using Xunit;
-
     public class MemoryDynamicParameterSetTest
     {
         [Fact]

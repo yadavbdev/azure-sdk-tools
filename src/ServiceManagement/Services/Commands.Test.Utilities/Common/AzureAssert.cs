@@ -12,33 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
-    using System;
-    using System.IO;
-    using VisualStudio.TestTools.UnitTesting;
     using ConfigConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
     using DefinitionConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema.ConfigurationSetting;
 
     public static class AzureAssert
     {
-        public static void AreEqualGlobalPathInfo(GlobalPathInfo expected, GlobalPathInfo actual)
-        {
-            AreEqualGlobalPathInfo(expected.AzureDirectory, expected.PublishSettingsFile, actual);
-        }
-
-        public static void AreEqualGlobalPathInfo(string azureSdkPath, string publishSettings, GlobalPathInfo actual)
-        {
-            Assert.AreEqual(publishSettings, actual.PublishSettingsFile);
-            Assert.AreEqual(azureSdkPath, actual.AzureDirectory);
-        }
-
         public static void AreEqualServiceSettings(ServiceSettings expected, ServiceSettings actual)
         {
             AreEqualServiceSettings(expected.Location, expected.Slot, expected.StorageServiceName, expected.Subscription, actual);

@@ -1,4 +1,4 @@
-// ----------------------------------------------------------------------------------
+﻿// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models.Authorization;
-using Microsoft.Azure.Commands.Tags.Model;
-using Microsoft.Azure.Gallery;
-using Microsoft.Azure.Management.Authorization.Models;
-using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Management.Monitoring.Events.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.Azure.Commands.Tags.Model;
+using Microsoft.Azure.Gallery;
+using Microsoft.Azure.Management.Resources.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Monitoring.Events.Models;
+using Newtonsoft.Json;
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using Microsoft.Azure.Management.Authorization.Models;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {

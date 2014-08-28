@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Get, "WAPackVMRole", DefaultParameterSetName = WAPackCmdletParameterSets.Empty)]
     public class GetWAPackVMRole : IaaSCmdletBase
     {
@@ -57,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
             }
             else if (this.ParameterSetName == WAPackCmdletParameterSets.Empty)
             {
-                IEnumerable<CloudService> cloudServiceResults = null;
+                IEnumerable<Utilities.WAPackIaaS.DataContract.CloudService> cloudServiceResults = null;
                 var vmRoles = new List<VMRole>();
 
                 var cloudServiceOperations = new CloudServiceOperations(this.WebClientFactory);

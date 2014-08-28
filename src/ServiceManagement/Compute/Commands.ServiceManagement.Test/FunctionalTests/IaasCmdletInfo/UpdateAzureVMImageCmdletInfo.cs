@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using PowershellCore;
-    using System;
-
     public class UpdateAzureVMImageCmdletInfo : CmdletsInfo
     {
         public UpdateAzureVMImageCmdletInfo(string imageName, string label, string recommendedSize,VirtualMachineImageDiskConfigSet diskConfig )

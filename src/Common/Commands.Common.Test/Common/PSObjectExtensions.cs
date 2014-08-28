@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using System.Management.Automation;
-
     public static class PSObjectExtensions
     {
         /// <summary>

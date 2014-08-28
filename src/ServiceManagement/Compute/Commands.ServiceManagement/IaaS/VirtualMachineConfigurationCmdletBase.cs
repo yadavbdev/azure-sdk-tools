@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Model;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     public class VirtualMachineConfigurationCmdletBase : ServiceManagementBaseCmdlet
     {
         protected const string StaticVNetIPNoun = "AzureStaticVNetIP";

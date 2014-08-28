@@ -14,7 +14,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using System.Globalization;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Test
 {

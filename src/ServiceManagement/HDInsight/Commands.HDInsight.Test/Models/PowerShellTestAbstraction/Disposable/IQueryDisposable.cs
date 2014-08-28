@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Disposable
 {
-    using System;
-
     /// <summary>
     ///     Extends <see cref="IDisposable" /> to expose the status.
     /// </summary>

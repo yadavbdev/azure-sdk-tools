@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ExpressRoute.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-    using Properties;
-    using System;
-    using System.Management.Automation;
-
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public sealed class ValidateGuid : ValidateEnumeratedArgumentsAttribute
     {

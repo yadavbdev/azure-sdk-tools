@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
 {
-    using DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using System.Data.Services.Client;
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-
-    internal class CloudServiceOperations : OperationsBase<CloudService>
+    internal class CloudServiceOperations : OperationsBase<DataContract.CloudService>
     {
         private const string genericBaseUri = "/CloudServices?api-version=2013-03";
         private const string specificBaseUri = "/CloudServices/{0}?api-version=2013-03";
@@ -33,11 +32,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
         {
         }
 
-        public override CloudService Create(CloudService cloudServiceToCreate, out Guid? jobId)
+        public override DataContract.CloudService Create(DataContract.CloudService cloudServiceToCreate, out Guid? jobId)
         {
             var client = this.webClientFactory.CreateClient(genericBaseUri);
             WebHeaderCollection outHeaders;
-            var resultList = client.Create<CloudService>(cloudServiceToCreate, out outHeaders);
+            var resultList = client.Create<DataContract.CloudService>(cloudServiceToCreate, out outHeaders);
 
             if (resultList.Count <= 0)
                 throw new WAPackOperationException(Resources.ErrorCreatingCloudService);
@@ -47,12 +46,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
             return resultList[0];
         }
 
-        public override List<CloudService> Read()
+        public override List<DataContract.CloudService> Read()
         {
             var client = this.webClientFactory.CreateClient(genericBaseUri);
 
             WebHeaderCollection outHeaders;
-            var cloudServices = client.Get<CloudService>(out outHeaders);
+            var cloudServices = client.Get<DataContract.CloudService>(out outHeaders);
 
             foreach (var cloudService in cloudServices)
             {
@@ -67,12 +66,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
             return cloudServices;
         }
 
-        public CloudService Read(string cloudServiceName)
+        public DataContract.CloudService Read(string cloudServiceName)
         {
             var client = this.webClientFactory.CreateClient(String.Format(specificBaseUri, cloudServiceName));
 
             WebHeaderCollection outHeaders;
-            var cloudService = client.Get<CloudService>(out outHeaders)[0];
+            var cloudService = client.Get<DataContract.CloudService>(out outHeaders)[0];
 
             client = this.webClientFactory.CreateClient(String.Format(cloudResourceUri, cloudServiceName));
             var cloudResource = client.Get<CloudResource>(out outHeaders)[0];
@@ -89,7 +88,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
             var client = this.webClientFactory.CreateClient(String.Format(specificBaseUri, cloudServiceName));
 
             WebHeaderCollection outHeaders;
-            client.Delete<CloudService>(out outHeaders);
+            client.Delete<DataContract.CloudService>(out outHeaders);
 
             jobId = TryGetJobIdFromHeaders(outHeaders);
         }

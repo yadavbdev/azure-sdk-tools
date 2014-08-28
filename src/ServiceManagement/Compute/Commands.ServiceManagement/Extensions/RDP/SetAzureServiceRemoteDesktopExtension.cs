@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using Model;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities.Common;
-
     /// <summary>
     /// Set Microsoft Azure Service Remote Desktop Extension.
     /// </summary>

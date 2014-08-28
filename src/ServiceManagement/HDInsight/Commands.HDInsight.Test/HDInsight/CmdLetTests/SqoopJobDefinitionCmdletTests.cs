@@ -11,13 +11,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using Microsoft.Hadoop.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests
 {
-    using Hadoop.Client;
-    using Management.HDInsight.Cmdlet.DataObjects;
-    using System;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class SqoopJobDefinitionCmdletTests : HDInsightTestCaseBase
     {

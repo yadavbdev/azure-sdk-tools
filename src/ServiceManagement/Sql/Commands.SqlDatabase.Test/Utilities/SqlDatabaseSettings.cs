@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Security;
+using System.Xml.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities
 {
-    using System;
-    using System.Linq;
-    using System.Security;
-    using System.Xml.Linq;
-
     public class SqlDatabaseTestSettings
     {
         /// <summary>

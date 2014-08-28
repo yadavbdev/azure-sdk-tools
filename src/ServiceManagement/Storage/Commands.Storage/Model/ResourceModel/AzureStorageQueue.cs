@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Storage.Queue;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel
 {
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using System;
-
     /// <summary>
     /// Azure storage queue
     /// </summary>

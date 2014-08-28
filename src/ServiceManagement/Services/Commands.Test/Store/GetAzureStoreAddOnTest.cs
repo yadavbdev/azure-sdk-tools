@@ -12,19 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Store;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference;
+using Microsoft.WindowsAzure.Commands.Utilities.Store;
+using Microsoft.WindowsAzure.Management.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Store
 {
-    using Commands.Store;
-    using Commands.Utilities.Store;
-    using Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-    using Location = Microsoft.WindowsAzure.Management.Models.LocationsListResponse.Location;
-    using Resource = Microsoft.WindowsAzure.Management.Store.Models.CloudServiceListResponse.CloudService.AddOnResource;
+    using Resource = Management.Store.Models.CloudServiceListResponse.CloudService.AddOnResource;
 
     [TestClass]
     public class GetAzureStoreAddOnTests : TestBase
@@ -86,10 +87,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             mockMarketplaceClient.Setup(f => f.IsKnownProvider(It.IsAny<Guid>())).Returns(true);
 
             mockStoreClient.Setup(f => f.GetLocations())
-                .Returns(new List<Location>() 
+                .Returns(new List<LocationsListResponse.Location>() 
                 {
-                    new Location() { Name = "West US" },
-                    new Location() { Name = "East US" } 
+                    new LocationsListResponse.Location() { Name = "West US" },
+                    new LocationsListResponse.Location() { Name = "East US" } 
                 });
             cmdlet.ListAvailable = true;
 

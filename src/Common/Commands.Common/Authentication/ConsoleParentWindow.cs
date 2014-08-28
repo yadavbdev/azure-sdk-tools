@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Windows.Forms;
-
     /// <summary>
     /// An implementation of <see cref="IWin32Window"/> that gives the
     /// windows handle for the current console window.

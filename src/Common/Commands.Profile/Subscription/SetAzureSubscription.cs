@@ -12,19 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities.Common;
-    using Utilities.Profile;
+
 
     /// <summary>
     /// Sets an azure subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureSubscription", DefaultParameterSetName = "CommonSettings"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Set, "AzureSubscription", DefaultParameterSetName = "CommonSettings"), OutputType(typeof(AzureSubscription))]
     public class SetAzureSubscriptionCommand : SubscriptionCmdletBase
     {
         public SetAzureSubscriptionCommand() : base(true)
@@ -52,123 +55,59 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [ValidateNotNullOrEmpty]
         public string CurrentStorageAccountName { get; set; }
 
+        [Parameter(Mandatory = false, HelpMessage = "Environment name.", ParameterSetName = "CommonSettings")]
+        [ValidateNotNullOrEmpty]
+        public string Environment { get; set; }
+
         [Parameter(Mandatory = false)]
         public SwitchParameter PassThru { get; set; }
-
-        protected virtual void WriteMessage(string message)
-        {
-            WriteVerbose(message);
-        }
 
         /// <summary>
         /// Executes the set subscription cmdlet operation.
         /// </summary>
-        internal void SetSubscriptionProcess()
+        public override void ExecuteCmdlet()
         {
-            WindowsAzureSubscription subscription = Profile.Subscriptions.FirstOrDefault(s => s.SubscriptionName == SubscriptionName);
-            if (subscription == null)
+            var subscription = new AzureSubscription
             {
-                CreateNewSubscription();
-            }
-            else
-            {
-                UpdateExistingSubscription(subscription);
-            }
-        }
-
-        private void CreateNewSubscription()
-        {
-            var subscription = new WindowsAzureSubscription
-            {
-                SubscriptionName = SubscriptionName,
-                SubscriptionId = SubscriptionId,
-                Certificate = Certificate,
-                CurrentStorageAccountName = CurrentStorageAccountName
+                Name = SubscriptionName,
+                Id = new Guid(SubscriptionId)
             };
-
-            if (string.IsNullOrEmpty(ServiceEndpoint))
-            {
-                subscription.ServiceEndpoint = new Uri(Profile.CurrentEnvironment.ServiceEndpoint);
-            }
-            else
-            {
-                subscription.ServiceEndpoint = new Uri(ServiceEndpoint);
-            }
-
-            if (string.IsNullOrEmpty(ResourceManagerEndpoint))
-            {
-                if (Profile.CurrentEnvironment.ResourceManagerEndpoint != null)
-                {
-                    subscription.ResourceManagerEndpoint = new Uri(Profile.CurrentEnvironment.ResourceManagerEndpoint);
-                }
-                else
-                {
-                    subscription.ResourceManagerEndpoint = null;
-                }
-            }
-            else
-            {
-                subscription.ResourceManagerEndpoint = new Uri(ResourceManagerEndpoint);
-            }
-
-            if (Profile.CurrentEnvironment.GalleryEndpoint != null)
-            {
-                subscription.GalleryEndpoint = new Uri(Profile.CurrentEnvironment.GalleryEndpoint);
-            }
-            else
-            {
-                subscription.GalleryEndpoint = null;
-            }
-
-            subscription.SqlDatabaseDnsSuffix = Profile.CurrentEnvironment.SqlDatabaseDnsSuffix ?? WindowsAzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix;
-
-            Profile.AddSubscription(subscription);
-        }
-
-        private void UpdateExistingSubscription(WindowsAzureSubscription subscription)
-        {
-            if (!string.IsNullOrEmpty(SubscriptionId))
-            {
-                subscription.SubscriptionId = SubscriptionId;
-            }
-
-            if (Certificate != null)
-            {
-                subscription.Certificate = Certificate;
-            }
-
-            if (ServiceEndpoint != null)
-            {
-                subscription.ServiceEndpoint = new Uri(ServiceEndpoint);
-            }
-
-            if (ResourceManagerEndpoint != null)
-            {
-                subscription.ResourceManagerEndpoint = new Uri(ResourceManagerEndpoint);
-            }
 
             if (CurrentStorageAccountName != null)
             {
-                subscription.CurrentStorageAccountName = CurrentStorageAccountName;
+                subscription.Properties[AzureSubscription.Property.StorageAccount] = CurrentStorageAccountName;
+            }
+            if (Certificate != null)
+            {
+                ProfileClient.ImportCertificate(Certificate);
+                subscription.Account = Certificate.Thumbprint;
             }
 
-            Profile.UpdateSubscription(subscription);
-        }
+            AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);
 
-        public override void ExecuteCmdlet()
-        {
-            try
+            if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
             {
-                SetSubscriptionProcess();
-                if (PassThru.IsPresent)
+                if (Environment == null)
                 {
-                    WriteObject(true);
+                    WriteWarning(
+                        "Please use Environment parameter to specify subscription environment. This warning will be converted into an error in the upcoming release.");
+                }
+                else
+                {
+                    environment = ProfileClient.Profile.Environments.Values
+                        .FirstOrDefault(e => e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == ServiceEndpoint 
+                            && e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == ResourceManagerEndpoint);
+
+                    if (environment == null)
+                    {
+                        throw new Exception("ServiceEndpoint and ResourceManagerEndpoint values do not match existing environment. Please use Environment parameter.");
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.InvalidData, null));
-            }
+           
+            subscription.Environment = environment.Name;
+
+            WriteObject(ProfileClient.AddOrSetSubscription(subscription));
         }
     }
 }

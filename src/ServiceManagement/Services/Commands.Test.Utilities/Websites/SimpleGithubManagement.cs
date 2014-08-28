@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github.Entities;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Websites
 {
-    using Commands.Test.Utilities.Common;
-    using Commands.Utilities.Websites.Services.Github;
-    using Commands.Utilities.Websites.Services.Github.Entities;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
-    using System.Collections.Generic;
-
     public class SimpleGithubManagement : IGithubServiceManagement
     {
         /// <summary>

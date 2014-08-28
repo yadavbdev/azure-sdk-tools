@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Test.Properties;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Common.Test.Properties;
-    using Commands.Utilities.CloudService.Scaffolding;
-    using System.IO;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class ScaffoldTests : TestBase
     {
@@ -29,7 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 string path = files.CreateEmptyFile("Scaffold.xml");
-                File.WriteAllText(path, Resources.ValidScaffoldXml);
+                FileUtilities.DataStore.WriteFile(path, Resources.ValidScaffoldXml);
 
                 Scaffold scaffold = Scaffold.Parse(path);
 

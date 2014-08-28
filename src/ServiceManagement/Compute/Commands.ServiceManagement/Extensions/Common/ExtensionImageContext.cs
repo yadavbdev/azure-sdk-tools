@@ -13,11 +13,11 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System;
-    using Utilities.Common;
-
     public class ExtensionImageContext : ManagementOperationContext
     {
         public string ProviderNameSpace { get; set; }

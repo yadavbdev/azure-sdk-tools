@@ -13,16 +13,15 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Management.Automation.Language;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Management.Automation.Language;
-
     public static class ConfigurationParsingHelper
     {
         private static readonly ConcurrentDictionary<string, string> _resourceName2ModuleNameCache = 
@@ -84,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
                 // TODO: refactor code to avoid calling a script, just use StaticBindingResult directly,
                 // once System.Management.Automation.dll version will be updated from 3.0.0.0.
 
-                using (PowerShell powerShell = PowerShell.Create()) 
+                using (System.Management.Automation.PowerShell powerShell = System.Management.Automation.PowerShell.Create()) 
                 {
                     powerShell.AddScript(
                      @"function BindArguments($ast, $outModules, $outResources) 
@@ -145,7 +144,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             {
                 try
                 {
-                    using (PowerShell powershell = PowerShell.Create())
+                    using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
                     {
                         powershell.AddCommand("Get-DscResource").AddParameter("Name", resourceName).
                             AddCommand("Foreach-Object").AddParameter("MemberName", "Module").

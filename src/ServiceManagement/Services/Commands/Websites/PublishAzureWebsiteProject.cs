@@ -1,14 +1,13 @@
-﻿namespace Microsoft.WindowsAzure.Commands.Websites
-{
-    using Commands.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
-    using System;
-    using System.Collections;
-    using System.IO;
-    using System.Management.Automation;
+﻿using System;
+using System.Collections;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
 
+namespace Microsoft.WindowsAzure.Commands.Websites
+{
     [Cmdlet(VerbsData.Publish, "AzureWebsiteProject")]
     public class PublishAzureWebsiteProject : WebsiteContextBaseCmdlet, IDynamicParameters
     {
