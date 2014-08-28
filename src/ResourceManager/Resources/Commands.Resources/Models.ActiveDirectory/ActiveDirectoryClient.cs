@@ -46,10 +46,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         {
             PSADObject result = FilterUsers(options).FirstOrDefault();
 
-            //if (result == null)
-            //{
-            //    result = FilterServicePrincipals(options).FirstOrDefault();
-            //}
+            if (result == null)
+            {
+                result = FilterServicePrincipals(options).FirstOrDefault();
+            }
 
             if (result == null)
             {
