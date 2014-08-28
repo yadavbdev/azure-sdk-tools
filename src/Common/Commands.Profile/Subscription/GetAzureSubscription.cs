@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "ByName":
-                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(AzureSession.CurrentEnvironment.Name)
+                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(AzureSession.CurrentEnvironment)
                         .Where(s => SubscriptionName == null || s.Name.Equals(SubscriptionName, StringComparison.InvariantCultureIgnoreCase)));
                     break;
                 case "ById":
@@ -133,9 +133,34 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 subscriptionOutput = subscriptions;
             }
 
-            foreach (AzureSubscription subscription in subscriptionOutput)
+            if (subscriptionOutput.Count() == 1)
             {
-                WriteObject(subscription);
+                AzureSubscription subscription = subscriptionOutput.First();
+                PSObject psObject = base.ConstructPSObject(
+                    null,
+                    "SubscriptionId", subscription.Id,
+                    "SubscriptionName", subscription.Name,
+                    "Environment", subscription.Environment,
+                    "SupportedModes", subscription.GetProperty(AzureSubscription.Property.SupportedModes),
+                    "IsDefault", (subscription.GetProperty(AzureSubscription.Property.Default) != null ? "Yes" : ""),
+                    "IsCurrent", (AzureSession.CurrentSubscription != null && AzureSession.CurrentSubscription.Id == subscription.Id
+                        ? "Yes"
+                        : ""));
+
+                WriteObject(psObject);
+            }
+            else
+            {
+                List<PSObject> output = new List<PSObject>();
+                subscriptionOutput.ForEach(s => output.Add(base.ConstructPSObject(
+                    null,
+                    "SubscriptionId", s.Id,
+                    "SubscriptionName", s.Name,
+                    "Environment", s.Environment,
+                    "IsCurrent", (AzureSession.CurrentSubscription != null && AzureSession.CurrentSubscription.Id == s.Id ? "Yes" : "")
+                    )));
+
+                WriteObject(output, true);
             }
         }
     }
