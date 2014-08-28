@@ -135,7 +135,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 Id = credentials.UserName,
                 Type = AzureAccount.AccountType.User,
-                Environment = environment
+                Environment = environment.Name
             };
             account.SetSubscriptions(mergedSubscriptions);
 
@@ -474,7 +474,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 // Set user ID
                 foreach (var subscription in mergedSubscriptions)
                 {
-                    subscription.Environment = currentEnvironment.Name;
+                    subscription.Environment = environment.Name;
                     subscription.Properties[AzureSubscription.Property.AzureAccount] = credentials.UserName;
                 }
 
