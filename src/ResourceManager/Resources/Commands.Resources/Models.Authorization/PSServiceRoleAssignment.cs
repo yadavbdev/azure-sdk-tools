@@ -12,14 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 
-namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
+namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
-    public class PSADObject
+    public class PSServiceRoleAssignment : PSRoleAssignment
     {
-        public string DisplayName { get; set; }
-
-        public Guid Id { get; set; }
+        public string ServicePrincipalName { get; set; }
     }
 }

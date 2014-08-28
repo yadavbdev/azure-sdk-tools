@@ -23,40 +23,40 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
     /// <summary>
     /// Get AD users.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureADUser", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADUser>))]
-    public class GetAzureADUserCommand : ActiveDirectoryBaseCmdlet
+    [Cmdlet(VerbsCommon.Get, "AzureADServicePrincipal", DefaultParameterSetName = ParameterSet.Empty), OutputType(typeof(List<PSADServicePrincipal>))]
+    public class GetAzureADServicePrincipalCommand : ActiveDirectoryBaseCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.SearchString,
-            HelpMessage = "The user search string.")]
+            HelpMessage = "The service principal search string.")]
         [ValidateNotNullOrEmpty]
         public string SearchString { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.ObjectId,
-            HelpMessage = "The user object id.")]
+            HelpMessage = "The service principal object id.")]
         [ValidateNotNullOrEmpty]
         public Guid ObjectId { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.Empty,
-            HelpMessage = "The user UPN.")]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.UPN,
-            HelpMessage = "The user UPN.")]
+            HelpMessage = "The user SPN.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = ParameterSet.SPN,
+            HelpMessage = "The user SPN.")]
         [ValidateNotNullOrEmpty]
-        [Alias("UPN")]
-        public string UserPrinciplaName { get; set; }
+        [Alias("SPN")]
+        public string ServicePrinciplaName { get; set; }
 
         public override void ExecuteCmdlet()
         {
             ADObjectFilterOptions options = new ADObjectFilterOptions
             {
                 SearchString = SearchString,
-                UPN = UserPrinciplaName,
+                SPN = ServicePrinciplaName,
                 Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 Paging = true
             };
 
             do
             {
-                WriteObject(ActiveDirectoryClient.FilterUsers(options), true);
+                WriteObject(ActiveDirectoryClient.FilterServicePrincipals(options), true);
 
             } while (!string.IsNullOrEmpty(options.NextLink));
         }

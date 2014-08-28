@@ -82,7 +82,8 @@ namespace Microsoft.Azure.Commands.Resources
                         "ResourceType", r.ResourceType,
                         "ParentResource", r.ParentResource,
                         "Location", r.Location,
-                        "Permissions", r.PermissionsTable)));
+                        "Permissions", r.PermissionsTable,
+                        "ResourceId", r.ResourceId)));
 
                     WriteObject(output, true);
                 }

@@ -12,37 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
-    public class ADObjectFilterOptions
+    public class PSADServicePrincipal : PSADObject
     {
-        public string SearchString { get; set; }
-
-        public string Mail { get; set; }
-
-        public string UPN { get; set; }
-
-        public string SPN { get; set; }
-
-        public string Id { get; set; }
-
-        public bool Paging { get; set; }
-
-        /// <summary>
-        /// Used internally to track the paging for the listing, do not change manually.
-        /// </summary>
-        public string NextLink { get; set; }
-
-        public bool HasFilter {
-            get
-            {
-                return !string.IsNullOrEmpty(SearchString) ||
-                       !string.IsNullOrEmpty(Mail) ||
-                       !string.IsNullOrEmpty(UPN) ||
-                       !string.IsNullOrEmpty(SPN) ||
-                       !string.IsNullOrEmpty(Id);
-            }
-        }
+        public string ServicePrincipalName { get; set; }
     }
 }

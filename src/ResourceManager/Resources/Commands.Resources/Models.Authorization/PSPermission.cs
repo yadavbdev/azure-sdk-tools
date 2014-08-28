@@ -22,8 +22,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
         public string ActionsString { get { return string.Join(", ", Actions); } }
 
-        public List<string> NoActions { get; set; }
+        public List<string> NotActions { get; set; }
 
-        public string NoActionsString { get { return string.Join(", ", NoActions); } }
+        public string NotActionsString { get { return string.Join(", ", NotActions); } }
     }
 }

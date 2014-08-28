@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                 {
                     Name = role.Properties.RoleName,
                     Actions = new List<string>(role.Properties.Permissions.SelectMany(r => r.Actions)),
-                    NoActions = new List<string>(role.Properties.Permissions.SelectMany(r => r.NotActions)),
+                    NotActions = new List<string>(role.Properties.Permissions.SelectMany(r => r.NotActions)),
                     Id = role.Id
                 };
             }
@@ -43,16 +43,59 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         {
             PSRoleDefinition roleDefinition = policyClient.GetRoleDefinition(role.Properties.RoleDefinitionId);
             PSADObject adObject = activeDirectoryClient.GetADObject(new ADObjectFilterOptions { Id = role.Properties.PrincipalId.ToString() }) ?? new PSADObject();
-            return new PSRoleAssignment()
+
+            if (adObject is PSADUser)
             {
-                Id = role.Id,
-                Email = adObject.Email,
-                DisplayName = adObject.DisplayName,
-                Actions = roleDefinition.Actions,
-                NoActions = roleDefinition.NoActions,
-                RoleDefinitionName = roleDefinition.Name,
-                Scope = role.Properties.Scope
-            };
+                return new PSUserRoleAssignment()
+                {
+                    Id = role.Id,
+                    DisplayName = adObject.DisplayName,
+                    Actions = roleDefinition.Actions,
+                    NotActions = roleDefinition.NotActions,
+                    RoleDefinitionName = roleDefinition.Name,
+                    Scope = role.Properties.Scope,
+                    UserPrincipalName = ((PSADUser)adObject).UserPrincipalName/*,
+                    SignInName = ((PSADUser)adObject).SignInName*/
+                };
+            }
+            else if (adObject is PSADGroup)
+            {
+                return new PSGroupRoleAssignment()
+                {
+                    Id = role.Id,
+                    DisplayName = adObject.DisplayName,
+                    Actions = roleDefinition.Actions,
+                    NotActions = roleDefinition.NotActions,
+                    RoleDefinitionName = roleDefinition.Name,
+                    Scope = role.Properties.Scope,
+                    Mail = ((PSADGroup)adObject).Mail
+                };
+            }
+            else if (adObject is PSADServicePrincipal)
+            {
+                return new PSServiceRoleAssignment()
+                {
+                    Id = role.Id,
+                    DisplayName = adObject.DisplayName,
+                    Actions = roleDefinition.Actions,
+                    NotActions = roleDefinition.NotActions,
+                    RoleDefinitionName = roleDefinition.Name,
+                    Scope = role.Properties.Scope,
+                    ServicePrincipalName = ((PSADServicePrincipal)adObject).ServicePrincipalName
+                };
+            }
+            else
+            {
+                return new PSRoleAssignment()
+                {
+                    Id = role.Id,
+                    DisplayName = adObject.DisplayName,
+                    Actions = roleDefinition.Actions,
+                    NotActions = roleDefinition.NotActions,
+                    RoleDefinitionName = roleDefinition.Name,
+                    Scope = role.Properties.Scope
+                };
+            }
         }
     }
 }

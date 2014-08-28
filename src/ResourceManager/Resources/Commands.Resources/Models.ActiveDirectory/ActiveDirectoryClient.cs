@@ -44,58 +44,52 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public PSADObject GetADObject(ADObjectFilterOptions options)
         {
-            PSADObject result = null;
+            PSADObject result = FilterUsers(options).FirstOrDefault();
 
-            if (!string.IsNullOrEmpty(options.Id))
+            //if (result == null)
+            //{
+            //    result = FilterServicePrincipals(options).FirstOrDefault();
+            //}
+
+            if (result == null)
             {
-                try
-                {
-                    User user = GraphClient.User.Get(options.Id).User;
-
-                    if (user != null)
-                    {
-                        result = user.ToPSADObject();
-                    }
-                }
-                catch { /* The user was not found, ignore the exception */ }
-
-                try
-                {
-                    Group group = GraphClient.Group.Get(options.Id).Group;
-
-                    if (group != null)
-                    {
-                        result = group.ToPSADObject();
-                    }
-                }
-                catch { /* The group was not found, ignore the exception */ }
-            }
-
-            if (!string.IsNullOrEmpty(options.Email))
-            {
-                try
-                {
-                    User user = GraphClient.User.GetBySignInName(options.Email).Users.FirstOrDefault();
-
-                    if (user != null)
-                    {
-                        result = user.ToPSADObject();
-                    }
-                }
-                catch { /* The user was not found, ignore the exception */ }
+                result = FilterGroups(options).FirstOrDefault();
             }
 
             return result;
         }
 
-        public List<PSADObject> FilterUsers(ADObjectFilterOptions options)
+        public List<PSADServicePrincipal> FilterServicePrincipals(ADObjectFilterOptions options)
         {
-            List<PSADObject> users = new List<PSADObject>();
-            UserListResult result = new UserListResult();
+            List<PSADServicePrincipal> servicePrincipals = new List<PSADServicePrincipal>();
+            ServicePrincipalListResult result = new ServicePrincipalListResult();
+            ServicePrincipal servicePrincipal = null;
 
-            if (!string.IsNullOrEmpty(options.Id) || !string.IsNullOrEmpty(options.Email))
+            if (!string.IsNullOrEmpty(options.Id))
             {
-                users.Add(GetADObject(options));
+                try
+                {
+                    servicePrincipal = GraphClient.ServicePrincipal.Get(options.Id).ServicePrincipal;
+                }
+                catch {  /* The user does not exist, ignore the exception. */ }
+
+                if (servicePrincipal != null)
+                {
+                    servicePrincipals.Add(servicePrincipal.ToPSADServicePrincipal());
+                }
+            }
+            else if (!string.IsNullOrEmpty(options.SPN))
+            {
+                try
+                {
+                    servicePrincipal = GraphClient.ServicePrincipal.GetByServicePrincipalName(options.SPN).ServicePrincipals.FirstOrDefault();
+                }
+                catch {  /* The user does not exist, ignore the exception. */ }
+
+                if (servicePrincipal != null)
+                {
+                    servicePrincipals.Add(servicePrincipal.ToPSADServicePrincipal());
+                }
             }
             else
             {
@@ -103,25 +97,94 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 {
                     if (string.IsNullOrEmpty(options.NextLink))
                     {
-                        result = GraphClient.User.List(null, options.DisplayName);
+                        result = GraphClient.ServicePrincipal.List(options.SearchString);
+                    }
+                    else
+                    {
+                        result = GraphClient.ServicePrincipal.ListNext(options.NextLink);
+                    }
+
+                    servicePrincipals.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+                    options.NextLink = result.NextLink;
+                }
+                else
+                {
+                    result = GraphClient.ServicePrincipal.List(options.SearchString);
+                    servicePrincipals.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+
+                    while (!string.IsNullOrEmpty(result.NextLink))
+                    {
+                        result = GraphClient.ServicePrincipal.ListNext(result.NextLink);
+                        servicePrincipals.AddRange(result.ServicePrincipals.Select(u => u.ToPSADServicePrincipal()));
+                    }
+                }
+            }
+
+            return servicePrincipals;
+        }
+
+        public List<PSADServicePrincipal> FilterServices()
+        {
+            return FilterServicePrincipals(new ADObjectFilterOptions());
+        }
+
+        public List<PSADUser> FilterUsers(ADObjectFilterOptions options)
+        {
+            List<PSADUser> users = new List<PSADUser>();
+            UserListResult result = new UserListResult();
+            User user = null;
+
+            if (!string.IsNullOrEmpty(options.Id) || !string.IsNullOrEmpty(options.UPN))
+            {
+                try
+                {
+                    user = GraphClient.User.Get(options.Id).User;
+                }
+                catch {  /* The user does not exist, ignore the exception. */ }
+
+                if (user != null)
+                {
+                    users.Add(user.ToPSADUser());
+                }
+            }
+            else if (!string.IsNullOrEmpty(options.Mail))
+            {
+                try
+                {
+                    user = GraphClient.User.GetBySignInName(options.Mail).Users.FirstOrDefault();
+                }
+                catch {  /* The user does not exist, ignore the exception. */ }
+
+                if (user != null)
+                {
+                    users.Add(user.ToPSADUser());
+                }
+            }
+            else
+            {
+                if (options.Paging)
+                {
+                    if (string.IsNullOrEmpty(options.NextLink))
+                    {
+                        result = GraphClient.User.List(null, options.SearchString);
                     }
                     else
                     {
                         result = GraphClient.User.ListNext(options.NextLink);
                     }
 
-                    users.AddRange(result.Users.Select(u => u.ToPSADObject()));
+                    users.AddRange(result.Users.Select(u => u.ToPSADUser()));
                     options.NextLink = result.NextLink;
                 }
                 else
                 {
-                    result = GraphClient.User.List(null, options.DisplayName);
-                    users.AddRange(result.Users.Select(u => u.ToPSADObject()));
+                    result = GraphClient.User.List(null, options.SearchString);
+                    users.AddRange(result.Users.Select(u => u.ToPSADUser()));
 
                     while (!string.IsNullOrEmpty(result.NextLink))
                     {
                         result = GraphClient.User.ListNext(result.NextLink);
-                        users.AddRange(result.Users.Select(u => u.ToPSADObject()));
+                        users.AddRange(result.Users.Select(u => u.ToPSADUser()));
                     }
                 }
             }
@@ -129,7 +192,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return users;
         }
 
-        public List<PSADObject> FilterUsers()
+        public List<PSADUser> FilterUsers()
         {
             return FilterUsers(new ADObjectFilterOptions());
         }
@@ -137,7 +200,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public List<PSADObject> ListUserGroups(string principal)
         {
             List<PSADObject> result = new List<PSADObject>();
-            Guid objectId = GetObjectId(new ADObjectFilterOptions { Email = principal });
+            Guid objectId = GetObjectId(new ADObjectFilterOptions { UPN = principal });
             PSADObject user = GetADObject(new ADObjectFilterOptions { Id = objectId.ToString() });
             var groupsIds = GraphClient.User.GetMemberGroups(new UserGetMemberGroupsParameters { ObjectId = user.Id.ToString() }).ObjectIds;
             var groupsResult = GraphClient.Objects.GetObjectsByObjectIds(new GetObjectsParameters { Ids = groupsIds });
@@ -146,21 +209,22 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return result;
         }
 
-        public List<PSADObject> FilterGroups(ADObjectFilterOptions options)
+        public List<PSADGroup> FilterGroups(ADObjectFilterOptions options)
         {
-            List<PSADObject> groups = new List<PSADObject>();
+            List<PSADGroup> groups = new List<PSADGroup>();
+            Group group = null;
 
             if (!string.IsNullOrEmpty(options.Id))
             {
-                groups.Add(GraphClient.Group.Get(options.Id).Group.ToPSADObject());
-            }
-            else if (!string.IsNullOrEmpty(options.Email))
-            {
-                groups.AddRange(ListUserGroups(options.Email));
-
-                if (!string.IsNullOrEmpty(options.DisplayName))
+                try
                 {
-                    groups.RemoveAll(g => !g.DisplayName.Equals(options.DisplayName, StringComparison.OrdinalIgnoreCase));
+                    group = GraphClient.Group.Get(options.Id).Group;
+                }
+                catch {  /* The group does not exist, ignore the exception */ }
+
+                if (group != null)
+                {
+                    groups.Add(group.ToPSADGroup());
                 }
             }
             else
@@ -171,25 +235,25 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 {
                     if (string.IsNullOrEmpty(options.NextLink))
                     {
-                        result = GraphClient.Group.List(options.Email, options.DisplayName);
+                        result = GraphClient.Group.List(options.Mail, options.SearchString);
                     }
                     else
                     {
                         result = GraphClient.Group.ListNext(result.NextLink);
                     }
 
-                    groups.AddRange(result.Groups.Select(u => u.ToPSADObject()));
+                    groups.AddRange(result.Groups.Select(g => g.ToPSADGroup()));
                     options.NextLink = result.NextLink;
                 }
                 else
                 {
-                    result = GraphClient.Group.List(options.Email, options.DisplayName);
-                    groups.AddRange(result.Groups.Select(u => u.ToPSADObject()));
+                    result = GraphClient.Group.List(options.Mail, options.SearchString);
+                    groups.AddRange(result.Groups.Select(g => g.ToPSADGroup()));
 
                     while (!string.IsNullOrEmpty(result.NextLink))
                     {
                         result = GraphClient.Group.ListNext(result.NextLink);
-                        groups.AddRange(result.Groups.Select(u => u.ToPSADObject()));
+                        groups.AddRange(result.Groups.Select(g => g.ToPSADGroup()));
                     }
                 }
             }
@@ -197,7 +261,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return groups;
         }
 
-        public List<PSADObject> FilterGroups()
+        public List<PSADGroup> FilterGroups()
         {
             return FilterGroups(new ADObjectFilterOptions());
         }
@@ -205,108 +269,52 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public List<PSADObject> GetGroupMembers(ADObjectFilterOptions options)
         {
             List<PSADObject> members = new List<PSADObject>();
+            PSADObject group = FilterGroups(options).FirstOrDefault();
 
-            if (!string.IsNullOrEmpty(options.Id))
+            if (group != null)
             {
-                members.Add(GraphClient.Group.Get(options.Id).Group.ToPSADObject());
-            }
-            else
-            {
-                PSADObject group = FilterGroups(new ADObjectFilterOptions { DisplayName = options.DisplayName }).FirstOrDefault();
+                GetObjectsResult result = new GetObjectsResult();
 
-                if (group != null)
+                if (options.Paging)
                 {
-                    GetObjectsResult result = new GetObjectsResult();
-
-                    if (options.Paging)
+                    if (string.IsNullOrEmpty(options.NextLink))
                     {
-                        if (string.IsNullOrEmpty(options.NextLink))
-                        {
-                            result = GraphClient.Group.GetGroupMembers(group.Id.ToString());
-                        }
-                        else
-                        {
-                            result = GraphClient.Group.GetGroupMembersNext(result.NextLink);
-                        }
-
-                        members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
-                        options.NextLink = result.NextLink;
+                        result = GraphClient.Group.GetGroupMembers(group.Id.ToString());
                     }
                     else
                     {
-                        result = GraphClient.Group.GetGroupMembers(group.Id.ToString());
-                        members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
+                        result = GraphClient.Group.GetGroupMembersNext(result.NextLink);
+                    }
 
-                        while (!string.IsNullOrEmpty(result.NextLink))
-                        {
-                            result = GraphClient.Group.GetGroupMembersNext(result.NextLink);
-                            members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
-                        }
+                    members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
+                    options.NextLink = result.NextLink;
+                }
+                else
+                {
+                    result = GraphClient.Group.GetGroupMembers(group.Id.ToString());
+                    members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
+
+                    while (!string.IsNullOrEmpty(result.NextLink))
+                    {
+                        result = GraphClient.Group.GetGroupMembersNext(result.NextLink);
+                        members.AddRange(result.AADObject.Select(u => u.ToPSADObject()));
                     }
                 }
             }
+
             return members;
         }
 
         public Guid GetObjectId(ADObjectFilterOptions options)
         {
-            // Input is object id.
-            if (!string.IsNullOrEmpty(options.Id))
-            {
-                Guid result;
-                if (Guid.TryParse(options.Id, out result))
-                {
-                    // Input is GUID, just use it as is.
-                    return result;
-                }
+            PSADObject adObj = GetADObject(options);
 
-                throw new KeyNotFoundException(string.Format("The provided object id '{0}' can not be parsed", options.Id));
+            if (adObj == null)
+            {
+                throw new KeyNotFoundException("The provided information does not map to an AD object id.");
             }
 
-            // Input is principal org id, live id or group mail.
-            if (!string.IsNullOrEmpty(options.Email))
-            {
-                try
-                {
-                    PSADObject user = GetADObject(options);
-                    if (user != null)
-                    {
-                        // Input is OrgId principal
-                        return user.Id;
-                    }
-                }
-                catch { /* Unable to retrieve the user, skip */ }
-
-                var groups = FilterGroups(options);
-                if (groups.Count > 0)
-                {
-                    // Input is group mail
-                    return groups.First().Id;
-                }
-
-                throw new KeyNotFoundException(string.Format("The provided email '{0}' can not be resolved", options.Email));
-            }
-
-            if (!string.IsNullOrEmpty(options.DisplayName))
-            {
-                var users = FilterUsers(options);
-                if (users.Count > 0)
-                {
-                    // Input is used display name.
-                    return users.First().Id;
-                }
-
-                var groups = FilterGroups(options);
-                if (groups.Count > 0)
-                {
-                    // Input is group display name
-                    return groups.First().Id;
-                }
-
-                throw new KeyNotFoundException(string.Format("The provided display name '{0}' can not be resolved", options.DisplayName));
-            }
-
-            throw new KeyNotFoundException("Please provide the object id, email or display name filter to resolve.");
+            return adObj.Id;
         }
     }
 }

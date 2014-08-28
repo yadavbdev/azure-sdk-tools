@@ -396,7 +396,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 return new PSPermission()
                 {
                     Actions = new List<string>(),
-                    NoActions = new List<string>()
+                    NotActions = new List<string>()
                 };
             }
         }
@@ -408,18 +408,18 @@ namespace Microsoft.Azure.Commands.Resources.Models
             if (permissions != null && permissions.Count > 0)
             {
                 int maxActionsLength = Math.Max("Actions".Length, permissions.Where(p => p.Actions != null).DefaultIfEmpty(EmptyPermission).Max(p => p.ActionsString.Length));
-                int maxNoActionsLength = Math.Max("NoActions".Length, permissions.Where(p => p.NoActions != null).DefaultIfEmpty(EmptyPermission).Max(p => p.NoActionsString.Length));
+                int maxNotActionsLength = Math.Max("NotActions".Length, permissions.Where(p => p.NotActions != null).DefaultIfEmpty(EmptyPermission).Max(p => p.NotActionsString.Length));
 
-                string rowFormat = "{0, -" + maxActionsLength + "}  {1, -" + maxNoActionsLength + "}\r\n";
+                string rowFormat = "{0, -" + maxActionsLength + "}  {1, -" + maxNotActionsLength + "}\r\n";
                 permissionsTable.AppendLine();
-                permissionsTable.AppendFormat(rowFormat, "Actions", "NoActions");
+                permissionsTable.AppendFormat(rowFormat, "Actions", "NotActions");
                 permissionsTable.AppendFormat(rowFormat,
                     GeneralUtilities.GenerateSeparator(maxActionsLength, "="),
-                    GeneralUtilities.GenerateSeparator(maxNoActionsLength, "="));
+                    GeneralUtilities.GenerateSeparator(maxNotActionsLength, "="));
 
                 foreach (PSPermission permission in permissions)
                 {
-                    permissionsTable.AppendFormat(rowFormat, permission.ActionsString, permission.NoActionsString);
+                    permissionsTable.AppendFormat(rowFormat, permission.ActionsString, permission.NotActionsString);
                 }
             }
 
@@ -431,7 +431,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             return new PSPermission()
             {
                 Actions = new List<string>(permission.Actions),
-                NoActions = new List<string>(permission.NotActions)
+                NotActions = new List<string>(permission.NotActions)
             };
         }
     }
