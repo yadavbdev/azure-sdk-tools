@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>;
 
-        TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
+        TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
 
         HttpClient CreateHttpClient(string endpoint, ICredentials credentials);
 

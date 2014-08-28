@@ -51,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 creds = authenticationFactory.GetSubscriptionCloudCredentials(context);
             }
 
-            return CreateClient<TClient>(creds, endpoint);
+            return CreateCustomClient<TClient>(creds, endpoint);
         }
 
         public TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
@@ -76,10 +76,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             }
 
             Uri endpointUri = (new ProfileClient()).Profile.Environments[subscription.Environment].GetEndpointAsUri(endpoint);
-            return CreateClient<TClient>(creds, endpointUri);
+            return CreateCustomClient<TClient>(creds, endpointUri);
         }
 
-        public TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        public TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
         {
             TClient client = ManagementClients.FirstOrDefault(o => o is TClient) as TClient;
             if (client == null)
@@ -93,7 +93,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 else
                 {
                     IClientFactory realHelper = new ClientFactory();
-                    var realClient = realHelper.CreateClient<TClient>(parameters);
+                    var realClient = realHelper.CreateCustomClient<TClient>(parameters);
                     var newRealClient = realClient.WithHandler(HttpMockServer.CreateInstance());
                     realClient.Dispose();
                     return newRealClient;
