@@ -91,14 +91,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
         {
             // Setup
             string[] invalidNames = { "1test", "test#", "test invaid", "-test", "_test" };
+            Mock<ServiceBusClientExtensions> client = new Mock<ServiceBusClientExtensions>();
 
             foreach (string invalidName in invalidNames)
             {
                 MockCommandRuntime mockCommandRuntime = new MockCommandRuntime();
-                GetAzureSBNamespaceCommand cmdlet = new GetAzureSBNamespaceCommand() { Name = invalidName, CommandRuntime = mockCommandRuntime };
+                GetAzureSBNamespaceCommand cmdlet = new GetAzureSBNamespaceCommand()
+                {
+                    Name = invalidName,
+                    CommandRuntime = mockCommandRuntime,
+                    Client = client.Object
+                };
                 string expected = string.Format("{0}\r\nParameter name: Name", string.Format(Resources.InvalidNamespaceName, invalidName));
+                client.Setup(f => f.GetNamespace(invalidName)).Throws(new InvalidOperationException(expected));
 
-                Testing.AssertThrows<ArgumentException>(() => cmdlet.ExecuteCmdlet(), expected);
+                Testing.AssertThrows<InvalidOperationException>(() => cmdlet.ExecuteCmdlet(), expected);
             }
         }
     }
