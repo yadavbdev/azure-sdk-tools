@@ -434,24 +434,40 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(ref UserCredentials credentials, AzureEnvironment environment)
         {
-            List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
-                    GetServiceManagementSubscriptions(environment, ref credentials).ToList(),
-                    GetResourceManagerSubscriptions(environment, ref credentials).ToList());
+            try
+            {
+                IAccessToken commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(environment,
+                    ref credentials);
 
-            // Set user ID
-            foreach (var subscription in mergedSubscriptions)
-            {
-                subscription.Environment = environment.Name;
-                subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
-                subscription.Properties[AzureSubscription.Property.AvailablePrincipalNames] = credentials.UserName;
-            }
+                credentials.ShowDialog = ShowDialog.Never;
 
-            if (mergedSubscriptions.Any())
-            {
-                return mergedSubscriptions;
+                List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
+                    GetServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
+                    GetResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
+
+                // Set user ID
+                foreach (var subscription in mergedSubscriptions)
+                {
+                    subscription.Environment = environment.Name;
+                    subscription.Properties[AzureSubscription.Property.DefaultPrincipalName] = credentials.UserName;
+                    subscription.Properties[AzureSubscription.Property.AvailablePrincipalNames] = credentials.UserName;
+                }
+
+                if (mergedSubscriptions.Any())
+                {
+                    return mergedSubscriptions;
+                }
+                else
+                {
+                    return new AzureSubscription[0];
+                }
             }
-            else
+            catch (AadAuthenticationException aadEx)
             {
+                if (DebugLog != null)
+                {
+                    DebugLog(aadEx.Message);
+                }
                 return new AzureSubscription[0];
             }
         }
@@ -526,14 +542,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return mergedSubscription;
         }
 
-        private IEnumerable<AzureSubscription> GetResourceManagerSubscriptions(AzureEnvironment environment, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> GetResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
             try
             {
-                IAccessToken commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
-
                 TenantListResult tenants;
                 using (var subscriptionClient = AzureSession.ClientFactory.CreateClient<Azure.Subscriptions.SubscriptionClient>(
                     new TokenCloudCredentials(commonTenantToken.AccessToken),
@@ -587,15 +601,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return result;
         }
 
-        private IEnumerable<AzureSubscription> GetServiceManagementSubscriptions(AzureEnvironment environment, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> GetServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
             try
             {
-                IAccessToken commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(environment,
-                    ref credentials);
-
                 using (var subscriptionClient = AzureSession.ClientFactory
                     .CreateClient<WindowsAzure.Subscriptions.SubscriptionClient>(
                         new TokenCloudCredentials(commonTenantToken.AccessToken),

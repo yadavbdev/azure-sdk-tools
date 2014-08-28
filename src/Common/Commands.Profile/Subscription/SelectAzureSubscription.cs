@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [OutputType(typeof(AzureSubscription))]
     public class SelectAzureSubscriptionCommand : SubscriptionCmdletBase
     {
-        public SelectAzureSubscriptionCommand() : base(false)
+        public SelectAzureSubscriptionCommand() : base(true)
         {
         }
 

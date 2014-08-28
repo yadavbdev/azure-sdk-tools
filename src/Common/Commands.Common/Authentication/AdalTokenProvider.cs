@@ -152,26 +152,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
             if (string.IsNullOrEmpty(userId))
             {
-                var prompt = PromptBehavior.Always;
-                if (showDialog == ShowDialog.Never)
-                {
-                    prompt = PromptBehavior.Never;
-                }
-                else
+                PromptBehavior promptBehavior = (PromptBehavior)Enum.Parse(typeof(PromptBehavior), showDialog.ToString());
+
+                if (promptBehavior != PromptBehavior.Never)
                 {
                     ClearCookies();
                 }
 
                 result = context.AcquireToken(config.ResourceClientUri, config.ClientId,
-                    config.ClientRedirectUri, prompt);
+                    config.ClientRedirectUri, promptBehavior);
             }
             else
             {
-                var promptBehavior = PromptBehavior.Auto;
-                if (showDialog == ShowDialog.Never)
-                {
-                    promptBehavior = PromptBehavior.Never;
-                }
+                PromptBehavior promptBehavior = (PromptBehavior)Enum.Parse(typeof(PromptBehavior), showDialog.ToString());
 
                 if (password == null)
                 {
