@@ -56,8 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
 
         public static bool IsPropertySet<TKey>(this Dictionary<TKey, string> dictionary, TKey property)
         {
-            return !dictionary.ContainsKey(property) ||
-                   string.IsNullOrEmpty(dictionary[property]);
+            return dictionary.ContainsKey(property) && !string.IsNullOrEmpty(dictionary[property]);
         }
     }
 }
