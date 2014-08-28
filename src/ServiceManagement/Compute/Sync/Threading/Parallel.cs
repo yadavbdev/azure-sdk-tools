@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Threading;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Threading
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-
     internal class Parallel
     {
         public readonly static int MaxParallellism = Environment.ProcessorCount;

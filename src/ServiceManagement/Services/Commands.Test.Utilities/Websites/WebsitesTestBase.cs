@@ -12,17 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Websites
 {
-    using Commands.Test.Utilities.Common;
-    using Commands.Utilities.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
-
     [TestClass]
     public class WebsitesTestBase : TestBase
     {
-        protected string subscriptionId = "foo";
+        protected string subscriptionId = "035B9E16-BA8E-40A3-BEEA-4998F452C203";
 
         [TestInitialize]
         public virtual void SetupTest()
@@ -33,10 +34,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Websites
         [TestCleanup]
         public void TestCleanup()
         {
-            string webSpacesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+            string webSpacesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                           string.Format("spaces.{0}.json", subscriptionId));
 
-            string sitesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+            string sitesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                           string.Format("sites.{0}.json", subscriptionId));
 
             if (File.Exists(webSpacesFile))

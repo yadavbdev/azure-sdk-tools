@@ -17,7 +17,7 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.Azure.Commands.ActiveDirectory.Models
 {
-    public abstract class ActiveDirectoryBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class ActiveDirectoryBaseCmdlet : AzurePSCmdlet
     {
         private ActiveDirectoryClient activeDirectoryClient;
 
@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory.Models
             {
                 if (activeDirectoryClient == null)
                 {
-                    activeDirectoryClient = new ActiveDirectoryClient(CurrentSubscription);
+                    activeDirectoryClient = new ActiveDirectoryClient(CurrentSubscription, profileClient.Profile);
                 }
 
                 return activeDirectoryClient;

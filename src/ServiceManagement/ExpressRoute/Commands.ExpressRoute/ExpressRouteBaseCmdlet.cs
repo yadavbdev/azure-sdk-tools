@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-    using Utilities.Common;
-
-    public abstract class ExpressRouteBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class ExpressRouteBaseCmdlet : AzurePSCmdlet
     {
         private ExpressRouteClient expressRouteClient;
 

@@ -11,13 +11,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.File
 {
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-
     /// <summary>
     /// Provides utilities to determining whether the given string is a valid
     /// name of some component.

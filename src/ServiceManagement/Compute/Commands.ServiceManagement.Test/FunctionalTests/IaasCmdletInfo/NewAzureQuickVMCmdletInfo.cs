@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using ConfigDataInfo;
-    using Model;
-    using PowershellCore;
-
     public class NewAzureQuickVMCmdletInfo : CmdletsInfo
     {
         public NewAzureQuickVMCmdletInfo(OS os, string name, string serviceName, string imageName, string userName, string password)

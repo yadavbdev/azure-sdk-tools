@@ -11,17 +11,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
 {
-    using Commands.BaseCommandInterfaces;
-    using Commands.CommandInterfaces;
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-    using ServiceLocation;
-    using System.Collections;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Management.Automation;
-
     /// <summary>
     ///     Represents the New-AzureHDInsightConfig Power Shell Cmdlet.
     /// </summary>

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
 {
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-    using System.Runtime.Serialization;
-
     public class TrafficManagerEndpoint
     {
         [DataMember(IsRequired = true)]

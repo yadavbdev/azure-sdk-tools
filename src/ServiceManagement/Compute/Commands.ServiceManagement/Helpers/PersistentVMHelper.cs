@@ -13,27 +13,24 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Xml.Serialization;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using ConfigurationSet = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.ConfigurationSet;
+using DataVirtualHardDisk = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.DataVirtualHardDisk;
+using OSVirtualHardDisk = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.OSVirtualHardDisk;
+using RoleInstance = Microsoft.WindowsAzure.Management.Compute.Models.RoleInstance;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
 {
-    using AutoMapper;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Xml.Serialization;
-    using ConfigurationSet = Model.ConfigurationSet;
-    using DataVirtualHardDisk = Model.DataVirtualHardDisk;
-    using LinuxProvisioningConfigurationSet = Model.LinuxProvisioningConfigurationSet;
-    using NetworkConfigurationSet = Model.NetworkConfigurationSet;
-    using OSVirtualHardDisk = Model.OSVirtualHardDisk;
-    using RoleInstance = Management.Compute.Models.RoleInstance;
-    using WindowsProvisioningConfigurationSet = Model.WindowsProvisioningConfigurationSet;
-
     public static class PersistentVMHelper
     {
         public static void SaveStateToFile(PersistentVM role, string filePath)

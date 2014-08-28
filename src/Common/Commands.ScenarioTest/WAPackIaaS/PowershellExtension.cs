@@ -11,21 +11,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-
     internal static class PowershellExtension
     {
-        internal static Collection<PSObject> InvokeAndAssertForNoErrors(this PowerShell powershell)
+        internal static Collection<PSObject> InvokeAndAssertForNoErrors(this System.Management.Automation.PowerShell powershell)
         {
             return powershell.InvokeAndAssertForErrors(null);
         }
 
-        internal static Collection<PSObject> InvokeAndAssertForErrors(this PowerShell powershell, string expectedErrorMsg = null)
+        internal static Collection<PSObject> InvokeAndAssertForErrors(this System.Management.Automation.PowerShell powershell, string expectedErrorMsg = null)
         {
             powershell.Streams.ClearStreams();
             var result = powershell.Invoke();
@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 
         
 
-        internal static string GetPowershellErrorMessage(this PowerShell powershell)
+        internal static string GetPowershellErrorMessage(this System.Management.Automation.PowerShell powershell)
         {
             bool hadErrors = powershell.HadErrors;
             IList<ErrorRecord> errors = powershell.Streams.Error;

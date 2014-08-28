@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Security.Permissions;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
 {
-    using Microsoft.WindowsAzure.Storage.Shared.Protocol;
-    using System;
-    using System.Management.Automation;
-    using System.Security.Permissions;
     using StorageClient = WindowsAzure.Storage.Shared.Protocol;
 
     /// <summary>
     /// Show azure storage service properties
     /// </summary>
     [Cmdlet(VerbsCommon.Set, StorageNouns.StorageServiceLogging),
-        OutputType(typeof(LoggingProperties))]
+        OutputType(typeof(StorageClient.LoggingProperties))]
     public class SetAzureStorageServiceLoggingCommand : StorageCloudBlobCmdletBase
     {
         [Parameter(Mandatory = true, Position = 0, HelpMessage = GetAzureStorageServiceLoggingCommand.ServiceTypeHelpMessage)]
@@ -40,7 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         public const string LoggingOperationHelpMessage =
             "Logging operations. (All, None, combinations of Read, Write, Delete that are seperated by semicolon.)";
         [Parameter(HelpMessage = LoggingOperationHelpMessage)]
-        public LoggingOperations[] LoggingOperations { get; set; }
+        public StorageClient.LoggingOperations[] LoggingOperations { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = "Display ServiceProperties")]
         public SwitchParameter PassThru { get; set; }
@@ -59,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// Update the specified service properties according to the input
         /// </summary>
         /// <param name="logging">Service properties</param>
-        internal void UpdateServiceProperties(LoggingProperties logging)
+        internal void UpdateServiceProperties(StorageClient.LoggingProperties logging)
         {
             if (Version != null)
             {
@@ -85,7 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
 
             if (LoggingOperations != null && LoggingOperations.Length > 0)
             {
-                LoggingOperations logOperations = default(LoggingOperations);
+                StorageClient.LoggingOperations logOperations = default(StorageClient.LoggingOperations);
 
                 for (int i = 0; i < LoggingOperations.Length; i++)
                 {
@@ -117,7 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         /// <param name="LoggingOperations">The string type of Logging operations</param>
         /// <example>GetLoggingOperations("all"), GetLoggingOperations("read, write")</example>
         /// <returns>LoggingOperations object</returns>
-        internal LoggingOperations GetLoggingOperations(string LoggingOperations)
+        internal StorageClient.LoggingOperations GetLoggingOperations(string LoggingOperations)
         {
             LoggingOperations = LoggingOperations.ToLower();
             if (LoggingOperations.IndexOf("all") != -1)
@@ -162,8 +162,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            ServiceProperties currentServiceProperties = Channel.GetStorageServiceProperties(ServiceType, GetRequestOptions(ServiceType), OperationContext);
-            ServiceProperties serviceProperties = new ServiceProperties();
+            StorageClient.ServiceProperties currentServiceProperties = Channel.GetStorageServiceProperties(ServiceType, GetRequestOptions(ServiceType), OperationContext);
+            StorageClient.ServiceProperties serviceProperties = new StorageClient.ServiceProperties();
             serviceProperties.Clean();
             serviceProperties.Logging = currentServiceProperties.Logging;
 

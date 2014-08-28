@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.Text;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github
 {
-    using System;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Dispatcher;
-    using System.Text;
-
     public class GithubAutHeaderInserter : IClientMessageInspector, IEndpointBehavior
     {
         public string Username

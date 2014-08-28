@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using WebEntities;
-
     public abstract class LinkedRevisionControl : IDisposable
     {
         protected string InvocationPath;

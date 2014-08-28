@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.CloudService;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService
 {
-    using Commands.CloudService;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.CloudService.Model;
-    using Moq;
-    using System.Management.Automation;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class PublishAzureServiceTests : TestBase
     {

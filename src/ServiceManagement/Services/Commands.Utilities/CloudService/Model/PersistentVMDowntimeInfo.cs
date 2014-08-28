@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model
 {
-    using Management.Compute.Models;
-    using System;
-
     public class PersistentVMDowntimeInfo
     {
         public PersistentVMDowntimeInfo()

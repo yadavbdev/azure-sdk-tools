@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests
 {
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class StartJobsCmdletIntegrationTests : StartJobsCmdletTestCaseBase
     {

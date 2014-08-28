@@ -11,13 +11,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests
 {
-    using Management.HDInsight.Cmdlet.PSCmdlets;
-    using System;
-    using System.Linq;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class CmdLetHelpFileTests : HDInsightTestCaseBase
     {

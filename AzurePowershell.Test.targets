@@ -98,9 +98,7 @@
   <!-- Run the scenario tests with Mocks -->
   <Target Name="MockedScenarioTests">
     <Message Importance="high" Text="Running scenario tests with Mocks" />
-    <MSBuild Targets="InvokeMSTest"
-             Properties="_testAssembly=$(ScenarioTestDebug);_testSettings=$(TestSettings);_testFilter=$(MockTestFilter);_testResult=$(TestOutputDirectory)\MockedScenarioTests.trx"
-             Projects="build.proj"/>
+	<Xunit.Runner.MSBuild.xunit Assembly="$(ScenarioTestDebug)" Html="$(TestOutputDirectory)\MockedScenarioTests.xunit.dll.html" Verbose="true"/>
   </Target>
 
   <!-- Run the MediaService Scenario Tests -->

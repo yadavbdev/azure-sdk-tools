@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Xml;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services
 {
-    using System;
-    using System.Runtime.Serialization;
-    using System.Text;
-    using System.Xml;
-
     [DataContract(Name = "Error", Namespace = Constants.SqlDatabaseManagementNamespace)]
     public class SqlDatabaseManagementError : IExtensibleDataObject
     {

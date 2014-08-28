@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.File
 {
-    using System;
-
     /// <summary>
     /// Provides constants for cmdlets.
     /// </summary>

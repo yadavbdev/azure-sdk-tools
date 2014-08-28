@@ -12,14 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using System;
-    using System.Diagnostics;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Base class for Microsoft Azure PowerShell unit tests.
     /// </summary>
@@ -27,8 +30,28 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
     {
         public TestBase()
         {
-            TestingTracingInterceptor.AddToContext();
+            BaseSetup();
         }
+
+        /// <summary>
+        /// Initialize the necessary environment for the tests.
+        /// </summary>
+        [TestInitialize]
+        public void BaseSetup()
+        {
+            if (ProfileClient.DataStore != null && !(ProfileClient.DataStore is MockDataStore))
+            {
+                ProfileClient.DataStore = new MockDataStore();
+            }
+            if (AzureSession.CurrentSubscription == null)
+            {
+                AzureSession.SetCurrentSubscription(
+                    new AzureSubscription { Id = Guid.NewGuid(), Name = "test", Environment = EnvironmentName.AzureCloud },
+                    null);
+            }
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+        }
+
         /// <summary>
         /// Gets or sets a reference to the TestContext used for interacting
         /// with the test framework.
@@ -44,21 +67,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         {
             Debug.Assert(TestContext != null);
             TestContext.WriteLine(format, args);
-        }
-
-        protected static int AnyIpPort()
-        {
-            return new Random().Next(ushort.MaxValue);
-        }
-
-        public static Uri AnyUrl()
-        {
-            return new Uri("http://www.microsoft.com");
-        }
-
-        public static string AnyString()
-        {
-            return "RandomStringForTestPurposes";
         }
     }
 }

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     public class Role
     {
         private readonly List<ConfigurationSet> configurationSets = new List<ConfigurationSet>(); 

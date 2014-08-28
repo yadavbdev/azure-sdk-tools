@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Management.Automation.Language;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation.Language;
-
     public class ConfigurationParseResult
     {
         public string Path { get; set; }

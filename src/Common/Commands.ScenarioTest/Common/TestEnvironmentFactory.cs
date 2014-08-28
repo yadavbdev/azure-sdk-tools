@@ -13,16 +13,16 @@
 // limitations under the License.
 //
 
+using System;
+using System.Collections.Generic;
 using Microsoft.Azure.Utilities.HttpRecorder;
+using Microsoft.WindowsAzure.Common.Internals;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.IdentityModel.Clients.ActiveDirectory;
-    using Microsoft.WindowsAzure.Common.Internals;
-    using Newtonsoft.Json.Linq;
     using System;
-    using System.Collections.Generic;
-
+    using Microsoft.IdentityModel.Clients.ActiveDirectory;
     public abstract class TestEnvironmentFactory
     {
         /// <summary>

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.IO
 {
-    using System;
-    using System.IO;
-
     internal class StreamWithReadProgress : Stream
     {
         private readonly Stream innerStream;

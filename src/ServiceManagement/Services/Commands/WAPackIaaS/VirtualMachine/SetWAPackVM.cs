@@ -12,22 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Set, "WAPackVM", DefaultParameterSetName = WAPackCmdletParameterSets.UpdateVMSizeProfile)]
     public class SetWAPackVM : IaaSCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = WAPackCmdletParameterSets.UpdateVMSizeProfile, ValueFromPipeline = true, HelpMessage = "Existing VirtualMachine Object.")]
         [ValidateNotNullOrEmpty]
-        public VirtualMachine VM
+        public Utilities.WAPackIaaS.DataContract.VirtualMachine VM
         {
             get;
             set;
@@ -67,7 +66,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
             }
         }
 
-        private void SetSizeProfile(VirtualMachine vm)
+        private void SetSizeProfile(Utilities.WAPackIaaS.DataContract.VirtualMachine vm)
         {
             vm.CPUCount = VMSizeProfile.CPUCount;
             vm.Memory = VMSizeProfile.Memory;

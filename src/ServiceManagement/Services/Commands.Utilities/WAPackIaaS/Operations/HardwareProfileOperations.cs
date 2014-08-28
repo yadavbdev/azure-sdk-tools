@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
 {
-    using DataContract;
-
     internal class HardwareProfileOperations : OperationsBase<HardwareProfile>
     {
         public HardwareProfileOperations(WebClientFactory webClientFactory)

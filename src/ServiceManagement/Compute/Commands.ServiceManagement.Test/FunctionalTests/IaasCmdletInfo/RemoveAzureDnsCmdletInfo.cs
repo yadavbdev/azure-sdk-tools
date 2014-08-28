@@ -13,10 +13,10 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class RemoveAzureDnsCmdletInfo : CmdletsInfo
     {
         public RemoveAzureDnsCmdletInfo(string name, string serviceName, bool force = false)

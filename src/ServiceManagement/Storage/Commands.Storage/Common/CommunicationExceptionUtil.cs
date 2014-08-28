@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.ServiceModel;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Commands.Utilities.Common;
-    using System.ServiceModel;
-
     /// <summary>
     /// Communication exception utility
     /// </summary>

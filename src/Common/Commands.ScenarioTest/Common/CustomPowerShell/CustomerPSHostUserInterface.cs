@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using System.Management.Automation.Host;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Utilities.Store;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common.CustomPowerShell
 {
-    using Commands.Utilities.Store;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-    using System.Management.Automation.Host;
-
     class CustomerPSHostUserInterface : PSHostUserInterface
     {
         public List<string> WarningStream { get; private set; }

@@ -12,20 +12,30 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Profile;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Moq;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Environment
 {
-    using Commands.Profile;
-    using Commands.Utilities.Common;
-    using Moq;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class GetAzureEnvironmentTests : TestBase
     {
-        [TestMethod]
+        private MockDataStore dataStore;
+
+        public GetAzureEnvironmentTests()
+        {
+            dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+        }
+
+        [Fact]
         public void GetsAzureEnvironments()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -41,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetsAzureEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -54,7 +64,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
             cmdlet.ExecuteCmdlet();
 
             commandRuntimeMock.Verify(
-                f => f.WriteObject(It.IsAny<WindowsAzureEnvironment>()),
+                f => f.WriteObject(It.IsAny<AzureEnvironment>()),
                 Times.Once());
         }
     }
