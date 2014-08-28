@@ -25,6 +25,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public string Environment { get; set; }
 
+        public string Account { get; set; }
+
         public Dictionary<Property, string> Properties { get; set; }
 
         public enum Property
@@ -44,9 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             /// </summary>
             Default,
 
-            StorageAccount,
-
-            AzureAccount
+            StorageAccount
         }
     }
 }

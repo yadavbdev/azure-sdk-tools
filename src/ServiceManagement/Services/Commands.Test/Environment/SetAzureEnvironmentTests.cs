@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
 
         public void Cleanup()
         {
-            AzureSession.SetCurrentSubscription(null, null);
+            AzureSession.SetCurrentContext(null, null, null);
         }
 
         [Fact]

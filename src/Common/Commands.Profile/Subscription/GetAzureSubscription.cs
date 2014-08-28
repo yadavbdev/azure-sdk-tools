@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "ByName":
-                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(AzureSession.CurrentEnvironment)
+                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(AzureSession.CurrentContext.Environment)
                         .Where(s => SubscriptionName == null || s.Name.Equals(SubscriptionName, StringComparison.InvariantCultureIgnoreCase)));
                     break;
                 case "ById":
@@ -102,7 +102,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             // since current is strictly in-memory and we want the real
             // current subscription.
             //
-            if (AzureSession.CurrentSubscription == null)
+            if (AzureSession.CurrentContext.Subscription == null)
             {
                 WriteError(new ErrorRecord(
                     new InvalidOperationException(Resources.InvalidSelectedSubscription),
@@ -111,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             }
             else
             {
-                WriteSubscriptions(AzureSession.CurrentSubscription);
+                WriteSubscriptions(AzureSession.CurrentContext.Subscription);
             }
         }
 
@@ -141,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 "Environment", subscription.Environment,
                 "SupportedModes", subscription.GetProperty(AzureSubscription.Property.SupportedModes),
                 "IsDefault", (subscription.GetProperty(AzureSubscription.Property.Default) != null ? "Yes" : "No"),
-                "IsCurrent", (AzureSession.CurrentSubscription != null && AzureSession.CurrentSubscription.Id == subscription.Id
+                "IsCurrent", (AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == subscription.Id
                     ? "Yes"
                     : "No"))));
 
@@ -161,7 +161,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 SubscriptionDataExtended result = new SubscriptionDataExtended
                 {
                     AccountAdminLiveEmailId = response.AccountAdminLiveEmailId,
-                    ActiveDirectoryUserId = subscription.GetProperty(AzureSubscription.Property.AzureAccount),
+                    ActiveDirectoryUserId = subscription.Account,
                     CurrentCoreCount = response.CurrentCoreCount,
                     CurrentHostedServices = response.CurrentHostedServices,
                     CurrentDnsServers = 0, // TODO: Add to spec
@@ -179,7 +179,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     ServiceEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement).ToString(),
                     ResourceManagerEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager).ToString(),
                     IsDefault = subscription.GetProperty(AzureSubscription.Property.Default) != null,
-                    Certificate = ProfileClient.DataStore.GetCertificate(subscription.GetProperty(AzureSubscription.Property.AzureAccount)),
+                    Certificate = ProfileClient.DataStore.GetCertificate(subscription.Account),
                     CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.StorageAccount)
                 };
                 

@@ -209,7 +209,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 
                 // Retrieve the fully qualified server name
                 string fullyQualifiedServerName =
-                    this.SqlConnectionContext.ServerName + AzureSession.CurrentEnvironment.GetEndpoint(AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix);
+                    this.SqlConnectionContext.ServerName + AzureSession.CurrentContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix);
 
                 // Issue the request
                 ImportExportRequest context = this.ExportSqlAzureDatabaseProcess(

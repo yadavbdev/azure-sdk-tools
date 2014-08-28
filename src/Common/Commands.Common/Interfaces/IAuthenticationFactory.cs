@@ -35,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         /// <param name="credentials"></param>
         /// <returns></returns>
         IAccessToken Authenticate(AzureEnvironment environment, string tenant, ref UserCredentials credentials);
-        
-        SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureSubscription subscription, AzureProfile profile);
+
+        SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureContext context);
     }
 }

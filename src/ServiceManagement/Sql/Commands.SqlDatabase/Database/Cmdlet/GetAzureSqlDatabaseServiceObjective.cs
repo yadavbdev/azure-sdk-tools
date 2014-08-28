@@ -97,7 +97,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                     break;
 
                 case ByServerName:
-                    context = ServerDataServiceCertAuth.Create(this.ServerName, AzureSession.CurrentSubscription);
+                    context = ServerDataServiceCertAuth.Create(this.ServerName, AzureSession.CurrentContext.Subscription);
                     break;
 
                 default:

@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             {
                 if (schedulerMgmntClient == null)
                 {
-                    schedulerMgmntClient = new SchedulerMgmntClient(CurrentSubscription);
+                    schedulerMgmntClient = new SchedulerMgmntClient(CurrentContext.Subscription);
                 }
                 return schedulerMgmntClient;
             }

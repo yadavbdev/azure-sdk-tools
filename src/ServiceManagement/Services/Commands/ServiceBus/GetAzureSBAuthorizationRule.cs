@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
 
         public override void ExecuteCmdlet()
         {
-            Client = Client ?? new ServiceBusClientExtensions(CurrentSubscription);
+            Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
             List<ExtendedAuthorizationRule> rules = null;
             List<PSObject> output = new List<PSObject>();
             AuthorizationRuleFilterOption options = new AuthorizationRuleFilterOption()

@@ -994,7 +994,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         /// </summary>
         public static string DefaultAndCurrentSubscription {
             get {
-                return ResourceManager.GetString("DefaultAndCurrentSubscription", resourceCulture);
+                return ResourceManager.GetString("DefaultAndCurrentContext.Subscription", resourceCulture);
             }
         }
         

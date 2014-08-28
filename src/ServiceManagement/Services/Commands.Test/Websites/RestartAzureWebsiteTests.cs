@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Name = websiteName,
                 WebsitesClient = websitesClientMock.Object
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             restartAzureWebsiteCommand.ExecuteCmdlet();
 
@@ -67,7 +67,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 WebsitesClient = websitesClientMock.Object,
                 Slot = slot
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             restartAzureWebsiteCommand.ExecuteCmdlet();
 

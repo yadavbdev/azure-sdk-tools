@@ -55,9 +55,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             return Token;
         }
 
-        public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureSubscription subscription, AzureProfile profile)
+        public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureContext context)
         {
-            return new AccessTokenCredential(subscription.Id, Token);
+            return new AccessTokenCredential(context.Subscription.Id, Token);
         }
     }
 }

@@ -28,23 +28,22 @@ namespace Microsoft.WindowsAzure.Commands.Common
             SubscriptionTokenCache = new Dictionary<Guid, IAccessToken>();
             ClientFactory = new ClientFactory();
             AuthenticationFactory = new AuthenticationFactory();
-            CurrentEnvironment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
+            CurrentContext = new AzureContext();
+            CurrentContext.Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
         }
 
         public static IDictionary<Guid, IAccessToken> SubscriptionTokenCache { get; set; }
 
-        public static AzureSubscription CurrentSubscription { get; private set; }
-
-        public static AzureEnvironment CurrentEnvironment {get; private set; }
+        public static AzureContext CurrentContext {get; private set; }
         
-        public static void SetCurrentSubscription(AzureSubscription subscription, AzureEnvironment environment)
+        public static void SetCurrentContext(AzureSubscription subscription, AzureEnvironment environment, AzureAccount account)
         {
             if (environment == null)
             {
-                if (subscription != null && CurrentEnvironment != null &&
-                    subscription.Environment == CurrentEnvironment.Name)
+                if (subscription != null && CurrentContext != null &&
+                    subscription.Environment == CurrentContext.Environment.Name)
                 {
-                    environment = CurrentEnvironment;
+                    environment = CurrentContext.Environment;
                 }
                 else
                 {
@@ -57,13 +56,35 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 }
             }
 
+            if (account == null)
+            {
+                if (subscription != null && CurrentContext != null &&
+                    subscription.Account == CurrentContext.Account.Id)
+                {
+                    account = CurrentContext.Account;
+                }
+                else
+                {
+                    throw new ArgumentException("Account id doesn't match one in subscription.", "account");
+                }
+
+                if (subscription != null)
+                {
+                    subscription.Account = account.Id;
+                }
+            }
+
             if (subscription != null && subscription.Environment != environment.Name)
             {
                 throw new ArgumentException("Environment name doesn't match one in subscription.", "environment");
             }
 
-            CurrentSubscription = subscription;
-            CurrentEnvironment = environment;
+            CurrentContext = new AzureContext
+            {
+                Subscription = subscription,
+                Account = account,
+                Environment = environment
+            };
         }
 
         public static IClientFactory ClientFactory { get; set; }

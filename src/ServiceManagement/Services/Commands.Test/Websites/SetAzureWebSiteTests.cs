@@ -74,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 NumberOfWorkers = 3,
                 WebsitesClient = clientMock.Object
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
             Assert.IsTrue(updatedSiteConfig);
@@ -90,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 HostNames = new [] { "stuff.com" },
                 WebsitesClient = clientMock.Object
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
             Assert.IsFalse(updatedSiteConfig);
@@ -143,7 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 WebsitesClient = clientMock.Object,
                 Slot = slot
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
             Assert.IsTrue(updatedSiteConfig);
@@ -160,7 +160,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 WebsitesClient = clientMock.Object,
                 Slot = slot
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
             Assert.IsFalse(updatedSiteConfig);

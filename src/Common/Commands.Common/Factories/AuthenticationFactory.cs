@@ -46,35 +46,33 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             return token;
         }
 
-        public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureSubscription subscription, AzureProfile profile)
+        public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureContext context)
         {
-            if (subscription == null)
+            if (context.Subscription == null)
             {
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
             }
 
-            var accountId = subscription.GetProperty(AzureSubscription.Property.AzureAccount);
+            var account = context.Subscription.Account;
 
-            if (AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))
+            if (AzureSession.SubscriptionTokenCache.ContainsKey(context.Subscription.Id))
             {
-                return new AccessTokenCredential(subscription.Id, AzureSession.SubscriptionTokenCache[subscription.Id]);
+                return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[context.Subscription.Id]);
             }
-            else if (accountId != null)
+            else if (account != null)
             {
-                Debug.Assert(profile.Accounts.ContainsKey(accountId));
-
-                switch (profile.Accounts[accountId].Type)
+                switch (context.Account.Type)
                 {
                     case AzureAccount.AccountType.User:
-                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(subscription.Id))
+                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(context.Subscription.Id))
                         {
                             throw new ArgumentException(Resources.InvalidSubscriptionState);
                         }
-                        return new AccessTokenCredential(subscription.Id, AzureSession.SubscriptionTokenCache[subscription.Id]);
+                        return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[context.Subscription.Id]);
 
                     case AzureAccount.AccountType.Certificate:
-                        var certificate = ProfileClient.DataStore.GetCertificate(accountId);
-                        return new CertificateCloudCredentials(subscription.Id.ToString(), certificate);
+                        var certificate = ProfileClient.DataStore.GetCertificate(account);
+                        return new CertificateCloudCredentials(context.Subscription.Id.ToString(), certificate);
 
                     default:
                         throw new NotImplementedException();

@@ -43,20 +43,20 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             throwWhenNotAvailable = throwIfClientNotSpecified;
         }
 
-        public TClient CreateClient<TClient>(AzureSubscription subscription, Uri endpoint, AzureProfile profile) where TClient : ServiceClient<TClient>
+        public TClient CreateClient<TClient>(AzureContext context, Uri endpoint) where TClient : ServiceClient<TClient>
         {
-            SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id.ToString(), "fake_token");
+            SubscriptionCloudCredentials creds = new TokenCloudCredentials(context.Subscription.Id.ToString(), "fake_token");
             if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
             {
-                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription, profile);
+                creds = authenticationFactory.GetSubscriptionCloudCredentials(context);
             }
 
             return CreateClient<TClient>(creds, endpoint);
         }
 
-        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName, AzureProfile profile) where TClient : ServiceClient<TClient>
+        public TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
         {
-            return CreateClient<TClient>(subscription, endpointName, profile.Environments[subscription.Environment]);
+            return CreateClient<TClient>(context, endpointName);
         }
 
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
@@ -65,7 +65,14 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
             {
                 ProfileClient profileClient = new ProfileClient();
-                creds = authenticationFactory.GetSubscriptionCloudCredentials(subscription, profileClient.Profile);
+                AzureContext context = new AzureContext()
+                {
+                    Account = profileClient.ListAccounts(subscription.Account, subscription.Environment).First(),
+                    Environment = profileClient.GetEnvironmentOrDefault(subscription.Environment),
+                    Subscription = subscription
+                };
+
+                creds = authenticationFactory.GetSubscriptionCloudCredentials(context);
             }
 
             Uri endpointUri = (new ProfileClient()).Profile.Environments[subscription.Environment].GetEndpointAsUri(endpoint);

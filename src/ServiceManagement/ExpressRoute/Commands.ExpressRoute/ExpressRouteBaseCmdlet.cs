@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
             {
                 if (expressRouteClient == null)
                 {
-                    expressRouteClient = new ExpressRouteClient(CurrentSubscription);
+                    expressRouteClient = new ExpressRouteClient(CurrentContext.Subscription);
                 }
                 return expressRouteClient;
             }

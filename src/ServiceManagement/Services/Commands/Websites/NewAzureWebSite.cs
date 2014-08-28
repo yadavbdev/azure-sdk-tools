@@ -321,7 +321,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites
             {
                 // Create webspace with VirtualPlan failed, try with subscription id
                 // This supports Windows Azure Pack
-                webspace.Plan = CurrentSubscription.Id.ToString();
+                webspace.Plan = CurrentContext.Subscription.Id.ToString();
                 result = CreateSite(webspace, website);
             }
             return result;
@@ -367,7 +367,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites
             {
                 Name = Regex.Replace(location.ToLower(), " ", "") + "webspace",
                 GeoRegion = location,
-                Subscription = CurrentSubscription.Id.ToString(),
+                Subscription = CurrentContext.Subscription.Id.ToString(),
                 Plan = "VirtualDedicatedPlan"
             };
         }
@@ -399,7 +399,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites
 
                 createdWebsite = WebsitesClient.GetWebsite(website.Name);
 
-                Cache.AddSite(CurrentSubscription.Id.ToString(), createdWebsite);
+                Cache.AddSite(CurrentContext.Subscription.Id.ToString(), createdWebsite);
                 SiteConfig websiteConfiguration = WebsitesClient.GetWebsiteConfiguration(createdWebsite.Name, Slot);
                 WriteObject(new SiteWithConfig(createdWebsite, websiteConfiguration));
             }

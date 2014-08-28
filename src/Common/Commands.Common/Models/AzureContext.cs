@@ -12,26 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
-namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Common
+namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public abstract class WebsiteBaseCmdlet : AzurePSCmdlet
+    public class AzureContext
     {
-        private IWebsitesClient websitesClient;
+        public AzureAccount Account { get; set; }
 
-        public IWebsitesClient WebsitesClient
-        {
-            get
-            {
-                if (websitesClient == null)
-                {
-                    websitesClient = new WebsitesClient(CurrentContext.Subscription, WriteDebug);
-                }
-                return websitesClient;
-            }
+        public AzureSubscription Subscription { get; set; }
 
-            set { websitesClient = value; }
-        }
+        public AzureEnvironment Environment { get; set; }
     }
 }

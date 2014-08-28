@@ -103,7 +103,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
             var waSubscription = GetCurrentSubscription();
             ProfileClient profileClient = new ProfileClient();
 
-            var subscriptionCreds = getClustersCommand.GetSubscriptionCredentials(waSubscription, AzureSession.CurrentEnvironment, profileClient.Profile);
+            var subscriptionCreds = getClustersCommand.GetSubscriptionCredentials(waSubscription, AzureSession.CurrentContext.Environment, profileClient.Profile);
 
             Assert.IsInstanceOfType(subscriptionCreds, typeof(HDInsightCertificateCredential));
             var asCertificateCreds = subscriptionCreds as HDInsightCertificateCredential;
@@ -133,8 +133,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
             };
             profileClient.Profile.Save();
 
-            waSubscription.Properties[AzureSubscription.Property.AzureAccount] = "test";
-            var accessTokenCreds = getClustersCommand.GetSubscriptionCredentials(waSubscription, AzureSession.CurrentEnvironment, profileClient.Profile);
+            waSubscription.Account = "test";
+            var accessTokenCreds = getClustersCommand.GetSubscriptionCredentials(waSubscription, AzureSession.CurrentContext.Environment, profileClient.Profile);
             Assert.IsInstanceOfType(accessTokenCreds, typeof(HDInsightAccessTokenCredential));
             var asAccessTokenCreds = accessTokenCreds as HDInsightAccessTokenCredential;
             Assert.AreEqual("abc", asAccessTokenCreds.AccessToken);
@@ -151,7 +151,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
 
             var subscriptionCreds = getClustersCommand.GetJobSubmissionClientCredentials(
                 waSubscription,
-                AzureSession.CurrentEnvironment,
+                AzureSession.CurrentContext.Environment,
                 IntegrationTestBase.TestCredentials.WellKnownCluster.DnsName,
                 profileClient.Profile);
 
@@ -169,10 +169,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
             var waSubscription = new AzureSubscription()
             {
                 Id = IntegrationTestBase.TestCredentials.SubscriptionId,
-                Properties = new Dictionary<AzureSubscription.Property, string>
-                {
-                    { AzureSubscription.Property.AzureAccount, "test" }
-                }
+                Account = "test"
             };
             ProfileClient profileClient = new ProfileClient();
             profileClient.Profile.Accounts["test"] = new AzureAccount
@@ -188,7 +185,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
             profileClient.Profile.Save();
             var accessTokenCreds = getClustersCommand.GetJobSubmissionClientCredentials(
                 waSubscription,
-                AzureSession.CurrentEnvironment,
+                AzureSession.CurrentContext.Environment,
                 IntegrationTestBase.TestCredentials.WellKnownCluster.DnsName,
                 profileClient.Profile);
             Assert.IsInstanceOfType(accessTokenCreds, typeof(HDInsightAccessTokenCredential));
@@ -207,11 +204,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
             {
                 Id = IntegrationTestBase.TestCredentials.SubscriptionId,
             };
-            waSubscription.Properties[AzureSubscription.Property.AzureAccount] = "test";
+            waSubscription.Account = "test";
             var profile = new AzureProfile();
             var accessTokenCreds = getClustersCommand.GetJobSubmissionClientCredentials(
                 waSubscription,
-                AzureSession.CurrentEnvironment,
+                AzureSession.CurrentContext.Environment,
                 IntegrationTestBase.TestCredentials.WellKnownCluster.DnsName, profile);
             Assert.IsInstanceOfType(accessTokenCreds, typeof(BasicAuthCredential));
             var asBasicAuthCredentials = accessTokenCreds as BasicAuthCredential;

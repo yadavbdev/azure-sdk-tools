@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             get
             {
-                return this.automationClient = this.automationClient ?? new AutomationClient(CurrentSubscription);
+                return this.automationClient = this.automationClient ?? new AutomationClient(CurrentContext.Subscription);
             }
 
             set

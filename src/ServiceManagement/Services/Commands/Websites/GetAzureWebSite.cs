@@ -59,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites
                     if (string.IsNullOrEmpty(Slot))
                     {
                         List<Site> websites = WebsitesClient.GetWebsiteSlots(Name);
-                        Cache.SaveSites(CurrentSubscription.Id.ToString(), new Sites(websites));
+                        Cache.SaveSites(CurrentContext.Subscription.Id.ToString(), new Sites(websites));
 
                         if (websites.Count > 1)
                         {
@@ -121,7 +121,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites
                         websites = WebsitesClient.ListWebsites(Slot);
                     }
 
-                    Cache.SaveSites(CurrentSubscription.Id.ToString(), new Sites(websites));
+                    Cache.SaveSites(CurrentContext.Subscription.Id.ToString(), new Sites(websites));
                     WriteWebsites(websites);
                 });
         }

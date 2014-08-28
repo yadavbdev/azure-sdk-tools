@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Client = Client ?? new ServiceBusClientExtensions(CurrentSubscription);
+            Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
             WriteObject(Client.CreateNamespace(Name, Location));
         }
     }

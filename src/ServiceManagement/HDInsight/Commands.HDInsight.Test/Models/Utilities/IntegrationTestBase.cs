@@ -80,7 +80,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
             {
                 Id = IntegrationTestBase.TestCredentials.SubscriptionId,
                 // Use fake certificate thumbprint
-                Properties = new Dictionary<AzureSubscription.Property, string> { { AzureSubscription.Property.AzureAccount, certificateThumbprint1 } }
+                Account = certificateThumbprint1
             };
         }
 

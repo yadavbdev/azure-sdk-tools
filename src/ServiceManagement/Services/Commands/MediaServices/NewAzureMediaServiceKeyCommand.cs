@@ -59,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.MediaServices
                           string.Empty,
                           () =>
                           {
-                              MediaServicesClient = MediaServicesClient ?? new MediaServicesClient(CurrentSubscription, WriteDebug);
+                              MediaServicesClient = MediaServicesClient ?? new MediaServicesClient(CurrentContext.Subscription, WriteDebug);
 
                               
                               OperationResponse result =null;

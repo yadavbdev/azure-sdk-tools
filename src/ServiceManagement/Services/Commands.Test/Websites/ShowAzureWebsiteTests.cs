@@ -48,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Name = "website1",
                 WebsitesClient = mockClient.Object
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             // Show existing website
             showAzureWebsiteCommand.ExecuteCmdlet();

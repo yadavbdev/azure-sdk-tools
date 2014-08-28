@@ -136,10 +136,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 Id = new Guid(currentEnvironment.SubscriptionId),
                 Name = testSubscriptionName,
                 Environment = testEnvironmentName,
+                Account = currentEnvironment.UserName,
                 Properties = new Dictionary<AzureSubscription.Property,string> 
                 {
                      { AzureSubscription.Property.Default, "True"},
-                     { AzureSubscription.Property.AzureAccount, currentEnvironment.UserName},
                      { AzureSubscription.Property.StorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
                 }
             };

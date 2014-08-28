@@ -18,6 +18,7 @@ using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
+using System.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
@@ -29,28 +30,24 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public AzurePSCmdlet()
         {
             profileClient = new ProfileClient();
-            if (AzureSession.CurrentSubscription == null &&
+            if (AzureSession.CurrentContext == null &&
                 profileClient.Profile.DefaultSubscription != null)
             {
-                AzureSession.SetCurrentSubscription(
+                AzureSession.SetCurrentContext(
                     profileClient.Profile.DefaultSubscription,
-                    profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment));
+                    profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment),
+                    profileClient.ListAccounts(profileClient.Profile.DefaultSubscription.Account, profileClient.Profile.DefaultSubscription.Environment).First());
             }
         }
 
-        public AzureSubscription CurrentSubscription
+        public AzureContext CurrentContext
         {
-            get { return AzureSession.CurrentSubscription; }
-        }
-
-        public AzureEnvironment CurrentEnvironment
-        {
-            get { return AzureSession.CurrentEnvironment; }
+            get { return AzureSession.CurrentContext; }
         }
 
         public bool HasCurrentSubscription
         {
-            get { return AzureSession.CurrentSubscription != null; }
+            get { return AzureSession.CurrentContext.Subscription != null; }
         }
 
         protected string CurrentPath()
