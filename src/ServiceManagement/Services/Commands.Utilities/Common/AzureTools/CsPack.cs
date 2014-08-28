@@ -13,18 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools
 {
-    using Commands.Utilities.Properties;
-    using Common;
-    using Common.XmlSchema.ServiceDefinitionSchema;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Package services for deployment to Azure.
     /// </summary>

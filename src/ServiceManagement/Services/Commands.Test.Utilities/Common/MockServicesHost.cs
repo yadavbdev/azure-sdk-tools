@@ -12,19 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.Common;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// This class simulates querying and updating hosted services.
     /// </summary>

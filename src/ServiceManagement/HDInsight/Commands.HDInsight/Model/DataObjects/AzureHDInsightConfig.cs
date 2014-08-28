@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Management.HDInsight.ClusterProvisioning.Data;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects
 {
-    using ClusterProvisioning.Data;
-    using System.Collections.Generic;
-
     /// <summary>
     ///     Represents an Azure Configuration to be used when creating new clusters.
     /// </summary>

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdlets.IaaS.Extensions
 {
-    using System.Linq;
-    using Commands.Test.Utilities.Common;
-    using ServiceManagement.IaaS.Extensions.DSC;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Tests for DSC ConfigurationParsingHelper class.
     /// </summary>

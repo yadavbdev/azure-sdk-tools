@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using System.Net.Http;
+using System.Threading;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-    using System.Net.Http;
-    using System.Threading;
-
     public class HttpRestCallLogger : MessageProcessingHandler
     {
         public static PSCmdlet CurrentCmdlet { get; set; }
@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             if (CurrentCmdlet.MyInvocation.BoundParameters.ContainsKey("Debug") ||
                 debugPreference.Equals("Continue"))
             {
-                using (PowerShell ps = PowerShell.Create())
+                using (System.Management.Automation.PowerShell ps = System.Management.Automation.PowerShell.Create())
                 {
                     ps.Runspace = RunspaceFactory.CreateRunspace(CurrentCmdlet.Host);
                     ps.Runspace.Open();

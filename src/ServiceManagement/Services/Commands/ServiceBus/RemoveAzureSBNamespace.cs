@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System.Management.Automation;
-
     /// <summary>
     /// Creates new service bus namespace.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureSBNamespace", SupportsShouldProcess = true), OutputType(typeof(bool))]
-    public class RemoveAzureSBNamespaceCommand : CmdletWithSubscriptionBase
+    public class RemoveAzureSBNamespaceCommand : AzurePSCmdlet
     {
         public ServiceBusClientExtensions Client { get; set; }
 
@@ -48,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
                 Name,
                 () =>
                 {
-                    Client = Client ?? new ServiceBusClientExtensions(CurrentSubscription);
+                    Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
                     Client.RemoveNamespace(Name);
 
                     if (PassThru)

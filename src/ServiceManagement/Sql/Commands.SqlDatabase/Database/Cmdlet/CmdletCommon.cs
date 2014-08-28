@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Management.Automation;
+using System.Threading;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using System;
-    using System.Diagnostics;
-    using System.Management.Automation;
-    using System.Threading;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
-
     internal static class CmdletCommon
     {
         public static DateTime NormalizeToUtc(DateTime dateTime)
@@ -44,7 +44,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// <param name="context">The context upon which to perform the action</param>
         /// <param name="response">The database object.</param>
         /// <returns>Returns the response from the server</returns>
-        internal static Database WaitForDatabaseOperation(PSCmdlet cmdlet, IServerDataServiceContext context, Database response, string databaseName, bool isCreate)
+        internal static Services.Server.Database WaitForDatabaseOperation(PSCmdlet cmdlet, IServerDataServiceContext context, Services.Server.Database response, string databaseName, bool isCreate)
         {
             // Duration to sleep: 2 second
             TimeSpan sleepDuration = TimeSpan.FromSeconds(2.0);

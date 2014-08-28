@@ -12,23 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using System;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-    using TestBase = Test.Utilities.Common.TestBase;
-    using Testing = Test.Utilities.Common.Testing;
-
     [TestClass]
     public class ServiceSettingsTests : TestBase
     {
         [TestInitialize]
         public void SetupTest()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
         }
 
         [TestMethod]

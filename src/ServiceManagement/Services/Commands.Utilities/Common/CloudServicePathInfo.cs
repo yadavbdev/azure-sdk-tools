@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using Common;
-
     public abstract class CloudProjectPathInfo
     {
         public string Definition { get; protected set; }

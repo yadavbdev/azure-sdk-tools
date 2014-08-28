@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    using PowershellCore;
-    using System.Security.Cryptography.X509Certificates;
-
     public class SetAzureServiceExtensionCmdletInfo : CmdletsInfo
     {
         public SetAzureServiceExtensionCmdletInfo(string serviceName, string[] roles, string slot, string extensionName,

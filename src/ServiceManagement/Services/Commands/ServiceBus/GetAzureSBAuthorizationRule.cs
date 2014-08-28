@@ -12,21 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-
     /// <summary>
     /// Creates new service bus authorization rule.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSBAuthorizationRule"), OutputType(typeof(ExtendedAuthorizationRule), typeof(List<ExtendedAuthorizationRule>))]
-    public class GetAzureSBAuthorizationRuleCommand : CmdletWithSubscriptionBase
+    public class GetAzureSBAuthorizationRuleCommand : AzurePSCmdlet
     {
         public const string EntitySASParameterSet = "EntitySAS";
 
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
 
         public override void ExecuteCmdlet()
         {
-            Client = Client ?? new ServiceBusClientExtensions(CurrentSubscription);
+            Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
             List<ExtendedAuthorizationRule> rules = null;
             List<PSObject> output = new List<PSObject>();
             AuthorizationRuleFilterOption options = new AuthorizationRuleFilterOption()

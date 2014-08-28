@@ -12,24 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using AutoMapper;
-    using Commands.Utilities.Common;
-    using Helpers;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
     using PVM = Model;
-    using Role = Management.Compute.Models.Role;
-    using RoleInstance = Management.Compute.Models.RoleInstance;
 
-    [Cmdlet(VerbsCommon.Get, "AzureRole"), OutputType(typeof(RoleContext), typeof(RoleInstanceContext))]
+    [Cmdlet(VerbsCommon.Get, "AzureRole"), OutputType(typeof(PVM.RoleContext), typeof(PVM.RoleInstanceContext))]
     public class GetAzureRoleCommand : ServiceManagementBaseCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the hosted service.")]
@@ -40,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         }
 
         [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Deployment slot")]
-        [ValidateSet(DeploymentSlotType.Staging, DeploymentSlotType.Production, IgnoreCase = true)]
+        [ValidateSet(PVM.DeploymentSlotType.Staging, PVM.DeploymentSlotType.Production, IgnoreCase = true)]
         public string Slot
         {
             get;
@@ -75,7 +73,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
             {
                 if (this.InstanceDetails.IsPresent)
                 {
-                    Collection<RoleInstanceContext> instanceContexts = new Collection<RoleInstanceContext>();
+                    Collection<PVM.RoleInstanceContext> instanceContexts = new Collection<PVM.RoleInstanceContext>();
                     IList<RoleInstance> roleInstances = null;
 
                     if (string.IsNullOrEmpty(this.RoleName))
@@ -92,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
                         var vmRole = currentDeployment.Roles == null || !currentDeployment.Roles.Any() ? null
                                    : currentDeployment.Roles.FirstOrDefault(r => string.Equals(r.RoleName, role.RoleName, StringComparison.OrdinalIgnoreCase));
 
-                        instanceContexts.Add(new RoleInstanceContext
+                        instanceContexts.Add(new PVM.RoleInstanceContext
                         {
                             ServiceName           = this.ServiceName,
                             OperationId           = getDeploymentOperation.Id,
@@ -122,7 +120,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
                 }
                 else
                 {
-                    var roleContexts = new Collection<RoleContext>();
+                    var roleContexts = new Collection<PVM.RoleContext>();
                     IList<Role> roles = null;
                     if (string.IsNullOrEmpty(this.RoleName))
                     {
@@ -133,7 +131,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
                         roles = new List<Role>(currentDeployment.Roles.Where(r => r.RoleName.Equals(this.RoleName, StringComparison.OrdinalIgnoreCase)));
                     }
 
-                    foreach (var r in roles.Select(role => new RoleContext
+                    foreach (var r in roles.Select(role => new PVM.RoleContext
                     {
                         InstanceCount        = currentDeployment.RoleInstances.Count(ri => ri.RoleName.Equals(role.RoleName, StringComparison.OrdinalIgnoreCase)),
                         RoleName             = role.RoleName,

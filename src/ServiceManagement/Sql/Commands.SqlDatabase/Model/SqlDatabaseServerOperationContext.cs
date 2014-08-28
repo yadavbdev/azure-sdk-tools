@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Model
 {
-    using Commands.Utilities.Common;
-
     public class SqlDatabaseServerOperationContext : ManagementOperationContext
     {
         public string ServerName { get; set; }

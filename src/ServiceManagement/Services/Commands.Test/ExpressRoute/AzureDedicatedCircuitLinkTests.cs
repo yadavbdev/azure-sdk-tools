@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ExpressRoute;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Management.ExpressRoute;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 {
-    using Commands.ExpressRoute;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.ExpressRoute;
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class AzureDedicatedCircuitLinkTests : TestBase
     {

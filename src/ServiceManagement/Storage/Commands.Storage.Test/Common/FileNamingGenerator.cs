@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
- namespace Microsoft.WindowsAzure.Management.Storage.Test.Common
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
+namespace Microsoft.WindowsAzure.Management.Storage.Test.Common
+{
     /// <summary>
     /// Provides utilities to generate different names for file service.
     /// </summary>

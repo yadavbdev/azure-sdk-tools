@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-
     [TestClass]
     public class CloudServiceOperationsTests
     {
@@ -41,8 +41,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         {
             var mockChannel = new MockRequestChannel();
 
-            var cloudServiceToCreate = new CloudService { Name = cloudServiceName, Label = cloudServiceLabel };
-            var cloudServiceToReturn = new CloudService
+            var cloudServiceToCreate = new Commands.Utilities.WAPackIaaS.DataContract.CloudService { Name = cloudServiceName, Label = cloudServiceLabel };
+            var cloudServiceToReturn = new Commands.Utilities.WAPackIaaS.DataContract.CloudService
             {
                 Name = cloudServiceName,
                 Label = cloudServiceLabel,
@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var createdCloudService = cloudServiceOperations.Create(cloudServiceToCreate, out jobOut);
 
             Assert.IsNotNull(createdCloudService);
-            Assert.IsInstanceOfType(createdCloudService, typeof(CloudService));
+            Assert.IsInstanceOfType(createdCloudService, typeof(Commands.Utilities.WAPackIaaS.DataContract.CloudService));
             Assert.AreEqual(cloudServiceToReturn.Name, createdCloudService.Name);
             Assert.AreEqual(cloudServiceToReturn.Label, createdCloudService.Label);
 
@@ -72,7 +72,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         public void ShouldReturnOneCloudService()
         {
             var mockChannel = new MockRequestChannel();
-            mockChannel.AddReturnObject(new CloudService { Name = cloudServiceName, Label = cloudServiceLabel });
+            mockChannel.AddReturnObject(new Commands.Utilities.WAPackIaaS.DataContract.CloudService { Name = cloudServiceName, Label = cloudServiceLabel });
             mockChannel.AddReturnObject(new CloudResource());
 
             var cloudServiceOperations = new CloudServiceOperations(new WebClientFactory(new Subscription(), mockChannel));
@@ -90,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         public void ShouldReturnOneCloudServiceByName()
         {
             var mockChannel = new MockRequestChannel();
-            mockChannel.AddReturnObject(new CloudService { Name = cloudServiceName, Label = cloudServiceLabel });
+            mockChannel.AddReturnObject(new Commands.Utilities.WAPackIaaS.DataContract.CloudService { Name = cloudServiceName, Label = cloudServiceLabel });
             mockChannel.AddReturnObject(new CloudResource());
 
             var cloudServiceOperations = new CloudServiceOperations(new WebClientFactory(new Subscription(), mockChannel));
@@ -110,8 +110,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var mockChannel = new MockRequestChannel();
             var cldList = new List<object>
             {
-                new CloudService { Name = cloudServiceName, Label = cloudServiceLabel },
-                new CloudService { Name = cloudServiceName, Label = cloudServiceLabel }
+                new Commands.Utilities.WAPackIaaS.DataContract.CloudService { Name = cloudServiceName, Label = cloudServiceLabel },
+                new Commands.Utilities.WAPackIaaS.DataContract.CloudService { Name = cloudServiceName, Label = cloudServiceLabel }
             };
             mockChannel.AddReturnObject(cldList);
             mockChannel.AddReturnObject(new CloudResource()).AddReturnObject(new VMRole { Name = "VMRole01", Label = "VMRole01-Label" }).AddReturnObject(new VM {});
@@ -135,7 +135,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         public void ShouldDeleteCloudService()
         {
             var mockChannel = new MockRequestChannel();
-            mockChannel.AddReturnObject(new CloudService { Name = cloudServiceName, Label = cloudServiceLabel }, new WebHeaderCollection { "x-ms-request-id:" + Guid.NewGuid() });
+            mockChannel.AddReturnObject(new Commands.Utilities.WAPackIaaS.DataContract.CloudService { Name = cloudServiceName, Label = cloudServiceLabel }, new WebHeaderCollection { "x-ms-request-id:" + Guid.NewGuid() });
 
             Guid? jobOut;
             var cloudServiceOperations = new CloudServiceOperations(new WebClientFactory(new Subscription(), mockChannel));

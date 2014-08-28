@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
-    using System;
-
     public static class ServerTestHelper
     {
         /// <summary>

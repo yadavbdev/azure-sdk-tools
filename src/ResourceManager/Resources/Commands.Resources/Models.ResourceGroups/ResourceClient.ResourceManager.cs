@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.Resources;
-using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.Azure.Management.Resources;
+using Microsoft.Azure.Management.Resources.Models;
+using Microsoft.WindowsAzure;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources.Models
@@ -108,7 +107,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             
             ResourceGetResult getResult = ResourceManagementClient.Resources.Get(parameters.ResourceGroupName, resourceIdentity);
 
-            return getResult.Resource.ToPSResource(parameters.ApiVersion, this);
+            return getResult.Resource.ToPSResource(this);
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             ResourceGetResult getResult = ResourceManagementClient.Resources.Get(parameters.ResourceGroupName, resourceIdentity);
 
-            return getResult.Resource.ToPSResource(parameters.ApiVersion, this);
+            return getResult.Resource.ToPSResource(this);
         }
 
         /// <summary>
@@ -182,7 +181,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                     throw new ArgumentException(ProjectResources.ResourceDoesntExists);
                 }
 
-                resources.Add(getResult.Resource.ToPSResource(parameters.ApiVersion, this));
+                resources.Add(getResult.Resource.ToPSResource(this));
             }
             else
             {
@@ -205,7 +204,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
                 if (listResult.Resources != null)
                 {
-                    resources.AddRange(listResult.Resources.Select(r => r.ToPSResource(parameters.ApiVersion, this)));
+                    resources.AddRange(listResult.Resources.Select(r => r.ToPSResource(this)));
                 }
             }
             return resources;
@@ -325,7 +324,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 WriteVerbose(ProjectResources.TemplateValid);
             }
 
-            WindowsAzureProfile.Instance.CurrentSubscription.RegisterCustomProviders(validationInfo.RequiredProviders);
             ResourceManagementClient.Deployments.CreateOrUpdate(parameters.ResourceGroupName, parameters.DeploymentName, deployment);
             WriteVerbose(string.Format("Create template deployment '{0}' using template {1}.", parameters.DeploymentName, deployment.TemplateLink.Uri));
             Deployment result = ProvisionDeploymentStatus(parameters.ResourceGroupName, parameters.DeploymentName, deployment);

@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Management.Sql;
+using Microsoft.WindowsAzure.Management.Sql.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Server.Cmdlet
 {
-    using Microsoft.WindowsAzure.Management.Sql;
-    using Microsoft.WindowsAzure.Management.Sql.Models;
-    using Model;
-    using Properties;
-    using System;
-    using System.Management.Automation;
-
     /// <summary>
     /// Creates a new Microsoft Azure SQL Database server in the selected subscription.
     /// </summary>

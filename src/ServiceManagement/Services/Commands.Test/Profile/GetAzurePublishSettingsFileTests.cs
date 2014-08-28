@@ -12,14 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Profile;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Profile
 {
-    using Commands.Profile;
-    using Commands.Utilities.Common;
-    using Moq;
-    using System.Management.Automation;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class GetAzurePublishSettingsFileTests
     {
@@ -27,6 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Profile
         public void GetsPublishSettingsFileUrl()
         {
             // Setup
+            ProfileClient.DataStore = new MockDataStore();
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             GetAzurePublishSettingsFileCommand cmdlet = new GetAzurePublishSettingsFileCommand()
             {
@@ -35,6 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Profile
                 Environment = EnvironmentName.AzureCloud,
                 Realm = "microsoft.com"
             };
+            cmdlet.ProfileClient = new ProfileClient();
 
             // Test
             cmdlet.ExecuteCmdlet();

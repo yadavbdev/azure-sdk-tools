@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Websites.WebJobs
 {
-    using System;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-
     public interface IPSWebJob
     {
         string JobName { get; set; }

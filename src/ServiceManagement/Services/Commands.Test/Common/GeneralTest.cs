@@ -12,13 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Common
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class GeneralTests
     {
@@ -29,14 +28,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Common
         public static void ClassInit(TestContext context)
         {
             // Set test environment variables
-            Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, _publishSettingsUrl);
+            System.Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, _publishSettingsUrl);
         }
 
         [ClassCleanup]
         public static void ClassCleanup()
         {
             // Delete test environment variables
-            Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, null);
+            System.Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, null);
         }
 
         [TestMethod]

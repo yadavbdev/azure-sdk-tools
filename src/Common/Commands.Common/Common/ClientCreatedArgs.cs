@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net.Http;
+
 namespace Microsoft.WindowsAzure.Commands.Common
 {
-    using System;
-    using System.Net.Http;
-
     public class ClientCreatedArgs : EventArgs
     {
         public object CreatedClient { get; set; }

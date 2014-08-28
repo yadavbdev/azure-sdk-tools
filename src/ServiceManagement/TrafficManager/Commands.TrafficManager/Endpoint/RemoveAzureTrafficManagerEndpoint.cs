@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Remove, "AzureTrafficManagerEndpoint"), OutputType(typeof(IProfileWithDefinition))]
     public class RemoveAzureTrafficManagerEndpoint : TrafficManagerConfigurationBaseCmdlet
     {

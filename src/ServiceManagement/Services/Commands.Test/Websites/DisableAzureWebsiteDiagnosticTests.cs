@@ -12,16 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Websites;
-    using Moq;
-    using System.Management.Automation;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class DisableAzureWebsiteApplicationDiagnosticTests : WebsitesTestBase
     {
@@ -52,10 +53,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 File = true,
             };
+
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -80,10 +82,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 Storage = true
             };
+
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -109,11 +112,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 File = true,
                 Slot = slot
             };
+
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();

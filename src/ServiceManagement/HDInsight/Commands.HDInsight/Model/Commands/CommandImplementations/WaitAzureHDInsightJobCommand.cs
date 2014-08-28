@@ -11,15 +11,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Threading.Tasks;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
-    using CommandInterfaces;
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-    using Hadoop.Client;
-    using System;
-    using System.Threading.Tasks;
-
     internal class WaitAzureHDInsightJobCommand : AzureHDInsightJobExecutorCommand<AzureHDInsightJob>, IWaitAzureHDInsightJobCommand
     {
         internal static bool ReduceWaitTime = false;

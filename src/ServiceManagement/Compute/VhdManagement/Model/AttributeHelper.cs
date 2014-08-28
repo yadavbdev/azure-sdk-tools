@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
-
     public class AttributeHelper<T>
     {
         private readonly Type type;

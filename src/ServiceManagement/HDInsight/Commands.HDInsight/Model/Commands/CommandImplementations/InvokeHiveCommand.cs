@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
-    using CommandInterfaces;
-    using GetAzureHDInsightClusters;
-
     internal class InvokeHiveCommand : InvokeAzureHDInsightJobCommandBase, IInvokeHiveCommand
     {
     }

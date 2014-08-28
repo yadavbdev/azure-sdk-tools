@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Common.XmlSchema.ServiceDefinitionSchema;
-
     /// <summary>
     /// Used to delay application of runtime until the user has acknowledged she wants the change
     /// </summary>

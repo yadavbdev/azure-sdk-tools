@@ -14,22 +14,23 @@
 
 //TODO: When transition to SM.NET is completed, rename the namespace to "Microsoft.WindowsAzure.ServiceManagement"
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
+using System.Xml;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Runtime.Serialization;
-    using System.Security.Permissions;
-    using System.ServiceModel;
-    using System.ServiceModel.Web;
-    using System.Text;
-    using System.Xml;
 
     #region Constants
     public static class Constants
@@ -6137,7 +6138,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             this.ResponseHeaders = responseHeaders;
         }
 
-        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

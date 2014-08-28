@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Logging;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Management.HDInsight.Cmdlet.Logging;
-    using Management.HDInsight.Logging;
-
     internal class BufferingLogWriterFactory : IBufferingLogWriterFactory
     {
         public static IBufferingLogWriter Instance { get; set; }

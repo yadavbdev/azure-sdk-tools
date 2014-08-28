@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class GetAzureSubscriptionCmdletInfo : CmdletsInfo
     {
         public GetAzureSubscriptionCmdletInfo(string subscriptionName, string subscriptionDataFile, bool extendedDetails, bool currentSubscription, bool defaultSubscription)

@@ -13,13 +13,13 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Management.Automation;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Network.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Management.Network.Models;
-    using System.Management.Automation;
-    using System.Xml.Linq;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Remove, "AzureVNetConfig"), OutputType(typeof(ManagementOperationContext))]
     public class RemoveAzureVNetConfigCommand : ServiceManagementBaseCmdlet
     {

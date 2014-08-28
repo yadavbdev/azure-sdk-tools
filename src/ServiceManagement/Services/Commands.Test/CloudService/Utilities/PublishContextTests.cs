@@ -12,19 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Properties;
-    using Moq;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using Test.Utilities.CloudService;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class PublishContextTests : TestBase
     {
@@ -44,23 +45,27 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         [TestInitialize()]
         public void TestInitialize()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             service = new AzureServiceWrapper(Directory.GetCurrentDirectory(), Path.GetRandomFileName(), null);
             service.CreateVirtualCloudPackage();
             packagePath = service.Paths.CloudPackage;
             configPath = service.Paths.CloudConfiguration;
             settings = ServiceSettingsTestData.Instance.Data[ServiceSettingsState.Default];
-            WindowsAzureProfile.Instance = new WindowsAzureProfile(new Mock<IProfileStore>().Object);
-            WindowsAzureProfile.Instance.ImportPublishSettings(Data.ValidPublishSettings.First());
+            ProfileClient.DataStore = new MockDataStore();
+            ProfileClient client = new ProfileClient();
+            ProfileClient.DataStore.WriteFile(Test.Utilities.Common.Data.ValidPublishSettings.First(),
+                File.ReadAllText(Test.Utilities.Common.Data.ValidPublishSettings.First()));
+            client.ImportPublishSettings(Test.Utilities.Common.Data.ValidPublishSettings.First());
+            client.Profile.Save();
         }
 
         [TestCleanup()]
         public void TestCleanup()
         {
-            WindowsAzureProfile.ResetInstance();
-            if (Directory.Exists(Data.AzureSdkAppDir))
+            ProfileClient.DataStore = new MockDataStore();
+            if (Directory.Exists(Test.Utilities.Common.Data.AzureSdkAppDir))
             {
-                new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(Data.AzureSdkAppDir);
+                new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(Test.Utilities.Common.Data.AzureSdkAppDir);
             }
         }
 

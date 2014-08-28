@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.Azure.Commands.Automation.Common
 {
-    using System;
-
     [Serializable]
     public class ResourceNotFoundException : Exception
     {

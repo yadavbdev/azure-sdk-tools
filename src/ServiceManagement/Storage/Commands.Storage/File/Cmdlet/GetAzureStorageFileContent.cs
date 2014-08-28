@@ -11,13 +11,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Globalization;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
+using Microsoft.WindowsAzure.Storage.File;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
-    using Microsoft.WindowsAzure.Storage.File;
-    using System.Globalization;
-    using System.IO;
-    using System.Management.Automation;
     using LocalDirectory = System.IO.Directory;
     using LocalPath = System.IO.Path;
 

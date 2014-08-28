@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Test.Resources;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Common.Test.Resources;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Various utilities and helpers to facilitate testing.
     /// </summary>

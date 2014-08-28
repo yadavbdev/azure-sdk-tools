@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding
 {
-    using System.IO;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.CloudService;
-    using Utilities.Common;
-    using Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Utilities.Properties;
-
     /// <summary>
     /// Create scaffolding for a new worker role, change cscfg file and csdef to include the added worker role
     /// </summary>

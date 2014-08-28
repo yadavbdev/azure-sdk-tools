@@ -11,14 +11,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Management.Automation;
+using System.Runtime.InteropServices;
+using System.Security;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using Extensions;
-    using System;
-    using System.Management.Automation;
-    using System.Runtime.InteropServices;
-    using System.Security;
-
     internal static class PsCredentialsExtensionMethods
     {
         internal static string GetCleartextFromSecureString(SecureString secureString)

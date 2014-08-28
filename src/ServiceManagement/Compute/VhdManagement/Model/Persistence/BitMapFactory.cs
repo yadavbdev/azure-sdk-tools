@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 {
-    using System;
-    using System.Collections;
-
     public class BitMapFactory
     {
         private readonly VhdFile vhdFile;

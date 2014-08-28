@@ -13,25 +13,24 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using ConfigDataInfo;
-    using Extensions;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class FunctionalTest : ServiceManagementTest
     {
@@ -543,7 +542,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             // Create a certificate
             X509Certificate2 cert = Utilities.CreateCertificate(password);
 
-            string storage = defaultAzureSubscription.CurrentStorageAccountName;
+            string storage = defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount);
             XmlDocument daConfig = new XmlDocument();
             daConfig.Load(@".\da.xml");
 
@@ -876,11 +875,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             try
             {
-                StorageServiceKeyOperationContext key1 = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName); // Get-AzureStorageAccountKey
+                StorageServiceKeyOperationContext key1 = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount)); // Get-AzureStorageAccountKey
                 Console.WriteLine("Primary - {0}", key1.Primary);
                 Console.WriteLine("Secondary - {0}", key1.Secondary);
 
-                StorageServiceKeyOperationContext key2 = vmPowershellCmdlets.NewAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName, KeyType.Secondary);
+                StorageServiceKeyOperationContext key2 = vmPowershellCmdlets.NewAzureStorageAccountKey(defaultAzureSubscription.GetProperty(AzureSubscription.Property.StorageAccount), KeyType.Secondary);
                 Console.WriteLine("Primary - {0}", key2.Primary);
                 Console.WriteLine("Secondary - {0}", key2.Secondary);
 

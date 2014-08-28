@@ -11,13 +11,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using Helpers;
-    using Model;
-    using System.Linq;
-    using System.Xml.Linq;
-
     public class VirtualMachineAccessExtensionCmdletBase : VirtualMachineExtensionCmdletBase
     {
         protected const string VirtualMachineAccessExtensionNoun = "AzureVMAccessExtension";

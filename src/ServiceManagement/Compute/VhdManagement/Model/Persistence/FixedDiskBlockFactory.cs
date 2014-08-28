@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 {
-    using System;
-
     public class FixedDiskBlockFactory : IBlockFactory
     {
         private readonly VhdFile vhdFile;

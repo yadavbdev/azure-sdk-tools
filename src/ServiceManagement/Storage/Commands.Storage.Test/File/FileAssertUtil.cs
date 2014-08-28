@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Management.Storage.Test.Common;
+using Microsoft.WindowsAzure.Storage.File;
+
 namespace Microsoft.WindowsAzure.Management.Storage.Test.File
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Text;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Management.Storage.Test.Common;
-    using Microsoft.WindowsAzure.Storage.File;
-
     internal static class FileAssertUtil
     {
         public static void AssertSingleObject<T>(this IEnumerable<T> collection, Func<T, bool> assertAction)

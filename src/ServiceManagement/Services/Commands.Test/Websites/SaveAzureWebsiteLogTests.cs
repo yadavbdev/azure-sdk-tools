@@ -12,20 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using Commands.Websites;
-    using Moq;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using Utilities.Common;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class SaveAzureWebsiteLogTests : WebsitesTestBase
     {
@@ -82,12 +85,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId }
             };
-            
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
+
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test", File.ReadAllText(SaveAzureWebsiteLogCommand.DefaultOutput));
+            Assert.AreEqual("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
         }
 
         [TestMethod]
@@ -108,13 +111,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 Output = "file_without_ext"
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test with no extension", File.ReadAllText(expectedOutput));
+            Assert.AreEqual("test with no extension", FileUtilities.DataStore.ReadFileAsText(expectedOutput));
         }
 
         [TestMethod]
@@ -133,13 +136,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 Slot = slot
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test", File.ReadAllText(SaveAzureWebsiteLogCommand.DefaultOutput));
+            Assert.AreEqual("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
         }
     }
 }

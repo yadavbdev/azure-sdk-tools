@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Gallery;
-using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Xunit;
 

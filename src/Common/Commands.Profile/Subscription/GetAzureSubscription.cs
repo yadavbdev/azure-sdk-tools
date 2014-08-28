@@ -12,32 +12,42 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using Microsoft.WindowsAzure.Management;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Management;
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using Utilities.Profile;
-
     /// <summary>
     /// Implementation of the get-azuresubscription cmdlet that works against
-    /// the WindowsAzureProfile layer.
+    /// the AzureProfile layer.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSubscription", DefaultParameterSetName = "ByName")]
-    [OutputType(typeof(WindowsAzureSubscription))]
+    [OutputType(typeof(AzureSubscription))]
     public class GetAzureSubscriptionCommand : SubscriptionCmdletBase
     {
-        public GetAzureSubscriptionCommand() : base(false)
+        public GetAzureSubscriptionCommand() : base(true)
         {
+
         }
 
         [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription", ParameterSetName = "ByName")]
         [ValidateNotNullOrEmpty]
+        [Alias("Name")]
         public string SubscriptionName { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "ID of the subscription", ParameterSetName = "ById")]
+        [ValidateNotNullOrEmpty]
+        [Alias("Id")]
+        public string SubscriptionId { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = "Retrieves the default subscription", ParameterSetName = "Default")]
         public SwitchParameter Default { get; set; }
@@ -53,7 +63,11 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "ByName":
-                    GetByName();
+                    WriteSubscriptions(ProfileClient.RefreshSubscriptions(AzureSession.CurrentContext.Environment)
+                        .Where(s => SubscriptionName == null || s.Name.Equals(SubscriptionName, StringComparison.InvariantCultureIgnoreCase)));
+                    break;
+                case "ById":
+                    WriteSubscriptions(ProfileClient.GetSubscriptionById(new Guid(SubscriptionId)));
                     break;
                 case "Default":
                     GetDefault();
@@ -64,19 +78,11 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             }
         }
 
-        public void GetByName()
-        {
-            IEnumerable<WindowsAzureSubscription> subscriptions = Profile.Subscriptions.Union(LoadSubscriptionsFromServer());
-            if (!string.IsNullOrEmpty(SubscriptionName))
-            {
-                subscriptions = subscriptions.Where(s => s.SubscriptionName == SubscriptionName);
-            }
-            WriteSubscriptions(subscriptions);
-        }
-
         public void GetDefault()
         {
-            if (Profile.DefaultSubscription == null)
+            var defaultSubscription = ProfileClient.Profile.DefaultSubscription;
+
+            if (defaultSubscription == null)
             {
                 WriteError(new ErrorRecord(
                     new InvalidOperationException(Resources.InvalidDefaultSubscription), 
@@ -85,7 +91,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             }
             else
             {
-                WriteSubscriptions(Profile.DefaultSubscription);
+                WriteSubscriptions(defaultSubscription);
             }
         }
 
@@ -96,8 +102,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             // since current is strictly in-memory and we want the real
             // current subscription.
             //
-            var currentProfile = BaseProfile;
-            if (currentProfile.CurrentSubscription == null)
+            if (AzureSession.CurrentContext.Subscription == null)
             {
                 WriteError(new ErrorRecord(
                     new InvalidOperationException(Resources.InvalidSelectedSubscription),
@@ -106,47 +111,73 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             }
             else
             {
-                WriteSubscriptions(currentProfile.CurrentSubscription);
+                WriteSubscriptions(AzureSession.CurrentContext.Subscription);
             }
         }
 
-        private void WriteSubscriptions(params WindowsAzureSubscription[] subscriptions)
+        private void WriteSubscriptions(params AzureSubscription[] subscriptions)
         {
-            WriteSubscriptions((IEnumerable<WindowsAzureSubscription>) subscriptions);
+            WriteSubscriptions((IEnumerable<AzureSubscription>) subscriptions);
         }
 
-        private void WriteSubscriptions(IEnumerable<WindowsAzureSubscription> subscriptions)
+        private void WriteSubscriptions(IEnumerable<AzureSubscription> subscriptions)
         {
-            IEnumerable<WindowsAzureSubscription> subscriptionOutput;
+            IEnumerable<AzureSubscription> subscriptionOutput;
 
             if (ExtendedDetails.IsPresent)
             {
-                subscriptionOutput = subscriptions.Select(s => s.ToExtendedData());
+                subscriptionOutput = subscriptions.Select(s => s.ToExtendedData(AzureSession.ClientFactory, ProfileClient.Profile));
             }
             else
             {
                 subscriptionOutput = subscriptions;
             }
 
-            foreach (WindowsAzureSubscription subscription in subscriptionOutput)
+            if (subscriptionOutput.Count() == 1)
             {
-                WriteObject(subscription);
+                AzureSubscription subscription = subscriptionOutput.First();
+                PSObject psObject = base.ConstructPSObject(
+                    null,
+                    "SubscriptionId", subscription.Id,
+                    "SubscriptionName", subscription.Name,
+                    "Environment", subscription.Environment,
+                    "SupportedModes", subscription.GetProperty(AzureSubscription.Property.SupportedModes),
+                    "IsDefault", (subscription.GetProperty(AzureSubscription.Property.Default) != null ? "Yes" : ""),
+                    "IsCurrent", (AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == subscription.Id
+                        ? "Yes"
+                        : ""));
+
+                WriteObject(psObject);
+            }
+            else
+            {
+                List<PSObject> output = new List<PSObject>();
+                subscriptionOutput.ForEach(s => output.Add(base.ConstructPSObject(
+                    null,
+                    "SubscriptionId", s.Id,
+                    "SubscriptionName", s.Name,
+                    "Environment", s.Environment,
+                    "IsCurrent", (AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == s.Id ? "Yes" : "")
+                    )));
+
+                WriteObject(output, true);
             }
         }
     }
 
     static class SubscriptionConversions
     {
-        internal static SubscriptionDataExtended ToExtendedData(this WindowsAzureSubscription subscription)
+        internal static SubscriptionDataExtended ToExtendedData(this AzureSubscription subscription, IClientFactory clientFactory, AzureProfile azureProfile)
         {
-            using (var client = subscription.CreateClient<ManagementClient>())
+            using (var client = clientFactory.CreateClient<ManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement))
             {
                 var response = client.Subscriptions.Get();
+                var environment = azureProfile.Environments[subscription.Environment];
 
                 SubscriptionDataExtended result = new SubscriptionDataExtended
                 {
                     AccountAdminLiveEmailId = response.AccountAdminLiveEmailId,
-                    ActiveDirectoryUserId = subscription.ActiveDirectoryUserId,
+                    ActiveDirectoryUserId = subscription.Account,
                     CurrentCoreCount = response.CurrentCoreCount,
                     CurrentHostedServices = response.CurrentHostedServices,
                     CurrentDnsServers = 0, // TODO: Add to spec
@@ -159,13 +190,13 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     ServiceAdminLiveEmailId = response.ServiceAdminLiveEmailId,
                     SubscriptionRealName = response.SubscriptionName,
                     SubscriptionStatus = response.SubscriptionStatus.ToString(),
-                    SubscriptionName = subscription.SubscriptionName,
-                    SubscriptionId = subscription.SubscriptionId,
-                    ServiceEndpoint = subscription.ServiceEndpoint,
-                    ResourceManagerEndpoint = subscription.ResourceManagerEndpoint,
-                    IsDefault = subscription.IsDefault,
-                    Certificate = subscription.Certificate,
-                    CurrentStorageAccountName = subscription.CurrentStorageAccountName
+                    Name = subscription.Name,
+                    Id = subscription.Id,
+                    ServiceEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement).ToString(),
+                    ResourceManagerEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager).ToString(),
+                    IsDefault = subscription.GetProperty(AzureSubscription.Property.Default) != null,
+                    Certificate = ProfileClient.DataStore.GetCertificate(subscription.Account),
+                    CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.StorageAccount)
                 };
                 
                 return result;

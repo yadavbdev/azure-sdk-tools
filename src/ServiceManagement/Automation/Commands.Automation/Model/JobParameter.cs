@@ -14,7 +14,7 @@
 
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The job parameter.

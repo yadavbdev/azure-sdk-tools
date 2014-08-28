@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 using Microsoft.WindowsAzure.Management.MediaServices.Models;
 
 namespace Microsoft.WindowsAzure.Commands.MediaServices
 {
-    using System.Management.Automation;
-    using Utilities.MediaServices;
-    using Utilities.MediaServices.Services.Entities;
-    using Utilities.Properties;
-
     public enum KeyType
     {
         Primary,
@@ -60,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.MediaServices
                           string.Empty,
                           () =>
                           {
-                              MediaServicesClient = MediaServicesClient ?? new MediaServicesClient(CurrentSubscription, WriteDebug);
+                              MediaServicesClient = MediaServicesClient ?? new MediaServicesClient(CurrentContext.Subscription, WriteDebug);
 
                               
                               OperationResponse result =null;
