@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         /// <summary>
         /// Creates new ActiveDirectoryClient using WindowsAzureSubscription.
         /// </summary>
-        /// <param name="subscription">The WindowsAzureSubscription instance</param>
+        /// <param name="context"></param>
         public ActiveDirectoryClient(AzureContext context)
         {
             AccessTokenCredential creds = (AccessTokenCredential)AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);

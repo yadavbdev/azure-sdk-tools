@@ -133,35 +133,19 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 subscriptionOutput = subscriptions;
             }
 
-            if (subscriptionOutput.Count() == 1)
-            {
-                AzureSubscription subscription = subscriptionOutput.First();
-                PSObject psObject = base.ConstructPSObject(
-                    null,
-                    "SubscriptionId", subscription.Id,
-                    "SubscriptionName", subscription.Name,
-                    "Environment", subscription.Environment,
-                    "SupportedModes", subscription.GetProperty(AzureSubscription.Property.SupportedModes),
-                    "IsDefault", (subscription.GetProperty(AzureSubscription.Property.Default) != null ? "Yes" : ""),
-                    "IsCurrent", (AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == subscription.Id
-                        ? "Yes"
-                        : ""));
+            List<PSObject> output = new List<PSObject>();
+            subscriptionOutput.ForEach(subscription => output.Add(base.ConstructPSObject(
+                null,
+                "SubscriptionId", subscription.Id,
+                "SubscriptionName", subscription.Name,
+                "Environment", subscription.Environment,
+                "SupportedModes", subscription.GetProperty(AzureSubscription.Property.SupportedModes),
+                "IsDefault", (subscription.GetProperty(AzureSubscription.Property.Default) != null ? "Yes" : "No"),
+                "IsCurrent", (AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == subscription.Id
+                    ? "Yes"
+                    : "No"))));
 
-                WriteObject(psObject);
-            }
-            else
-            {
-                List<PSObject> output = new List<PSObject>();
-                subscriptionOutput.ForEach(s => output.Add(base.ConstructPSObject(
-                    null,
-                    "SubscriptionId", s.Id,
-                    "SubscriptionName", s.Name,
-                    "Environment", s.Environment,
-                    "IsCurrent", (AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == s.Id ? "Yes" : "")
-                    )));
-
-                WriteObject(output, true);
-            }
+            WriteObject(output, true);
         }
     }
 
