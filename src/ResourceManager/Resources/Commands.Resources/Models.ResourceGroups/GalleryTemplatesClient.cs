@@ -37,8 +37,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
     {
         public IGalleryClient GalleryClient { get; set; }
 
-        public GalleryTemplatesClient(AzureSubscription subscription)
-            : this(AzureSession.ClientFactory.CreateClient<GalleryClient>(subscription, AzureEnvironment.Endpoint.Gallery))
+        public GalleryTemplatesClient(AzureContext context)
+            : this(AzureSession.ClientFactory.CreateClient<GalleryClient>(context, AzureEnvironment.Endpoint.Gallery))
         {
 
         }

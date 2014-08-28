@@ -43,10 +43,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             {
                 ProfileClient.DataStore = new MockDataStore();
             }
-            if (AzureSession.CurrentSubscription == null)
+            if (AzureSession.CurrentContext.Subscription == null)
             {
-                AzureSession.SetCurrentSubscription(
+                AzureSession.SetCurrentContext(
                     new AzureSubscription { Id = Guid.NewGuid(), Name = "test", Environment = EnvironmentName.AzureCloud },
+                    null,
                     null);
             }
             AzureSession.AuthenticationFactory = new MockAuthenticationFactory();

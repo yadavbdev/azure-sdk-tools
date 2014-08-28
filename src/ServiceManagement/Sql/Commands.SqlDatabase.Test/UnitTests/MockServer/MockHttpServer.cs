@@ -170,7 +170,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
             TestingTracingInterceptor.AddToContext();
             ProfileClient.DataStore = new MockDataStore();
             AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = Guid.NewGuid(), Name = "test" }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = Guid.NewGuid(), Name = "test" }, null, null);
 
             // Check if the cert has been installed 
             Process proc = ExecuteProcess(

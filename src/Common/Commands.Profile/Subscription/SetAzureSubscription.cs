@@ -80,7 +80,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             if (Certificate != null)
             {
                 ProfileClient.ImportCertificate(Certificate);
-                subscription.Properties[AzureSubscription.Property.AzureAccount] = Certificate.Thumbprint;
+                subscription.Account = Certificate.Thumbprint;
             }
 
             AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);

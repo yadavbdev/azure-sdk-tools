@@ -32,13 +32,13 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         /// Creates new ActiveDirectoryClient using WindowsAzureSubscription.
         /// </summary>
         /// <param name="subscription">The WindowsAzureSubscription instance</param>
-        public ActiveDirectoryClient(AzureSubscription subscription, AzureProfile profile)
+        public ActiveDirectoryClient(AzureContext context)
         {
-            AccessTokenCredential creds = (AccessTokenCredential)AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(subscription, profile);
+            AccessTokenCredential creds = (AccessTokenCredential)AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
             GraphClient = AzureSession.ClientFactory.CreateClient<GraphRbacManagementClient>(
                 creds.TenantID,
                 creds,
-                profile.Environments[subscription.Environment].GetEndpointAsUri(AzureEnvironment.Endpoint.Graph));
+                context.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.Graph));
         }
 
         public PSADObject GetADObject(ADObjectFilterOptions options)

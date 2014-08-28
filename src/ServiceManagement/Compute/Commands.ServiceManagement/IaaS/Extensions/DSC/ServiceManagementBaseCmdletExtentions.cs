@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             }
             else
             {
-                var storageAccountName = cmdlet.CurrentSubscription.GetProperty(AzureSubscription.Property.StorageAccount);
+                var storageAccountName = cmdlet.CurrentContext.Subscription.GetProperty(AzureSubscription.Property.StorageAccount);
                 
                 if (!string.IsNullOrEmpty(storageAccountName))
                 {

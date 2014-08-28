@@ -122,7 +122,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             // Update AzureAccount
             foreach (var subscription in mergedSubscriptions)
             {
-                subscription.SetProperty(AzureSubscription.Property.AzureAccount, credentials.UserName);
+                subscription.Account = credentials.UserName;
                 Profile.Subscriptions[subscription.Id] = subscription;
             }
 
@@ -145,15 +145,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return account;
         }
 
-        public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
+        public IEnumerable<AzureAccount> ListAccounts(string userName)
         {
-            List<AzureSubscription> subscriptions = Profile.Subscriptions.Values.ToList();
-            if (environment != null)
-            {
-                subscriptions = subscriptions.Where(s => s.Environment == environment).ToList();
-            }
-
             List<AzureAccount> accounts = new List<AzureAccount>();
+            
             if (!string.IsNullOrEmpty(userName))
             {
                 Debug.Assert(Profile.Accounts.ContainsKey(userName));
@@ -187,7 +182,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             foreach (AzureSubscription subscription in account.GetSubscriptions(Profile))
             {
-                if (subscription.GetProperty(AzureSubscription.Property.AzureAccount) == accountId)
+                if (subscription.Account == accountId)
                 {
                     AzureAccount defaultAccount = GetDefaultAccount(subscription.Id);
 
@@ -201,7 +196,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         }
 
                         // Warn the user if the removed subscription is the current one.
-                        if (subscription.Equals(AzureSession.CurrentSubscription))
+                        if (subscription.Equals(AzureSession.CurrentContext.Subscription))
                         {
                             WriteWarning(Resources.RemoveCurrentSubscription);
                         }
@@ -294,10 +289,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
 
             // Warn the user if the removed subscription is the current one.
-            if (AzureSession.CurrentSubscription != null && subscription.Id == AzureSession.CurrentSubscription.Id)
+            if (AzureSession.CurrentContext.Subscription != null && subscription.Id == AzureSession.CurrentContext.Subscription.Id)
             {
                 WriteWarning(Resources.RemoveCurrentSubscription);
-                AzureSession.SetCurrentSubscription(null, null);
+                AzureSession.SetCurrentContext(null, null, null);
             }
 
             Profile.Subscriptions.Remove(id);
@@ -365,7 +360,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                AzureSession.SetCurrentSubscription(subscription, environment);
+                var account = ListAccounts(subscription.Account).First();
+                AzureSession.SetCurrentContext(subscription, environment, account);
             }
 
             return subscription;
@@ -421,7 +417,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         private List<AzureSubscription> ListSubscriptionsFromPublishSettingsFile(string filePath)
         {
-            var currentEnvironment = AzureSession.CurrentEnvironment;
+            var currentEnvironment = AzureSession.CurrentContext.Environment;
 
             if (string.IsNullOrEmpty(filePath) || !DataStore.FileExists(filePath))
             {
@@ -475,7 +471,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 foreach (var subscription in mergedSubscriptions)
                 {
                     subscription.Environment = environment.Name;
-                    subscription.Properties[AzureSubscription.Property.AzureAccount] = credentials.UserName;
+                    subscription.Account = credentials.UserName;
                 }
 
                 if (mergedSubscriptions.Any())
@@ -694,11 +690,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             if (string.IsNullOrEmpty(name))
             {
-                return AzureSession.CurrentEnvironment;
+                return AzureSession.CurrentContext.Environment;
             }
-            else if (AzureSession.CurrentEnvironment != null && AzureSession.CurrentEnvironment.Name == name)
+            else if (AzureSession.CurrentContext.Environment != null && AzureSession.CurrentContext.Environment.Name == name)
             {
-                return AzureSession.CurrentEnvironment;
+                return AzureSession.CurrentContext.Environment;
             }
             else if (Profile.Environments.ContainsKey(name))
             {

@@ -45,10 +45,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         /// Creates PoliciesClient using WindowsAzureSubscription instance.
         /// </summary>
         /// <param name="subscription">The WindowsAzureSubscription instance</param>
-        public AuthorizationClient(AzureSubscription subscription, AzureProfile profile)
+        public AuthorizationClient(AzureContext context)
         {
-            ActiveDirectoryClient = new ActiveDirectoryClient(subscription, profile);
-            AuthorizationManagementClient = AzureSession.ClientFactory.CreateClient<AuthorizationManagementClient>(subscription, AzureEnvironment.Endpoint.ResourceManager);
+            ActiveDirectoryClient = new ActiveDirectoryClient(context);
+            AuthorizationManagementClient = AzureSession.ClientFactory.CreateClient<AuthorizationManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
         }
 
         public PSRoleDefinition GetRoleDefinition(string roleId)

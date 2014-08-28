@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 File = true,
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription {Id = new System.Guid(base.subscriptionId)}, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Storage = true
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -117,7 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Slot = slot
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();

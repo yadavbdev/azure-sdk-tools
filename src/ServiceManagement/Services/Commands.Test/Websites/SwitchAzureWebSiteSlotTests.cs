@@ -55,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Name = "website1",
                 Force = true
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             // Switch existing website
             switchAzureWebsiteCommand.ExecuteCmdlet();

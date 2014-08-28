@@ -38,11 +38,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         private AzureSubscription azureSubscription2;
         private AzureSubscription azureSubscription3withoutUser;
         private AzureEnvironment azureEnvironment;
+        private AzureAccount azureAccount;
 
         public ProfileClientTests()
         {
             SetMockData();
-            AzureSession.SetCurrentSubscription(null, null);
+            AzureSession.SetCurrentContext(null, null, null);
         }
 
         [Fact]
@@ -148,7 +149,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts("test", azureEnvironment.Name).ToList();
+            var account = client.ListAccounts("test").ToList();
 
             Assert.Equal(1, account.Count);
             Assert.Equal("test", account[0].Id);
@@ -169,7 +170,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts("test", null).ToList();
+            var account = client.ListAccounts("test").ToList();
 
             Assert.Equal(1, account.Count);
             Assert.Equal("test", account[0].Id);
@@ -190,7 +191,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts("test2", azureEnvironment.Name).ToList();
+            var account = client.ListAccounts("test2").ToList();
 
             Assert.Equal(0, account.Count);
         }
@@ -203,12 +204,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
             client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
-            azureSubscription3withoutUser.Properties[AzureSubscription.Property.AzureAccount] = "test2";
+            azureSubscription3withoutUser.Account = "test2";
             client.Profile.Subscriptions[azureSubscription3withoutUser.Id] = azureSubscription3withoutUser;
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts(null, azureEnvironment.Name).ToList();
+            var account = client.ListAccounts(null).ToList();
 
             Assert.Equal(2, account.Count);
         }
@@ -221,7 +222,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
             client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
-            azureSubscription3withoutUser.Properties[AzureSubscription.Property.AzureAccount] = "test2";
+            azureSubscription3withoutUser.Account = "test2";
             client.Profile.Subscriptions[azureSubscription3withoutUser.Id] = azureSubscription3withoutUser;
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
@@ -244,7 +245,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
             client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
-            azureSubscription3withoutUser.Properties[AzureSubscription.Property.AzureAccount] = "test2";
+            azureSubscription3withoutUser.Account = "test2";
             client.Profile.Subscriptions[azureSubscription3withoutUser.Id] = azureSubscription3withoutUser;
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
@@ -346,7 +347,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             client.AddEnvironment(azureEnvironment);
 
-            Assert.Equal(EnvironmentName.AzureCloud, AzureSession.CurrentEnvironment.Name);
+            Assert.Equal(EnvironmentName.AzureCloud, AzureSession.CurrentContext.Environment.Name);
 
             var defaultEnv = client.GetEnvironmentOrDefault(null);
 
@@ -366,7 +367,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
 
-            AzureSession.SetCurrentSubscription(azureSubscription1, azureEnvironment);
+            AzureSession.SetCurrentContext(azureSubscription1, azureEnvironment, azureAccount);
 
             var newEnv = client.GetEnvironmentOrDefault(azureEnvironment.Name);
 
@@ -440,7 +441,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             var subscriptions = client.RefreshSubscriptions(azureEnvironment);
 
             Assert.Equal(4, subscriptions.Count);
-            Assert.Equal(4, subscriptions.Count(s => s.Properties[AzureSubscription.Property.AzureAccount] == "test"));
+            Assert.Equal(4, subscriptions.Count(s => s.Account == "test"));
             Assert.Equal(1, subscriptions.Count(s => s.Id == azureSubscription1.Id));
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)));
             Assert.Equal(2, subscriptions.First(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)).GetPropertyAsArray(AzureSubscription.Property.SupportedModes).Count());
@@ -466,7 +467,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription2.SubscriptionId)));
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(csmSubscription1.SubscriptionId)));
             Assert.True(subscriptions.All(s => s.Environment == "Test"));
-            Assert.True(subscriptions.All(s => s.GetProperty(AzureSubscription.Property.AzureAccount) == "test"));
+            Assert.True(subscriptions.All(s => s.Account == "test"));
         }
 
         [Fact]
@@ -535,11 +536,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
 
-            Assert.Null(AzureSession.CurrentSubscription);
+            Assert.Null(AzureSession.CurrentContext.Subscription);
 
             client.SetSubscriptionAsCurrent(azureSubscription2.Name);
 
-            Assert.Equal(azureSubscription2.Id, AzureSession.CurrentSubscription.Id);
+            Assert.Equal(azureSubscription2.Id, AzureSession.CurrentContext.Subscription.Id);
             Assert.Throws<ArgumentException>(() => client.SetSubscriptionAsCurrent("bad"));
             Assert.Throws<ArgumentNullException>(() => client.SetSubscriptionAsCurrent(null));
         }
@@ -616,9 +617,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 Id = new Guid("56E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"),
                 Name = "LocalSub1",
                 Environment = "Test",
+                Account = "test",
                 Properties = new Dictionary<AzureSubscription.Property, string>
                 {
-                    { AzureSubscription.Property.AzureAccount, "test" }, 
                     { AzureSubscription.Property.Default, "True" } 
                 }
             };
@@ -627,10 +628,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 Id = new Guid("66E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"),
                 Name = "LocalSub2",
                 Environment = "Test",
-                Properties = new Dictionary<AzureSubscription.Property, string>
-                {
-                    { AzureSubscription.Property.AzureAccount, "test" }
-                }
+                Account = "test"
             };
             azureSubscription3withoutUser = new AzureSubscription
             {
@@ -651,6 +649,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                     { AzureEnvironment.Endpoint.ResourceManager, "https://api-current.resources.windows-int.net/" },
                 }
             };
+            azureAccount = new AzureAccount()
+            {
+                Environment = "Test",
+                Id = "test@test.com",
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                {
+                    { AzureAccount.Property.Subscriptions, "56E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E" }
+                }
+            };
+
             newProfileDataPath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.ProfileFile);
             oldProfileDataPath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFile);
             oldProfileData = @"<?xml version=""1.0"" encoding=""utf-8""?>

@@ -57,7 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites
             AzureEnvironment environment;
             if (string.IsNullOrEmpty(Environment))
             {
-                environment = AzureSession.CurrentEnvironment;
+                environment = AzureSession.CurrentContext.Environment;
             }
             else
             {

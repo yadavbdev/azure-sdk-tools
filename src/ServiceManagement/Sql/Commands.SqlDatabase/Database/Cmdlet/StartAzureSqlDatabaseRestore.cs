@@ -198,7 +198,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             {
                 string serverName = this.SourceServerName ?? connectionContext.ServerName;
 
-                connectionContext = ServerDataServiceCertAuth.Create(serverName, AzureSession.CurrentSubscription);
+                connectionContext = ServerDataServiceCertAuth.Create(serverName, AzureSession.CurrentContext.Subscription);
             }
 
             string clientRequestId = connectionContext.ClientRequestId;

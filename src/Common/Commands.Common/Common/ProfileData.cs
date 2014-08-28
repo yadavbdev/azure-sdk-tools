@@ -144,14 +144,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             if (!string.IsNullOrEmpty(this.ManagementCertificate))
             {
-                subscription.Properties.Add(AzureSubscription.Property.AzureAccount, this.ManagementCertificate);
+                subscription.Account = this.ManagementCertificate;
                 subscription.SetProperty(AzureSubscription.Property.SupportedModes,
                     AzureModule.AzureServiceManagement.ToString());
             }
 
             if (!string.IsNullOrEmpty(this.ActiveDirectoryUserId))
             {
-                subscription.Properties[AzureSubscription.Property.AzureAccount] = this.ActiveDirectoryUserId;
+                subscription.Account = this.ActiveDirectoryUserId;
             }
 
             if (!string.IsNullOrEmpty(this.CloudStorageAccount))

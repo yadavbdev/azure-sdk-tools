@@ -72,7 +72,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Location = webspaceName,
                 WebsitesClient = clientMock.Object
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription {Id = new Guid(base.subscriptionId)}, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
             Assert.AreEqual(websiteName, createdSiteName);
@@ -118,7 +118,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Name = websiteName,
                 WebsitesClient = clientMock.Object
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
             Assert.IsTrue(created);
@@ -162,7 +162,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 WebsitesClient = clientMock.Object,
                 Slot = slot
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
             clientMock.Verify(c => c.CreateWebsite(webspaceName, It.IsAny<SiteWithWebSpace>(), slot), Times.Once());

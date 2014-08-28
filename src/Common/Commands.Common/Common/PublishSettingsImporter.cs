@@ -55,10 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 Id = new Guid(s.Id),
                 Name = s.Name,
                 Environment = environment,
-                Properties = new Dictionary<AzureSubscription.Property,string>
-                {
-                    { AzureSubscription.Property.AzureAccount, certificate.Thumbprint },
-                }
+                Account = certificate.Thumbprint
             };
         }
 

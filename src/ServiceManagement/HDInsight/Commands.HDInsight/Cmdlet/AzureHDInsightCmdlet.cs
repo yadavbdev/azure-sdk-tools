@@ -122,7 +122,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
                 var subscriptionResolver =
                     ServiceLocator.Instance.Locate<IAzureHDInsightSubscriptionResolverFactory>().Create(client.Profile);
                 var resolvedSubscription = subscriptionResolver.ResolveSubscription(Subscription);
-                if (certificate.IsNotNull() && resolvedSubscription.GetProperty(AzureSubscription.Property.AzureAccount) != certificate.Thumbprint)
+                if (certificate.IsNotNull() && resolvedSubscription.Account != certificate.Thumbprint)
                 {
                     ProfileClient.DataStore.AddCertificate(certificate);
                 }
@@ -145,7 +145,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
                 // we need this for the tests to mock out the current subscription.
                 if (this.HasCurrentSubscription)
                 {
-                    return this.CurrentSubscription;
+                    return this.CurrentContext.Subscription;
                 }
 
                 return testSubscription;

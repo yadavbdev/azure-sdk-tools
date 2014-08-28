@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
                     new AzureSubscription()
                         {
                             Id = IntegrationTestBase.TestCredentials.SubscriptionId,
-                            Properties = new Dictionary<AzureSubscription.Property,string> { { AzureSubscription.Property.AzureAccount, certificate.Thumbprint } }
+                            Account = certificate.Thumbprint
                         }, 
                 };
         }

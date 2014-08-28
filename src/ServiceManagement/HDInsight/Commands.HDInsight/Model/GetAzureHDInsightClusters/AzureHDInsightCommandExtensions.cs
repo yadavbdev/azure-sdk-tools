@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             AzureEnvironment environment,
             AzureProfile profile)
         {
-            var accountId = currentSubscription.GetProperty(AzureSubscription.Property.AzureAccount);
+            var accountId = currentSubscription.Account;
             Debug.Assert(profile.Accounts.ContainsKey(accountId));
 
             if (profile.Accounts[accountId].Type == AzureAccount.AccountType.Certificate)
@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             return new HDInsightCertificateCredential
             {
                 SubscriptionId = currentSubscription.Id,
-                Certificate = ProfileClient.DataStore.GetCertificate(currentSubscription.GetProperty(AzureSubscription.Property.AzureAccount)),
+                Certificate = ProfileClient.DataStore.GetCertificate(currentSubscription.Account),
                 Endpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement),
             };
         }
@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         {
             UserCredentials credentials = new UserCredentials
             {
-                UserName = currentSubscription.GetProperty(AzureSubscription.Property.AzureAccount),
+                UserName = currentSubscription.Account,
                 ShowDialog = ShowDialog.Auto
             };
             var accessToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);

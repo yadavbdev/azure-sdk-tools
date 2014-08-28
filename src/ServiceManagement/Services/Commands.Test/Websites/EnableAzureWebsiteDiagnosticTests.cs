@@ -65,7 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 LogLevel = LogEntryType.Information
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -100,7 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 StorageAccountName = storageName
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -134,8 +134,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 LogLevel = LogEntryType.Information,
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
-            AzureSession.CurrentSubscription.Properties[AzureSubscription.Property.StorageAccount] = storageName;
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
+            AzureSession.CurrentContext.Subscription.Properties[AzureSubscription.Property.StorageAccount] = storageName;
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -170,7 +170,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Slot = slot
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             enableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();

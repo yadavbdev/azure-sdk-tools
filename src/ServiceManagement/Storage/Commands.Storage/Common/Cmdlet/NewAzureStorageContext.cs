@@ -342,7 +342,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common.Cmdlet
             
             if (string.IsNullOrEmpty(azureEnvironmentName))
             {
-                azureEnvironment = AzureSession.CurrentEnvironment;
+                azureEnvironment = AzureSession.CurrentContext.Environment;
             }
             else
             {

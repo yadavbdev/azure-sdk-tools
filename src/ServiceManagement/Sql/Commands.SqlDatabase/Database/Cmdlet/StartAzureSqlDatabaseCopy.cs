@@ -187,7 +187,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             // Use the provided ServerDataServiceContext or create one from the
             // provided ServerName and the active subscription.
             IServerDataServiceContext context = ServerDataServiceCertAuth.Create(this.ServerName,
-                AzureSession.CurrentSubscription);
+                AzureSession.CurrentContext.Subscription);
 
             try
             {

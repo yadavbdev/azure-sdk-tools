@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
                 MediaServicesClient = clientMock.Object,
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription {Id = new Guid(SubscriptionId)}, null);
+            AzureSession.SetCurrentContext(new AzureSubscription {Id = new Guid(SubscriptionId)}, null, null);
 
             getAzureMediaServiceCommand.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
@@ -104,7 +104,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
                 MediaServicesClient = clientMock.Object,
                 Name = expectedName
             };
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(SubscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(SubscriptionId) }, null, null);
             getAzureMediaServiceCommand.ExecuteCmdlet();
             Assert.AreEqual(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
             MediaServiceAccountDetails accounts = (MediaServiceAccountDetails)((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
@@ -143,7 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
                 Name = mediaServicesAccountName
             };
 
-            AzureSession.SetCurrentSubscription(new AzureSubscription { Id = new Guid(SubscriptionId) }, null);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(SubscriptionId) }, null, null);
             getAzureMediaServiceCommand.ExecuteCmdlet();
             Assert.AreEqual(0, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
         }

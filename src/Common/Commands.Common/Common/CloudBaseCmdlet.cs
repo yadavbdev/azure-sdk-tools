@@ -81,12 +81,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         protected void DoInitChannelCurrentSubscription(bool force)
         {
-            if (CurrentSubscription == null)
+            if (CurrentContext.Subscription == null)
             {
                 throw new ArgumentException(Resources.InvalidCurrentSubscription);
             }
 
-            if (!CurrentSubscription.IsPropertySet(AzureSubscription.Property.AzureAccount))
+            if (CurrentContext.Account == null)
             {
                 throw new ArgumentException(Resources.InvalidCurrentSuscriptionCertificate);
             }
@@ -127,19 +127,19 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 return Channel;
             }
 
-            string certificateThumbprint = CurrentSubscription.GetProperty(AzureSubscription.Property.AzureAccount);
+            string certificateThumbprint = CurrentContext.Account.Id;
             Debug.Assert(profileClient.Profile.Accounts[certificateThumbprint].Type == AzureAccount.AccountType.Certificate);
 
             return ChannelHelper.CreateServiceManagementChannel<T>(
                 ServiceBinding,
-                CurrentEnvironment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement),
+                CurrentContext.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement),
                 ProfileClient.DataStore.GetCertificate(certificateThumbprint),
                 new HttpRestMessageInspector(WriteDebug));
         }
 
         protected void RetryCall(Action<string> call)
         {
-            RetryCall(CurrentSubscription.Id, call);
+            RetryCall(CurrentContext.Subscription.Id, call);
         }
 
         protected void RetryCall(Guid subsId, Action<string> call)
@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         protected TResult RetryCall<TResult>(Func<string, TResult> call)
         {
-            return RetryCall(CurrentSubscription.Id, call);
+            return RetryCall(CurrentContext.Subscription.Id, call);
         }
 
         protected TResult RetryCall<TResult>(Guid subsId, Func<string, TResult> call)

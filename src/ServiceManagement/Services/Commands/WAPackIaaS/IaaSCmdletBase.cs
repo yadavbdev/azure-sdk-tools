@@ -65,9 +65,9 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS
             {
                 if (subscription == null)
                 {
-                    if (CurrentSubscription != null)
+                    if (CurrentContext.Subscription != null)
                     {
-                        subscription = new Subscription(CurrentSubscription);
+                        subscription = new Subscription(CurrentContext.Subscription);
                     }
                 }
                 
