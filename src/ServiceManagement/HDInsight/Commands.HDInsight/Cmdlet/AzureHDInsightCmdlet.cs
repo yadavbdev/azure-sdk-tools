@@ -150,7 +150,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
 
                 return testSubscription;
 #else
-                return this.CurrentSubscription;
+                return this.CurrentContext.Subscription;
 #endif
             }
         }

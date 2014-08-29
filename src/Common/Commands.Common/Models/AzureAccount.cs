@@ -41,7 +41,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             /// <summary>
             /// Comma separated list of subscription ids on this account.
             /// </summary>
-            Subscriptions
+            Subscriptions,
+
+            /// <summary>
+            /// Comma separated list of tenants on this account.
+            /// </summary>
+            Tenants
         }
     }
 }
