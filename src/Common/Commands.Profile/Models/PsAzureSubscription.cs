@@ -16,7 +16,7 @@ using Microsoft.WindowsAzure.Commands.Common.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Profile.Models
 {
-    public class PsAzureSubscription
+    public class PSAzureSubscription
     {
         public string SubscriptionId { get; set; }
         public string SubscriptionName { get; set; }

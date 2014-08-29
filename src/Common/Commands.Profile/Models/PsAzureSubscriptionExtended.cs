@@ -17,11 +17,11 @@ using Microsoft.WindowsAzure.Commands.Common.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Profile.Models
 {
-    public class PsAzureSubscriptionExtended : PsAzureSubscription
+    public class PSAzureSubscriptionExtended : PSAzureSubscription
     {
-        public PsAzureSubscriptionExtended() { }
+        public PSAzureSubscriptionExtended() { }
 
-        public PsAzureSubscriptionExtended(PsAzureSubscription subscription)
+        public PSAzureSubscriptionExtended(PSAzureSubscription subscription)
         {
             base.SubscriptionId = subscription.SubscriptionId;
             base.SubscriptionName = subscription.SubscriptionName;
