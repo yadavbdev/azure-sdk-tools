@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public IAccessToken Authenticate(AzureEnvironment environment, string tenant, ref UserCredentials credentials)
         {
-            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, CommonAdTenant), credentials.ShowDialog, credentials.UserName, credentials.Password);
+            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, tenant), credentials.ShowDialog, credentials.UserName, credentials.Password);
             credentials.UserName = token.UserId;
             return token;
         }
