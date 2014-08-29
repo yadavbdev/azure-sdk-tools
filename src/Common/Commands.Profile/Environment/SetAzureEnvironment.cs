@@ -53,6 +53,11 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         [Parameter(Position = 8, Mandatory = false, ValueFromPipelineByPropertyName = true, 
             HelpMessage = "Identifier of the target resource that is the recipient of the requested token.")]
+
+        [Parameter(Position = 9, Mandatory = false, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The AD Graph Endpoint.")]
+        public string GraphEndpoint { get; set; }
+
         public string ActiveDirectoryServiceEndpointResourceId { get; set; }
 
         public SetAzureEnvironmentCommand() : base(true) { }
@@ -69,6 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectory] = ActiveDirectoryEndpoint;
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId] = ActiveDirectoryServiceEndpointResourceId;
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.Gallery] = GalleryEndpoint;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.Graph] = GraphEndpoint;
 
             ProfileClient.SetEnvironment(newEnvironment);
 
