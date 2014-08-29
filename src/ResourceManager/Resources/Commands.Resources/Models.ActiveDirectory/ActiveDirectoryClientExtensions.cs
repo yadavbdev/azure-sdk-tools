@@ -62,7 +62,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             {
                 DisplayName = user.DisplayName,
                 Id = new Guid(user.ObjectId),
-                UserPrincipalName = user.UserPrincipalName
+                UserPrincipalName = user.UserPrincipalName,
+                SignInName = user.SignInName
             };
         }
 
@@ -71,7 +72,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return new PSADGroup()
             {
                 DisplayName = group.DisplayName,
-                Id = new Guid(group.ObjectId)
+                Id = new Guid(group.ObjectId)/*,
+                Mail = group.Mail*/
             };
         }
 

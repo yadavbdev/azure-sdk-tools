@@ -29,16 +29,13 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [Parameter(Position = 0, Mandatory = false, HelpMessage = "Name of account to get information for")]
         public string Name { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, HelpMessage = "Name of the environment")]
-        public string Environment { get; set; }
-
         public GetAzureAccount() : base(false)
         {
         }
 
         public override void ExecuteCmdlet()
         {
-            WriteObject(ProfileClient.ListAccounts(Name, Environment), true);
+            WriteObject(ProfileClient.ListAccounts(Name), true);
         }
     }
 }
