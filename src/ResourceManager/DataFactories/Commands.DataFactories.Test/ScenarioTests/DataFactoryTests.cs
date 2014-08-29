@@ -15,9 +15,9 @@
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Xunit;
 
-namespace Microsoft.Azure.Commands.DataFactories.Test.ScenarioTests
+namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    public class DataFactoryTests : DataFactoriesTestsBase
+    public class DataFactoryTests : DataFactoriesScenarioTestsBase
     {
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]

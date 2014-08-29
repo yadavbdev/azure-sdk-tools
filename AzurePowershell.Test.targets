@@ -62,6 +62,9 @@
   </Target>
 
   <Target Name="TestDataFactoryManager">
+    <MSBuild Targets="InvokeMSTest"
+             Properties="_testAssembly=$(DataFactoryManagerTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\DataFactoryManagerDebug.trx"
+             Projects="build.proj"/>
     <Xunit.Runner.MSBuild.xunit Assembly="$(DataFactoryManagerTestDebug)" Html="$(TestOutputDirectory)\DataFactoryManagerTestDebug.xunit.dll.html" Verbose="true"/>
   </Target>
 

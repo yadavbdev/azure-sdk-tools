@@ -18,13 +18,13 @@ using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Testing;
 
-namespace Microsoft.Azure.Commands.DataFactories.Test.ScenarioTests
+namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    public abstract class DataFactoriesTestsBase : IDisposable
+    public abstract class DataFactoriesScenarioTestsBase : IDisposable
     {
         private EnvironmentSetupHelper helper;
 
-        protected DataFactoriesTestsBase()
+        protected DataFactoriesScenarioTestsBase()
         {
             helper = new EnvironmentSetupHelper();
         }

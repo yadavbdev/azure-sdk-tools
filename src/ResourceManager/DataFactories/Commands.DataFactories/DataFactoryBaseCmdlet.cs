@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.DataFactories
     {
         private IDataFactoryClient dataFactoryClient;
 
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.")]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
