@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void SetEndpointIfProvided(AzureEnvironment newEnvironment, AzureEnvironment.Endpoint endpoint, string property)
         {
-            if (property != null)
+            if (!string.IsNullOrEmpty(property))
             {
                 newEnvironment.Endpoints[endpoint] = property;
             }
