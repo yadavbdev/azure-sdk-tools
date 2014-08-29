@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using Microsoft.WindowsAzure.Commands.Common.Models;
@@ -40,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             Debug.Assert(endpoint != null);
 
             SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
-            return CreateClient<TClient>(creds, endpoint);
+            return CreateCustomClient<TClient>(creds, endpoint);
         }
 
         public TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
@@ -53,6 +54,13 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             return CreateClient<TClient>(context, context.Environment.GetEndpointAsUri(endpoint));
         }
 
+        /// <summary>
+        /// TODO: Migrate all code that references this method to use AzureContext
+        /// </summary>
+        /// <typeparam name="TClient"></typeparam>
+        /// <param name="subscription"></param>
+        /// <param name="endpointName"></param>
+        /// <returns></returns>
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
         {
             if (subscription == null)
@@ -61,10 +69,16 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             }
 
             ProfileClient profileClient = new ProfileClient();
-            return CreateClient<TClient>(subscription, endpointName, profileClient.Profile);
+            AzureContext context = new AzureContext
+            {
+                Subscription = subscription,
+                Environment = profileClient.GetEnvironmentOrDefault(subscription.Environment),
+                Account = profileClient.ListAccounts(subscription.Account, subscription.Environment).First()
+            };
+            return CreateClient<TClient>(context, endpointName);
         }
 
-        public TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        public TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
         {
             List<Type> types = new List<Type>();
             foreach (object obj in parameters)

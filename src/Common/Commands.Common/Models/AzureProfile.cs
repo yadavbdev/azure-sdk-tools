@@ -52,6 +52,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             Subscriptions = new Dictionary<Guid, AzureSubscription>();
             Accounts = new Dictionary<string, AzureAccount>();
 
+            if (!store.DirectoryExists(AzurePowerShell.ProfileDirectory))
+            {
+                store.CreateDirectory(AzurePowerShell.ProfileDirectory);
+            }
+
             if (store.FileExists(profilePath))
             {
                 string contents = store.ReadFileAsText(profilePath);

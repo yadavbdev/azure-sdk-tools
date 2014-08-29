@@ -58,18 +58,17 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (account == null)
             {
-                if (subscription != null && CurrentContext != null &&
-                    subscription.Account == CurrentContext.Account.Id)
+                if (subscription != null && CurrentContext != null)
                 {
-                    account = CurrentContext.Account;
-                }
-                else
-                {
-                    throw new ArgumentException("Account id doesn't match one in subscription.", "account");
-                }
+                    if (subscription.Account == CurrentContext.Account.Id)
+                    {
+                        account = CurrentContext.Account;
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Account id doesn't match one in subscription.", "account");
+                    }
 
-                if (subscription != null)
-                {
                     subscription.Account = account.Id;
                 }
             }

@@ -528,11 +528,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
-        public void SetAzureSubscriptionAsDefaultSetsDefault()
+        public void SetAzureSubscriptionAsDefaultSetsDefaultAndCurrent()
         {
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
             client.AddEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
@@ -542,6 +543,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.SetSubscriptionAsDefault(azureSubscription2.Name);
 
             Assert.Equal(azureSubscription2.Id, client.Profile.DefaultSubscription.Id);
+            Assert.Equal(azureSubscription2.Id, AzureSession.CurrentContext.Subscription.Id);
             Assert.Throws<ArgumentException>(() => client.SetSubscriptionAsDefault("bad"));
             Assert.Throws<ArgumentNullException>(() => client.SetSubscriptionAsDefault(null));
         }
@@ -552,6 +554,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
             client.AddEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
@@ -571,6 +574,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
             client.AddEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
@@ -594,7 +598,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
                 Properties.Resources.ValidProfile);
 
-            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings");
+            client.AddEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", azureEnvironment.Name);
                 
             Assert.Equal(6, subscriptions.Count);
             Assert.Equal(6, client.Profile.Subscriptions.Count);

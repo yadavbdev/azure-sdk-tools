@@ -163,7 +163,6 @@
     <Compile Include="Common\ManagementOperationContext.cs" />
     <Compile Include="Common\Parameters.cs" />
     <Compile Include="Common\SubscriptionCmdletBase.cs" />
-    <Compile Include="Common\SubscriptionDataExtended.cs" />
     <Compile Include="Common\TestMockSupport.cs" />
     <Compile Include="Common\HttpClientExtensions.cs" />
     <Compile Include="Common\HttpClientHelper.cs" />

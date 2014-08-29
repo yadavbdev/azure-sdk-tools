@@ -49,11 +49,18 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
             var account = ProfileClient.AddAccount(userCredentials, ProfileClient.GetEnvironmentOrDefault(Environment));
 
-            WriteVerbose(string.Format(Resources.AddAccountAdded, userCredentials.UserName));
-            WriteVerbose(string.Format(Resources.AddAccountShowDefaultSubscription, ProfileClient.Profile.DefaultSubscription.Name));
-            WriteVerbose(Resources.AddAccountViewSubscriptions);
-            WriteVerbose(Resources.AddAccountChangeSubscription);
-            WriteObject(account);
+            if (account != null)
+            {
+                WriteVerbose(string.Format(Resources.AddAccountAdded, userCredentials.UserName));
+                if (ProfileClient.Profile.DefaultSubscription != null)
+                {
+                    WriteVerbose(string.Format(Resources.AddAccountShowDefaultSubscription,
+                        ProfileClient.Profile.DefaultSubscription.Name));
+                }
+                WriteVerbose(Resources.AddAccountViewSubscriptions);
+                WriteVerbose(Resources.AddAccountChangeSubscription);
+                WriteObject(account);
+            } 
         }
     }
 }

@@ -125,11 +125,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 Profile.Subscriptions[subscription.Id] = subscription;
             }
 
-            if (Profile.DefaultSubscription == null)
-            {
-                Profile.DefaultSubscription = Profile.Subscriptions.Values.FirstOrDefault();
-            }
-
+            // If credentials.UserName is null the login failed
             if (credentials.UserName != null)
             {
                 AzureAccount account = new AzureAccount
@@ -145,6 +141,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
                 // Add the account to the profile
                 Profile.Accounts[account.Id] = account;
+
+                if (Profile.DefaultSubscription == null)
+                {
+                    var firstSubscription = Profile.Subscriptions.Values.FirstOrDefault();
+                    if (firstSubscription != null)
+                    {
+                        SetSubscriptionAsDefault(firstSubscription.Name);
+                    }
+                }
 
                 return account;
             }
@@ -261,9 +266,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             // Validate environment
             GetEnvironmentOrDefault(subscription.Environment);
-            
-            Profile.Subscriptions[subscription.Id] = subscription;
-            return subscription;
+
+            if (Profile.Subscriptions.ContainsKey(subscription.Id))
+            {
+                Profile.Subscriptions[subscription.Id] = MergeSubscriptionProperties(Profile.Subscriptions[subscription.Id], subscription);
+            }
+            else
+            {
+                Profile.Subscriptions[subscription.Id] = subscription;
+            }
+            return Profile.Subscriptions[subscription.Id];
         }
 
         public AzureSubscription RemoveSubscription(string name)
@@ -393,7 +405,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             else
             {
+                var environment = GetEnvironmentOrDefault(subscription.Environment);
+                var account = ListAccounts(subscription.Account, subscription.Environment).First();
+
                 Profile.DefaultSubscription = subscription;
+                AzureSession.SetCurrentContext(subscription, environment, account);
             }
 
             return subscription;
@@ -415,26 +431,39 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 .Select(a => a.Value).ToList();
         }
 
-        public List<AzureSubscription> ImportPublishSettings(string filePath)
+        public List<AzureSubscription> ImportPublishSettings(string filePath, string environmentName)
         {
-            var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath);
-            foreach (var subscription in subscriptions)
+            var azureEnvironment = GetEnvironmentOrDefault(environmentName);
+            var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath, azureEnvironment);
+            if (subscriptions.Any())
             {
-                subscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
+                var thumbprint = subscriptions.First().Account;
+                Profile.Accounts[thumbprint] = new AzureAccount
+                {
+                    Id = thumbprint,
+                    Environment = azureEnvironment.Name,
+                    Type = AzureAccount.AccountType.Certificate
+                };
+                Profile.Accounts[thumbprint].SetSubscriptions(subscriptions);
+
+                foreach (var subscription in subscriptions)
+                {
+                    subscription.Properties[AzureSubscription.Property.SupportedModes] =
+                        AzureModule.AzureServiceManagement.ToString();
+
+                    AddOrSetSubscription(subscription);
+                }
             }
-            AddOrSetSubscriptions(subscriptions);
             return subscriptions;
         }
 
-        private List<AzureSubscription> ListSubscriptionsFromPublishSettingsFile(string filePath)
+        private List<AzureSubscription> ListSubscriptionsFromPublishSettingsFile(string filePath, AzureEnvironment environment)
         {
-            var currentEnvironment = AzureSession.CurrentContext.Environment;
-
             if (string.IsNullOrEmpty(filePath) || !DataStore.FileExists(filePath))
             {
                 throw new ArgumentException("File path is not valid.", "filePath");
             }
-            return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), currentEnvironment.Name).ToList();
+            return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), environment.Name).ToList();
         }
 
         private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(AzureEnvironment environment)
@@ -546,7 +575,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 Id = subscription1.Id,
                 Name = subscription1.Name,
-                Environment = subscription1.Environment
+                Environment = subscription1.Environment,
+                Account = subscription1.Account ?? subscription2.Account
             };
 
             // Merge all properties
@@ -575,7 +605,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             try
             {
                 TenantListResult tenants;
-                using (var subscriptionClient = AzureSession.ClientFactory.CreateClient<Azure.Subscriptions.SubscriptionClient>(
+                using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
                     new TokenCloudCredentials(commonTenantToken.AccessToken),
                     environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
                 {
@@ -588,7 +618,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     // Generate tenant specific token to query list of subscriptions
                     IAccessToken tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, tenant.TenantId, ref credentials);
 
-                    using (var subscriptionClient = AzureSession.ClientFactory.CreateClient<Azure.Subscriptions.SubscriptionClient>(
+                    using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
                             new TokenCloudCredentials(tenantToken.AccessToken),
                             environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
                     {
@@ -634,7 +664,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             try
             {
                 using (var subscriptionClient = AzureSession.ClientFactory
-                    .CreateClient<WindowsAzure.Subscriptions.SubscriptionClient>(
+                    .CreateCustomClient<WindowsAzure.Subscriptions.SubscriptionClient>(
                         new TokenCloudCredentials(commonTenantToken.AccessToken),
                         environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement)))
                 {

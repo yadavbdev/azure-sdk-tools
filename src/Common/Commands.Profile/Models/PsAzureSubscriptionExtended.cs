@@ -15,11 +15,21 @@
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.Common
+namespace Microsoft.WindowsAzure.Commands.Profile.Models
 {
-    public class SubscriptionDataExtended : AzureSubscription
+    public class PsAzureSubscriptionExtended : PsAzureSubscription
     {
-        public bool IsDefault { get; set; }
+        public PsAzureSubscriptionExtended() { }
+
+        public PsAzureSubscriptionExtended(PsAzureSubscription subscription)
+        {
+            base.SubscriptionId = subscription.SubscriptionId;
+            base.SubscriptionName = subscription.SubscriptionName;
+            base.SupportedModes = subscription.SupportedModes;
+            base.Accounts = subscription.Accounts;
+            base.IsDefault = subscription.IsDefault;
+            base.IsCurrent = subscription.IsCurrent;
+        }
         public string ActiveDirectoryUserId { get; set; }
         public X509Certificate2 Certificate { get; set; }
         public string AccountAdminLiveEmailId { get; set; }
