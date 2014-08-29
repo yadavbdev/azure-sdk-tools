@@ -43,19 +43,35 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public PSADObject GetADObject(ADObjectFilterOptions options)
         {
-            PSADObject result = FilterUsers(options).FirstOrDefault();
+            PSADObject result = null;
 
-            if (result == null)
+            if (IsSet(options.Mail, options.UPN, options.Id))
+            {
+                result = FilterUsers(options).FirstOrDefault();
+            }
+
+            if (result == null && IsSet(options.SPN, options.Id))
             {
                 result = FilterServicePrincipals(options).FirstOrDefault();
             }
 
-            if (result == null)
+            if (result == null && IsSet(options.Mail, options.Id))
             {
                 result = FilterGroups(options).FirstOrDefault();
             }
 
-            return result;
+            // Final fallback - no specific filters requested, grab first user
+            return result ?? FilterUsers(options).FirstOrDefault();
+        }
+
+        private static bool IsSet(params string[] strings)
+        {
+            return strings.Any(s => !string.IsNullOrEmpty(s));
+        }
+
+        private static string Normalize(string s)
+        {
+            return string.IsNullOrEmpty(s) ? null : s;
         }
 
         public List<PSADServicePrincipal> FilterServicePrincipals(ADObjectFilterOptions options)
@@ -137,7 +153,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             {
                 try
                 {
-                    user = GraphClient.User.Get(options.Id).User;
+                    user = GraphClient.User.Get(Normalize(options.Id) ?? Normalize(options.UPN)).User;
                 }
                 catch {  /* The user does not exist, ignore the exception. */ }
 
