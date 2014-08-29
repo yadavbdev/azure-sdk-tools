@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 {
     public class AuthenticationFactory : IAuthenticationFactory
     {
-        private const string CommonAdTenant = "Common";
+        public const string CommonAdTenant = "Common";
 
         public AuthenticationFactory()
         {
@@ -54,6 +54,32 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             }
 
             var account = context.Subscription.Account;
+
+            if (!AzureSession.SubscriptionTokenCache.ContainsKey(context.Subscription.Id))
+            {
+                // Try to re-authenticate
+                UserCredentials credentials = new UserCredentials
+                    {
+                        UserName = account,
+                        ShowDialog = ShowDialog.Never
+                    };
+
+                var tenants = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.Tenants)
+                    .Intersect(context.Account.GetPropertyAsArray(AzureAccount.Property.Tenants));
+
+                foreach (var tenant in tenants)
+                {
+                    try
+                    {
+                        AzureSession.SubscriptionTokenCache[context.Subscription.Id] = Authenticate(context.Environment, tenant, ref credentials);
+                        break;
+                    }
+                    catch
+                    {
+                        // Skip
+                    }
+                }
+            }
 
             if (AzureSession.SubscriptionTokenCache.ContainsKey(context.Subscription.Id))
             {

@@ -42,6 +42,22 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public Action<string> DebugLog;
 
+        private void WriteDebugMessage(string message)
+        {
+            if (DebugLog != null)
+            {
+                DebugLog(message);
+            }
+        }
+
+        private void WriteWarningMessage(string message)
+        {
+            if (WarningLog != null)
+            {
+                WarningLog(message);
+            }
+        }
+
         private static void UpgradeProfile()
         {
             string oldProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFile);
@@ -72,14 +88,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 
                 // Rename WindowsAzureProfile.xml to WindowsAzureProfile.json
                 DataStore.RenameFile(oldProfilePath, newProfileFilePath);
-            }
-        }
-
-        private void WriteWarning(string msg)
-        {
-            if (WarningLog != null)
-            {
-                WarningLog(msg);
             }
         }
 
@@ -115,9 +123,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
             credentials.ShowDialog = ShowDialog.Always;
 
             var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
-            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment);
-            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
-
+            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment).ToList();
+            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer);
+            
             // Update back Profile.Subscriptions
             // Update AzureAccount
             foreach (var subscription in mergedSubscriptions)
@@ -138,6 +146,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == credentials.UserName)
                         .ToList());
+                account.SetProperty(AzureAccount.Property.Tenants,
+                    subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
+                    .Distinct().ToArray());
 
                 // Add the account to the profile
                 Profile.Accounts[account.Id] = account;
@@ -208,13 +219,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         // Warn the user if the removed subscription is the default one.
                         if (subscription.IsPropertySet(AzureSubscription.Property.Default))
                         {
-                            WriteWarning(Resources.RemoveDefaultSubscription);
+                            WriteWarningMessage(Resources.RemoveDefaultSubscription);
                         }
 
                         // Warn the user if the removed subscription is the current one.
                         if (subscription.Equals(AzureSession.CurrentContext.Subscription))
                         {
-                            WriteWarning(Resources.RemoveCurrentSubscription);
+                            WriteWarningMessage(Resources.RemoveCurrentSubscription);
                         }
 
                         Profile.Subscriptions.Remove(subscription.Id);
@@ -308,13 +319,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (subscription.IsPropertySet(AzureSubscription.Property.Default))
             {
-                WriteWarning(Resources.RemoveDefaultSubscription);
+                WriteWarningMessage(Resources.RemoveDefaultSubscription);
             }
 
             // Warn the user if the removed subscription is the current one.
             if (AzureSession.CurrentContext.Subscription != null && subscription.Id == AzureSession.CurrentContext.Subscription.Id)
             {
-                WriteWarning(Resources.RemoveCurrentSubscription);
+                WriteWarningMessage(Resources.RemoveCurrentSubscription);
                 AzureSession.SetCurrentContext(null, null, null);
             }
 
@@ -504,8 +515,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 credentials.ShowDialog = ShowDialog.Never;
 
                 List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
-                    GetServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
-                    GetResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
+                    ListServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
+                    ListResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
 
                 // Set user ID
                 foreach (var subscription in mergedSubscriptions)
@@ -525,13 +536,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
                 return new AzureSubscription[0];
             }
         }
+
 
         private List<AzureSubscription> MergeSubscriptions(List<AzureSubscription> subscriptionsList1,
             List<AzureSubscription> subscriptionsList2)
@@ -601,10 +610,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             mergedSubscription.SetProperty(AzureSubscription.Property.SupportedModes, supportedModes.ToArray());
 
+            // Merge Tenants
+            var tenants = subscription1.GetPropertyAsArray(AzureSubscription.Property.Tenants)
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.Tenants));
+
+            mergedSubscription.SetProperty(AzureSubscription.Property.Tenants, tenants.ToArray());
+
             return mergedSubscription;
         }
 
-        private IEnumerable<AzureSubscription> GetResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -637,7 +652,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                                 Name = subscription.DisplayName,
                                 Environment = environment.Name
                             };
-                            psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureResourceManager.ToString();
+                            psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
+                            psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant.TenantId);
                             if (commonTenantToken.LoginType == LoginType.LiveId)
                             {
                                 AzureSession.SubscriptionTokenCache[psSubscription.Id] = tenantToken;
@@ -654,16 +670,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
             }
 
             return result;
         }
 
-        private IEnumerable<AzureSubscription> GetServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -683,8 +696,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             Name = subscription.SubscriptionName,
                             Environment = environment.Name
                         };
-                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] =
-                            AzureModule.AzureServiceManagement.ToString();
+                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
+                        psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
+                        
                         if (commonTenantToken.LoginType == LoginType.LiveId)
                         {
                             AzureSession.SubscriptionTokenCache[psSubscription.Id] =
@@ -702,13 +716,26 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
             }
 
             return result;
+        }
+
+        private void WriteOrThrowAadExceptionMessage(AadAuthenticationException aadEx)
+        {
+            if (aadEx is AadAuthenticationFailedWithoutPopupException)
+            {
+                WriteDebugMessage(aadEx.Message);
+            }
+            else if (aadEx is AadAuthenticationCanceledException)
+            {
+                WriteWarningMessage(aadEx.Message);
+            }
+            else
+            {
+                throw aadEx;
+            }
         }
 
         #endregion
