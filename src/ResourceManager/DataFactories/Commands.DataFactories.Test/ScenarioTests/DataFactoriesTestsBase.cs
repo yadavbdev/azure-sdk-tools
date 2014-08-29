@@ -13,16 +13,9 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.Azure.Gallery;
 using Microsoft.Azure.Management.DataFactories;
-using Microsoft.Azure.Management.Resources;
-using Microsoft.Azure.Subscriptions;
-using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Management.Monitoring.Events;
-using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.ScenarioTests
@@ -39,18 +32,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.ScenarioTests
         protected void SetupManagementClients()
         {
             var dataPipelineManagementClient = GetDataPipelineManagementClient();
-            var resourceManagementClient = GetResourceManagementClient();
-            var subscriptionsClient = GetSubscriptionClient();
-            var storageClient = GetStorageManagementClient();
-            var galleryClient = GetGalleryClient();
-            var eventsClient = GetEventsClient();
-
-            helper.SetupManagementClients(dataPipelineManagementClient,
-                resourceManagementClient,
-                subscriptionsClient,
-                storageClient,
-                galleryClient,
-                eventsClient);
+            
+            helper.SetupManagementClients(dataPipelineManagementClient);
         }
 
         protected void RunPowerShellTest(params string[] scripts)
@@ -72,31 +55,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.ScenarioTests
         protected DataPipelineManagementClient GetDataPipelineManagementClient()
         {
             return TestBase.GetServiceClient<DataPipelineManagementClient>(new CSMTestEnvironmentFactory());
-        }
-
-        protected ResourceManagementClient GetResourceManagementClient()
-        {
-            return TestBase.GetServiceClient<ResourceManagementClient>(new CSMTestEnvironmentFactory());
-        }
-
-        protected SubscriptionClient GetSubscriptionClient()
-        {
-            return TestBase.GetServiceClient<SubscriptionClient>(new CSMTestEnvironmentFactory());
-        }
-
-        protected StorageManagementClient GetStorageManagementClient()
-        {
-            return TestBase.GetServiceClient<StorageManagementClient>(new RDFETestEnvironmentFactory());
-        }
-
-        protected GalleryClient GetGalleryClient()
-        {
-            return TestBase.GetServiceClient<GalleryClient>(new CSMTestEnvironmentFactory());
-        }
-
-        protected EventsClient GetEventsClient()
-        {
-            return TestBase.GetServiceClient<EventsClient>(new CSMTestEnvironmentFactory());
         }
 
         public void Dispose()
