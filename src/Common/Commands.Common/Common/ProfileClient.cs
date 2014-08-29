@@ -619,6 +619,34 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return mergedSubscription;
         }
 
+        private AzureEnvironment MergeEnvironmentProperties(AzureEnvironment environment1, AzureEnvironment environment2)
+        {
+            if (environment1 == null || environment2 == null)
+            {
+                throw new ArgumentNullException("environment1");
+            }
+            if (environment1.Name != environment2.Name)
+            {
+                throw new ArgumentException("Subscription Ids do not match.");
+            }
+            AzureEnvironment mergedEnvironment = new AzureEnvironment
+            {
+                Name = environment1.Name
+            };
+
+            // Merge all properties
+            foreach (AzureEnvironment.Endpoint property in Enum.GetValues(typeof(AzureEnvironment.Endpoint)))
+            {
+                string propertyValue = environment1.GetEndpoint(property) ?? environment2.GetEndpoint(property);
+                if (propertyValue != null)
+                {
+                    mergedEnvironment.Endpoints[property] = propertyValue;
+                }
+            }
+
+            return mergedEnvironment;
+        }
+
         private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
@@ -742,24 +770,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         #region Environment management
 
-        public AzureEnvironment AddEnvironment(AzureEnvironment environment)
-        {
-            if (environment == null)
-            {
-                throw new ArgumentNullException("Environment needs to be specified.", "environment");
-            }
-
-            if (!Profile.Environments.ContainsKey(environment.Name))
-            {
-                Profile.Environments[environment.Name] = environment;
-                return environment;
-            }
-            else
-            {
-                throw new ArgumentException(string.Format(Resources.EnvironmentExists, environment.Name), "environment");
-            }
-        }
-
         public AzureEnvironment GetEnvironmentOrDefault(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -815,7 +825,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureEnvironment SetEnvironment(AzureEnvironment environment)
+        public AzureEnvironment AddOrSetEnvironment(AzureEnvironment environment)
         {
             if (environment == null)
             {
@@ -824,13 +834,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (Profile.Environments.ContainsKey(environment.Name))
             {
-                Profile.Environments[environment.Name] = environment;
-                return environment;
+                Profile.Environments[environment.Name] = 
+                    MergeEnvironmentProperties(Profile.Environments[environment.Name], environment);
             }
             else
             {
-                throw new ArgumentException(string.Format(Resources.EnvironmentNotFound, environment.Name), "environment");
+                Profile.Environments[environment.Name] = environment;
             }
+
+            return Profile.Environments[environment.Name];
         }
         #endregion
     }
