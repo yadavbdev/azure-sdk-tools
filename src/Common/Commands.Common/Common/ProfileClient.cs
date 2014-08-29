@@ -589,6 +589,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 }
             }
 
+            // Merge RegisteredResourceProviders
+            var registeredProviders = subscription1.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders)
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders));
+
+            mergedSubscription.SetProperty(AzureSubscription.Property.RegisteredResourceProviders, registeredProviders.ToArray());
+
             // Merge SupportedMode
             var supportedModes = subscription1.GetPropertyAsArray(AzureSubscription.Property.SupportedModes)
                     .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.SupportedModes));
