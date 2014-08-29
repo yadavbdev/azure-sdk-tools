@@ -19,7 +19,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Azure.Subscriptions;
 using Microsoft.Azure.Subscriptions.Models;
-using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
@@ -42,6 +41,22 @@ namespace Microsoft.WindowsAzure.Commands.Common
         public Action<string> WarningLog;
 
         public Action<string> DebugLog;
+
+        private void WriteDebugMessage(string message)
+        {
+            if (DebugLog != null)
+            {
+                DebugLog(message);
+            }
+        }
+
+        private void WriteWarningMessage(string message)
+        {
+            if (WarningLog != null)
+            {
+                WarningLog(message);
+            }
+        }
 
         private static void UpgradeProfile()
         {
@@ -73,14 +88,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 
                 // Rename WindowsAzureProfile.xml to WindowsAzureProfile.json
                 DataStore.RenameFile(oldProfilePath, newProfileFilePath);
-            }
-        }
-
-        private void WriteWarning(string msg)
-        {
-            if (WarningLog != null)
-            {
-                WarningLog(msg);
             }
         }
 
@@ -212,13 +219,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         // Warn the user if the removed subscription is the default one.
                         if (subscription.IsPropertySet(AzureSubscription.Property.Default))
                         {
-                            WriteWarning(Resources.RemoveDefaultSubscription);
+                            WriteWarningMessage(Resources.RemoveDefaultSubscription);
                         }
 
                         // Warn the user if the removed subscription is the current one.
                         if (subscription.Equals(AzureSession.CurrentContext.Subscription))
                         {
-                            WriteWarning(Resources.RemoveCurrentSubscription);
+                            WriteWarningMessage(Resources.RemoveCurrentSubscription);
                         }
 
                         Profile.Subscriptions.Remove(subscription.Id);
@@ -312,13 +319,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (subscription.IsPropertySet(AzureSubscription.Property.Default))
             {
-                WriteWarning(Resources.RemoveDefaultSubscription);
+                WriteWarningMessage(Resources.RemoveDefaultSubscription);
             }
 
             // Warn the user if the removed subscription is the current one.
             if (AzureSession.CurrentContext.Subscription != null && subscription.Id == AzureSession.CurrentContext.Subscription.Id)
             {
-                WriteWarning(Resources.RemoveCurrentSubscription);
+                WriteWarningMessage(Resources.RemoveCurrentSubscription);
                 AzureSession.SetCurrentContext(null, null, null);
             }
 
@@ -529,13 +536,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
                 return new AzureSubscription[0];
             }
         }
+
 
         private List<AzureSubscription> MergeSubscriptions(List<AzureSubscription> subscriptionsList1,
             List<AzureSubscription> subscriptionsList2)
@@ -665,10 +670,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
             }
 
             return result;
@@ -714,13 +716,26 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
             }
 
             return result;
+        }
+
+        private void WriteOrThrowAadExceptionMessage(AadAuthenticationException aadEx)
+        {
+            if (aadEx is AadAuthenticationFailedWithoutPopupException)
+            {
+                WriteDebugMessage(aadEx.Message);
+            }
+            else if (aadEx is AadAuthenticationCanceledException)
+            {
+                WriteWarningMessage(aadEx.Message);
+            }
+            else
+            {
+                throw aadEx;
+            }
         }
 
         #endregion
