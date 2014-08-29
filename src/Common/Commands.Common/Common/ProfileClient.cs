@@ -24,6 +24,7 @@ using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace Microsoft.WindowsAzure.Commands.Common
 {
@@ -615,8 +616,20 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 // Go over each tenant and get all subscriptions for tenant
                 foreach (var tenant in tenants.TenantIds)
                 {
+                    IAccessToken tenantToken = null;
                     // Generate tenant specific token to query list of subscriptions
-                    IAccessToken tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, tenant.TenantId, ref credentials);
+                    try
+                    {
+                        tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, tenant.TenantId, ref credentials);
+                    }
+                    catch (AadAuthenticationFailedException ex)
+                    {
+                        var adex = ex.InnerException as AdalException;
+                        WarningLog(string.Format(Resources.AddAccountNonInteractiveGuestOrFpo, tenant.TenantId));
+                        continue;
+                    }
+
+                    if (tenantToken == null) continue;
 
                     using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
                             new TokenCloudCredentials(tenantToken.AccessToken),

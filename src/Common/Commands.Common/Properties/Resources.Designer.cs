@@ -88,6 +88,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skipping external tenant {0}, of which you are a guest or an FPO. In order to access this tenant, please run Add-AzureAccount without &quot;-Credential&quot;..
+        /// </summary>
+        public static string AddAccountNonInteractiveGuestOrFpo {
+            get {
+                return ResourceManager.GetString("AddAccountNonInteractiveGuestOrFpo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subscription &quot;{0}&quot; is selected as the default subscription..
         /// </summary>
         public static string AddAccountShowDefaultSubscription {
