@@ -335,22 +335,30 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
-        public void RemoveAzureEnvironmentRemovesEnvironment()
+        public void RemoveAzureEnvironmentRemovesEnvironmentSubscriptionsAndAccounts()
         {
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
 
-            Assert.Equal(2, client.Profile.Environments.Count);
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+            client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
+            client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
+            client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
+
+            Assert.Equal(2, client.Profile.Subscriptions.Values.Count(s => s.Environment == "Test"));
+            Assert.Equal(3, client.Profile.Environments.Count);
+            Assert.Equal(1, client.Profile.Accounts.Count);
 
             Assert.Throws<ArgumentNullException>(() => client.RemoveEnvironment(null));
             Assert.Throws<ArgumentException>(() => client.RemoveEnvironment("bad"));
 
-            var env = client.RemoveEnvironment(EnvironmentName.AzureCloud);
+            var env = client.RemoveEnvironment(azureEnvironment.Name);
 
-            Assert.Equal(EnvironmentName.AzureCloud, env.Name);
-
-            Assert.Equal(1, client.Profile.Environments.Count);
+            Assert.Equal(azureEnvironment.Name, env.Name);
+            Assert.Equal(0, client.Profile.Subscriptions.Values.Count(s => s.Environment == "Test"));
+            Assert.Equal(2, client.Profile.Environments.Count);
+            Assert.Equal(0, client.Profile.Accounts.Count);
         }
 
 

@@ -51,12 +51,27 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
             }
             else
             {
+                dictionary[property] = string.Join(",", values);
+            }
+        }
+
+        public static void SetOrAppendProperty<TKey>(this Dictionary<TKey, string> dictionary, TKey property, params string[] values)
+        {
+            if (values == null || values.Length == 0)
+            {
+                if (dictionary.ContainsKey(property))
+                {
+                    dictionary.Remove(property);
+                }
+            }
+            else
+            {
                 if (!dictionary.ContainsKey(property))
                 {
                     dictionary[property] = "";
                 }
-                var oldValues = dictionary[property].Split(new[] {','},  StringSplitOptions.RemoveEmptyEntries);
-                dictionary[property] = string.Join(",", oldValues.Union(values).Where(s=>!string.IsNullOrEmpty(s)));
+                var oldValues = dictionary[property].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                dictionary[property] = string.Join(",", oldValues.Union(values).Where(s => !string.IsNullOrEmpty(s)));
             }
         }
 

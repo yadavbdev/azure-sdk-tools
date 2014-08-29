@@ -145,7 +145,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == credentials.UserName)
                         .ToList());
-                account.SetProperty(AzureAccount.Property.Tenants,
+                account.SetOrAppendProperty(AzureAccount.Property.Tenants,
                     subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
                     .Distinct().ToArray());
 
@@ -807,6 +807,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (Profile.Environments.ContainsKey(name))
             {
                 var environment = Profile.Environments[name];
+                var subscriptions = Profile.Subscriptions.Values.Where(s => s.Environment == name).ToArray();
+                foreach (var subscription in subscriptions)
+                {
+                    RemoveSubscription(subscription.Id);
+                }
                 Profile.Environments.Remove(name);
                 return environment;
             }

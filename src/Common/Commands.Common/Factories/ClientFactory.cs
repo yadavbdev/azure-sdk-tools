@@ -176,11 +176,14 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         private void UpdateSubscriptionRegisteredProviders(AzureSubscription subscription, List<string> providers)
         {
-            var registeredProviders = subscription.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders);
-            subscription.SetProperty(AzureSubscription.Property.RegisteredResourceProviders, registeredProviders.Union(providers).ToArray());
-            ProfileClient profileClient = new ProfileClient();
-            profileClient.AddOrSetSubscription(subscription);
-            profileClient.Profile.Save();
+            if (providers != null && providers.Count > 0)
+            {
+                subscription.SetOrAppendProperty(AzureSubscription.Property.RegisteredResourceProviders,
+                    providers.ToArray());
+                ProfileClient profileClient = new ProfileClient();
+                profileClient.AddOrSetSubscription(subscription);
+                profileClient.Profile.Save();
+            }
         }
 
         HttpClient IClientFactory.CreateHttpClient(string endpoint, ICredentials credentials)
