@@ -145,9 +145,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == credentials.UserName)
                         .ToList());
-                account.SetProperty(AzureAccount.Property.Tenants,
+                account.SetOrAppendProperty(AzureAccount.Property.Tenants,
                     subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
-                    .Distinct().ToArray());
+                    .Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray());
 
                 // Add the account to the profile
                 Profile.Accounts[account.Id] = account;
@@ -591,19 +591,19 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             // Merge RegisteredResourceProviders
             var registeredProviders = subscription1.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders)
-                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders));
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders), StringComparer.CurrentCultureIgnoreCase);
 
             mergedSubscription.SetProperty(AzureSubscription.Property.RegisteredResourceProviders, registeredProviders.ToArray());
 
             // Merge SupportedMode
             var supportedModes = subscription1.GetPropertyAsArray(AzureSubscription.Property.SupportedModes)
-                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.SupportedModes));
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.SupportedModes), StringComparer.CurrentCultureIgnoreCase);
 
             mergedSubscription.SetProperty(AzureSubscription.Property.SupportedModes, supportedModes.ToArray());
 
             // Merge Tenants
             var tenants = subscription1.GetPropertyAsArray(AzureSubscription.Property.Tenants)
-                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.Tenants));
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.Tenants), StringComparer.CurrentCultureIgnoreCase);
 
             mergedSubscription.SetProperty(AzureSubscription.Property.Tenants, tenants.ToArray());
 
@@ -803,10 +803,19 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 throw new ArgumentNullException("Environment name needs to be specified.", "name");
             }
+            if (AzureEnvironment.PublicEnvironments.ContainsKey(name))
+            {
+                throw new ArgumentException(Resources.RemovingDefaultEnvironmentsNotSupported, "name");
+            }
             
             if (Profile.Environments.ContainsKey(name))
             {
                 var environment = Profile.Environments[name];
+                var subscriptions = Profile.Subscriptions.Values.Where(s => s.Environment == name).ToArray();
+                foreach (var subscription in subscriptions)
+                {
+                    RemoveSubscription(subscription.Id);
+                }
                 Profile.Environments.Remove(name);
                 return environment;
             }

@@ -15,6 +15,7 @@
 using System.Management.Automation;
 using System.Security.Permissions;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
 
 namespace Microsoft.WindowsAzure.Commands.Profile
@@ -31,10 +32,25 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             HelpMessage = "The environment name")]
         public string Name { get; set; }
 
+        [Parameter(Position = 1, HelpMessage = "Do not confirm deletion of subscription")]
+        public SwitchParameter Force { get; set; }
+
         public RemoveAzureEnvironmentCommand() : base(true) { }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
+        {
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(Resources.RemoveEnvironmentConfirmation, Name),
+                Resources.RemoveEnvironmentMessage,
+                Name,
+                RemoveEnvironmentProcess);
+
+            WriteObject(ProfileClient.RemoveEnvironment(Name));
+        }
+
+        public void RemoveEnvironmentProcess()
         {
             WriteObject(ProfileClient.RemoveEnvironment(Name));
         }

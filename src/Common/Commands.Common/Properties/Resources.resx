@@ -1534,4 +1534,13 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="CredentialOrganizationIdMessage" xml:space="preserve">
     <value>-Credential parameter can only be used with Organization ID credentials. For more information, please refer to http://go.microsoft.com/fwlink/?linkid=331007&amp;clcid=0x409 for more information about the difference between an organizational account and a Microsoft account.</value>
   </data>
+  <data name="RemoveEnvironmentConfirmation" xml:space="preserve">
+    <value>Removing an environment will remove all associated subscriptions and accounts. Are you sure you want to remove an environment '{0}'?</value>
+  </data>
+  <data name="RemoveEnvironmentMessage" xml:space="preserve">
+    <value>Removing environment</value>
+  </data>
+  <data name="RemovingDefaultEnvironmentsNotSupported" xml:space="preserve">
+    <value>Removing public environment is not supported.</value>
+  </data>
 </root>
