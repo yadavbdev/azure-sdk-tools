@@ -42,6 +42,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             SupportedModes,
 
             /// <summary>
+            /// Associated tenants
+            /// </summary>
+            Tenants,
+
+            /// <summary>
             /// If this property existed on the subscription indicates that it's default one.
             /// </summary>
             Default,

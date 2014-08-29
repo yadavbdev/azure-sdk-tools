@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Utilities
 {
@@ -33,7 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
         {
             if (dictionary.ContainsKey(property))
             {
-                return dictionary[property].Split(',');
+                return dictionary[property].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
 
             return new string[0];
@@ -50,7 +51,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
             }
             else
             {
-                dictionary[property] = string.Join(",", values);
+                if (!dictionary.ContainsKey(property))
+                {
+                    dictionary[property] = "";
+                }
+                var oldValues = dictionary[property].Split(new[] {','},  StringSplitOptions.RemoveEmptyEntries);
+                dictionary[property] = string.Join(",", oldValues.Union(values).Where(s=>!string.IsNullOrEmpty(s)));
             }
         }
 

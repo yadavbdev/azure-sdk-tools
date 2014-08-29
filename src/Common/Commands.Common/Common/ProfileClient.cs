@@ -19,6 +19,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Azure.Subscriptions;
 using Microsoft.Azure.Subscriptions.Models;
+using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
@@ -115,9 +116,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
             credentials.ShowDialog = ShowDialog.Always;
 
             var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
-            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment);
-            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
-
+            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment).ToList();
+            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer);
+            
             // Update back Profile.Subscriptions
             // Update AzureAccount
             foreach (var subscription in mergedSubscriptions)
@@ -138,6 +139,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == credentials.UserName)
                         .ToList());
+                account.SetProperty(AzureAccount.Property.Tenants,
+                    subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
+                    .Distinct().ToArray());
 
                 // Add the account to the profile
                 Profile.Accounts[account.Id] = account;
@@ -504,8 +508,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 credentials.ShowDialog = ShowDialog.Never;
 
                 List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
-                    GetServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
-                    GetResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
+                    ListServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
+                    ListResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
 
                 // Set user ID
                 foreach (var subscription in mergedSubscriptions)
@@ -601,10 +605,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             mergedSubscription.SetProperty(AzureSubscription.Property.SupportedModes, supportedModes.ToArray());
 
+            // Merge Tenants
+            var tenants = subscription1.GetPropertyAsArray(AzureSubscription.Property.Tenants)
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.Tenants));
+
+            mergedSubscription.SetProperty(AzureSubscription.Property.Tenants, tenants.ToArray());
+
             return mergedSubscription;
         }
 
-        private IEnumerable<AzureSubscription> GetResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -637,7 +647,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                                 Name = subscription.DisplayName,
                                 Environment = environment.Name
                             };
-                            psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureResourceManager.ToString();
+                            psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
+                            psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant.TenantId);
                             if (commonTenantToken.LoginType == LoginType.LiveId)
                             {
                                 AzureSession.SubscriptionTokenCache[psSubscription.Id] = tenantToken;
@@ -663,7 +674,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return result;
         }
 
-        private IEnumerable<AzureSubscription> GetServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -683,8 +694,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             Name = subscription.SubscriptionName,
                             Environment = environment.Name
                         };
-                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] =
-                            AzureModule.AzureServiceManagement.ToString();
+                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
+                        psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
+                        
                         if (commonTenantToken.LoginType == LoginType.LiveId)
                         {
                             AzureSession.SubscriptionTokenCache[psSubscription.Id] =
