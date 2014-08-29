@@ -16,10 +16,10 @@ using Microsoft.Azure.Graph.RBAC;
 using Microsoft.Azure.Graph.RBAC.Models;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
@@ -44,6 +44,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public PSADObject GetADObject(ADObjectFilterOptions options)
         {
             PSADObject result = null;
+
+            Debug.Assert(options != null);
 
             if (IsSet(options.Mail, options.UPN, options.Id))
             {
