@@ -149,6 +149,8 @@ namespace Microsoft.Azure.Commands.Resources
                 ADObjectFilter = new ADObjectFilterOptions
                 {
                     Mail = Mail,
+                    UPN = UserPrincipalName,
+                    SPN = ServicePrincipalName,
                     Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 },
                 ResourceIdentifier = new ResourceIdentifier()
