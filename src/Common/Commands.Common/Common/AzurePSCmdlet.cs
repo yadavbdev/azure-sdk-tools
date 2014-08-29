@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public AzurePSCmdlet()
         {
             profileClient = new ProfileClient();
-            if (AzureSession.CurrentContext == null &&
+            if (AzureSession.CurrentContext.Subscription == null &&
                 profileClient.Profile.DefaultSubscription != null)
             {
                 AzureSession.SetCurrentContext(
