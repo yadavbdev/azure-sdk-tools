@@ -42,14 +42,14 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
             HelpMessage = "The user SPN.")]
         [ValidateNotNullOrEmpty]
         [Alias("SPN")]
-        public string ServicePrinciplaName { get; set; }
+        public string ServicePrincipalName { get; set; }
 
         public override void ExecuteCmdlet()
         {
             ADObjectFilterOptions options = new ADObjectFilterOptions
             {
                 SearchString = SearchString,
-                SPN = ServicePrinciplaName,
+                SPN = ServicePrincipalName,
                 Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
                 Paging = true
             };
