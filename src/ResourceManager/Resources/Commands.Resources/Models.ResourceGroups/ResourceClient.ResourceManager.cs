@@ -158,14 +158,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             List<PSResource> resources = new List<PSResource>();
 
-            if (!string.IsNullOrEmpty(parameters.ResourceGroupName))
-            {
-                if (!ResourceManagementClient.ResourceGroups.CheckExistence(parameters.ResourceGroupName).Exists)
-                {
-                    throw new ArgumentException(ProjectResources.ResourceGroupDoesntExists);
-                }
-            }
-
             if (!string.IsNullOrEmpty(parameters.Name))
             {
                 ResourceIdentity resourceIdentity = parameters.ToResourceIdentity();

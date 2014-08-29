@@ -37,7 +37,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
             {
                 Id = certificate.Thumbprint,
                 Type = AzureAccount.AccountType.Certificate,
-                Environment = EnvironmentName.AzureCloud,
                 Properties =
                     new Dictionary<AzureAccount.Property, string>
                     {

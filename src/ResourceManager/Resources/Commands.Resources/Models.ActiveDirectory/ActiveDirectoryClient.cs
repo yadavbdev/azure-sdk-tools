@@ -16,10 +16,10 @@ using Microsoft.Azure.Graph.RBAC;
 using Microsoft.Azure.Graph.RBAC.Models;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
@@ -43,19 +43,36 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public PSADObject GetADObject(ADObjectFilterOptions options)
         {
-            PSADObject result = FilterUsers(options).FirstOrDefault();
+            PSADObject result = null;
 
-            //if (result == null)
-            //{
-            //    result = FilterServicePrincipals(options).FirstOrDefault();
-            //}
+            Debug.Assert(options != null);
 
-            if (result == null)
+            if (IsSet(options.Mail, options.UPN, options.Id))
+            {
+                result = FilterUsers(options).FirstOrDefault();
+            }
+
+            if (result == null && IsSet(options.SPN, options.Id))
+            {
+                result = FilterServicePrincipals(options).FirstOrDefault();
+            }
+
+            if (result == null && IsSet(options.Mail, options.Id))
             {
                 result = FilterGroups(options).FirstOrDefault();
             }
 
             return result;
+        }
+
+        private static bool IsSet(params string[] strings)
+        {
+            return strings.Any(s => !string.IsNullOrEmpty(s));
+        }
+
+        private static string Normalize(string s)
+        {
+            return string.IsNullOrEmpty(s) ? null : s;
         }
 
         public List<PSADServicePrincipal> FilterServicePrincipals(ADObjectFilterOptions options)
@@ -137,7 +154,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             {
                 try
                 {
-                    user = GraphClient.User.Get(options.Id).User;
+                    user = GraphClient.User.Get(Normalize(options.Id) ?? Normalize(options.UPN)).User;
                 }
                 catch {  /* The user does not exist, ignore the exception. */ }
 

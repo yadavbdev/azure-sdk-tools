@@ -54,8 +54,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
                     NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope,
-                    UserPrincipalName = ((PSADUser)adObject).UserPrincipalName/*,
-                    SignInName = ((PSADUser)adObject).SignInName*/
+                    UserPrincipalName = ((PSADUser)adObject).UserPrincipalName,
+                    SignInName = ((PSADUser)adObject).SignInName
                 };
             }
             else if (adObject is PSADGroup)
