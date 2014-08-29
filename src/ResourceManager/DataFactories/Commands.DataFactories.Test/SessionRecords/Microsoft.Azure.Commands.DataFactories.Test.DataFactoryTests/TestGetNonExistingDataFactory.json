@@ -1,0 +1,46 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "/subscriptions/b23b2c11-e7e0-4d26-9760-97bd8f7209bd/resourcegroups/mdw/providers/Microsoft.DataFactory/datafactories/Non-ExistingDF?api-version=2014-07-01-preview",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "74a3a454-0c3c-41a6-b8e7-ece480eb8562"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"error\": {\r\n    \"code\": \"ResourceNotFound\",\r\n    \"message\": \"Resource not found.\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "6a0084c1-5fc6-47df-b140-94fc4345b828"
+        ],
+        "x-ms-correlation-request-id": [
+          "6a0084c1-5fc6-47df-b140-94fc4345b828"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20140829T052526Z:6a0084c1-5fc6-47df-b140-94fc4345b828"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Fri, 29 Aug 2014 05:25:25 GMT"
+        ]
+      },
+      "StatusCode": 404
+    }
+  ],
+  "Names": {},
+  "Variables": {
+    "SubscriptionId": "b23b2c11-e7e0-4d26-9760-97bd8f7209bd"
+  }
+}

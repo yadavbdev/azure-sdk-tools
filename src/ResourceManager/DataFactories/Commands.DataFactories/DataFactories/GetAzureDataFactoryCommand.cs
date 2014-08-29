@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.DataFactories
     [Cmdlet(VerbsCommon.Get, Constants.DataFactory), OutputType(typeof(List<PSDataFactory>), typeof(PSDataFactory))]
     public class GetAzureDataFactoryCommand : DataFactoryBaseCmdlet
     {
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true,
+        [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
         public string Name { get; set; }
         
