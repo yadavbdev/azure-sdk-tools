@@ -140,7 +140,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 {
                     Id = credentials.UserName,
                     Type = AzureAccount.AccountType.User,
-                    Environment = environment.Name
                 };
                 account.SetSubscriptions(
                     Profile.Subscriptions.Values.Where(
@@ -170,7 +169,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
+        public IEnumerable<AzureAccount> ListAccounts(string userName)
         {
             List<AzureAccount> accounts = new List<AzureAccount>();
             
@@ -178,15 +177,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 if (Profile.Accounts.ContainsKey(userName))
                 {
-                    if (environment == null || Profile.Accounts[userName].Environment == environment)
-                    {
-                        accounts.Add(Profile.Accounts[userName]);
-                    }
+                    accounts.Add(Profile.Accounts[userName]);
                 }
-            }
-            else
-            {
-                accounts = Profile.Accounts.Values.Where(a => environment == null || a.Environment == environment).ToList();
             }
 
             return accounts;
@@ -394,7 +386,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = ListAccounts(subscription.Account, environment != null ? environment.Name : null).First();
+                var account = ListAccounts(subscription.Account).First();
                 AzureSession.SetCurrentContext(subscription, environment, account);
             }
 
@@ -417,7 +409,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = ListAccounts(subscription.Account, subscription.Environment).First();
+                var account = ListAccounts(subscription.Account).First();
 
                 Profile.DefaultSubscription = subscription;
                 AzureSession.SetCurrentContext(subscription, environment, account);
@@ -452,7 +444,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 Profile.Accounts[thumbprint] = new AzureAccount
                 {
                     Id = thumbprint,
-                    Environment = azureEnvironment.Name,
                     Type = AzureAccount.AccountType.Certificate
                 };
                 Profile.Accounts[thumbprint].SetSubscriptions(subscriptions);

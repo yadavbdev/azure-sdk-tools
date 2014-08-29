@@ -150,7 +150,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts("test", azureEnvironment.Name).ToList();
+            var account = client.ListAccounts("test").ToList();
 
             Assert.Equal(1, account.Count);
             Assert.Equal("test", account[0].Id);
@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts("test", azureEnvironment.Name).ToList();
+            var account = client.ListAccounts("test").ToList();
 
             Assert.Equal(1, account.Count);
             Assert.Equal("test", account[0].Id);
@@ -194,7 +194,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts("test2", azureEnvironment.Name).ToList();
+            var account = client.ListAccounts("test2").ToList();
 
             Assert.Equal(0, account.Count);
         }
@@ -212,7 +212,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Accounts["test2"] = new AzureAccount
             {
                 Id = "test2",
-                Environment = azureEnvironment.Name,
                 Type = AzureAccount.AccountType.User,
                 Properties = new Dictionary<AzureAccount.Property, string>
                 {
@@ -223,7 +222,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.ListAccounts(null, null).ToList();
+            var account = client.ListAccounts(null).ToList();
 
             Assert.Equal(2, account.Count);
         }
@@ -241,7 +240,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Accounts["test2"] = new AzureAccount
             {
                 Id = "test2",
-                Environment = azureEnvironment.Name,
                 Type = AzureAccount.AccountType.User,
                 Properties = new Dictionary<AzureAccount.Property, string>
                 {
@@ -275,7 +273,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Accounts["test2"] = new AzureAccount
             {
                 Id = "test2",
-                Environment = azureEnvironment.Name,
                 Type = AzureAccount.AccountType.User,
                 Properties = new Dictionary<AzureAccount.Property, string>
                 {
@@ -697,7 +694,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             {
                 Id = "test",
                 Type = AzureAccount.AccountType.User,
-                Environment = "Test",
                 Properties = new Dictionary<AzureAccount.Property, string>
                 {
                     { AzureAccount.Property.Subscriptions, azureSubscription1.Id + "," + azureSubscription2.Id } 
