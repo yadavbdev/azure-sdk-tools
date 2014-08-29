@@ -266,9 +266,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             // Validate environment
             GetEnvironmentOrDefault(subscription.Environment);
-            
-            Profile.Subscriptions[subscription.Id] = subscription;
-            return subscription;
+
+            if (Profile.Subscriptions.ContainsKey(subscription.Id))
+            {
+                Profile.Subscriptions[subscription.Id] = MergeSubscriptionProperties(Profile.Subscriptions[subscription.Id], subscription);
+            }
+            else
+            {
+                Profile.Subscriptions[subscription.Id] = subscription;
+            }
+            return Profile.Subscriptions[subscription.Id];
         }
 
         public AzureSubscription RemoveSubscription(string name)
@@ -424,26 +431,39 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 .Select(a => a.Value).ToList();
         }
 
-        public List<AzureSubscription> ImportPublishSettings(string filePath)
+        public List<AzureSubscription> ImportPublishSettings(string filePath, string environmentName)
         {
-            var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath);
-            foreach (var subscription in subscriptions)
+            var azureEnvironment = GetEnvironmentOrDefault(environmentName);
+            var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath, azureEnvironment);
+            if (subscriptions.Any())
             {
-                subscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
+                var thumbprint = subscriptions.First().Account;
+                Profile.Accounts[thumbprint] = new AzureAccount
+                {
+                    Id = thumbprint,
+                    Environment = azureEnvironment.Name,
+                    Type = AzureAccount.AccountType.Certificate
+                };
+                Profile.Accounts[thumbprint].SetSubscriptions(subscriptions);
+
+                foreach (var subscription in subscriptions)
+                {
+                    subscription.Properties[AzureSubscription.Property.SupportedModes] =
+                        AzureModule.AzureServiceManagement.ToString();
+
+                    AddOrSetSubscription(subscription);
+                }
             }
-            AddOrSetSubscriptions(subscriptions);
             return subscriptions;
         }
 
-        private List<AzureSubscription> ListSubscriptionsFromPublishSettingsFile(string filePath)
+        private List<AzureSubscription> ListSubscriptionsFromPublishSettingsFile(string filePath, AzureEnvironment environment)
         {
-            var currentEnvironment = AzureSession.CurrentContext.Environment;
-
             if (string.IsNullOrEmpty(filePath) || !DataStore.FileExists(filePath))
             {
                 throw new ArgumentException("File path is not valid.", "filePath");
             }
-            return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), currentEnvironment.Name).ToList();
+            return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), environment.Name).ToList();
         }
 
         private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(AzureEnvironment environment)
@@ -555,7 +575,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 Id = subscription1.Id,
                 Name = subscription1.Name,
-                Environment = subscription1.Environment
+                Environment = subscription1.Environment,
+                Account = subscription1.Account ?? subscription2.Account
             };
 
             // Merge all properties

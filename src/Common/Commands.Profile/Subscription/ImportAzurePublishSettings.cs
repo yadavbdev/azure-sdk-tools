@@ -36,6 +36,10 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             HelpMessage = "Path to the publish settings file.")]
         public string PublishSettingsFile { get; set; }
 
+        [Parameter(Mandatory = false, HelpMessage = "Environment name.", ParameterSetName = "CommonSettings")]
+        [ValidateNotNullOrEmpty]
+        public string Environment { get; set; }
+
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
@@ -91,7 +95,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void ImportFile(string fileName)
         {
-            var subscriptions = ProfileClient.ImportPublishSettings(fileName);
+            var subscriptions = ProfileClient.ImportPublishSettings(fileName, Environment);
             if (ProfileClient.Profile.DefaultSubscription != null)
             {
                 WriteVerbose(string.Format(
