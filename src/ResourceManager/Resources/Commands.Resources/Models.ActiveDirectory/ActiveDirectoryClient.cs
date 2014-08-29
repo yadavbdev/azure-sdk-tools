@@ -60,8 +60,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 result = FilterGroups(options).FirstOrDefault();
             }
 
-            // Final fallback - no specific filters requested, grab first user
-            return result ?? FilterUsers(options).FirstOrDefault();
+            return result;
         }
 
         private static bool IsSet(params string[] strings)
