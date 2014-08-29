@@ -109,6 +109,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             var providersToRegister = RequiredResourceLookup.RequiredProvidersForResourceManager<T>();
             var registeredProviders = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders);
             var unregisteredProviders = providersToRegister.Where(p => !registeredProviders.Contains(p)).ToList();
+            var successfullyRegisteredProvider = new List<string>();
 
             if (unregisteredProviders.Count > 0)
             {
@@ -120,7 +121,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                         try
                         {
                             client.Providers.Register(provider);
-                            UpdateSubscriptionRegisteredProviders(context.Subscription, provider);
+                            successfullyRegisteredProvider.Add(provider);
                         }
                         catch
                         {
@@ -128,6 +129,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                         }
                     }
                 }
+
+                UpdateSubscriptionRegisteredProviders(context.Subscription, successfullyRegisteredProvider);
             }
         }
 
@@ -141,6 +144,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             var providersToRegister = RequiredResourceLookup.RequiredProvidersForServiceManagement<T>();
             var registeredProviders = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders);
             var unregisteredProviders = providersToRegister.Where(p => !registeredProviders.Contains(p)).ToList();
+            var successfullyRegisteredProvider = new List<string>();
 
             if (unregisteredProviders.Count > 0)
             {
@@ -162,16 +166,18 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                                 throw;
                             }
                         }
-                        UpdateSubscriptionRegisteredProviders(context.Subscription, provider);
+                        successfullyRegisteredProvider.Add(provider);
                     }
                 }
+
+                UpdateSubscriptionRegisteredProviders(context.Subscription, successfullyRegisteredProvider);
             }
         }
 
-        private void UpdateSubscriptionRegisteredProviders(AzureSubscription subscription, string provider)
+        private void UpdateSubscriptionRegisteredProviders(AzureSubscription subscription, List<string> providers)
         {
             var registeredProviders = subscription.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders);
-            subscription.SetProperty(AzureSubscription.Property.RegisteredResourceProviders, registeredProviders.Union(new[] { provider }).ToArray());
+            subscription.SetProperty(AzureSubscription.Property.RegisteredResourceProviders, registeredProviders.Union(providers).ToArray());
             ProfileClient profileClient = new ProfileClient();
             profileClient.AddOrSetSubscription(subscription);
             profileClient.Profile.Save();
