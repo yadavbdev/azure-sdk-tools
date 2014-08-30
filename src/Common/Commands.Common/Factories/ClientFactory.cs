@@ -73,7 +73,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             {
                 Subscription = subscription,
                 Environment = profileClient.GetEnvironmentOrDefault(subscription.Environment),
-                Account = profileClient.ListAccounts(subscription.Account).First()
+                Account = profileClient.GetAccounts(subscription.Account)
             };
             return CreateClient<TClient>(context, endpointName);
         }
