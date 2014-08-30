@@ -268,6 +268,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot deserialize settings string from DSC extension. Updating your Azure PowerShell SDK to the latest version may solve this problem. Settings string:
+        ///{0}.
+        /// </summary>
+        public static string AzureVMDscWrongSettingsFormat {
+            get {
+                return ResourceManager.GetString("AzureVMDscWrongSettingsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - Uploading WinRMCertificate: {1}.
         /// </summary>
         public static string AzureVMUploadingWinRMCertificate {

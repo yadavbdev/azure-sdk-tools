@@ -14,9 +14,14 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Management.Automation;
     using System.Linq;
+    using Properties;
+    using Commands.Common.Storage.Properties;
     using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
     using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
     using Newtonsoft.Json;
@@ -40,9 +45,31 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 r =>
                 {
                     GetExtensionValues(r);
-                    
-                    var publicSettings = string.IsNullOrEmpty(PublicConfiguration) ? null : JsonConvert.DeserializeObject<DscPublicSettings>(PublicConfiguration);
-
+                    DscPublicSettings publicSettings = null;
+                    try
+                    {
+                        publicSettings = string.IsNullOrEmpty(PublicConfiguration)
+                            ? null
+                            : JsonConvert.DeserializeObject<DscPublicSettings>(PublicConfiguration);
+                    }
+                    catch (JsonException)
+                    {
+                        // Try deserialize as version 1.0
+                        try
+                        {
+                            DscPublicSettings.Version1 publicSettingsV1 = JsonConvert.DeserializeObject<DscPublicSettings.Version1>(PublicConfiguration);
+                            publicSettings = publicSettingsV1.ToCurrentVersion();
+                        }
+                        catch (JsonException e)
+                        {
+                            this.ThrowTerminatingError(new ErrorRecord(new JsonException(String.Format(
+                                CultureInfo.CurrentUICulture,
+                                Resources.AzureVMDscWrongSettingsFormat,
+                                PublicConfiguration), e), string.Empty,
+                                ErrorCategory.ParserError,
+                                null));
+                        }
+                    }
                     var context = new VirtualMachineDscExtensionContext
                     {
                         ExtensionName = r.Name,
@@ -65,7 +92,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                     {
                         context.ModulesUrl = publicSettings.ModulesUrl;
                         context.ConfigurationFunction = publicSettings.ConfigurationFunction;
-                        context.Properties = publicSettings.Properties;
+                        context.Properties = new Hashtable(publicSettings.Properties.ToDictionary( x => x.Name, x => x.Value ));
                     }
 
                     return context;
