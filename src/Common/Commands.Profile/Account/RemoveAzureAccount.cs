@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [Cmdlet(VerbsCommon.Remove, "AzureAccount", SupportsShouldProcess = true), OutputType(typeof(AzureAccount))]
     public class RemoveAzureAccountCommand : SubscriptionCmdletBase
     {
-        public RemoveAzureAccountCommand() : base(false)
+        public RemoveAzureAccountCommand() : base(true)
         {
         }
 
