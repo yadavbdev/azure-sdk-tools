@@ -433,7 +433,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (subscription != null)
             {
                 Profile.DefaultSubscription = subscription;
-                Profile.Subscriptions[subscription.Id].Account = accountName;
             }
 
             return subscription;
