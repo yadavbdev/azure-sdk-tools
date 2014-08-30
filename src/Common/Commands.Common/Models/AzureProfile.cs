@@ -19,6 +19,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Common.Internals;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
@@ -122,10 +123,14 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                 {
                     defaultSubscription.Properties.Remove(AzureSubscription.Property.Default);
                 }
-                defaultSubscription = value;
-                if (defaultSubscription != null)
+
+                if (value != null)
                 {
-                    defaultSubscription.Properties[AzureSubscription.Property.Default] = "True";
+                    Debug.Assert(value.Id != Guid.Empty);
+
+                    value.Properties[AzureSubscription.Property.Default] = "True";
+                    Subscriptions[value.Id] = value;
+                    defaultSubscription = Subscriptions[value.Id];
                 }
             }
         }

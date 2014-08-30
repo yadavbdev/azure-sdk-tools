@@ -522,8 +522,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.Profile.Accounts[azureAccount.Id] = azureAccount;
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
-            client.SetSubscriptionAsCurrent(azureSubscription1.Name);
-            client.SetSubscriptionAsDefault(azureSubscription1.Name);
+            client.SetSubscriptionAsCurrent(azureSubscription1.Name, azureSubscription1.Account);
+            client.SetSubscriptionAsDefault(azureSubscription1.Name, azureSubscription1.Account);
 
             Assert.Equal(1, client.Profile.Subscriptions.Count);
 
@@ -621,12 +621,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             Assert.Null(client.Profile.DefaultSubscription);
 
-            client.SetSubscriptionAsDefault(azureSubscription2.Name);
+            client.SetSubscriptionAsDefault(azureSubscription2.Name, azureSubscription2.Account);
 
             Assert.Equal(azureSubscription2.Id, client.Profile.DefaultSubscription.Id);
             Assert.Equal(azureSubscription2.Id, AzureSession.CurrentContext.Subscription.Id);
-            Assert.Throws<ArgumentException>(() => client.SetSubscriptionAsDefault("bad"));
-            Assert.Throws<ArgumentNullException>(() => client.SetSubscriptionAsDefault(null));
+            Assert.Throws<ArgumentException>(() => client.SetSubscriptionAsDefault("bad", null));
+            Assert.Throws<ArgumentNullException>(() => client.SetSubscriptionAsDefault(null, null));
         }
 
         [Fact]
@@ -641,7 +641,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.AddOrSetSubscription(azureSubscription2);
 
             Assert.Null(client.Profile.DefaultSubscription);
-            client.SetSubscriptionAsDefault(azureSubscription2.Name);
+            client.SetSubscriptionAsDefault(azureSubscription2.Name, azureSubscription2.Account);
             Assert.Equal(azureSubscription2.Id, client.Profile.DefaultSubscription.Id);
 
             client.ClearDefaultSubscription();
@@ -662,11 +662,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             Assert.Null(AzureSession.CurrentContext.Subscription);
 
-            client.SetSubscriptionAsCurrent(azureSubscription2.Name);
+            client.SetSubscriptionAsCurrent(azureSubscription2.Name, azureSubscription2.Account);
 
             Assert.Equal(azureSubscription2.Id, AzureSession.CurrentContext.Subscription.Id);
-            Assert.Throws<ArgumentException>(() => client.SetSubscriptionAsCurrent("bad"));
-            Assert.Throws<ArgumentNullException>(() => client.SetSubscriptionAsCurrent(null));
+            Assert.Throws<ArgumentException>(() => client.SetSubscriptionAsCurrent("bad", null));
+            Assert.Throws<ArgumentNullException>(() => client.SetSubscriptionAsCurrent(null, null));
         }
 
         [Fact]
@@ -851,7 +851,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F</SubscriptionId>
                     </AzureSubscriptionData>
-	                <AzureSubscriptionData>
+                    <AzureSubscriptionData>
                       <ActiveDirectoryEndpoint>https://login.windows.net/</ActiveDirectoryEndpoint>
                       <ActiveDirectoryServiceEndpointResourceId>https://management.core.windows.net/</ActiveDirectoryServiceEndpointResourceId>
                       <ActiveDirectoryTenantId>72f988bf-86f1-41af-91ab-2d7cd011db47</ActiveDirectoryTenantId>
