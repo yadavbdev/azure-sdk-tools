@@ -21,6 +21,7 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
@@ -89,7 +90,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             Guid principalId = ActiveDirectoryClient.GetObjectId(parameters.ADObjectFilter);
 
             Guid roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid() : RoleAssignmentNames.Dequeue();
-            string roleDefinitionId = FilterRoleDefinitions(parameters.RoleDefinition).First().Id;
+            string roleDefinitionId = GetRoleRoleDefinition(parameters.RoleDefinition).Id;
 
             RoleAssignmentCreateParameters createParameters = new RoleAssignmentCreateParameters
             {
@@ -160,6 +161,18 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             }
 
             return roleAssignment;
+        }
+
+        public PSRoleDefinition GetRoleRoleDefinition(string name)
+        {
+            PSRoleDefinition role = FilterRoleDefinitions(name).FirstOrDefault();
+
+            if (role == null)
+            {
+                throw new KeyNotFoundException(string.Format(ProjectResources.RoleDefinitionNotFound, name));
+            }
+
+            return role;
         }
     }
 }
