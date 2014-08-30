@@ -46,8 +46,6 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 Resources.RemoveEnvironmentMessage,
                 Name,
                 RemoveEnvironmentProcess);
-
-            WriteObject(ProfileClient.RemoveEnvironment(Name));
         }
 
         public void RemoveEnvironmentProcess()

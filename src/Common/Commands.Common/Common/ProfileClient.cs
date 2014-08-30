@@ -168,20 +168,36 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 return null;
             }
         }
+        public AzureAccount GetAccount(string accountName)
+        {
+            if (string.IsNullOrEmpty(accountName))
+            {
+                throw new ArgumentNullException("accountName");
+            }
 
-        public IEnumerable<AzureAccount> ListAccounts(string userName)
+            if (Profile.Accounts.ContainsKey(accountName))
+            {
+                return Profile.Accounts[accountName];
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("Account with name '{0}' does not exist.", accountName), "accountName");
+            }
+        }
+
+        public IEnumerable<AzureAccount> ListAccounts(string accountName)
         {
             List<AzureAccount> accounts = new List<AzureAccount>();
             
-            if (!string.IsNullOrEmpty(userName))
+            if (!string.IsNullOrEmpty(accountName))
             {
-                if (Profile.Accounts.ContainsKey(userName))
+                if (Profile.Accounts.ContainsKey(accountName))
                 {
-                    accounts.Add(Profile.Accounts[userName]);
+                    accounts.Add(Profile.Accounts[accountName]);
                 }
             }
 
-            return accounts;
+            return Profile.Accounts.Values;
         }
 
         public AzureAccount RemoveAccount(string accountId)
@@ -386,7 +402,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = ListAccounts(subscription.Account).First();
+                var account = GetAccount(subscription.Account);
                 AzureSession.SetCurrentContext(subscription, environment, account);
             }
 
@@ -409,7 +425,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = ListAccounts(subscription.Account).First();
+                var account = GetAccount(subscription.Account);
 
                 Profile.DefaultSubscription = subscription;
                 AzureSession.SetCurrentContext(subscription, environment, account);
