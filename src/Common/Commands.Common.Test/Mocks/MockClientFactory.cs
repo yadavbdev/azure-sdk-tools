@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 ProfileClient profileClient = new ProfileClient();
                 AzureContext context = new AzureContext()
                 {
-                    Account = profileClient.GetAccounts(subscription.Account),
+                    Account = profileClient.GetAccount(subscription.Account),
                     Environment = profileClient.GetEnvironmentOrDefault(subscription.Environment),
                     Subscription = subscription
                 };

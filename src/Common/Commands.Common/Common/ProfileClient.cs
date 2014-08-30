@@ -168,7 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 return null;
             }
         }
-        public AzureAccount GetAccounts(string accountName)
+        public AzureAccount GetAccount(string accountName)
         {
             if (string.IsNullOrEmpty(accountName))
             {
@@ -402,7 +402,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = GetAccounts(subscription.Account);
+                var account = GetAccount(subscription.Account);
                 AzureSession.SetCurrentContext(subscription, environment, account);
             }
 
@@ -425,7 +425,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = GetAccounts(subscription.Account);
+                var account = GetAccount(subscription.Account);
 
                 Profile.DefaultSubscription = subscription;
                 AzureSession.SetCurrentContext(subscription, environment, account);

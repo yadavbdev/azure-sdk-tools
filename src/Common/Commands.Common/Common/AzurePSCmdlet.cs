@@ -36,7 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 AzureSession.SetCurrentContext(
                     profileClient.Profile.DefaultSubscription,
                     profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment),
-                    profileClient.GetAccounts(profileClient.Profile.DefaultSubscription.Account));
+                    profileClient.GetAccount(profileClient.Profile.DefaultSubscription.Account));
             }
         }
 
