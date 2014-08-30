@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Utilities
 {
@@ -33,7 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
         {
             if (dictionary.ContainsKey(property))
             {
-                return dictionary[property].Split(',');
+                return dictionary[property].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
 
             return new string[0];
@@ -52,6 +53,16 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
             {
                 dictionary[property] = string.Join(",", values);
             }
+        }
+
+        public static void SetOrAppendProperty<TKey>(this Dictionary<TKey, string> dictionary, TKey property, params string[] values)
+        {
+            if (!dictionary.ContainsKey(property))
+            {
+                dictionary[property] = "";
+            }
+            var oldValues = dictionary[property].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            dictionary[property] = string.Join(",", oldValues.Union(values, StringComparer.CurrentCultureIgnoreCase).Where(s => !string.IsNullOrEmpty(s)));
         }
 
         public static bool IsPropertySet<TKey>(this Dictionary<TKey, string> dictionary, TKey property)

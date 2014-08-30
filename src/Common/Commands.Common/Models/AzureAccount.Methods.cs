@@ -42,6 +42,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             Properties.SetProperty(property, values);
         }
 
+        public void SetOrAppendProperty(Property property, params string[] values)
+        {
+            Properties.SetOrAppendProperty(property, values);
+        }
+
         public bool IsPropertySet(Property property)
         {
             return Properties.IsPropertySet(property);
@@ -84,12 +89,18 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public void RemoveSubscription(Guid id)
         {
-            string subscriptions = GetProperty(Property.Subscriptions);
-
-            if (string.IsNullOrEmpty(subscriptions))
+            if (HasSubscription(id))
             {
-                SetProperty(Property.Subscriptions, 
-                    string.Join(",", subscriptions.Split(',').Where(s => s != id.ToString())));
+                var remainingSubscriptions = GetPropertyAsArray(Property.Subscriptions).Where(s => s != id.ToString()).ToArray();
+
+                if (remainingSubscriptions.Any())
+                {
+                    Properties[Property.Subscriptions] = string.Join(",", remainingSubscriptions);
+                }
+                else
+                {
+                    Properties.Remove(Property.Subscriptions);
+                }
             }
         }
 

@@ -43,6 +43,22 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public Action<string> DebugLog;
 
+        private void WriteDebugMessage(string message)
+        {
+            if (DebugLog != null)
+            {
+                DebugLog(message);
+            }
+        }
+
+        private void WriteWarningMessage(string message)
+        {
+            if (WarningLog != null)
+            {
+                WarningLog(message);
+            }
+        }
+
         private static void UpgradeProfile()
         {
             string oldProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFile);
@@ -73,14 +89,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 
                 // Rename WindowsAzureProfile.xml to WindowsAzureProfile.json
                 DataStore.RenameFile(oldProfilePath, newProfileFilePath);
-            }
-        }
-
-        private void WriteWarning(string msg)
-        {
-            if (WarningLog != null)
-            {
-                WarningLog(msg);
             }
         }
 
@@ -116,9 +124,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
             credentials.ShowDialog = ShowDialog.Always;
 
             var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
-            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment);
-            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
-
+            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment).ToList();
+            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer);
+            
             // Update back Profile.Subscriptions
             // Update AzureAccount
             foreach (var subscription in mergedSubscriptions)
@@ -133,12 +141,14 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 {
                     Id = credentials.UserName,
                     Type = AzureAccount.AccountType.User,
-                    Environment = environment.Name
                 };
                 account.SetSubscriptions(
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == credentials.UserName)
                         .ToList());
+                account.SetOrAppendProperty(AzureAccount.Property.Tenants,
+                    subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
+                    .Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray());
 
                 // Add the account to the profile
                 Profile.Accounts[account.Id] = account;
@@ -159,27 +169,36 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 return null;
             }
         }
-
-        public IEnumerable<AzureAccount> ListAccounts(string userName, string environment)
+        public AzureAccount GetAccount(string accountName)
         {
-            List<AzureAccount> accounts = new List<AzureAccount>();
-            
-            if (!string.IsNullOrEmpty(userName))
+            if (string.IsNullOrEmpty(accountName))
             {
-                if (Profile.Accounts.ContainsKey(userName))
-                {
-                    if (environment == null || Profile.Accounts[userName].Environment == environment)
-                    {
-                        accounts.Add(Profile.Accounts[userName]);
-                    }
-                }
+                throw new ArgumentNullException("accountName");
+            }
+
+            if (Profile.Accounts.ContainsKey(accountName))
+            {
+                return Profile.Accounts[accountName];
             }
             else
             {
-                accounts = Profile.Accounts.Values.Where(a => environment == null || a.Environment == environment).ToList();
+                throw new ArgumentException(string.Format("Account with name '{0}' does not exist.", accountName), "accountName");
+            }
+        }
+
+        public IEnumerable<AzureAccount> ListAccounts(string accountName)
+        {
+            List<AzureAccount> accounts = new List<AzureAccount>();
+            
+            if (!string.IsNullOrEmpty(accountName))
+            {
+                if (Profile.Accounts.ContainsKey(accountName))
+                {
+                    accounts.Add(Profile.Accounts[accountName]);
+                }
             }
 
-            return accounts;
+            return Profile.Accounts.Values;
         }
 
         public AzureAccount RemoveAccount(string accountId)
@@ -209,13 +228,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         // Warn the user if the removed subscription is the default one.
                         if (subscription.IsPropertySet(AzureSubscription.Property.Default))
                         {
-                            WriteWarning(Resources.RemoveDefaultSubscription);
+                            WriteWarningMessage(Resources.RemoveDefaultSubscription);
                         }
 
                         // Warn the user if the removed subscription is the current one.
                         if (subscription.Equals(AzureSession.CurrentContext.Subscription))
                         {
-                            WriteWarning(Resources.RemoveCurrentSubscription);
+                            WriteWarningMessage(Resources.RemoveCurrentSubscription);
                         }
 
                         Profile.Subscriptions.Remove(subscription.Id);
@@ -309,13 +328,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (subscription.IsPropertySet(AzureSubscription.Property.Default))
             {
-                WriteWarning(Resources.RemoveDefaultSubscription);
+                WriteWarningMessage(Resources.RemoveDefaultSubscription);
             }
 
             // Warn the user if the removed subscription is the current one.
             if (AzureSession.CurrentContext.Subscription != null && subscription.Id == AzureSession.CurrentContext.Subscription.Id)
             {
-                WriteWarning(Resources.RemoveCurrentSubscription);
+                WriteWarningMessage(Resources.RemoveCurrentSubscription);
                 AzureSession.SetCurrentContext(null, null, null);
             }
 
@@ -384,7 +403,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = ListAccounts(subscription.Account, environment != null ? environment.Name : null).First();
+                var account = GetAccount(subscription.Account);
                 AzureSession.SetCurrentContext(subscription, environment, account);
             }
 
@@ -407,7 +426,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 var environment = GetEnvironmentOrDefault(subscription.Environment);
-                var account = ListAccounts(subscription.Account, subscription.Environment).First();
+                var account = GetAccount(subscription.Account);
 
                 Profile.DefaultSubscription = subscription;
                 AzureSession.SetCurrentContext(subscription, environment, account);
@@ -442,7 +461,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 Profile.Accounts[thumbprint] = new AzureAccount
                 {
                     Id = thumbprint,
-                    Environment = azureEnvironment.Name,
                     Type = AzureAccount.AccountType.Certificate
                 };
                 Profile.Accounts[thumbprint].SetSubscriptions(subscriptions);
@@ -505,8 +523,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 credentials.ShowDialog = ShowDialog.Never;
 
                 List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
-                    GetServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
-                    GetResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
+                    ListServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
+                    ListResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
 
                 // Set user ID
                 foreach (var subscription in mergedSubscriptions)
@@ -526,13 +544,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
                 return new AzureSubscription[0];
             }
         }
+
 
         private List<AzureSubscription> MergeSubscriptions(List<AzureSubscription> subscriptionsList1,
             List<AzureSubscription> subscriptionsList2)
@@ -590,16 +606,56 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 }
             }
 
+            // Merge RegisteredResourceProviders
+            var registeredProviders = subscription1.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders)
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders), StringComparer.CurrentCultureIgnoreCase);
+
+            mergedSubscription.SetProperty(AzureSubscription.Property.RegisteredResourceProviders, registeredProviders.ToArray());
+
             // Merge SupportedMode
             var supportedModes = subscription1.GetPropertyAsArray(AzureSubscription.Property.SupportedModes)
-                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.SupportedModes));
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.SupportedModes), StringComparer.CurrentCultureIgnoreCase);
 
             mergedSubscription.SetProperty(AzureSubscription.Property.SupportedModes, supportedModes.ToArray());
+
+            // Merge Tenants
+            var tenants = subscription1.GetPropertyAsArray(AzureSubscription.Property.Tenants)
+                    .Union(subscription2.GetPropertyAsArray(AzureSubscription.Property.Tenants), StringComparer.CurrentCultureIgnoreCase);
+
+            mergedSubscription.SetProperty(AzureSubscription.Property.Tenants, tenants.ToArray());
 
             return mergedSubscription;
         }
 
-        private IEnumerable<AzureSubscription> GetResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private AzureEnvironment MergeEnvironmentProperties(AzureEnvironment environment1, AzureEnvironment environment2)
+        {
+            if (environment1 == null || environment2 == null)
+            {
+                throw new ArgumentNullException("environment1");
+            }
+            if (environment1.Name != environment2.Name)
+            {
+                throw new ArgumentException("Subscription Ids do not match.");
+            }
+            AzureEnvironment mergedEnvironment = new AzureEnvironment
+            {
+                Name = environment1.Name
+            };
+
+            // Merge all properties
+            foreach (AzureEnvironment.Endpoint property in Enum.GetValues(typeof(AzureEnvironment.Endpoint)))
+            {
+                string propertyValue = environment1.GetEndpoint(property) ?? environment2.GetEndpoint(property);
+                if (propertyValue != null)
+                {
+                    mergedEnvironment.Endpoints[property] = propertyValue;
+                }
+            }
+
+            return mergedEnvironment;
+        }
+
+        private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -644,7 +700,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                                 Name = subscription.DisplayName,
                                 Environment = environment.Name
                             };
-                            psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureResourceManager.ToString();
+                            psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
+                            psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant.TenantId);
                             if (commonTenantToken.LoginType == LoginType.LiveId)
                             {
                                 AzureSession.SubscriptionTokenCache[psSubscription.Id] = tenantToken;
@@ -661,16 +718,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
             }
 
             return result;
         }
 
-        private IEnumerable<AzureSubscription> GetServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -690,8 +744,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             Name = subscription.SubscriptionName,
                             Environment = environment.Name
                         };
-                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] =
-                            AzureModule.AzureServiceManagement.ToString();
+                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
+                        psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
+                        
                         if (commonTenantToken.LoginType == LoginType.LiveId)
                         {
                             AzureSession.SubscriptionTokenCache[psSubscription.Id] =
@@ -709,36 +764,31 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             catch (AadAuthenticationException aadEx)
             {
-                if (DebugLog != null)
-                {
-                    DebugLog(aadEx.Message);
-                }
+                WriteOrThrowAadExceptionMessage(aadEx);
             }
 
             return result;
         }
 
-        #endregion
-
-        #region Environment management
-
-        public AzureEnvironment AddEnvironment(AzureEnvironment environment)
+        private void WriteOrThrowAadExceptionMessage(AadAuthenticationException aadEx)
         {
-            if (environment == null)
+            if (aadEx is AadAuthenticationFailedWithoutPopupException)
             {
-                throw new ArgumentNullException("Environment needs to be specified.", "environment");
+                WriteDebugMessage(aadEx.Message);
             }
-
-            if (!Profile.Environments.ContainsKey(environment.Name))
+            else if (aadEx is AadAuthenticationCanceledException)
             {
-                Profile.Environments[environment.Name] = environment;
-                return environment;
+                WriteWarningMessage(aadEx.Message);
             }
             else
             {
-                throw new ArgumentException(string.Format(Resources.EnvironmentExists, environment.Name), "environment");
+                throw aadEx;
             }
         }
+
+        #endregion
+
+        #region Environment management
 
         public AzureEnvironment GetEnvironmentOrDefault(string name)
         {
@@ -782,10 +832,19 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 throw new ArgumentNullException("Environment name needs to be specified.", "name");
             }
+            if (AzureEnvironment.PublicEnvironments.ContainsKey(name))
+            {
+                throw new ArgumentException(Resources.RemovingDefaultEnvironmentsNotSupported, "name");
+            }
             
             if (Profile.Environments.ContainsKey(name))
             {
                 var environment = Profile.Environments[name];
+                var subscriptions = Profile.Subscriptions.Values.Where(s => s.Environment == name).ToArray();
+                foreach (var subscription in subscriptions)
+                {
+                    RemoveSubscription(subscription.Id);
+                }
                 Profile.Environments.Remove(name);
                 return environment;
             }
@@ -795,7 +854,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureEnvironment SetEnvironment(AzureEnvironment environment)
+        public AzureEnvironment AddOrSetEnvironment(AzureEnvironment environment)
         {
             if (environment == null)
             {
@@ -804,13 +863,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (Profile.Environments.ContainsKey(environment.Name))
             {
-                Profile.Environments[environment.Name] = environment;
-                return environment;
+                Profile.Environments[environment.Name] = 
+                    MergeEnvironmentProperties(Profile.Environments[environment.Name], environment);
             }
             else
             {
-                throw new ArgumentException(string.Format(Resources.EnvironmentNotFound, environment.Name), "environment");
+                Profile.Environments[environment.Name] = environment;
             }
+
+            return Profile.Environments[environment.Name];
         }
         #endregion
     }

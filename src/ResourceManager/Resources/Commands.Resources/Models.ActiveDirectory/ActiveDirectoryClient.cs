@@ -16,10 +16,10 @@ using Microsoft.Azure.Graph.RBAC;
 using Microsoft.Azure.Graph.RBAC.Models;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
@@ -45,6 +45,8 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         {
             PSADObject result = null;
 
+            Debug.Assert(options != null);
+
             if (IsSet(options.Mail, options.UPN, options.Id))
             {
                 result = FilterUsers(options).FirstOrDefault();
@@ -60,8 +62,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 result = FilterGroups(options).FirstOrDefault();
             }
 
-            // Final fallback - no specific filters requested, grab first user
-            return result ?? FilterUsers(options).FirstOrDefault();
+            return result;
         }
 
         private static bool IsSet(params string[] strings)

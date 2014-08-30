@@ -23,8 +23,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
     {
         public string Id { get; set; }
 
-        public string Environment { get; set; }
-
         public AccountType Type { get; set; }
 
         public Dictionary<Property, string> Properties { get; set; }
@@ -41,7 +39,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             /// <summary>
             /// Comma separated list of subscription ids on this account.
             /// </summary>
-            Subscriptions
+            Subscriptions,
+
+            /// <summary>
+            /// Comma separated list of tenants on this account.
+            /// </summary>
+            Tenants
         }
     }
 }

@@ -30,13 +30,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public AzurePSCmdlet()
         {
             profileClient = new ProfileClient();
-            if (AzureSession.CurrentContext == null &&
+            if (AzureSession.CurrentContext.Subscription == null &&
                 profileClient.Profile.DefaultSubscription != null)
             {
                 AzureSession.SetCurrentContext(
                     profileClient.Profile.DefaultSubscription,
                     profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment),
-                    profileClient.ListAccounts(profileClient.Profile.DefaultSubscription.Account, profileClient.Profile.DefaultSubscription.Environment).First());
+                    profileClient.GetAccount(profileClient.Profile.DefaultSubscription.Account));
             }
         }
 
@@ -194,6 +194,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 WriteDebugWithTimestamp(string.Format(Resources.BeginProcessingWithParameterSetLog, this.GetType().Name, ParameterSetName));
             }
+
+            WriteDebugWithTimestamp(string.Format("using account id '{0}'...", CurrentContext.Account.Id));
 
             RecordingTracingInterceptor.AddToContext(httpTracingInterceptor);
 

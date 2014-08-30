@@ -22,8 +22,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
 {
     public interface IClientFactory
     {
-        TClient CreateClient<TClient>(AzureContext context, Uri endpoint) where TClient : ServiceClient<TClient>;
-
         TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>;
 
         TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>;

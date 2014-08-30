@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.Gallery] = GalleryEndpoint;
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.Graph] = GraphEndpoint;
 
-            ProfileClient.AddEnvironment(newEnvironment);
+            ProfileClient.AddOrSetEnvironment(newEnvironment);
             WriteObject(newEnvironment);
         }
     }

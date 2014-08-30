@@ -56,13 +56,29 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                     List<AzureEnvironment> envs = profile.Environments.Values.ToList();
                     foreach (AzureSubscriptionData oldSubscription in data.Subscriptions)
                     {
-                        AzureSubscription newSubscription = oldSubscription.ToAzureSubscription(envs);
-                        profile.Subscriptions[newSubscription.Id] = newSubscription;
-
-                        if (!string.IsNullOrEmpty(oldSubscription.ManagementCertificate))
+                        var newSubscription = oldSubscription.ToAzureSubscription(envs);
+                        if (newSubscription.Account == null)
                         {
-                            profile.AddCertificate(GeneralUtilities.GetCertificateFromStore(oldSubscription.ManagementCertificate));
+                            continue;
                         }
+
+                        var newAccounts = oldSubscription.ToAzureAccounts();
+                        foreach (var account in newAccounts)
+                        {
+                            if (profile.Accounts.ContainsKey(account.Id))
+                            {
+                                profile.Accounts[account.Id].SetOrAppendProperty(AzureAccount.Property.Tenants,
+                                    account.GetPropertyAsArray(AzureAccount.Property.Tenants));
+                                profile.Accounts[account.Id].SetOrAppendProperty(AzureAccount.Property.Subscriptions,
+                                    account.GetPropertyAsArray(AzureAccount.Property.Subscriptions));
+                            }
+                            else
+                            {
+                                profile.Accounts[account.Id] = account;
+                            }
+                        }
+
+                        profile.Subscriptions[newSubscription.Id] = newSubscription;
                     }
                 }
             }

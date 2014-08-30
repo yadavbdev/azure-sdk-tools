@@ -128,7 +128,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
             {
-                client.AddEnvironment(environment);
+                client.AddOrSetEnvironment(environment);
             }
 
             testSubscription = new AzureSubscription()

@@ -1536,5 +1536,13 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   </data>
   <data name="AddAccountNonInteractiveGuestOrFpo" xml:space="preserve">
     <value>Skipping external tenant {0}, of which you are a guest or an FPO. In order to access this tenant, please run Add-AzureAccount without "-Credential".</value>
+  <data name="RemoveEnvironmentConfirmation" xml:space="preserve">
+    <value>Removing an environment will remove all associated subscriptions and accounts. Are you sure you want to remove an environment '{0}'?</value>
+  </data>
+  <data name="RemoveEnvironmentMessage" xml:space="preserve">
+    <value>Removing environment</value>
+  </data>
+  <data name="RemovingDefaultEnvironmentsNotSupported" xml:space="preserve">
+    <value>Removing public environment is not supported.</value>
   </data>
 </root>

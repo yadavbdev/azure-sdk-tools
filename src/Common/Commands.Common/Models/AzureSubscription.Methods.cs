@@ -46,6 +46,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             Properties.SetProperty(property, values);
         }
 
+        public void SetOrAppendProperty(Property property, params string[] values)
+        {
+            Properties.SetOrAppendProperty(property, values);
+        }
+
         public bool IsPropertySet(Property property)
         {
             return Properties.IsPropertySet(property);

@@ -123,7 +123,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void WriteSubscriptions(IEnumerable<AzureSubscription> subscriptions)
         {
-            IEnumerable<PsAzureSubscription> subscriptionOutput;
+            IEnumerable<PSAzureSubscription> subscriptionOutput;
 
             if (ExtendedDetails.IsPresent)
             {
@@ -137,9 +137,9 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             WriteObject(subscriptionOutput, true);
         }
 
-        private PsAzureSubscription ConstructPsAzureSubscription(AzureSubscription subscription)
+        private PSAzureSubscription ConstructPsAzureSubscription(AzureSubscription subscription)
         {
-            PsAzureSubscription psObject = new PsAzureSubscription();
+            PSAzureSubscription psObject = new PSAzureSubscription();
 
             psObject.SubscriptionId = subscription.Id.ToString();
             psObject.SubscriptionName = subscription.Name;
@@ -152,14 +152,14 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             return psObject;
         }
 
-        private PsAzureSubscriptionExtended ConstructPsAzureSubscriptionExtended(AzureSubscription subscription, IClientFactory clientFactory)
+        private PSAzureSubscriptionExtended ConstructPsAzureSubscriptionExtended(AzureSubscription subscription, IClientFactory clientFactory)
         {
             using (var client = clientFactory.CreateClient<ManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement))
             {
                 var response = client.Subscriptions.Get();
                 var environment = ProfileClient.GetEnvironmentOrDefault(subscription.Environment);
 
-                PsAzureSubscriptionExtended result = new PsAzureSubscriptionExtended(ConstructPsAzureSubscription(subscription))
+                PSAzureSubscriptionExtended result = new PSAzureSubscriptionExtended(ConstructPsAzureSubscription(subscription))
                 {
                     AccountAdminLiveEmailId = response.AccountAdminLiveEmailId,
                     ActiveDirectoryUserId = subscription.Account,

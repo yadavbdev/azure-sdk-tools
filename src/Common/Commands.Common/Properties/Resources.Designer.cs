@@ -2838,6 +2838,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removing an environment will remove all associated subscriptions and accounts. Are you sure you want to remove an environment &apos;{0}&apos;?.
+        /// </summary>
+        public static string RemoveEnvironmentConfirmation {
+            get {
+                return ResourceManager.GetString("RemoveEnvironmentConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing environment.
+        /// </summary>
+        public static string RemoveEnvironmentMessage {
+            get {
+                return ResourceManager.GetString("RemoveEnvironmentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removing job collection.
         /// </summary>
         public static string RemoveJobCollectionMessage {
@@ -3041,6 +3059,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         public static string RemoveWebsiteWarning {
             get {
                 return ResourceManager.GetString("RemoveWebsiteWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing public environment is not supported..
+        /// </summary>
+        public static string RemovingDefaultEnvironmentsNotSupported {
+            get {
+                return ResourceManager.GetString("RemovingDefaultEnvironmentsNotSupported", resourceCulture);
             }
         }
         
