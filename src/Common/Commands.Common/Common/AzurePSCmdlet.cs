@@ -195,7 +195,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 WriteDebugWithTimestamp(string.Format(Resources.BeginProcessingWithParameterSetLog, this.GetType().Name, ParameterSetName));
             }
 
-            WriteDebugWithTimestamp(string.Format("using account id '{0}'...", CurrentContext.Account.Id));
+            if (CurrentContext != null && CurrentContext.Account != null && CurrentContext.Account.Id != null)
+            {
+                WriteDebugWithTimestamp(string.Format("using account id '{0}'...", CurrentContext.Account.Id));
+            }
 
             RecordingTracingInterceptor.AddToContext(httpTracingInterceptor);
 
