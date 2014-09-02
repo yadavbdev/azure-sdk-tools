@@ -27,12 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     {
         private readonly RecordingTracingInterceptor httpTracingInterceptor = new RecordingTracingInterceptor();
         protected ProfileClient profileClient;
-
-        static AzurePSCmdlet()
-        {
-            AzureSession.ClientFactory = new AzurePowerShellClientFactory();
-        }
-
+        
         public AzurePSCmdlet()
         {
             profileClient = new ProfileClient();
