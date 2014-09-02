@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
@@ -61,7 +62,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 GalleryEndpoint = "galleryendpoint"
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             client = new ProfileClient();
@@ -71,25 +74,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
             Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.ServiceManagement], cmdlet.ServiceEndpoint);
             Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl], cmdlet.ManagementPortalUrl);
             Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.Gallery], "galleryendpoint");
-        }
-
-        [Fact]
-        public void FailsForNonExistingEnvironments()
-        {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
-            SetAzureEnvironmentCommand cmdlet = new SetAzureEnvironmentCommand()
-            {
-                CommandRuntime = commandRuntimeMock.Object,
-                Name = "Katal",
-                PublishSettingsFileUrl = "http://microsoft.com",
-                ServiceEndpoint = "endpoint.net",
-                ManagementPortalUrl = "management portal url",
-                StorageEndpoint = "endpoint.net"
-            };
-
-            Testing.AssertThrows<KeyNotFoundException>(
-                () => cmdlet.ExecuteCmdlet(),
-                string.Format(Resources.EnvironmentNotFound, "Katal"));
         }
 
         [Fact]
@@ -106,9 +90,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                     PublishSettingsFileUrl = "http://microsoft.com"
                 };
 
-                Testing.AssertThrows<InvalidOperationException>(
-                    () => cmdlet.ExecuteCmdlet(),
-                    string.Format(Resources.ChangePublicEnvironmentMessage, name));
+                cmdlet.InvokeBeginProcessing();
+                Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
             }
         }
 

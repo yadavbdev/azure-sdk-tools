@@ -55,9 +55,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 StorageEndpoint = "endpoint.net",
                 GalleryEndpoint = "http://galleryendpoint.com"
             };
-            InvokeBeginProcessing(cmdlet);
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
-            InvokeEndProcessing(cmdlet);
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             ProfileClient client = new ProfileClient();
@@ -80,7 +80,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 PublishSettingsFileUrl = "http://microsoft.com"
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             ProfileClient client = new ProfileClient();
@@ -102,7 +104,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 ManagementPortalUrl = "management portal url",
                 StorageEndpoint = "endpoint.net"
             };
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
             ProfileClient client = new ProfileClient();
             int count = client.Profile.Environments.Count;
 
@@ -140,7 +144,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 StorageEndpoint = "core.windows.net"
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             ProfileClient client = new ProfileClient();
@@ -148,19 +154,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
             Assert.Equal(env.Name, cmdlet.Name);
             Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], actual.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl]);
         }
-
-        private void InvokeBeginProcessing(PSCmdlet cmdlt)
-        {
-            MethodInfo dynMethod = (typeof(PSCmdlet)).GetMethod("BeginProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
-            dynMethod.Invoke(cmdlt, null);
-        }
-
-        private void InvokeEndProcessing(PSCmdlet cmdlt)
-        {
-            MethodInfo dynMethod = (typeof(PSCmdlet)).GetMethod("EndProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
-            dynMethod.Invoke(cmdlt, null);
-        }
-
         public void Dispose()
         {
             Cleanup();

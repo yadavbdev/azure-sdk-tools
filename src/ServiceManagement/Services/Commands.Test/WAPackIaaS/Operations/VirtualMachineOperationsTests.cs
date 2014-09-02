@@ -101,7 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmList = vmOperations.Read(expectedVmName);
             Assert.Equal(expectedVmIds.Length, vmList.Count);
             Assert.True(vmList.All(vm => vm.Name == expectedVmName));
-            Assert.Equal(expectedVmIds, vmList.Select(v => v.ID).ToArray());
+            Assert.Equal(expectedVmIds.OrderBy(g => g), vmList.Select(v => v.ID).OrderBy(g => g).ToArray());
         }
 
         [Fact]

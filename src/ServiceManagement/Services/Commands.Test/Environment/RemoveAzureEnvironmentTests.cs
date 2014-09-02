@@ -20,6 +20,7 @@ using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Profile;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Moq;
 using Xunit;
 
@@ -44,6 +45,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
         public void RemovesAzureEnvironment()
         {
             var commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+
             const string name = "test";
             ProfileClient client = new ProfileClient();
             client.AddOrSetEnvironment(new AzureEnvironment
@@ -55,10 +58,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
             var cmdlet = new RemoveAzureEnvironmentCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
+                Force = true,
                 Name = name
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             client = new ProfileClient();
             Assert.False(client.Profile.Environments.ContainsKey(name));
@@ -68,29 +74,36 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
         public void ThrowsForUnknownEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+
             RemoveAzureEnvironmentCommand cmdlet = new RemoveAzureEnvironmentCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
-                Name = "test2"
+                Name = "test2",
+                Force = true
             };
 
-            Assert.Throws<KeyNotFoundException>(() => cmdlet.ExecuteCmdlet());
+            cmdlet.InvokeBeginProcessing();
+            Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
         }
 
         [Fact]
         public void ThrowsForPublicEnvironment()
         {
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
             foreach (string name in AzureEnvironment.PublicEnvironments.Keys)
             {
                 RemoveAzureEnvironmentCommand cmdlet = new RemoveAzureEnvironmentCommand()
                 {
                     CommandRuntime = commandRuntimeMock.Object,
+                    Force = true,
                     Name = name
                 };
 
-                Assert.Throws<InvalidOperationException>(() => cmdlet.ExecuteCmdlet());
+                cmdlet.InvokeBeginProcessing();
+                Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
             }
         }
 

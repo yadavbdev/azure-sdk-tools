@@ -176,7 +176,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 return null;
             }
         }
-        public AzureAccount GetAccount(string accountName)
+
+        public AzureAccount GetAccountOrNull(string accountName)
         {
             if (string.IsNullOrEmpty(accountName))
             {
@@ -189,8 +190,20 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             else
             {
+                return null;
+            }
+        }
+
+        public AzureAccount GetAccount(string accountName)
+        {
+            var account = GetAccountOrNull(accountName);
+            
+            if (account == null)
+            {
                 throw new ArgumentException(string.Format("Account with name '{0}' does not exist.", accountName), "accountName");
             }
+
+            return account;
         }
 
         public IEnumerable<AzureAccount> ListAccounts(string accountName)
@@ -850,6 +863,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (environment == null)
             {
                 throw new ArgumentNullException("Environment needs to be specified.", "environment");
+            }
+
+            if (AzureEnvironment.PublicEnvironments.ContainsKey(environment.Name))
+            {
+                throw new ArgumentException(Resources.ChangingDefaultEnvironmentNotSupported, "environment");
             }
 
             if (Profile.Environments.ContainsKey(environment.Name))

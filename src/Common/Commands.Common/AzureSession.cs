@@ -70,6 +70,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     }
 
                     subscription.Account = account.Id;
+
                 }
             }
 
