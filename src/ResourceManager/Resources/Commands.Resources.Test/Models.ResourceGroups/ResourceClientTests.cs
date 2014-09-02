@@ -48,8 +48,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
         private Mock<IAuthorizationManagementClient> authorizationManagementClientMock;
 
-        private Mock<IStorageClientWrapper> storageClientWrapperMock;
-
         private Mock<IDeploymentOperations> deploymentsMock;
 
         private Mock<IResourceGroupOperations> resourceGroupMock;
@@ -152,7 +150,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             progressLoggerMock = new Mock<Action<string>>();
             errorLoggerMock = new Mock<Action<string>>();
             permissionOperationsMock = new Mock<IPermissionOperations>();
-            storageClientWrapperMock = new Mock<IStorageClientWrapper>();
             resourceManagementClientMock.Setup(f => f.Deployments).Returns(deploymentsMock.Object);
             resourceManagementClientMock.Setup(f => f.ResourceGroups).Returns(resourceGroupMock.Object);
             resourceManagementClientMock.Setup(f => f.Resources).Returns(resourceOperationsMock.Object);
@@ -162,7 +159,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             authorizationManagementClientMock.Setup(f => f.Permissions).Returns(permissionOperationsMock.Object);
             resourcesClient = new ResourcesClient(
                 resourceManagementClientMock.Object,
-                storageClientWrapperMock.Object,
                 galleryTemplatesClientMock.Object,
                 eventsClientMock.Object,
                 authorizationManagementClientMock.Object)
@@ -925,7 +921,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 {
                     ResourceGroup = new ResourceGroup() { Location = resourceGroupLocation }
                 }));
-            storageClientWrapperMock.Setup(f => f.UploadFileToBlob(It.IsAny<BlobUploadParameters>())).Returns(templateUri);
             deploymentsMock.Setup(f => f.CreateOrUpdateAsync(resourceGroupName, deploymentName, It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentOperationsCreateResult
                 {
@@ -998,7 +993,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 {
                     Exists = true
                 }));
-            storageClientWrapperMock.Setup(f => f.UploadFileToBlob(It.IsAny<BlobUploadParameters>())).Returns(templateUri);
             deploymentsMock.Setup(f => f.ValidateAsync(resourceGroupName, It.IsAny<string>(), It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentValidateResponse
                 {
@@ -1037,7 +1031,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 {
                     Exists = true
                 }));
-            storageClientWrapperMock.Setup(f => f.UploadFileToBlob(It.IsAny<BlobUploadParameters>())).Returns(templateUri);
             deploymentsMock.Setup(f => f.ValidateAsync(resourceGroupName, It.IsAny<string>(), It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentValidateResponse
                 {
@@ -1249,7 +1242,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 {
                     ResourceGroup = new ResourceGroup() { Location = resourceGroupLocation }
                 }));
-            storageClientWrapperMock.Setup(f => f.UploadFileToBlob(It.IsAny<BlobUploadParameters>())).Returns(templateUri);
             deploymentsMock.Setup(f => f.CreateOrUpdateAsync(resourceGroupName, deploymentName, It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentOperationsCreateResult
                 {
@@ -1362,7 +1354,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 {
                     ResourceGroup = new ResourceGroup() { Location = resourceGroupLocation }
                 }));
-            storageClientWrapperMock.Setup(f => f.UploadFileToBlob(It.IsAny<BlobUploadParameters>())).Returns(templateUri);
             deploymentsMock.Setup(f => f.CreateOrUpdateAsync(resourceGroupName, deploymentName, It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentOperationsCreateResult
                 {
@@ -1471,7 +1462,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 {
                     ResourceGroup = new ResourceGroup() { Location = resourceGroupLocation }
                 }));
-            storageClientWrapperMock.Setup(f => f.UploadFileToBlob(It.IsAny<BlobUploadParameters>())).Returns(templateUri);
             deploymentsMock.Setup(f => f.CreateOrUpdateAsync(resourceGroupName, deploymentName, It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentOperationsCreateResult
                 {
@@ -1577,7 +1567,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 {
                     ResourceGroup = new ResourceGroup() { Location = resourceGroupLocation }
                 }));
-            storageClientWrapperMock.Setup(f => f.UploadFileToBlob(It.IsAny<BlobUploadParameters>())).Returns(templateUri);
             deploymentsMock.Setup(f => f.CreateOrUpdateAsync(resourceGroupName, deploymentName, It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentOperationsCreateResult
                 {
