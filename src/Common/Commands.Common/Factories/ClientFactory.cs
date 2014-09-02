@@ -31,23 +31,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
     {
         private static readonly char[] uriPathSeparator = { '/' };
 
-        public TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
+        public virtual TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
         {
             if (context == null)
             {
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
-            }
-
-            if (!TestMockSupport.RunningMocked)
-            {
-                if (endpoint == AzureEnvironment.Endpoint.ServiceManagement)
-                {
-                    RegisterServiceManagementProviders<TClient>(context);
-                } 
-                else if (endpoint == AzureEnvironment.Endpoint.ResourceManager)
-                {
-                    RegisterResourceManagerProviders<TClient>(context);
-                }
             }
 
             SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
@@ -61,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
         /// <param name="subscription"></param>
         /// <param name="endpointName"></param>
         /// <returns></returns>
-        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
+        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
         {
             if (subscription == null)
             {
@@ -75,7 +63,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 Environment = profileClient.GetEnvironmentOrDefault(subscription.Environment),
                 Account = profileClient.GetAccount(subscription.Account)
             };
-            return CreateClient<TClient>(context, endpointName);
+
+            return CreateClient<TClient>(context, endpoint);
         }
 
         public TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
@@ -97,93 +86,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             client.UserAgent.Add(ApiConstants.UserAgentValue);
            
             return client;
-        }
-
-        /// <summary>
-        /// Registers resource providers for Sparta.
-        /// </summary>
-        /// <typeparam name="T">The client type</typeparam>
-        private void RegisterResourceManagerProviders<T>(AzureContext context) where T : ServiceClient<T>
-        {
-            var credentials = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
-            var providersToRegister = RequiredResourceLookup.RequiredProvidersForResourceManager<T>();
-            var registeredProviders = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders);
-            var unregisteredProviders = providersToRegister.Where(p => !registeredProviders.Contains(p)).ToList();
-            var successfullyRegisteredProvider = new List<string>();
-
-            if (unregisteredProviders.Count > 0)
-            {
-                using (IResourceManagementClient client = new ResourceManagementClient(credentials, 
-                    context.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
-                {
-                    foreach (string provider in unregisteredProviders)
-                    {
-                        try
-                        {
-                            client.Providers.Register(provider);
-                            successfullyRegisteredProvider.Add(provider);
-                        }
-                        catch
-                        {
-                            // Ignore this as the user may not have access to Sparta endpoint or the provider is already registered
-                        }
-                    }
-                }
-
-                UpdateSubscriptionRegisteredProviders(context.Subscription, successfullyRegisteredProvider);
-            }
-        }
-
-        /// <summary>
-        /// Registers resource providers for RDFE.
-        /// </summary>
-        /// <typeparam name="T">The client type</typeparam>
-        private void RegisterServiceManagementProviders<T>(AzureContext context) where T : ServiceClient<T>
-        {
-            var credentials = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
-            var providersToRegister = RequiredResourceLookup.RequiredProvidersForServiceManagement<T>();
-            var registeredProviders = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders);
-            var unregisteredProviders = providersToRegister.Where(p => !registeredProviders.Contains(p)).ToList();
-            var successfullyRegisteredProvider = new List<string>();
-
-            if (unregisteredProviders.Count > 0)
-            {
-                using (var client = new ManagementClient(credentials, context.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement)))
-                {
-                    foreach (var provider in unregisteredProviders)
-                    {
-                        try
-                        {
-                            client.Subscriptions.RegisterResource(provider);
-                        }
-                        catch (CloudException ex)
-                        {
-                            if (ex.Response.StatusCode != HttpStatusCode.Conflict && ex.Response.StatusCode != HttpStatusCode.NotFound)
-                            {
-                                // Conflict means already registered, that's OK.
-                                // NotFound means there is no registration support, like Windows Azure Pack.
-                                // Otherwise it's a failure.
-                                throw;
-                            }
-                        }
-                        successfullyRegisteredProvider.Add(provider);
-                    }
-                }
-
-                UpdateSubscriptionRegisteredProviders(context.Subscription, successfullyRegisteredProvider);
-            }
-        }
-
-        private void UpdateSubscriptionRegisteredProviders(AzureSubscription subscription, List<string> providers)
-        {
-            if (providers != null && providers.Count > 0)
-            {
-                subscription.SetOrAppendProperty(AzureSubscription.Property.RegisteredResourceProviders,
-                    providers.ToArray());
-                ProfileClient profileClient = new ProfileClient();
-                profileClient.AddOrSetSubscription(subscription);
-                profileClient.Profile.Save();
-            }
         }
 
         HttpClient IClientFactory.CreateHttpClient(string endpoint, ICredentials credentials)

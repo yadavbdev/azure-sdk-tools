@@ -1534,6 +1534,9 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="CredentialOrganizationIdMessage" xml:space="preserve">
     <value>-Credential parameter can only be used with Organization ID credentials. For more information, please refer to http://go.microsoft.com/fwlink/?linkid=331007&amp;clcid=0x409 for more information about the difference between an organizational account and a Microsoft account.</value>
   </data>
+  <data name="AddAccountNonInteractiveGuestOrFpo" xml:space="preserve">
+    <value>Skipping external tenant {0}, because you are using a guest or a foreign principal object identity. In order to access this tenant, please run Add-AzureAccount without "-Credential".</value>
+  </data>
   <data name="RemoveEnvironmentConfirmation" xml:space="preserve">
     <value>Removing an environment will remove all associated subscriptions and accounts. Are you sure you want to remove an environment '{0}'?</value>
   </data>
