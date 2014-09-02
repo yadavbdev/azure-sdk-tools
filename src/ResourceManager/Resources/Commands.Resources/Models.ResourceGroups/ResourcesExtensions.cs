@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
         public static PSResourceGroup ToPSResourceGroup(this ResourceGroup resourceGroup, ResourcesClient client)
         {
             List<PSResource> resources = client.FilterResources(new FilterResourcesOptions { ResourceGroup = resourceGroup.Name })
-                .Select(r => r.ToPSResource(client)).ToList();
+                .Select(r => r.ToPSResource(client, true)).ToList();
             return new PSResourceGroup
             {
                 ResourceGroupName = resourceGroup.Name,
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 };
         }
 
-        public static PSResource ToPSResource(this Resource resource, string apiVersion, ResourcesClient client)
+        public static PSResource ToPSResource(this Resource resource, ResourcesClient client, bool minimal)
         {
             ResourceIdentifier identifier = new ResourceIdentifier(resource.Id);
             return new PSResource
@@ -93,14 +93,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 Properties = JsonUtilities.DeserializeJson(resource.Properties),
                 PropertiesText = resource.Properties,
                 Tags = TagsConversionHelper.CreateTagHashtable(resource.Tags),
-                Permissions = client.GetResourcePermissions(identifier),
+                Permissions = minimal ? null : client.GetResourcePermissions(identifier),
                 ResourceId = identifier.ToString()
             };
-        }
-
-        public static PSResource ToPSResource(this Resource resource, ResourcesClient client)
-        {
-            return ToPSResource(resource, null, client);
         }
 
         public static PSResourceProviderType ToPSResourceProviderType(this ProviderResourceType resourceType, string providerNamespace)

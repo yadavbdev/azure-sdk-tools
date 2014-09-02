@@ -107,7 +107,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             
             ResourceGetResult getResult = ResourceManagementClient.Resources.Get(parameters.ResourceGroupName, resourceIdentity);
 
-            return getResult.Resource.ToPSResource(this);
+            return getResult.Resource.ToPSResource(this, false);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             ResourceGetResult getResult = ResourceManagementClient.Resources.Get(parameters.ResourceGroupName, resourceIdentity);
 
-            return getResult.Resource.ToPSResource(this);
+            return getResult.Resource.ToPSResource(this, false);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                     throw new ArgumentException(ProjectResources.ResourceDoesntExists);
                 }
 
-                resources.Add(getResult.Resource.ToPSResource(this));
+                resources.Add(getResult.Resource.ToPSResource(this, false));
             }
             else
             {
@@ -196,7 +196,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
                 if (listResult.Resources != null)
                 {
-                    resources.AddRange(listResult.Resources.Select(r => r.ToPSResource(this)));
+                    resources.AddRange(listResult.Resources.Select(r => r.ToPSResource(this, false)));
                 }
             }
             return resources;

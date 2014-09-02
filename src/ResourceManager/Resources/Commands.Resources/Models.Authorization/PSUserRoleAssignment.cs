@@ -20,6 +20,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
     {
         public string UserPrincipalName { get; set; }
 
-        public string SignInName { get; set; }
+        public string Mail { get; set; }
     }
 }
