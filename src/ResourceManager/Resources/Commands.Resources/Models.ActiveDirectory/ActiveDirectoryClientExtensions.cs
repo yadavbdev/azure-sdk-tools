@@ -41,14 +41,37 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public static PSADObject ToPSADObject(this AADObject obj)
         {
-            PSADObject psObj = new PSADObject()
+            if (obj.ObjectType.Equals(typeof(User).Name))
             {
-                DisplayName = obj.DisplayName,
-                Id = new Guid(obj.ObjectId),
-                Type = obj.ObjectType,
-            };
-            psObj.SetProperty("UserPrincipalName", obj.UserPrincipalName);
-            return psObj;
+                return new PSADUser()
+                {
+                    DisplayName = obj.DisplayName,
+                    Id = new Guid(obj.ObjectId),
+                    Type = obj.ObjectType,
+                    UserPrincipalName = obj.UserPrincipalName,
+                    Mail = obj.Mail
+                };
+            }
+            else if (obj.ObjectType.Equals(typeof(Group).Name))
+            {
+                return new PSADGroup()
+                {
+                    DisplayName = obj.DisplayName,
+                    Type = obj.ObjectType,
+                    Id = new Guid(obj.ObjectId)/*,
+                    Mail = group.Mail*/
+                };
+
+            }
+            else
+            {
+                return new PSADObject()
+                {
+                    DisplayName = obj.DisplayName,
+                    Id = new Guid(obj.ObjectId),
+                    Type = obj.ObjectType
+                };
+            }
         }
 
         public static PSADObject ToPSADGroup(this AADObject obj)

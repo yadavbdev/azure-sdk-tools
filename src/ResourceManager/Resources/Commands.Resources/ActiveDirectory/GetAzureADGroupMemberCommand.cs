@@ -40,16 +40,7 @@ namespace Microsoft.Azure.Commands.ActiveDirectory
 
             do
             {
-                List<PSADObject> groupMembers = ActiveDirectoryClient.GetGroupMembers(options);
-                List<PSObject> output = new List<PSObject>();
-
-                groupMembers.ForEach(m => output.Add(base.ConstructPSObject(
-                    null,
-                    "Name", m.DisplayName,
-                    "Type", m.Type,
-                    "Id", m.Id,
-                    "UserPrincipalName", m.GetProperty("UserPrincipalName"))));
-                WriteObject(output, true);
+                WriteObject(ActiveDirectoryClient.GetGroupMembers(options), true);
             } while (!string.IsNullOrEmpty(options.NextLink));
         }
     }

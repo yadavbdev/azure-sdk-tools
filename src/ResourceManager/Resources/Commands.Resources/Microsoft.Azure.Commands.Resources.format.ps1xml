@@ -192,6 +192,43 @@
       </TableControl>
     </View>
     <View>
+      <Name>Microsoft.Azure.Commands.Resources.Models.ActiveDirectory.PSADObject</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.Resources.Models.ActiveDirectory.PSADObject</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>DisplayName</Label>
+            <Width>30</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Type</Label>
+            <Width>30</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>ObjectId</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap/>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>DisplayName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Type</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Id</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Microsoft.Azure.Commands.Resources.Models.PSDeploymentEventData</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.Azure.Commands.Resources.Models.PSDeploymentEventData</TypeName>

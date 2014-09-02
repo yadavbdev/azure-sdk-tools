@@ -26,37 +26,5 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public Guid Id { get; set; }
 
         public string Type { get; set; }
-
-        public Dictionary<string, string> Properties;
-
-        public PSADObject()
-        {
-            Properties = new Dictionary<string, string>();
-        }
-
-        public string GetProperty(string property)
-        {
-            return Properties.GetProperty(property);
-        }
-
-        public string[] GetPropertyAsArray(string property)
-        {
-            return Properties.GetPropertyAsArray(property);
-        }
-
-        public void SetProperty(string property, params string[] values)
-        {
-            Properties.SetProperty(property, values);
-        }
-
-        public void SetOrAppendProperty(string property, params string[] values)
-        {
-            Properties.SetOrAppendProperty(property, values);
-        }
-
-        public bool IsPropertySet(string property)
-        {
-            return Properties.IsPropertySet(property);
-        }
     }
 }
