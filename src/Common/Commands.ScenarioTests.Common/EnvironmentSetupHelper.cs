@@ -145,7 +145,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             };
             
             client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
-            client.SetSubscriptionAsCurrent(testSubscription.Name);
+            client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
