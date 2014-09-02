@@ -73,7 +73,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
         /// Creates new ResourcesClient instance
         /// </summary>
         /// <param name="resourceManagementClient">The IResourceManagementClient instance</param>
-        /// <param name="storageClientWrapper">The IStorageClientWrapper instance</param>
         /// <param name="galleryTemplatesClient">The IGalleryClient instance</param>
         /// <param name="eventsClient">The IEventsClient instance</param>
         public ResourcesClient(
@@ -141,7 +140,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             ResourceManagementClient.Providers.Unregister(RPName);
         }
         
-        private string GetTemplate(string templateFile, string galleryTemplateName, string storageAccountName)
+        private string GetTemplate(string templateFile, string galleryTemplateName)
         {
             string template;
 
@@ -316,7 +315,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             BasicDeployment deployment = new BasicDeployment
             {
                 Mode = DeploymentMode.Incremental,
-                Template = GetTemplate(parameters.TemplateFile, parameters.GalleryTemplateIdentity, parameters.StorageAccountName),
+                Template = GetTemplate(parameters.TemplateFile, parameters.GalleryTemplateIdentity),
                 Parameters = GetDeploymentParameters(parameters.TemplateParameterObject)
             };
 
