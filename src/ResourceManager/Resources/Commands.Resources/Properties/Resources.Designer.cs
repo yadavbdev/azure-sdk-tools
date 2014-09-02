@@ -241,7 +241,7 @@ namespace Microsoft.Azure.Commands.Resources.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removing role assignment on scope &apos;{0}&apos;...
+        ///   Looks up a localized string similar to Removing role assignment for AD object &apos;{0}&apos; on scope &apos;{1}&apos; with role definition &apos;{2}&apos; .
         /// </summary>
         internal static string RemovingRoleAssignment {
             get {

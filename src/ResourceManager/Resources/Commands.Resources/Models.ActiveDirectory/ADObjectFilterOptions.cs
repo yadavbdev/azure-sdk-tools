@@ -34,14 +34,24 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         /// </summary>
         public string NextLink { get; set; }
 
-        public bool HasFilter {
+        public bool HasFilter { get { return !string.IsNullOrEmpty(ActiveFilter); } }
+
+        public string ActiveFilter
+        {
             get
             {
-                return !string.IsNullOrEmpty(SearchString) ||
-                       !string.IsNullOrEmpty(Mail) ||
-                       !string.IsNullOrEmpty(UPN) ||
-                       !string.IsNullOrEmpty(SPN) ||
-                       !string.IsNullOrEmpty(Id);
+                if (!string.IsNullOrEmpty(Id))
+                    return Id;
+                else if (!string.IsNullOrEmpty(UPN))
+                    return UPN;
+                else if (!string.IsNullOrEmpty(SPN))
+                    return SPN;
+                else if (!string.IsNullOrEmpty(Mail))
+                    return Mail;
+                else if (!string.IsNullOrEmpty(SearchString))
+                    return SearchString;
+                else
+                    return null;
             }
         }
     }

@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                 DisplayName = user.DisplayName,
                 Id = new Guid(user.ObjectId),
                 UserPrincipalName = user.UserPrincipalName,
-                SignInName = user.SignInName
+                Mail = user.SignInName
             };
         }
 
