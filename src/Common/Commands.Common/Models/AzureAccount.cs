@@ -23,8 +23,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
     {
         public string Id { get; set; }
 
-        public string Environment { get; set; }
-
         public AccountType Type { get; set; }
 
         public Dictionary<Property, string> Properties { get; set; }

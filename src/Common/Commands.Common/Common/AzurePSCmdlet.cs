@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
@@ -26,6 +27,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     {
         private readonly RecordingTracingInterceptor httpTracingInterceptor = new RecordingTracingInterceptor();
         protected ProfileClient profileClient;
+
+        static AzurePSCmdlet()
+        {
+            AzureSession.ClientFactory = new AzurePowerShellClientFactory();
+        }
 
         public AzurePSCmdlet()
         {
@@ -36,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 AzureSession.SetCurrentContext(
                     profileClient.Profile.DefaultSubscription,
                     profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment),
-                    profileClient.ListAccounts(profileClient.Profile.DefaultSubscription.Account, profileClient.Profile.DefaultSubscription.Environment).First());
+                    profileClient.GetAccount(profileClient.Profile.DefaultSubscription.Account));
             }
         }
 
@@ -193,6 +199,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             else
             {
                 WriteDebugWithTimestamp(string.Format(Resources.BeginProcessingWithParameterSetLog, this.GetType().Name, ParameterSetName));
+            }
+
+            if (CurrentContext != null && CurrentContext.Account != null && CurrentContext.Account.Id != null)
+            {
+                WriteDebugWithTimestamp(string.Format("using account id '{0}'...", CurrentContext.Account.Id));
             }
 
             RecordingTracingInterceptor.AddToContext(httpTracingInterceptor);

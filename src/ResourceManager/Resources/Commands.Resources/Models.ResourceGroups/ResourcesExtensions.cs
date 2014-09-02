@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 }
 
                 result.Name = string.IsNullOrEmpty(providerNamespace) ? resourceType.Name : string.Join("/", providerNamespace, resourceType.Name);
-                result.Locations = resourceType.Locations.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+                result.Locations = resourceType.Locations.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
                 result.LocationsString = string.Join(", ", result.Locations);
             }
 

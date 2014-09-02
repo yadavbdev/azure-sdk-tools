@@ -51,13 +51,18 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
             }
             else
             {
-                if (!dictionary.ContainsKey(property))
-                {
-                    dictionary[property] = "";
-                }
-                var oldValues = dictionary[property].Split(new[] {','},  StringSplitOptions.RemoveEmptyEntries);
-                dictionary[property] = string.Join(",", oldValues.Union(values).Where(s=>!string.IsNullOrEmpty(s)));
+                dictionary[property] = string.Join(",", values);
             }
+        }
+
+        public static void SetOrAppendProperty<TKey>(this Dictionary<TKey, string> dictionary, TKey property, params string[] values)
+        {
+            if (!dictionary.ContainsKey(property))
+            {
+                dictionary[property] = "";
+            }
+            var oldValues = dictionary[property].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            dictionary[property] = string.Join(",", oldValues.Union(values, StringComparer.CurrentCultureIgnoreCase).Where(s => !string.IsNullOrEmpty(s)));
         }
 
         public static bool IsPropertySet<TKey>(this Dictionary<TKey, string> dictionary, TKey property)

@@ -128,7 +128,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
             {
-                client.AddEnvironment(environment);
+                client.AddOrSetEnvironment(environment);
             }
 
             testSubscription = new AzureSubscription()
@@ -145,7 +145,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             };
             
             client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
-            client.SetSubscriptionAsCurrent(testSubscription.Name);
+            client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)

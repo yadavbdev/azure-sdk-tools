@@ -207,4 +207,7 @@
   <data name="InvalidTagFormatNotUniqueName" xml:space="preserve">
     <value>Invalid tag format. Ensure that each tag has a unique name. Example: @{Name = "tagName1"; Value = "tagValue1"}, @{Name = "tagName2"; Value = "tagValue2"}</value>
   </data>
+  <data name="RoleDefinitionNotFound" xml:space="preserve">
+    <value>Can not find role definition with name '{0}'.</value>
+  </data>
 </root>

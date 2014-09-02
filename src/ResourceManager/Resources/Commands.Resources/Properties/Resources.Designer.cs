@@ -304,6 +304,15 @@ namespace Microsoft.Azure.Commands.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not find role definition with name &apos;{0}&apos;..
+        /// </summary>
+        internal static string RoleDefinitionNotFound {
+            get {
+                return ResourceManager.GetString("RoleDefinitionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Because the current subscription does not have a current storage account, you must specify the StorageAccountName parameter..
         /// </summary>
         internal static string StorageAccountNameNeedsToBeSpecified {

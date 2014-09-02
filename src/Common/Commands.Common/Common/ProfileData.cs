@@ -154,6 +154,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 subscription.Account = this.ActiveDirectoryUserId;
             }
 
+            if (!string.IsNullOrEmpty(this.ActiveDirectoryTenantId))
+            {
+                subscription.SetProperty(AzureSubscription.Property.Tenants, ActiveDirectoryTenantId);
+            }
+
+            if (this.IsDefault)
+            {
+                subscription.SetProperty(AzureSubscription.Property.Default, "True");
+            }
+
             if (!string.IsNullOrEmpty(this.CloudStorageAccount))
             {
                 subscription.Properties.Add(AzureSubscription.Property.StorageAccount, this.CloudStorageAccount);
@@ -167,6 +177,33 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
 
             return subscription;
+        }
+
+        public IEnumerable<AzureAccount> ToAzureAccounts()
+        {
+            if (!string.IsNullOrEmpty(ActiveDirectoryUserId))
+            {
+                AzureAccount userAccount = new AzureAccount
+                {
+                    Id = ActiveDirectoryUserId,
+                    Type = AzureAccount.AccountType.User
+                };
+                userAccount.SetProperty(AzureAccount.Property.Subscriptions, new Guid(this.SubscriptionId).ToString());
+                if (!string.IsNullOrEmpty(ActiveDirectoryTenantId))
+                {
+                    userAccount.SetProperty(AzureAccount.Property.Tenants, ActiveDirectoryTenantId);
+                }
+                yield return userAccount;
+            }
+            if (!string.IsNullOrEmpty(ManagementCertificate))
+            {
+                AzureAccount certificateAccount = new AzureAccount
+                {
+                    Id = ManagementCertificate,
+                    Type = AzureAccount.AccountType.Certificate
+                };
+                yield return certificateAccount;
+            }
         }
 
         [DataMember]
