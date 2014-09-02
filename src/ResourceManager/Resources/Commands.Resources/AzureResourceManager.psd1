@@ -67,7 +67,7 @@ NestedModules = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.dll',
     '.\Resources\Microsoft.WindowsAzure.Commands.Profile.dll',
     '.\Tags\Microsoft.Azure.Commands.Tags.dll',
-	'.\DataFactories\Microsoft.Azure.Commands.DataFactories.dll'
+    '.\DataFactories\Microsoft.Azure.Commands.DataFactories.dll'
 )
 
 # Functions to export from this module
