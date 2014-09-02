@@ -66,8 +66,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         /// <param name="args">Arguments.</param>
         public void Log(string format, params object[] args)
         {
-            Debug.Assert(TestContext != null);
-            TestContext.WriteLine(format, args);
+            if (TestContext != null)
+            {
+                TestContext.WriteLine(format, args);
+            }
+            else
+            {
+                Console.WriteLine(format, args);
+            }
         }
     }
 }

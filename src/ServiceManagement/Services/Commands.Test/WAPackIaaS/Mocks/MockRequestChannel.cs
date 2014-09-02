@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
 
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks
@@ -127,7 +127,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks
                     throw new ArgumentNullException();
 
                 object actualValue = property.GetValue(request, null);
-                Assert.AreEqual(value.Value, actualValue);
+                Assert.Equal(value.Value, actualValue);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks
         {
             foreach (var eHeader in this.expectedHeaders)
             {
-                Assert.AreEqual(actualHeaders[eHeader.Key], eHeader.Value);
+                Assert.Equal(actualHeaders[eHeader.Key], eHeader.Value);
             }
         }
     }

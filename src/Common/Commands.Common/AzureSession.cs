@@ -58,9 +58,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (account == null)
             {
-                if (subscription != null && CurrentContext != null)
+                if (subscription != null && CurrentContext != null && subscription.Account != null)
                 {
-                    if (subscription.Account == CurrentContext.Account.Id)
+                    if (CurrentContext.Account != null && subscription.Account == CurrentContext.Account.Id)
                     {
                         account = CurrentContext.Account;
                     }
@@ -70,6 +70,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     }
 
                     subscription.Account = account.Id;
+
                 }
             }
 

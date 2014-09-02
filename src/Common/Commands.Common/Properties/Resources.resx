@@ -1543,4 +1543,7 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="RemovingDefaultEnvironmentsNotSupported" xml:space="preserve">
     <value>Removing public environment is not supported.</value>
   </data>
+  <data name="ChangingDefaultEnvironmentNotSupported" xml:space="preserve">
+    <value>Changing public environment is not supported.</value>
+  </data>
 </root>

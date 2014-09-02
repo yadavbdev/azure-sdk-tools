@@ -14,7 +14,7 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.ServiceBus;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -25,16 +25,15 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    [TestClass]
+    
     public class NewAzureSBNamespaceTests : TestBase
     {
-        [TestInitialize]
-        public void SetupTest()
+        public NewAzureSBNamespaceTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureSBNamespaceSuccessfull()
         {
             // Setup
@@ -61,10 +60,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<ExtendedServiceBusNamespace>(expected, actual);
+            Assert.Equal<ExtendedServiceBusNamespace>(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureSBNamespaceGetsDefaultLocation()
         {
             // Setup
@@ -87,10 +86,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<ExtendedServiceBusNamespace>(expected, actual);
+            Assert.Equal<ExtendedServiceBusNamespace>(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureSBNamespaceWithInvalidNamesFail()
         {
             // Setup
@@ -115,7 +114,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreatesNewSBCaseInsensitiveRegion()
         {
             // Setup
@@ -142,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<ExtendedServiceBusNamespace>(expected, actual);
+            Assert.Equal<ExtendedServiceBusNamespace>(expected, actual);
         }
     }
 }

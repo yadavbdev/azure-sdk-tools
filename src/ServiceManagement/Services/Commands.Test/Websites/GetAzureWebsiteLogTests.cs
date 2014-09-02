@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
@@ -27,7 +27,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class GetAzureWebsiteLogTests : WebsitesTestBase
     {
 
@@ -49,8 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         Predicate<string> stopCondition;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public GetAzureWebsiteLogTests()
         {
             base.SetupTest();
             websitesClientMock = new Mock<IWebsitesClient>();
@@ -91,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 .Returns(website);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureWebsiteLogTest()
         {
             getAzureWebsiteLogCmdlet.Tail = true;
@@ -108,7 +107,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetAzureWebsiteLogWithPath()
         {
             getAzureWebsiteLogCmdlet.Tail = true;
@@ -126,7 +125,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGetAzureWebsiteLogListPath()
         {
             List<LogPath> paths = new List<LogPath>() { 
@@ -141,7 +140,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCmdlet.ExecuteCmdlet();
 
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

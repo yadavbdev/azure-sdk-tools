@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Store;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference;
@@ -27,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
 {
     using Resource = Management.Store.Models.CloudServiceListResponse.CloudService.AddOnResource;
 
-    [TestClass]
+    
     public class GetAzureStoreAddOnTests : TestBase
     {
         Mock<ICommandRuntime> mockCommandRuntime;
@@ -38,8 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
 
         GetAzureStoreAddOnCommand cmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public GetAzureStoreAddOnTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
             mockCommandRuntime = new Mock<ICommandRuntime>();
@@ -53,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureStoreAddOnAvailableAddOnsSuccessfull()
         {
             // Setup
@@ -99,10 +98,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
 
             // Assert
             mockMarketplaceClient.Verify(f => f.GetAvailableWindowsAzureOffers(null), Times.Once());
-            CollectionAssert.AreEquivalent(expectedWindowsAzureOffers, actualWindowsAzureOffers);
+            Assert.Equal(expectedWindowsAzureOffers, actualWindowsAzureOffers);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureStoreAddOnWithEmptyCloudService()
         {
             // Setup
@@ -117,7 +116,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             mockCommandRuntime.Verify(f => f.WriteObject(expected, true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureStoreAddOnWithoutSearchOptions()
         {
             // Setup
@@ -137,7 +136,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             mockCommandRuntime.Verify(f => f.WriteObject(expected, true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureStoreAddOnWithNameFilter()
         {
             // Setup

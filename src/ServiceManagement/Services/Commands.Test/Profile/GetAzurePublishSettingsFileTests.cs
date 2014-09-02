@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Profile;
@@ -22,10 +22,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Profile
 {
-    [TestClass]
+    
     public class GetAzurePublishSettingsFileTests
     {
-        [TestMethod]
+        [Fact]
         public void GetsPublishSettingsFileUrl()
         {
             // Setup

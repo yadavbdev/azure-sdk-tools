@@ -14,7 +14,7 @@
 
 using System.Collections.Generic;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
@@ -25,7 +25,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class EnableAzureWebsiteApplicationDiagnosticTests : WebsitesTestBase
     {
         private const string websiteName = "website1";
@@ -38,8 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Dictionary<DiagnosticProperties, object> properties;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public EnableAzureWebsiteApplicationDiagnosticTests()
         {
             websitesClientMock = new Mock<IWebsitesClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -47,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             properties[DiagnosticProperties.LogLevel] = LogEntryType.Information;
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureWebsiteApplicationDiagnosticApplication()
         {
             // Setup
@@ -79,7 +78,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureWebsiteApplicationDiagnosticApplicationTableLog()
         {
             // Setup
@@ -114,7 +113,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureWebsiteApplicationDiagnosticApplicationTableLogUseCurrentStorageAccount()
         {
             // Setup
@@ -149,7 +148,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableApplicationDiagnosticOnSlot()
         {
             string slot = "staging";
