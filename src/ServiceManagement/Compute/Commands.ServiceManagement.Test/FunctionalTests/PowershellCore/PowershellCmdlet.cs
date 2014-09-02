@@ -65,7 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 {
                     foreach (var cmdletparam in cmdlet.parameters)
                     {
-                        if(cmdletparam.value == null)
+                        if(cmdletparam.isSwitch)
                         {
                             powershell.AddParameter(cmdletparam.name);
                         }

@@ -18,6 +18,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
     {
         private readonly string cmdletParamName;
         private readonly object cmdletParamValue;
+        private readonly bool cmdletIsSwitch;
 
         public string name
         {
@@ -35,16 +36,25 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
+        public bool isSwitch
+        {
+            get
+            {
+                return cmdletIsSwitch;
+            }
+        }
+
         public CmdletParam(string name, object value)
         {
             cmdletParamName = name;
             cmdletParamValue = value;
+            cmdletIsSwitch = false;
         }
 
         public CmdletParam(string name)
         {
             cmdletParamName = name;
-            //cmdletParamValue = value;
+            cmdletIsSwitch = true;
         }
     }
 }
