@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
         {
-            return CreateClient<TClient>(context, endpointName);
+            return CreateClient<TClient>(context.Subscription, endpointName);
         }
 
         public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>

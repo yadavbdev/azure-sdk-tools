@@ -66,7 +66,8 @@ FormatsToProcess = @(
 NestedModules = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.dll',
     '.\Resources\Microsoft.WindowsAzure.Commands.Profile.dll',
-    '.\Tags\Microsoft.Azure.Commands.Tags.dll'
+    '.\Tags\Microsoft.Azure.Commands.Tags.dll',
+	'.\Sql\Microsoft.Azure.Commands.Sql.dll'
 )
 
 # Functions to export from this module

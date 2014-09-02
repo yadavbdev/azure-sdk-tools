@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30626.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8531411A-0137-4E27-9C5E-49E07C245048}"
 	ProjectSection(SolutionItems) = preProject
@@ -112,6 +112,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.ScenarioTests.Comm
 		{46C06ED8-43D9-41FD-B73B-41547D9C04E1} = {46C06ED8-43D9-41FD-B73B-41547D9C04E1}
 		{2493A8F7-1949-4F29-8D53-9D459046C3B8} = {2493A8F7-1949-4F29-8D53-9D459046C3B8}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Sql", "ResourceManager\Sql\Commands.Sql\Commands.Sql.csproj", "{69ED499E-6F3C-488F-86B8-B74CFDA4D47E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Sql.Tests", "ResourceManager\Sql\Commands.Sql.Tests\Commands.Sql.Tests.csproj", "{56ED8C97-53B9-4DF6-ACB5-7E6800105BF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -263,6 +267,14 @@ Global
 		{C1BDA476-A5CC-4394-914D-48B0EC31A710}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1BDA476-A5CC-4394-914D-48B0EC31A710}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1BDA476-A5CC-4394-914D-48B0EC31A710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69ED499E-6F3C-488F-86B8-B74CFDA4D47E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69ED499E-6F3C-488F-86B8-B74CFDA4D47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69ED499E-6F3C-488F-86B8-B74CFDA4D47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69ED499E-6F3C-488F-86B8-B74CFDA4D47E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56ED8C97-53B9-4DF6-ACB5-7E6800105BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56ED8C97-53B9-4DF6-ACB5-7E6800105BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56ED8C97-53B9-4DF6-ACB5-7E6800105BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56ED8C97-53B9-4DF6-ACB5-7E6800105BF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -285,5 +297,6 @@ Global
 		{84F99CBD-5B86-4428-B263-135B2F67F512} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 		{7E8D2555-2DDD-4757-974F-D5FFD0647671} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 		{C1BDA476-A5CC-4394-914D-48B0EC31A710} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
+		{56ED8C97-53B9-4DF6-ACB5-7E6800105BF8} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 	EndGlobalSection
 EndGlobal
