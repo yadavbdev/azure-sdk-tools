@@ -157,7 +157,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 
             if (roleAssignment != null)
             {
-                AuthorizationManagementClient.RoleAssignments.DeleteById(roleAssignment.Id);
+                AuthorizationManagementClient.RoleAssignments.DeleteById(roleAssignment.RoleAssignmentId);
             }
 
             return roleAssignment;
