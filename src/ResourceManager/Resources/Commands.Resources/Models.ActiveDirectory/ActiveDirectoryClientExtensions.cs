@@ -14,6 +14,7 @@
 
 using Microsoft.Azure.Graph.RBAC.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
@@ -43,7 +44,14 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
             return new PSADObject()
             {
                 DisplayName = obj.DisplayName,
-                Id = new Guid(obj.ObjectId)
+                Id = new Guid(obj.ObjectId),
+                Type = obj.ObjectType,
+                Properties = System.Management.Automation.PSObject.AsPSObject(
+                    new
+                    {
+                        UserPrincipalName = obj.UserPrincipalName
+                    }
+                )
             };
         }
 

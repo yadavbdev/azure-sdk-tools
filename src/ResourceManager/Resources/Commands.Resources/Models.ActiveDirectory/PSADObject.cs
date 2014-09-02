@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 {
@@ -21,5 +22,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
         public string DisplayName { get; set; }
 
         public Guid Id { get; set; }
+
+        public string Type { get; set; }
+
+        public PSObject Properties { get; set; }
     }
 }
