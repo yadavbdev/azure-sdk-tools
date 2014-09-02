@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories;
 using Microsoft.Azure.Management.DataFactories.Models;
