@@ -309,7 +309,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
                 Environment = UnitTestEnvironmentName
             };
             client.AddOrSetSubscription(subscription);
-            client.SetSubscriptionAsCurrent(UnitTestSubscriptionName);
+            client.SetSubscriptionAsCurrent(UnitTestSubscriptionName, UnitTestHelper.GetUnitTestClientCertificate().Thumbprint);
             client.Profile.Save();
             
             return subscription;
