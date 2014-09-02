@@ -1313,6 +1313,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot get module for DscResource &apos;{0}&apos;. Possible solutions:
+        ///1) Specify -ModuleName for Import-DscResource in your configuration.
+        ///2) Unblock module that contains resource.
+        ///3) Move Import-DscResource inside Node block.
+        ///.
+        /// </summary>
+        public static string PublishVMDscExtensionGetDscResourceFailed {
+            get {
+                return ResourceManager.GetString("PublishVMDscExtensionGetDscResourceFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of required modules: [{0}]..
         /// </summary>
         public static string PublishVMDscExtensionRequiredModulesVerbose {
@@ -1356,6 +1369,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string PublishVMDscExtensionUploadArchiveConfigFileInvalidExtension {
             get {
                 return ResourceManager.GetString("PublishVMDscExtensionUploadArchiveConfigFileInvalidExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration file &apos;{0}&apos; not found..
+        /// </summary>
+        public static string PublishVMDscExtensionUploadArchiveConfigFileNotExist {
+            get {
+                return ResourceManager.GetString("PublishVMDscExtensionUploadArchiveConfigFileNotExist", resourceCulture);
             }
         }
         
@@ -1797,6 +1819,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string StorageCredentialsFactoryCurrentSubscriptionNotSet {
             get {
                 return ResourceManager.GetString("StorageCredentialsFactoryCurrentSubscriptionNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subnet should be specified when deploying VMs in a VNET: {0}.
+        /// </summary>
+        public static string SubnetShouldBeSpecifiedIfVnetPresent {
+            get {
+                return ResourceManager.GetString("SubnetShouldBeSpecifiedIfVnetPresent", resourceCulture);
             }
         }
         
