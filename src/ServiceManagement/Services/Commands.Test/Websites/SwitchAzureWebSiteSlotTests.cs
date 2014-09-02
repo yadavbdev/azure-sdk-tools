@@ -14,7 +14,7 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -26,10 +26,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class SwitchAzureWebsiteSlotTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void SwitchesSlots()
         {
             // Setup

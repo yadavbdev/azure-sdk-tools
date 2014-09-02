@@ -14,16 +14,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.CloudService.Development;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cmdlet
 {
-    [TestClass]
     public class GetAzureServiceProjectRuntimesTests : TestBase
     {
         private const string serviceName = "AzureService";
@@ -32,8 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
 
         private GetAzureServiceProjectRoleRuntimeCommand cmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public GetAzureServiceProjectRuntimesTests()
         {
             cmdlet = new GetAzureServiceProjectRoleRuntimeCommand();
             mockCommandRuntime = new MockCommandRuntime();
@@ -43,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         /// <summary>
         /// Verify that the correct runtimes are returned in the correct format from a given runtime manifest
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestGetRuntimes()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -56,8 +54,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
 
                 List<CloudRuntimePackage> actual = mockCommandRuntime.OutputPipeline[0] as List<CloudRuntimePackage>;
 
-                Assert.AreEqual<int>(runtimes.Count, actual.Count);
-                Assert.IsTrue(runtimes.All<CloudRuntimePackage>(p => actual.Any<CloudRuntimePackage>(p2 => p2.PackageUri.Equals(p.PackageUri))));
+                Assert.Equal<int>(runtimes.Count, actual.Count);
+                Assert.True(runtimes.All<CloudRuntimePackage>(p => actual.Any<CloudRuntimePackage>(p2 => p2.PackageUri.Equals(p.PackageUri))));
             }
         }
     }
