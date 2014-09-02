@@ -205,6 +205,15 @@ namespace Microsoft.Azure.Commands.Automation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The runbook parameter &quot;{0}&quot; cannot be serialized to JSON..
+        /// </summary>
+        internal static string RunbookParameterCannotBeSerializedToJson {
+            get {
+                return ResourceManager.GetString("RunbookParameterCannotBeSerializedToJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The runbook parameter &quot;{0}&quot; is mandatory..
         /// </summary>
         internal static string RunbookParameterValueRequired {
