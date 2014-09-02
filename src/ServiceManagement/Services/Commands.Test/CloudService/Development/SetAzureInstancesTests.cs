@@ -226,6 +226,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         {
             string originalDirectory = Directory.GetCurrentDirectory();
             string serviceName = "AzureService1";
+            if (Directory.Exists(serviceName))
+            {
+                Directory.Delete(serviceName, true);
+            }
             CloudServiceProject service = new CloudServiceProject(Directory.GetCurrentDirectory(), serviceName, null);
             service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
             Directory.SetCurrentDirectory(Path.Combine(service.Paths.RootPath, "WebRole1"));
@@ -242,6 +246,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         {
             string originalDirectory = Directory.GetCurrentDirectory();
             string serviceName = "AzureService2";
+            if (Directory.Exists(serviceName))
+            {
+                Directory.Delete(serviceName, true);
+            }
             CloudServiceProject service = new CloudServiceProject(Directory.GetCurrentDirectory(), serviceName, null);
             service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
             Directory.SetCurrentDirectory(Path.Combine(service.Paths.RootPath, "WebRole1", "bin"));
@@ -257,6 +265,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         public void SetAzureServiceProjectRoleInServiecRootDirectoryFail()
         {
             string serviceName = "AzureService3";
+            if (Directory.Exists(serviceName))
+            {
+                Directory.Delete(serviceName, true);
+            }
             CloudServiceProject service = new CloudServiceProject(Directory.GetCurrentDirectory(), serviceName, null);
             service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
             cmdlet.RoleName = string.Empty;

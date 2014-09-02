@@ -121,10 +121,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             {
                 string roleName = "WebRole1";
                 string serviceName = "AzureService";
+                string scaffoldingPath = "TemplateMissingScaffoldXml";
+                if (Directory.Exists(scaffoldingPath))
+                {
+                    Directory.Delete(scaffoldingPath, true);
+                }
                 string rootPath = files.CreateNewService(serviceName);
                 string expectedVerboseMessage = string.Format(Resources.AddRoleMessageCreate, rootPath, roleName);
                 string originalDirectory = Directory.GetCurrentDirectory();
-                string scaffoldingPath = "TemplateMissingScaffoldXml";
                 addWebCmdlet = new AddAzureWebRoleCommand() { RootPath = rootPath, CommandRuntime = mockCommandRuntime, Name = roleName, TemplateFolder = scaffoldingPath };
 
                 Assert.Throws<DirectoryNotFoundException>(() => addWebCmdlet.ExecuteCmdlet());
