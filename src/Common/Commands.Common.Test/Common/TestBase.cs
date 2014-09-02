@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common;
@@ -45,10 +46,19 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             }
             if (AzureSession.CurrentContext.Subscription == null)
             {
+                var newGuid = Guid.NewGuid();
                 AzureSession.SetCurrentContext(
-                    new AzureSubscription { Id = Guid.NewGuid(), Name = "test", Environment = EnvironmentName.AzureCloud },
+                    new AzureSubscription { Id = newGuid, Name = "test", Environment = EnvironmentName.AzureCloud, Account = "test" },
                     null,
-                    null);
+                    new AzureAccount
+                    {
+                        Id = "test",
+                        Type = AzureAccount.AccountType.User,
+                        Properties = new Dictionary<AzureAccount.Property, string>
+                        {
+                            {AzureAccount.Property.Subscriptions, newGuid.ToString()}
+                        }
+                    });
             }
             AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
         }
