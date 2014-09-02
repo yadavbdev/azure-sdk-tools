@@ -450,10 +450,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             env2 = client.AddOrSetEnvironment(newEnv);
             Assert.Equal("foo", env2.Endpoints[AzureEnvironment.Endpoint.Graph]);
             Assert.NotNull(env2.Endpoints[AzureEnvironment.Endpoint.ServiceManagement]);
-
-            var env = client.AddOrSetEnvironment(client.Profile.Environments[EnvironmentName.AzureCloud]);
-
-            Assert.Equal(env.Name, EnvironmentName.AzureCloud);
         }
 
         [Fact]
