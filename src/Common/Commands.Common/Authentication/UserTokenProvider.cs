@@ -102,7 +102,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             {
                 try
                 {
-                    result = AquireToken(config, promptBehavior, userId, password);
+                    result = DoAcquireToken(config, promptBehavior, userId, password);
                 }
                 catch (AdalException adalEx)
                 {
@@ -150,7 +150,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             return result;
         }
 
-        private AuthenticationResult AquireToken(AdalConfiguration config, ShowDialog showDialog, string userId, SecureString password)
+        private AuthenticationResult DoAcquireToken(AdalConfiguration config, ShowDialog showDialog, string userId, SecureString password)
         {
             AuthenticationResult result;
             var context = CreateContext(config);
@@ -165,7 +165,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                 }
 
                 result = context.AcquireToken(config.ResourceClientUri, config.ClientId,
-                    config.ClientRedirectUri, promptBehavior);
+                        config.ClientRedirectUri, promptBehavior,
+                        UserIdentifier.AnyUser, AdalConfiguration.EnableEbdMagicCookie);
             }
             else
             {

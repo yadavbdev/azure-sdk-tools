@@ -69,6 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                 IntPtr pCredential
                 );
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable", Justification = "Wrapper for native struct")]
             [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
             internal struct Credential
             {

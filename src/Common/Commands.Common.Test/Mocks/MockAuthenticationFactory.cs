@@ -50,6 +50,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public IAccessToken Authenticate(AzureEnvironment environment, string tenant, ref UserCredentials credentials)
         {
+            return Authenticate(environment, tenant, CredentialType.User, ref credentials);
+        }
+
+        public IAccessToken Authenticate(AzureEnvironment environment, string tenant, CredentialType credentialType,
+            ref UserCredentials credentials)
+        {
             if (credentials.UserName == null)
             {
                 credentials.UserName = "test";

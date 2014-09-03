@@ -1552,4 +1552,7 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="InvalidCredentialType" xml:space="preserve">
     <value>Credential type invalid, only handles '{0}'</value>
   </data>
+  <data name="UnknownCredentialType" xml:space="preserve">
+    <value>Illegal credential type</value>
+  </data>
 </root>

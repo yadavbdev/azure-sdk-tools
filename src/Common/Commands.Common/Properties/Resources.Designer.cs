@@ -3982,6 +3982,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Illegal credential type.
+        /// </summary>
+        public static string UnknownCredentialType {
+            get {
+                return ResourceManager.GetString("UnknownCredentialType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provider {0} is unknown..
         /// </summary>
         public static string UnknownProviderMessage {

@@ -36,12 +36,18 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public IAccessToken Authenticate(AzureEnvironment environment, ref UserCredentials credentials)
         {
-            return Authenticate(environment, CommonAdTenant, ref credentials);
+            return Authenticate(environment, CommonAdTenant, CredentialType.User, ref credentials);
         }
 
         public IAccessToken Authenticate(AzureEnvironment environment, string tenant, ref UserCredentials credentials)
         {
-            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, tenant), credentials.ShowDialog, credentials.UserName, credentials.Password);
+            return Authenticate(environment, tenant, CredentialType.User, ref credentials);
+        }
+
+        public IAccessToken Authenticate(AzureEnvironment environment, string tenant, CredentialType credentialType,
+            ref UserCredentials credentials)
+        {
+            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, tenant), credentials.ShowDialog, credentials.UserName, credentials.Password, credentialType);
             credentials.UserName = token.UserId;
             return token;
         }
