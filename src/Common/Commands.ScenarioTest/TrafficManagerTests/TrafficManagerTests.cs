@@ -193,6 +193,24 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         [Trait(Category.Service, Category.TrafficManager)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
+        public void TestAddAzureTrafficManagerEndpointNoMinChildEndpoints()
+        {
+            this.RunPowerShellTest("Test-AddAzureTrafficManagerEndpointNoMinChildEndpoints");
+        }
+
+        [Fact]
+        [Trait(Category.Service, Category.TrafficManager)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        public void TestAddAzureTrafficManagerEndpointTypeTrafficManager()
+        {
+            this.RunPowerShellTest("Test-AddAzureTrafficManagerEndpointTypeTrafficManager");
+        }
+
+        [Fact]
+        [Trait(Category.Service, Category.TrafficManager)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
         public void TestSetAzureTrafficManagerEndpoint()
         {
             this.RunPowerShellTest("Test-SetAzureTrafficManagerEndpoint");
