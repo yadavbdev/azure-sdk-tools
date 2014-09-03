@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
@@ -44,6 +45,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         /// <param name="credentialType">Credential type.</param>
         /// <returns>An access token.</returns>
         IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId,
-            SecureString password, CredentialType credentialType);
+            SecureString password, AzureAccount.AccountType credentialType);
     }
 }

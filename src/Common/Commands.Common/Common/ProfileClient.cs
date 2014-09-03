@@ -16,9 +16,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Azure.Subscriptions;
 using Microsoft.Azure.Subscriptions.Models;
+using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
@@ -112,17 +114,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         #region Account management
 
-        public AzureAccount AddAccount(UserCredentials credentials, AzureEnvironment environment)
+        public AzureAccount AddAccount(AzureAccount account, AzureEnvironment environment, SecureString password)
         {
             if (environment == null)
             {
                 throw new ArgumentNullException("environment");
             }
 
-            credentials.ShowDialog = ShowDialog.Always;
-
             var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
-            var subscriptionsFromServer = ListSubscriptionsFromServer(ref credentials, environment).ToList();
+            var subscriptionsFromServer = ListSubscriptionsFromServer(ref account, environment, password, ShowDialog.Always).ToList();
             var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer);
             
             // Update back Profile.Subscriptions
@@ -133,18 +133,14 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
 
             // If credentials.UserName is null the login failed
-            if (credentials.UserName != null)
+            if (account != null && account.Id != null)
             {
-                AzureAccount account = new AzureAccount
-                {
-                    Id = credentials.UserName,
-                    Type = AzureAccount.AccountType.User,
-                };
+                account.Type = AzureAccount.AccountType.User;
 
                 // Set account subscriptions from the profile
                 account.SetSubscriptions(
                     Profile.Subscriptions.Values.Where(
-                        s => s.Account == credentials.UserName)
+                        s => s.Account == account.Id)
                         .ToList());
 
                 // Set account tenants
@@ -161,7 +157,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     }
 
                     // Set default account to credentials.UserName
-                    Profile.Subscriptions[subscription.Id].Account = credentials.UserName;
+                    Profile.Subscriptions[subscription.Id].Account = account.Id;
                 }
 
                 // Add the account to the profile
@@ -511,19 +507,14 @@ namespace Microsoft.WindowsAzure.Commands.Common
         private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(AzureEnvironment environment)
         {
             // Get all AD accounts and iterate
-            var principalNames = Profile.Accounts.Keys;
+            var accountNames = Profile.Accounts.Keys;
 
             List<AzureSubscription> subscriptions = new List<AzureSubscription>();
 
-            foreach (var principal in principalNames)
+            foreach (var accountName in accountNames)
             {
-                UserCredentials credentials = new UserCredentials
-                {
-                    UserName = principal,
-                    ShowDialog = ShowDialog.Never
-                };
-
-                subscriptions.AddRange(ListSubscriptionsFromServer(ref credentials, environment));
+                var account = Profile.Accounts[accountName];
+                subscriptions.AddRange(ListSubscriptionsFromServer(ref account, environment, null, ShowDialog.Never));
             }
 
             if (subscriptions.Any())
@@ -536,24 +527,21 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(ref UserCredentials credentials, AzureEnvironment environment)
+        private IEnumerable<AzureSubscription> ListSubscriptionsFromServer(ref AzureAccount account, AzureEnvironment environment, SecureString password, ShowDialog promptBehavior)
         {
             try
             {
-                IAccessToken commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(environment,
-                    ref credentials);
-
-                credentials.ShowDialog = ShowDialog.Never;
+                IAccessToken commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment, AuthenticationFactory.CommonAdTenant, password, promptBehavior);
 
                 List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
-                    ListServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
-                    ListResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
+                    ListServiceManagementSubscriptions(ref account, environment, commonTenantToken, password, ShowDialog.Never).ToList(),
+                    ListResourceManagerSubscriptions(ref account, environment, commonTenantToken, password, ShowDialog.Never).ToList());
 
                 // Set user ID
                 foreach (var subscription in mergedSubscriptions)
                 {
                     subscription.Environment = environment.Name;
-                    subscription.Account = credentials.UserName;
+                    subscription.Account = account.Id;
                 }
 
                 if (mergedSubscriptions.Any())
@@ -678,7 +666,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return mergedEnvironment;
         }
 
-        private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(ref AzureAccount account, AzureEnvironment environment, IAccessToken commonTenantToken, SecureString password, ShowDialog promptBehavior)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -699,8 +687,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     // Generate tenant specific token to query list of subscriptions
                     try
                     {
-                        credentials.Tenant = tenant.TenantId;
-                        tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
+                        account.SetOrAppendProperty(AzureAccount.Property.Tenants, tenant.TenantId);
+                        tenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment, tenant.TenantId, password, promptBehavior);
                     }
                     catch (AadAuthenticationException ex)
                     {
@@ -748,7 +736,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return result;
         }
 
-        private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(AzureEnvironment environment, IAccessToken commonTenantToken, ref UserCredentials credentials)
+        private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(ref AzureAccount account, AzureEnvironment environment, IAccessToken commonTenantToken, SecureString password, ShowDialog promptBehavior)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
@@ -773,9 +761,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         
                         if (commonTenantToken.LoginType == LoginType.LiveId)
                         {
-                            credentials.Tenant = subscription.ActiveDirectoryTenantId;
+                            account.SetOrAppendProperty(AzureAccount.Property.Tenants, subscription.ActiveDirectoryTenantId);
                             AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] =
-                                AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
+                                AzureSession.AuthenticationFactory.Authenticate(ref account, environment, subscription.ActiveDirectoryTenantId, 
+                                password, promptBehavior);
                         }
                         else
                         {

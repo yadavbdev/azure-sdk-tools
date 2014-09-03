@@ -15,6 +15,7 @@
 using System;
 using System.Security;
 using System.Windows.Forms;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
@@ -43,20 +44,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password)
         {
-            return userTokenProvider.GetAccessToken(config, promptBehavior, userId, password, CredentialType.User);
+            return userTokenProvider.GetAccessToken(config, promptBehavior, userId, password, AzureAccount.AccountType.User);
         }
 
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password,
-            CredentialType credentialType)
+            AzureAccount.AccountType credentialType)
         {
             switch (credentialType)
             {
-            case CredentialType.User:
-                return userTokenProvider.GetAccessToken(config, promptBehavior, userId, password, credentialType);
-            case CredentialType.ServicePrincipal:
-                return servicePrincipalTokenProvider.GetAccessToken(config, promptBehavior, userId, password, credentialType);
-            default:
-                throw new ArgumentException(Resources.UnknownCredentialType, "credentialType");
+                case AzureAccount.AccountType.User:
+                    return userTokenProvider.GetAccessToken(config, promptBehavior, userId, password, credentialType);
+                case AzureAccount.AccountType.ServicePrincipal:
+                    return servicePrincipalTokenProvider.GetAccessToken(config, promptBehavior, userId, password, credentialType);
+                default:
+                    throw new ArgumentException(Resources.UnknownCredentialType, "credentialType");
             }
         }
    }
