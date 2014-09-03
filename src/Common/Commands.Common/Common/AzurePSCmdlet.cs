@@ -27,12 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     {
         private readonly RecordingTracingInterceptor httpTracingInterceptor = new RecordingTracingInterceptor();
         protected ProfileClient profileClient;
-
-        static AzurePSCmdlet()
-        {
-            AzureSession.ClientFactory = new AzurePowerShellClientFactory();
-        }
-
+        
         public AzurePSCmdlet()
         {
             profileClient = new ProfileClient();
@@ -42,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 AzureSession.SetCurrentContext(
                     profileClient.Profile.DefaultSubscription,
                     profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment),
-                    profileClient.GetAccount(profileClient.Profile.DefaultSubscription.Account));
+                    profileClient.GetAccountOrNull(profileClient.Profile.DefaultSubscription.Account));
             }
         }
 

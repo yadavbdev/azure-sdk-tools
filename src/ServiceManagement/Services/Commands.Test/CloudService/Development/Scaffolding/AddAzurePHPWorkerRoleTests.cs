@@ -14,7 +14,7 @@
 
 using System.IO;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -25,20 +25,19 @@ using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffolding
 {
-    [TestClass]
+    
     public class AddAzurePHPWorkerRoleTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
 
         private AddAzurePHPWorkerRoleCommand addPHPWorkerCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public AddAzurePHPWorkerRoleTests()
         {
             AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
         }
 
-        [TestMethod]
+        [Fact]
         public void AddAzurePHPWorkerRoleProcess()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -53,12 +52,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
                 addPHPWorkerCmdlet.ExecuteCmdlet();
 
                 AzureAssert.ScaffoldingExists(Path.Combine(rootPath, roleName), Path.Combine(Resources.PHPScaffolding, Resources.WorkerRole));
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
-                Assert.AreEqual<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
+                Assert.Equal<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AddAzurePHPWorkerRoleWillRecreateDeploymentSettings()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -71,14 +70,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
                 string expectedVerboseMessage = string.Format(Resources.AddRoleMessageCreatePHP, rootPath, roleName);
                 string settingsFilePath = Path.Combine(rootPath, Resources.SettingsFileName);
                 File.Delete(settingsFilePath);
-                Assert.IsFalse(File.Exists(settingsFilePath));
+                Assert.False(File.Exists(settingsFilePath));
 
                 addPHPWorkerCmdlet.ExecuteCmdlet();
 
                 AzureAssert.ScaffoldingExists(Path.Combine(rootPath, roleName), Path.Combine(Resources.PHPScaffolding, Resources.WorkerRole));
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
-                Assert.AreEqual<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
-                Assert.IsTrue(File.Exists(settingsFilePath));
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
+                Assert.Equal<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
+                Assert.True(File.Exists(settingsFilePath));
             }
         }
     }

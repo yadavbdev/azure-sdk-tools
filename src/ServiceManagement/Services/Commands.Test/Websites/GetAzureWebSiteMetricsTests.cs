@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -27,10 +27,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class GetAzureWebsiteMetricsTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void GetWebsiteMetricsBasicTest()
         {
             // Setup
@@ -68,13 +68,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(subscriptionId) }, null, null);
 
             command.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
             var metrics = (MetricResponse)((MockCommandRuntime)command.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(metrics);
-            Assert.AreEqual("CPU Time", metrics.Data.Name);
-            Assert.IsNotNull(metrics.Data.Values);
-            Assert.IsNotNull(metrics.Data.Values[0]);
-            Assert.AreEqual(201, metrics.Data.Values[0].Total);
+            Assert.NotNull(metrics);
+            Assert.Equal("CPU Time", metrics.Data.Name);
+            Assert.NotNull(metrics.Data.Values);
+            Assert.NotNull(metrics.Data.Values[0]);
+            Assert.Equal(201, metrics.Data.Values[0].Total);
         }
     }
 }

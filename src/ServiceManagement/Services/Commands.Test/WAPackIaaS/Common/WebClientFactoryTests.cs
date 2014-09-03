@@ -13,33 +13,32 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
 using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
 
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS
 {
-    [TestClass]
+    
     public class WebClientFactoryTests
     {
-        [TestMethod]
-        [TestCategory("WAPackIaaS-Negative")]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-Negative")]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldThrowWithNullSubscription()
         {
             var factory = new WebClientFactory(null, null);
-            factory.CreateClient(string.Empty);
+            Assert.Throws<ArgumentNullException>(() => factory.CreateClient(string.Empty));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldCreateWAPackIaaSClient()
         {
             var factory = new WebClientFactory(new Subscription(), null);
-            Assert.IsInstanceOfType(factory.CreateClient("a"), typeof(WAPackIaaSClient));
+            Assert.NotNull(factory.CreateClient("a"));
         }
     }
 }

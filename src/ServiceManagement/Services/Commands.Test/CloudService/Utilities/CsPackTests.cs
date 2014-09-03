@@ -15,7 +15,7 @@
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -23,13 +23,12 @@ using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    [TestClass]
-    [Ignore]
-    public class CsPackTests : TestBase
+    
+    internal class CsPackTests : TestBase
     {
         private const string serviceName = "AzureService";
 
-        [TestMethod]
+        [Fact]
         public void CreateLocalPackageWithOneNodeWebRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -44,11 +43,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 service.CreatePackage(DevEnv.Local);
 
                 AzureAssert.ScaffoldingExists(Path.Combine(service.Paths.LocalPackage, @"roles\WebRole1\approot"), Path.Combine(Resources.NodeScaffolding, Resources.WebRole));
-                Assert.IsTrue(File.Exists(targetLogsFile));
+                Assert.True(File.Exists(targetLogsFile));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateLocalPackageWithOnePHPWebRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -63,11 +62,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 service.CreatePackage(DevEnv.Local);
 
                 AzureAssert.ScaffoldingExists(Path.Combine(service.Paths.LocalPackage, @"roles\WebRole1\approot"), Path.Combine(Resources.PHPScaffolding, Resources.WebRole));
-                Assert.IsTrue(File.Exists(targetLogsFile));
+                Assert.True(File.Exists(targetLogsFile));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateLocalPackageWithNodeWorkerRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -80,7 +79,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateLocalPackageWithPHPWorkerRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -93,7 +92,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateLocalPackageWithMultipleRoles()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -112,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateCloudPackageWithMultipleRoles()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -126,7 +125,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
                 using (Package package = Package.Open(service.Paths.CloudPackage))
                 {
-                    Assert.AreEqual(9, package.GetParts().Count());
+                    Assert.Equal(9, package.GetParts().Count());
                 }
             }
         }
