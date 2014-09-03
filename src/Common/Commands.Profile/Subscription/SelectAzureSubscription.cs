@@ -50,16 +50,19 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [Parameter(Mandatory = false)]
         public SwitchParameter PassThru { get; set; }
 
+        [Parameter(Mandatory = false)]
+        public string Account { get; set; }
+
         public override void ExecuteCmdlet()
         {
             switch (ParameterSetName)
             {
                 case "Current":
-                    WriteObject(ProfileClient.SetSubscriptionAsCurrent(SubscriptionName));
+                    WriteObject(ProfileClient.SetSubscriptionAsCurrent(SubscriptionName, Account));
                     break;
 
                 case "Default":
-                    WriteObject(ProfileClient.SetSubscriptionAsDefault(SubscriptionName));
+                    WriteObject(ProfileClient.SetSubscriptionAsDefault(SubscriptionName, Account));
                     break;
 
                 case "NoCurrent":

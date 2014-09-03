@@ -14,7 +14,7 @@
 
 using System.Collections.Generic;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Websites;
@@ -22,10 +22,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class GetAzureWebsiteLocationTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void ProcessGetAzureWebsiteLocationTest()
         {
             // Setup

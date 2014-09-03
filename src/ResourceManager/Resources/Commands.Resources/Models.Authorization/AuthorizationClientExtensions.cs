@@ -48,52 +48,56 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             {
                 return new PSUserRoleAssignment()
                 {
-                    Id = role.Id,
+                    RoleAssignmentId = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
                     NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope,
                     UserPrincipalName = ((PSADUser)adObject).UserPrincipalName,
-                    SignInName = ((PSADUser)adObject).SignInName
+                    Mail = ((PSADUser)adObject).Mail,
+                    ObjectId = adObject.Id
                 };
             }
             else if (adObject is PSADGroup)
             {
                 return new PSGroupRoleAssignment()
                 {
-                    Id = role.Id,
+                    RoleAssignmentId = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
                     NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope,
-                    Mail = ((PSADGroup)adObject).Mail
+                    Mail = ((PSADGroup)adObject).Mail,
+                    ObjectId = adObject.Id
                 };
             }
             else if (adObject is PSADServicePrincipal)
             {
                 return new PSServiceRoleAssignment()
                 {
-                    Id = role.Id,
+                    RoleAssignmentId = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
                     NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
                     Scope = role.Properties.Scope,
-                    ServicePrincipalName = ((PSADServicePrincipal)adObject).ServicePrincipalName
+                    ServicePrincipalName = ((PSADServicePrincipal)adObject).ServicePrincipalName,
+                    ObjectId = adObject.Id
                 };
             }
             else
             {
                 return new PSRoleAssignment()
                 {
-                    Id = role.Id,
+                    RoleAssignmentId = role.Id,
                     DisplayName = adObject.DisplayName,
                     Actions = roleDefinition.Actions,
                     NotActions = roleDefinition.NotActions,
                     RoleDefinitionName = roleDefinition.Name,
-                    Scope = role.Properties.Scope
+                    Scope = role.Properties.Scope,
+                    ObjectId = adObject.Id
                 };
             }
         }

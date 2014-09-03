@@ -172,7 +172,10 @@ namespace Microsoft.Azure.Commands.Resources
 
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(ProjectResources.RemovingRoleAssignment, options.Scope),
+                string.Format(ProjectResources.RemovingRoleAssignment,
+                options.ADObjectFilter.ActiveFilter,
+                options.Scope,
+                options.RoleDefinition),
                 ProjectResources.RemovingRoleAssignment,
                 null,
                 () => roleAssignment = PoliciesClient.RemoveRoleAssignment(options));

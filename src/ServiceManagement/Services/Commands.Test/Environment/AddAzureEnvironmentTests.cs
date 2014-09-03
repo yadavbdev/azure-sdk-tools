@@ -14,6 +14,7 @@
 
 using System;
 using System.Management.Automation;
+using System.Reflection;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -22,7 +23,6 @@ using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Moq;
 using Xunit;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Environment
 {
@@ -55,17 +55,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 StorageEndpoint = "endpoint.net",
                 GalleryEndpoint = "http://galleryendpoint.com"
             };
-
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             ProfileClient client = new ProfileClient();
-            AzureEnvironment env = client.Profile.Environments["KaTaL"];
-            Assert.AreEqual(env.Name, cmdlet.Name);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ServiceManagement], cmdlet.ServiceEndpoint);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl], cmdlet.ManagementPortalUrl);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.Gallery], "http://galleryendpoint.com");
+            AzureEnvironment env = client.GetEnvironmentOrDefault("KaTaL");
+            Assert.Equal(env.Name, cmdlet.Name);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.ServiceManagement], cmdlet.ServiceEndpoint);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl], cmdlet.ManagementPortalUrl);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.Gallery], "http://galleryendpoint.com");
         }
 
         [Fact]
@@ -79,13 +80,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 PublishSettingsFileUrl = "http://microsoft.com"
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             ProfileClient client = new ProfileClient();
             AzureEnvironment env = client.Profile.Environments["KaTaL"];
-            Assert.AreEqual(env.Name, cmdlet.Name);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
+            Assert.Equal(env.Name, cmdlet.Name);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
         }
 
         [Fact]
@@ -101,7 +104,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 ManagementPortalUrl = "management portal url",
                 StorageEndpoint = "endpoint.net"
             };
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
             ProfileClient client = new ProfileClient();
             int count = client.Profile.Environments.Count;
 
@@ -139,15 +144,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 StorageEndpoint = "core.windows.net"
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             ProfileClient client = new ProfileClient();
             AzureEnvironment env = client.Profile.Environments["KaTaL"];
-            Assert.AreEqual(env.Name, cmdlet.Name);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], actual.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl]);
+            Assert.Equal(env.Name, cmdlet.Name);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], actual.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl]);
         }
-
         public void Dispose()
         {
             Cleanup();

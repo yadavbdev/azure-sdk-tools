@@ -24,11 +24,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             if (credentials != null)
             {
-                return ClientFactory.CreateHttpClient(serviceUrl, credentials);
+                return ClientFactory.CreateHttpClientBase(serviceUrl, ClientFactory.CreateHttpClientHandler(serviceUrl, credentials));
             }
             else
             {
-                return ClientFactory.CreateHttpClient(serviceUrl, handler);
+                return ClientFactory.CreateHttpClientBase(serviceUrl, handler);
             }
         }
     }

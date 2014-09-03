@@ -12,13 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.Resources.Models.Authorization
 {
     public class PSRoleAssignment
     {
-        public string Id { get; set; }
+        public string RoleAssignmentId { get; set; }
 
         public string DisplayName { get; set; }
 
@@ -29,5 +30,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         public List<string> NotActions { get; set; }
 
         public string Scope { get; set; }
+
+        public Guid ObjectId { get; set; }
     }
 }

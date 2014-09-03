@@ -24,7 +24,7 @@ using Microsoft.WindowsAzure.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 {
-    public class MockClientFactory : IClientFactory
+    public class MockClientFactory : ClientFactory
     {
         private IAuthenticationFactory authenticationFactory;
 
@@ -43,12 +43,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             throwWhenNotAvailable = throwIfClientNotSpecified;
         }
 
-        public TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpointName) where TClient : ServiceClient<TClient>
-        {
-            return CreateClient<TClient>(context, endpointName);
-        }
-
-        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
+        public override TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint)
         {
             SubscriptionCloudCredentials creds = new TokenCloudCredentials(subscription.Id.ToString(), "fake_token");
             if (HttpMockServer.GetCurrentMode() != HttpRecorderMode.Playback)
@@ -68,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             return CreateCustomClient<TClient>(creds, endpointUri);
         }
 
-        public TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        public override TClient CreateCustomClient<TClient>(params object[] parameters)
         {
             TClient client = ManagementClients.FirstOrDefault(o => o is TClient) as TClient;
             if (client == null)
@@ -81,8 +76,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 }
                 else
                 {
-                    IClientFactory realHelper = new ClientFactory();
-                    var realClient = realHelper.CreateCustomClient<TClient>(parameters);
+                    var realClient = base.CreateCustomClient<TClient>(parameters);
                     var newRealClient = realClient.WithHandler(HttpMockServer.CreateInstance());
                     realClient.Dispose();
                     return newRealClient;
@@ -92,12 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             return client;
         }
 
-        public HttpClient CreateHttpClient(string serviceUrl, ICredentials credentials)
-        {
-            return CreateHttpClient(serviceUrl, ClientFactory.CreateHttpClientHandler(serviceUrl, credentials));
-        }
-
-        public HttpClient CreateHttpClient(string serviceUrl, HttpMessageHandler effectiveHandler)
+        public override HttpClient CreateHttpClient(string serviceUrl, HttpMessageHandler effectiveHandler)
         {
             if (serviceUrl == null)
             {

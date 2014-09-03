@@ -30,6 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         private static string testEnvironmentName = "__test-environment";
         private static string testSubscriptionName = "__test-subscriptions";
         private AzureSubscription testSubscription;
+        private AzureAccount testAccount;
         protected List<string> modules;
         private ProfileClient client;
 
@@ -143,9 +144,20 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                      { AzureSubscription.Property.StorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
                 }
             };
-            
+
+            testAccount = new AzureAccount()
+            {
+                Id = currentEnvironment.UserName,
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string> 
+                {
+                     { AzureAccount.Property.Subscriptions, currentEnvironment.SubscriptionId},
+                }
+            };
+
             client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
-            client.SetSubscriptionAsCurrent(testSubscription.Name);
+            client.Profile.Accounts[testAccount.Id] = testAccount;
+            client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)

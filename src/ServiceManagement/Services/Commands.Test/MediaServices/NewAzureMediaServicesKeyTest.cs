@@ -13,7 +13,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.MediaServices;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -23,10 +23,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
 {
-    [TestClass]
+    
     public class RegenerateMediaServicesAccountTests : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void RegenerateMediaServicesAccountTest()
         {
             // Setup
@@ -61,9 +61,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             };
 
             command.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
             string key = (string)((MockCommandRuntime)command.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.AreEqual(newKey, key);
+            Assert.Equal(newKey, key);
         }
     }
 }

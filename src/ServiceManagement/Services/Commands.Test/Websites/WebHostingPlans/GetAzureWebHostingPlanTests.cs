@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -28,10 +28,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites.WebHostingPlans
 {
-    [TestClass]
+    
     public class GetAzureWebHostingPlanTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void ListWebHostingPlansTest()
         {
             // Setup
@@ -55,14 +55,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.WebHostingPlans
             AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(subscriptionId) }, null, null);
 
             command.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
             var plans = (IEnumerable<WebHostingPlan>)((MockCommandRuntime)command.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(plans);
-            Assert.IsTrue(plans.Any(p => (p).Name.Equals("Plan1") && (p).WebSpace.Equals("webspace1")));
-            Assert.IsTrue(plans.Any(p => (p).Name.Equals("Plan2") && (p).WebSpace.Equals("webspace2")));
+            Assert.NotNull(plans);
+            Assert.True(plans.Any(p => (p).Name.Equals("Plan1") && (p).WebSpace.Equals("webspace1")));
+            Assert.True(plans.Any(p => (p).Name.Equals("Plan2") && (p).WebSpace.Equals("webspace2")));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureWebHostingPlanBasicTest()
         {
             // Setup
@@ -83,10 +83,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.WebHostingPlans
             AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(subscriptionId) }, null, null);
 
             command.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
             var plans = (IEnumerable<WebHostingPlan>)((MockCommandRuntime)command.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(plans);
-            Assert.IsTrue(plans.Any(p => (p).Name.Equals("Plan1") && (p).WebSpace.Equals("webspace1")));
+            Assert.NotNull(plans);
+            Assert.True(plans.Any(p => (p).Name.Equals("Plan1") && (p).WebSpace.Equals("webspace1")));
         }
     }
 }

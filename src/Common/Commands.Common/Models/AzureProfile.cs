@@ -19,6 +19,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Common.Internals;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
@@ -31,9 +32,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public AzureProfile()
         {
-            Environments = new Dictionary<string, AzureEnvironment>();
+            Environments = new Dictionary<string, AzureEnvironment>(StringComparer.InvariantCultureIgnoreCase);
             Subscriptions = new Dictionary<Guid, AzureSubscription>();
-            Accounts = new Dictionary<string, AzureAccount>();
+            Accounts = new Dictionary<string, AzureAccount>(StringComparer.InvariantCultureIgnoreCase);
         }
 
         public AzureProfile(IDataStore store, string profilePath)
@@ -48,9 +49,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         private void Load()
         {
-            Environments = new Dictionary<string, AzureEnvironment>();
+            Environments = new Dictionary<string, AzureEnvironment>(StringComparer.InvariantCultureIgnoreCase);
             Subscriptions = new Dictionary<Guid, AzureSubscription>();
-            Accounts = new Dictionary<string, AzureAccount>();
+            Accounts = new Dictionary<string, AzureAccount>(StringComparer.InvariantCultureIgnoreCase);
 
             if (!store.DirectoryExists(AzurePowerShell.ProfileDirectory))
             {
@@ -122,10 +123,18 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                 {
                     defaultSubscription.Properties.Remove(AzureSubscription.Property.Default);
                 }
-                defaultSubscription = value;
-                if (defaultSubscription != null)
+
+                if (value != null)
                 {
-                    defaultSubscription.Properties[AzureSubscription.Property.Default] = "True";
+                    Debug.Assert(value.Id != Guid.Empty);
+
+                    value.Properties[AzureSubscription.Property.Default] = "True";
+                    Subscriptions[value.Id] = value;
+                    defaultSubscription = Subscriptions[value.Id];
+                }
+                else
+                {
+                    defaultSubscription = null;
                 }
             }
         }

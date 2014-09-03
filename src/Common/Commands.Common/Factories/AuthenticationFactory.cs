@@ -55,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
             var account = context.Subscription.Account;
 
-            if (!AzureSession.SubscriptionTokenCache.ContainsKey(context.Subscription.Id))
+            if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, context.Account.Id)))
             {
                 // Try to re-authenticate
                 UserCredentials credentials = new UserCredentials
@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 {
                     try
                     {
-                        AzureSession.SubscriptionTokenCache[context.Subscription.Id] = Authenticate(context.Environment, tenant, ref credentials);
+                        AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)] = Authenticate(context.Environment, tenant, ref credentials);
                         break;
                     }
                     catch
@@ -81,20 +81,20 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 }
             }
 
-            if (AzureSession.SubscriptionTokenCache.ContainsKey(context.Subscription.Id))
+            if (AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, context.Account.Id)))
             {
-                return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[context.Subscription.Id]);
+                return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)]);
             }
             else if (account != null)
             {
                 switch (context.Account.Type)
                 {
                     case AzureAccount.AccountType.User:
-                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(context.Subscription.Id))
+                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, context.Account.Id)))
                         {
                             throw new ArgumentException(Resources.InvalidSubscriptionState);
                         }
-                        return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[context.Subscription.Id]);
+                        return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)]);
 
                     case AzureAccount.AccountType.Certificate:
                         var certificate = ProfileClient.DataStore.GetCertificate(account);
