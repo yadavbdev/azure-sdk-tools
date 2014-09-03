@@ -32,7 +32,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             try
             {
-                Assert.IsTrue(vm.AvailabilitySetName.Equals(availabilitySetName, StringComparison.InvariantCultureIgnoreCase));
+                if (string.IsNullOrEmpty(vm.AvailabilitySetName))
+                {
+                    Assert.IsTrue(string.IsNullOrEmpty(availabilitySetName));
+                }
+                else
+                {
+                    Assert.IsTrue(vm.AvailabilitySetName.Equals(availabilitySetName, StringComparison.InvariantCultureIgnoreCase));
+                }
                 return true;
             }
             catch (Exception e)
