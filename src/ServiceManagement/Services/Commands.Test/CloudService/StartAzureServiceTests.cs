@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.CloudService;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Moq;
+using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService
 {
-    [TestClass]
     public class StartAzureServiceTests : TestBase
     {
         private const string serviceName = "AzureService";
@@ -37,8 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService
 
         private Mock<ICloudServiceClient> cloudServiceClientMock;
 
-        [TestInitialize]
-        public void SetupTest()
+        public StartAzureServiceTests()
         {
             AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
@@ -51,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void TestStartAzureService()
         {
             stopServiceCmdlet.ServiceName = serviceName;
@@ -64,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
                 stopServiceCmdlet.ExecuteCmdlet();
 
-                Assert.AreEqual<int>(0, mockCommandRuntime.OutputPipeline.Count);
+                Assert.Equal<int>(0, mockCommandRuntime.OutputPipeline.Count);
                 cloudServiceClientMock.Verify(f => f.StartCloudService(serviceName, slot), Times.Once());
             }
         }

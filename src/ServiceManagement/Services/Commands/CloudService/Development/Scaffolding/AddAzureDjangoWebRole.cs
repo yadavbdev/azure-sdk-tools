@@ -80,7 +80,8 @@ namespace Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding
 
         internal static string FindPythonInterpreterPath()
         {
-            foreach (var baseKey in new[] { Registry.LocalMachine, Registry.CurrentUser })
+            foreach (var baseKey in new[] { RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, 
+                RegistryView.Registry32), Registry.CurrentUser })
             {
                 using (var python = baseKey.OpenSubKey(PythonCorePath))
                 {

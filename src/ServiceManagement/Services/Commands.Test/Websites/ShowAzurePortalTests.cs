@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Websites;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class ShowAzurePortalTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void ProcessGetAzurePublishSettingsTest()
         {
             ShowAzurePortalCommand showAzurePortalCommand = new ShowAzurePortalCommand

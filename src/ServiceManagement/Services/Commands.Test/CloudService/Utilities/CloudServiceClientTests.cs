@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -34,7 +34,7 @@ using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    [TestClass]
+    
     public class CloudServiceClientTests : TestBase
     {
         private AzureSubscription subscription;
@@ -85,8 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 .Add(s => { s.Name = serviceName; });
         }
 
-        [TestInitialize]
-        public void TestSetup()
+        public CloudServiceClientTests()
         {
             AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
 
@@ -134,25 +133,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void TestStartCloudService()
         {
             client.StartCloudService(serviceName);
 
-            Assert.IsTrue(services.LastDeploymentStatusUpdate.HasValue);
-            Assert.AreEqual(UpdatedDeploymentStatus.Running, services.LastDeploymentStatusUpdate.Value);
+            Assert.True(services.LastDeploymentStatusUpdate.HasValue);
+            Assert.Equal(UpdatedDeploymentStatus.Running, services.LastDeploymentStatusUpdate.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestStopCloudService()
         {
             client.StopCloudService(serviceName);
 
-            Assert.IsTrue(services.LastDeploymentStatusUpdate.HasValue);
-            Assert.AreEqual(UpdatedDeploymentStatus.Suspended, services.LastDeploymentStatusUpdate.Value);
+            Assert.True(services.LastDeploymentStatusUpdate.HasValue);
+            Assert.Equal(UpdatedDeploymentStatus.Suspended, services.LastDeploymentStatusUpdate.Value);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRemoveCloudService()
         {
             clientMocks.ComputeManagementClientMock.Setup(
@@ -179,7 +178,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 c => c.HostedServices.DeleteAsync(serviceName, It.IsAny<CancellationToken>()), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRemoveCloudServiceWithStaging()
         {
             services.Clear()
@@ -218,7 +217,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRemoveCloudServiceWithoutDeployments()
         {
             RemoveDeployments();
@@ -251,8 +250,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact (Skip = "Ignore")]
         public void TestPublishNewCloudService()
         {
             RemoveDeployments();
@@ -283,8 +281,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "Ignore")]
         public void TestUpgradeCloudService()
         {
             clientMocks.ComputeManagementClientMock.Setup(
@@ -318,8 +315,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "Ignore")]
         public void TestCreateStorageServiceWithPublish()
         {
             RemoveDeployments();
@@ -349,8 +345,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }            
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "Ignore")]
         public void TestPublishWithCurrentStorageAccount()
         {
             RemoveDeployments();
@@ -383,8 +378,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }           
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "Ignore")]
         public void TestPublishWithDefaultLocation()
         {
             RemoveDeployments();
@@ -421,7 +415,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }            
         }
 
-        [TestMethod]
+        [Fact]
         public void TestPublishFromPackageUsingDefaultLocation()
         {
             RemoveDeployments();
@@ -462,7 +456,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestUpgradeCloudServiceFromAPackage()
         {
             clientMocks.ComputeManagementClientMock.Setup(

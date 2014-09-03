@@ -12,40 +12,44 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Common
 {
-    [TestClass]
-    public class GeneralTests
+    
+    public class GeneralTests : IDisposable
     {
         private const string _publishSettingsUrl = "http://manage.windowsazure.com/";
         private const string _azureHostNameSuffix = "the suffix";
 
-        [ClassInitialize]
-        public static void ClassInit(TestContext context)
+        public GeneralTests()
         {
             // Set test environment variables
             System.Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, _publishSettingsUrl);
         }
 
-        [ClassCleanup]
-        public static void ClassCleanup()
+        public void ClassCleanup()
         {
             // Delete test environment variables
             System.Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, null);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestBlobEndpointUri()
         {
             string accountName = "azure awesome account";
             string expected = string.Format(Resources.BlobEndpointUri, accountName);
             string actual = GeneralUtilities.BlobEndpointUri(accountName);
 
-            Assert.AreEqual<string>(expected, actual);
+            Assert.Equal<string>(expected, actual);
+        }
+
+        public void Dispose()
+        {
+            ClassCleanup();
         }
     }
 }

@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             if (!FileUtilities.IsValidDirectoryPath(outputPath))
             {
                 // Try create the directory if it does not exist.
-                new FileInfo(outputPath).Directory.Create();
+                FileUtilities.DataStore.CreateDirectory(Path.GetDirectoryName(outputPath));
             }
 
             if (FileUtilities.IsValidDirectoryPath(outputPath))
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             Action saveFile = () => FileUtilities.DataStore.WriteFile(finalOutputPath.ToString(), contents);
 
-            if (File.Exists(finalOutputPath.ToString()) && confirmAction != null)
+            if (FileUtilities.DataStore.FileExists(finalOutputPath.ToString()) && confirmAction != null)
             {
                 confirmAction(
                     overwrite,
@@ -187,9 +187,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 {
                     templateContent = GeneralUtilities.DownloadFile(templateFilePath);
                 }
-                else if (File.Exists(templateFilePath))
+                else if (FileUtilities.DataStore.FileExists(templateFilePath))
                 {
-                    templateContent = File.ReadAllText(templateFilePath);
+                    templateContent = FileUtilities.DataStore.ReadFileAsText(templateFilePath);
                 }
             }
 
@@ -202,16 +202,16 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             Dictionary<string, TemplateFileParameterV1> parameters = new Dictionary<string, TemplateFileParameterV1>();
 
-            if (!string.IsNullOrEmpty(templateParameterFilePath) && File.Exists(templateParameterFilePath))
+            if (!string.IsNullOrEmpty(templateParameterFilePath) && FileUtilities.DataStore.FileExists(templateParameterFilePath))
             {
                 try
                 {
-                    parameters = JsonConvert.DeserializeObject<Dictionary<string, TemplateFileParameterV1>>(File.ReadAllText(templateParameterFilePath));
+                    parameters = JsonConvert.DeserializeObject<Dictionary<string, TemplateFileParameterV1>>(FileUtilities.DataStore.ReadFileAsText(templateParameterFilePath));
                 }
                 catch (JsonSerializationException)
                 {
                     parameters = new Dictionary<string, TemplateFileParameterV1>(
-                        JsonConvert.DeserializeObject<TemplateFileParameterV2>(File.ReadAllText(templateParameterFilePath)).Parameters);
+                        JsonConvert.DeserializeObject<TemplateFileParameterV2>(FileUtilities.DataStore.ReadFileAsText(templateParameterFilePath)).Parameters);
                 }
             }
 
@@ -246,7 +246,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 UpdateParametersWithObject(dynamicParameters, templateParameterObject);
             }
-            if (templateParameterFilePath != null && File.Exists(templateParameterFilePath))
+            if (templateParameterFilePath != null && FileUtilities.DataStore.FileExists(templateParameterFilePath))
             {
                 var parametersFromFile = ParseTemplateParameterFileContents(templateParameterFilePath);
                 UpdateParametersWithObject(dynamicParameters, new Hashtable(parametersFromFile));

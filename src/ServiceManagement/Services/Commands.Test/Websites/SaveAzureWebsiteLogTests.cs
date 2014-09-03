@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -29,7 +29,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class SaveAzureWebsiteLogTests : WebsitesTestBase
     {
         private Site site1 = new Site
@@ -57,8 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Mock<IWebsitesClient> clientMock;
 
-        [TestInitialize]
-        public void Setup()
+        public SaveAzureWebsiteLogTests()
         {
             clientMock = new Mock<IWebsitesClient>();
             clientMock.Setup(c => c.GetWebsite("website1", null))
@@ -69,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 .Returns(spaces);
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveAzureWebsiteLogTest()
         {
             // Setup
@@ -90,10 +89,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
+            Assert.Equal("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveAzureWebsiteLogWithNoFileExtensionTest()
         {
             // Setup
@@ -117,10 +116,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test with no extension", FileUtilities.DataStore.ReadFileAsText(expectedOutput));
+            Assert.Equal("test with no extension", FileUtilities.DataStore.ReadFileAsText(expectedOutput));
         }
 
-        [TestMethod]
+        [Fact]
         public void SaveAzureWebsiteLogWithSlotTest()
         {
             // Setup
@@ -142,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCommand.DefaultCurrentPath = "";
             getAzureWebsiteLogCommand.ExecuteCmdlet();
-            Assert.AreEqual("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
+            Assert.Equal("test", FileUtilities.DataStore.ReadFileAsText(SaveAzureWebsiteLogCommand.DefaultOutput));
         }
     }
 }

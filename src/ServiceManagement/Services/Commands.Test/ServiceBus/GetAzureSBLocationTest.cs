@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.ServiceBus;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -23,16 +23,15 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    [TestClass]
+    
     public class GetAzureSBLocationTests : TestBase
     {
-        [TestInitialize]
-        public void SetupTest()
+        public GetAzureSBLocationTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureSBLocationSuccessfull()
         {
             // Setup
@@ -53,12 +52,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             List<ServiceBusLocation> actual = mockCommandRuntime.OutputPipeline[0] as List<ServiceBusLocation>;
-            Assert.AreEqual<int>(expected.Count, actual.Count);
+            Assert.Equal<int>(expected.Count, actual.Count);
 
             for (int i = 0; i < expected.Count; i++)
             {
-                Assert.AreEqual<string>(expected[i].Code, actual[i].Code);
-                Assert.AreEqual<string>(expected[i].FullName, actual[i].FullName);
+                Assert.Equal<string>(expected[i].Code, actual[i].Code);
+                Assert.Equal<string>(expected[i].FullName, actual[i].FullName);
             }
         }
     }

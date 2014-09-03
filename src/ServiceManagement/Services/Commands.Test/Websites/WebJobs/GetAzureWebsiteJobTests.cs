@@ -14,7 +14,7 @@
 
 using System.Collections.Generic;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
@@ -24,7 +24,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class GetAzureWebsiteJobTests : WebsitesTestBase
     {
         private const string websiteName = "website1";
@@ -37,8 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Mock<ICommandRuntime> commandRuntimeMock;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public GetAzureWebsiteJobTests()
         {
             websitesClientMock = new Mock<IWebsitesClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -51,7 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void GetEmptyWebJobList()
         {
             // Setup
@@ -70,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(output, true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetOneWebJob()
         {
             // Setup
@@ -93,7 +92,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(output, true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetsMultipleWebJobs()
         {
             // Setup

@@ -45,9 +45,7 @@
   </Target>
   
   <Target Name="TestManagement">
-    <MSBuild Targets="InvokeMSTest"
-             Properties="_testAssembly=$(ManagementTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\ManagementDebug.trx"
-             Projects="build.proj"/>
+	<Xunit.Runner.MSBuild.xunit Assembly="$(ManagementTestDebug)" Html="$(TestOutputDirectory)\ManagementDebug.xunit.dll.html" Verbose="true"/>
   </Target>
 
   <Target Name="TestManagedCache">

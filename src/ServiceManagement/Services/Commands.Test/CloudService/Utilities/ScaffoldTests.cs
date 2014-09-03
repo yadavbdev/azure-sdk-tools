@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Test.Properties;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
@@ -20,10 +20,10 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    [TestClass]
+    
     public class ScaffoldTests : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void ParseTests()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -33,17 +33,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
                 Scaffold scaffold = Scaffold.Parse(path);
 
-                Assert.AreEqual(scaffold.Files.Count, 6);
-                Assert.AreEqual(scaffold.Files[0].PathExpression, "modules\\.*");
-                Assert.AreEqual(scaffold.Files[1].Path, @"bin/node123dfx65.exe");
-                Assert.AreEqual(scaffold.Files[1].TargetPath, @"/bin/node.exe");
-                Assert.AreEqual(scaffold.Files[2].Path, @"bin/iisnode.dll");
-                Assert.AreEqual(scaffold.Files[3].Path, @"bin/setup.cmd");
-                Assert.AreEqual(scaffold.Files[4].Path, "Web.config");
-                Assert.AreEqual(scaffold.Files[4].Rules.Count, 1);
-                Assert.AreEqual(scaffold.Files[5].Path, "WebRole.xml");
-                Assert.AreEqual(scaffold.Files[5].Copy, false);
-                Assert.AreEqual(scaffold.Files[5].Rules.Count, 1);
+                Assert.Equal(scaffold.Files.Count, 6);
+                Assert.Equal(scaffold.Files[0].PathExpression, "modules\\.*");
+                Assert.Equal(scaffold.Files[1].Path, @"bin/node123dfx65.exe");
+                Assert.Equal(scaffold.Files[1].TargetPath, @"/bin/node.exe");
+                Assert.Equal(scaffold.Files[2].Path, @"bin/iisnode.dll");
+                Assert.Equal(scaffold.Files[3].Path, @"bin/setup.cmd");
+                Assert.Equal(scaffold.Files[4].Path, "Web.config");
+                Assert.Equal(scaffold.Files[4].Rules.Count, 1);
+                Assert.Equal(scaffold.Files[5].Path, "WebRole.xml");
+                Assert.Equal(scaffold.Files[5].Copy, false);
+                Assert.Equal(scaffold.Files[5].Rules.Count, 1);
             }
         }
     }
