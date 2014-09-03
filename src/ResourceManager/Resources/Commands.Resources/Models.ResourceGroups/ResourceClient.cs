@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
         public IResourceManagementClient ResourceManagementClient { get; set; }
 
         public IAuthorizationManagementClient AuthorizationManagementClient { get; set; }
-        
+
         public GalleryTemplatesClient GalleryTemplatesClient { get; set; }
 
         public IEventsClient EventsClient { get; set; }
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             ResourceManagementClient.Providers.Unregister(RPName);
         }
-        
+
         private string GetTemplate(string templateFile, string galleryTemplateName)
         {
             string template;
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             return result.ResourceGroup;
         }
-        
+
         private void WriteVerbose(string progress)
         {
             if (VerboseLogger != null)
@@ -215,7 +215,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             const string failureStatusFormat = "Resource {0} '{1}' failed with message '{2}'";
             List<DeploymentOperation> newOperations;
             DeploymentOperationsListResult result;
-            
+
             result = ResourceManagementClient.DeploymentOperations.List(resourceGroup, deploymentName, null);
             newOperations = GetNewOperations(operations, result.Operations);
             operations.AddRange(newOperations);
@@ -296,12 +296,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
             List<DeploymentOperation> newOperations = new List<DeploymentOperation>();
             foreach (DeploymentOperation operation in current)
             {
-                DeploymentOperation temp = old.Find(o => o.OperationId.Equals(operation.OperationId) && o.Properties.ProvisioningState.Equals(operation.Properties.ProvisioningState));
-                if (temp != null)
-                {
-                    newOperations.Add(operation);
-                }
-                else
+                DeploymentOperation operationWithSameIdAndProvisioningState = old.Find(o => o.OperationId.Equals(operation.OperationId) && o.Properties.ProvisioningState.Equals(operation.Properties.ProvisioningState));
+                if (operationWithSameIdAndProvisioningState == null)
                 {
                     newOperations.Add(operation);
                 }
