@@ -13,16 +13,16 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Profile;
 using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Profile
 {
-    [TestClass]
+    
     public class SelectAzureSubscriptionTests
     {
-        [TestMethod]
+        [Fact]
         public void CleansDefaultSubscriptionTwice()
         {
             // Setup
@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Profile
             cmdlet.ExecuteCmdlet();
 
             // Assert that no exception is thrown
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
     }
 }

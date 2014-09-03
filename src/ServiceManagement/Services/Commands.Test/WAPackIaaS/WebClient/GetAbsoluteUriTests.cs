@@ -14,28 +14,27 @@
 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
 
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
 {
-    [TestClass]
+    
     public class GetAbsoluteUriTests
     {
         private Subscription subscription;
-        
-        [TestInitialize]
-        public void Initialize()
+
+        public GetAbsoluteUriTests()
         {
             var azureSub = new AzureSubscription();
             azureSub.Id = Guid.NewGuid();
             this.subscription = new Subscription(azureSub);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUri()
         {
             var expectedUri = new StringBuilder();
@@ -44,12 +43,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             var client = new WAPackIaaSClient(this.subscription);
             var actualUri = client.GetAbsoluteUri();
 
-           Assert.AreEqual(expectedUri.ToString(), actualUri);
+           Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithoutSubscription()
         {
             this.subscription.SubscriptionId = String.Empty;
@@ -60,12 +59,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             var client = new WAPackIaaSClient(this.subscription);
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithUriSuffix()
         {
             const string uriSuffix = "/myResource";
@@ -77,12 +76,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             client.SetUriSuffix(uriSuffix);
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithUriSuffixAndSingleQueryParameter()
         {
             const string uriSuffix = "/myResource";
@@ -96,12 +95,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             client.AddQueryParameters("query1", "value1");
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithUriSuffixAndTwoQueryParameter()
         {
             const string uriSuffix = "/myResource";
@@ -116,12 +115,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             client.AddQueryParameters("query2", "value2");
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithUriSuffixAndSingleFilter()
         {
             const string uriSuffix = "/myResource";
@@ -136,12 +135,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             client.AddHttpFilter(filterName, WebFilterOptions.eq, "val1");
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithUriSuffixAndTwoFilters()
         {
             const string uriSuffix = "/myResource";
@@ -158,12 +157,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             client.AddHttpFilter(filterName2, WebFilterOptions.ne, "20");
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithSuffixAndFilterAndQueryParameter()
         {
             const string uriSuffix = "/myResource";
@@ -181,12 +180,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
 
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldGenerateUriWithUriSuffixAndSingleGuidFilter()
         {
             const string uriSuffix = "/myResource";
@@ -203,7 +202,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             client.AddHttpFilter(filterName, WebFilterOptions.eq, guidValue.ToString());
             var actualUri = client.GetAbsoluteUri();
 
-            Assert.AreEqual(expectedUri.ToString(), actualUri);
+            Assert.Equal(expectedUri.ToString(), actualUri);
         }
     }
 }

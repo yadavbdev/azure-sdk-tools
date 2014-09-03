@@ -15,7 +15,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -26,27 +26,26 @@ using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffolding
 {
-    [TestClass]
+    
     public class AddAzurePythonWebRoleTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
 
         private AddAzureDjangoWebRoleCommand addPythonWebCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public AddAzurePythonWebRoleTests()
         {
             AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
         }
 
-        [TestMethod]
+        [Fact]
         public void AddAzurePythonWebRoleProcess()
         {
             var pyInstall = AddAzureDjangoWebRoleCommand.FindPythonInterpreterPath();
             if (pyInstall == null)
             {
-                Assert.Inconclusive("Python is not installed on this machine and therefore the Python tests cannot be run");
+                Assert.True(false, "Python is not installed on this machine and therefore the Python tests cannot be run");
                 return;
             }
 
@@ -62,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
 
             if (stdOut.IndexOf("django-admin.py") == -1)
             {
-                Assert.Inconclusive("Django is not installed on this machine and therefore the Python tests cannot be run.  Please 'pip install Django==1.5'");
+                Assert.True(false, "Django is not installed on this machine and therefore the Python tests cannot be run.  Please 'pip install Django==1.5'");
                 return;
             }
 
@@ -79,19 +78,19 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
                 addPythonWebCmdlet.ExecuteCmdlet();
 
                 AzureAssert.ScaffoldingExists(Path.Combine(rootPath, roleName), Path.Combine(Resources.PythonScaffolding, Resources.WebRole));
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
-                Assert.AreEqual<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
-                Assert.IsTrue(Directory.Exists(Path.Combine(rootPath, roleName, roleName)));
-                Assert.IsTrue(File.Exists(Path.Combine(rootPath, roleName, roleName, "manage.py")));
-                Assert.IsTrue(Directory.Exists(Path.Combine(rootPath, roleName, roleName, roleName)));
-                Assert.IsTrue(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "__init__.py")));
-                Assert.IsTrue(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "settings.py")));
-                Assert.IsTrue(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "urls.py")));
-                Assert.IsTrue(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "wsgi.py")));
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
+                Assert.Equal<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
+                Assert.True(Directory.Exists(Path.Combine(rootPath, roleName, roleName)));
+                Assert.True(File.Exists(Path.Combine(rootPath, roleName, roleName, "manage.py")));
+                Assert.True(Directory.Exists(Path.Combine(rootPath, roleName, roleName, roleName)));
+                Assert.True(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "__init__.py")));
+                Assert.True(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "settings.py")));
+                Assert.True(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "urls.py")));
+                Assert.True(File.Exists(Path.Combine(rootPath, roleName, roleName, roleName, "wsgi.py")));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AddAzurePythonWebRoleWillRecreateDeploymentSettings()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -104,14 +103,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
                 string expectedVerboseMessage = string.Format(Resources.AddRoleMessageCreatePython, rootPath, roleName);
                 string settingsFilePath = Path.Combine(rootPath, Resources.SettingsFileName);
                 File.Delete(settingsFilePath);
-                Assert.IsFalse(File.Exists(settingsFilePath));
+                Assert.False(File.Exists(settingsFilePath));
 
                 addPythonWebCmdlet.ExecuteCmdlet();
 
                 AzureAssert.ScaffoldingExists(Path.Combine(rootPath, roleName), Path.Combine(Resources.PythonScaffolding, Resources.WebRole));
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
-                Assert.AreEqual<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
-                Assert.IsTrue(File.Exists(settingsFilePath));
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).GetVariableValue<string>(Parameters.RoleName));
+                Assert.Equal<string>(expectedVerboseMessage, mockCommandRuntime.VerboseStream[0]);
+                Assert.True(File.Exists(settingsFilePath));
             }
         }
     }

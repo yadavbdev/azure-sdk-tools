@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
@@ -22,25 +22,25 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    [TestClass]
+    
     public class CsRunTests : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void RoleInfoIsExtractedFromEmulatorOutput()
         {
             var dummyEmulatorOutput = "Exported interface at http://127.0.0.1:81/.\r\nExported interface at tcp://127.0.0.1:8080/.";
             var output = CsRun.GetRoleInfoMessage(dummyEmulatorOutput);
-            Assert.IsTrue(output.Contains("Role is running at http://127.0.0.1:81"));
-            Assert.IsTrue(output.Contains("Role is running at tcp://127.0.0.1:8080"));
+            Assert.True(output.Contains("Role is running at http://127.0.0.1:81"));
+            Assert.True(output.Contains("Role is running at tcp://127.0.0.1:8080"));
         }
 
-        [TestMethod]
+        [Fact]
         public void StartEmulatorUsingExpressMode_VerifyCommandLine()
         {
             StartEmulatorCommonTest(ComputeEmulatorMode.Express);
         }
 
-        [TestMethod]
+        [Fact]
         public void StartEmulatorUsingFullMode_VerifyCommandLine()
         {
             StartEmulatorCommonTest(ComputeEmulatorMode.Full);
@@ -82,8 +82,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
             // Assert
             commandRunner.VerifyAll();
-            Assert.AreEqual(csRun.DeploymentId, testDeploymentId);
-            Assert.AreEqual(csRun.RoleInformation, expectedRoleRunningMessage);
+            Assert.Equal(csRun.DeploymentId, testDeploymentId);
+            Assert.Equal(csRun.RoleInformation, expectedRoleRunningMessage);
         }
     }
 }

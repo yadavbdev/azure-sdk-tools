@@ -13,54 +13,54 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
 using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    [TestClass]
+    
     public class ServicePathInfoTests
     {
-        [TestMethod]
+        [Fact]
         public void ServicePathInfoTest()
         {
             PowerShellProjectPathInfo paths = new PowerShellProjectPathInfo("MyService");
             AzureAssert.AreEqualServicePathInfo("MyService", paths);
         }
 
-        [TestMethod]
+        [Fact]
         public void ServicePathInfoTestEmptyRootPathFail()
         {
             try
             {
                 PowerShellProjectPathInfo paths = new PowerShellProjectPathInfo(string.Empty);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is ArgumentException);
-                Assert.AreEqual<string>(string.Format(Resources.InvalidOrEmptyArgumentMessage, "rootPath"), ex.Message);
+                Assert.True(ex is ArgumentException);
+                Assert.Equal<string>(string.Format(Resources.InvalidOrEmptyArgumentMessage, "rootPath"), ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ServicePathInfoTestNullRootPathFail()
         {
             try
             {
                 PowerShellProjectPathInfo paths = new PowerShellProjectPathInfo(null);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is ArgumentException);
-                Assert.AreEqual<string>(string.Format(Resources.InvalidOrEmptyArgumentMessage, "rootPath"), ex.Message);
+                Assert.True(ex is ArgumentException);
+                Assert.Equal<string>(string.Format(Resources.InvalidOrEmptyArgumentMessage, "rootPath"), ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ServicePathInfoTestInvalidRootPathFail()
         {
             foreach (string invalidDirectoryName in Test.Utilities.Common.Data.InvalidServiceRootName)
@@ -68,12 +68,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 try
                 {
                     PowerShellProjectPathInfo paths = new PowerShellProjectPathInfo(invalidDirectoryName);
-                    Assert.Fail("No exception was thrown");
+                    Assert.True(false, "No exception was thrown");
                 }
                 catch (Exception ex)
                 {
-                    Assert.IsTrue(ex is ArgumentException);
-                    Assert.AreEqual<string>(Resources.InvalidRootNameMessage, ex.Message);
+                    Assert.True(ex is ArgumentException);
+                    Assert.Equal<string>(Resources.InvalidRootNameMessage, ex.Message);
                 }
             }
         }

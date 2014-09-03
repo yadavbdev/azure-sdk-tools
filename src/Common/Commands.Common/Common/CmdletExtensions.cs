@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Data.Services.Client;
 using System.IO;
 using System.Management.Automation;
+using System.Reflection;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
@@ -123,6 +124,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             string contents = "Get-Alias | where { $_.Description -eq 'AzureAlias' } | foreach { Remove-Item alias:\\$($_.Name) }";
             ExecuteScript<object>(cmdlet, contents);
+        }
+
+        public static void InvokeBeginProcessing(this PSCmdlet cmdlt)
+        {
+            MethodInfo dynMethod = (typeof(PSCmdlet)).GetMethod("BeginProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
+            dynMethod.Invoke(cmdlt, null);
+        }
+
+        public static void InvokeEndProcessing(this PSCmdlet cmdlt)
+        {
+            MethodInfo dynMethod = (typeof(PSCmdlet)).GetMethod("EndProcessing", BindingFlags.NonPublic | BindingFlags.Instance);
+            dynMethod.Invoke(cmdlt, null);
         }
 
         #endregion
