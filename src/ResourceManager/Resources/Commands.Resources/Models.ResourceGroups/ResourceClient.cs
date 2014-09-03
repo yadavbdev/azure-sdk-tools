@@ -25,15 +25,14 @@ using Microsoft.Azure.Management.Resources.Models;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Commands.Common.Storage;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events;
-using Microsoft.WindowsAzure.Management.Storage;
 using Newtonsoft.Json;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 using Microsoft.Azure.Management.Authorization;
 using Microsoft.Azure.Management.Authorization.Models;
 using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using System.Diagnostics;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
@@ -48,8 +47,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public IAuthorizationManagementClient AuthorizationManagementClient { get; set; }
         
-        public IStorageClientWrapper StorageClientWrapper { get; set; }
-
         public GalleryTemplatesClient GalleryTemplatesClient { get; set; }
 
         public IEventsClient EventsClient { get; set; }
@@ -65,7 +62,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
         public ResourcesClient(AzureContext context)
             : this(
                 AzureSession.ClientFactory.CreateClient<ResourceManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager),
-                new StorageClientWrapper(AzureSession.ClientFactory.CreateClient<StorageManagementClient>(context, AzureEnvironment.Endpoint.ServiceManagement)),
                 new GalleryTemplatesClient(context),
                 AzureSession.ClientFactory.CreateClient<EventsClient>(context, AzureEnvironment.Endpoint.ResourceManager),
                 AzureSession.ClientFactory.CreateClient<AuthorizationManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager))
@@ -77,18 +73,15 @@ namespace Microsoft.Azure.Commands.Resources.Models
         /// Creates new ResourcesClient instance
         /// </summary>
         /// <param name="resourceManagementClient">The IResourceManagementClient instance</param>
-        /// <param name="storageClientWrapper">The IStorageClientWrapper instance</param>
         /// <param name="galleryTemplatesClient">The IGalleryClient instance</param>
         /// <param name="eventsClient">The IEventsClient instance</param>
         public ResourcesClient(
             IResourceManagementClient resourceManagementClient,
-            IStorageClientWrapper storageClientWrapper,
             GalleryTemplatesClient galleryTemplatesClient,
             IEventsClient eventsClient,
             IAuthorizationManagementClient authorizationManagementClient)
         {
             ResourceManagementClient = resourceManagementClient;
-            StorageClientWrapper = storageClientWrapper;
             GalleryTemplatesClient = galleryTemplatesClient;
             EventsClient = eventsClient;
             AuthorizationManagementClient = authorizationManagementClient;
@@ -101,8 +94,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
 
         }
-
-        private static string DeploymentTemplateStorageContainerName = "deployment-templates";
 
         private string GetDeploymentParameters(Hashtable templateParameterObject)
         {
@@ -149,52 +140,29 @@ namespace Microsoft.Azure.Commands.Resources.Models
             ResourceManagementClient.Providers.Unregister(RPName);
         }
         
-        private Uri GetTemplateUri(string templateFile, string galleryTemplateName, string storageAccountName)
+        private string GetTemplate(string templateFile, string galleryTemplateName)
         {
-            Uri templateFileUri;
+            string template;
 
             if (!string.IsNullOrEmpty(templateFile))
             {
                 if (Uri.IsWellFormedUriString(templateFile, UriKind.Absolute))
                 {
-                    templateFileUri = new Uri(templateFile);
+                    template = GeneralUtilities.DownloadFile(templateFile);
                 }
                 else
                 {
-                    storageAccountName = GetStorageAccountName(storageAccountName);
-                    templateFileUri = StorageClientWrapper.UploadFileToBlob(new BlobUploadParameters
-                    {
-                        StorageName = storageAccountName,
-                        FileLocalPath = templateFile,
-                        OverrideIfExists = true,
-                        ContainerPublic = false,
-                        ContainerName = DeploymentTemplateStorageContainerName
-                    });
-                    WriteVerbose(string.Format(
-                        "Uploading template '{0}' to {1}.",
-                        Path.GetFileName(templateFile), templateFileUri));
+                    template = ProfileClient.DataStore.ReadFileAsText(templateFile);
                 }
             }
             else
             {
-                templateFileUri = new Uri(GalleryTemplatesClient.GetGalleryTemplateFile(galleryTemplateName));
+                Debug.Assert(!string.IsNullOrEmpty(galleryTemplateName));
+                string templateUri = GalleryTemplatesClient.GetGalleryTemplateFile(galleryTemplateName);
+                template = GeneralUtilities.DownloadFile(templateUri);
             }
 
-            return templateFileUri;
-        }
-
-        private string GetStorageAccountName(string storageAccountName)
-        {
-            string currentStorageName = AzureSession.CurrentContext.Subscription.GetProperty(AzureSubscription.Property.StorageAccount);
-
-            string storageName = string.IsNullOrEmpty(storageAccountName) ? currentStorageName : storageAccountName;
-
-            if (string.IsNullOrEmpty(storageName))
-            {
-                throw new ArgumentException(ProjectResources.StorageAccountNameNeedsToBeSpecified);
-            }
-
-            return storageName;
+            return template;
         }
 
         private ResourceGroup CreateOrUpdateResourceGroup(string name, string location, Hashtable[] tags)
@@ -347,11 +315,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             BasicDeployment deployment = new BasicDeployment
             {
                 Mode = DeploymentMode.Incremental,
-                TemplateLink = new TemplateLink
-                {
-                    Uri = GetTemplateUri(parameters.TemplateFile, parameters.GalleryTemplateIdentity, parameters.StorageAccountName),
-                    ContentVersion = parameters.TemplateVersion
-                },
+                Template = GetTemplate(parameters.TemplateFile, parameters.GalleryTemplateIdentity),
                 Parameters = GetDeploymentParameters(parameters.TemplateParameterObject)
             };
 
