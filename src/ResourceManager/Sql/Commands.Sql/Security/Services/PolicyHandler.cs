@@ -36,10 +36,14 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         // cacheing the fetched properties to prevent constly network interaction in cases it is not needed
         private DatabaseSecurityPolicyProperties FetchedProperties;
 
+        // In cases when storage is not needed and not provided, theres's no need to perform storage related network interaction that may fail
+        public bool IgnoreStorage { get; set; }
+
         public PolicyHandler(AzureSubscription subscription)
         {
             Subscription = subscription;
             Communicator = new EndpointsCommunicator(subscription);
+            IgnoreStorage = false;
         }
         
         public AuditingPolicy GetDatabaseAuditingPolicy(string resourceGroup, string serverName, string databaseName, string requestId)
@@ -137,7 +141,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             if (storageAccountName != null)
                 properties.StorageAccountName = storageAccountName;
 
-            if (string.IsNullOrEmpty(properties.StorageAccountName)) // can happen if the user didn't provide account name for a policy that lacked it 
+            if (string.IsNullOrEmpty(properties.StorageAccountName) && (!IgnoreStorage)) // can happen if the user didn't provide account name for a policy that lacked it 
             {
                 throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.NoStorageAccountWhenConfiguringAuditingPolicy));
             }
@@ -155,9 +159,12 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
                 properties.StorageAccountResourceGroupName = Communicator.GetStorageResourceGroup(properties.StorageAccountName);
                 properties.StorageTableEndpoint = Communicator.GetStorageTableEndpoint(properties.StorageAccountName);
             }
-            
-            // always re-fetching the primary key as the user may change it
-            properties.StorageAccountKey = Communicator.GetPrimaryStorageKeys(properties.StorageAccountName);
+
+            if (!IgnoreStorage)
+            {
+                // storage primary key is not sent when fetching the policy, so if it is needed, it should be fetched 
+                properties.StorageAccountKey = Communicator.GetPrimaryStorageKeys(properties.StorageAccountName);
+            }
         }
 
         /// <summary>
