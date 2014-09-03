@@ -172,7 +172,7 @@ namespace Microsoft.Azure.Commands.Resources
 
             // Load parameters from the file
             string templateParameterFilePath = this.TryResolvePath(TemplateParameterFile);
-            if (templateParameterFilePath != null && File.Exists(templateParameterFilePath))
+            if (templateParameterFilePath != null && FileUtilities.DataStore.FileExists(templateParameterFilePath))
             {
                 var parametersFromFile = GalleryTemplatesClient.ParseTemplateParameterFileContents(templateParameterFilePath);
                 parametersFromFile.ForEach(dp => templateParameterObject[dp.Key] = dp.Value.Value);

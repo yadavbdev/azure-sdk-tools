@@ -37,14 +37,12 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             var resourceManagementClient = GetResourceManagementClient();
             var subscriptionsClient = GetSubscriptionClient();
-            var storageClient = GetStorageManagementClient();
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
             var authorizationManagementClient = GetAuthorizationManagementClient();
 
             helper.SetupManagementClients(resourceManagementClient,
                 subscriptionsClient,
-                storageClient,
                 galleryClient,
                 eventsClient,
                 authorizationManagementClient);
@@ -79,11 +77,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         protected SubscriptionClient GetSubscriptionClient()
         {
             return TestBase.GetServiceClient<SubscriptionClient>(new CSMTestEnvironmentFactory());
-        }
-
-        protected StorageManagementClient GetStorageManagementClient()
-        {
-            return TestBase.GetServiceClient<StorageManagementClient>(new RDFETestEnvironmentFactory());
         }
 
         protected GalleryClient GetGalleryClient()

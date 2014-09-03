@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Store;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Properties;
@@ -24,7 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
 {
     using Resource = Management.Store.Models.CloudServiceListResponse.CloudService.AddOnResource;
 
-    [TestClass]
+    
     public class RemoveAzureStoreAddOnTests : TestBase
     {
         Mock<ICommandRuntime> mockCommandRuntime;
@@ -35,8 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
 
         RemoveAzureStoreAddOnCommand cmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public RemoveAzureStoreAddOnTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
             mockCommandRuntime = new Mock<ICommandRuntime>();
@@ -50,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveAzureStoreAddOnWithSuccessful()
         {
             // Setup
@@ -73,7 +72,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             mockCommandRuntime.Verify(f => f.WriteObject(expected), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveAzureStoreAddOnWithPassThru()
         {
             // Setup
@@ -98,7 +97,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             mockCommandRuntime.Verify(f => f.WriteObject(expected), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveAzureStoreAddOnWithNo()
         {
             // Setup

@@ -15,7 +15,6 @@
 using System;
 using System.IO;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.CloudService.Development;
 using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -24,15 +23,14 @@ using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 using Microsoft.WindowsAzure.Commands.Common;
+using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 {
     /// <summary>
     /// Basic unit tests for the Enable-AzureServiceProjectRemoteDesktop enableRDCmdlet.
     /// </summary>
-    [TestClass]
-    [Ignore]
-    public class SaveAzureServiceProjectPackageCommandTest : TestBase
+    internal class SaveAzureServiceProjectPackageCommandTest : TestBase
     {
         static private MockCommandRuntime mockCommandRuntime;
 
@@ -42,8 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 
         private AddAzureNodeWorkerRoleCommand addNodeWorkerCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public SaveAzureServiceProjectPackageCommandTest()
         {
             AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
@@ -57,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
             cmdlet.CommandRuntime = mockCommandRuntime;
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreatePackageSuccessfull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -73,13 +70,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 cmdlet.ExecuteCmdlet();
 
                 PSObject obj = mockCommandRuntime.OutputPipeline[0] as PSObject;
-                Assert.AreEqual<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
-                Assert.AreEqual<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
-                Assert.IsTrue(File.Exists(packagePath));
+                Assert.Equal<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
+                Assert.True(File.Exists(packagePath));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreatePackageWithEmptyServiceSuccessfull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -92,13 +89,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 cmdlet.ExecuteCmdlet();
 
                 PSObject obj = mockCommandRuntime.OutputPipeline[0] as PSObject;
-                Assert.AreEqual<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
-                Assert.AreEqual<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
-                Assert.IsTrue(File.Exists(packagePath));
+                Assert.Equal<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
+                Assert.True(File.Exists(packagePath));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreatePackageWithMultipleRolesSuccessfull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -117,13 +114,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 cmdlet.ExecuteCmdlet();
 
                 PSObject obj = mockCommandRuntime.OutputPipeline[0] as PSObject;
-                Assert.AreEqual<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
-                Assert.AreEqual<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
-                Assert.IsTrue(File.Exists(packagePath));
+                Assert.Equal<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
+                Assert.True(File.Exists(packagePath));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ThrowsErrorForInvalidCacheVersion()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))

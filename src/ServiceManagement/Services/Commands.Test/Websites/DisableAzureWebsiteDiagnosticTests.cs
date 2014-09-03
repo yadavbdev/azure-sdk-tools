@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
@@ -23,7 +23,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class DisableAzureWebsiteApplicationDiagnosticTests : WebsitesTestBase
     {
         private const string websiteName = "website1";
@@ -34,14 +34,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Mock<ICommandRuntime> commandRuntimeMock;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public DisableAzureWebsiteApplicationDiagnosticTests()
         {
             websitesClientMock = new Mock<IWebsitesClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
         }
 
-        [TestMethod]
+        [Fact]
         public void DisableAzureWebsiteApplicationDiagnosticApplication()
         {
             // Setup
@@ -70,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void DisableAzureWebsiteApplicationDiagnosticApplicationTableLog()
         {
             // Setup
@@ -99,7 +98,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void DisablesApplicationDiagnosticOnSlot()
         {
             // Setup
