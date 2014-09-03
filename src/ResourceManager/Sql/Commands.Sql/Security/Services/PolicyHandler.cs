@@ -68,6 +68,13 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             wrapper.UseServerDefault = properties.UseServerDefault;
             wrapper.IsEnabled = properties.IsAuditingEnabled;
             wrapper.StorageAccountName = properties.StorageAccountName;
+            AddEventTypesToWrapperFromPolicy(wrapper, properties);
+            this.FetchedProperties = properties;           
+            return wrapper;
+        }
+
+        private void AddEventTypesToWrapperFromPolicy(AuditingPolicy wrapper, DatabaseSecurityPolicyProperties properties)
+        {
             HashSet<string> events = new HashSet<string>();
             if (properties.IsEventTypeDataAccessEnabled) events.Add(Constants.Access);
             if (properties.IsEventTypeDataChangesEnabled) events.Add(Constants.Data);
@@ -75,9 +82,6 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             if (properties.IsEventTypeGrantRevokePermissionsEnabled) events.Add(Constants.RevokePermissions);
             if (properties.IsEventTypeSecurityExceptionsEnabled) events.Add(Constants.Security);
             wrapper.EventType = events.ToArray();
-
-            this.FetchedProperties = properties;           
-            return wrapper;
         }
 
         public void SetServerAuditingPolicy(AuditingPolicy policy, String clientId)
@@ -100,7 +104,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             properties.RetentionDays = 90;
             properties.IsAuditingEnabled = policy.IsEnabled;
             properties.UseServerDefault = policy.UseServerDefault;
-            UpdateEventTypes(policy.EventType, properties);
+            UpdateEventTypes(policy, properties);
             UpdateStorage(policy.StorageAccountName, properties);
             return updateParameters;
         }
@@ -108,16 +112,21 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         /// <summary>
         /// Updates the storage properties of the policy that this object operates on
         /// </summary>
-        private void UpdateEventTypes(string[] eventType, DatabaseSecurityPolicyProperties properties)
+        private void UpdateEventTypes(AuditingPolicy wrappedPolicy, DatabaseSecurityPolicyProperties properties)
         {
-            if (eventType == null || eventType.Length == 0)
+            string[] userEnteredEventType = wrappedPolicy.EventType;
+            if (userEnteredEventType == null || userEnteredEventType.Length == 0)
                 return;
-            HashSet<String> eventTypes = new HashSet<String>(eventType);
+            HashSet<String> eventTypes = new HashSet<String>(userEnteredEventType);
             properties.IsEventTypeDataAccessEnabled = valueOfProperty(eventTypes, Constants.Access);
             properties.IsEventTypeSchemaChangeEnabled = valueOfProperty(eventTypes, Constants.Schema);
             properties.IsEventTypeDataChangesEnabled = valueOfProperty(eventTypes, Constants.Data);
             properties.IsEventTypeSecurityExceptionsEnabled = valueOfProperty(eventTypes, Constants.Security);
             properties.IsEventTypeGrantRevokePermissionsEnabled = valueOfProperty(eventTypes, Constants.RevokePermissions);
+            
+            // we need to re-add the event types to the AuditingPolicy object to replace the All / None with the real values 
+            if (userEnteredEventType.Contains(Constants.All) || userEnteredEventType.Contains(Constants.None))
+                AddEventTypesToWrapperFromPolicy(wrappedPolicy, properties);
         }
 
         /// <summary>
@@ -136,7 +145,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             // no need to do time consuming http inteaction to fetch these properties if the storage account was not changed
             if (properties.StorageAccountName == this.FetchedProperties.StorageAccountName)
             {
-                properties.StorageAccountResourceGroupName = this.FetchedProperties.StorageAccountName;
+                properties.StorageAccountResourceGroupName = this.FetchedProperties.StorageAccountResourceGroupName;
                 properties.StorageAccountSubscriptionId = this.FetchedProperties.StorageAccountSubscriptionId;
                 properties.StorageTableEndpoint = this.FetchedProperties.StorageTableEndpoint;
             }

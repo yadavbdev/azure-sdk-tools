@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Sql.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot use a server&apos;s policy without it having a storage account defined.
+        ///   Looks up a localized string similar to Cannot use a server&apos;s auditing policy before it is configured..
         /// </summary>
         internal static string NoServerStorageAccount {
             get {
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.Sql.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot set auditing policy without storage account name.
+        ///   Looks up a localized string similar to Cannot set auditing policy without a storage account name..
         /// </summary>
         internal static string NoStorageAccountWhenConfiguringAuditingPolicy {
             get {
@@ -79,7 +79,7 @@ namespace Microsoft.Azure.Commands.Sql.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The policy&apos;s storage account was not found. It either do not exist or associated with a different subscription.
+        ///   Looks up a localized string similar to Cannot find a storage account with the name &apos;{0}&apos;. It either does not exist or is associated with a different subscription..
         /// </summary>
         internal static string StorageAccountNotFound {
             get {
