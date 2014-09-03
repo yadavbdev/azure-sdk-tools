@@ -276,6 +276,7 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureStorageAccountCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAffinityGroupCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureAclConfigCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureAvailabilitySetCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureAvailabilitySetCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureDeploymentCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureDnsCmdletInfo.cs" />

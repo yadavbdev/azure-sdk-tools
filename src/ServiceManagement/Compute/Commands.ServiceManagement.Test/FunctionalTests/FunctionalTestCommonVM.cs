@@ -277,6 +277,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
                 Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, string.Empty));
 
+                vm = vmPowershellCmdlets.SetAzureAvailabilitySet(defaultVm, defaultService, testAVSetName);
+                vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
+                Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, testAVSetName));
+
+                vm = vmPowershellCmdlets.SetAzureAvailabilitySet(defaultVm, defaultService, null);
+                vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
+                Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, testAVSetName));
+
+                vm = vmPowershellCmdlets.RemoveAzureAvailabilitySet(defaultVm, defaultService);
+                vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
+                Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, testAVSetName));
+
                 pass = true;
             }
             catch (Exception e)

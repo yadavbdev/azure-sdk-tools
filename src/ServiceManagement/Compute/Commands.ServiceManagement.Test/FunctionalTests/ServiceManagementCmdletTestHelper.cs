@@ -276,6 +276,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return RunPSCmdletAndReturnFirst<PersistentVM>(new SetAzureAvailabilitySetCmdletInfo(availabilitySetName, vm));
         }
 
+        public PersistentVM RemoveAzureAvailabilitySet(PersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<PersistentVM>(new RemoveAzureAvailabilitySetCmdletInfo(vm));
+        }
+
+        public PersistentVM RemoveAzureAvailabilitySet(string vmName, string serviceName)
+        {
+            PersistentVM vm = GetAzureVM(vmName, serviceName).VM;
+            return RunPSCmdletAndReturnFirst<PersistentVM>(new RemoveAzureAvailabilitySetCmdletInfo(vm));
+        }
+
         #endregion AzureAvailabilitySet
 
         #region AzureCertificate
