@@ -672,6 +672,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 foreach (var tenant in tenants.TenantIds)
                 {
                     // Generate tenant specific token to query list of subscriptions
+                    if (!string.Equals(tenant.TenantId, commonTenantToken.TenantId))
+                    {
+                        credentials.ShowDialog = ShowDialog.Auto;
+                    }
+
                     IAccessToken tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, tenant.TenantId, ref credentials);
 
                     using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
@@ -689,7 +694,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             };
                             psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant.TenantId);
-                            if (commonTenantToken.LoginType == LoginType.LiveId)
+                            if (commonTenantToken.LoginType == LoginType.LiveId || !string.Equals(commonTenantToken.TenantId, tenantToken.TenantId))
                             {
                                 AzureSession.SubscriptionTokenCache[psSubscription.Id] = tenantToken;
                             }
