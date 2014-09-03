@@ -83,8 +83,18 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public void SetSubscriptions(List<AzureSubscription> subscriptions)
         {
-            string value = string.Join(",", subscriptions.Select(s => s.Id.ToString()));
-            Properties[Property.Subscriptions] = value;
+            if (subscriptions == null || subscriptions.Count == 0)
+            {
+                if (Properties.ContainsKey(Property.Subscriptions))
+                {
+                    Properties.Remove(Property.Subscriptions);
+                }
+            }
+            else
+            {
+                string value = string.Join(",", subscriptions.Select(s => s.Id.ToString()));
+                Properties[Property.Subscriptions] = value;
+            }
         }
 
         public void RemoveSubscription(Guid id)

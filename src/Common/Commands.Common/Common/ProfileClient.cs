@@ -152,13 +152,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
                     .Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray());
 
-                // Set account subscriptions from the server
                 foreach (var subscription in subscriptionsFromServer)
                 {
+                    // Set account subscriptions from the server
                     if (!account.HasSubscription(subscription.Id))
                     {
                         account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
                     }
+
+                    // Set default account to credentials.UserName
+                    Profile.Subscriptions[subscription.Id].Account = credentials.UserName;
                 }
 
                 // Add the account to the profile
@@ -698,7 +701,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     {
                         tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, tenant.TenantId, ref credentials);
                     }
-                    catch (AadAuthenticationFailedException ex)
+                    catch (AadAuthenticationException ex)
                     {
                         var adex = ex.InnerException as AdalException;
                         WarningLog(string.Format(Resources.AddAccountNonInteractiveGuestOrFpo, tenant.TenantId));
