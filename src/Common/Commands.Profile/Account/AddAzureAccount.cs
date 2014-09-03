@@ -42,7 +42,10 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            AzureAccount azureAccount = new AzureAccount();
+            AzureAccount azureAccount = new AzureAccount
+            {
+                Type = AzureAccount.AccountType.User
+            };
             SecureString password = null;
             if (Credential != null)
             {
