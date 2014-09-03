@@ -54,6 +54,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Cmdlet
 
         protected override void SendPolicy(AuditingPolicy policy) 
         {
+            this.PolicyHandler.IgnoreStorage = true;
             this.PolicyHandler.SetDatabaseAuditingPolicy(policy, clientRequestId);
         }
     }

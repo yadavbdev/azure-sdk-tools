@@ -49,6 +49,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Cmdlet
         protected override void UpdatePolicy(AuditingPolicy policy)
         { 
             policy.UseServerDefault = true;
+            policy.IsEnabled = true;
             policy.StorageAccountName = GetStorageAccountName();
         }
         protected override void SendPolicy(AuditingPolicy policy)

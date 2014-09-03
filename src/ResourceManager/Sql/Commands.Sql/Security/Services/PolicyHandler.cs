@@ -36,10 +36,14 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         // cacheing the fetched properties to prevent constly network interaction in cases it is not needed
         private DatabaseSecurityPolicyProperties FetchedProperties;
 
+        // In cases when storage is not needed and not provided, theres's no need to perform storage related network interaction that may fail
+        public bool IgnoreStorage { get; set; }
+
         public PolicyHandler(AzureSubscription subscription)
         {
             Subscription = subscription;
             Communicator = new EndpointsCommunicator(subscription);
+            IgnoreStorage = false;
         }
         
         public AuditingPolicy GetDatabaseAuditingPolicy(string resourceGroup, string serverName, string databaseName, string requestId)
@@ -68,6 +72,13 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             wrapper.UseServerDefault = properties.UseServerDefault;
             wrapper.IsEnabled = properties.IsAuditingEnabled;
             wrapper.StorageAccountName = properties.StorageAccountName;
+            AddEventTypesToWrapperFromPolicy(wrapper, properties);
+            this.FetchedProperties = properties;           
+            return wrapper;
+        }
+
+        private void AddEventTypesToWrapperFromPolicy(AuditingPolicy wrapper, DatabaseSecurityPolicyProperties properties)
+        {
             HashSet<string> events = new HashSet<string>();
             if (properties.IsEventTypeDataAccessEnabled) events.Add(Constants.Access);
             if (properties.IsEventTypeDataChangesEnabled) events.Add(Constants.Data);
@@ -75,9 +86,6 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             if (properties.IsEventTypeGrantRevokePermissionsEnabled) events.Add(Constants.RevokePermissions);
             if (properties.IsEventTypeSecurityExceptionsEnabled) events.Add(Constants.Security);
             wrapper.EventType = events.ToArray();
-
-            this.FetchedProperties = properties;           
-            return wrapper;
         }
 
         public void SetServerAuditingPolicy(AuditingPolicy policy, String clientId)
@@ -100,7 +108,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             properties.RetentionDays = 90;
             properties.IsAuditingEnabled = policy.IsEnabled;
             properties.UseServerDefault = policy.UseServerDefault;
-            UpdateEventTypes(policy.EventType, properties);
+            UpdateEventTypes(policy, properties);
             UpdateStorage(policy.StorageAccountName, properties);
             return updateParameters;
         }
@@ -108,16 +116,21 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         /// <summary>
         /// Updates the storage properties of the policy that this object operates on
         /// </summary>
-        private void UpdateEventTypes(string[] eventType, DatabaseSecurityPolicyProperties properties)
+        private void UpdateEventTypes(AuditingPolicy wrappedPolicy, DatabaseSecurityPolicyProperties properties)
         {
-            if (eventType == null || eventType.Length == 0)
+            string[] userEnteredEventType = wrappedPolicy.EventType;
+            if (userEnteredEventType == null || userEnteredEventType.Length == 0)
                 return;
-            HashSet<String> eventTypes = new HashSet<String>(eventType);
+            HashSet<String> eventTypes = new HashSet<String>(userEnteredEventType);
             properties.IsEventTypeDataAccessEnabled = valueOfProperty(eventTypes, Constants.Access);
             properties.IsEventTypeSchemaChangeEnabled = valueOfProperty(eventTypes, Constants.Schema);
             properties.IsEventTypeDataChangesEnabled = valueOfProperty(eventTypes, Constants.Data);
             properties.IsEventTypeSecurityExceptionsEnabled = valueOfProperty(eventTypes, Constants.Security);
             properties.IsEventTypeGrantRevokePermissionsEnabled = valueOfProperty(eventTypes, Constants.RevokePermissions);
+            
+            // we need to re-add the event types to the AuditingPolicy object to replace the All / None with the real values 
+            if (userEnteredEventType.Contains(Constants.All) || userEnteredEventType.Contains(Constants.None))
+                AddEventTypesToWrapperFromPolicy(wrappedPolicy, properties);
         }
 
         /// <summary>
@@ -128,7 +141,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             if (storageAccountName != null)
                 properties.StorageAccountName = storageAccountName;
 
-            if (string.IsNullOrEmpty(properties.StorageAccountName)) // can happen if the user didn't provide account name for a policy that lacked it 
+            if (string.IsNullOrEmpty(properties.StorageAccountName) && (!IgnoreStorage)) // can happen if the user didn't provide account name for a policy that lacked it 
             {
                 throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.NoStorageAccountWhenConfiguringAuditingPolicy));
             }
@@ -136,7 +149,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             // no need to do time consuming http inteaction to fetch these properties if the storage account was not changed
             if (properties.StorageAccountName == this.FetchedProperties.StorageAccountName)
             {
-                properties.StorageAccountResourceGroupName = this.FetchedProperties.StorageAccountName;
+                properties.StorageAccountResourceGroupName = this.FetchedProperties.StorageAccountResourceGroupName;
                 properties.StorageAccountSubscriptionId = this.FetchedProperties.StorageAccountSubscriptionId;
                 properties.StorageTableEndpoint = this.FetchedProperties.StorageTableEndpoint;
             }
@@ -146,9 +159,12 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
                 properties.StorageAccountResourceGroupName = Communicator.GetStorageResourceGroup(properties.StorageAccountName);
                 properties.StorageTableEndpoint = Communicator.GetStorageTableEndpoint(properties.StorageAccountName);
             }
-            
-            // always re-fetching the primary key as the user may change it
-            properties.StorageAccountKey = Communicator.GetPrimaryStorageKeys(properties.StorageAccountName);
+
+            if (!IgnoreStorage)
+            {
+                // storage primary key is not sent when fetching the policy, so if it is needed, it should be fetched 
+                properties.StorageAccountKey = Communicator.GetPrimaryStorageKeys(properties.StorageAccountName);
+            }
         }
 
         /// <summary>

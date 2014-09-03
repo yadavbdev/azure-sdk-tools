@@ -118,15 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NoServerStorageAccount" xml:space="preserve">
-    <value>Cannot use server's policy that does not have a storage account</value>
-    <comment>Error message</comment>
+    <value>Cannot use a server's auditing policy before it is configured.</value>
   </data>
   <data name="NoStorageAccountWhenConfiguringAuditingPolicy" xml:space="preserve">
-    <value>Cannot set auditing policy without storage account name</value>
-    <comment>Error message</comment>
+    <value>Cannot set auditing policy without a storage account name.</value>
   </data>
-  <data name="StorageFromAnotherSubscription" xml:space="preserve">
-    <value>Cannot use storage that is not related to the currently selected subscription</value>
-    <comment>Error message</comment>
+  <data name="StorageAccountNotFound" xml:space="preserve">
+    <value>Cannot find a storage account with the name '{0}'. It either does not exist or is associated with a different subscription.</value>
   </data>
 </root>
