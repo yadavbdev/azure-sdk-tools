@@ -17,6 +17,7 @@ using System.Management.Automation;
 using System.Security.Permissions;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using System;
 
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
@@ -35,7 +36,18 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            WriteObject(ProfileClient.ListEnvironments(Name));
+            List<AzureEnvironment> environments = ProfileClient.ListEnvironments(Name);
+            List<PSObject> output = new List<PSObject>();
+            foreach (AzureEnvironment e in environments)
+            {
+                List<object> args = new List<object> { "Name", e.Name };
+                foreach (AzureEnvironment.Endpoint property in Enum.GetValues(typeof(AzureEnvironment.Endpoint)))
+                {
+                    args.AddRange(new object[] { property, e.GetEndpoint(property) });
+                }
+                output.Add(base.ConstructPSObject(null, args.ToArray()));
+            }
+            WriteObject(output);
         }
     }
 }
