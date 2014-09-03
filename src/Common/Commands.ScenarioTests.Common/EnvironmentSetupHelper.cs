@@ -110,6 +110,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             {
                 AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
             }
+            else
+            {
+                AzureSession.AuthenticationFactory = new MockAuthenticationFactory(currentEnvironment.UserName, jwtToken);
+            }
 
             AzureEnvironment environment = new AzureEnvironment {Name = testEnvironmentName};
 
