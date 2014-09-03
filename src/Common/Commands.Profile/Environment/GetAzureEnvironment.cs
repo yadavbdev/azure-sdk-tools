@@ -17,6 +17,7 @@ using System.Management.Automation;
 using System.Security.Permissions;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using System;
 
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
@@ -37,13 +38,18 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         {
             List<AzureEnvironment> environments = ProfileClient.ListEnvironments(Name);
             List<PSObject> output = new List<PSObject>();
-            environments.ForEach(e => output.Add(base.ConstructPSObject(
-                null,
-                "Name", e.Name,
-                "PublishSettingsFileUrl", e.GetEndpoint(AzureEnvironment.Endpoint.PublishSettingsFileUrl),
-                "ServiceManagement", e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement),
-                "ResourceManager", e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager),
-                "ManagementPortalUrl", e.GetEndpoint(AzureEnvironment.Endpoint.ManagementPortalUrl))));
+            foreach (AzureEnvironment e in environments)
+            {
+                List<object> args = new List<object>();
+                args.Add("Name");
+                args.Add(e.Name);
+                foreach (AzureEnvironment.Endpoint property in Enum.GetValues(typeof(AzureEnvironment.Endpoint)))
+                {
+                    args.Add(property);
+                    args.Add(e.GetEndpoint(property));
+                }
+                output.Add(base.ConstructPSObject(null, args.ToArray()));
+            }
             WriteObject(output);
         }
     }
