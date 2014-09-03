@@ -173,7 +173,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                 }
 
                 result = context.AcquireToken(config.ResourceClientUri, config.ClientId,
-                    config.ClientRedirectUri, promptBehavior);
+                        config.ClientRedirectUri, promptBehavior,
+                        UserIdentifier.AnyUser, AdalConfiguration.EnableEbdMagicCookie);
             }
             else
             {

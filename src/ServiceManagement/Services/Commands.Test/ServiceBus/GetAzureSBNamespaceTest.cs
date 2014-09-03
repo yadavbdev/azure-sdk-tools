@@ -14,7 +14,7 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.ServiceBus;
@@ -25,15 +25,14 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    [TestClass]
+    
     public class GetAzureSBNamespaceTests : TestBase
     {
         Mock<ServiceBusClientExtensions> client;
         MockCommandRuntime mockCommandRuntime;
         GetAzureSBNamespaceCommand cmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public GetAzureSBNamespaceTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
             client = new Mock<ServiceBusClientExtensions>();
@@ -46,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
             AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureSBNamespaceSuccessfull()
         {
             // Setup
@@ -60,10 +59,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<string>(expected.Name, actual.Name);
+            Assert.Equal<string>(expected.Name, actual.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void ListNamespacesSuccessfull()
         {
             // Setup
@@ -79,14 +78,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             List<ExtendedServiceBusNamespace> actual = mockCommandRuntime.OutputPipeline[0] as List<ExtendedServiceBusNamespace>;
-            Assert.AreEqual<int>(expected.Count, actual.Count);
+            Assert.Equal<int>(expected.Count, actual.Count);
             for (int i = 0; i < expected.Count; i++)
             {
-                Assert.AreEqual<string>(expected[i].Name, actual[i].Name);
+                Assert.Equal<string>(expected[i].Name, actual[i].Name);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureSBNamespaceWithInvalidNamesFail()
         {
             // Setup

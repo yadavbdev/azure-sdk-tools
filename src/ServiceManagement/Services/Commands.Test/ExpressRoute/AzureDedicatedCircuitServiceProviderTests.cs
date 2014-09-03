@@ -19,7 +19,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.ExpressRoute;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -29,7 +29,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 {
-    [TestClass]
+    
     public class AzureDedicatedCircuitServiceProviderTests : TestBase
     {
         private const string SubscriptionId = "foo";
@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                     new Uri("http://someValue")));
         }
 
-        [TestMethod]
+        [Fact]
         public void ListAzureDedicatedCircuitServiceProviderSuccessful()
         {
             // Setup
@@ -115,7 +115,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             // Assert
             IEnumerable<AzureDedicatedCircuitServiceProvider> actual =
                 mockCommandRuntime.OutputPipeline[0] as IEnumerable<AzureDedicatedCircuitServiceProvider>;
-            Assert.AreEqual(actual.ToArray().Count(), 2);
+            Assert.Equal(actual.ToArray().Count(), 2);
         }
     }
 }

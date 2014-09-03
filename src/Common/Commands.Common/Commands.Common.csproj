@@ -152,6 +152,7 @@
     <Compile Include="Authentication\RegistryBackedDictionary.cs" />
     <Compile Include="Authentication\UserTokenProvider.cs" />
     <Compile Include="Common\AzurePowerShell.cs" />
+    <Compile Include="Common\AzurePowerShellClientFactory.cs" />
     <Compile Include="Common\ProfileClient.cs" />
     <Compile Include="Common\ProfileData.cs" />
     <Compile Include="Common\ServiceManagementTypes.cs" />

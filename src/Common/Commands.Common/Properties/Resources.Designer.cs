@@ -88,6 +88,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skipping external tenant {0}, because you are using a guest or a foreign principal object identity. In order to access this tenant, please run Add-AzureAccount without &quot;-Credential&quot;..
+        /// </summary>
+        public static string AddAccountNonInteractiveGuestOrFpo {
+            get {
+                return ResourceManager.GetString("AddAccountNonInteractiveGuestOrFpo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subscription &quot;{0}&quot; is selected as the default subscription..
         /// </summary>
         public static string AddAccountShowDefaultSubscription {
@@ -679,6 +688,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         public static string ChangeSettingsElementMessage {
             get {
                 return ResourceManager.GetString("ChangeSettingsElementMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changing public environment is not supported..
+        /// </summary>
+        public static string ChangingDefaultEnvironmentNotSupported {
+            get {
+                return ResourceManager.GetString("ChangingDefaultEnvironmentNotSupported", resourceCulture);
             }
         }
         

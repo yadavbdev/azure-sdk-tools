@@ -14,17 +14,16 @@
 
 using System.IO;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.CloudService.Development;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cmdlet
 {
-    [TestClass]
     public class SetAzureRuntimeTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
@@ -37,19 +36,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         {
             string packagePath = Path.Combine(rootPath, roleName);
             string actualVersion;
-            Assert.IsTrue(JavaScriptPackageHelpers.TryGetEngineVersion(packagePath, runtime, out actualVersion));
-            Assert.AreEqual(version, actualVersion, true);
+            Assert.True(JavaScriptPackageHelpers.TryGetEngineVersion(packagePath, runtime, out actualVersion));
+            Assert.Equal(version, actualVersion);
         }
 
         public static void VerifyInvalidPackageJsonVersion(string rootPath, string roleName, string runtime, string version)
         {
             string packagePath = Path.Combine(rootPath, roleName);
             string actualVersion;
-            Assert.IsFalse(JavaScriptPackageHelpers.TryGetEngineVersion(packagePath, runtime, out actualVersion));
+            Assert.False(JavaScriptPackageHelpers.TryGetEngineVersion(packagePath, runtime, out actualVersion));
         }
 
-        [TestInitialize]
-        public void TestSetup()
+        public SetAzureRuntimeTests()
         {
             mockCommandRuntime = new MockCommandRuntime();
             cmdlet = new SetAzureServiceProjectRoleCommand();
@@ -62,7 +60,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         /// (in this case, valid package.json changes).  Test for both a valid node runtiem version and 
         /// valid iisnode runtiem version
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestSetAzureRuntimeValidRuntimeVersions()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -76,9 +74,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
                 RoleSettings roleSettings2 = cmdlet.SetAzureRuntimesProcess(roleName, "iisnode", "0.1.21", service.Paths.RootPath, RuntimePackageHelper.GetTestManifest(files));
                 VerifyPackageJsonVersion(service.Paths.RootPath, roleName, "node", "0.8.2");
                 VerifyPackageJsonVersion(service.Paths.RootPath, roleName, "iisnode", "0.1.21");
-                Assert.AreEqual<int>(0, mockCommandRuntime.OutputPipeline.Count);
-                Assert.AreEqual<string>(roleName, roleSettings1.name);
-                Assert.AreEqual<string>(roleName, roleSettings2.name);
+                Assert.Equal<int>(0, mockCommandRuntime.OutputPipeline.Count);
+                Assert.Equal<string>(roleName, roleSettings1.name);
+                Assert.Equal<string>(roleName, roleSettings2.name);
             }
         }
 
@@ -86,7 +84,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         /// Test that attempting to set an invlaid runtime version (one that is not listed in the runtime manifest) 
         /// results in no changes to package scaffolding (no changes in package.json)
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestSetAzureRuntimeInvalidRuntimeVersion()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -98,12 +96,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
                 RoleSettings roleSettings2 = cmdlet.SetAzureRuntimesProcess(roleName, "iisnode", "0.9.99", service.Paths.RootPath, RuntimePackageHelper.GetTestManifest(files));
                 VerifyInvalidPackageJsonVersion(service.Paths.RootPath, roleName, "node", "*");
                 VerifyInvalidPackageJsonVersion(service.Paths.RootPath, roleName, "iisnode", "*");
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).Members[Parameters.RoleName].Value.ToString());
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[1]).Members[Parameters.RoleName].Value.ToString());
-                Assert.IsTrue(((PSObject)mockCommandRuntime.OutputPipeline[0]).TypeNames.Contains(typeof(RoleSettings).FullName));
-                Assert.IsTrue(((PSObject)mockCommandRuntime.OutputPipeline[1]).TypeNames.Contains(typeof(RoleSettings).FullName));
-                Assert.AreEqual<string>(roleName, roleSettings1.name);
-                Assert.AreEqual<string>(roleName, roleSettings2.name);
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).Members[Parameters.RoleName].Value.ToString());
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[1]).Members[Parameters.RoleName].Value.ToString());
+                Assert.True(((PSObject)mockCommandRuntime.OutputPipeline[0]).TypeNames.Contains(typeof(RoleSettings).FullName));
+                Assert.True(((PSObject)mockCommandRuntime.OutputPipeline[1]).TypeNames.Contains(typeof(RoleSettings).FullName));
+                Assert.Equal<string>(roleName, roleSettings1.name);
+                Assert.Equal<string>(roleName, roleSettings2.name);
             }
         }
 
@@ -111,7 +109,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         /// Test that attempting to add a runtime with an invlid runtime type (a runtime type that has no entries in the 
         /// master package.json).  Results in no scaffolding changes - no changes to package.json.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestSetAzureRuntimeInvalidRuntimeType()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -123,12 +121,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
                 RoleSettings roleSettings2 = cmdlet.SetAzureRuntimesProcess(roleName, "iisnoide", "0.9.99", service.Paths.RootPath, RuntimePackageHelper.GetTestManifest(files));
                 VerifyInvalidPackageJsonVersion(service.Paths.RootPath, roleName, "node", "*");
                 VerifyInvalidPackageJsonVersion(service.Paths.RootPath, roleName, "iisnode", "*");
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).Members[Parameters.RoleName].Value.ToString());
-                Assert.AreEqual<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[1]).Members[Parameters.RoleName].Value.ToString());
-                Assert.IsTrue(((PSObject)mockCommandRuntime.OutputPipeline[0]).TypeNames.Contains(typeof(RoleSettings).FullName));
-                Assert.IsTrue(((PSObject)mockCommandRuntime.OutputPipeline[1]).TypeNames.Contains(typeof(RoleSettings).FullName));
-                Assert.AreEqual<string>(roleName, roleSettings1.name);
-                Assert.AreEqual<string>(roleName, roleSettings2.name);
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[0]).Members[Parameters.RoleName].Value.ToString());
+                Assert.Equal<string>(roleName, ((PSObject)mockCommandRuntime.OutputPipeline[1]).Members[Parameters.RoleName].Value.ToString());
+                Assert.True(((PSObject)mockCommandRuntime.OutputPipeline[0]).TypeNames.Contains(typeof(RoleSettings).FullName));
+                Assert.True(((PSObject)mockCommandRuntime.OutputPipeline[1]).TypeNames.Contains(typeof(RoleSettings).FullName));
+                Assert.Equal<string>(roleName, roleSettings1.name);
+                Assert.Equal<string>(roleName, roleSettings2.name);
             }
         }
 
@@ -137,7 +135,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
         /// (in this case, valid package.json changes).  Test for both a valid node runtiem version and 
         /// valid iisnode runtiem version
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void TestSetAzureRuntimeValidRuntimeVersionsCanInsensitive()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -152,9 +150,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
                 RoleSettings roleSettings2 = cmdlet.SetAzureRuntimesProcess(caseInsensitiveName, "iisnode", "0.1.21", service.Paths.RootPath, RuntimePackageHelper.GetTestManifest(files));
                 VerifyPackageJsonVersion(service.Paths.RootPath, roleName, "node", "0.8.2");
                 VerifyPackageJsonVersion(service.Paths.RootPath, roleName, "iisnode", "0.1.21");
-                Assert.AreEqual<int>(0, mockCommandRuntime.OutputPipeline.Count);
-                Assert.AreEqual<string>(roleName, roleSettings1.name);
-                Assert.AreEqual<string>(roleName, roleSettings2.name);
+                Assert.Equal<int>(0, mockCommandRuntime.OutputPipeline.Count);
+                Assert.Equal<string>(roleName, roleSettings1.name);
+                Assert.Equal<string>(roleName, roleSettings2.name);
             }
         }
     }
