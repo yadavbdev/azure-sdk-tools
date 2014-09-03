@@ -542,9 +542,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 IAccessToken commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(environment,
                     ref credentials);
-
                 credentials.ShowDialog = ShowDialog.Never;
-
                 List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
                     ListServiceManagementSubscriptions(environment, commonTenantToken, ref credentials).ToList(),
                     ListResourceManagerSubscriptions(environment, commonTenantToken, ref credentials).ToList());
@@ -696,11 +694,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 foreach (var tenant in tenants.TenantIds)
                 {
                     IAccessToken tenantToken = null;
-                    // Generate tenant specific token to query list of subscriptions
-                    if (!string.Equals(tenant.TenantId, commonTenantToken.TenantId))
-                    {
-                        credentials.ShowDialog = ShowDialog.Auto;
-                    }
 
                     try
                     {
@@ -730,15 +723,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             };
                             psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant.TenantId);
-                            if (commonTenantToken.LoginType == LoginType.LiveId || !string.Equals(commonTenantToken.TenantId, tenantToken.TenantId))
-                            {
-                                AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
-                            }
-                            else
-                            {
-                                AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = commonTenantToken;
-                            }
-
+                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
                             result.Add(psSubscription);
                         }
                     }
