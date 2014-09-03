@@ -38,10 +38,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
         [Fact]
         public void GetsAzureEnvironments()
         {
-            List<AzureEnvironment> environments = null;
+            List<PSObject> environments = null;
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>()))
-                .Callback<object>(e => environments = (List<AzureEnvironment>)e);
+                .Callback<object>(e => environments = (List<PSObject>)e);
 
             GetAzureEnvironmentCommand cmdlet = new GetAzureEnvironmentCommand()
             {
@@ -58,10 +58,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
         [Fact]
         public void GetsAzureEnvironment()
         {
-            List<AzureEnvironment> environments = null;
+            List<PSObject> environments = null;
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
             commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>()))
-                .Callback<object>(e => environments = (List<AzureEnvironment>)e);
+                .Callback<object>(e => environments = (List<PSObject>)e);
 
             GetAzureEnvironmentCommand cmdlet = new GetAzureEnvironmentCommand()
             {
