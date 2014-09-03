@@ -55,6 +55,9 @@ This repository contains a set of PowerShell cmdlets for developers and administ
   * Get dropped databases that can be restored.
   * Issue requests to restore a live or dropped database to a point in time.
   * Issue requests to recover a database from an unavailable database server.
+  * Get/Set/Disable of database server auditing policy 
+  * Get/Set/Disable of database auditing policy
+  * Set database to use its server's auditing policy
 * Service Bus
   * Manage service bus namespaces.
 * VM

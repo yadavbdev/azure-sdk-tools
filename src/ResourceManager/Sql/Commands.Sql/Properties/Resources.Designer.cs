@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.Sql.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot use server&apos;s policy that does not have a storage account.
+        ///   Looks up a localized string similar to Cannot use a server&apos;s policy without it having a storage account defined.
         /// </summary>
         internal static string NoServerStorageAccount {
             get {
@@ -79,11 +79,11 @@ namespace Microsoft.Azure.Commands.Sql.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot use storage that is not related to the currently selected subscription.
+        ///   Looks up a localized string similar to The policy&apos;s storage account was not found. It either do not exist or associated with a different subscription.
         /// </summary>
-        internal static string StorageFromAnotherSubscription {
+        internal static string StorageAccountNotFound {
             get {
-                return ResourceManager.GetString("StorageFromAnotherSubscription", resourceCulture);
+                return ResourceManager.GetString("StorageAccountNotFound", resourceCulture);
             }
         }
     }

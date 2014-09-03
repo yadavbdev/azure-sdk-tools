@@ -100,7 +100,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             }
             catch
             {
-                throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.StorageFromAnotherSubscription));
+                throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.StorageAccountNotFound));
             }
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
                 }     
                 else
                 {
-                    throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.StorageFromAnotherSubscription));
+                    throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.StorageAccountNotFound));
                 }
             }
             return null;
@@ -136,7 +136,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             }
             catch
             {
-                throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.StorageFromAnotherSubscription));
+                throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.StorageAccountNotFound));
             }
         }
 
