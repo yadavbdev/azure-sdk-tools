@@ -248,13 +248,16 @@ namespace Microsoft.Azure.Commands.Resources.Models
             List<DeploymentOperation> newOperations;
             DeploymentOperationsListResult result;
             
-            do
+            result = ResourceManagementClient.DeploymentOperations.List(resourceGroup, deploymentName, null);
+            newOperations = GetNewOperations(operations, result.Operations);
+            operations.AddRange(newOperations);
+
+            while (!string.IsNullOrEmpty(result.NextLink))
             {
-                result = ResourceManagementClient.DeploymentOperations.List(resourceGroup, deploymentName, null);
+                result = ResourceManagementClient.DeploymentOperations.ListNext(result.NextLink);
                 newOperations = GetNewOperations(operations, result.Operations);
                 operations.AddRange(newOperations);
-
-            } while (!string.IsNullOrEmpty(result.NextLink));
+            }
 
             foreach (DeploymentOperation operation in newOperations)
             {
@@ -325,13 +328,10 @@ namespace Microsoft.Azure.Commands.Resources.Models
             List<DeploymentOperation> newOperations = new List<DeploymentOperation>();
             foreach (DeploymentOperation operation in current)
             {
-                DeploymentOperation temp = old.Find(o => o.OperationId.Equals(operation.OperationId));
+                DeploymentOperation temp = old.Find(o => o.OperationId.Equals(operation.OperationId) && o.Properties.ProvisioningState.Equals(operation.Properties.ProvisioningState));
                 if (temp != null)
                 {
-                    if (!temp.Properties.ProvisioningState.Equals(operation.Properties.ProvisioningState))
-                    {
-                        newOperations.Add(operation);
-                    }
+                    newOperations.Add(operation);
                 }
                 else
                 {
