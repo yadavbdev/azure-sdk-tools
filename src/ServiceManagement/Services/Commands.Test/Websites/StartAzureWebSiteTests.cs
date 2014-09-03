@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -24,10 +24,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class StartAzureWebsiteTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void ProcessStartWebsiteTest()
         {
             const string websiteName = "website1";
@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             websitesClientMock.Verify(f => f.StartWebsite(websiteName, null), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void StartsWebsiteSlot()
         {
             const string slot = "staging";

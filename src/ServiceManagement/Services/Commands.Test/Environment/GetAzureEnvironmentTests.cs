@@ -38,34 +38,42 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
         [Fact]
         public void GetsAzureEnvironments()
         {
+            List<AzureEnvironment> environments = null;
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>()))
+                .Callback<object>(e => environments = (List<AzureEnvironment>)e);
+
             GetAzureEnvironmentCommand cmdlet = new GetAzureEnvironmentCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
-            commandRuntimeMock.Verify(
-                f => f.WriteObject(It.IsAny<List<PSObject>>(), true),
-                Times.Once());
+            Assert.Equal(2, environments.Count);
         }
 
         [Fact]
         public void GetsAzureEnvironment()
         {
+            List<AzureEnvironment> environments = null;
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>()))
+                .Callback<object>(e => environments = (List<AzureEnvironment>)e);
+
             GetAzureEnvironmentCommand cmdlet = new GetAzureEnvironmentCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = EnvironmentName.AzureChinaCloud
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
-            commandRuntimeMock.Verify(
-                f => f.WriteObject(It.IsAny<AzureEnvironment>()),
-                Times.Once());
+            Assert.Equal(1, environments.Count);
         }
     }
 }

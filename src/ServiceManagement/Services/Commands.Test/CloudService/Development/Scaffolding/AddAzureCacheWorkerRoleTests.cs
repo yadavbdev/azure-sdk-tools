@@ -15,7 +15,7 @@
 using System;
 using System.IO;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -31,7 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
     using ConfigConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
     using Microsoft.WindowsAzure.Commands.Common;
 
-    [TestClass]
+    
     public class AddAzureCacheWorkerRoleTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
@@ -40,8 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
 
         private AddAzureCacheWorkerRoleCommand addCacheRoleCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public AddAzureCacheWorkerRoleTests()
         {
             AzureTool.IgnoreMissingSDKError = true;
             AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
@@ -54,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             addCacheRoleCmdlet.CommandRuntime = mockCommandRuntime;
         }
 
-        [TestMethod]
+        [Fact]
         public void AddNewCacheWorkerRoleSuccessful()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -72,14 +71,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
                 AzureAssert.LocalResourcesLocalStoreExists(new LocalStore { name = Resources.CacheDiagnosticStoreName, cleanOnRoleRecycle = false }, 
                     cacheWorkerRole.LocalResources);
 
-                Assert.IsNull(cacheWorkerRole.Endpoints.InputEndpoint);
+                Assert.Null(cacheWorkerRole.Endpoints.InputEndpoint);
 
                 AssertConfigExists(AzureAssert.GetCloudRole(rootPath, roleName));
                 AssertConfigExists(AzureAssert.GetLocalRole(rootPath, roleName), Resources.EmulatorConnectionString);
 
                 PSObject actualOutput = mockCommandRuntime.OutputPipeline[1] as PSObject;
-                Assert.AreEqual<string>(roleName, actualOutput.Members[Parameters.CacheWorkerRoleName].Value.ToString());
-                Assert.AreEqual<int>(expectedInstanceCount, int.Parse(actualOutput.Members[Parameters.Instances].Value.ToString()));
+                Assert.Equal<string>(roleName, actualOutput.Members[Parameters.CacheWorkerRoleName].Value.ToString());
+                Assert.Equal<int>(expectedInstanceCount, int.Parse(actualOutput.Members[Parameters.Instances].Value.ToString()));
             }
         }
 
@@ -91,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             AzureAssert.ConfigurationSettingExist(new ConfigConfigurationSetting { name = Resources.CachingConfigStoreConnectionStringSettingName, value = connectionString }, role.ConfigurationSettings);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddNewCacheWorkerRoleWithInvalidNamesFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -106,7 +105,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AddNewCacheWorkerRoleDoesNotHaveAnyRuntime()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -119,7 +118,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
                 WorkerRole cacheWorkerRole = addCacheRoleCmdlet.AddAzureCacheWorkerRoleProcess(roleName, expectedInstanceCount, rootPath);
 
                 Variable runtimeId = Array.Find<Variable>(cacheWorkerRole.Startup.Task[0].Environment, v => v.name.Equals(Resources.RuntimeTypeKey));
-                Assert.AreEqual<string>(string.Empty, runtimeId.value);
+                Assert.Equal<string>(string.Empty, runtimeId.value);
             }
         }
     }
