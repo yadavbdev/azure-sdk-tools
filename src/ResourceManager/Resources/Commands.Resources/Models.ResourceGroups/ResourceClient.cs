@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 }
                 else
                 {
-                    template = ProfileClient.DataStore.ReadFileAsText(templateFile);
+                    template = FileUtilities.DataStore.ReadFileAsText(templateFile);
                 }
             }
             else
