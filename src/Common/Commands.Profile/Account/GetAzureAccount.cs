@@ -40,7 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             List<PSObject> output = new List<PSObject>();
             foreach (AzureAccount account in accounts) {
                 output.Add(base.ConstructPSObject(
-                    null,
+                    "Microsoft.WindowsAzure.Commands.Profile.Models.Accounts",
                     "Id", account.Id,
                     "Type", account.Type,
                     "Subscriptions", account.GetProperty(AzureAccount.Property.Subscriptions),
