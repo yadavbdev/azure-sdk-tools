@@ -140,14 +140,19 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     Id = credentials.UserName,
                     Type = AzureAccount.AccountType.User,
                 };
+
+                // Set account subscriptions from the profile
                 account.SetSubscriptions(
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == credentials.UserName)
                         .ToList());
+
+                // Set account tenants
                 account.SetOrAppendProperty(AzureAccount.Property.Tenants,
                     subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
                     .Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray());
 
+                // Set account subscriptions from the server
                 foreach (var subscription in subscriptionsFromServer)
                 {
                     if (!account.HasSubscription(subscription.Id))
