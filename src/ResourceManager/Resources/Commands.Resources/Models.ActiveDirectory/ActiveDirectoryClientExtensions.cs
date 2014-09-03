@@ -41,7 +41,9 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public static PSADObject ToPSADObject(this AADObject obj)
         {
-            if (obj.ObjectType.Equals(typeof(User).Name))
+            if (obj == null) throw new ArgumentNullException();
+
+            if (obj.ObjectType == typeof(User).Name)
             {
                 return new PSADUser()
                 {
@@ -52,7 +54,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                     Mail = obj.Mail
                 };
             }
-            else if (obj.ObjectType.Equals(typeof(Group).Name))
+            else if (obj.ObjectType == typeof(Group).Name)
             {
                 return new PSADGroup()
                 {
