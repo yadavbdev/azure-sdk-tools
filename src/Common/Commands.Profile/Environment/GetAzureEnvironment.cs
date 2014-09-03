@@ -35,7 +35,16 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            WriteObject(ProfileClient.ListEnvironments(Name));
+            List<AzureEnvironment> environments = ProfileClient.ListEnvironments(Name);
+            List<PSObject> output = new List<PSObject>();
+            environments.ForEach(e => output.Add(base.ConstructPSObject(
+                null,
+                "Name", e.Name,
+                "PublishSettingsFileUrl", e.GetEndpoint(AzureEnvironment.Endpoint.PublishSettingsFileUrl),
+                "ServiceManagement", e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement),
+                "ResourceManager", e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager),
+                "ManagementPortalUrl", e.GetEndpoint(AzureEnvironment.Endpoint.ManagementPortalUrl))));
+            WriteObject(output);
         }
     }
 }
