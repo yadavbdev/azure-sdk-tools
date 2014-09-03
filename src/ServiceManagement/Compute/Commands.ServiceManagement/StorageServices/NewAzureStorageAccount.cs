@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using Management.Storage.Models;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Creates a new storage account in Microsoft Azure.
     /// </summary>
@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
         [Parameter(HelpMessage = "Type of the storage account.")]
         [ValidateNotNullOrEmpty]
-        public string AccountType
+        public string Type
         {
             get;
             set;
@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
                 Description = this.Description,
                 AffinityGroup = this.AffinityGroup,
                 Location = this.Location,
-                AccountType = string.IsNullOrEmpty(this.AccountType) ? StorageAccountTypes.StandardZRS : this.AccountType
+                AccountType = string.IsNullOrEmpty(this.Type) ? StorageAccountTypes.StandardZRS : this.Type
             };
 
             ExecuteClientActionNewSM(

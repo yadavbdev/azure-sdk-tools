@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.Generic;
-
     public class StorageServicePropertiesOperationContext : StorageServiceOperationContext
     {
         public string StorageAccountDescription { get; set; }
@@ -23,6 +23,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public string AffinityGroup { get; set; }
 
         public string Location { get; set; }
+
+        public bool? GeoReplicationEnabled { get; set; }
 
         public string GeoPrimaryLocation { get; set; }
 

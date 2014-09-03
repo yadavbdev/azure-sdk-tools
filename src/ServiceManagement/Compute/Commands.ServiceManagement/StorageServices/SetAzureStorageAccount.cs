@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using System.Management.Automation;
-    using Management.Storage.Models;
-    using Properties;
-    using Utilities.Common;
-
     /// <summary>
     /// Updates the label and/or the description for a storage account in Microsoft Azure.
     /// </summary>
@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
         [Parameter(ParameterSetName = AccountTypeParamSet, HelpMessage = "Type of the storage account.")]
         [ValidateNotNullOrEmpty]
-        public string AccountType
+        public string Type
         {
             get;
             set;
@@ -81,12 +81,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
         {
             if (string.Equals(this.ParameterSetName, GeoReplicationEnabledParamSet))
             {
-                WriteWarning(Resources.WarningMessageAboutTheGeoReplicationEnabledParameter);
+                WriteWarning(Resources.DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet);
             }
 
             var upstorageinput = new StorageAccountUpdateParameters
             {
-                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardZRS : this.AccountType,
+                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardZRS : this.Type,
                 Description = this.Description,
                 Label = this.Label
             };
