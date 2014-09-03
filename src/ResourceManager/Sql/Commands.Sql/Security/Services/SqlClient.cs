@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
     /// AuditingPolicy class. This class knows how to wrap a policy in its communication model and return 
     /// a policy in its cmdlet model and vice versa (i.e., unwrapping).
     /// </summary>
-    public class PolicyHandler
+    public class SqlClient
     {
         private AzureSubscription Subscription { get; set; }
 
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         // In cases when storage is not needed and not provided, theres's no need to perform storage related network interaction that may fail
         public bool IgnoreStorage { get; set; }
 
-        public PolicyHandler(AzureSubscription subscription)
+        public SqlClient(AzureSubscription subscription)
         {
             Subscription = subscription;
             Communicator = new EndpointsCommunicator(subscription);
