@@ -330,6 +330,117 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "Iaas"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM)")]
+        public void NewAzureVMWithLocation()
+        {
+            _serviceName = Utilities.GetUniqueShortName(serviceNamePrefix);
+            string _altLocation = GetAlternateLocation(locationName);
+
+            try
+            {
+                // New-AzureService
+                vmPowershellCmdlets.NewAzureService(_serviceName, locationName);
+
+                // New-AzureVMConfig
+                string newAzureVMName = Utilities.GetUniqueShortName("PSVM");
+                string imageName = vmPowershellCmdlets.GetAzureVMImageName(new[] { "Windows" }, false);
+
+                // Add-AzureProvisioningConfig
+                var azureVMConfigInfo = new AzureVMConfigInfo(newAzureVMName, InstanceSize.Small.ToString(), imageName);
+                var azureProvisioningConfig = new AzureProvisioningConfigInfo(OS.Windows, username, password);
+                var persistentVMConfigInfo = new PersistentVMConfigInfo(azureVMConfigInfo, azureProvisioningConfig, null, null);
+                PersistentVM vm = vmPowershellCmdlets.GetPersistentVM(persistentVMConfigInfo);
+
+                // New-AzureVM
+                try
+                {
+                    vmPowershellCmdlets.NewAzureVM(_serviceName, new[] { vm }, _altLocation);
+                    Assert.Fail("Should fail, but succeeded!");
+                }
+                catch (Exception ex)
+                {
+                    if (ex is AssertFailedException)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failure is expected.  Continue the tests...");
+                    }
+                }
+
+                vmPowershellCmdlets.NewAzureVM(_serviceName, new[] { vm }, locationName);
+                Console.WriteLine("New Azure service with name:{0} created successfully.", _serviceName);
+                var vmReturned = vmPowershellCmdlets.GetAzureVM(newAzureVMName, _serviceName);
+
+                Utilities.PrintContext(vmReturned);
+                Assert.AreEqual(_serviceName, vmReturned.ServiceName);
+                pass = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "Iaas"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM)")]
+        public void NewAzureVMWithAffinityGroup()
+        {
+            _serviceName = Utilities.GetUniqueShortName(serviceNamePrefix);
+            string _affiniyGroupName1 = Utilities.GetUniqueShortName("aff");
+            string _affiniyGroupName2 = Utilities.GetUniqueShortName("aff");
+
+            try
+            {
+                // New-AzureService
+                vmPowershellCmdlets.NewAzureAffinityGroup(_affiniyGroupName1, locationName, "location1", "location1");
+                vmPowershellCmdlets.NewAzureAffinityGroup(_affiniyGroupName2, locationName, "location2", "location2");
+                vmPowershellCmdlets.NewAzureService(_serviceName, "service1", null, _affiniyGroupName1);
+
+                // New-AzureVMConfig
+                string newAzureVMName = Utilities.GetUniqueShortName("PSVM");
+                string imageName = vmPowershellCmdlets.GetAzureVMImageName(new[] { "Windows" }, false);
+
+                // Add-AzureProvisioningConfig
+                var azureVMConfigInfo = new AzureVMConfigInfo(newAzureVMName, InstanceSize.Small.ToString(), imageName);
+                var azureProvisioningConfig = new AzureProvisioningConfigInfo(OS.Windows, username, password);
+                var persistentVMConfigInfo = new PersistentVMConfigInfo(azureVMConfigInfo, azureProvisioningConfig, null, null);
+                PersistentVM vm = vmPowershellCmdlets.GetPersistentVM(persistentVMConfigInfo);
+
+                // New-AzureVM
+                try
+                {
+                    vmPowershellCmdlets.NewAzureVMWithAG(_serviceName, new[] { vm }, _affiniyGroupName2);
+                    Assert.Fail("Should fail, but succeeded!");
+                }
+                catch (Exception ex)
+                {
+                    if (ex is AssertFailedException)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failure is expected.  Continue the tests...");
+                    }
+                }
+
+                vmPowershellCmdlets.NewAzureVMWithAG(_serviceName, new[] { vm }, _affiniyGroupName1);
+                Console.WriteLine("New Azure service with name:{0} created successfully.", _serviceName);
+                var vmReturned = vmPowershellCmdlets.GetAzureVM(newAzureVMName, _serviceName);
+
+                Utilities.PrintContext(vmReturned);
+                Assert.AreEqual(_serviceName, vmReturned.ServiceName);
+                pass = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "Iaas"), Priority(1), Owner("hylee"), Description("Test the cmdlets(New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM) with a WinRMCert")]
         [Ignore]
         public void NewAzureVMWithWinRMCertificateTest()
@@ -393,6 +504,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             {
                 File.Delete(keyPath);
             }
+        }
+
+        public string GetAlternateLocation(string location)
+        {
+            foreach (var loc in vmPowershellCmdlets.GetAzureLocation())
+            {
+                if (! loc.Name.Equals(location) && ! loc.DisplayName.Equals(location))
+                {
+                    return loc.Name;
+                }
+            }
+            return null;
         }
     }
 }
