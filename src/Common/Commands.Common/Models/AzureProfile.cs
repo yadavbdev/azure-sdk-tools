@@ -132,6 +132,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                     Subscriptions[value.Id] = value;
                     defaultSubscription = Subscriptions[value.Id];
                 }
+                else
+                {
+                    defaultSubscription = null;
+                }
             }
         }
 

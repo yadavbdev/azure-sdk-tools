@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -24,6 +25,7 @@ using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Common;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
 {
@@ -170,7 +172,47 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
             TestingTracingInterceptor.AddToContext();
             ProfileClient.DataStore = new MockDataStore();
             AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
-            AzureSession.SetCurrentContext(new AzureSubscription { Id = Guid.NewGuid(), Name = "test" }, null, null);
+            var newGuid = Guid.NewGuid();
+            ProfileClient client = new ProfileClient();
+            client.Profile.Subscriptions[newGuid] = new AzureSubscription
+            {
+                Id = newGuid,
+                Name = "test",
+                Environment = EnvironmentName.AzureCloud,
+                Account = "test"
+            };
+            client.Profile.Accounts["test"] = new AzureAccount
+            {
+                Id = "test",
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                        {
+                            {AzureAccount.Property.Subscriptions, newGuid.ToString()}
+                        }
+            };
+            client.Profile.Accounts[UnitTestHelper.GetUnitTestClientCertificate().Thumbprint] = new AzureAccount
+            {
+                Id = UnitTestHelper.GetUnitTestClientCertificate().Thumbprint,
+                Type = AzureAccount.AccountType.Certificate,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                        {
+                            {AzureAccount.Property.Subscriptions, newGuid.ToString()}
+                        }
+            };
+            client.Profile.Accounts[UnitTestHelper.GetUnitTestSSLCertificate().Thumbprint] = new AzureAccount
+            {
+                Id = UnitTestHelper.GetUnitTestSSLCertificate().Thumbprint,
+                Type = AzureAccount.AccountType.Certificate,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                        {
+                            {AzureAccount.Property.Subscriptions, newGuid.ToString()}
+                        }
+            };
+            AzureSession.SetCurrentContext(client.Profile.Subscriptions[newGuid],
+                null, client.Profile.Accounts["test"]);
+
+            client.Profile.Save();
+
 
             // Check if the cert has been installed 
             Process proc = ExecuteProcess(
