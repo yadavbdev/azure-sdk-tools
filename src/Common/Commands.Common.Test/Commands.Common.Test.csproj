@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ProfileClientTests.cs" />
+    <Compile Include="Common\ServicePrincipalStoreTests.cs" />
     <Compile Include="Mocks\MockAuthenticationFactory.cs" />
     <Compile Include="Mocks\ClientMocks.cs" />
     <Compile Include="Common\GeneralUtilitiesTests.cs" />

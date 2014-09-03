@@ -12,18 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Security;
-
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    public struct UserCredentials
+    public enum CredentialType
     {
-        public string UserName { get; set; }
-
-        public SecureString Password { get; set; }
-
-        public ShowDialog ShowDialog { get; set; }
-
-        public CredentialType Type { get; set; }
+        User = 0,
+        ServicePrincipal
     }
 }

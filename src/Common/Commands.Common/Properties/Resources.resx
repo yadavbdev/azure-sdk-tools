@@ -1543,4 +1543,7 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="RemovingDefaultEnvironmentsNotSupported" xml:space="preserve">
     <value>Removing public environment is not supported.</value>
   </data>
+  <data name="InvalidCredentialType" xml:space="preserve">
+    <value>Credential type invalid, only handles '{0}'</value>
+  </data>
 </root>

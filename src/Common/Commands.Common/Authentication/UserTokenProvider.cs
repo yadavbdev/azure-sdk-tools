@@ -24,40 +24,32 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
     /// <summary>
     /// A token provider that uses ADAL to retrieve
-    /// tokens from Azure Active Directory
+    /// tokens from Azure Active Directory for user
+    /// credentials.
     /// </summary>
-    public class AdalTokenProvider : ITokenProvider
+    internal class UserTokenProvider : ITokenProvider
     {
         private readonly IWin32Window parentWindow;
-        private readonly ITokenProvider userTokenProvider;
 
-        public AdalTokenProvider()
-            : this(new ConsoleParentWindow())
-        {
-        }
-
-        public AdalTokenProvider(IWin32Window parentWindow)
+        public UserTokenProvider(IWin32Window parentWindow)
         {
             this.parentWindow = parentWindow;
-            this.userTokenProvider = new UserTokenProvider(parentWindow);
         }
 
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password)
         {
-            return userTokenProvider.GetAccessToken(config, promptBehavior, userId, password, CredentialType.User);
+            return GetAccessToken(config, promptBehavior, userId, password, CredentialType.User);
         }
 
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password,
             CredentialType credentialType)
         {
-            switch (credentialType)
+            if (credentialType != CredentialType.User)
             {
-            case CredentialType.User:
-                return userTokenProvider.GetAccessToken(config, promptBehavior, userId, password, credentialType);
-            case CredentialType.ServicePrincipal:
-                return null;
+                throw new ArgumentException(string.Format(Resources.InvalidCredentialType, "User"), "credentialType");
             }
-            throw new NotImplementedException();
+
+            return new AdalAccessToken(AcquireToken(config, promptBehavior, userId, password), this, config);
         }
 
         private readonly static TimeSpan thresholdExpiration = new TimeSpan(0, 5, 0);
@@ -211,9 +203,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             internal readonly AdalConfiguration Configuration;
             internal AuthenticationResult AuthResult;
-            private readonly AdalTokenProvider tokenProvider;
+            private readonly UserTokenProvider tokenProvider;
 
-            public AdalAccessToken(AuthenticationResult authResult, AdalTokenProvider tokenProvider, AdalConfiguration configuration)
+            public AdalAccessToken(AuthenticationResult authResult, UserTokenProvider tokenProvider, AdalConfiguration configuration)
             {
                 AuthResult = authResult;
                 this.tokenProvider = tokenProvider;
@@ -258,5 +250,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             internal static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer,
                 int lpdwBufferLength);
         }
+
     }
 }

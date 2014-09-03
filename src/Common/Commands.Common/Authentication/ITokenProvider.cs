@@ -24,6 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     {
         /// <summary>
         /// Get a new login token for the given environment and user credentials.
+        /// Assumes that credential is for a user, not a service principal.
         /// </summary>
         /// <param name="config">Configuration.</param>
         /// <param name="promptBehavior">Prompt behavior.</param>
@@ -31,5 +32,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         /// <param name="password">Secure strings with password</param>
         /// <returns>An access token.</returns>
         IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password);
+
+        /// <summary>
+        /// Get a new login token for the given environment, user credential,
+        /// and credential type.
+        /// </summary>
+        /// <param name="config">Configuration.</param>
+        /// <param name="promptBehavior">Prompt behavior.</param>
+        /// <param name="userId">User ID/Service principal to get the token for.</param>
+        /// <param name="password">Secure strings with password/service principal key.</param>
+        /// <param name="credentialType">Credential type.</param>
+        /// <returns>An access token.</returns>
+        IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId,
+            SecureString password, CredentialType credentialType);
     }
 }
