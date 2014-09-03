@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
         [Parameter(ParameterSetName = AccountTypeParamSet, HelpMessage = "Type of the storage account.")]
         [ValidateNotNullOrEmpty]
-        public string AccountType
+        public string Type
         {
             get;
             set;
@@ -85,12 +85,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
         {
             if (string.Equals(this.ParameterSetName, GeoReplicationEnabledParamSet))
             {
-                WriteWarning(Resources.WarningMessageAboutTheGeoReplicationEnabledParameter);
+                WriteWarning(Resources.DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet);
             }
 
             var upstorageinput = new StorageAccountUpdateParameters
             {
-                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardZRS : this.AccountType,
+                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardZRS : this.Type,
                 Description = this.Description,
                 Label = this.Label
             };

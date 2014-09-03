@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
         [Parameter(HelpMessage = "Type of the storage account.")]
         [ValidateNotNullOrEmpty]
-        public string AccountType
+        public string Type
         {
             get;
             set;
@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
                 Description = this.Description,
                 AffinityGroup = this.AffinityGroup,
                 Location = this.Location,
-                AccountType = string.IsNullOrEmpty(this.AccountType) ? StorageAccountTypes.StandardZRS : this.AccountType
+                AccountType = string.IsNullOrEmpty(this.Type) ? StorageAccountTypes.StandardZRS : this.Type
             };
 
             ExecuteClientActionNewSM(

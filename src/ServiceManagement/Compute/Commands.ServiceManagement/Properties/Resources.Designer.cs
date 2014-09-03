@@ -466,6 +466,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled property will be deprecated in a future release of Azure PowerShell. The value will be merged into the AccountType property..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled parameter will be deprecated in a future release of Azure PowerShell. The functionality will be merged into the Type parameter..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deprovisioning the VM: {0} .
         /// </summary>
         public static string DeprovisioningVM {
@@ -1954,15 +1972,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string WaitForUploadingPackage {
             get {
                 return ResourceManager.GetString("WaitForUploadingPackage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The &apos;GeoReplicationEnabled&apos; parameter is going to be deprecated. Please use the &apos;AccountType&apos; parameter instead..
-        /// </summary>
-        public static string WarningMessageAboutTheGeoReplicationEnabledParameter {
-            get {
-                return ResourceManager.GetString("WarningMessageAboutTheGeoReplicationEnabledParameter", resourceCulture);
             }
         }
         
