@@ -16,6 +16,7 @@ using System;
 using System.Security;
 using System.Windows.Forms;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
@@ -35,9 +36,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         }
 
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password,
-            CredentialType credentialType)
+            AzureAccount.AccountType credentialType)
         {
-            if (credentialType == CredentialType.User)
+            if (credentialType == AzureAccount.AccountType.User)
             {
                 throw new ArgumentException(string.Format(Resources.InvalidCredentialType, "User"), "credentialType");
             }
