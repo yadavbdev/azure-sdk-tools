@@ -47,9 +47,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
         /// </summary>
         /// <typeparam name="TClient"></typeparam>
         /// <param name="subscription"></param>
-        /// <param name="endpointName"></param>
+        /// <param name="endpoint"></param>
         /// <returns></returns>
-        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
+        public virtual TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
         {
             if (subscription == null)
             {
@@ -67,7 +67,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             return CreateClient<TClient>(context, endpoint);
         }
 
-        public TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        public virtual TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
         {
             List<Type> types = new List<Type>();
             foreach (object obj in parameters)
@@ -88,22 +88,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             return client;
         }
 
-        HttpClient IClientFactory.CreateHttpClient(string endpoint, ICredentials credentials)
+        public virtual HttpClient CreateHttpClient(string endpoint, ICredentials credentials)
         {
-            return CreateHttpClient(endpoint, credentials);
+            return CreateHttpClientBase(endpoint, CreateHttpClientHandler(endpoint, credentials));
         }
 
-        HttpClient IClientFactory.CreateHttpClient(string endpoint, HttpMessageHandler effectiveHandler)
+        public virtual HttpClient CreateHttpClient(string endpoint, HttpMessageHandler effectiveHandler)
         {
-            return CreateHttpClient(endpoint, effectiveHandler);
+            return CreateHttpClientBase(endpoint, effectiveHandler);
         }
 
-        public static HttpClient CreateHttpClient(string endpoint, ICredentials credentials)
-        {
-            return CreateHttpClient(endpoint, CreateHttpClientHandler(endpoint, credentials));
-        }
-
-        public static HttpClient CreateHttpClient(string endpoint, HttpMessageHandler effectiveHandler)
+        public static HttpClient CreateHttpClientBase(string endpoint, HttpMessageHandler effectiveHandler)
         {
             if (endpoint == null)
             {
