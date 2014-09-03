@@ -134,12 +134,10 @@
   <ItemGroup>
     <Compile Include="Authentication\AadAuthenticationException.cs" />
     <Compile Include="Authentication\AccessTokenCredential.cs" />
-    <Compile Include="Authentication\CredentialType.cs" />
     <Compile Include="Authentication\CredStore.cs" />
     <Compile Include="Authentication\ServicePrincipalKeyStore.cs" />
     <Compile Include="Authentication\ServicePrincipalTokenProvider.cs" />
     <Compile Include="Authentication\ShowDialog.cs" />
-    <Compile Include="Authentication\UserCredentials.cs" />
     <Compile Include="Authentication\AdalConfiguration.cs" />
     <Compile Include="Authentication\ProtectedFileTokenCache.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
