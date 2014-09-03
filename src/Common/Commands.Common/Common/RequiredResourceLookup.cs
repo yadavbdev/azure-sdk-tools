@@ -48,8 +48,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             if (typeof(T).FullName.EndsWith("ResourceManagementClient"))
             {
                 return new[] {
-                    "website",
-                    "visualstudio.accounts",
+                    "Microsoft.Web",
+                    "microsoft.visualstudio",
                     "microsoft.insights",
                     "successbricks.cleardb",
                     "microsoft.batch",
