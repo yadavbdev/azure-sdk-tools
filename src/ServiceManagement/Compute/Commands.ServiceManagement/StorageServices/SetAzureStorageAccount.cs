@@ -13,16 +13,12 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Storage.Models;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using System.Management.Automation;
-    using Management.Storage.Models;
-    using Properties;
-    using Utilities.Common;
-
     /// <summary>
     /// Updates the label and/or the description for a storage account in Microsoft Azure.
     /// </summary>
