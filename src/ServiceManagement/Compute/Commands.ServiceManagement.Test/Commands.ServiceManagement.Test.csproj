@@ -91,11 +91,11 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Compute, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.4.1.1\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.4.2.0\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Management.Storage">
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.1.2.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.2.0.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -276,6 +276,7 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureStorageAccountCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAffinityGroupCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureAclConfigCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureAvailabilitySetCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureAvailabilitySetCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureDeploymentCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureDnsCmdletInfo.cs" />

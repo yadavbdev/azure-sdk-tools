@@ -779,4 +779,7 @@ The file needs to be a PowerShell script (.ps1 or .psm1).</value>
   <data name="SubnetShouldBeSpecifiedIfVnetPresent" xml:space="preserve">
     <value>Subnet should be specified when deploying VMs in a VNET: {0}</value>
   </data>
+  <data name="WarningMessageAboutTheGeoReplicationEnabledParameter" xml:space="preserve">
+    <value>The 'GeoReplicationEnabled' parameter is going to be deprecated. Please use the 'AccountType' parameter instead.</value>
+  </data>
 </root>

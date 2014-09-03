@@ -24,8 +24,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         public string Location { get; set; }
 
-        public bool? GeoReplicationEnabled { get; set; }
-
         public string GeoPrimaryLocation { get; set; }
 
         public string GeoSecondaryLocation { get; set; } 
@@ -39,5 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public string StatusOfSecondary { get; set; }
 
         public IEnumerable<string> Endpoints { get; set; }
+
+        public string AccountType { get; set; }
     }
 }

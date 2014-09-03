@@ -1958,6 +1958,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;GeoReplicationEnabled&apos; parameter is going to be deprecated. Please use the &apos;AccountType&apos; parameter instead..
+        /// </summary>
+        public static string WarningMessageAboutTheGeoReplicationEnabledParameter {
+            get {
+                return ResourceManager.GetString("WarningMessageAboutTheGeoReplicationEnabledParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WinRMCertificate needs to have an exportable private key..
         /// </summary>
         public static string WinRMCertificateDoesNotHaveExportablePrivateKey {

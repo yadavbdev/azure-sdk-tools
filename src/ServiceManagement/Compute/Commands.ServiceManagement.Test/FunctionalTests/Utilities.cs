@@ -65,6 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         // AzureAvailablitySet
         public const string SetAzureAvailabilitySetCmdletName = "Set-AzureAvailabilitySet";
+        public const string RemoveAzureAvailabilitySetCmdletName = "Remove-AzureAvailabilitySet";
 
         // AzureCertificate & AzureCertificateSetting
         public const string AddAzureCertificateCmdletName = "Add-AzureCertificate";
