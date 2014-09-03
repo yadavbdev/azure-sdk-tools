@@ -59,7 +59,12 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 }
                 WriteVerbose(Resources.AddAccountViewSubscriptions);
                 WriteVerbose(Resources.AddAccountChangeSubscription);
-                WriteObject(account);
+                WriteObject(base.ConstructPSObject(
+                    "Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount",
+                    "Id", account.Id,
+                    "Type", account.Type,
+                    "Subscriptions", account.GetProperty(AzureAccount.Property.Subscriptions).Replace(",", "\r\n"),
+                    "Tenants", account.GetProperty(AzureAccount.Property.Tenants)));
             } 
         }
     }

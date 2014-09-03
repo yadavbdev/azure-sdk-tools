@@ -2,9 +2,9 @@
 <Configuration>
   <ViewDefinitions>
     <View>
-      <Name>Microsoft.WindowsAzure.Commands.Profile.Models.Accounts</Name>
+      <Name>Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount</Name>
       <ViewSelectedBy>
-        <TypeName>Microsoft.WindowsAzure.Commands.Profile.Models.Accounts</TypeName>
+        <TypeName>Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount</TypeName>
       </ViewSelectedBy>
       <TableControl>
         <TableHeaders>
