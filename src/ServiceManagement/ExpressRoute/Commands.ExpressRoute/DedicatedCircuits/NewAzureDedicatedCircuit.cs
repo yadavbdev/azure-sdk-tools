@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Circuit Service Provider Name")]
         public string ServiceProviderName { get; set; }
 
-        [Parameter(HelpMessage = "Do not confirm Azure Dedicated Circuit deletion")]
+        [Parameter(HelpMessage = "Do not confirm Azure Dedicated Circuit creation")]
         public SwitchParameter Force { get; set; }
 
         public override void ExecuteCmdlet()
