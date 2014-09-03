@@ -40,13 +40,10 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             List<PSObject> output = new List<PSObject>();
             foreach (AzureEnvironment e in environments)
             {
-                List<object> args = new List<object>();
-                args.Add("Name");
-                args.Add(e.Name);
+                List<object> args = new List<object> { "Name", e.Name };
                 foreach (AzureEnvironment.Endpoint property in Enum.GetValues(typeof(AzureEnvironment.Endpoint)))
                 {
-                    args.Add(property);
-                    args.Add(e.GetEndpoint(property));
+                    args.AddRange(new object[] { property, e.GetEndpoint(property) });
                 }
                 output.Add(base.ConstructPSObject(null, args.ToArray()));
             }
