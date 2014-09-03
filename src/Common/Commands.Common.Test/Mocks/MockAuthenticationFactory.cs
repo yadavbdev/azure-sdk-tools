@@ -33,6 +33,16 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             };
         }
 
+        public MockAuthenticationFactory(string userId, string accessToken)
+        {
+            Token = new MockAccessToken
+            {
+                UserId = userId,
+                LoginType = LoginType.OrgId,
+                AccessToken = accessToken
+            };
+        }
+
         public IAccessToken Authenticate(AzureEnvironment environment, ref UserCredentials credentials)
         {
             return Authenticate(environment, CommonAdTenant, ref credentials);
@@ -49,9 +59,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             {
                 UserId = credentials.UserName,
                 LoginType = LoginType.OrgId,
-                AccessToken = "abc"
+                AccessToken = Token.AccessToken
             };
-            
+
             return Token;
         }
 

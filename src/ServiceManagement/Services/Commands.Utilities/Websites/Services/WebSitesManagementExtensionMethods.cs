@@ -90,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                     {
                         ConnectionString = cs.ConnectionString,
                         Name = cs.Name,
-                        Type = (Utilities.DatabaseType)Enum.Parse(typeof(Utilities.DatabaseType), cs.Type.ToString())
+                        Type = (Utilities.DatabaseType)Enum.Parse(typeof(Utilities.DatabaseType), cs.Type.ToString(), ignoreCase: true)
                     }).ToList()),
                 HandlerMappings = getConfigResponse.HandlerMappings.Select(hm => new Utilities.HandlerMapping
                 {
@@ -378,7 +378,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 {
                     Name = csi.Name,
                     ConnectionString = csi.ConnectionString,
-                    Type = (Management.WebSites.Models.ConnectionStringType)Enum.Parse(typeof(Management.WebSites.Models.ConnectionStringType), csi.Type.ToString())
+                    Type = (Management.WebSites.Models.ConnectionStringType)Enum.Parse(typeof(Management.WebSites.Models.ConnectionStringType), csi.Type.ToString(), ignoreCase: true)
                 }));
 
             if (config.DefaultDocuments != null)

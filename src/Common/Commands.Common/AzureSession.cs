@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Common.Common;
 using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -26,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         static AzureSession()
         {
             SubscriptionTokenCache = new Dictionary<Tuple<Guid, string>, IAccessToken>();
-            ClientFactory = new ClientFactory();
+            ClientFactory = new AzurePowerShellClientFactory();
             AuthenticationFactory = new AuthenticationFactory();
             CurrentContext = new AzureContext();
             CurrentContext.Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
@@ -58,9 +59,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (account == null)
             {
-                if (subscription != null && CurrentContext != null)
+                if (subscription != null && CurrentContext != null && subscription.Account != null)
                 {
-                    if (subscription.Account == CurrentContext.Account.Id)
+                    if (CurrentContext.Account != null && subscription.Account == CurrentContext.Account.Id)
                     {
                         account = CurrentContext.Account;
                     }
@@ -70,6 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     }
 
                     subscription.Account = account.Id;
+
                 }
             }
 

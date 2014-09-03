@@ -57,12 +57,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Utilities
 
         public static void SetOrAppendProperty<TKey>(this Dictionary<TKey, string> dictionary, TKey property, params string[] values)
         {
-            if (!dictionary.ContainsKey(property))
+            string oldValueString = "";
+            if (dictionary.ContainsKey(property))
             {
-                dictionary[property] = "";
+                oldValueString = dictionary[property];
             }
-            var oldValues = dictionary[property].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            dictionary[property] = string.Join(",", oldValues.Union(values, StringComparer.CurrentCultureIgnoreCase).Where(s => !string.IsNullOrEmpty(s)));
+            var oldValues = oldValueString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var newValues = oldValues.Union(values, StringComparer.CurrentCultureIgnoreCase).Where(s => !string.IsNullOrEmpty(s)).ToArray();
+            if (newValues.Any())
+            {
+                dictionary[property] = string.Join(",", newValues);
+            }
         }
 
         public static bool IsPropertySet<TKey>(this Dictionary<TKey, string> dictionary, TKey property)

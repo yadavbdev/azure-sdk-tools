@@ -17,7 +17,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.ExpressRoute;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
@@ -27,7 +27,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 {
-    [TestClass]
+    
     public class AzureBgpPeeringTests : TestBase
     {
         private const string SubscriptionId = "foo";
@@ -40,7 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                     new Uri("http://someValue")));
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureBgpPeeringSuccessful()
         {
             // Setup
@@ -110,11 +110,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             // Assert
             AzureBgpPeering actual = mockCommandRuntime.OutputPipeline[0] as AzureBgpPeering;
-            Assert.AreEqual(expected.BgpPeering.State, actual.State);
-            Assert.AreEqual(expected.BgpPeering.PrimaryAzurePort, actual.PrimaryAzurePort);
+            Assert.Equal(expected.BgpPeering.State, actual.State);
+            Assert.Equal(expected.BgpPeering.PrimaryAzurePort, actual.PrimaryAzurePort);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureBgpPeeringSuccessful()
         {
             // Setup
@@ -175,11 +175,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             // Assert
             AzureBgpPeering actual = mockCommandRuntime.OutputPipeline[0] as AzureBgpPeering;
-            Assert.AreEqual(expected.BgpPeering.State, actual.State);
-            Assert.AreEqual(expected.BgpPeering.PrimaryAzurePort, actual.PrimaryAzurePort);
+            Assert.Equal(expected.BgpPeering.State, actual.State);
+            Assert.Equal(expected.BgpPeering.PrimaryAzurePort, actual.PrimaryAzurePort);
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveAzureBgpPeeringSuccessful()
         {
             // Setup
@@ -217,10 +217,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             cmdlet.ExecuteCmdlet();
 
-            Assert.IsTrue(mockCommandRuntime.VerboseStream[0].Contains(serviceKey));
+            Assert.True(mockCommandRuntime.VerboseStream[0].Contains(serviceKey));
         }
 
-        [TestMethod]
+        [Fact]
         public void SetBgpPeeringSuccessful()
         {
             // Setup
@@ -312,8 +312,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             // Assert
             AzureBgpPeering actual = mockCommandRuntime.OutputPipeline[0] as AzureBgpPeering;
-            Assert.AreEqual<string>(expected2.BgpPeering.PrimaryPeerSubnet, actual.PrimaryPeerSubnet);
-            Assert.AreEqual(expected.BgpPeering.PrimaryAzurePort, actual.PrimaryAzurePort);
+            Assert.Equal<string>(expected2.BgpPeering.PrimaryPeerSubnet, actual.PrimaryPeerSubnet);
+            Assert.Equal(expected.BgpPeering.PrimaryAzurePort, actual.PrimaryAzurePort);
         }
     }
 }

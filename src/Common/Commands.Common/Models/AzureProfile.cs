@@ -32,9 +32,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public AzureProfile()
         {
-            Environments = new Dictionary<string, AzureEnvironment>();
+            Environments = new Dictionary<string, AzureEnvironment>(StringComparer.InvariantCultureIgnoreCase);
             Subscriptions = new Dictionary<Guid, AzureSubscription>();
-            Accounts = new Dictionary<string, AzureAccount>();
+            Accounts = new Dictionary<string, AzureAccount>(StringComparer.InvariantCultureIgnoreCase);
         }
 
         public AzureProfile(IDataStore store, string profilePath)
@@ -49,9 +49,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         private void Load()
         {
-            Environments = new Dictionary<string, AzureEnvironment>();
+            Environments = new Dictionary<string, AzureEnvironment>(StringComparer.InvariantCultureIgnoreCase);
             Subscriptions = new Dictionary<Guid, AzureSubscription>();
-            Accounts = new Dictionary<string, AzureAccount>();
+            Accounts = new Dictionary<string, AzureAccount>(StringComparer.InvariantCultureIgnoreCase);
 
             if (!store.DirectoryExists(AzurePowerShell.ProfileDirectory))
             {
@@ -131,6 +131,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                     value.Properties[AzureSubscription.Property.Default] = "True";
                     Subscriptions[value.Id] = value;
                     defaultSubscription = Subscriptions[value.Id];
+                }
+                else
+                {
+                    defaultSubscription = null;
                 }
             }
         }
