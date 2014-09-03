@@ -33,8 +33,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
     /// </summary>
     public class ProfileClient
     {
-        private readonly string AzureModeBoth = AzureModule.AzureServiceManagement + "," + AzureModule.AzureResourceManager;
-
         public static IDataStore DataStore { get; set; }
 
         public AzureProfile Profile { get; private set; }
