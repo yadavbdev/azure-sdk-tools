@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -26,10 +26,10 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class NewAzureWebsiteTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void ProcessNewWebsiteTest()
         {
             const string websiteName = "website1";
@@ -75,12 +75,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
-            Assert.AreEqual(websiteName, createdSiteName);
-            Assert.AreEqual(webspaceName, createdWebspaceName);
-            Assert.AreEqual<string>(websiteName, (mockRuntime.OutputPipeline[0] as SiteWithConfig).Name);
+            Assert.Equal(websiteName, createdSiteName);
+            Assert.Equal(webspaceName, createdWebspaceName);
+            Assert.Equal<string>(websiteName, (mockRuntime.OutputPipeline[0] as SiteWithConfig).Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetsWebsiteDefaultLocation()
         {
             const string websiteName = "website1";
@@ -121,12 +121,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             newAzureWebsiteCommand.ExecuteCmdlet();
-            Assert.IsTrue(created);
-            Assert.AreEqual<string>(websiteName, (mockRuntime.OutputPipeline[0] as SiteWithConfig).Name);
+            Assert.True(created);
+            Assert.Equal<string>(websiteName, (mockRuntime.OutputPipeline[0] as SiteWithConfig).Name);
             clientMock.Verify(f => f.GetDefaultLocation(), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateStageSlot()
         {
             string slot = "staging";

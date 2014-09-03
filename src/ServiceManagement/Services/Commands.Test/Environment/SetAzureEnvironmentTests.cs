@@ -15,7 +15,8 @@
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -23,12 +24,10 @@ using Microsoft.WindowsAzure.Commands.Profile;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 using Moq;
-using Xunit;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Environment
 {
-    [TestClass]
+    
     public class SetAzureEnvironmentTests : TestBase, IDisposable
     {
         private MockDataStore dataStore;
@@ -63,35 +62,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                 GalleryEndpoint = "galleryendpoint"
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
             commandRuntimeMock.Verify(f => f.WriteObject(It.IsAny<AzureEnvironment>()), Times.Once());
             client = new ProfileClient();
             AzureEnvironment env = client.Profile.Environments["KaTaL"];
-            Assert.AreEqual(env.Name.ToLower(), cmdlet.Name.ToLower());
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ServiceManagement], cmdlet.ServiceEndpoint);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl], cmdlet.ManagementPortalUrl);
-            Assert.AreEqual(env.Endpoints[AzureEnvironment.Endpoint.Gallery], "galleryendpoint");
-        }
-
-        [Fact]
-        public void FailsForNonExistingEnvironments()
-        {
-            Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
-            SetAzureEnvironmentCommand cmdlet = new SetAzureEnvironmentCommand()
-            {
-                CommandRuntime = commandRuntimeMock.Object,
-                Name = "Katal",
-                PublishSettingsFileUrl = "http://microsoft.com",
-                ServiceEndpoint = "endpoint.net",
-                ManagementPortalUrl = "management portal url",
-                StorageEndpoint = "endpoint.net"
-            };
-
-            Testing.AssertThrows<KeyNotFoundException>(
-                () => cmdlet.ExecuteCmdlet(),
-                string.Format(Resources.EnvironmentNotFound, "Katal"));
+            Assert.Equal(env.Name.ToLower(), cmdlet.Name.ToLower());
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl], cmdlet.PublishSettingsFileUrl);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.ServiceManagement], cmdlet.ServiceEndpoint);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl], cmdlet.ManagementPortalUrl);
+            Assert.Equal(env.Endpoints[AzureEnvironment.Endpoint.Gallery], "galleryendpoint");
         }
 
         [Fact]
@@ -108,9 +90,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Environment
                     PublishSettingsFileUrl = "http://microsoft.com"
                 };
 
-                Testing.AssertThrows<InvalidOperationException>(
-                    () => cmdlet.ExecuteCmdlet(),
-                    string.Format(Resources.ChangePublicEnvironmentMessage, name));
+                cmdlet.InvokeBeginProcessing();
+                Assert.Throws<ArgumentException>(() => cmdlet.ExecuteCmdlet());
             }
         }
 

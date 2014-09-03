@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Utilities.Websites;
 using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
@@ -22,7 +22,7 @@ using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    [TestClass]
+    
     public class RemoveAzureWebsiteJobTests : WebsitesTestBase
     {
         private const string websiteName = "website1";
@@ -35,8 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Mock<ICommandRuntime> commandRuntimeMock;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public RemoveAzureWebsiteJobTests()
         {
             websitesClientMock = new Mock<IWebsitesClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -50,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void DeletesTriggeredWebJob()
         {
             // Setup
@@ -69,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void DeletesContinuousWebJob()
         {
             // Setup
