@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Security;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
@@ -43,16 +44,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             };
         }
 
-        public IAccessToken Authenticate(AzureEnvironment environment, ref UserCredentials credentials)
+        public IAccessToken Authenticate(ref AzureAccount account, AzureEnvironment environment, string tenant, SecureString password,
+            ShowDialog promptBehavior)
         {
-            if (credentials.UserName == null)
+            if (account.Id == null)
             {
-                credentials.UserName = "test";
+                account.Id = "test";
             }
 
             Token = new MockAccessToken
             {
-                UserId = credentials.UserName,
+                UserId = account.Id,
                 LoginType = LoginType.OrgId,
                 AccessToken = Token.AccessToken
             };

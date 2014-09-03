@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
+using System.Security;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
@@ -53,22 +54,19 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            UserCredentials userCredentials = new UserCredentials();
+            AzureAccount azureAccount = new AzureAccount();
+            SecureString password = null;
             if (Credential != null)
             {
-                userCredentials.UserName = Credential.UserName;
-                userCredentials.Password = Credential.Password;
-                userCredentials.ShowDialog = ShowDialog.Always;
+                azureAccount.Id = Credential.UserName;
+                password = Credential.Password;
             }
 
-            userCredentials.Type = isServicePrincipal ? CredentialType.ServicePrincipal : CredentialType.User;
-            userCredentials.Tenant = Tenant;
-
-            var account = ProfileClient.AddAccount(userCredentials, ProfileClient.GetEnvironmentOrDefault(Environment));
+            var account = ProfileClient.AddAccount(azureAccount, ProfileClient.GetEnvironmentOrDefault(Environment), password);
 
             if (account != null)
             {
-                WriteVerbose(string.Format(Resources.AddAccountAdded, userCredentials.UserName));
+                WriteVerbose(string.Format(Resources.AddAccountAdded, azureAccount.Id));
                 if (ProfileClient.Profile.DefaultSubscription != null)
                 {
                     WriteVerbose(string.Format(Resources.AddAccountShowDefaultSubscription,
