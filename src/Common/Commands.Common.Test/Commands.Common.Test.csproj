@@ -181,6 +181,10 @@
     <Compile Include="Resources\ResourceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Commands.Common.Storage\Commands.Common.Storage.csproj">
+      <Project>{65c3a86a-716d-4e7d-ab67-1db00b3bf72d}</Project>
+      <Name>Commands.Common.Storage</Name>
+    </ProjectReference>  
     <ProjectReference Include="..\Commands.Common\Commands.Common.csproj">
       <Project>{5ee72c53-1720-4309-b54b-5fb79703195f}</Project>
       <Name>Commands.Common</Name>
