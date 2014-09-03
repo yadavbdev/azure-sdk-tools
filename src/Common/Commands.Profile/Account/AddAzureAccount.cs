@@ -23,16 +23,30 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     /// <summary>
     /// Cmdlet to log into an environment and download the subscriptions
     /// </summary>
-    [Cmdlet(VerbsCommon.Add, "AzureAccount")]
+    [Cmdlet(VerbsCommon.Add, "AzureAccount", DefaultParameterSetName = "User")]
     [OutputType(typeof(AzureAccount))]
     public class AddAzureAccount : SubscriptionCmdletBase
     {
-        [Parameter(Mandatory = false, HelpMessage = "Environment containing the account to log into")]
+        [Parameter(ParameterSetName = "User", Mandatory = false, HelpMessage = "Environment containing the account to log into")]
+        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = false, HelpMessage = "Environment containing the account to log into")]
         public string Environment { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "Optional credential")]
+        [Parameter(ParameterSetName = "User", Mandatory = false, HelpMessage = "Optional credential")]
+        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true, HelpMessage = "Optional credential")]
         public PSCredential Credential { get; set; }
 
+        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true)]
+        public SwitchParameter ServicePrincipal
+        {
+            get { return isServicePrincipal; }
+            set { isServicePrincipal = value; }
+        }
+
+        private bool isServicePrincipal;
+
+        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true, HelpMessage = "Optional tenant name or ID")]
+        public string Tenant { get; set; }
+     
         public AddAzureAccount() : base(true)
         {
         }
@@ -46,6 +60,9 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 userCredentials.Password = Credential.Password;
                 userCredentials.ShowDialog = ShowDialog.Always;
             }
+
+            userCredentials.Type = isServicePrincipal ? CredentialType.ServicePrincipal : CredentialType.User;
+            userCredentials.Tenant = Tenant;
 
             var account = ProfileClient.AddAccount(userCredentials, ProfileClient.GetEnvironmentOrDefault(Environment));
 
