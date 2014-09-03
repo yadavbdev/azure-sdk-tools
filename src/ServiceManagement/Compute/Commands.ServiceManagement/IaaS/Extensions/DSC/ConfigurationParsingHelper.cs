@@ -82,7 +82,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
                 }
             ");
             initialSessionState.Commands.Add(importDscResourcefunctionEntry);
-            initialSessionState.LanguageMode = PSLanguageMode.FullLanguage;
+            initialSessionState.LanguageMode = PSLanguageMode.RestrictedLanguage;
             var moduleVarEntry = new SessionStateVariableEntry("modules", modules, "");
             var resourcesVarEntry = new SessionStateVariableEntry("resources", resources, "");
             initialSessionState.Variables.Add(moduleVarEntry);
