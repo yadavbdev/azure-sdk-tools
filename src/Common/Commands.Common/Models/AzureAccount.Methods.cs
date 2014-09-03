@@ -56,13 +56,23 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
         {
             string subscriptions = string.Empty;
             List<AzureSubscription> subscriptionsList = new List<AzureSubscription>();
-            Properties.TryGetValue(Property.Subscriptions, out subscriptions);
-
-            foreach (var subscription in subscriptions.Split(','))
+            if (Properties.ContainsKey(Property.Subscriptions))
             {
-                Guid subscriptionId = new Guid(subscription);
-                Debug.Assert(profile.Subscriptions.ContainsKey(subscriptionId));
-                subscriptionsList.Add(profile.Subscriptions[subscriptionId]);
+                subscriptions = Properties[Property.Subscriptions];
+            }
+
+            foreach (var subscription in subscriptions.Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries))
+            {
+                try
+                {
+                    Guid subscriptionId = new Guid(subscription);
+                    Debug.Assert(profile.Subscriptions.ContainsKey(subscriptionId));
+                    subscriptionsList.Add(profile.Subscriptions[subscriptionId]);
+                }
+                catch
+                {
+                    // Skip
+                }
             }
 
             return subscriptionsList;
