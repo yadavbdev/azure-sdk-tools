@@ -21,6 +21,8 @@ using System.Linq;
 using System.Management.Automation;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
+
 using Microsoft.Azure.Gallery;
 using Microsoft.Azure.Gallery.Models;
 using Microsoft.WindowsAzure;
@@ -94,7 +96,46 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 result.AddRange(QueryGalleryTemplates(options, filterStrings, parameters));
             }
 
+            if (!options.AllVersions && result.Count > 1)
+            {
+                // Take only the most recent version
+                GalleryItem mostRecentTemplate = MostRecentTemplate(result);
+                if (mostRecentTemplate != null)
+                {
+                    return new List<PSGalleryItem>() { mostRecentTemplate.ToPSGalleryItem() };
+                }
+            }
+
             return result.Select(i => i.ToPSGalleryItem()).ToList();
+        }
+
+        private GalleryItem MostRecentTemplate(List<GalleryItem> galleryItems)
+        {
+            if (galleryItems == null || galleryItems.Count == 0)
+            {
+                return null;
+            }
+
+            if (galleryItems.Count == 1)
+            {
+                return galleryItems[0];
+            }
+
+            GalleryItem mostRecent = galleryItems[0];
+            foreach (var galleryItem in galleryItems)
+            {
+                // if CompareTo is greater then the present galleryItem is a higher version
+                string galleryItemVersion = galleryItem.Version.Replace("-preview", string.Empty);
+                string mostRecentVersion = mostRecent.Version.Replace("-preview", string.Empty);
+                galleryItemVersion = galleryItemVersion.Replace("-placeholder", string.Empty);
+                mostRecentVersion = mostRecentVersion.Replace("-placeholder", string.Empty);
+                if ((new Version(galleryItemVersion)).CompareTo(new Version(mostRecentVersion)) > 0)
+                {
+                    mostRecent = galleryItem;
+                }
+            }
+
+            return mostRecent;
         }
 
         /// <summary>
@@ -373,8 +414,25 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 parameters = new ItemListParameters() { Filter = string.Join(" and ", filterStrings) };
             }
+            
+            List<GalleryItem> galleryItems = GalleryClient.Items.List(parameters).Items.ToList();
+            if (!string.IsNullOrEmpty(options.ApplicationName))
+            {
+                List<GalleryItem> result = new List<GalleryItem>();
+                string wildcardApplicationName = Regex.Escape(options.ApplicationName).Replace(@"\*", ".*").Replace(@"\?", ".");
+                Regex regex = new Regex(wildcardApplicationName, RegexOptions.IgnoreCase);
+                foreach (var galleryItem in galleryItems)
+                {
+                    if (regex.IsMatch(galleryItem.Name))
+                    {
+                        result.Add(galleryItem);
+                    }
+                }
 
-            return GalleryClient.Items.List(parameters).Items.ToList();
+                return result;
+            }
+
+            return galleryItems;
         }
     }
 }
