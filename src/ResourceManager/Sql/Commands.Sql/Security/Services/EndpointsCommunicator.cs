@@ -59,7 +59,8 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         /// </summary>
         public DatabaseSecurityPolicy GetDatabaseSecurityPolicy(string resourceGroupName, string serverName, string databaseName, string clientRequestId)
         {
-            DatabaseSecurityPolicyGetResponse response = GetCurrentSqlClient(clientRequestId).DatabaseSecurity.Get(resourceGroupName, serverName, databaseName);
+            ISecurityOperations operations = GetCurrentSqlClient(clientRequestId).DatabaseSecurity;
+            DatabaseSecurityPolicyGetResponse response = operations.Get(resourceGroupName, serverName, databaseName);
             return response.DatabaseSecurityPolicy;
         }
 
@@ -68,7 +69,8 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         /// </summary>
         public DatabaseSecurityPolicy GetServerSecurityPolicy(string resourceGroupName, string serverName, string clientRequestId)
         {
-            DatabaseSecurityPolicyGetResponse response = GetCurrentSqlClient(clientRequestId).DatabaseSecurity.Get(resourceGroupName, serverName, Constants.ServerPolicyId);
+            ISecurityOperations operations = GetCurrentSqlClient(clientRequestId).DatabaseSecurity;
+            DatabaseSecurityPolicyGetResponse response = operations.Get(resourceGroupName, serverName, Constants.ServerPolicyId);
             return response.DatabaseSecurityPolicy;
         }
 
@@ -77,7 +79,8 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         /// </summary>
         public void SetDatabaseSecurityPolicy(string resourceGroupName, string serverName, string databaseName, string clientRequestId, DatabaseSecurityPolicyUpdateParameters parameters)
         {
-            GetCurrentSqlClient(clientRequestId).DatabaseSecurity.Update(resourceGroupName, serverName, databaseName, parameters);
+            ISecurityOperations operations = GetCurrentSqlClient(clientRequestId).DatabaseSecurity;
+            operations.Update(resourceGroupName, serverName, databaseName, parameters);
         }
 
         /// <summary>
@@ -85,7 +88,8 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         /// </summary>
         public void SetServerSecurityPolicy(string resourceGroupName, string serverName,  string clientRequestId, DatabaseSecurityPolicyUpdateParameters parameters)
         {
-            GetCurrentSqlClient(clientRequestId).DatabaseSecurity.Update(resourceGroupName, serverName, Constants.ServerPolicyId, parameters);
+            ISecurityOperations operations = GetCurrentSqlClient(clientRequestId).DatabaseSecurity;
+            operations.Update(resourceGroupName, serverName, Constants.ServerPolicyId, parameters);
         }
         
         /// <summary>

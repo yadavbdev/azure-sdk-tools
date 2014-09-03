@@ -41,7 +41,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Cmdlet
         /// <summary>
         /// The PolicyHandler object mapped to this cmdlet
         /// </summary>
-        public PolicyHandler PolicyHandler { get;  internal set; }
+        public SqlClient PolicyHandler { get;  internal set; }
 
         /// <summary>
         /// Provides the auditing policy that this cmdlet operates on
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Cmdlet
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            PolicyHandler = new PolicyHandler(CurrentContext.Subscription);
+            PolicyHandler = new SqlClient(CurrentContext.Subscription);
             AuditingPolicy policy = this.GetPolicy();
             this.UpdatePolicy(policy);
             this.SendPolicy(policy);
