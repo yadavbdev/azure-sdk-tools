@@ -699,7 +699,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     // Generate tenant specific token to query list of subscriptions
                     try
                     {
-                        tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, tenant.TenantId, ref credentials);
+                        credentials.Tenant = tenant.TenantId;
+                        tenantToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
                     }
                     catch (AadAuthenticationException ex)
                     {
@@ -772,9 +773,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         
                         if (commonTenantToken.LoginType == LoginType.LiveId)
                         {
+                            credentials.Tenant = subscription.ActiveDirectoryTenantId;
                             AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] =
-                                AzureSession.AuthenticationFactory.Authenticate(environment,
-                                    subscription.ActiveDirectoryTenantId, ref credentials);
+                                AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
                         }
                         else
                         {

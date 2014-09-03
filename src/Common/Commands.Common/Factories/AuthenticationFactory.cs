@@ -36,18 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public IAccessToken Authenticate(AzureEnvironment environment, ref UserCredentials credentials)
         {
-            return Authenticate(environment, CommonAdTenant, CredentialType.User, ref credentials);
-        }
-
-        public IAccessToken Authenticate(AzureEnvironment environment, string tenant, ref UserCredentials credentials)
-        {
-            return Authenticate(environment, tenant, CredentialType.User, ref credentials);
-        }
-
-        public IAccessToken Authenticate(AzureEnvironment environment, string tenant, CredentialType credentialType,
-            ref UserCredentials credentials)
-        {
-            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, tenant), credentials.ShowDialog, credentials.UserName, credentials.Password, credentialType);
+            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, credentials.GetTenant()), credentials.ShowDialog, credentials.UserName, credentials.Password, credentials.Type);
             credentials.UserName = token.UserId;
             return token;
         }
@@ -77,7 +66,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 {
                     try
                     {
-                        AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)] = Authenticate(context.Environment, tenant, ref credentials);
+                        credentials.Tenant = tenant;
+                        AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)] = Authenticate(context.Environment, ref credentials);
                         break;
                     }
                     catch

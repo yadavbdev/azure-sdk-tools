@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common.Factories;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
@@ -25,5 +26,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         public ShowDialog ShowDialog { get; set; }
 
         public CredentialType Type { get; set; }
+
+        public string Tenant { get; set; }
+
+        public string GetTenant()
+        {
+            if (!string.IsNullOrEmpty(Tenant))
+            {
+                return Tenant;
+            }
+
+            return AuthenticationFactory.CommonAdTenant;
+        }
     }
 }
