@@ -294,10 +294,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 throw new ArgumentNullException("Subscription needs to be specified.", "subscription");
             }
+
             if (subscription.Environment == null)
             {
                 throw new ArgumentNullException("Environment needs to be specified.", "subscription.Environment");
             }
+
             // Validate environment
             GetEnvironmentOrDefault(subscription.Environment);
 
@@ -308,7 +310,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 Profile.Subscriptions[subscription.Id] = subscription;
+                Profile.Accounts[subscription.Account] = new AzureAccount
+                {
+                    Id = subscription.Account,
+                    Type = AzureAccount.AccountType.Certificate
+                };
             }
+
             return Profile.Subscriptions[subscription.Id];
         }
 

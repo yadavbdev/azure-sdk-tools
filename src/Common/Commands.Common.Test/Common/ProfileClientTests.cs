@@ -502,6 +502,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             var subscription = client.AddOrSetSubscription(azureSubscription1);
 
             Assert.Equal(1, client.Profile.Subscriptions.Count);
+            Assert.Equal(1, client.Profile.Accounts.Count);
             Assert.Equal(subscription, azureSubscription1);
             Assert.Throws<ArgumentNullException>(() => client.AddOrSetSubscription(null));
             Assert.Throws<ArgumentNullException>(() => client.AddOrSetSubscription(
