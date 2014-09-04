@@ -135,28 +135,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
             // If credentials.UserName is null the login failed
             if (account != null && account.Id != null)
             {
-                account.Type = AzureAccount.AccountType.User;
-
                 // Set account subscriptions from the profile
                 account.SetSubscriptions(
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == account.Id)
                         .ToList());
 
-                // Set account tenants
-                account.SetOrAppendProperty(AzureAccount.Property.Tenants,
-                    subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
-                    .Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray());
-
+                // Set default account to credentials.UserName
                 foreach (var subscription in subscriptionsFromServer)
                 {
-                    // Set account subscriptions from the server
-                    if (!account.HasSubscription(subscription.Id))
-                    {
-                        account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
-                    }
-
-                    // Set default account to credentials.UserName
                     Profile.Subscriptions[subscription.Id].Account = account.Id;
                 }
 
@@ -715,12 +702,17 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             };
                             psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant);
+                            account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, new Guid(subscription.SubscriptionId).ToString());
 
                             AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
 
                             result.Add(psSubscription);
                         }
                     }
+                }
+                catch (CloudException cEx)
+                {
+                    WriteOrThrowAadExceptionMessage(cEx);
                 }
                 catch (AadAuthenticationException aadEx)
                 {
@@ -734,6 +726,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(ref AzureAccount account, AzureEnvironment environment, SecureString password, ShowDialog promptBehavior)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
+
             foreach (var tenant in account.GetPropertyAsArray(AzureAccount.Property.Tenants))
             {
                 try
@@ -755,12 +748,17 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             };
                             psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
+                            account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, new Guid(subscription.SubscriptionId).ToString());
 
                             AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
 
                             result.Add(psSubscription);
                         }
                     }
+                }
+                catch (CloudException cEx)
+                {
+                    WriteOrThrowAadExceptionMessage(cEx);
                 }
                 catch (AadAuthenticationException aadEx)
                 {
@@ -785,6 +783,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 throw aadEx;
             }
+        }
+
+        private void WriteOrThrowAadExceptionMessage(CloudException aadEx)
+        {
+            WriteDebugMessage(aadEx.Message);
         }
 
         #endregion
