@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Concretes
 {
-    using Interfaces;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-
     public class PipelineAbstraction : RunspaceAbstraction, IPipeline
     {
         internal PipelineAbstraction(Pipeline pipeline, Runspace runspace) : base(runspace)

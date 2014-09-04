@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities.Common;
-    using Model;
-
     /// <summary>
     /// Set Microsoft Azure Service AD Domain Extension.
     /// </summary>

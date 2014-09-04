@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using System.Management.Automation;
-    using Utilities.Websites.Common;
-
     [Cmdlet(VerbsLifecycle.Restart, "AzureWebsite"), OutputType(typeof(bool))]
     public class RestartAzureWebsiteCommand : WebsiteContextBaseCmdlet
     {

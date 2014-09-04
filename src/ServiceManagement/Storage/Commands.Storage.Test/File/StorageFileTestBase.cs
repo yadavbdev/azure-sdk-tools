@@ -12,18 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Storage.File;
+using Microsoft.WindowsAzure.Commands.Storage.Test;
+using Microsoft.WindowsAzure.Management.Storage.Test.Service;
+
 namespace Microsoft.WindowsAzure.Management.Storage.Test.File
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Microsoft.WindowsAzure.Commands.Storage.File;
-    using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
-    using Microsoft.WindowsAzure.Commands.Storage.Test;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.Storage.Test.Service;
-
     public abstract class StorageFileTestBase<T> : StorageTestBase, IDisposable where T : AzureStorageFileCmdletBase
     {
         private MockStorageFileManagement channel = new MockStorageFileManagement();

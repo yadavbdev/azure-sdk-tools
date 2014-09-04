@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Management.Automation;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Management.Automation;
-    using System.Threading.Tasks;
-
     internal static class TaskEx2
     {
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Required for functionality.")]

@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Internal;
+using System.Management.Automation.Runspaces;
+using System.Reflection;
+
 namespace Microsoft.WindowsAzure.Management.Storage.Test.File
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Management.Automation.Internal;
-    using System.Management.Automation.Runspaces;
-    using System.Reflection;
-    using System.Text;
-
     internal static class PSCmdletReflectionHelper
     {
         private static readonly Type psCmdletType = typeof(PSCmdlet);
@@ -48,7 +46,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File
 
         public static IDisposable InitializeSessionState(this PSCmdlet cmdlet)
         {
-            var ps = PowerShell.Create(InitialSessionState.CreateDefault());
+            var ps = System.Management.Automation.PowerShell.Create(InitialSessionState.CreateDefault());
             try
             {
                 var engine = engineFieldInfo.GetValue(ps.Runspace);

@@ -12,12 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
-    using PowershellCore;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
     public class NewAzureServiceDomainJoinExtensionConfigCmdletInfo: CmdletsInfo
     {
         private NewAzureServiceDomainJoinExtensionConfigCmdletInfo(string[] role, string thumbprintAlgorithm, bool restart, PSCredential credential, string version)

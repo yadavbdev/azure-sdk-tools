@@ -22,10 +22,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Xml.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema
 {
-    using System.Xml.Serialization;
-
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
     [System.SerializableAttribute()]

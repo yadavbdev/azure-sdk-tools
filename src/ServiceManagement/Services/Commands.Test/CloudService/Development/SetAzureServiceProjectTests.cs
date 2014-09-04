@@ -12,28 +12,28 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Common;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cmdlet
 {
-    using Commands.CloudService.Development;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Properties;
-    using ServiceManagement.Model;
-    using System;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class SetAzureServiceProjectTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
 
         private SetAzureServiceProjectCommand setServiceProjectCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public SetAzureServiceProjectTests()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             setServiceProjectCmdlet = new SetAzureServiceProjectCommand();
@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
             setServiceProjectCmdlet.PassThru = true;
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsLocationValid()
         {
             string[] locations = { "West US", "East US", "East Asia", "North Europe" };
@@ -61,14 +61,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
 
                     // Assert location is changed
                     //
-                    Assert.AreEqual<string>(item, settings.Location);
+                    Assert.Equal<string>(item, settings.Location);
                     ServiceSettings actualOutput = mockCommandRuntime.OutputPipeline[0] as ServiceSettings;
-                    Assert.AreEqual<string>(item, settings.Location);
+                    Assert.Equal<string>(item, settings.Location);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsLocationEmptyFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -83,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsUnknownLocation()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -99,13 +99,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
 
                 // Assert location is changed
                 //
-                Assert.AreEqual<string>(unknownLocation, settings.Location);
+                Assert.Equal<string>(unknownLocation, settings.Location);
                 ServiceSettings actualOutput = mockCommandRuntime.OutputPipeline[0] as ServiceSettings;
-                Assert.AreEqual<string>(unknownLocation, settings.Location);
+                Assert.Equal<string>(unknownLocation, settings.Location);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsStorageTests()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -122,13 +122,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
 
                 // Assert storageAccountName is changed
                 //
-                Assert.AreEqual<string>("companystore", settings.StorageServiceName);
+                Assert.Equal<string>("companystore", settings.StorageServiceName);
                 ServiceSettings actualOutput = mockCommandRuntime.OutputPipeline[0] as ServiceSettings;
-                Assert.AreEqual<string>("companystore", settings.StorageServiceName);
+                Assert.Equal<string>("companystore", settings.StorageServiceName);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsStorageTestsEmptyFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -143,7 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsSlotTests()
         {
             string[] slots = { DeploymentSlotType.Production, DeploymentSlotType.Staging };
@@ -162,12 +162,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
                     // Assert slot is changed
                     //
                     settings = ServiceSettings.Load(paths.Settings);
-                    Assert.AreEqual<string>(item, settings.Slot);
+                    Assert.Equal<string>(item, settings.Slot);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsSlotTestsEmptyFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -182,7 +182,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests.Cm
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetAzureServiceProjectTestsSlotTestsInvalidFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))

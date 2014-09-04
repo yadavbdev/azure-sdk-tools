@@ -12,12 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-
     public class VirtualMachineDscExtensionCmdletBase : VirtualMachineExtensionCmdletBase
     {
         internal static readonly string ExtensionPublishedNamespace = "Microsoft.Powershell";

@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
 {
-    using DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-
     internal class StaticIPAddressPoolOperations : OperationsBase<StaticIPAddressPool>
     {
         public StaticIPAddressPoolOperations(WebClientFactory webClientFactory)

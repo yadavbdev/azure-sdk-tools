@@ -12,24 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using Commands.BaseCommandInterfaces;
-    using DataObjects;
-    using Extensions;
-    using Hadoop.Client;
-    using HDInsight.Logging;
-    using ServiceLocation;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using WindowsAzure.Commands.Utilities.Common;
-
     internal abstract class InvokeAzureHDInsightJobCommandBase : IInvokeAzureHDInsightJobCommand
     {
         private const string HiveQueryFileStoragePath = "http://{0}/{1}/user/{2}/{3}.hql";
@@ -51,7 +51,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             get { return this.client != null ? this.client.CancellationToken : new CancellationTokenSource().Token; }
         }
 
-        public WindowsAzureSubscription CurrentSubscription { get; set; }
+        public AzureSubscription CurrentSubscription { get; set; }
 
         public AzureHDInsightClusterConnection Connection { get; set; }
 

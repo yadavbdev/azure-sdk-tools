@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class StandardHeadersHandler : DelegatingHandler
     {
         public StandardHeadersHandler()

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model
 {
-    using System.Net;
-
     public class VirtualIP
     {
         public VirtualIP()

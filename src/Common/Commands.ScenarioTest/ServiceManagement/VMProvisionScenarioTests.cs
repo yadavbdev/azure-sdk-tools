@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ServiceManagemenet
 {
-    using Common;
-    using ServiceManagement.Model;
-    using ServiceManagement.Test.FunctionalTests;
-    using ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using ServiceManagement.Test.Properties;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class VMProvisionScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class VMProvisionScenarioTests : AzurePowerShellCertificateTest
     {
         public VMProvisionScenarioTests()
             : base("CloudService\\Common.ps1",
@@ -47,8 +47,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ServiceManagemenet
             string imageName = vmPowershellCmdlets.GetAzureVMImageName(new[] { "Windows" }, false);
             string locationName = vmPowershellCmdlets.GetAzureLocationName(new[] { Resource.Location });
 
-            string newAzureQuickVMName = Utilities.GetUniqueShortName("PSTestVM");
-            string newAzureQuickVMSvcName = Utilities.GetUniqueShortName("PSTestService");
+            string newAzureQuickVMName = ServiceManagement.Test.FunctionalTests.Utilities.GetUniqueShortName("PSTestVM");
+            string newAzureQuickVMSvcName = ServiceManagement.Test.FunctionalTests.Utilities.GetUniqueShortName("PSTestService");
 
             vmPowershellCmdlets.NewAzureQuickVM(OS.Windows, newAzureQuickVMName, newAzureQuickVMSvcName, imageName, "pstestuser", "p@ssw0rd", locationName);
 

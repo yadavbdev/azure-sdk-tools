@@ -13,10 +13,10 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Utilities.Common;
-
     public class ReservedIPContext : ManagementOperationContext
     {
         public string ReservedIPName { get; set; }

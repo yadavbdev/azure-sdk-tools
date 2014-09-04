@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Management.Automation;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.File
 {
-    using System;
-    using System.Management.Automation;
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// Provides the exception object thrown by AzureStorageFile cmdlets.
     /// </summary>

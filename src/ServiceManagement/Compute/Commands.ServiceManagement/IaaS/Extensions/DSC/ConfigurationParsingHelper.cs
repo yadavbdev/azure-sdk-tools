@@ -13,16 +13,17 @@
 // ----------------------------------------------------------------------------------
 
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Language;
+using System.Management.Automation.Runspaces;
+
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC 
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Management.Automation.Language;
-    using System.Management.Automation.Runspaces;
 
     public static class ConfigurationParsingHelper
     {
@@ -88,7 +89,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             initialSessionState.Variables.Add(moduleVarEntry);
             initialSessionState.Variables.Add(resourcesVarEntry);
 
-            using (PowerShell powerShell = PowerShell.Create(initialSessionState))
+            using (System.Management.Automation.PowerShell powerShell = System.Management.Automation.PowerShell.Create(initialSessionState))
             {
                 foreach (var import in imports)
                 {
@@ -128,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             {
                 try
                 {
-                    using (PowerShell powershell = PowerShell.Create())
+                    using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
                     {
                         powershell.AddCommand("Get-DscResource").AddParameter("Name", resourceName).
                             AddCommand("Foreach-Object").AddParameter("MemberName", "Module").

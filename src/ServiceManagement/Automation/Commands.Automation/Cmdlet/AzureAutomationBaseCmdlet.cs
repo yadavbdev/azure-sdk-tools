@@ -12,26 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.IO;
+using System.Management.Automation;
+using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Xml.Linq;
+using Microsoft.Azure.Commands.Automation.Common;
+using Microsoft.Azure.Commands.Automation.DataContract;
+using Microsoft.Azure.Commands.Automation.Properties;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using Microsoft.Azure.Commands.Automation.Common;
-    using Microsoft.Azure.Commands.Automation.DataContract;
-    using Microsoft.Azure.Commands.Automation.Properties;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Globalization;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Runtime.Serialization.Json;
-    using System.Text;
-    using System.Xml.Linq;
-
     /// <summary>
     /// The azure automation base cmdlet.
     /// </summary>
-    public abstract class AzureAutomationBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class AzureAutomationBaseCmdlet : AzurePSCmdlet
     {
         /// <summary>
         /// The automation client.
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         {
             get
             {
-                return this.automationClient = this.automationClient ?? new AutomationClient(CurrentSubscription);
+                return this.automationClient = this.automationClient ?? new AutomationClient(CurrentContext.Subscription);
             }
 
             set

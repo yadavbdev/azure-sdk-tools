@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Net;
+using System.ServiceModel;
+using System.Xml;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using ServiceManagement.Model;
-    using System.IO;
-    using System.Net;
-    using System.ServiceModel;
-    using System.Xml;
-
     public class ErrorHelper
     {
         public static bool TryGetExceptionDetails(CommunicationException exception, out ServiceManagementError errorDetails, out string operationId)
@@ -60,7 +60,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             if (response.Headers != null)
             {
-                operationId = response.Headers[Constants.OperationTrackingIdHeader];
+                operationId = response.Headers[ApiConstants.OperationTrackingIdHeader];
             }
 
             if (response.StatusCode == HttpStatusCode.NotFound)

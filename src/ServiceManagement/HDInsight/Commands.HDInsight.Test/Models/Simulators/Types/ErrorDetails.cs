@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators.Types
 {
-    using System.Net;
-    using System.Runtime.Serialization;
-
     /// <summary>
     ///     Class to represent an error that has been returned in response to a passthrough request.
     /// </summary>

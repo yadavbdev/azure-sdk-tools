@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     internal enum WebFilterOptions
     {
         eq = 0,

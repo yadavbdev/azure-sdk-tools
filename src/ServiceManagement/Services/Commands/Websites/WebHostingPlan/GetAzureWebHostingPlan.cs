@@ -12,22 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Websites.WebHostingPlan
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Properties;
-    using Utilities.Websites.Common;
-    using Utilities.Websites.Services;
-    using Utilities.Websites.Services.DeploymentEntities;
-    using Utilities.Websites.Services.WebEntities;
-
     /// <summary>
     /// Gets an azure website.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "AzureWebHostingPlan"), OutputType(typeof(SiteWithConfig), typeof(IEnumerable<WebHostingPlan>))]
+    [Cmdlet(VerbsCommon.Get, "AzureWebHostingPlan"), OutputType(typeof(SiteWithConfig), typeof(IEnumerable<Utilities.Websites.Services.WebEntities.WebHostingPlan>))]
     public class GetAzureWebHostingPlanCommand : WebHostingPlanContextBaseCmdlet
     {  
         public override void ExecuteCmdlet()
@@ -68,7 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.Websites.WebHostingPlan
         {
             Do(() =>
                 {
-                    List<WebHostingPlan> plans = WebsitesClient.ListWebHostingPlans();
+                    List<Utilities.Websites.Services.WebEntities.WebHostingPlan> plans = WebsitesClient.ListWebHostingPlans();
                     WriteObject(plans, true);
                 });
         }

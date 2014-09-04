@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using DeploymentEntities;
-    using Microsoft.WindowsAzure.Management.WebSites.Models;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-
     public interface ISiteConfig
     {
         int? NumberOfWorkers { get; set; }

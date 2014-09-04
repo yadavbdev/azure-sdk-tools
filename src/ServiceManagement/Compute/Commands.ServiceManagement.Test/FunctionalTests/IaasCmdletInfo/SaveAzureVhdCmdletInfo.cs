@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-    using System;
-    using System.IO;
-
     public class SaveAzureVhdCmdletInfo : CmdletsInfo
     {
         public SaveAzureVhdCmdletInfo(Uri source, FileInfo localFilePath, int? numThreads, string storageKey, bool overwrite)

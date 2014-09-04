@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using AutoMapper;
-    using Management.Storage.Models;
-    using Model;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Lists all storage services underneath the subscription.
     /// </summary>

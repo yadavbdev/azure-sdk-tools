@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.Hadoop.Client;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces
 {
-    using Hadoop.Client;
-
     internal interface IAzureHDInsightJobSubmissionClientFactory
     {
         IJobSubmissionClient Create(IJobSubmissionClientCredential credentials);

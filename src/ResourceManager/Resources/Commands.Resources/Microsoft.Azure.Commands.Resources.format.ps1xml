@@ -60,6 +60,14 @@
                 <Label>Tags</Label>
                 <PropertyName>TagsTable</PropertyName>
               </ListItem>
+              <ListItem>
+                <Label>Permissions</Label>
+                <PropertyName>PermissionsTable</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ResourceId</Label>
+                <PropertyName>ResourceId</PropertyName>
+              </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
@@ -91,8 +99,16 @@
                 <PropertyName>TagsTable</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>Permissions</Label>
+                <PropertyName>PermissionsTable</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>Resources</Label>
                 <PropertyName>ResourcesTable</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ResourceId</Label>
+                <PropertyName>ResourceId</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>

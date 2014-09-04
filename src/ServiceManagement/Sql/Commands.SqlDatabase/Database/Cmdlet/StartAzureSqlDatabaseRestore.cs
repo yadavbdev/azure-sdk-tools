@@ -12,19 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Management.Automation;
-
     /// <summary>
     /// Issues a new restore request for the specified live or dropped Microsoft Azure SQL Database.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Start, "AzureSqlDatabaseRestore", ConfirmImpact = ConfirmImpact.Low)]
-    public class StartAzureSqlDatabaseRestore : CmdletBase
+    public class StartAzureSqlDatabaseRestore : AzurePSCmdlet
     {
         #region Parameter Sets
 
@@ -82,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             ParameterSetName = BySourceDatabaseObject,
             HelpMessage = "The database object representing the database to restore.")]
         [ValidateNotNull]
-        public Database SourceDatabase { get; set; }
+        public Services.Server.Database SourceDatabase { get; set; }
 
         /// <summary>
         /// Gets or sets the database object for the dropped database to restore.
@@ -197,7 +198,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             {
                 string serverName = this.SourceServerName ?? connectionContext.ServerName;
 
-                connectionContext = ServerDataServiceCertAuth.Create(serverName, WindowsAzureProfile.Instance.CurrentSubscription);
+                connectionContext = ServerDataServiceCertAuth.Create(serverName, AzureSession.CurrentContext.Subscription);
             }
 
             string clientRequestId = connectionContext.ClientRequestId;

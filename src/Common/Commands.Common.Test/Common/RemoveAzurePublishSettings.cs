@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.Common;
-
     public class RemoveAzurePublishSettingsCommand
     {
         public void RemovePublishSettingsProcess(string azureSdkDirPath)
         {
-            new WindowsAzureProfile(new PowershellProfileStore(azureSdkDirPath, null)).DestroyData();
+            ProfileClient.DataStore.EmptyDirectory(azureSdkDirPath);
         }
     }
 }

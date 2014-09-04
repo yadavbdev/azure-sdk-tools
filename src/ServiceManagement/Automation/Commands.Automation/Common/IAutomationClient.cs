@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.Azure.Commands.Automation.Model;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.Azure.Commands.Automation.Common
 {
-    using Microsoft.Azure.Commands.Automation.Model;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-
     public interface IAutomationClient
     {
-        WindowsAzureSubscription Subscription { get; }
+        AzureSubscription Subscription { get; }
 
         IEnumerable<AutomationAccount> ListAutomationAccounts(string automationAccountName, string location);
 

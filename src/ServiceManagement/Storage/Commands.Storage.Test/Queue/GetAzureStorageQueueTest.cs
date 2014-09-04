@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+using Microsoft.WindowsAzure.Commands.Storage.Queue;
+using Microsoft.WindowsAzure.Storage.Queue;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Queue
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Model.ResourceModel;
-    using Storage.Common;
-    using Storage.Queue;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [TestClass]
     public class GetAzureStorageQueueTest : StorageQueueTestBase
     {

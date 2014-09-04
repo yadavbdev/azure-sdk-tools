@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage.Auth;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
 {
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-    using Commands.Common.Storage;
-    using Management.Storage.Models;
-    using Storage.Auth;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
-    using Utilities.Common;
-
     static class ServiceManagementBaseCmdletExtentions
     {
         /// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             }
             else
             {
-                var storageAccountName = cmdlet.CurrentSubscription.CurrentStorageAccountName;
+                var storageAccountName = cmdlet.CurrentContext.Subscription.GetProperty(AzureSubscription.Property.StorageAccount);
                 
                 if (!string.IsNullOrEmpty(storageAccountName))
                 {

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common
 {
-    using System;
-
     /// <summary>
     /// Define constants that are common for all DataService models.
     /// </summary>

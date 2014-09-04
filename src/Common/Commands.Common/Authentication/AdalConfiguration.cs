@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using System;
-    using System.Linq;
-
     /// <summary>
     /// Class storing the configuration information needed
     /// for ADAL to request token from the right AD tenant
@@ -28,8 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         // These constants define the default values to use for AD authentication
         // against RDFE
         //
-        private const string powershellClientId = "1950a258-227b-4e31-a9cf-717495945fc2";
-        private static readonly Uri powershellRedirectUri = new Uri("urn:ietf:wg:oauth:2.0:oob");
+        private const string PowerShellClientId = "1950a258-227b-4e31-a9cf-717495945fc2";
         private string adEndpoint = string.Empty;
 
         // Turn off endpoint validation for known test cluster AD endpoints
@@ -37,6 +36,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             "https://sts.login.windows-int.net/"
         };
+
+        public static readonly Uri PowerShellRedirectUri = new Uri("urn:ietf:wg:oauth:2.0:oob");
 
         // ID for site to pass to enable EBD (email-based differentiation)
         // This gets passed in the call to get the azure branding on the
@@ -61,24 +62,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         public AdalConfiguration()
         {
-            ClientId = powershellClientId;
-            ClientRedirectUri = powershellRedirectUri;
-        }
-
-        public AdalConfiguration(WindowsAzureEnvironment environment)
-            : this()
-        {
-            AdEndpoint = environment.ActiveDirectoryEndpoint != null ? environment.ActiveDirectoryEndpoint.TrimEnd('/') + '/' : null;
-            AdDomain = environment.ActiveDirectoryCommonTenantId;
-            ResourceClientUri = environment.ActiveDirectoryServiceEndpointResourceId;
-        }
-
-        public AdalConfiguration(WindowsAzureSubscription subscription)
-            : this()
-        {
-            AdEndpoint = subscription.ActiveDirectoryEndpoint != null ? subscription.ActiveDirectoryEndpoint.TrimEnd('/') + '/' : null;
-            AdDomain = subscription.ActiveDirectoryTenantId;
-            ResourceClientUri = subscription.ActiveDirectoryServiceEndpointResourceId;
+            ClientId = PowerShellClientId;
+            ClientRedirectUri = PowerShellRedirectUri;
         }
     }
 }

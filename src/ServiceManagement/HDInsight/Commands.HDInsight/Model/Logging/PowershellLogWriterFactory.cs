@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Logging
 {
-    using HDInsight.Logging;
-
     internal class PowershellLogWriterFactory : IBufferingLogWriterFactory
     {
         public IBufferingLogWriter Create()

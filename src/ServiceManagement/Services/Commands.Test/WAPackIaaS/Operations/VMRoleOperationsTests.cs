@@ -12,21 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-
-    [TestClass]
+    
     public class VMRoleOperationsTests
     {
         private const string genericBaseUri = "/CloudServices/{0}/Resources/MicrosoftCompute/VMRoles";
@@ -37,9 +37,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         private const string vmRoleLabel = "VMRole01-Label";
         private const string cloudServiceName = "CloudService01";
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldCreateOneVMRole()
         {
             var mockChannel = new MockRequestChannel();
@@ -61,58 +61,57 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmRoleOperations = new VMRoleOperations(new WebClientFactory(new Subscription(), mockChannel));
             var createdVMRole = vmRoleOperations.Create(cloudServiceName, vmRoleToCreate, out jobOut);
 
-            Assert.IsNotNull(createdVMRole);
-            Assert.IsInstanceOfType(createdVMRole, typeof(VMRole));
-            Assert.AreEqual(vmRoleToReturn.Name, createdVMRole.Name);
-            Assert.AreEqual(vmRoleToReturn.Label, createdVMRole.Label);
+            Assert.NotNull(createdVMRole);
+            Assert.Equal(vmRoleToReturn.Name, createdVMRole.Name);
+            Assert.Equal(vmRoleToReturn.Label, createdVMRole.Label);
 
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(1, requestList.Count);
-            Assert.AreEqual(HttpMethod.Post.ToString(), requestList[0].Item1.Method);
+            Assert.Equal(1, requestList.Count);
+            Assert.Equal(HttpMethod.Post.ToString(), requestList[0].Item1.Method);
 
             // Check the URI (for Azure consistency)
-            Assert.AreEqual(String.Format(genericBaseUri,cloudServiceName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(String.Format(genericBaseUri,cloudServiceName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneVMRole()
         {
             var mockChannel = new MockRequestChannel();
             mockChannel.AddReturnObject(new VMRole { Name = vmRoleName, Label = vmRoleLabel });
 
             var vmRoleOperations = new VMRoleOperations(new WebClientFactory(new Subscription(), mockChannel));
-            Assert.AreEqual(1, vmRoleOperations.Read(cloudServiceName).Count);
+            Assert.Equal(1, vmRoleOperations.Read(cloudServiceName).Count);
 
             // Check the URI (for Azure consistency)
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(2, requestList.Count);
-            Assert.AreEqual(String.Format(genericBaseUri, cloudServiceName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
-            Assert.AreEqual(String.Format(vmsUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(2, requestList.Count);
+            Assert.Equal(String.Format(genericBaseUri, cloudServiceName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(String.Format(vmsUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneVMRoleByName()
         {
             var mockChannel = new MockRequestChannel();
             mockChannel.AddReturnObject(new VMRole { Name = vmRoleName, Label = vmRoleLabel });
 
             var vmRoleOperations = new VMRoleOperations(new WebClientFactory(new Subscription(), mockChannel));
-            Assert.AreEqual(vmRoleName, vmRoleOperations.Read(cloudServiceName, vmRoleName).Name);
+            Assert.Equal(vmRoleName, vmRoleOperations.Read(cloudServiceName, vmRoleName).Name);
 
             // Check the URI (for Azure consistency)
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(2, requestList.Count);
-            Assert.AreEqual(String.Format(specificBaseUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
-            Assert.AreEqual(String.Format(vmsUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(2, requestList.Count);
+            Assert.Equal(String.Format(specificBaseUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(String.Format(vmsUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnMultipleVMRole()
         {
             const string vmRoleName01 = "VMRole01";
@@ -132,21 +131,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmRoleOperations = new VMRoleOperations(new WebClientFactory(new Subscription(), mockChannel));
             var vmRoleList = vmRoleOperations.Read(cloudServiceName);
 
-            Assert.AreEqual(vmRoles.Count, vmRoleList.Count);
-            Assert.IsTrue(vmRoleList[0].Name == vmRoleName01);
-            Assert.IsTrue(vmRoleList[1].Name == vmRoleName02);
+            Assert.Equal(vmRoles.Count, vmRoleList.Count);
+            Assert.True(vmRoleList[0].Name == vmRoleName01);
+            Assert.True(vmRoleList[1].Name == vmRoleName02);
 
             // Check the URI (for Azure consistency)
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(3, requestList.Count);
-            Assert.AreEqual(String.Format(genericBaseUri, cloudServiceName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
-            Assert.AreEqual(String.Format(vmsUri, cloudServiceName, vmRoleName01), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
-            Assert.AreEqual(String.Format(vmsUri, cloudServiceName, vmRoleName02), mockChannel.ClientRequests[2].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(3, requestList.Count);
+            Assert.Equal(String.Format(genericBaseUri, cloudServiceName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(String.Format(vmsUri, cloudServiceName, vmRoleName01), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(String.Format(vmsUri, cloudServiceName, vmRoleName02), mockChannel.ClientRequests[2].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnMultipleVMRoleVMs()
         {
             var mockChannel = new MockRequestChannel();
@@ -161,19 +160,19 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 
             var vmRoleOperations = new VMRoleOperations(new WebClientFactory(new Subscription(), mockChannel));
             var readVMRole = vmRoleOperations.Read(cloudServiceName, vmRoleName);
-            Assert.AreEqual(vmRoleName, readVMRole.Name);
-            Assert.AreEqual(vmList.Count, readVMRole.VMs.Count);
+            Assert.Equal(vmRoleName, readVMRole.Name);
+            Assert.Equal(vmList.Count, readVMRole.VMs.Count);
 
             // Check the URI (for Azure consistency)
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(2, requestList.Count);
-            Assert.AreEqual(String.Format(specificBaseUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
-            Assert.AreEqual(String.Format(vmsUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(2, requestList.Count);
+            Assert.Equal(String.Format(specificBaseUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(String.Format(vmsUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldDeleteVMRole()
         {
             var mockChannel = new MockRequestChannel();
@@ -183,23 +182,23 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmRoleOperations = new VMRoleOperations(new WebClientFactory(new Subscription(), mockChannel));
             vmRoleOperations.Delete(cloudServiceName, vmRoleName, out jobOut);
 
-            Assert.AreEqual(mockChannel.ClientRequests.Count, 1);
-            Assert.AreEqual(HttpMethod.Delete.ToString(), mockChannel.ClientRequests[0].Item1.Method);
+            Assert.Equal(mockChannel.ClientRequests.Count, 1);
+            Assert.Equal(HttpMethod.Delete.ToString(), mockChannel.ClientRequests[0].Item1.Method);
 
             // Check the URI (for Azure consistency)
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(1, requestList.Count);
-            Assert.AreEqual(String.Format(specificBaseUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(1, requestList.Count);
+            Assert.Equal(String.Format(specificBaseUri, cloudServiceName, vmRoleName), mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [TestCategory("WAPackIaaS-Negative")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
+        [Trait("Type", "WAPackIaaS-Negative")]
         public void ShouldReturnEmptyOnNoResult()
         {
             var vmRoleOperations = new VMRoleOperations(new WebClientFactory(new Subscription(), MockRequestChannel.Create()));
-            Assert.IsFalse(vmRoleOperations.Read().Any());
+            Assert.False(vmRoleOperations.Read().Any());
         }
     }
 }

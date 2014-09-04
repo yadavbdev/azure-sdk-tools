@@ -12,14 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Get, "WAPackCloudService", DefaultParameterSetName = WAPackCmdletParameterSets.Empty)]
     public class GetWAPackCloudService : IaaSCmdletBase
     {
@@ -33,14 +31,14 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
 
         public override void ExecuteCmdlet()
         {
-            IEnumerable<CloudService> results = null;
+            IEnumerable<Utilities.WAPackIaaS.DataContract.CloudService> results = null;
             var vmRoleOperations = new VMRoleOperations(this.WebClientFactory);
             var cloudServiceOperations = new CloudServiceOperations(this.WebClientFactory);
 
             if (this.ParameterSetName == WAPackCmdletParameterSets.FromName)
             {
                 var cloudService = cloudServiceOperations.Read(this.Name);
-                results = new List<CloudService>() { cloudService };
+                results = new List<Utilities.WAPackIaaS.DataContract.CloudService>() { cloudService };
             }
             else if (this.ParameterSetName == WAPackCmdletParameterSets.Empty)
             {

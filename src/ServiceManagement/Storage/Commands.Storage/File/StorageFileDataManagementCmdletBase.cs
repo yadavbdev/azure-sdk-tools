@@ -11,15 +11,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.File
 {
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-    using System.Threading.Tasks;
-
     public abstract class StorageFileDataManagementCmdletBase : AzureStorageFileCmdletBase
     {
         /// <summary>
