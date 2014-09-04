@@ -67,45 +67,53 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            var subscription = new AzureSubscription
-            {
-                Name = SubscriptionName,
-                Id = new Guid(SubscriptionId)
-            };
+            AzureSubscription subscription = null;
+            AzureEnvironment environment = null;
 
-            if (CurrentStorageAccountName != null)
+            if (!string.IsNullOrEmpty(SubscriptionName))
+            {
+                subscription = profileClient.GetSubscription(SubscriptionName);
+            }
+
+            if (!string.IsNullOrEmpty(SubscriptionId))
+            {
+                subscription = profileClient.GetSubscription(new Guid(SubscriptionId));
+            }
+
+            if (!string.IsNullOrEmpty(CurrentStorageAccountName))
             {
                 subscription.Properties[AzureSubscription.Property.StorageAccount] = CurrentStorageAccountName;
             }
+
             if (Certificate != null)
             {
                 ProfileClient.ImportCertificate(Certificate);
                 subscription.Account = Certificate.Thumbprint;
             }
 
-            AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);
-
-            if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
+            if (!string.IsNullOrEmpty(Environment))
             {
-                if (Environment == null)
-                {
-                    WriteWarning(
-                        "Please use Environment parameter to specify subscription environment. This warning will be converted into an error in the upcoming release.");
-                }
-                else
-                {
-                    environment = ProfileClient.Profile.Environments.Values
-                        .FirstOrDefault(e => e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == ServiceEndpoint 
-                            && e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == ResourceManagerEndpoint);
+                environment = profileClient.Profile.Environments.Values
+                    .FirstOrDefault(e => e.Name.Equals(Environment, StringComparison.OrdinalIgnoreCase));
+            }
+            else if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
+            {
+                WriteWarning("Please use Environment parameter to specify subscription environment. This warning will be converted into an error in the upcoming release.");
 
-                    if (environment == null)
-                    {
-                        throw new Exception("ServiceEndpoint and ResourceManagerEndpoint values do not match existing environment. Please use Environment parameter.");
-                    }
+                environment = ProfileClient.Profile.Environments.Values
+                    .FirstOrDefault(e => e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == ServiceEndpoint
+                    || e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == ResourceManagerEndpoint);
+
+                if (environment == null)
+                {
+                    throw new Exception("ServiceEndpoint and ResourceManagerEndpoint values do not match existing environment. Please use Environment parameter.");
                 }
             }
-           
-            subscription.Environment = environment.Name;
+
+            if (environment != null)
+            {
+                subscription.Environment = environment.Name;
+            }
 
             WriteObject(ProfileClient.AddOrSetSubscription(subscription));
         }
