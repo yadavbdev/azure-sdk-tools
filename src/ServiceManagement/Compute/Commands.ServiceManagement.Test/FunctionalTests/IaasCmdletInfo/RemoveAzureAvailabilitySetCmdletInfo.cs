@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Management.Automation;
-using Microsoft.WindowsAzure.Commands.Common.Utilities;
-
-namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    public class PSADObject
+    using Model;
+    using PowershellCore;
+
+    public class RemoveAzureAvailabilitySetCmdletInfo : CmdletsInfo
     {
-        public string DisplayName { get; set; }
-
-        public Guid Id { get; set; }
-
-        public string Type { get; set; }
+        public RemoveAzureAvailabilitySetCmdletInfo(PersistentVM vm)
+        {
+            base.cmdletName = Utilities.RemoveAzureAvailabilitySetCmdletName;
+            this.cmdletParams.Add(new CmdletParam("VM", vm));
+        }
     }
 }

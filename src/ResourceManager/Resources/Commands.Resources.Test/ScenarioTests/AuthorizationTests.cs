@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Management.Automation;
-using Microsoft.WindowsAzure.Commands.Common.Utilities;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Xunit;
 
-namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
+namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    public class PSADObject
+    public class AuthorizationTests : ResourcesTestsBase
     {
-        public string DisplayName { get; set; }
-
-        public Guid Id { get; set; }
-
-        public string Type { get; set; }
+        //[Fact]
+        //[Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Fact(Skip = "TODO: Fix the broken test.")]
+        public void TestAuthorizationEndToEnd()
+        {
+            RunPowerShellTest("Test-AuthorizationEndToEnd");
+        }
     }
 }

@@ -148,7 +148,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureServiceManagement;
 
-            var account = client.AddAccount(new UserCredentials { UserName = "test" }, AzureEnvironment.PublicEnvironments[ EnvironmentName.AzureCloud]);
+            var account = client.AddAccount(new AzureAccount { Id = "test", Type = AzureAccount.AccountType.User }, AzureEnvironment.PublicEnvironments[ EnvironmentName.AzureCloud], null);
 
             Assert.Equal("test", account.Id);
             Assert.Equal(3, account.GetSubscriptions(client.Profile).Count);
@@ -167,7 +167,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.AddAccount(new UserCredentials { UserName = "test" }, AzureEnvironment.PublicEnvironments[ EnvironmentName.AzureCloud]);
+            var account = client.AddAccount(new AzureAccount { Id = "test", Type = AzureAccount.AccountType.User }, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud], null);
 
             Assert.Equal("test", account.Id);
             Assert.Equal(3, account.GetSubscriptions(client.Profile).Count);

@@ -65,6 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         // AzureAvailablitySet
         public const string SetAzureAvailabilitySetCmdletName = "Set-AzureAvailabilitySet";
+        public const string RemoveAzureAvailabilitySetCmdletName = "Remove-AzureAvailabilitySet";
 
         // AzureCertificate & AzureCertificateSetting
         public const string AddAzureCertificateCmdletName = "Add-AzureCertificate";
@@ -574,7 +575,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     {
                         Console.WriteLine("{0} error occurs! retrying ...", errorMessage);
                         Console.WriteLine(e.InnerException.ToString());
-                        Thread.Sleep(intervalSeconds * 1000);
+                        Thread.Sleep(TimeSpan.FromSeconds(intervalSeconds));
                         i++;
                         continue;
                     }
