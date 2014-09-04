@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             if (!string.IsNullOrEmpty(accountType))
             {
-                this.cmdletParams.Add(new CmdletParam("AccountType", accountType));
+                this.cmdletParams.Add(new CmdletParam("Type", accountType));
             }
         }
     }

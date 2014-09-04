@@ -24,6 +24,7 @@ using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.Profile.Models;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model;
@@ -830,36 +831,37 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         #region AzureSubscription
 
-        public Collection<AzureSubscription> GetAzureSubscription()
+        public Collection<PSAzureSubscriptionExtended> GetAzureSubscription()
         {
-            return RunPSCmdletAndReturnAll<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, false, false));
+            return RunPSCmdletAndReturnAll<PSAzureSubscriptionExtended>(new GetAzureSubscriptionCmdletInfo(null, null, true, false, false));
         }
 
-        public AzureSubscription GetAzureSubscription(string subscriptionName)
+        public PSAzureSubscriptionExtended GetAzureSubscription(string subscriptionName)
         {
-            return RunPSCmdletAndReturnFirst<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(subscriptionName, null, false, false, false));
+            return RunPSCmdletAndReturnFirst<PSAzureSubscriptionExtended>(new GetAzureSubscriptionCmdletInfo(subscriptionName, null, true, false, false));
         }
 
-        public AzureSubscription GetCurrentAzureSubscription()
+        public PSAzureSubscriptionExtended GetCurrentAzureSubscription()
         {
-            return RunPSCmdletAndReturnFirst<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, true, false));
+            return RunPSCmdletAndReturnFirst<PSAzureSubscriptionExtended>(new GetAzureSubscriptionCmdletInfo(null, null, true, true, false));
         }
 
-        public AzureSubscription GetDefaultAzureSubscription()
+        public PSAzureSubscriptionExtended GetDefaultAzureSubscription()
         {
-            return RunPSCmdletAndReturnFirst<AzureSubscription>(new GetAzureSubscriptionCmdletInfo(null, null, false, false, true));
+            return RunPSCmdletAndReturnFirst<PSAzureSubscriptionExtended>(new GetAzureSubscriptionCmdletInfo(null, null, true, false, true));
         }
 
-        public AzureSubscription SetAzureSubscription(string subscriptionName, string currentStorageAccountName, bool debug = false)
+        public PSAzureSubscriptionExtended SetAzureSubscription(string subscriptionName, string subscriptionId, string currentStorageAccountName, bool debug = false)
         {
-            var setAzureSubscriptionCmdlet = new SetAzureSubscriptionCmdletInfo(subscriptionName, currentStorageAccountName);
+            var setAzureSubscriptionCmdlet = new SetAzureSubscriptionCmdletInfo(subscriptionName, subscriptionId, currentStorageAccountName);
+            SelectAzureSubscription(subscriptionName);
             var azurePowershellCmdlet = new WindowsAzurePowershellCmdlet(setAzureSubscriptionCmdlet);
             azurePowershellCmdlet.Run(debug);
 
-            Collection<AzureSubscription> subscriptions = GetAzureSubscription();
-            foreach (AzureSubscription subscription in subscriptions)
+            Collection<PSAzureSubscriptionExtended> subscriptions = GetAzureSubscription();
+            foreach (PSAzureSubscriptionExtended subscription in subscriptions)
             {
-                if (subscription.Name == subscriptionName)
+                if (subscription.SubscriptionName == subscriptionName)
                 {
                     return subscription;
                 }
@@ -867,14 +869,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return null;
         }
 
-        public AzureSubscription SetDefaultAzureSubscription(string subscriptionName, bool debug = false)
+        public PSAzureSubscriptionExtended SetDefaultAzureSubscription(string subscriptionName, bool debug = false)
         {
             SelectAzureSubscription(subscriptionName);
 
-            Collection<AzureSubscription> subscriptions = GetAzureSubscription();
-            foreach (AzureSubscription subscription in subscriptions)
+            Collection<PSAzureSubscriptionExtended> subscriptions = GetAzureSubscription();
+            foreach (PSAzureSubscriptionExtended subscription in subscriptions)
             {
-                if (subscription.Name == subscriptionName)
+                if (subscription.SubscriptionName == subscriptionName)
                 {
                     return subscription;
                 }
@@ -882,9 +884,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return null;
         }
 
-        public bool SelectAzureSubscription(string subscriptionName, bool clear = false, string subscriptionDataFile = null)
+        public AzureSubscription SelectAzureSubscription(string subscriptionName, bool clear = false, string subscriptionDataFile = null)
         {
-            return RunPSCmdletAndReturnFirst<bool>(new SelectAzureSubscriptionCmdletInfo(subscriptionName, clear, subscriptionDataFile));
+            return RunPSCmdletAndReturnFirst<AzureSubscription>(new SelectAzureSubscriptionCmdletInfo(subscriptionName, clear, subscriptionDataFile));
         }
 
         #endregion
@@ -1957,7 +1959,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         #endregion AzureVMDscExtensionCmdlets
 
-		internal SM.LinuxProvisioningConfigurationSet.SSHPublicKey NewAzureSSHKey(NewAzureSshKeyType option, string fingerprint, string path)
+        internal SM.LinuxProvisioningConfigurationSet.SSHPublicKey NewAzureSSHKey(NewAzureSshKeyType option, string fingerprint, string path)
         {
             return RunPSCmdletAndReturnFirst<SM.LinuxProvisioningConfigurationSet.SSHPublicKey>(new NewAzureSSHKeyCmdletInfo(option, fingerprint, path));
         }
