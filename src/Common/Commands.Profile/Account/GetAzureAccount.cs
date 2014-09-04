@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
 using System.Collections.Generic;
@@ -37,16 +38,9 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         public override void ExecuteCmdlet()
         {
             IEnumerable<AzureAccount> accounts = profileClient.ListAccounts(Name);
-            List<PSObject> output = new List<PSObject>();
+            List<PSAzureAccount> output = new List<PSAzureAccount>();
             foreach (AzureAccount account in accounts) {
-                string subscriptionsList = account.GetProperty(AzureAccount.Property.Subscriptions);
-                string tenantsList = account.GetProperty(AzureAccount.Property.Tenants);
-                output.Add(base.ConstructPSObject(
-                    "Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount",
-                    "Id", account.Id,
-                    "Type", account.Type,
-                    "Subscriptions", subscriptionsList == null ? "" : subscriptionsList.Replace(",", "\r\n"),
-                    "Tenants", tenantsList == null ? "" : tenantsList.Replace(",", "\r\n")));
+                output.Add(account.ToPSAzureAccount());
             }
             WriteObject(output, true);
         }

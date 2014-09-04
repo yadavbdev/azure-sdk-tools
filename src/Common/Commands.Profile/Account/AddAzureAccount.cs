@@ -14,6 +14,7 @@
 
 using System.Management.Automation;
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -96,12 +97,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     WriteWarning(string.Format(Resources.NoSubscriptionAddedMessage, azureAccount.Id));
                 }
 
-                WriteObject(base.ConstructPSObject(
-                    "Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount",
-                    "Id", account.Id,
-                    "Type", account.Type,
-                    "Subscriptions", subscriptionsList == null ? "" : subscriptionsList.Replace(",", "\r\n"),
-                    "Tenants", tenantsList == null ? "" : tenantsList.Replace(",", "\r\n")));
+                WriteObject(account.ToPSAzureAccount());
             } 
         }
     }
