@@ -59,14 +59,16 @@ TypesToProcess = @()
 # Format files (.ps1xml) to be loaded when importing this module
 FormatsToProcess = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.format.ps1xml',
-    '.\Tags\Microsoft.Azure.Commands.Tags.format.ps1xml'
+    '.\Tags\Microsoft.Azure.Commands.Tags.format.ps1xml',
+	'.\RedisCache\Microsoft.Azure.Commands.RedisCache.format.ps1xml'
 )
 
 # Modules to import as nested modules of the module specified in ModuleToProcess
 NestedModules = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.dll',
     '.\Resources\Microsoft.WindowsAzure.Commands.Profile.dll',
-    '.\Tags\Microsoft.Azure.Commands.Tags.dll'
+    '.\Tags\Microsoft.Azure.Commands.Tags.dll',
+	'.\RedisCache\Microsoft.Azure.Commands.RedisCache.dll'
 )
 
 # Functions to export from this module
