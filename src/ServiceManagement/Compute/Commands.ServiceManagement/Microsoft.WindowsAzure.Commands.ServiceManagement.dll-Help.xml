@@ -1446,7 +1446,7 @@
                    Add-AzureProvisioningConfig
 		</command:name>
 		<maml:description>
-			<maml:para>Adds the provisioning configuration to a Windows Azure virtual machine.</maml:para>
+			<maml:para>Adds the provisioning configuration to a Microsoft Azure virtual machine.</maml:para>
 		</maml:description>
 		<maml:copyright>
 			<maml:para></maml:para>
@@ -16377,13 +16377,11 @@ Get-AzureVMImage `
         <maml:para>Shuts down a Microsoft Azure virtual machine.</maml:para>
       </maml:description>
       <maml:copyright>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:copyright>
       <command:verb>Stop</command:verb>
       <command:noun>AzureVM</command:noun>
-      <dev:version>
-      </dev:version>
+      <dev:version></dev:version>
     </command:details>
     <maml:description>
       <maml:para>The Stop-AzureVM cmdlet requests a shutdown of a virtual machine.</maml:para>
@@ -16402,7 +16400,11 @@ Get-AzureVMImage `
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Specifies the name of the virtual machine to shut down.</maml:para>
+            <maml:para>
+              Specifies the name of the virtual machine to shut down.
+
+              Use a wildcard &quot;*&quot; to stop multiple VMs asynchronously. With a wild card, Stop-AzureVM cmdlet calls ShutdownRoles operation (http://msdn.microsoft.com/en-us/library/azure/dn469421.aspx), instead of ShutdownRole operation (http://msdn.microsoft.com/en-us/library/azure/jj157195.aspx ).
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -16417,6 +16419,13 @@ Get-AzureVMImage `
           <maml:description>
             <maml:para>Allows the deallocation of last VM in a deployment.</maml:para>
           </maml:description>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+          <maml:name>PipelineVariable</maml:name>
+          <maml:description>
+            <maml:para>Not Specified</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
@@ -16447,88 +16456,112 @@ Get-AzureVMImage `
           </maml:description>
           <command:parameterValue required="true" variableLength="false">PersistentVM</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+          <maml:name>PipelineVariable</maml:name>
+          <maml:description>
+            <maml:para>Not Specified</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <!-- Cmdlet parameter section  -->
     <command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="4">
+        <maml:name>Force</maml:name>
+        <maml:description>
+          <maml:para>Allows the deallocation of last VM in a deployment.</maml:para>
+
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri/>
+        </dev:type>
+        <dev:defaultValue></dev:defaultValue>
+      </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>Specifies the name of the virtual machine to shut down.</maml:para>
+          <maml:para>
+            Specifies the name of the virtual machine to shut down.
+
+            Use a wildcard &quot;*&quot; to stop multiple VMs asynchronously. With a wild card, Stop-AzureVM cmdlet calls ShutdownRoles operation (http://msdn.microsoft.com/en-us/library/azure/dn469421.aspx), instead of ShutdownRole operation (http://msdn.microsoft.com/en-us/library/azure/jj157195.aspx ).
+          </maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>PipelineVariable</maml:name>
+        <maml:description>
+          <maml:para>Not Specified</maml:para>
+
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri/>
+        </dev:type>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
         <maml:name>ServiceName</maml:name>
         <maml:description>
           <maml:para>Specifies the name of the Microsoft Azure service that contains the virtual machine to shut down.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-        <maml:name>VM</maml:name>
-        <maml:description>
-          <maml:para>Specifies a virtual machine object that identifies the virtual machine to shut down.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">PersistentVM</command:parameterValue>
-        <dev:type>
-          <maml:name>PersistentVM</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="3">
         <maml:name>StayProvisioned</maml:name>
         <maml:description>
           <maml:para>Keeps the VM provisioned.</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="4">
-        <maml:name>Force</maml:name>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>VM</maml:name>
         <maml:description>
-          <maml:para>Allows the deallocation of last VM in a deployment.</maml:para>
+          <maml:para>Specifies a virtual machine object that identifies the virtual machine to shut down.</maml:para>
+
         </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">PersistentVM</command:parameterValue>
         <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:name>PersistentVM</maml:name>
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <!-- Input - Output section-->
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>
-          </maml:name>
-          <maml:uri />
+          <maml:name></maml:name>
+          <maml:uri/>
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:inputType>
@@ -16536,14 +16569,14 @@ Get-AzureVMImage `
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>
-          </maml:name>
+          <maml:name></maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:returnValue>
@@ -16553,19 +16586,19 @@ Get-AzureVMImage `
     <command:nonTerminatingErrors />
     <!-- Notes section  -->
     <maml:alertSet>
-      <maml:title>
-      </maml:title>
+      <maml:title></maml:title>
       <maml:alert>
         <maml:para>
+
         </maml:para>
       </maml:alert>
       <maml:alert>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
     <!-- Example section  -->
     <command:examples>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 1 --------------------------
@@ -16574,28 +16607,24 @@ Get-AzureVMImage `
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
-          Stop-AzureVM -ServiceName "myservice1" -Name "MyVM"
+          Stop-AzureVM -ServiceName &quot;myservice1&quot; -Name &quot;MyVM&quot;
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
-          <maml:para>This command shuts down the "MyVM" virtual machine running in the "myservice1" Microsoft Azure service and deprovisions it. If it is the last VM in deployment, then confirmation pop-up window is displayed with a warning that deprovisioning will cause loss deployment VIP.</maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para>This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Microsoft Azure service and deprovisions it. If it is the last VM in deployment, then confirmation pop-up window is displayed with a warning that deprovisioning will cause loss deployment VIP.</maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 2 --------------------------
@@ -16604,28 +16633,26 @@ Get-AzureVMImage `
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
-          Get-AzureVM -ServiceName "myservice1" -Name "MyVM" | Stop-AzureVM
+          Get-AzureVM -ServiceName &quot;myservice1&quot; -Name &quot;MyVM&quot; | Stop-AzureVM
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
-          <maml:para>This command retrieves the virtual machine object for the VM whose name is "MyVM" and then shuts it down and deprovisions it. If it is the last VM in deployment, then confirmation pop-up window is displayed with a warning that deprovisioning will cause loss deployment VIP.</maml:para>
           <maml:para>
+            This command retrieves the virtual machine object for the VM whose name is &quot;MyVM&quot; and then shuts it down and deprovisions it. If it is the last VM in deployment, then confirmation pop-up window is displayed with a warning that deprovisioning will cause loss deployment VIP.
           </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 3 --------------------------
@@ -16634,28 +16661,26 @@ Get-AzureVMImage `
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
-          Stop-AzureVM -ServiceName "myservice1" -Name "MyVM" -StayProvisioned
+          Stop-AzureVM -ServiceName &quot;myservice1&quot; -Name &quot;MyVM&quot; -StayProvisioned
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
-          <maml:para>This command shuts down the "MyVM" virtual machine running in the "myservice1" Microsoft Azure service and keeps the VM provisioned.</maml:para>
           <maml:para>
+            This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Microsoft Azure service and keeps the VM provisioned.
           </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 4 --------------------------
@@ -16664,25 +16689,46 @@ Get-AzureVMImage `
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
-          Stop-AzureVM -ServiceName "myservice1" -Name "MyVM" -Force
+          Stop-AzureVM -ServiceName &quot;myservice1&quot; -Name &quot;MyVM&quot; -Force
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
-          <maml:para>This command shuts down the "MyVM" virtual machine running in the "myservice1" Microsoft Azure service even if it is the last VM in the deployment.</maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para>This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Microsoft Azure service even if it is the last VM in the deployment.</maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+
+      <command:example>
+        <maml:title>
+          -------------------------- EXAMPLE 5 --------------------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+        </maml:introduction>
+        <dev:code>
+          Stop-AzureVM -ServiceName &quot;PSTestService&quot; -Name &quot;*&quot; -Force
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Description</maml:para>
+          <maml:para>-----------</maml:para>
+          <maml:para>This command shuts down multiple VMs asynchronously in the &quot;PSTestService&quot;</maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
@@ -16690,27 +16736,12 @@ Get-AzureVMImage `
     <!-- Link section  -->
     <maml:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>Get-AzureVM</maml:linkText>
-        <maml:uri />
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Remove-AzureVM</maml:linkText>
-        <maml:uri />
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Restart-AzureVM</maml:linkText>
-        <maml:uri />
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Start-AzureVM</maml:linkText>
-        <maml:uri />
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Update-AzureVM</maml:linkText>
-        <maml:uri />
+        <maml:linkText></maml:linkText>
+        <maml:uri/>
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
       <command:name>Update-AzureDisk</command:name>
@@ -29636,13 +29667,11 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <maml:para>This cmdlet sets resource extensions for VMs.</maml:para>
       </maml:description>
       <maml:copyright>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:copyright>
       <command:verb>Set</command:verb>
       <command:noun>AzureVMExtension</command:noun>
-      <dev:version>
-      </dev:version>
+      <dev:version></dev:version>
     </command:details>
     <maml:description>
       <maml:para>This cmdlet sets resource extensions for VMs.</maml:para>
@@ -29675,8 +29704,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
           <maml:name>VM</maml:name>
           <maml:description>
-            <maml:para>
-            </maml:para>
+            <maml:para></maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         </command:parameter>
@@ -29712,8 +29740,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
           <maml:name>VM</maml:name>
           <maml:description>
-            <maml:para>
-            </maml:para>
+            <maml:para></maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         </command:parameter>
@@ -29730,7 +29757,11 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -29744,8 +29775,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
           <maml:name>VM</maml:name>
           <maml:description>
-            <maml:para>
-            </maml:para>
+            <maml:para></maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         </command:parameter>
@@ -29776,8 +29806,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
           <maml:name>VM</maml:name>
           <maml:description>
-            <maml:para>
-            </maml:para>
+            <maml:para></maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         </command:parameter>
@@ -29796,172 +29825,175 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <maml:name>Disable</maml:name>
         <maml:description>
           <maml:para>To Set the Extension State to 'Disable'.</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
         <maml:name>ExtensionName</maml:name>
         <maml:description>
           <maml:para>The Extension Name.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
         <maml:name>PipelineVariable</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="4">
         <maml:name>PrivateConfigPath</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="4">
         <maml:name>PrivateConfiguration</maml:name>
         <maml:description>
           <maml:para>The private configuration text.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
         <maml:name>PublicConfigPath</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
         <maml:name>PublicConfiguration</maml:name>
         <maml:description>
           <maml:para>The public configuration text.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
         <maml:name>Publisher</maml:name>
         <maml:description>
           <maml:para>The Extension's Publisher.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
         <maml:name>ReferenceName</maml:name>
         <maml:description>
-          <maml:para>The extension's reference name.</maml:para>
+          <maml:para>
+            The extension's reference name.
+
+            This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+          </maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="6">
         <maml:name>Uninstall</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="4">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>The Extension Version.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
         <maml:name>VM</maml:name>
         <maml:description>
-          <maml:para>
-          </maml:para>
+          <maml:para></maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         <dev:type>
           <maml:name>IPersistentVM</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <!-- Input - Output section-->
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>
-          </maml:name>
-          <maml:uri />
+          <maml:name></maml:name>
+          <maml:uri/>
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:inputType>
@@ -29969,14 +30001,14 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>
-          </maml:name>
+          <maml:name></maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:returnValue>
@@ -29986,19 +30018,19 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:nonTerminatingErrors />
     <!-- Notes section  -->
     <maml:alertSet>
-      <maml:title>
-      </maml:title>
+      <maml:title></maml:title>
       <maml:alert>
         <maml:para>
+
         </maml:para>
       </maml:alert>
       <maml:alert>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
     <!-- Example section  -->
     <command:examples>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 1 --------------------------
@@ -30014,19 +30046,14 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
           <maml:para>
             Description
           </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
@@ -30034,12 +30061,12 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <!-- Link section  -->
     <maml:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>
-        </maml:linkText>
-        <maml:uri />
+        <maml:linkText></maml:linkText>
+        <maml:uri/>
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
     <command:details>
       <command:name>
@@ -30791,16 +30818,18 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         Set-AzureVMBGInfoExtension
       </command:name>
       <maml:description>
-        <maml:para>This cmdlet sets the BGInfo extension for the VM.</maml:para>
+        <maml:para>
+          This cmdlet sets the BGInfo extension for the VM.
+
+          This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+        </maml:para>
       </maml:description>
       <maml:copyright>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:copyright>
       <command:verb>Set</command:verb>
       <command:noun>AzureVMBGInfoExtension</command:noun>
-      <dev:version>
-      </dev:version>
+      <dev:version></dev:version>
     </command:details>
     <maml:description>
       <maml:para>This cmdlet sets the BGInfo extension for the VM.</maml:para>
@@ -30818,7 +30847,11 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -30855,7 +30888,11 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -30888,93 +30925,97 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <maml:name>Disable</maml:name>
         <maml:description>
           <maml:para>To Set the Extension State to 'Disable'.</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
         <maml:name>PipelineVariable</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
         <maml:name>ReferenceName</maml:name>
         <maml:description>
-          <maml:para>The extension's reference name.</maml:para>
+          <maml:para>
+            The extension's reference name.
+
+            This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+          </maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
         <maml:name>Uninstall</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="4">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>The Extension Version.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
         <maml:name>VM</maml:name>
         <maml:description>
           <maml:para>The persistent VM object.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         <dev:type>
           <maml:name>IPersistentVM</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <!-- Input - Output section-->
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>
-          </maml:name>
-          <maml:uri />
+          <maml:name></maml:name>
+          <maml:uri/>
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:inputType>
@@ -30982,14 +31023,14 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>
-          </maml:name>
+          <maml:name></maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:returnValue>
@@ -30999,19 +31040,19 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:nonTerminatingErrors />
     <!-- Notes section  -->
     <maml:alertSet>
-      <maml:title>
-      </maml:title>
+      <maml:title></maml:title>
       <maml:alert>
         <maml:para>
+
         </maml:para>
       </maml:alert>
       <maml:alert>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
     <!-- Example section  -->
     <command:examples>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 1 --------------------------
@@ -31027,19 +31068,14 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
           <maml:para>
             Description
           </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
@@ -31047,12 +31083,12 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <!-- Link section  -->
     <maml:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>
-        </maml:linkText>
-        <maml:uri />
+        <maml:linkText></maml:linkText>
+        <maml:uri/>
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
     <command:details>
       <command:name>
@@ -31338,13 +31374,11 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <maml:para>This cmdlet sets the VMAccess extension for the VM.</maml:para>
       </maml:description>
       <maml:copyright>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:copyright>
       <command:verb>Set</command:verb>
       <command:noun>AzureVMAccessExtension</command:noun>
-      <dev:version>
-      </dev:version>
+      <dev:version></dev:version>
     </command:details>
     <maml:description>
       <maml:para>This cmdlet sets the VMAccess extension for the VM.</maml:para>
@@ -31416,7 +31450,11 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -31449,119 +31487,123 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <maml:name>Disable</maml:name>
         <maml:description>
           <maml:para>To Set the Extension State to 'Disable'.</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
         <maml:name>Password</maml:name>
         <maml:description>
           <maml:para>The password for resetting the VM's credential.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
         <maml:name>PipelineVariable</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
         <maml:name>ReferenceName</maml:name>
         <maml:description>
-          <maml:para>The extension's reference name.</maml:para>
+          <maml:para>
+            The extension's reference name.
+
+            This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+          </maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
         <maml:name>Uninstall</maml:name>
         <maml:description>
           <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
         <maml:name>UserName</maml:name>
         <maml:description>
           <maml:para>The user name for resetting the VM's credential.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="4">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>The Extension Version.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
         <maml:name>VM</maml:name>
         <maml:description>
           <maml:para>The persistent VM object.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         <dev:type>
           <maml:name>IPersistentVM</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <!-- Input - Output section-->
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>
-          </maml:name>
-          <maml:uri />
+          <maml:name></maml:name>
+          <maml:uri/>
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:inputType>
@@ -31569,14 +31611,14 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>
-          </maml:name>
+          <maml:name></maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:returnValue>
@@ -31586,19 +31628,19 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:nonTerminatingErrors />
     <!-- Notes section  -->
     <maml:alertSet>
-      <maml:title>
-      </maml:title>
+      <maml:title></maml:title>
       <maml:alert>
         <maml:para>
+
         </maml:para>
       </maml:alert>
       <maml:alert>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
     <!-- Example section  -->
     <command:examples>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 1 --------------------------
@@ -31614,19 +31656,14 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
           <maml:para>
             Description
           </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
@@ -31634,12 +31671,12 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <!-- Link section  -->
     <maml:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>
-        </maml:linkText>
-        <maml:uri />
+        <maml:linkText></maml:linkText>
+        <maml:uri/>
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
     <command:details>
       <command:name>
@@ -31925,13 +31962,11 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
         <maml:para>This cmdlet sets the Puppet extension for the VM.</maml:para>
       </maml:description>
       <maml:copyright>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:copyright>
       <command:verb>Set</command:verb>
       <command:noun>AzureVMPuppetExtension</command:noun>
-      <dev:version>
-      </dev:version>
+      <dev:version></dev:version>
     </command:details>
     <maml:description>
       <maml:para>This cmdlet sets the Puppet extension for the VM.</maml:para>
@@ -31940,122 +31975,150 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Set-AzureVMPuppetExtension</maml:name>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
           <maml:name>PuppetMasterServer</maml:name>
           <maml:description>
-            <maml:para>The FQDN of puppet master server.</maml:para>
+            <maml:para>The FQDN of puppet master server..</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-          <maml:name>Disable</maml:name>
-          <maml:description>
-            <maml:para>To Set the Extension State to 'Disable'.</maml:para>
-          </maml:description>
-        </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-          <maml:name>ReferenceName</maml:name>
-          <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>The Extension Version.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="4">
+          <maml:name>Disable</maml:name>
+          <maml:description>
+            <maml:para>To Set the Extension State to 'Disable'.</maml:para>
+          </maml:description>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="7">
+          <maml:name>ReferenceName</maml:name>
+          <maml:description>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
           <maml:name>VM</maml:name>
           <maml:description>
             <maml:para>The persistent VM object.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+          <maml:name>PipelineVariable</maml:name>
+          <maml:description>
+            <maml:para>Not Specified</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <!-- Cmdlet parameter section  -->
     <command:parameters>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-        <maml:name>PuppetMasterServer</maml:name>
-        <maml:description>
-          <maml:para>The FQDN of puppet master server..</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="4">
         <maml:name>Disable</maml:name>
         <maml:description>
           <maml:para>To Set the Extension State to 'Disable'.</maml:para>
+
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
           <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-        <maml:name>ReferenceName</maml:name>
+        <maml:name>PipelineVariable</maml:name>
         <maml:description>
-          <maml:para>The extension's reference name.</maml:para>
+          <maml:para>Not Specified</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
+        <maml:name>PuppetMasterServer</maml:name>
+        <maml:description>
+          <maml:para>The FQDN of puppet master server..</maml:para>
+
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri/>
+        </dev:type>
+        <dev:defaultValue></dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="7">
+        <maml:name>ReferenceName</maml:name>
+        <maml:description>
+          <maml:para>
+            The extension's reference name.
+
+            This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+          </maml:para>
+
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        <dev:type>
+          <maml:name>string</maml:name>
+          <maml:uri/>
+        </dev:type>
+        <dev:defaultValue></dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="3">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>The Extension Version.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
           <maml:name>string</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
         <maml:name>VM</maml:name>
         <maml:description>
           <maml:para>The persistent VM object.</maml:para>
+
         </maml:description>
         <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
         <dev:type>
           <maml:name>IPersistentVM</maml:name>
-          <maml:uri />
+          <maml:uri/>
         </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
+        <dev:defaultValue></dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <!-- Input - Output section-->
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>
-          </maml:name>
-          <maml:uri />
+          <maml:name></maml:name>
+          <maml:uri/>
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:inputType>
@@ -32063,14 +32126,14 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>
-          </maml:name>
+          <maml:name></maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
         <maml:description>
           <maml:para>
             <!-- description  -->
+
           </maml:para>
         </maml:description>
       </command:returnValue>
@@ -32080,19 +32143,19 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:nonTerminatingErrors />
     <!-- Notes section  -->
     <maml:alertSet>
-      <maml:title>
-      </maml:title>
+      <maml:title></maml:title>
       <maml:alert>
         <maml:para>
+
         </maml:para>
       </maml:alert>
       <maml:alert>
-        <maml:para>
-        </maml:para>
+        <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
     <!-- Example section  -->
     <command:examples>
+
       <command:example>
         <maml:title>
           -------------------------- EXAMPLE 1 --------------------------
@@ -32101,25 +32164,21 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
-          Set-AzureVMPuppetExtension -VM $vm;
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
-          <maml:para>This cmdlet sets the Puppet extension for the VM.</maml:para>
           <maml:para>
+            Description
           </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
-          <maml:para>
-          </maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
+          <maml:para></maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
-            <command:commandText>
-            </command:commandText>
+            <command:commandText></command:commandText>
           </command:commandLine>
         </command:commandLines>
       </command:example>
@@ -32127,9 +32186,8 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <!-- Link section  -->
     <maml:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>
-        </maml:linkText>
-        <maml:uri />
+        <maml:linkText></maml:linkText>
+        <maml:uri/>
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
@@ -32437,7 +32495,11 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -32474,7 +32536,11 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -32547,7 +32613,11 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -32592,7 +32662,11 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
           <maml:name>ReferenceName</maml:name>
           <maml:description>
-            <maml:para>The extension's reference name.</maml:para>
+            <maml:para>
+              The extension's reference name.
+
+              This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+            </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -32708,7 +32782,11 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
         <maml:name>ReferenceName</maml:name>
         <maml:description>
-          <maml:para>The extension's reference name.</maml:para>
+          <maml:para>
+            The extension's reference name.
+
+            This is a user-defined string that can be used to refer to an extension. It is specified when the extension is added to the VM for the first time. For subsequent updates, user should specify the previously used reference name while updating the extension. The ReferenceName assigned to an extension will be returned using the Get-AzureVM cmdlet.
+          </maml:para>
 
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -32923,11 +33001,6 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
-
-
-
-
-
 
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
     <command:details>
