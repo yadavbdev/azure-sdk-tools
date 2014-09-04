@@ -129,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             // Update AzureAccount
             foreach (var subscription in mergedSubscriptions)
             {
-                Profile.Subscriptions[subscription.Id] = subscription;
+                AddOrSetSubscription(subscription);
             }
 
             // If credentials.UserName is null the login failed
@@ -144,7 +144,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 // Set default account to credentials.UserName
                 foreach (var subscription in subscriptionsFromServer)
                 {
-                    Profile.Subscriptions[subscription.Id].Account = account.Id;
+                    subscription.Account = account.Id;
+                    AddOrSetSubscription(subscription);
                 }
 
                 // Add the account to the profile
@@ -303,12 +304,20 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (Profile.Subscriptions.ContainsKey(subscription.Id))
             {
-                Profile.Subscriptions[subscription.Id] = MergeSubscriptionProperties(Profile.Subscriptions[subscription.Id], subscription);
+                Profile.Subscriptions[subscription.Id] = MergeSubscriptionProperties(subscription, Profile.Subscriptions[subscription.Id]);
             }
             else
             {
                 Profile.Subscriptions[subscription.Id] = subscription;
             }
+
+            // Update in-memory subscription
+            if (AzureSession.CurrentContext != null && AzureSession.CurrentContext.Subscription != null &&
+                AzureSession.CurrentContext.Subscription.Id == subscription.Id)
+            {
+                AzureSession.SetCurrentContext(Profile.Subscriptions[subscription.Id], null, null);
+            }
+
             return Profile.Subscriptions[subscription.Id];
         }
 
@@ -383,7 +392,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             // Update back Profile.Subscriptions
             foreach (var subscription in mergedSubscriptions)
             {
-                Profile.Subscriptions[subscription.Id] = subscription;
+                AddOrSetSubscription(subscription);
             }
 
             return Profile.Subscriptions.Values.ToList();
@@ -872,12 +881,20 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (Profile.Environments.ContainsKey(environment.Name))
             {
-                Profile.Environments[environment.Name] = 
-                    MergeEnvironmentProperties(Profile.Environments[environment.Name], environment);
+                Profile.Environments[environment.Name] =
+                    MergeEnvironmentProperties(environment, Profile.Environments[environment.Name]);
             }
             else
             {
                 Profile.Environments[environment.Name] = environment;
+            }
+
+            // Update in-memory environment
+            if (AzureSession.CurrentContext != null && AzureSession.CurrentContext.Environment != null &&
+                AzureSession.CurrentContext.Environment.Name == environment.Name)
+            {
+                AzureSession.SetCurrentContext(AzureSession.CurrentContext.Subscription, Profile.Environments[environment.Name], 
+                    AzureSession.CurrentContext.Account);
             }
 
             return Profile.Environments[environment.Name];

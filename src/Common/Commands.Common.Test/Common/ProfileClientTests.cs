@@ -509,6 +509,42 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
+        public void AddOrSetAzureSubscriptionUpdatesInMemory()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            AzureSession.SetCurrentContext(azureSubscription1, azureEnvironment, azureAccount);
+            azureSubscription1.Properties[AzureSubscription.Property.StorageAccount] = "testAccount";
+            Assert.Equal(azureSubscription1.Id, AzureSession.CurrentContext.Subscription.Id);
+            Assert.Equal(azureSubscription1.Properties[AzureSubscription.Property.StorageAccount],
+                AzureSession.CurrentContext.Subscription.Properties[AzureSubscription.Property.StorageAccount]);
+
+            var newSubscription = new AzureSubscription
+            {
+                Id = azureSubscription1.Id,
+                Environment = azureSubscription1.Environment,
+                Account = azureSubscription1.Account,
+                Name = azureSubscription1.Name
+            };
+            newSubscription.Properties[AzureSubscription.Property.StorageAccount] = "testAccount1";
+
+            client.AddOrSetSubscription(newSubscription);
+            var newSubscriptionFromProfile = client.Profile.Subscriptions[newSubscription.Id];
+
+            Assert.Equal(newSubscription.Id, AzureSession.CurrentContext.Subscription.Id);
+            Assert.Equal(newSubscription.Id, newSubscriptionFromProfile.Id);
+            Assert.Equal(newSubscription.Properties[AzureSubscription.Property.StorageAccount],
+                AzureSession.CurrentContext.Subscription.Properties[AzureSubscription.Property.StorageAccount]);
+            Assert.Equal(newSubscription.Properties[AzureSubscription.Property.StorageAccount],
+                newSubscriptionFromProfile.Properties[AzureSubscription.Property.StorageAccount]);
+        }
+
+        [Fact]
         public void RemoveAzureSubscriptionChecksAndRemoves()
         {
             MockDataStore dataStore = new MockDataStore();
