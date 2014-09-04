@@ -15,7 +15,7 @@
     </command:details>
     <maml:description>
       <maml:para>The Set-AzureSqlDatabaseAuditingSetting cmdlet changes the auditing setting of an Azure Sql database. To use the cmdlet, use the ResourceGroupName, ServerName and DatabaseName parameters to identify the database, the StorageAccountName parameter to specify the storage account to be used for the audit logs and the EventType parameter to define which event types to audit.</maml:para>
-      <maml:para>After the successful execution of the cmdlet, auding of the database is enabled. These settings override the server default auditing settings. </maml:para>
+      <maml:para>After the successful execution of the cmdlet, auditing of the database is enabled. These settings override the server default auditing settings. </maml:para>
       <maml:para>If the command succeeds and the PassThru switch is on, it returns an object describing the current auditing setting used as well as the database identifiers (ResourceGroupName, ServerName and DatabaseName) </maml:para>
     </maml:description>
     <command:syntax>
@@ -455,7 +455,7 @@
     </command:details>
     <maml:description>
       <maml:para>The Disable-AzureSqlDatabaseAuditing cmdlet disables the auditing of an Azure Sql database. To use the cmdlet, use the ResourceGroupName, ServerName and DatabaseName parameters to identify the database.</maml:para>
-      <maml:para>After the successful execution of the cmdlet, auding of the database is disabled. </maml:para>
+      <maml:para>After the successful execution of the cmdlet, auditing of the database is disabled. </maml:para>
       <maml:para>If the command succeeds and the PassThru switch is on, it returns an object describing the current auditing setting used as well as the database identifiers (i.e., ResourceGroupName, ServerName and DatabaseName) </maml:para>
     </maml:description>
     <command:syntax>
@@ -601,7 +601,7 @@
     </command:details>
     <maml:description>
       <maml:para>The Disable-AzureSqlServerAuditing cmdlet disables auditing of all the databases that rely on the auditing setting of the given database server. To use the cmdlet, use the ResourceGroupName and ServerName parameters to identify the database server.</maml:para>
-      <maml:para>After the successful execution of the cmdlet, auding of the database is disabled. </maml:para>
+      <maml:para>After the successful execution of the cmdlet, auditing of the database is disabled. </maml:para>
       <maml:para>If the command succeeds and the PassThru switch is on, it returns an object describing the current auditing setting used as well as the database server identifiers (i.e., ResourceGroupName and ServerName) </maml:para>
     </maml:description>
     <command:syntax>
