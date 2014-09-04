@@ -516,7 +516,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             foreach (var accountName in accountNames)
             {
                 var account = Profile.Accounts[accountName];
-                subscriptions.AddRange(ListSubscriptionsFromServer(ref account, environment, null, ShowDialog.Never));
+
+                if (account.Type != AzureAccount.AccountType.Certificate)
+                {
+                    subscriptions.AddRange(ListSubscriptionsFromServer(ref account, environment, null, ShowDialog.Never));
+                }
             }
 
             if (subscriptions.Any())
