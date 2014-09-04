@@ -135,28 +135,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
             // If credentials.UserName is null the login failed
             if (account != null && account.Id != null)
             {
-                account.Type = AzureAccount.AccountType.User;
-
                 // Set account subscriptions from the profile
                 account.SetSubscriptions(
                     Profile.Subscriptions.Values.Where(
                         s => s.Account == account.Id)
                         .ToList());
 
-                // Set account tenants
-                account.SetOrAppendProperty(AzureAccount.Property.Tenants,
-                    subscriptionsFromServer.SelectMany(s => s.GetPropertyAsArray(AzureSubscription.Property.Tenants))
-                    .Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray());
-
+                // Set default account to credentials.UserName
                 foreach (var subscription in subscriptionsFromServer)
                 {
-                    // Set account subscriptions from the server
-                    if (!account.HasSubscription(subscription.Id))
-                    {
-                        account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
-                    }
-
-                    // Set default account to credentials.UserName
                     Profile.Subscriptions[subscription.Id].Account = account.Id;
                 }
 
@@ -531,11 +518,23 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             try
             {
-                IAccessToken commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment, AuthenticationFactory.CommonAdTenant, password, promptBehavior);
+                if (!account.IsPropertySet(AzureAccount.Property.Tenants))
+                {
+                    LoadAccountTenants(ref account, environment, password, promptBehavior);
+                }
+            }
+            catch (AadAuthenticationException aadEx)
+            {
+                WriteOrThrowAadExceptionMessage(aadEx);
+                return new AzureSubscription[0];
+            }
+
+            try
+            {
 
                 List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
-                    ListServiceManagementSubscriptions(ref account, environment, commonTenantToken, password, ShowDialog.Never).ToList(),
-                    ListResourceManagerSubscriptions(ref account, environment, commonTenantToken, password, ShowDialog.Never).ToList());
+                    ListServiceManagementSubscriptions(ref account, environment, password, ShowDialog.Never).ToList(),
+                    ListResourceManagerSubscriptions(ref account, environment, password, ShowDialog.Never).ToList());
 
                 // Set user ID
                 foreach (var subscription in mergedSubscriptions)
@@ -560,6 +559,18 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
+        private void LoadAccountTenants(ref AzureAccount account, AzureEnvironment environment, SecureString password, ShowDialog promptBehavior)
+        {
+            var commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment,
+                AuthenticationFactory.CommonAdTenant, password, promptBehavior);
+            using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
+                new TokenCloudCredentials(commonTenantToken.AccessToken),
+                environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
+            {
+                account.SetOrAppendProperty(AzureAccount.Property.Tenants, 
+                    subscriptionClient.Tenants.List().TenantIds.Select(ti => ti.TenantId).ToArray());
+            }
+        }
 
         private List<AzureSubscription> MergeSubscriptions(List<AzureSubscription> subscriptionsList1,
             List<AzureSubscription> subscriptionsList2)
@@ -666,42 +677,19 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return mergedEnvironment;
         }
 
-        private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(ref AzureAccount account, AzureEnvironment environment, IAccessToken commonTenantToken, SecureString password, ShowDialog promptBehavior)
+        private IEnumerable<AzureSubscription> ListResourceManagerSubscriptions(ref AzureAccount account, AzureEnvironment environment, SecureString password, ShowDialog promptBehavior)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
-            try
+            foreach (var tenant in account.GetPropertyAsArray(AzureAccount.Property.Tenants))
             {
-                TenantListResult tenants;
-                using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
-                    new TokenCloudCredentials(commonTenantToken.AccessToken),
-                    environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
+                try
                 {
-                    tenants = subscriptionClient.Tenants.List();
-                }
-
-                // Go over each tenant and get all subscriptions for tenant
-                foreach (var tenant in tenants.TenantIds)
-                {
-                    IAccessToken tenantToken = null;
-                    // Generate tenant specific token to query list of subscriptions
-                    try
-                    {
-                        account.SetOrAppendProperty(AzureAccount.Property.Tenants, tenant.TenantId);
-                        tenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment, tenant.TenantId, password, promptBehavior);
-                    }
-                    catch (AadAuthenticationException ex)
-                    {
-                        var adex = ex.InnerException as AdalException;
-                        WarningLog(string.Format(Resources.AddAccountNonInteractiveGuestOrFpo, tenant.TenantId));
-                        continue;
-                    }
-
-                    if (tenantToken == null) continue;
-
+                    var tenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment, tenant, password, ShowDialog.Never);
+                    
                     using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
-                            new TokenCloudCredentials(tenantToken.AccessToken),
-                            environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
+                                new TokenCloudCredentials(tenantToken.AccessToken),
+                                environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
                     {
                         var subscriptionListResult = subscriptionClient.Subscriptions.List();
                         foreach (var subscription in subscriptionListResult.Subscriptions)
@@ -713,71 +701,69 @@ namespace Microsoft.WindowsAzure.Commands.Common
                                 Environment = environment.Name
                             };
                             psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
-                            psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant.TenantId);
-                            if (commonTenantToken.LoginType == LoginType.LiveId)
-                            {
-                                AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
-                            }
-                            else
-                            {
-                                AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = commonTenantToken;
-                            }
+                            psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant);
+                            account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, new Guid(subscription.SubscriptionId).ToString());
+
+                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
 
                             result.Add(psSubscription);
                         }
                     }
                 }
-            }
-            catch (AadAuthenticationException aadEx)
-            {
-                WriteOrThrowAadExceptionMessage(aadEx);
+                catch (CloudException cEx)
+                {
+                    WriteOrThrowAadExceptionMessage(cEx);
+                }
+                catch (AadAuthenticationException aadEx)
+                {
+                    WriteOrThrowAadExceptionMessage(aadEx);
+                }
             }
 
             return result;
         }
 
-        private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(ref AzureAccount account, AzureEnvironment environment, IAccessToken commonTenantToken, SecureString password, ShowDialog promptBehavior)
+        private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(ref AzureAccount account, AzureEnvironment environment, SecureString password, ShowDialog promptBehavior)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
-            try
+            foreach (var tenant in account.GetPropertyAsArray(AzureAccount.Property.Tenants))
             {
-                using (var subscriptionClient = AzureSession.ClientFactory
-                    .CreateCustomClient<WindowsAzure.Subscriptions.SubscriptionClient>(
-                        new TokenCloudCredentials(commonTenantToken.AccessToken),
-                        environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement)))
+                try
                 {
-                    var subscriptionListResult = subscriptionClient.Subscriptions.List();
-                    foreach (var subscription in subscriptionListResult.Subscriptions)
-                    {
-                        AzureSubscription psSubscription = new AzureSubscription
-                        {
-                            Id = new Guid(subscription.SubscriptionId),
-                            Name = subscription.SubscriptionName,
-                            Environment = environment.Name
-                        };
-                        psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
-                        psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
-                        
-                        if (commonTenantToken.LoginType == LoginType.LiveId)
-                        {
-                            account.SetOrAppendProperty(AzureAccount.Property.Tenants, subscription.ActiveDirectoryTenantId);
-                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] =
-                                AzureSession.AuthenticationFactory.Authenticate(ref account, environment, subscription.ActiveDirectoryTenantId, 
-                                password, promptBehavior);
-                        }
-                        else
-                        {
-                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = commonTenantToken;
-                        }
+                    var tenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment, tenant, password, ShowDialog.Never);
 
-                        result.Add(psSubscription);
+                    using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<WindowsAzure.Subscriptions.SubscriptionClient>(
+                            new TokenCloudCredentials(tenantToken.AccessToken),
+                            environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement)))
+                    {
+                        var subscriptionListResult = subscriptionClient.Subscriptions.List();
+                        foreach (var subscription in subscriptionListResult.Subscriptions)
+                        {
+                            AzureSubscription psSubscription = new AzureSubscription
+                            {
+                                Id = new Guid(subscription.SubscriptionId),
+                                Name = subscription.SubscriptionName,
+                                Environment = environment.Name
+                            };
+                            psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
+                            psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
+                            account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, new Guid(subscription.SubscriptionId).ToString());
+
+                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
+
+                            result.Add(psSubscription);
+                        }
                     }
                 }
-            }
-            catch (AadAuthenticationException aadEx)
-            {
-                WriteOrThrowAadExceptionMessage(aadEx);
+                catch (CloudException cEx)
+                {
+                    WriteOrThrowAadExceptionMessage(cEx);
+                }
+                catch (AadAuthenticationException aadEx)
+                {
+                    WriteOrThrowAadExceptionMessage(aadEx);
+                }
             }
 
             return result;
@@ -797,6 +783,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
             {
                 throw aadEx;
             }
+        }
+
+        private void WriteOrThrowAadExceptionMessage(CloudException aadEx)
+        {
+            WriteDebugMessage(aadEx.Message);
         }
 
         #endregion
