@@ -12,29 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Xunit;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Websites;
 
-namespace Microsoft.WindowsAzure.Commands.Test.Websites
+namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    
-    public class ShowAzurePortalTests : WebsitesTestBase
+    public class AuthorizationTests : ResourcesTestsBase
     {
-        [Fact(Skip = "Consider removing these.")]
-        public void ProcessGetAzurePublishSettingsTest()
+        //[Fact]
+        //[Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Fact(Skip = "TODO: Fix the broken test.")]
+        public void TestAuthorizationEndToEnd()
         {
-            ShowAzurePortalCommand showAzurePortalCommand = new ShowAzurePortalCommand
-            {
-                Name = null,
-                Environment = EnvironmentName.AzureCloud,
-                Realm = "microsoft.com"
-            };
-
-            showAzurePortalCommand.ExecuteCmdlet();
-
-            //If test reaches here then it passed.
+            RunPowerShellTest("Test-AuthorizationEndToEnd");
         }
     }
 }
