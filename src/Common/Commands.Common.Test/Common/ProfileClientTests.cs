@@ -643,6 +643,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
+        public void GetAzureSubscriptionByNameChecksAndReturnsOnlyLocal()
+        {
+            SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            client.AddOrSetSubscription(azureSubscription2);
+
+            var subscriptions = client.GetSubscription(azureSubscription1.Name);
+
+            Assert.Equal(azureSubscription1.Id, subscriptions.Id);
+            Assert.Throws<ArgumentException>(() => client.GetSubscription(new Guid()));
+        }
+
+        [Fact]
         public void GetAzureSubscriptionByIdChecksAndReturnsOnlyLocal()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
@@ -654,10 +672,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
 
-            var subscriptions = client.GetSubscriptionById(azureSubscription1.Id);
+            var subscriptions = client.GetSubscription(azureSubscription1.Id);
 
             Assert.Equal(azureSubscription1.Id, subscriptions.Id);
-            Assert.Throws<ArgumentException>(() => client.GetSubscriptionById(new Guid()));
+            Assert.Throws<ArgumentException>(() => client.GetSubscription(new Guid()));
         }
 
         [Fact]
@@ -853,6 +871,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ServiceEndpoint>https://umapi.rdfetest.dnsdemo4.com:8443/</ServiceEndpoint>
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <StorageEndpointSuffix i:nil=""true"" />
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureEnvironmentData>
                     <AzureEnvironmentData>
                       <ActiveDirectoryServiceEndpointResourceId>https://management.core.windows.net/</ActiveDirectoryServiceEndpointResourceId>
@@ -866,6 +885,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ServiceEndpoint>https://management-preview.core.windows-int.net/</ServiceEndpoint>
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <StorageEndpointSuffix i:nil=""true"" />
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureEnvironmentData>
                   </Environments>
                   <Subscriptions>
@@ -885,6 +905,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                     <AzureSubscriptionData>
                       <ActiveDirectoryEndpoint i:nil=""true"" />
@@ -902,6 +923,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                     <AzureSubscriptionData>
                       <ActiveDirectoryEndpoint>https://login.windows.net/</ActiveDirectoryEndpoint>
@@ -919,6 +941,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>d1e52cbc-b073-42e2-a0a0-c2f547118a6f</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                   </Subscriptions>
                 </ProfileData>";

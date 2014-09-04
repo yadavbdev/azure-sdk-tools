@@ -13,13 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -31,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Authentication
     /// </summary>
     public static class ServicePrincipalKeyStore
     {
-        private const string keyStoreUserName = "PowershellServicePrincipalKey";
+        private const string keyStoreUserName = "PowerShellServicePrincipalKey";
         private const string targetNamePrefix = "AzurePowershell:target=";
 
         public static void SaveKey(string appId, string tenantId, SecureString serviceKey)

@@ -29,8 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [OutputType(typeof(AzureAccount))]
     public class AddAzureAccount : SubscriptionCmdletBase
     {
-        [Parameter(ParameterSetName = "User", Mandatory = false, HelpMessage = "Environment containing the account to log into")]
-        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = false, HelpMessage = "Environment containing the account to log into")]
+        [Parameter(Mandatory = false, HelpMessage = "Environment containing the account to log into")]
         public string Environment { get; set; }
 
         [Parameter(ParameterSetName = "User", Mandatory = false, HelpMessage = "Optional credential")]
@@ -38,14 +37,8 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         public PSCredential Credential { get; set; }
 
         [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true)]
-        public SwitchParameter ServicePrincipal
-        {
-            get { return isServicePrincipal; }
-            set { isServicePrincipal = value; }
-        }
-
-        private bool isServicePrincipal;
-
+        public SwitchParameter ServicePrincipal { get; set; }
+        
         [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true, HelpMessage = "Optional tenant name or ID")]
         public string Tenant { get; set; }
      
@@ -56,19 +49,18 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            AzureAccount azureAccount = new AzureAccount
-            {
-                Type = AzureAccount.AccountType.User
-            };
+            AzureAccount azureAccount = new AzureAccount();
+
+            azureAccount.Type = ServicePrincipal.IsPresent
+                ? AzureAccount.AccountType.ServicePrincipal
+                : AzureAccount.AccountType.User;
+            
             SecureString password = null;
             if (Credential != null)
             {
                 azureAccount.Id = Credential.UserName;
                 password = Credential.Password;
             }
-            azureAccount.Type = isServicePrincipal
-                ? AzureAccount.AccountType.ServicePrincipal
-                : AzureAccount.AccountType.User;
 
             if (!string.IsNullOrEmpty(Tenant))
             {

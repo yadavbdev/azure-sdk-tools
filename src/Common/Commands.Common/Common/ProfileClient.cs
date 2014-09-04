@@ -427,7 +427,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return Profile.Subscriptions.Values.ToList();
         }
 
-        public AzureSubscription GetSubscriptionById(Guid id)
+        public AzureSubscription GetSubscription(Guid id)
         {
             if (Profile.Subscriptions.ContainsKey(id))
             {
@@ -436,6 +436,21 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage, "id");
+            }
+        }
+
+        public AzureSubscription GetSubscription(string name)
+        {
+            AzureSubscription subscription = Profile.Subscriptions.Values
+                .FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            if (subscription != null)
+            {
+                return subscription;
+            }
+            else
+            {
+                throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage, "name");
             }
         }
 

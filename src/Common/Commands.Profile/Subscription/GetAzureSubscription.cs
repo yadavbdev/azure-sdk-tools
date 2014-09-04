@@ -68,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                         .Where(s => SubscriptionName == null || s.Name.Equals(SubscriptionName, StringComparison.InvariantCultureIgnoreCase)));
                     break;
                 case "ById":
-                    WriteSubscriptions(ProfileClient.GetSubscriptionById(new Guid(SubscriptionId)));
+                    WriteSubscriptions(ProfileClient.GetSubscription(new Guid(SubscriptionId)));
                     break;
                 case "Default":
                     GetDefault();

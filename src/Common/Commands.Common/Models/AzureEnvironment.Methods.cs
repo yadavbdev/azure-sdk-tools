@@ -94,7 +94,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                         { AzureEnvironment.Endpoint.StorageEndpointSuffix, AzureEnvironmentConstants.AzureStorageEndpointSuffix },
                         { AzureEnvironment.Endpoint.Gallery, AzureEnvironmentConstants.GalleryEndpoint },
                         { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, AzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix },
-                        { AzureEnvironment.Endpoint.Graph, AzureEnvironmentConstants.AzureGraphEndpoint }
+                        { AzureEnvironment.Endpoint.Graph, AzureEnvironmentConstants.AzureGraphEndpoint },
+                        { AzureEnvironment.Endpoint.TrafficManagerDnsSuffix, AzureEnvironmentConstants.AzureTrafficManagerDnsSuffix },
                     }
                 }
             },
@@ -115,6 +116,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                         { AzureEnvironment.Endpoint.Gallery, null },
                         { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, AzureEnvironmentConstants.ChinaSqlDatabaseDnsSuffix },
                         { AzureEnvironment.Endpoint.Graph, null },
+                        { AzureEnvironment.Endpoint.TrafficManagerDnsSuffix, AzureEnvironmentConstants.ChinaTrafficManagerDnsSuffix },
                     }
                 }
             }
@@ -252,7 +254,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
             ActiveDirectory,
 
-            Graph
+            Graph,
+
+            TrafficManagerDnsSuffix,
         }
     }
 }
