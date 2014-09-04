@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 azureAccount.SetProperty(AzureAccount.Property.Tenants, new[] {Tenant});
             }
 
-            var account = ProfileClient.AddAccount(azureAccount, ProfileClient.GetEnvironmentOrDefault(Environment), password);
+            var account = ProfileClient.AddAccountAndLoadSubscriptions(azureAccount, ProfileClient.GetEnvironmentOrDefault(Environment), password);
 
             if (account != null)
             {
