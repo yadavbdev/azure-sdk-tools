@@ -67,6 +67,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
             set;
         }
 
+        [Parameter(HelpMessage = "Type of the storage account.")]
+        [ValidateNotNullOrEmpty]
+        public string Type
+        {
+            get;
+            set;
+        }
+
         internal void ExecuteCommand()
         {
             ServiceManagementProfile.Initialize();
@@ -78,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
                 Description = this.Description,
                 AffinityGroup = this.AffinityGroup,
                 Location = this.Location,
-                GeoReplicationEnabled = true
+                AccountType = string.IsNullOrEmpty(this.Type) ? StorageAccountTypes.StandardZRS : this.Type
             };
 
             ExecuteClientActionNewSM(

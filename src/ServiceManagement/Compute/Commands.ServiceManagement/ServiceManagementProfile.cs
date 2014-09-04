@@ -441,17 +441,20 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
             //Storage mapping
             Mapper.CreateMap<StorageAccountGetResponse, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.StorageAccountDescription, o => o.MapFrom(r => r.StorageAccount.Properties == null ? null : r.StorageAccount.Properties.Description))
-                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.StorageAccount.Name));
+                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.StorageAccount.Name))
+                  .ForMember(c => c.GeoReplicationEnabled, o => o.MapFrom(r => string.Equals(r.StorageAccount.Properties.AccountType, StorageAccountTypes.StandardZRS) ? (bool?)true : null));
             Mapper.CreateMap<StorageAccountProperties, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.StorageAccountDescription, o => o.MapFrom(r => r.Description))
                   .ForMember(c => c.GeoPrimaryLocation, o => o.MapFrom(r => r.GeoPrimaryRegion))
                   .ForMember(c => c.GeoSecondaryLocation, o => o.MapFrom(r => r.GeoSecondaryRegion))
                   .ForMember(c => c.StorageAccountStatus, o => o.MapFrom(r => r.Status))
                   .ForMember(c => c.StatusOfPrimary, o => o.MapFrom(r => r.StatusOfGeoPrimaryRegion))
-                  .ForMember(c => c.StatusOfSecondary, o => o.MapFrom(r => r.StatusOfGeoSecondaryRegion));
+                  .ForMember(c => c.StatusOfSecondary, o => o.MapFrom(r => r.StatusOfGeoSecondaryRegion))
+                  .ForMember(c => c.GeoReplicationEnabled, o => o.MapFrom(r => string.Equals(r.AccountType, StorageAccountTypes.StandardZRS) ? (bool?)true : null));
             Mapper.CreateMap<StorageAccount, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.StorageAccountDescription, o => o.MapFrom(r => r.Properties == null ? null : r.Properties.Description))
-                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.Name));
+                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.Name))
+                  .ForMember(c => c.GeoReplicationEnabled, o => o.MapFrom(r => string.Equals(r.Properties.AccountType, StorageAccountTypes.StandardZRS) ? (bool?)true : null));
             Mapper.CreateMap<OperationStatusResponse, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));

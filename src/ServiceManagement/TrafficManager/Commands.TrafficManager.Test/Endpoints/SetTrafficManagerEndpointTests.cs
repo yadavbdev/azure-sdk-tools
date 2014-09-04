@@ -32,6 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
         private const LoadBalancingMethod DefaultLoadBalancingMethod = LoadBalancingMethod.Failover;
         private const string DomainName = "www.example.com";
         private const int Weight = 3;
+        private const int MinChildEndpoints = 2;
         private const string Location = "West US";
         private MockCommandRuntime mockCommandRuntime;
         private SetAzureTrafficManagerEndpoint cmdlet;
@@ -53,7 +54,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
                 DomainName = DomainName,
                 Type = EndpointType.Any,
                 Status = EndpointStatus.Enabled,
-                Weight = 10
+                Weight = 10,
+                MinChildEndpoints = 2
             };
 
             original.Endpoints.Add(existingEndpoint);
@@ -66,6 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
                 DomainName = DomainName,
                 TrafficManagerProfile = original,
                 Weight = Weight,
+                MinChildEndpoints = MinChildEndpoints,
                 Location = Location,
                 CommandRuntime = mockCommandRuntime
             };
@@ -91,6 +94,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
             // Updated properties
             Assert.AreEqual(Weight, updatedEndpoint.Weight);
             Assert.AreEqual(Location, updatedEndpoint.Location);
+            Assert.AreEqual(MinChildEndpoints, updatedEndpoint.MinChildEndpoints);
         }
 
         [TestMethod]
@@ -154,6 +158,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
                 Type = EndpointType.Any,
                 Status = EndpointStatus.Enabled,
                 Weight = Weight,
+                MinChildEndpoints = MinChildEndpoints,
                 Location = Location
             };
 
@@ -163,6 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
                 TrafficManagerProfile = original,
                 Type = EndpointType.Any.ToString(),
                 Weight = Weight,
+                MinChildEndpoints = MinChildEndpoints,
                 Location = Location,
                 Status = EndpointStatus.Enabled.ToString(),
                 CommandRuntime = mockCommandRuntime

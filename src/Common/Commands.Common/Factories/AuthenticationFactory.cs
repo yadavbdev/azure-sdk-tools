@@ -34,15 +34,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public ITokenProvider TokenProvider { get; set; }
 
-        public IAccessToken Authenticate(AzureEnvironment environment, ref UserCredentials credentials)
+        public IAccessToken Authenticate(ref AzureAccount account, AzureEnvironment environment, string tenant, SecureString password,
+            ShowDialog promptBehavior)
         {
-            return Authenticate(environment, CommonAdTenant, ref credentials);
-        }
-
-        public IAccessToken Authenticate(AzureEnvironment environment, string tenant, ref UserCredentials credentials)
-        {
-            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, tenant), credentials.ShowDialog, credentials.UserName, credentials.Password);
-            credentials.UserName = token.UserId;
+            var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, tenant), promptBehavior, account.Id, password, account.Type);
+            account.Id = token.UserId;
             return token;
         }
 
@@ -53,17 +49,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
             }
 
-            var account = context.Subscription.Account;
+            var account = context.Account;
 
             if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, context.Account.Id)))
             {
                 // Try to re-authenticate
-                UserCredentials credentials = new UserCredentials
-                    {
-                        UserName = account,
-                        ShowDialog = ShowDialog.Never
-                    };
-
                 var tenants = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.Tenants)
                     .Intersect(context.Account.GetPropertyAsArray(AzureAccount.Property.Tenants));
 
@@ -71,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 {
                     try
                     {
-                        AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)] = Authenticate(context.Environment, tenant, ref credentials);
+                        AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)] = Authenticate(ref account, context.Environment, tenant, null, ShowDialog.Never);
                         break;
                     }
                     catch
@@ -87,17 +77,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             }
             else if (account != null)
             {
-                switch (context.Account.Type)
+                switch (account.Type)
                 {
                     case AzureAccount.AccountType.User:
-                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, context.Account.Id)))
+                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, account.Id)))
                         {
                             throw new ArgumentException(Resources.InvalidSubscriptionState);
                         }
-                        return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)]);
+                        return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, account.Id)]);
 
                     case AzureAccount.AccountType.Certificate:
-                        var certificate = ProfileClient.DataStore.GetCertificate(account);
+                        var certificate = ProfileClient.DataStore.GetCertificate(account.Id);
                         return new CertificateCloudCredentials(context.Subscription.Id.ToString(), certificate);
 
                     default:
