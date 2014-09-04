@@ -14,6 +14,8 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
+    using Management.Compute.Models;
+    using Properties;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -21,10 +23,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
     using System.Management.Automation;
     using System.Net;
     using System.Threading;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Management.Models;
-    using Properties;
     using Utilities.Common;
 
     public class IaaSDeploymentManagementCmdletBase : ServiceManagementBaseCmdlet
@@ -118,7 +116,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
                 if (d == null)
                 {
-                    throw new ApplicationException(String.Format(Resources.CouldNotFindDeployment, ServiceName, Model.PersistentVMModel.DeploymentSlotType.Production));
+                    throw new ApplicationException(String.Format(Resources.CouldNotFindDeployment, ServiceName, Model.DeploymentSlotType.Production));
                 }
 
                 durableRoleInstance = d.RoleInstances == null || !d.RoleInstances.Any() ? null : d.RoleInstances.First(ri => ri.RoleName == roleName);

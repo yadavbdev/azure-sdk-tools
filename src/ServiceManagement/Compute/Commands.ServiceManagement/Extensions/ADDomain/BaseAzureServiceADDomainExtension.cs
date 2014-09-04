@@ -11,10 +11,9 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System.Management.Automation;
     using ADDomain;
     using Management.Compute.Models;
-    using Management.Models;
+    using System.Management.Automation;
     using Utilities.Websites.Services;
 
     public abstract class BaseAzureServiceADDomainExtensionCmdlet : BaseAzureServiceExtensionCmdlet
@@ -181,7 +180,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
                 JoinOption = config.Options,
                 User = config.User,
                 UnjoinDomainUser = config.UnjoinDomainUser,
-                Restart = config.Restart
+                Restart = config.Restart,
+                Version = ext.Version
             };
         }
     }

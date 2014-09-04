@@ -41,6 +41,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 return new[] { "cacheservice.Caching" };
             }
 
+            if (typeof(T).FullName.EndsWith("SchedulerManagementClient"))
+            {
+                return new[] { "scheduler.jobcollections" };
+            }
+
             return new string[0];
         }
 
@@ -51,6 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 return new[] { 
                     "microsoft.insights",
                     "successbricks.cleardb",
+                    "microsoft.batch",
                     "microsoft.cache" };
             }
 

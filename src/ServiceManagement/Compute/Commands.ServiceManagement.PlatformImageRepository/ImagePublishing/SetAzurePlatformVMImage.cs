@@ -14,12 +14,12 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.ImagePublishing
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
     using Helpers;
     using Properties;
     using ServiceManagement.Model;
+    using System;
+    using System.Linq;
+    using System.Management.Automation;
     using Utilities.Common;
 
     [Cmdlet(VerbsCommon.Set, "AzurePlatformVMImage", DefaultParameterSetName = ReplicateParameterSetName), OutputType(typeof(ManagementOperationContext))]
@@ -54,11 +54,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageReposit
         {
             get;
             set;
-        }
-
-        protected override void InitChannelCurrentSubscription(bool force)
-        {
-            DoInitChannelCurrentSubscription(force);
         }
 
         public void SetAzurePlatformVMImageProcess()

@@ -12,7 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
 using System.Management.Automation;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
@@ -22,7 +21,7 @@ namespace Microsoft.Azure.Commands.Resources.ResourceGroups
     /// Cancel a running deployment.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Stop, "AzureResourceGroupDeployment"), OutputType(typeof(bool))]
-    public class StopAzureResourceGroupDeploymentCommand : ResourceManagerBaseCmdlet
+    public class StopAzureResourceGroupDeploymentCommand : ResourcesBaseCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the resource group.")]
         [ValidateNotNullOrEmpty]

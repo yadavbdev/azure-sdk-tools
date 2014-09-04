@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
+    using Microsoft.WindowsAzure.Commands.Utilities.Common;
     using Microsoft.WindowsAzure.Commands.Utilities.Websites;
     using Microsoft.WindowsAzure.Management.WebSites.Models;
     using System;
@@ -38,6 +39,9 @@ namespace Microsoft.WindowsAzure.Commands.Websites
     [Cmdlet(VerbsCommon.New, "AzureWebsite"), OutputType(typeof(SiteWithConfig))]
     public class NewAzureWebsiteCommand : WebsiteContextBaseCmdlet, IGithubCmdlet
     {
+        private string hostName;
+        private string publishingUsername;
+
         [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The geographic region to create the website.")]
         [ValidateNotNullOrEmpty]
         public string Location
@@ -50,16 +54,30 @@ namespace Microsoft.WindowsAzure.Commands.Websites
         [ValidateNotNullOrEmpty]
         public string Hostname
         {
-            get;
-            set;
+            get
+            {
+                return hostName;
+            }
+            set
+            {
+                // Convert to Unicode if necessary.
+                hostName = IdnHelper.GetUnicode(value);
+            }
         }
 
         [Parameter(Position = 3, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The publishing user name.")]
         [ValidateNotNullOrEmpty]
         public string PublishingUsername
         {
-            get;
-            set;
+            get
+            {
+                return publishingUsername;
+            }
+            set
+            {
+                // Convert to Unicode if necessary.
+                publishingUsername = IdnHelper.GetUnicodeForUserName(value);
+            }
         }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Configure git on the web site and local folder.")]
@@ -119,8 +137,8 @@ namespace Microsoft.WindowsAzure.Commands.Websites
         {
             if (!File.Exists("iisnode.yml") && (File.Exists("server.js") || File.Exists("app.js")))
             {
-                string cmdletPath = Directory.GetParent(MyInvocation.MyCommand.Module.Path).FullName;
-                File.Copy(Path.Combine(cmdletPath, "Scaffolding/Node/Website/iisnode.yml"), "iisnode.yml");
+                string cmdletPath = FileUtilities.GetAssemblyDirectory();
+                File.Copy(Path.Combine(cmdletPath, "Resources/Scaffolding/Node/Website/iisnode.yml"), "iisnode.yml");
             }
         }
 

@@ -14,15 +14,14 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
+    using Management.Compute.Models;
     using System;
     using System.Linq;
     using System.Management.Automation;
-    using Management.Compute;
-    using Management.Compute.Models;
     using Utilities.Common;
 
     /// <summary>
-    /// Get Windows Azure VM Extension Image.
+    /// Get Microsoft Azure VM Extension Image.
     /// </summary>
     [Cmdlet(
         VerbsCommon.Get,

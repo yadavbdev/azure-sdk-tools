@@ -15,15 +15,16 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.AvailabilitySets
 {
+    using Model;
     using System;
     using System.Management.Automation;
-    using Model;
 
     [Cmdlet(VerbsCommon.Set, "AzureAvailabilitySet"), OutputType(typeof(IPersistentVM))]
     public class SetAzureAvailabilitySet : VirtualMachineConfigurationCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "Availability set name.")]
-        [ValidateNotNullOrEmpty]
+        [AllowNull]
+        [AllowEmptyString]
         public string AvailabilitySetName { get; set; }
 
         internal void ExecuteCommand()

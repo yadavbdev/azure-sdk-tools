@@ -14,11 +14,10 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.ObjectModel;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Security.Cryptography.X509Certificates;
     using System.Xml.Serialization;
-    using PersistentVMModel;
 
     public class PersistentVM : IPersistentVM
     {

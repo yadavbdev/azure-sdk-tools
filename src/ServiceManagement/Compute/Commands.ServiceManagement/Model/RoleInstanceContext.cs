@@ -14,8 +14,6 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using PersistentVMModel;
-
     public class RoleInstanceContext : ServiceOperationContext
     {
         public InstanceEndpointList InstanceEndpoints { get; set; } 
@@ -43,5 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public string PublicIPAddress { get; set; }
 
         public string PublicIPName { get; set; }
+
+        public int? PublicIPIdleTimeoutInMinutes { get; set; }
     }
 }

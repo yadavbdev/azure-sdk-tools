@@ -14,27 +14,25 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Net;
     using AutoMapper;
     using Extensions;
     using Helpers;
-    using IaaS;
-    using IaaS.DiskRepository;
     using IaaS.Extensions;
     using Management.Compute.Models;
     using Management.Models;
     using Management.Network.Models;
     using Management.Storage.Models;
     using Model;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Net;
     using Utilities.Common;
     using NSM = Management.Compute.Models;
     using NVM = Management.Network.Models;
-    using PVM = Model.PersistentVMModel;
+    using PVM = Model;
 
     public static class ServiceManagementMapperExtension
     {
@@ -88,7 +86,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
-            Mapper.CreateMap<HostedServiceListAvailableExtensionsResponse.ExtensionImage, ExtensionImageContext>()
+            Mapper.CreateMap<NSM.ExtensionImage, ExtensionImageContext>()
+                  .ForMember(c => c.ThumbprintAlgorithm, o => o.MapFrom(r => r.Certificate.ThumbprintAlgorithm))
                   .ForMember(c => c.ExtensionName, o => o.MapFrom(r => r.Type));
 
             // VM Extension Image
@@ -389,7 +388,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //Service mapping
-            Mapper.CreateMap<HostedServiceProperties, HostedServiceDetailedContext>()
+            Mapper.CreateMap<NSM.HostedServiceProperties, HostedServiceDetailedContext>()
                   .ForMember(c => c.Description, o => o.MapFrom(r => string.IsNullOrEmpty(r.Description) ? null : r.Description))
                   .ForMember(c => c.DateModified, o => o.MapFrom(r => r.DateLastModified));
             Mapper.CreateMap<HostedServiceGetResponse, HostedServiceDetailedContext>()

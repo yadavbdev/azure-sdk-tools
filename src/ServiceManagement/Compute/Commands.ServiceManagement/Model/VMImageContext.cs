@@ -14,9 +14,8 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
+    using Model;
     using System;
-    using Model.PersistentVMModel;
-    using Utilities.Common;
 
     public class VMImageContext : OSImageContext
     {

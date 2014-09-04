@@ -54,9 +54,13 @@ function Get-LogFile
 ##################
 function Run-Test 
 {
-    param([scriptblock]$test, [string] $testScript = $null, [switch] $generate = $false)
+    param([scriptblock]$test, [string] $testName = $null, [string] $testScript = $null, [switch] $generate = $false)
     Test-Setup
-    $transFile = Get-LogFile "."
+	$transFile = $testName + ".log"
+    if ($testName -eq $null) 
+	{
+	  $transFile = Get-LogFile "."
+	}
     if($testScript)
     {
         if ($generate)
@@ -74,8 +78,11 @@ function Run-Test
          Write-Log "[run-test]: Running test without file comparison"
     }
         
-    Start-Transcript -Path $transFile	
+    $oldPref = $ErrorActionPreference	 
+	$ErrorActionPreference = "SilentlyContinue"
+	#Start-Transcript -Path $transFile	
     $success = $false;
+    $ErrorActionPreference = $oldPref
     try 
     {
       &$test
@@ -84,7 +91,10 @@ function Run-Test
     finally 
     {
         Test-Cleanup
-        Stop-Transcript
+        $oldPref = $ErrorActionPreference	 
+	    $ErrorActionPreference = "SilentlyContinue"
+        #Stop-Transcript
+        $ErrorActionPreference = $oldPref
         if ($testScript)
         {
             if ($success -and -not $generate)
@@ -270,7 +280,7 @@ function Wait-Function
 
     do
     {
-        Start-Sleep -s 5
+        Wait-Seconds 5
         $current = [DateTime]::Now
         $diff = $current - $start
         $result = &$scriptBlock
@@ -283,6 +293,20 @@ function Wait-Function
         # End the processing so the test does not blow up
         exit
     }
+}
+
+<#
+.SYNOPSIS
+Waits for specified duration if not-mocked, otherwise skips wait.
+
+.PARAMETER timeout
+Timeout in seconds
+#>
+function Wait-Seconds
+{
+	param([int] $timeout)
+    
+    [Microsoft.WindowsAzure.Testing.TestUtilities]::Wait($timeout * 1000)
 }
 
 <#
@@ -311,7 +335,7 @@ function Retry-Function
     $tries = 1;
     while(( $result -ne $true) -and ($tries -le $maxTries))
     {
-        Start-Sleep -s $interval
+        Wait-Seconds $interval
         $result = Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $argument;
         $tries++;
     }

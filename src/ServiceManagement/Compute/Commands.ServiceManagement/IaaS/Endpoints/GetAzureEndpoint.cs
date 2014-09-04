@@ -14,12 +14,11 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 {
+    using IaaS;
+    using Model;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Management.Automation;
-    using IaaS;
-    using Model;
-    using Model.PersistentVMModel;
 
     [Cmdlet(VerbsCommon.Get, "AzureEndpoint"), OutputType(typeof(InputEndpointContext))]
     public class GetAzureEndpoint : VirtualMachineConfigurationCmdletBase
@@ -77,7 +76,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
                     Vip = ep.Vip,
                     Acl = ep.EndpointAccessControlList,
                     EnableDirectServerReturn = ep.EnableDirectServerReturn,
-                    InternalLoadBalancerName = ep.LoadBalancerName
+                    InternalLoadBalancerName = ep.LoadBalancerName,
+                    IdleTimeoutInMinutes = ep.IdleTimeoutInMinutes,
                 };
 
                 if (ep.LoadBalancerProbe != null && string.IsNullOrEmpty(endpointCtx.LBSetName) == false)

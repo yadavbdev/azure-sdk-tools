@@ -14,14 +14,13 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
+    using Extensions;
+    using Helpers;
+    using Management.Compute.Models;
+    using Properties;
     using System;
     using System.Management.Automation;
     using System.Net;
-    using Extensions;
-    using Helpers;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Properties;
     using Utilities.Common;
 
     /// <summary>
@@ -81,7 +80,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         [Parameter(Position = 4, Mandatory = true, ParameterSetName = "Upgrade", ValueFromPipelineByPropertyName = true, HelpMessage = "Deployment slot. Staging | Production")]
         [Parameter(Position = 3, Mandatory = true, ParameterSetName = "Config", ValueFromPipelineByPropertyName = true, HelpMessage = "Deployment slot. Staging | Production")]
         [Parameter(Position = 2, Mandatory = true, ParameterSetName = "Status", ValueFromPipelineByPropertyName = true, HelpMessage = "Deployment slot. Staging | Production")]
-        [ValidateSet(Model.PersistentVMModel.DeploymentSlotType.Staging, Model.PersistentVMModel.DeploymentSlotType.Production, IgnoreCase = true)]
+        [ValidateSet(Model.DeploymentSlotType.Staging, Model.DeploymentSlotType.Production, IgnoreCase = true)]
         public string Slot
         {
             get;
@@ -89,7 +88,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         }
 
         [Parameter(Position = 5, ParameterSetName = "Upgrade", HelpMessage = "Upgrade mode. Auto | Manual | Simultaneous")]
-        [ValidateSet(Model.PersistentVMModel.UpgradeType.Auto, Model.PersistentVMModel.UpgradeType.Manual, Model.PersistentVMModel.UpgradeType.Simultaneous, IgnoreCase = true)]
+        [ValidateSet(Model.UpgradeType.Auto, Model.UpgradeType.Manual, Model.UpgradeType.Simultaneous, IgnoreCase = true)]
         public string Mode
         {
             get;
@@ -119,7 +118,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         }
 
         [Parameter(Position = 3, Mandatory = true, ParameterSetName = "Status", HelpMessage = "New deployment status. Running | Suspended")]
-        [ValidateSet(Model.PersistentVMModel.DeploymentStatus.Running, Model.PersistentVMModel.DeploymentStatus.Suspended, IgnoreCase = true)]
+        [ValidateSet(Model.DeploymentStatus.Running, Model.DeploymentStatus.Suspended, IgnoreCase = true)]
         public string NewStatus
         {
             get;

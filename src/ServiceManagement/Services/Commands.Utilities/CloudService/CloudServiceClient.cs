@@ -666,7 +666,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         }
 
         /// <summary>
-        /// Publishes a service project on Windows Azure.
+        /// Publishes a service project on Microsoft Azure.
         /// </summary>
         /// <param name="name">The cloud service name</param>
         /// <param name="slot">The deployment slot</param>
@@ -858,7 +858,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             {
                 WriteVerboseWithTimestamp(Resources.PublishCreatingServiceMessage);
 
-                var createParameters = new HostedServiceCreateParameters {ServiceName = name, Label = label};
+                var createParameters = new HostedServiceCreateParameters
+                {
+                    ServiceName = name,
+                    Label = label
+                };
 
                 if (!string.IsNullOrEmpty(affinityGroup))
                 {

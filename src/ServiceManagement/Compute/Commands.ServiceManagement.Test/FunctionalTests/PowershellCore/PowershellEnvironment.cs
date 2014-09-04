@@ -14,11 +14,11 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.Management.Automation;
     using System.Management.Automation.Runspaces;
     using System.Text;
-    using System;
 
     public abstract class PowershellEnvironment
     {
@@ -51,6 +51,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
 
             StringBuilder command = new StringBuilder();
+            DateTime currentTime = DateTime.UtcNow;
+            command.Append("[" + currentTime.ToShortDateString() + " " + currentTime.ToLongTimeString() + "] ");
+
             for (int i = 0; i < powershell.Commands.Commands.Count; i++)
             {
 
