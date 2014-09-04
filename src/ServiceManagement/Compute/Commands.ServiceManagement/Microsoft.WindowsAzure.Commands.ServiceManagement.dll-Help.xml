@@ -34798,7 +34798,7 @@ Set-AzureVNetGatewayKey -VNetName "MyAzureVirtualNetwork" -LocalNetworkSiteName 
       <dev:version />
     </command:details>
     <maml:description>
-      <maml:para>The Get-AzureVMMicrosoftAntimalwareExtension cmdlet gets the Microsoft Antimalware extension details for a virtual machine. This cmdlet gets details for virtual machines that have the extension turned on programmatically by using the Set-AzureVMMicrosoftAntimalwareExtension cmdlet. Get-AzureVMMicrosoftAntimalwareExtension gets an XML representation of the antimalware configuration. If monitoring is turned on, the cmdlet also gets an XML representation of the antimalware monitoring configuration. The cmdlet also returns the JavaScript Object Notation (JSON) equivalent for the configuration. </maml:para>
+      <maml:para>The Get-AzureVMMicrosoftAntimalwareExtension cmdlet gets the Microsoft Antimalware extension details for a virtual machine. This cmdlet gets details for virtual machines that have the extension turned on programmatically by using the Set-AzureVMMicrosoftAntimalwareExtension cmdlet. The cmdlet gets the JavaScript Object Notation (JSON) equivalent for the configuration.  If monitoring is turned on, the cmdlet also gets an XML representation of the antimalware monitoring configuration.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -34852,7 +34852,7 @@ Set-AzureVNetGatewayKey -VNetName "MyAzureVirtualNetwork" -LocalNetworkSiteName 
           </maml:description>
         </dev:type>
         <maml:description>
-          <maml:para>A context object that includes an XML representation of the antimalware configuration. If monitoring is turned on, the object includes an XML representation of the antimalware monitoring configuration. The object also includes the JSON equivalent for the configuration.</maml:para>
+          <maml:para>A context object that includes the JSON antimalware configuration. If monitoring is turned on, the object includes an XML representation of the antimalware monitoring configuration.</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -34869,7 +34869,7 @@ Set-AzureVNetGatewayKey -VNetName "MyAzureVirtualNetwork" -LocalNetworkSiteName 
 </dev:code>
         <dev:remarks>
           <maml:para>This command gets details for the Microsoft Antimalware extension for a virtual machine. The command uses the Get-AzureVM cmdlet to get the specified virtual machine object, and then passes the object to the current cmdlet by using the pipeline operator. Get-AzureVMMicrosoftAntimalwareExtension gets configuration information for the extension. </maml:para>
-          <maml:para>The XML configuration information appears in the output field labeled AntimalwareConfiguration. The configuration information for monitoring appears in the output field labeled AntimalwareMonitoringConfiguration. </maml:para>
+          <maml:para>The configuration information for monitoring appears in the output field labeled AntimalwareMonitoringConfiguration. </maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
@@ -35456,7 +35456,7 @@ The default value is Production.</maml:para>
           <maml:description>
             <maml:para>Specifies the absolute path to the Microsoft Antimalware configuration file. Do not specify this parameter if you specify the AntimalwareConfiguration parameter. The configuration file must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
 
-&lt;AntimalwareConfig&gt;&lt;AntimalwareEnabled&gt;true&lt;/AntimalwareEnabled&gt;&lt;/AntimalwareConfig&gt;</maml:para>
+{ &quot;AntimalwareEnabled&quot;: true }</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
@@ -35500,11 +35500,11 @@ The default value is Production.</maml:para>
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true(ByPropertyName)" position="2" aliases="none">
           <maml:name>AntimalwareConfiguration</maml:name>
           <maml:description>
-            <maml:para>Specifies an XmlDocument object that contains the Microsoft Antimalware configuration. This object must not be $Null or empty. Do not specify this parameter if you specify the AntimalwareConfigFile parameter. The configuration object must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
+            <maml:para>Specifies a string object that contains the Microsoft Antimalware configuration. This object must not be $Null or empty. Do not specify this parameter if you specify the AntimalwareConfigFile parameter. The configuration object must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
 
-&lt;AntimalwareConfig&gt;&lt;AntimalwareEnabled&gt;true&lt;/AntimalwareEnabled&gt;&lt;/AntimalwareConfig&gt;</maml:para>
+{ &quot;AntimalwareEnabled&quot;: true }</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">XmlDocument</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true(ByPropertyName)" position="3" aliases="none">
           <maml:name>Version</maml:name>
@@ -35587,7 +35587,7 @@ The default value is Production.</maml:para>
         <maml:description>
           <maml:para>Specifies the absolute path to the Microsoft Antimalware configuration file. Do not specify this parameter if you specify the AntimalwareConfiguration parameter. The configuration file must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
 
-&lt;AntimalwareConfig&gt;&lt;AntimalwareEnabled&gt;true&lt;/AntimalwareEnabled&gt;&lt;/AntimalwareConfig&gt;</maml:para>
+{ &quot;AntimalwareEnabled&quot;: true }</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -35599,13 +35599,47 @@ The default value is Production.</maml:para>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true(ByPropertyName)" position="2" aliases="none">
         <maml:name>AntimalwareConfiguration</maml:name>
         <maml:description>
-          <maml:para>Specifies an XmlDocument object that contains the Microsoft Antimalware configuration. This object must not be $Null or empty. Do not specify this parameter if you specify the AntimalwareConfigFile parameter. The configuration object must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
+			<maml:para>Specifies a string object that contains the Microsoft Antimalware configuration. This object must not be $Null or empty. Do not specify this parameter if you specify the AntimalwareConfigFile parameter. The configuration object must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
 
-&lt;AntimalwareConfig&gt;&lt;AntimalwareEnabled&gt;true&lt;/AntimalwareEnabled&gt;&lt;/AntimalwareConfig&gt;</maml:para>
+	{ &quot;AntimalwareEnabled&quot;: true }</maml:para>
+			<maml:para>Microsoft Antimalware JSON configuration sample:
+
+			{
+				&quot;AntimalwareEnabled&quot;: true,
+				&quot;RealtimeProtectionEnabled&quot;: true,
+				&quot;ScheduledScanSettings&quot;: {
+					&quot;isEnabled&quot;: true,
+					&quot;day&quot;: 1,
+					&quot;time&quot;: 120,
+					&quot;scanType&quot;: &quot;Full&quot;
+				},
+				&quot;Exclusions&quot;: {
+					&quot;Extensions&quot;: &quot;.ext1;.ext2&quot;,
+					&quot;Paths&quot;: &quot;c:\\excluded-path-1;c:\\excluded-path-2&quot;,
+					&quot;Processes&quot;: &quot;excludedproc1.exe;excludedproc2.exe&quot;
+				}
+			}
+
+			Notes:
+			AntimalwareEnabled is a required parameter. Values:  true= Enable. false= Error out as false is not a supported value
+
+			RealtimeProtectionEnabled: true/false.   true = Enable. false = Disable. Default is true
+
+			ScheduledScanSettings:  
+			  isEnabled=true/false
+			  day=0-8 (0-daily, 1-Sunday, 2-Monday, ...., 7-Saturday, 8-Disabled)
+			  time=0-1440 (measured in minutes after midnight - 60-&gt;1AM, 120 -&gt; 2AM, ... )
+			  scanType=&quot;Quick&quot; or &quot;Full&quot; (Default is Quick)
+			  Note: If isEnabled=true is the only setting provided, the following defaults are set: day=7 (Saturday), time=120 (2 AM), scanType=&quot;Quick&quot; 
+
+			Exclusions:
+			Multiple exclusions in the same list are specified by using semicolon delimiters.
+			If no exclusions are specified, then the existing exclusions, if any, are overwritten by blank on the system.</maml:para>
+
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">XmlDocument</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         <dev:type>
-          <maml:name>XmlDocument</maml:name>
+          <maml:name>string</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>none</dev:defaultValue>
@@ -35729,7 +35763,7 @@ The default value is Production.</maml:para>
           <maml:para>
           </maml:para>
         </maml:introduction>
-        <dev:code>PS C:\&gt;Get-AzureVM -ServiceName "ContosoService03" -Name "ContosoVM22" | Set-AzureVMMicrosoftAntimalwareExtension -AntimalwareConfigFile 'C:\configuration\contosoVM.xml' | Update-AzureVM
+        <dev:code>PS C:\&gt;Get-AzureVM -ServiceName "ContosoService03" -Name "ContosoVM22" | Set-AzureVMMicrosoftAntimalwareExtension -AntimalwareConfigFile 'C:\configuration\contosoVM.json' | Update-AzureVM
 </dev:code>
         <dev:remarks>
           <maml:para>This command enables the Microsoft Antimalware extension by using a configuration file. The command uses the Get-AzureVM cmdlet to get the specified virtual machine object, and then passes the object to the current cmdlet by using the pipeline operator. </maml:para>
@@ -35748,7 +35782,7 @@ The default value is Production.</maml:para>
           </maml:para>
         </maml:introduction>
         <dev:code>PS C:\&gt;$StorageContext = New-AzureStorageContext -StorageAccountName "contosostoragemain" -StorageAccountKey (Get-AzureStorageKey -StorageAccountName "Contosostoragemain").Primary
-PS C:\&gt; Get-AzureVM -ServiceName "ContosoService03" -Name"ContosoVM22" | Set-AzureVMMicrosoftAntimalwareExtension -AntimalwareConfigFile 'C:\configuration\contosoVM.xml" -Monitoring ON -StorageContext $StorageContext | Update-AzureVM
+PS C:\&gt; Get-AzureVM -ServiceName "ContosoService03" -Name"ContosoVM22" | Set-AzureVMMicrosoftAntimalwareExtension -AntimalwareConfigFile 'C:\configuration\contosoVM.json" -Monitoring ON -StorageContext $StorageContext | Update-AzureVM
 </dev:code>
         <dev:remarks>
           <maml:para>The first command creates an AzureStorageContext object by using the New-AzureStorageContext cmdlet, and then stores it in the $StorageContext variable. </maml:para>
@@ -35767,14 +35801,12 @@ PS C:\&gt; Get-AzureVM -ServiceName "ContosoService03" -Name"ContosoVM22" | Set-
           <maml:para>
           </maml:para>
         </maml:introduction>
-        <dev:code>PS C:\&gt;[System.Xml.XmlDocument] $XmlConfig = New-Object System.Xml.XmlDocument
-PS C:\&gt; $XmlConfig.load('C:\configuration\contosoVM.xml')
-PS C:\&gt; Get-AzureVM -ServiceName "ContosoService03" -Name "ContosoVM22" | Set-AzureVMMicrosoftAntimalwareExtension -AntimalwareConfiguration $XmlConfig | Update-AzureVM
+        <dev:code>PS C:\&gt;$config_string = [IO.File]::ReadAllText('C:\configuration\contosoVM.json')
+PS C:\&gt; Get-AzureVM -ServiceName "ContosoService03" -Name "ContosoVM22" | Set-AzureVMMicrosoftAntimalwareExtension -AntimalwareConfiguration $config_string | Update-AzureVM
 </dev:code>
         <dev:remarks>
-          <maml:para>The first two commands create an XmlDocument object that contains a configuration for the Microsoft Antimalware extension, and then stores it in the $XmlConfig variable.</maml:para>
-          <maml:para>The third command uses Get-AzureVM to get the specified virtual machine object, and then passes the object to the current cmdlet. </maml:para>
-          <maml:para>The AntimalwareConfiguration parameter specifies the configuration information stored in $XmlConfig. Set-AzureVMMicrosoftAntimalwareExtension applies that configuration to the virtual machine, and then passes the result to the Update-AzureVM cmdlet.</maml:para>
+          <maml:para>The first command creates a string object by reading a JSON configuration for the Microsoft Antimalware extension, and then storing it in the $config_string variable.</maml:para>
+          <maml:para>The AntimalwareConfiguration parameter specifies the configuration information stored in $config_string. Set-AzureVMMicrosoftAntimalwareExtension applies that configuration to the virtual machine, and then passes the result to the Update-AzureVM cmdlet.</maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
@@ -35920,6 +35952,12 @@ The default value is Production.</maml:para>
             <command:parameterValue required="false" variableLength="false">OFF</command:parameterValue>
           </command:parameterValueGroup>
         </command:parameter>
+		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+		<maml:name>NoConfig</maml:name>
+		<maml:description>
+			<maml:para>To set monitoring on or off when no update to the configuration is needed, the NoConfig parameter may be specified.</maml:para>
+		</maml:description>
+		</command:parameter>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true(ByPropertyName)" position="6" aliases="none">
           <maml:name>StorageContext</maml:name>
           <maml:description>
