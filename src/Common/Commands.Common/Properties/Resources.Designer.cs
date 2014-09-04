@@ -2170,7 +2170,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is no subscription found to be associated with account {0}..
+        ///   Looks up a localized string similar to There is no subscription associated with account {0}..
         /// </summary>
         public static string NoSubscriptionAddedMessage {
             get {
