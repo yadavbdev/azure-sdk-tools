@@ -48,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 ManagedPipelineMode = getConfigResponse.ManagedPipelineMode,
                 WebSocketsEnabled = getConfigResponse.WebSocketsEnabled,
                 RemoteDebuggingEnabled = getConfigResponse.RemoteDebuggingEnabled,
-                RemoteDebuggingVersion = getConfigResponse.RemoteDebuggingVersion.GetValueOrDefault()
+                RemoteDebuggingVersion = getConfigResponse.RemoteDebuggingVersion.GetValueOrDefault(),
             };
 
             getConfigResponse.AppSettings.ForEach(kvp => update.AppSettings.Add(kvp.Key, kvp.Value));
@@ -102,7 +102,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 WebSocketsEnabled = getConfigResponse.WebSocketsEnabled,
                 RemoteDebuggingEnabled = getConfigResponse.RemoteDebuggingEnabled,
                 RemoteDebuggingVersion = getConfigResponse.RemoteDebuggingVersion.GetValueOrDefault(),
-                RoutingRules = getConfigResponse.RoutingRules.Select(r => r.ToRoutingRule()).ToList()
+                RoutingRules = getConfigResponse.RoutingRules.Select(r => r.ToRoutingRule()).ToList(),
+                Use32BitWorkerProcess = getConfigResponse.Use32BitWorkerProcess
             };
             return config;
         }
@@ -367,7 +368,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 WebSocketsEnabled = config.WebSocketsEnabled,
                 RemoteDebuggingEnabled = config.RemoteDebuggingEnabled,
                 RemoteDebuggingVersion = config.RemoteDebuggingVersion,
-                RoutingRules = config.RoutingRules.Select(r => r.ToRoutingRule()).ToArray()
+                RoutingRules = config.RoutingRules.Select(r => r.ToRoutingRule()).ToArray(),
+                Use32BitWorkerProcess = config.Use32BitWorkerProcess,
             };
             if (config.AppSettings != null)
                 config.AppSettings.ForEach(nvp => parameters.AppSettings.Add(ToKeyValuePair(nvp)));
