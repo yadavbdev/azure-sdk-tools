@@ -344,7 +344,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (AzureSession.CurrentContext != null && AzureSession.CurrentContext.Subscription != null &&
                 AzureSession.CurrentContext.Subscription.Id == subscription.Id)
             {
-                AzureSession.SetCurrentContext(Profile.Subscriptions[subscription.Id], null, null);
+                AzureSession.SetCurrentContext(Profile.Subscriptions[subscription.Id], 
+                    AzureSession.CurrentContext.Environment, 
+                    AzureSession.CurrentContext.Account);
             }
 
             return Profile.Subscriptions[subscription.Id];
