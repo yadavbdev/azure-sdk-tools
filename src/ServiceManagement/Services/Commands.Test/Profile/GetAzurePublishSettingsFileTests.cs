@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Profile
     
     public class GetAzurePublishSettingsFileTests
     {
-        [Fact]
+        [Fact (Skip = "Consider removing these.")]
         public void GetsPublishSettingsFileUrl()
         {
             // Setup
