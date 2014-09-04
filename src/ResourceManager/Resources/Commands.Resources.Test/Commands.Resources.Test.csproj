@@ -208,6 +208,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
+    <None Include="Resources\EmptyWebsiteTemplate.json" />
+    <None Include="Resources\EmptyWebsiteTemplateParameter.json" />
     <None Include="ScenarioTests\Common.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
