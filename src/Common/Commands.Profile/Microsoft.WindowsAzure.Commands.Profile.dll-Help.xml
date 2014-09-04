@@ -54,7 +54,7 @@
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
         <maml:name>Credential</maml:name>
         <maml:description>
-          <maml:para>The username and password account credentials used to authenticate with Azure Active Directory.  The credentials must be for a Microsoft Organizational account and not another kind of Microsoft account.</maml:para>
+          <maml:para>The username and password account credentials used to authenticate with Azure Active Directory.  The credentials must be for a Microsoft Organizational account or Service Principal, not a Microsoft account.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
         <dev:type>
@@ -84,6 +84,31 @@
         <maml:description>
           <maml:para>Specifies an alternate location for the subscription data file. This parameter is optional. By default, the subscription data file is saved in your roaming user profile.</maml:para>
           <maml:para>If you use this parameter to specify an alternate location for the subscription data file, be sure to use the SubscriptionDataFile parameters of cmdlets that access your account. Otherwise, the cmdlets look for your account data in the default location.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+        <maml:name>ServicePrincipal</maml:name>
+        <maml:description>
+          <maml:para>Specifies that your are logging in as a service principal. You must give a Credentials parameter for this case, with the service principal ID as the user name and the service principal key as the password.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue></dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+        <maml:name>Tenant</maml:name>
+        <maml:description>
+          <maml:para>Used when logging in as a service principal. Specifies the AAD tenant the service principal is defined in. This can be either the tenant's domain name or id.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
