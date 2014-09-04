@@ -74,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Common
                         }
                         catch
                         {
-                            // Ignore this as the user may not have access to Sparta endpoint or the provider is already registered
+                            // Ignore this as the user may not have access to service management endpoint or the provider is already registered
                         }
                     }
                 }

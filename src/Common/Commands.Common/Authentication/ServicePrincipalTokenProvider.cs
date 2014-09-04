@@ -16,6 +16,7 @@ using System;
 using System.Security;
 using System.Windows.Forms;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.WindowsAzure.Commands.Common.Authentication;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 
@@ -64,12 +65,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         private SecureString LoadAppKey(string appId, string tenantId)
         {
-            return null;
+            return ServicePrincipalKeyStore.GetKey(appId, tenantId);
         }
 
         private void StoreAppKey(string appId, string tenantId, SecureString appKey)
         {
-            TokenCache cache = ProtectedFileTokenCache.Instance;
+            ServicePrincipalKeyStore.SaveKey(appId, tenantId, appKey);
         }
 
         private static readonly TimeSpan expirationThreshold = new TimeSpan(0, 5, 0);
@@ -99,7 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
                 authTokenSetter(AuthResult.AccessTokenType, AuthResult.AccessToken);
             }
 
-            public string UserId { get { return AuthResult.UserInfo.DisplayableId; }}
+            public string UserId { get { return appId; }}
             public string AccessToken { get { return AuthResult.AccessToken; } }
             public LoginType LoginType { get { return LoginType.OrgId; } }
             public string TenantId { get { return AuthResult.TenantId; } }
