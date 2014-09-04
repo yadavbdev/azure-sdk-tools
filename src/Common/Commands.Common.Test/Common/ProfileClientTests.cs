@@ -103,7 +103,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal("https://api-dogfood.resources.windows-int.net", client.Profile.Environments["Dogfood"].Endpoints[AzureEnvironment.Endpoint.ResourceManager]);
             Assert.Equal("https://management-preview.core.windows-int.net/", client.Profile.Environments["Dogfood"].Endpoints[AzureEnvironment.Endpoint.ServiceManagement]);
             Assert.Equal(".database.windows.net", client.Profile.Environments["Dogfood"].Endpoints[AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix]);
-            Assert.Equal("trafficmanager.net", client.Profile.Environments["Dogfood"].Endpoints[AzureEnvironment.Endpoint.TrafficManagerDnsSuffix]);
             
             // Verify subscriptions
             Assert.Equal(2, client.Profile.Subscriptions.Count);

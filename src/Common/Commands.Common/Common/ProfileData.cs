@@ -70,7 +70,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     { AzureEnvironment.Endpoint.ServiceManagement, this.ServiceEndpoint },
                     { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, this.SqlDatabaseDnsSuffix },
                     { AzureEnvironment.Endpoint.StorageEndpointSuffix, this.StorageEndpointSuffix },
-                    { AzureEnvironment.Endpoint.TrafficManagerDnsSuffix, this.TrafficManagerDnsSuffix },
                 }
             };
         }
@@ -92,9 +91,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         [DataMember]
         public string StorageEndpointSuffix { get; set; }
-
-        [DataMember]
-        public string TrafficManagerDnsSuffix { get; set; }
 
         [DataMember]
         public string AdTenantUrl { get; set; }
