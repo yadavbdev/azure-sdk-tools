@@ -587,6 +587,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
+        public void GetAzureSubscriptionByNameChecksAndReturnsOnlyLocal()
+        {
+            SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            client.AddOrSetSubscription(azureSubscription2);
+
+            var subscriptions = client.GetSubscription(azureSubscription1.Name);
+
+            Assert.Equal(azureSubscription1.Id, subscriptions.Id);
+            Assert.Throws<ArgumentException>(() => client.GetSubscription(new Guid()));
+        }
+
+        [Fact]
         public void GetAzureSubscriptionByIdChecksAndReturnsOnlyLocal()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
@@ -598,10 +616,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
 
-            var subscriptions = client.GetSubscriptionById(azureSubscription1.Id);
+            var subscriptions = client.GetSubscription(azureSubscription1.Id);
 
             Assert.Equal(azureSubscription1.Id, subscriptions.Id);
-            Assert.Throws<ArgumentException>(() => client.GetSubscriptionById(new Guid()));
+            Assert.Throws<ArgumentException>(() => client.GetSubscription(new Guid()));
         }
 
         [Fact]
