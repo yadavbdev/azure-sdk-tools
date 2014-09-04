@@ -39,5 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public string StatusOfSecondary { get; set; }
 
         public IEnumerable<string> Endpoints { get; set; }
+
+        public string AccountType { get; set; }
     }
 }

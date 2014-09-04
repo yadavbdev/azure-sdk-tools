@@ -130,7 +130,8 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
                         Location = endpoint.Location,
                         Status = endpoint.Status,
                         Type = endpoint.Type,
-                        Weight = endpoint.Weight
+                        Weight = endpoint.Weight,
+                        MinChildEndpoints = endpoint.MinChildEndpoints
                     };
 
                 policyParameter.Endpoints.Add(endpointParam);
@@ -157,7 +158,8 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
                         Location = endpointReponse.Location,
                         Type = endpointReponse.Type,
                         Status = endpointReponse.Status,
-                        Weight = endpointReponse.Weight
+                        Weight = endpointReponse.Weight,
+                        MinChildEndpoints = endpointReponse.MinChildEndpoints
                     };
 
                 endpoints.Add(endpoint);

@@ -14,6 +14,8 @@
 
 using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.TrafficManager
 {
@@ -26,8 +28,22 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager
 
         public override void ExecuteCmdlet()
         {
-            bool result = TrafficManagerClient.TestDomainAvailability(DomainName);
+            bool result = TrafficManagerClient.TestDomainAvailability(GetDomainNameToCheck(DomainName));
             WriteObject(result);
+        }
+
+        private string GetDomainNameToCheck(string domainName)
+        {
+            string TrafficManagerSuffix = !string.IsNullOrEmpty(AzureSession.CurrentContext.Environment.GetEndpoint(Common.Models.AzureEnvironment.Endpoint.TrafficManagerDnsSuffix)) ?
+                AzureSession.CurrentContext.Environment.GetEndpoint(Common.Models.AzureEnvironment.Endpoint.TrafficManagerDnsSuffix) :
+                AzureEnvironmentConstants.AzureTrafficManagerDnsSuffix;
+
+            if (!string.IsNullOrEmpty(domainName) && !domainName.ToLower().EndsWith(TrafficManagerSuffix))
+            {
+                return string.Format("{0}.{1}", domainName, TrafficManagerSuffix);
+            }
+
+            return domainName;
         }
     }
 }
