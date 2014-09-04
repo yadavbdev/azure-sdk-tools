@@ -39,12 +39,14 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             IEnumerable<AzureAccount> accounts = profileClient.ListAccounts(Name);
             List<PSObject> output = new List<PSObject>();
             foreach (AzureAccount account in accounts) {
+                string subscriptionsList = account.GetProperty(AzureAccount.Property.Subscriptions);
+                string tenantsList = account.GetProperty(AzureAccount.Property.Tenants);
                 output.Add(base.ConstructPSObject(
                     "Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount",
                     "Id", account.Id,
                     "Type", account.Type,
-                    "Subscriptions", account.GetProperty(AzureAccount.Property.Subscriptions).Replace(",", "\r\n"),
-                    "Tenants", account.GetProperty(AzureAccount.Property.Tenants)));
+                    "Subscriptions", subscriptionsList == null ? "" : subscriptionsList.Replace(",", "\r\n"),
+                    "Tenants", tenantsList == null ? "" : tenantsList.Replace(",", "\r\n")));
             }
             WriteObject(output, true);
         }

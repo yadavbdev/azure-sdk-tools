@@ -87,12 +87,21 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 }
                 WriteVerbose(Resources.AddAccountViewSubscriptions);
                 WriteVerbose(Resources.AddAccountChangeSubscription);
+
+                string subscriptionsList = account.GetProperty(AzureAccount.Property.Subscriptions);
+                string tenantsList = account.GetProperty(AzureAccount.Property.Tenants);
+
+                if (subscriptionsList == null)
+                {
+                    WriteWarning(string.Format(Resources.NoSubscriptionAddedMessage, azureAccount.Id));
+                }
+
                 WriteObject(base.ConstructPSObject(
                     "Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount",
                     "Id", account.Id,
                     "Type", account.Type,
-                    "Subscriptions", account.GetProperty(AzureAccount.Property.Subscriptions).Replace(",", "\r\n"),
-                    "Tenants", account.GetProperty(AzureAccount.Property.Tenants)));
+                    "Subscriptions", subscriptionsList == null ? "" : subscriptionsList.Replace(",", "\r\n"),
+                    "Tenants", tenantsList == null ? "" : tenantsList.Replace(",", "\r\n")));
             } 
         }
     }

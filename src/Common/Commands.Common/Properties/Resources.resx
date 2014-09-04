@@ -1555,4 +1555,7 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="UnknownCredentialType" xml:space="preserve">
     <value>Illegal credential type</value>
   </data>
+  <data name="NoSubscriptionAddedMessage" xml:space="preserve">
+    <value>There is no subscription found to be associated with account {0}.</value>
+  </data>
 </root>
