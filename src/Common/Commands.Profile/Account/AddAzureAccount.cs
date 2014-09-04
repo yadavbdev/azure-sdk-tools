@@ -14,6 +14,7 @@
 
 using System.Management.Automation;
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -79,12 +80,16 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 }
                 WriteVerbose(Resources.AddAccountViewSubscriptions);
                 WriteVerbose(Resources.AddAccountChangeSubscription);
-                WriteObject(base.ConstructPSObject(
-                    "Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount",
-                    "Id", account.Id,
-                    "Type", account.Type,
-                    "Subscriptions", account.GetProperty(AzureAccount.Property.Subscriptions).Replace(",", "\r\n"),
-                    "Tenants", account.GetProperty(AzureAccount.Property.Tenants)));
+
+                string subscriptionsList = account.GetProperty(AzureAccount.Property.Subscriptions);
+                string tenantsList = account.GetProperty(AzureAccount.Property.Tenants);
+
+                if (subscriptionsList == null)
+                {
+                    WriteWarning(string.Format(Resources.NoSubscriptionAddedMessage, azureAccount.Id));
+                }
+
+                WriteObject(account.ToPSAzureAccount());
             } 
         }
     }
