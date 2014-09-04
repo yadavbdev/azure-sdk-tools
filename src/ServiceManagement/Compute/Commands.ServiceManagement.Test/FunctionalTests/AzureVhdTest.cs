@@ -134,7 +134,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             Assert.IsNotNull(vhdUploadContext);
             Assert.AreEqual(new Uri(destination), vhdUploadContext.DestinationUri);
-            Assert.AreEqual(vhdUploadContext.LocalFilePath.FullName, localFile.FullName);
+            Assert.IsTrue(string.Compare(vhdUploadContext.LocalFilePath.FullName, localFile.FullName, StringComparison.InvariantCultureIgnoreCase) == 0);
         }
     }
 }
