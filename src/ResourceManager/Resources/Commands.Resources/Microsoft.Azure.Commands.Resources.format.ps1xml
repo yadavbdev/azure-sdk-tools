@@ -101,10 +101,16 @@
               <ListItem>
                 <Label>Permissions</Label>
                 <PropertyName>PermissionsTable</PropertyName>
+                <ItemSelectionCondition>
+                  <PropertyName>PermissionsTable</PropertyName>
+                </ItemSelectionCondition>
               </ListItem>
               <ListItem>
                 <Label>Resources</Label>
                 <PropertyName>ResourcesTable</PropertyName>
+                <ItemSelectionCondition>
+                  <PropertyName>ResourcesTable</PropertyName>
+                </ItemSelectionCondition>
               </ListItem>
               <ListItem>
                 <Label>ResourceId</Label>
