@@ -121,13 +121,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 throw new ArgumentNullException("environment");
             }
 
-            var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
             var subscriptionsFromServer = ListSubscriptionsFromServer(ref account, environment, password, ShowDialog.Always).ToList();
-            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer);
             
             // Update back Profile.Subscriptions
-            // Update AzureAccount
-            foreach (var subscription in mergedSubscriptions)
+            foreach (var subscription in subscriptionsFromServer)
             {
                 AddOrSetSubscription(subscription);
             }
@@ -135,19 +132,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
             // If credentials.UserName is null the login failed
             if (account != null && account.Id != null)
             {
-                // Set account subscriptions from the profile
-                account.SetSubscriptions(
-                    Profile.Subscriptions.Values.Where(
-                        s => s.Account == account.Id)
-                        .ToList());
-
-                // Set default account to credentials.UserName
-                foreach (var subscription in subscriptionsFromServer)
-                {
-                    subscription.Account = account.Id;
-                    AddOrSetSubscription(subscription);
-                }
-
                 // Add the account to the profile
                 AddOrSetAccount(account);
 
@@ -160,7 +144,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     }
                 }
 
-                return account;
+                return Profile.Accounts[account.Id];
             }
             else
             {
@@ -195,6 +179,26 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
 
             return Profile.Accounts[account.Id];
+        }
+
+        public AzureAccount GetAccountOrDefault(string accountName)
+        {
+            if (string.IsNullOrEmpty(accountName))
+            {
+                return AzureSession.CurrentContext.Account;
+            }
+            else if (AzureSession.CurrentContext.Account != null && AzureSession.CurrentContext.Account.Id == accountName)
+            {
+                return AzureSession.CurrentContext.Account;
+            }
+            else if (Profile.Accounts.ContainsKey(accountName))
+            {
+                return Profile.Accounts[accountName];
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("Account with name '{0}' does not exist.", accountName), "accountName");
+            }
         }
 
         public AzureAccount GetAccountOrNull(string accountName)
@@ -310,14 +314,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         #region Subscripton management
 
-        public void AddOrSetSubscriptions(IEnumerable<AzureSubscription> subscriptions)
-        {
-            foreach (var subscription in subscriptions)
-            {
-                AddOrSetSubscription(subscription);
-            }
-        }
-
         public AzureSubscription AddOrSetSubscription(AzureSubscription subscription)
         {
             if (subscription == null)
@@ -344,9 +340,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (AzureSession.CurrentContext != null && AzureSession.CurrentContext.Subscription != null &&
                 AzureSession.CurrentContext.Subscription.Id == subscription.Id)
             {
-                AzureSession.SetCurrentContext(Profile.Subscriptions[subscription.Id], 
-                    AzureSession.CurrentContext.Environment, 
-                    AzureSession.CurrentContext.Account);
+                var account = GetAccountOrDefault(subscription.Account);
+                var environment = GetEnvironmentOrDefault(subscription.Environment);
+                AzureSession.SetCurrentContext(Profile.Subscriptions[subscription.Id], environment, account);
             }
 
             return Profile.Subscriptions[subscription.Id];
@@ -416,13 +412,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 throw new ArgumentNullException("environment");
             }
 
-            var subscriptionsFromDisk = Profile.Subscriptions.Values.Where(s => s.Environment == environment.Name);
             var subscriptionsFromServer = ListSubscriptionsFromServerForAllAccounts(environment);
-            var mergedSubscriptions = MergeSubscriptions(subscriptionsFromDisk.ToList(), subscriptionsFromServer.ToList());
 
             // Update back Profile.Subscriptions
-            foreach (var subscription in mergedSubscriptions)
+            foreach (var subscription in subscriptionsFromServer)
             {
+                // Resetting back default account
+                if (Profile.Subscriptions.ContainsKey(subscription.Id))
+                {
+                    subscription.Account = Profile.Subscriptions[subscription.Id].Account;
+                }
                 AddOrSetSubscription(subscription);
             }
 
@@ -453,6 +452,23 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage, "name");
+            }
+        }
+
+        public AzureSubscription GetSubscriptionOrDefault(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return AzureSession.CurrentContext.Subscription;
+            }
+            else if (AzureSession.CurrentContext.Subscription != null &&
+                     AzureSession.CurrentContext.Subscription.Name == name)
+            {
+                return AzureSession.CurrentContext.Subscription;
+            }
+            else
+            {
+                return GetSubscription(name);
             }
         }
 
@@ -597,6 +613,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 {
                     subscription.Environment = environment.Name;
                     subscription.Account = account.Id;
+                    account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
                 }
 
                 if (mergedSubscriptions.Any())
@@ -803,9 +820,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             };
                             psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant);
-                            account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, new Guid(subscription.SubscriptionId).ToString());
 
-                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
+                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, account.Id)] = tenantToken;
 
                             result.Add(psSubscription);
                         }
@@ -849,9 +865,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             };
                             psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
-                            account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, new Guid(subscription.SubscriptionId).ToString());
 
-                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
+                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, account.Id)] = tenantToken;
 
                             result.Add(psSubscription);
                         }
@@ -985,7 +1000,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
             if (AzureSession.CurrentContext != null && AzureSession.CurrentContext.Environment != null &&
                 AzureSession.CurrentContext.Environment.Name == environment.Name)
             {
-                AzureSession.SetCurrentContext(AzureSession.CurrentContext.Subscription, Profile.Environments[environment.Name], 
+                AzureSession.SetCurrentContext(AzureSession.CurrentContext.Subscription, 
+                    Profile.Environments[environment.Name], 
                     AzureSession.CurrentContext.Account);
             }
 

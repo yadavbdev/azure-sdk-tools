@@ -80,6 +80,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 throw new ArgumentException("Environment name doesn't match one in subscription.", "environment");
             }
 
+            if (subscription != null && account != null &&
+                subscription.Account != account.Id)
+            {
+                throw new ArgumentException("Account name doesn't match one in subscription.", "account");
+            }
+
             CurrentContext = new AzureContext
             {
                 Subscription = subscription,
