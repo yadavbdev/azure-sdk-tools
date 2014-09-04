@@ -12,29 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Xunit;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Websites;
-
-namespace Microsoft.WindowsAzure.Commands.Test.Websites
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    
-    public class ShowAzurePortalTests : WebsitesTestBase
+    using Model;
+    using PowershellCore;
+
+    public class RemoveAzureAvailabilitySetCmdletInfo : CmdletsInfo
     {
-        [Fact(Skip = "Consider removing these.")]
-        public void ProcessGetAzurePublishSettingsTest()
+        public RemoveAzureAvailabilitySetCmdletInfo(PersistentVM vm)
         {
-            ShowAzurePortalCommand showAzurePortalCommand = new ShowAzurePortalCommand
-            {
-                Name = null,
-                Environment = EnvironmentName.AzureCloud,
-                Realm = "microsoft.com"
-            };
-
-            showAzurePortalCommand.ExecuteCmdlet();
-
-            //If test reaches here then it passed.
+            base.cmdletName = Utilities.RemoveAzureAvailabilitySetCmdletName;
+            this.cmdletParams.Add(new CmdletParam("VM", vm));
         }
     }
 }

@@ -35,6 +35,26 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             {
                 this.cmdletParams.Add(new CmdletParam("GeoReplicationEnabled", geoReplication.Value));
             }
-        }        
+        }
+
+        public SetAzureStorageAccountCmdletInfo(string accountName, string label, string description, string accountType)
+        {
+            cmdletName = Utilities.SetAzureStorageAccountCmdletName;
+
+            this.cmdletParams.Add(new CmdletParam("StorageAccountName", accountName));
+            if (label != null)
+            {
+                this.cmdletParams.Add(new CmdletParam("Label", label));
+            }
+            if (description != null)
+            {
+                this.cmdletParams.Add(new CmdletParam("Description", description));
+            }
+
+            if (!string.IsNullOrEmpty(accountType))
+            {
+                this.cmdletParams.Add(new CmdletParam("AccountType", accountType));
+            }
+        }
     }
 }

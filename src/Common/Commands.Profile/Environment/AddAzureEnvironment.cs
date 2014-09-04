@@ -16,6 +16,8 @@ using System.Management.Automation;
 using System.Security.Permissions;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using System.Collections.Generic;
+using System;
 
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
@@ -76,7 +78,12 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             newEnvironment.Endpoints[AzureEnvironment.Endpoint.Graph] = GraphEndpoint;
 
             ProfileClient.AddOrSetEnvironment(newEnvironment);
-            WriteObject(newEnvironment);
+            List<object> args = new List<object> { "Name", newEnvironment.Name };
+            foreach (AzureEnvironment.Endpoint property in Enum.GetValues(typeof(AzureEnvironment.Endpoint)))
+            {
+                args.AddRange(new object[] { property, newEnvironment.GetEndpoint(property) });
+            }
+            WriteObject(base.ConstructPSObject(null, args.ToArray()));
         }
     }
 }

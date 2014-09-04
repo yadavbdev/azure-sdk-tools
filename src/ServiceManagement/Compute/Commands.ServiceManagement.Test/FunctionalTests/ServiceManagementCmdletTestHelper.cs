@@ -277,6 +277,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return RunPSCmdletAndReturnFirst<SM.PersistentVM>(new SetAzureAvailabilitySetCmdletInfo(availabilitySetName, vm));
         }
 
+        public SM.PersistentVM RemoveAzureAvailabilitySet(SM.PersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.PersistentVM>(new RemoveAzureAvailabilitySetCmdletInfo(vm));
+        }
+
+        public SM.PersistentVM RemoveAzureAvailabilitySet(string vmName, string serviceName)
+        {
+            SM.PersistentVM vm = GetAzureVM(vmName, serviceName).VM;
+            return RunPSCmdletAndReturnFirst<SM.PersistentVM>(new RemoveAzureAvailabilitySetCmdletInfo(vm));
+        }
+
         #endregion AzureAvailabilitySet
 
         #region AzureCertificate
@@ -905,7 +916,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         public ManagementOperationContext NewAzureStorageAccount(string storageName, string locationName, string affinity, string label, string description)
         {
-            return RunPSCmdletAndReturnFirst<ManagementOperationContext>(new NewAzureStorageAccountCmdletInfo(storageName, locationName, affinity, label, description));
+            return RunPSCmdletAndReturnFirst<ManagementOperationContext>(new NewAzureStorageAccountCmdletInfo(storageName, locationName, affinity, label, description, null));
+        }
+
+        public ManagementOperationContext NewAzureStorageAccount(string storageName, string locationName, string affinity, string label, string description, string accountType)
+        {
+            return RunPSCmdletAndReturnFirst<ManagementOperationContext>(new NewAzureStorageAccountCmdletInfo(storageName, locationName, affinity, label, description, accountType));
         }
 
         public SM.StorageServicePropertiesOperationContext NewAzureStorageAccount(string storageName, string locationName)
@@ -929,6 +945,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public ManagementOperationContext SetAzureStorageAccount(string accountName, string label, string description, bool? geoReplication)
         {
             return RunPSCmdletAndReturnFirst<ManagementOperationContext>(new SetAzureStorageAccountCmdletInfo(accountName, label, description, geoReplication));
+        }
+
+        public ManagementOperationContext SetAzureStorageAccount(string accountName, string label, string description, string accountType)
+        {
+            return RunPSCmdletAndReturnFirst<ManagementOperationContext>(new SetAzureStorageAccountCmdletInfo(accountName, label, description, accountType));
         }
 
         public void RemoveAzureStorageAccount(string storageAccountName)

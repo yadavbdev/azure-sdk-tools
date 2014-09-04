@@ -15,6 +15,7 @@
 using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
 
@@ -47,7 +48,12 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 userCredentials.ShowDialog = ShowDialog.Always;
             }
 
-            var account = ProfileClient.AddAccount(userCredentials, ProfileClient.GetEnvironmentOrDefault(Environment));
+            var environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
+            if (!string.IsNullOrEmpty(Environment))
+            {
+                environment = ProfileClient.GetEnvironmentOrDefault(Environment);
+            }
+            var account = ProfileClient.AddAccount(userCredentials, environment);
 
             if (account != null)
             {
@@ -59,7 +65,12 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 }
                 WriteVerbose(Resources.AddAccountViewSubscriptions);
                 WriteVerbose(Resources.AddAccountChangeSubscription);
-                WriteObject(account);
+                WriteObject(base.ConstructPSObject(
+                    "Microsoft.WindowsAzure.Commands.Profile.Models.CustomAzureAccount",
+                    "Id", account.Id,
+                    "Type", account.Type,
+                    "Subscriptions", account.GetProperty(AzureAccount.Property.Subscriptions).Replace(",", "\r\n"),
+                    "Tenants", account.GetProperty(AzureAccount.Property.Tenants)));
             } 
         }
     }
