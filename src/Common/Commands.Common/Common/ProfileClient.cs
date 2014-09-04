@@ -724,6 +724,10 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant.TenantId);
                             AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, psSubscription.Account)] = tenantToken;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5588ece32f715bffc62035959838f90f654e4284
                             result.Add(psSubscription);
                         }
                     }
