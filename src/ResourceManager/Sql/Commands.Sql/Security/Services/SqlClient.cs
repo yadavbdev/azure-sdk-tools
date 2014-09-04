@@ -22,7 +22,7 @@ using System.Linq;
 namespace Microsoft.Azure.Commands.Sql.Security.Services
 {
     /// <summary>
-    /// The PolicyHandler class is resposible for the mapping of data between two models: 
+    /// The SqlClient class is resposible for the mapping of data between two models: 
     /// The communication model as defined by the endpoint APIs and the cmdlet model that is defined by the
     /// AuditingPolicy class. This class knows how to wrap a policy in its communication model and return 
     /// a policy in its cmdlet model and vice versa (i.e., unwrapping).
@@ -114,6 +114,25 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         }
 
         /// <summary>
+        /// Check that the user didn't enter an All or None option with other event types.
+        /// Assumption - it is valid to repeat the All or None option several times, as long as no other values are provided
+        /// </summary>
+        private bool ValidateEventTypeOption(string[] userEnteredEventType, string option)
+        {
+            // if there's only one value, there can't be All / None with other values
+            if (userEnteredEventType.Length > 1)
+            {
+                // if All / None is not there, no problem either
+                if (!userEnteredEventType.Contains(option)) 
+                    return true;
+                // if there are values that are not All / None alongside All / None, than we're at invalid state
+                if (userEnteredEventType.Count(s => s.Equals(option)) != userEnteredEventType.Length)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Updates the storage properties of the policy that this object operates on
         /// </summary>
         private void UpdateEventTypes(AuditingPolicy wrappedPolicy, DatabaseSecurityPolicyProperties properties)
@@ -121,12 +140,18 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             string[] userEnteredEventType = wrappedPolicy.EventType;
             if (userEnteredEventType == null || userEnteredEventType.Length == 0)
                 return;
+
+            if (!ValidateEventTypeOption(userEnteredEventType, Constants.All))
+                throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.InvalidEventTypeSet, Constants.All));
+            if (!ValidateEventTypeOption(userEnteredEventType, Constants.None))
+                throw new Exception(string.Format(Microsoft.Azure.Commands.Sql.Properties.Resources.InvalidEventTypeSet, Constants.None));
+            
             HashSet<String> eventTypes = new HashSet<String>(userEnteredEventType);
-            properties.IsEventTypeDataAccessEnabled = valueOfProperty(eventTypes, Constants.Access);
-            properties.IsEventTypeSchemaChangeEnabled = valueOfProperty(eventTypes, Constants.Schema);
-            properties.IsEventTypeDataChangesEnabled = valueOfProperty(eventTypes, Constants.Data);
-            properties.IsEventTypeSecurityExceptionsEnabled = valueOfProperty(eventTypes, Constants.Security);
-            properties.IsEventTypeGrantRevokePermissionsEnabled = valueOfProperty(eventTypes, Constants.RevokePermissions);
+            properties.IsEventTypeDataAccessEnabled = ValueOfProperty(eventTypes, Constants.Access);
+            properties.IsEventTypeSchemaChangeEnabled = ValueOfProperty(eventTypes, Constants.Schema);
+            properties.IsEventTypeDataChangesEnabled = ValueOfProperty(eventTypes, Constants.Data);
+            properties.IsEventTypeSecurityExceptionsEnabled = ValueOfProperty(eventTypes, Constants.Security);
+            properties.IsEventTypeGrantRevokePermissionsEnabled = ValueOfProperty(eventTypes, Constants.RevokePermissions);
             
             // we need to re-add the event types to the AuditingPolicy object to replace the All / None with the real values 
             if (userEnteredEventType.Contains(Constants.All) || userEnteredEventType.Contains(Constants.None))
@@ -173,7 +198,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         /// <param name="eventTypes">A set of the event types that the user selected to use</param>
         /// <param name="propertyName">The property for which we'd like to know if the user selected to enable or disable</param>
         /// <returns>A bool stating whether the user selected to enable or disable the given property</returns>
-        private bool valueOfProperty(HashSet<String> eventTypes, String propertyName)
+        private bool ValueOfProperty(HashSet<String> eventTypes, String propertyName)
         {
             if (eventTypes.Contains(Constants.None)) return false;
             if (eventTypes.Contains(Constants.All)) return true;

@@ -61,6 +61,15 @@ namespace Microsoft.Azure.Commands.Sql.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot use the &apos;{0}&apos; option with other event types..
+        /// </summary>
+        internal static string InvalidEventTypeSet {
+            get {
+                return ResourceManager.GetString("InvalidEventTypeSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot use a server&apos;s auditing policy before it is configured..
         /// </summary>
         internal static string NoServerStorageAccount {
@@ -79,7 +88,7 @@ namespace Microsoft.Azure.Commands.Sql.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot find a storage account with the name &apos;{0}&apos;. It either does not exist or is associated with a different subscription..
+        ///   Looks up a localized string similar to Cannot find a storage account with the name &apos;{0}&apos;. It either does not exist, associated with a different subscription or you do not have the appropriate credentials to access it..
         /// </summary>
         internal static string StorageAccountNotFound {
             get {
