@@ -26,7 +26,6 @@ using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffolding
 {
-    
     public class AddAzurePythonWebRoleTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
@@ -39,7 +38,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             mockCommandRuntime = new MockCommandRuntime();
         }
 
-        [Fact]
         public void AddAzurePythonWebRoleProcess()
         {
             var pyInstall = AddAzureDjangoWebRoleCommand.FindPythonInterpreterPath();
@@ -90,7 +88,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             }
         }
 
-        [Fact]
         public void AddAzurePythonWebRoleWillRecreateDeploymentSettings()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))

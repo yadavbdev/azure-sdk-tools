@@ -1069,7 +1069,9 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 StorageAccountName = storageAccountName,
                 ConfirmAction = ConfirmAction
             };
+            
             galleryTemplatesClientMock.Setup(g => g.GetGalleryTemplateFile(It.IsAny<string>())).Returns("http://path/file.html");
+            
             deploymentsMock.Setup(f => f.ValidateAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentValidateResponse
                 {
@@ -1077,51 +1079,121 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                     Error = new ResourceManagementErrorWithDetails()
                 }))
                 .Callback((string rg, string dn, BasicDeployment d, CancellationToken c) => { deploymentFromValidate = d; });
+            
             deploymentsMock.Setup(f => f.CreateOrUpdateAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<BasicDeployment>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentOperationsCreateResult
                 {
                     RequestId = requestId
                 }))
                 .Callback((string name, string dName, BasicDeployment bDeploy, CancellationToken token) => { deploymentFromGet = bDeploy; deploymentName = dName; });
+            
             SetupListForResourceGroupAsync(parameters.ResourceGroupName, new List<Resource>() { new Resource() { Name = "website" } });
+
+            var operationId = Guid.NewGuid().ToString();
+            var operationQueue = new Queue<DeploymentOperation>();
+            operationQueue.Enqueue(
+                new DeploymentOperation()
+                {
+                    OperationId = operationId,
+                    Properties = new DeploymentOperationProperties()
+                    {
+                        ProvisioningState = ProvisioningState.Accepted,
+                        TargetResource = new TargetResource()
+                        {
+                            ResourceType = "Microsoft.Website",
+                            ResourceName = resourceName
+                        }
+                    }
+                }
+            );
+            operationQueue.Enqueue(
+                new DeploymentOperation()
+                {
+                    OperationId = operationId,
+                    Properties = new DeploymentOperationProperties()
+                    {
+                        ProvisioningState = ProvisioningState.Running,
+                        TargetResource = new TargetResource()
+                        {
+                            ResourceType = "Microsoft.Website",
+                            ResourceName = resourceName
+                        }
+                    }
+                }
+            );
+            operationQueue.Enqueue(
+                new DeploymentOperation()
+                {
+                    OperationId = operationId,
+                    Properties = new DeploymentOperationProperties()
+                    {
+                        ProvisioningState = ProvisioningState.Succeeded,
+                        TargetResource = new TargetResource()
+                        {
+                            ResourceType = "Microsoft.Website",
+                            ResourceName = resourceName
+                        }
+                    }
+                }
+            );
             deploymentOperationsMock.Setup(f => f.ListAsync(It.IsAny<string>(), It.IsAny<string>(), null, new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentOperationsListResult
                 {
                     Operations = new List<DeploymentOperation>()
                     {
-                        new DeploymentOperation()
-                        {
-                            OperationId = Guid.NewGuid().ToString(),
-                            Properties = new DeploymentOperationProperties()
-                            {
-                                ProvisioningState = ProvisioningState.Accepted,
-                                TargetResource = new TargetResource()
-                                {
-                                    ResourceType = "Microsoft.Website",
-                                    ResourceName = resourceName
-                                }
-                            }
-                        }
+                        operationQueue.Dequeue()
                     }
                 }));
+
+            var deploymentQueue = new Queue<Deployment>();
+            deploymentQueue.Enqueue(new Deployment
+            {
+                Name = deploymentName,
+                Properties = new DeploymentProperties()
+                {
+                    Mode = DeploymentMode.Incremental,
+                    CorrelationId = "123",
+                    ProvisioningState = ProvisioningState.Accepted
+                }
+            });
+            deploymentQueue.Enqueue(new Deployment
+            {
+                Name = deploymentName,
+                Properties = new DeploymentProperties()
+                {
+                    Mode = DeploymentMode.Incremental,
+                    CorrelationId = "123",
+                    ProvisioningState = ProvisioningState.Running
+                }
+            });
+            deploymentQueue.Enqueue(new Deployment
+            {
+                Name = deploymentName,
+                Properties = new DeploymentProperties()
+                {
+                    Mode = DeploymentMode.Incremental,
+                    CorrelationId = "123",
+                    ProvisioningState = ProvisioningState.Succeeded
+                }
+            });
             deploymentsMock.Setup(f => f.GetAsync(It.IsAny<string>(), It.IsAny<string>(), new CancellationToken()))
                 .Returns(Task.Factory.StartNew(() => new DeploymentGetResult
                 {
-                    Deployment = new Deployment
-                    {
-                        Name = deploymentName,
-                        Properties = new DeploymentProperties()
-                        {
-                            Mode = DeploymentMode.Incremental,
-                            CorrelationId = "123",
-                            ProvisioningState = ProvisioningState.Succeeded
-                        },
-                    }
+                    Deployment = deploymentQueue.Dequeue()
                 }));
 
             PSResourceGroupDeployment result = resourcesClient.ExecuteDeployment(parameters);
             Assert.Equal(deploymentName, deploymentName);
             Assert.Equal(ProvisioningState.Succeeded, result.ProvisioningState);
+            progressLoggerMock.Verify(
+                f => f(string.Format("Resource {0} '{1}' provisioning status is {2}", "Microsoft.Website", resourceName, ProvisioningState.Accepted.ToLower())),
+                Times.Once());
+            progressLoggerMock.Verify(
+                f => f(string.Format("Resource {0} '{1}' provisioning status is {2}", "Microsoft.Website", resourceName, ProvisioningState.Running.ToLower())),
+                Times.Once());
+            progressLoggerMock.Verify(
+                f => f(string.Format("Resource {0} '{1}' provisioning status is {2}", "Microsoft.Website", resourceName, ProvisioningState.Succeeded.ToLower())),
+                Times.Once());
         }
 
         [Fact]
