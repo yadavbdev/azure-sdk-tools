@@ -14,6 +14,7 @@
 
 using Microsoft.Azure.Graph.RBAC.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
@@ -40,11 +41,39 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public static PSADObject ToPSADObject(this AADObject obj)
         {
-            return new PSADObject()
+            if (obj == null) throw new ArgumentNullException();
+
+            if (obj.ObjectType == typeof(User).Name)
             {
-                DisplayName = obj.DisplayName,
-                Id = new Guid(obj.ObjectId)
-            };
+                return new PSADUser()
+                {
+                    DisplayName = obj.DisplayName,
+                    Id = new Guid(obj.ObjectId),
+                    Type = obj.ObjectType,
+                    UserPrincipalName = obj.UserPrincipalName,
+                    Mail = obj.Mail
+                };
+            }
+            else if (obj.ObjectType == typeof(Group).Name)
+            {
+                return new PSADGroup()
+                {
+                    DisplayName = obj.DisplayName,
+                    Type = obj.ObjectType,
+                    Id = new Guid(obj.ObjectId)/*,
+                    Mail = group.Mail*/
+                };
+
+            }
+            else
+            {
+                return new PSADObject()
+                {
+                    DisplayName = obj.DisplayName,
+                    Id = new Guid(obj.ObjectId),
+                    Type = obj.ObjectType
+                };
+            }
         }
 
         public static PSADObject ToPSADGroup(this AADObject obj)
