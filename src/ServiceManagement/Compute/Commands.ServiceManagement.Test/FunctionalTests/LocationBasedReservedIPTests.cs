@@ -32,18 +32,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         private string serviceName;
 
         [ClassInitialize]
-        public static void SetAzureVNetConfig(TestContext context)
+        public static void ClassInitialize(TestContext context)
         {
             var vnetConfig = vmPowershellCmdlets.GetAzureVNetConfig(null);
-            if (vnetConfig.Count == 0)
+            if (vnetConfig.Count > 0)
             {
-                vmPowershellCmdlets.SetAzureVNetConfig(Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg");
+                vmPowershellCmdlets.RunPSScript("Get-AzureService | Remove-AzureService -Force");
+                vmPowershellCmdlets.RemoveAzureVNetConfig();
             }
+            vmPowershellCmdlets.SetAzureVNetConfig(Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg");
             var sites = vmPowershellCmdlets.GetAzureVNetSite(null);
             subNet = sites[0].Subnets.First().Name;
             vnetName = sites[0].Name;
-
-
         }
 
         [TestInitialize]
@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             cleanupIfPassed = true;
         }
 
-        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenWindowsVM()
         {
             try
@@ -101,7 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-         [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+         [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenLinuxVM()
         {
             try
@@ -156,7 +156,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenWindowsQuickVM()
         {
             try
@@ -203,7 +203,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenLinuxQuickVM()
         {
             try

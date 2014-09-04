@@ -466,6 +466,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled property will be deprecated in a future release of Azure PowerShell. The value will be merged into the AccountType property..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled parameter will be deprecated in a future release of Azure PowerShell. The functionality will be merged into the Type parameter..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deprovisioning the VM: {0} .
         /// </summary>
         public static string DeprovisioningVM {
@@ -1819,6 +1837,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string StorageCredentialsFactoryCurrentSubscriptionNotSet {
             get {
                 return ResourceManager.GetString("StorageCredentialsFactoryCurrentSubscriptionNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subnet should be specified when deploying VMs in a VNET: {0}.
+        /// </summary>
+        public static string SubnetShouldBeSpecifiedIfVnetPresent {
+            get {
+                return ResourceManager.GetString("SubnetShouldBeSpecifiedIfVnetPresent", resourceCulture);
             }
         }
         

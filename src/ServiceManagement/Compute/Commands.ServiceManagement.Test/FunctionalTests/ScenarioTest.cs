@@ -177,7 +177,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 foreach (InputEndpointContext inputEndpointCtxt in vmPowershellCmdlets.GetAzureEndPoint(vmRoleCtxt))
                 {
-                    if (inputEndpointCtxt.Name.Equals("PowerShell"))
+                    if (inputEndpointCtxt.Name.Equals(WinRmEndpointName))
                     {
                         winRMEndpoint = inputEndpointCtxt;
                     }
@@ -637,7 +637,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             Console.WriteLine("InputEndpointContext Name: {0}", inputEndpointCtxt.Name);
             Console.WriteLine("InputEndpointContext port: {0}", inputEndpointCtxt.Port);
             Console.WriteLine("InputEndpointContext protocol: {0}", inputEndpointCtxt.Protocol);
-            Assert.AreEqual(inputEndpointCtxt.Name, "RemoteDesktop", true);
+            Assert.AreEqual(WinRmEndpointName, inputEndpointCtxt.Name, true);
 
             string path = ".\\myvmconnection.rdp";
             vmPowershellCmdlets.GetAzureRemoteDesktopFile(newAzureQuickVMName, serviceName, path, false); // Get-AzureRemoteDesktopFile
@@ -664,7 +664,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
 
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
-            //perfFile = @"..\deploymentUpgradeResult.csv";
 
             // Choose the package and config files from local machine
             string path = Convert.ToString(TestContext.DataRow["path"]);
@@ -691,11 +690,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.NewAzureDeployment(serviceName, packagePath1.FullName, configPath1.FullName, DeploymentSlotType.Production, deploymentLabel, deploymentName, false, false);
 
                 TimeSpan duration = DateTime.Now - start;
-
-                //Uri site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 1000);
-                //System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Deployment, {0}, {1}", duration, DateTime.Now - start) });
-
-                //Console.WriteLine("site: {0}", site.ToString());
                 Console.WriteLine("Time for all instances to become in ready state: {0}", DateTime.Now - start);
 
                 // Auto-Upgrade the deployment
@@ -707,9 +701,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Production);
                 Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
-
-                //site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
-                //System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Auto Upgrade, {0}, {1}", duration, DateTime.Now - start) });
 
                 // Manual-Upgrade the deployment
                 start = DateTime.Now;
@@ -724,9 +715,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
 
-                //site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
-                //System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Manual Upgrade, {0}, {1}", duration, DateTime.Now - start) });
-
                 // Simulatenous-Upgrade the deployment
                 start = DateTime.Now;
                 vmPowershellCmdlets.SetAzureDeploymentUpgrade(serviceName, DeploymentSlotType.Production, UpgradeType.Simultaneous, packagePath1.FullName, configPath1.FullName);
@@ -736,9 +724,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Production);
                 Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
-
-                //site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
-                //System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Simulatenous Upgrade, {0}, {1}", duration, DateTime.Now - start) });
 
                 vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
                 pass = Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName);
@@ -834,6 +819,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 {
                     VirtualNetworkSiteContext vnetsite = vmPowershellCmdlets.GetAzureVNetSite(vnet)[0];
                     Assert.AreEqual(vnet, vnetsite.Name);
+
                     //Verify DNS and IPAddress
                     Assert.AreEqual(1, vnetsite.DnsServers.Count());
                     Assert.IsTrue(dns.ContainsKey(vnetsite.DnsServers.First().Name));
@@ -897,7 +883,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 }
 
-                //Utilities.RetryFunctionUntilSuccess<ManagementOperationContext>(vmPowershellCmdlets.RemoveAzureVNetConfig, "in use", 10, 30);
                 Utilities.RetryActionUntilSuccess(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "in use", 10, 30);
 
                 pass = true;
@@ -914,7 +899,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     }
                     catch { }
                     Utilities.RetryActionUntilSuccess(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "in use", 10, 30);
-                    //Utilities.RetryFunctionUntilSuccess<ManagementOperationContext>(vmPowershellCmdlets.RemoveAzureVNetConfig, "in use", 10, 30);
                 }
                 Assert.Fail("Exception occurred: {0}", e.ToString());
             }
@@ -938,6 +922,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\nodiagpackage.csv", "nodiagpackage#csv", DataAccessMethod.Sequential)]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionConfigScenarioTest()
         {
 
@@ -993,6 +978,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((Get,Set,Remove)-AzureServiceRemoteDesktopExtension)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\nodiagpackage.csv", "nodiagpackage#csv", DataAccessMethod.Sequential)]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionTest()
         {
 
