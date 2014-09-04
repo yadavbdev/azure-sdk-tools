@@ -1419,7 +1419,7 @@
                    Add-AzureProvisioningConfig
 		</command:name>
 		<maml:description>
-			<maml:para>Adds the provisioning configuration to a Windows Azure virtual machine.</maml:para>
+			<maml:para>Adds the provisioning configuration to a Microsoft Azure virtual machine.</maml:para>
 		</maml:description>
 		<maml:copyright>
 			<maml:para></maml:para>
@@ -16327,7 +16327,7 @@ Get-AzureVMImage `
         Stop-AzureVM
       </command:name>
       <maml:description>
-        <maml:para>Shuts down a Windows Azure virtual machine.</maml:para>
+        <maml:para>Shuts down a Microsoft Azure virtual machine.</maml:para>
       </maml:description>
       <maml:copyright>
         <maml:para></maml:para>
@@ -16346,7 +16346,7 @@ Get-AzureVMImage `
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
           <maml:name>ServiceName</maml:name>
           <maml:description>
-            <maml:para>Specifies the name of the Windows Azure service that contains the virtual machine to shut down.</maml:para>
+            <maml:para>Specifies the name of the Microsoft Azure service that contains the virtual machine to shut down.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -16386,7 +16386,7 @@ Get-AzureVMImage `
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
           <maml:name>ServiceName</maml:name>
           <maml:description>
-            <maml:para>Specifies the name of the Windows Azure service that contains the virtual machine to shut down.</maml:para>
+            <maml:para>Specifies the name of the Microsoft Azure service that contains the virtual machine to shut down.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -16466,7 +16466,7 @@ Get-AzureVMImage `
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
         <maml:name>ServiceName</maml:name>
         <maml:description>
-          <maml:para>Specifies the name of the Windows Azure service that contains the virtual machine to shut down.</maml:para>
+          <maml:para>Specifies the name of the Microsoft Azure service that contains the virtual machine to shut down.</maml:para>
 
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -16565,7 +16565,7 @@ Get-AzureVMImage `
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
-          <maml:para>This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Windows Azure service and deprovisions it. If it is the last VM in deployment, then confirmation pop-up window is displayed with a warning that deprovisioning will cause loss deployment VIP.</maml:para>
+          <maml:para>This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Microsoft Azure service and deprovisions it. If it is the last VM in deployment, then confirmation pop-up window is displayed with a warning that deprovisioning will cause loss deployment VIP.</maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
@@ -16620,7 +16620,7 @@ Get-AzureVMImage `
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
           <maml:para>
-            This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Windows Azure service and keeps the VM provisioned.
+            This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Microsoft Azure service and keeps the VM provisioned.
           </maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
@@ -16647,7 +16647,7 @@ Get-AzureVMImage `
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
-          <maml:para>This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Windows Azure service even if it is the last VM in the deployment.</maml:para>
+          <maml:para>This command shuts down the &quot;MyVM&quot; virtual machine running in the &quot;myservice1&quot; Microsoft Azure service even if it is the last VM in the deployment.</maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
