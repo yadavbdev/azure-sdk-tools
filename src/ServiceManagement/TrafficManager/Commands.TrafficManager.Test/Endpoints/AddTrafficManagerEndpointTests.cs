@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
         private const string TrafficManagerType = "TrafficManager";
         private const EndpointStatus Status = EndpointStatus.Enabled;
         private const int Weight = 3;
-        private const int MinChildEndpoints = 2;
+        private const int MinChildEndpoints = 3;
 
         private MockCommandRuntime mockCommandRuntime;
 
