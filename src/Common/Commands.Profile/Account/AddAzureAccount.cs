@@ -61,6 +61,14 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 azureAccount.Id = Credential.UserName;
                 password = Credential.Password;
             }
+            azureAccount.Type = isServicePrincipal
+                ? AzureAccount.AccountType.ServicePrincipal
+                : AzureAccount.AccountType.User;
+
+            if (!string.IsNullOrEmpty(Tenant))
+            {
+                azureAccount.SetProperty(AzureAccount.Property.Tenants, new[] {Tenant});
+            }
 
             var account = ProfileClient.AddAccount(azureAccount, ProfileClient.GetEnvironmentOrDefault(Environment), password);
 
