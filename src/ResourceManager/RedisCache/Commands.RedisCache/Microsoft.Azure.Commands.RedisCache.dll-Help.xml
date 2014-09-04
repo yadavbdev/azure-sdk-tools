@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems xmlns="http://msh" schema="maml">
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-AzureRedisCache</command:name>
+      <maml:description>
+        <maml:para>Gets details about single cache or all caches in given resource group or all caches in given subscription.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Get</command:verb>
+      <command:noun>AzureRedisCache</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>The Get-AzureRedisCache cmdlet gets the details about cache or caches depending on input parameters. If ResourceGroupName and Name both parameters are provided than it will return details about specific cache name provided.</maml:para>
+      <maml:para>If only ResourceGroupName is provided than it will return details about all caches in given resource group.</maml:para>
+      <maml:para>If no parameters are given than it will return details about all caches in given subscription.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-AzureRedisCache</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>If this parameter is provided along with ResourceGroupName than it will get details about specific cache.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>If this parameter is provided with Name than it will give details about specific cache otherwise get details about all cache in this resource group.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>If this parameter is provided along with ResourceGroupName than it will get details about specific cache.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
+        <maml:name>ResourceGroupName</maml:name>
+        <maml:description>
+          <maml:para>If this parameter is provided with Name than it will give details about specific cache otherwise get details about all cache in this resource group.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+          <maml:uri>
+          </maml:uri>
+          <maml:description>
+            <maml:para />
+          </maml:description>
+        </dev:type>
+        <maml:description>
+          <maml:para>You can pipe input to this cmdlet by property name, but not by value.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Microsoft.Azure.Commands.RedisCache.Models.RedisCacheAttributes</maml:name>
+          <maml:uri>
+          </maml:uri>
+          <maml:description>
+            <maml:para />
+          </maml:description>
+        </dev:type>
+        <maml:description>
+          <maml:para>Returns an array of redis caches.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors />
+    <command:nonTerminatingErrors />
+    <maml:alertSet>
+      <maml:title />
+      <maml:alert>
+        <maml:para>The Get-AzureRedisCache cmdlet is included in the Azure Resource Manager module beginning in module version 0.9.0.</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Get specific redis cache by name</maml:title>
+        <maml:introduction>
+          <maml:para>
+          </maml:para>
+        </maml:introduction>
+        <dev:code>PS C:\&gt;Get-AzureRedisCache -ResourceGroupName myGroup -Name myexists
+          ResourceGroupName : myGroup
+          Id                : /subscriptions/a559b6fd-3a84-40bb-a450-b0db5ed37dfe/resourceGroups/myGroup/providers/Microsoft.Cache/Redis/myexists
+          Location          : North Central US
+          Name              : myexists
+          Type              : Microsoft.Cache/Redis
+          HostName          : myexists.redis.cache.windows.net
+          Port              : 6379
+          ProvisioningState : succeeded
+          SslPort           : 6380
+          MaxMemoryPolicy   : VolatileTTL
+          RedisVersion      : 2.8
+          Size              : 1GB
+          Sku               : Basic
+        </dev:code>
+        <dev:remarks>
+          <maml:para>This command gets details about specific redis cache.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Get all redis caches in specified resource group</maml:title>
+        <maml:introduction>
+          <maml:para>
+          </maml:para>
+        </maml:introduction>
+        <dev:code>
+          PS C:\&gt;Get-AzureRedisCache -ResourceGroupName myGroup
+          ResourceGroupName : myGroup
+          Id                : /subscriptions/a559b6fd-3a84-40bb-a450-b0db5ed37dfe/resourceGroups/myGroup/providers/Microsoft.Cache/Redis/myexists
+          Location          : North Central US
+          Name              : myexists
+          Type              : Microsoft.Cache/Redis
+          HostName          : myexists.redis.cache.windows.net
+          Port              : 6379
+          ProvisioningState : succeeded
+          SslPort           : 6380
+          MaxMemoryPolicy   : VolatileTTL
+          RedisVersion      : 2.8
+          Size              : 1GB
+          Sku               : Basic
+
+          ResourceGroupName : myGroup
+          Id                : /subscriptions/a559b6fd-3a84-40bb-a450-b0db5ed37dfe/resourceGroups/myGroup/providers/Microsoft.Cache/Redis/myearlier
+          Location          : North Central US
+          Name              : myearlier
+          Type              : Microsoft.Cache/Redis
+          HostName          : myearlier.redis.cache.windows.net
+          Port              : 6379
+          ProvisioningState : succeeded
+          SslPort           : 6380
+          MaxMemoryPolicy   : VolatileTTL
+          RedisVersion      : 2.8
+          Size              : 250MB
+          Sku               : Standard
+        </dev:code>
+        <dev:remarks>
+          <maml:para>This command gets details about all redis caches in given resource group.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Get all redis caches in current subscription</maml:title>
+        <maml:introduction>
+          <maml:para>
+          </maml:para>
+        </maml:introduction>
+        <dev:code>
+          PS C:\&gt;Get-AzureRedisCache
+          ResourceGroupName : myGroup
+          Id                : /subscriptions/a559b6fd-3a84-40bb-a450-b0db5ed37dfe/resourceGroups/myGroup/providers/Microsoft.Cache/Redis/myexists
+          Location          : North Central US
+          Name              : myexists
+          Type              : Microsoft.Cache/Redis
+          HostName          : myexists.redis.cache.windows.net
+          Port              : 6379
+          ProvisioningState : succeeded
+          SslPort           : 6380
+          MaxMemoryPolicy   : VolatileTTL
+          RedisVersion      : 2.8
+          Size              : 1GB
+          Sku               : Basic
+
+          ResourceGroupName : myGroup
+          Id                : /subscriptions/a559b6fd-3a84-40bb-a450-b0db5ed37dfe/resourceGroups/myGroup/providers/Microsoft.Cache/Redis/myearlier
+          Location          : North Central US
+          Name              : myearlier
+          Type              : Microsoft.Cache/Redis
+          HostName          : myearlier.redis.cache.windows.net
+          Port              : 6379
+          ProvisioningState : succeeded
+          SslPort           : 6380
+          MaxMemoryPolicy   : VolatileTTL
+          RedisVersion      : 2.8
+          Size              : 250MB
+          Sku               : Standard
+
+          ResourceGroupName : myGroup2
+          Id                : /subscriptions/a559b6fd-3a84-40bb-a450-b0db5ed37dfe/resourceGroups/myGroup2/providers/Microsoft.Cache/Redis/myearlier2
+          Location          : North Central US
+          Name              : myearlier2
+          Type              : Microsoft.Cache/Redis
+          HostName          : myearlier2.redis.cache.windows.net
+          Port              : 6379
+          ProvisioningState : succeeded
+          SslPort           : 6380
+          MaxMemoryPolicy   : VolatileTTL
+          RedisVersion      : 2.8
+          Size              : 250MB
+          Sku               : Basic
+        </dev:code>
+        <dev:remarks>
+          <maml:para>This command gets details about all redis caches in given current subscription.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri></maml:uri>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+</helpItems>
