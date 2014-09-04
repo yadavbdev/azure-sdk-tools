@@ -22,7 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
     
     public class ShowAzurePortalTests : WebsitesTestBase
     {
-        [Fact]
+        [Fact(Skip = "Consider removing these.")]
         public void ProcessGetAzurePublishSettingsTest()
         {
             ShowAzurePortalCommand showAzurePortalCommand = new ShowAzurePortalCommand
