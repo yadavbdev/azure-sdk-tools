@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using Microsoft.Hadoop.Client;
 using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
@@ -60,12 +61,11 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
         public static IHDInsightSubscriptionCredentials GetAccessTokenCredentials(this IAzureHDInsightCommonCommandBase command, AzureSubscription currentSubscription, AzureEnvironment environment)
         {
-            UserCredentials credentials = new UserCredentials
+            AzureAccount azureAccount = new AzureAccount
             {
-                UserName = currentSubscription.Account,
-                ShowDialog = ShowDialog.Auto
+                Id = currentSubscription.Account,
             };
-            var accessToken = AzureSession.AuthenticationFactory.Authenticate(environment, ref credentials);
+            var accessToken = AzureSession.AuthenticationFactory.Authenticate(ref azureAccount, environment, AuthenticationFactory.CommonAdTenant, null, ShowDialog.Auto);
             return new HDInsightAccessTokenCredential()
             {
                 SubscriptionId = currentSubscription.Id,

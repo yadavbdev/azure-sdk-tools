@@ -33,12 +33,12 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint
         public override void ExecuteCmdlet()
         {
             ProfileWithDefinition profile = TrafficManagerProfile.GetInstance();
-            if (!profile.Endpoints.Any(e => e.DomainName == DomainName))
+            if (!profile.Endpoints.Any(e => e.DomainName.Equals(DomainName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 throw new Exception(Resources.RemoveTrafficManagerEndpointMissing);
             }
 
-            TrafficManagerEndpoint endpoint = profile.Endpoints.First(e => e.DomainName == DomainName);
+            TrafficManagerEndpoint endpoint = profile.Endpoints.First(e => e.DomainName.Equals(DomainName, StringComparison.InvariantCultureIgnoreCase));
             profile.Endpoints.Remove(endpoint);
 
             WriteObject(profile);
