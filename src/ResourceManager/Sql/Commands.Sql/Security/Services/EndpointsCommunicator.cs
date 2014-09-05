@@ -125,7 +125,8 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
                 {
                     String resId =  account.Id;
                     String[] segments = resId.Split('/');
-                    return segments[4];
+                    int indexOfResoureGroup = new List<string>(segments).IndexOf("resourceGroups") +1;
+                    return segments[indexOfResoureGroup];
                 }     
                 else
                 {
