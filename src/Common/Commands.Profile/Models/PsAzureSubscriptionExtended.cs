@@ -31,6 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile.Models
             base.IsCurrent = subscription.IsCurrent;
         }
         public string ActiveDirectoryUserId { get; set; }
+        public AzureAccount Account { get; set; }
         public X509Certificate2 Certificate { get; set; }
         public string AccountAdminLiveEmailId { get; set; }
         public int CurrentCoreCount { get; set; }
