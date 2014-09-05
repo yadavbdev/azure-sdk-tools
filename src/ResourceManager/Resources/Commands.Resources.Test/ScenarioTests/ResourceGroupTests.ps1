@@ -236,16 +236,16 @@ function Test-NewResourceGroupWithTemplateThenGetWithAndWithoutDetails
     $location = Get-ProviderLocation ResourceManagement
     $templateFile = "Resources\EmptyWebsiteTemplate.json"
 
-    try 
+    try
     {
         # Test
         $actual = New-AzureResourceGroup -Name $rgname -Location $location -TemplateFile $templateFile `
                     -siteName $websiteName -hostingPlanName "test" -siteLocation "West US" `
                     -Tag @{ Name = "testtag"; Value = "testval" }
-        
+
         $expected1 = Get-AzureResourceGroup -Name $rgname
         # Assert
-        Assert-AreEqual $expected1.ResourceGroupName $actual.ResourceGroupName	
+        Assert-AreEqual $expected1.ResourceGroupName $actual.ResourceGroupName
         Assert-AreEqual $expected1.Tags[0]["Name"] $actual.Tags[0]["Name"]
         Assert-AreEqual $expected1.Resources.Count 2
 
@@ -255,7 +255,7 @@ function Test-NewResourceGroupWithTemplateThenGetWithAndWithoutDetails
 
         $expected3 = Get-AzureResourceGroup -Detailed
         $names = $expected3 | Select-Object -ExpandProperty ResourceGroupName
-        $index = [Array]::IndexOf($names, $rgname)
+        $index = [Array]::IndexOf($names, $expected1.ResourceGroupName)
         # Assert
         Assert-AreEqual $expected3[$index].Resources.Count 2
     }
