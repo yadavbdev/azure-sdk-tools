@@ -120,13 +120,13 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
             set
             {
-                foreach (var subscription in Subscriptions.Values)
-                {
-                    subscription.SetProperty(AzureSubscription.Property.Default, null);
-                }
-
                 if (value != null && Subscriptions.ContainsKey(value.Id))
                 {
+                    foreach (var subscription in Subscriptions.Values)
+                    {
+                        subscription.SetProperty(AzureSubscription.Property.Default, null);
+                    }
+
                     Subscriptions[value.Id].Properties[AzureSubscription.Property.Default] = "True";
                     value.Properties[AzureSubscription.Property.Default] = "True";
                 }

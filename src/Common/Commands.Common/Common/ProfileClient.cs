@@ -468,23 +468,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
-        public AzureSubscription GetSubscriptionOrDefault(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return AzureSession.CurrentContext.Subscription;
-            }
-            else if (AzureSession.CurrentContext.Subscription != null &&
-                     AzureSession.CurrentContext.Subscription.Name == name)
-            {
-                return AzureSession.CurrentContext.Subscription;
-            }
-            else
-            {
-                return GetSubscription(name);
-            }
-        }
-
         public AzureSubscription SetSubscriptionAsCurrent(string name, string accountName)
         {
             if (string.IsNullOrEmpty(name))

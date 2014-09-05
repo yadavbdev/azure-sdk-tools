@@ -427,7 +427,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(1, client.Profile.Accounts.Count);
         }
 
-
         [Fact]
         public void SetAzureEnvironmentUpdatesEnvironment()
         {
