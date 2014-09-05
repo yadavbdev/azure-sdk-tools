@@ -232,16 +232,16 @@ function Test-NewResourceGroupWithTemplateThenGetWithAndWithoutDetails
 {
     # Setup
     $rgname = Get-ResourceGroupName
+    $websiteName = Get-ResourceName
     $location = Get-ProviderLocation ResourceManagement
-    $templateFile = "..\Resources\EmptyWebsiteTemplate.json"
-    $parameterFile = "..\Resources\EmptyWebsiteTemplateParameter.json"
+    $templateFile = "Resources\EmptyWebsiteTemplate.json"
 
     try 
     {
         # Test
-        $actual = New-AzureResourceGroup -Name $rgname -Location $location `
-                    -TemplateFile $templateFile -TemplateParameterFile $parameterFile `
-                    -Tags @{Name = "testtag"; Value = "testval"} 
+        $actual = New-AzureResourceGroup -Name $rgname -Location $location -TemplateFile $templateFile `
+                    -siteName $websiteName -hostingPlanName "test" -siteLocation "West US" `
+                    -Tag @{ Name = "testtag"; Value = "testval" }
         
         $expected1 = Get-AzureResourceGroup -Name $rgname
         # Assert
@@ -251,15 +251,13 @@ function Test-NewResourceGroupWithTemplateThenGetWithAndWithoutDetails
 
         $expected2 = Get-AzureResourceGroup
         # Assert
-        Assert-AreEqual $expected2[0].ResourceGroupName $actual.ResourceGroupName	
-        Assert-AreEqual $expected2[0].Tags[0]["Name"] $actual.Tags[0]["Name"]
         Assert-AreEqual $expected2[0].Resources.Count 0
 
         $expected3 = Get-AzureResourceGroup -Detailed
+        $names = $expected3 | Select-Object -ExpandProperty ResourceGroupName
+        $index = [Array]::IndexOf($names, $rgname)
         # Assert
-        Assert-AreEqual $expected3[0].ResourceGroupName $actual.ResourceGroupName	
-        Assert-AreEqual $expected3[0].Tags[0]["Name"] $actual.Tags[0]["Name"]
-        Assert-AreEqual $expected3[0].Resources.Count 0
+        Assert-AreEqual $expected3[$index].Resources.Count 2
     }
     finally
     {
