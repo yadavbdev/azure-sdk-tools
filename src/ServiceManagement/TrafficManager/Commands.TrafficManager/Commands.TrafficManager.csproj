@@ -82,7 +82,7 @@
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.1.3.0\lib\net40\Microsoft.WindowsAzure.Management.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.TrafficManager">
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.TrafficManager.0.11.0-preview\lib\net40\Microsoft.WindowsAzure.Management.TrafficManager.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.TrafficManager.0.12.0-preview\lib\net40\Microsoft.WindowsAzure.Management.TrafficManager.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>

@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Security;
-
-namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
+namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public struct UserCredentials
+    public class PSAzureAccount
     {
-        public string UserName { get; set; }
+        public string Id { get; set; }
 
-        public SecureString Password { get; set; }
+        public AzureAccount.AccountType Type { get; set; }
 
-        public ShowDialog ShowDialog { get; set; }
+        public string Subscriptions { get; set; }
+
+        public string Tenants { get; set; }
     }
 }

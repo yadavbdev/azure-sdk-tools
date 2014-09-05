@@ -131,5 +131,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public const string ChinaActiveDirectoryEndpoint = "https://login.chinacloudapi.cn/";
 
         public const string AzureGraphEndpoint = "https://graph.windows.net/";
+
+        public const string AzureTrafficManagerDnsSuffix = "trafficmanager.net";
+
+        public const string ChinaTrafficManagerDnsSuffix = "trafficmanager.cn";
     }
 }
