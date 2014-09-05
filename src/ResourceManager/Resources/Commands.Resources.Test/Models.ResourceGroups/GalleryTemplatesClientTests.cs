@@ -405,7 +405,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
             FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
             {
-                Publisher = "Microsoft"
+                Publisher = "Microsoft",
+                AllVersions = true
             };
 
             List<PSGalleryItem> result = galleryTemplatesClient.FilterGalleryTemplates(options);
@@ -443,7 +444,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
             {
                 Publisher = "Microsoft",
-                Category = "awesome"
+                Category = "awesome",
+                AllVersions = true
             };
 
             List<PSGalleryItem> result = galleryTemplatesClient.FilterGalleryTemplates(options);
@@ -580,6 +582,50 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
                 galleryTemplatesClient.ParseTemplateParameterFileContents(@"Resources\WebSite.param.dev.json");
             Assert.Equal(true, result["isWorker"].Value);
             Assert.Equal((System.Int64)1, result["numberOfWorker"].Value);
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void FiltersGalleryTemplatesLatestVersion()
+        {
+            string filterString = FilterString.Generate<ItemListFilter>(f => f.Publisher == "Microsoft");
+            ItemListParameters actual = new ItemListParameters();
+            galleryClientMock.Setup(f => f.Items.ListAsync(It.IsAny<ItemListParameters>(), new CancellationToken()))
+                .Returns(Task.Factory.StartNew(() => new ItemListResult
+                {
+                    Items = new List<GalleryItem>()
+                    {
+                        new GalleryItem()
+                        {
+                            Name = "Template0",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.0"
+                        },
+                        new GalleryItem()
+                        {
+                            Name = "Template1",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.1"
+                        },
+                        new GalleryItem()
+                        {
+                            Name = "Template2",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.2"
+                        }
+                    }
+                }))
+                .Callback((ItemListParameters p, CancellationToken c) => actual = p);
+
+            FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
+            {
+                Publisher = "Microsoft"
+            };
+
+            List<PSGalleryItem> result = galleryTemplatesClient.FilterGalleryTemplates(options);
+
+            Assert.Equal(1, result.Count);
+            Assert.Equal("Template2", result[0].Name);
         }
     }
 }
