@@ -288,7 +288,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             AzureSdkPath = CreateDirectory("AzureSdk");
             ProfileClient client = new ProfileClient();
             ProfileClient.DataStore.WriteFile(publishSettingsPath, File.ReadAllText(publishSettingsPath));
-            client.ImportPublishSettings(publishSettingsPath, null);
+            client.ImportPublishSettings(publishSettingsPath);
             client.Profile.Save();
 
             return AzureSdkPath;

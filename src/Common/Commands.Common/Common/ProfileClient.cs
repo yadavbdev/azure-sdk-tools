@@ -526,8 +526,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public List<AzureSubscription> ImportPublishSettings(string filePath, string environmentName)
         {
-            var azureEnvironment = GetEnvironmentOrDefault(environmentName);
-            var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath, azureEnvironment);
+            var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath, environmentName);
             if (subscriptions.Any())
             {
                 foreach (var subscription in subscriptions)
@@ -556,13 +555,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return subscriptions;
         }
 
-        private List<AzureSubscription> ListSubscriptionsFromPublishSettingsFile(string filePath, AzureEnvironment environment)
+        private List<AzureSubscription> ListSubscriptionsFromPublishSettingsFile(string filePath, string environment)
         {
             if (string.IsNullOrEmpty(filePath) || !DataStore.FileExists(filePath))
             {
                 throw new ArgumentException("File path is not valid.", "filePath");
             }
-            return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), environment.Name).ToList();
+            return PublishSettingsImporter.ImportAzureSubscription(DataStore.ReadFileAsStream(filePath), this, environment).ToList();
         }
 
         private IEnumerable<AzureSubscription> ListSubscriptionsFromServerForAllAccounts(AzureEnvironment environment)
@@ -973,6 +972,34 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 return Profile.Environments.Values.FirstOrDefault(e =>
                     e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == serviceEndpoint ||
                     e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == resourceEndpoint);
+            }
+            return null;
+        }
+
+        public AzureEnvironment GetEnvironment(string name, string serviceManagementUrl)
+        {
+            if (name != null)
+            {
+                if (Profile.Environments.ContainsKey(name))
+                {
+                    return Profile.Environments[name];
+                }
+                else if (AzureSession.CurrentContext.Environment != null &&
+                         AzureSession.CurrentContext.Environment.Name == name)
+                {
+                    return AzureSession.CurrentContext.Environment;
+                }
+            }
+            else
+            {
+                if (AzureSession.CurrentContext.Environment != null &&
+                    AzureSession.CurrentContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.ManagementPortalUrl) == serviceManagementUrl)
+                {
+                    return AzureSession.CurrentContext.Environment;
+                }
+
+                return Profile.Environments.Values.FirstOrDefault(e =>
+                    e.GetEndpoint(AzureEnvironment.Endpoint.ManagementPortalUrl) == serviceManagementUrl);
             }
             return null;
         }

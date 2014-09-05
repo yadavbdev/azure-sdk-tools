@@ -216,6 +216,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ValidProfile2.PublishSettings" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\ValidProfile3.PublishSettings">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ValidProfileChina.PublishSettings">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\invalidsubscriptions.xml" />
