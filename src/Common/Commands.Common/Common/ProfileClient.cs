@@ -938,6 +938,36 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
         }
 
+        public AzureEnvironment GetEnvironment(string name, string serviceEndpoint, string resourceEndpoint)
+        {
+            if (name != null)
+            {
+                if (Profile.Environments.ContainsKey(name))
+                {
+                    return Profile.Environments[name];
+                }
+                else if (AzureSession.CurrentContext.Environment != null &&
+                         AzureSession.CurrentContext.Environment.Name == name)
+                {
+                    return AzureSession.CurrentContext.Environment;
+                }
+            }
+            else
+            {
+                if (AzureSession.CurrentContext.Environment != null &&
+                    (AzureSession.CurrentContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == serviceEndpoint ||
+                    AzureSession.CurrentContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == resourceEndpoint))
+                {
+                    return AzureSession.CurrentContext.Environment;
+                }
+
+                return Profile.Environments.Values.FirstOrDefault(e =>
+                    e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == serviceEndpoint ||
+                    e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == resourceEndpoint);
+            }
+            return null;
+        }
+
         public List<AzureEnvironment> ListEnvironments(string name)
         {
             if (string.IsNullOrEmpty(name))

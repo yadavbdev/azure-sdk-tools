@@ -26,6 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
     public class MockDataStore : IDataStore
     {
         private Dictionary<string, string> virtualStore = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+        private Dictionary<string, X509Certificate2> certStore = new Dictionary<string, X509Certificate2>(StringComparer.InvariantCultureIgnoreCase);
         private const string FolderKey = "Folder";
 
         public Dictionary<string, string> VirtualStore
@@ -257,12 +258,22 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public X509Certificate2 GetCertificate(string thumbprint)
         {
-            return new X509Certificate2();
+            if (thumbprint != null && certStore.ContainsKey(thumbprint))
+            {
+                return certStore[thumbprint];
+            }
+            else
+            {
+                return new X509Certificate2();
+            }
         }
 
         public void AddCertificate(X509Certificate2 cert)
         {
-            // Do nothing
+            if (cert != null && cert.Thumbprint != null)
+            {
+                certStore[cert.Thumbprint] = cert;
+            }
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            IEnumerable<AzureAccount> accounts = profileClient.ListAccounts(Name);
+            IEnumerable<AzureAccount> accounts = defaultProfileClient.ListAccounts(Name);
             List<PSAzureAccount> output = new List<PSAzureAccount>();
             foreach (AzureAccount account in accounts) {
                 output.Add(account.ToPSAzureAccount());

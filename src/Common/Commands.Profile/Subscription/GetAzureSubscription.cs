@@ -159,7 +159,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             {
                 var response = client.Subscriptions.Get();
                 var environment = ProfileClient.GetEnvironmentOrDefault(subscription.Environment);
-                var account = profileClient.Profile.Accounts[subscription.Account];
+                var account = defaultProfileClient.Profile.Accounts[subscription.Account];
                 bool isCert = account.Type == AzureAccount.AccountType.Certificate;
 
                 PSAzureSubscriptionExtended result = new PSAzureSubscriptionExtended(ConstructPsAzureSubscription(subscription))

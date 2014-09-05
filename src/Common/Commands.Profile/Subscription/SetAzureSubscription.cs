@@ -30,36 +30,22 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [Cmdlet(VerbsCommon.Set, "AzureSubscription", DefaultParameterSetName = "CommonSettings"), OutputType(typeof(AzureSubscription))]
     public class SetAzureSubscriptionCommand : SubscriptionCmdletBase
     {
-        private const string UpdateSubscriptionByIdParameterSet = "UpdateSubscriptionByIdParameterSetName";
-
-        private const string UpdateSubscriptionByNameParameterSet = "UpdateSubscriptionByNameParameterSetName";
-
-        private const string AddSubscriptionParameterSet = "AddSubscriptionParameterSetName";
-
         public SetAzureSubscriptionCommand() : base(true)
         {
             Environment = EnvironmentName.AzureCloud;
         }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Name of the subscription.", ParameterSetName = AddSubscriptionParameterSet)]
+            HelpMessage = "Name of the subscription.")]
         [ValidateNotNullOrEmpty]
         public string SubscriptionName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, 
-            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
+            HelpMessage = "Account subscription ID.")]
         public string SubscriptionId { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
-        [Parameter(ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
-        [Parameter(Position = 0, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Certificate ID.")]
         public X509Certificate2 Certificate { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Service endpoint.")]
@@ -84,46 +70,41 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            AzureSubscription subscription = null;
-            AzureEnvironment environment = null;
+            AzureSubscription subscription = ProfileClient.Profile.Subscriptions.Values.FirstOrDefault(s => s.Id == new Guid(SubscriptionId) || 
+                    s.Name.Equals(SubscriptionName, StringComparison.InvariantCultureIgnoreCase));
 
-            if (ParameterSetName == UpdateSubscriptionByIdParameterSet)
-            {
-                subscription = profileClient.GetSubscription(new Guid(SubscriptionId));
-            }
-            else if (ParameterSetName == UpdateSubscriptionByNameParameterSet)
-            {
-                subscription = profileClient.GetSubscription(SubscriptionName);
-            }
-            else
+            if (subscription == null)
             {
                 subscription = new AzureSubscription();
                 subscription.Id = new Guid(SubscriptionId);
-                subscription.Name = SubscriptionName;
+            }
+            else
+            {
+                Environment = subscription.Environment;
+            }
+
+            subscription.Name = SubscriptionName;
+
+            AzureEnvironment environment = ProfileClient.GetEnvironment(Environment, ServiceEndpoint, ResourceManagerEndpoint);
+            if (environment == null)
+            {
+                environment = defaultProfileClient.GetEnvironment(Environment, ServiceEndpoint, ResourceManagerEndpoint);
+            }
+
+            if (environment == null)
+            {
+                throw new ArgumentException("ServiceEndpoint and ResourceManagerEndpoint values do not "+
+                    "match existing environment. Please use Environment parameter.");
+            }
+            else
+            {
+                subscription.Environment = environment.Name;
             }
 
             if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
             {
-                WriteWarning("Please use Environment parameter to specify subscription environment. This warning will be converted into an error in the upcoming release.");
-
-                environment = ProfileClient.Profile.Environments.Values
-                    .FirstOrDefault(e => e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == ServiceEndpoint
-                    || e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == ResourceManagerEndpoint);
-
-                if (environment == null)
-                {
-                    throw new Exception("ServiceEndpoint and ResourceManagerEndpoint values do not match existing environment. Please use Environment parameter.");
-                }
-            }
-            else if (!string.IsNullOrEmpty(Environment))
-            {
-                environment = profileClient.Profile.Environments.Values
-                    .FirstOrDefault(e => e.Name.Equals(Environment, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (environment != null)
-            {
-                subscription.Environment = environment.Name;
+                WriteWarning("Please use Environment parameter to specify subscription environment. This "+
+                    "warning will be converted into an error in the upcoming release.");
             }
 
             if (Certificate != null)
@@ -131,12 +112,22 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                 ProfileClient.ImportCertificate(Certificate);
                 subscription.Account = Certificate.Thumbprint;
                 AzureAccount account = new AzureAccount
-                    {
-                        Id = Certificate.Thumbprint,
-                        Type = AzureAccount.AccountType.Certificate
-                    };
+                {
+                    Id = Certificate.Thumbprint,
+                    Type = AzureAccount.AccountType.Certificate
+                };
                 account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
-                profileClient.AddOrSetAccount(account);
+                ProfileClient.AddOrSetAccount(account);
+
+                if (subscription.Account == null)
+                {
+                    subscription.Account = account.Id;
+                }
+            }
+
+            if (subscription.Account == null)
+            {
+                throw new ArgumentException("Certificate is required for creating a new subscription.");
             }
 
             if (!string.IsNullOrEmpty(CurrentStorageAccountName))
