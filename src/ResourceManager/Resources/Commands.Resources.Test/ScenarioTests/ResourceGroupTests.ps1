@@ -90,7 +90,7 @@ function Test-CreatesAndRemoveResourceGroupViaPiping
     # Test
     New-AzureResourceGroup -Name $rgname1 -Location $location
     New-AzureResourceGroup -Name $rgname2 -Location $location
-        
+
     Get-AzureResourceGroup | where {$_.ResourceGroupName -eq $rgname1 -or $_.ResourceGroupName -eq $rgname2} | Remove-AzureResourceGroup -Force
 
     # Assert
