@@ -25,6 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     internal class ServicePrincipalTokenProvider : ITokenProvider
     {
         private readonly IWin32Window parentWindow;
+        private static readonly TimeSpan expirationThreshold = new TimeSpan(0, 5, 0);
 
         public ServicePrincipalTokenProvider(IWin32Window parentWindow)
         {
@@ -48,8 +49,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         private AuthenticationResult AcquireToken(AdalConfiguration config, string appId, SecureString appKey)
         {
+            if (appKey == null)
+            {
+                return Renew(config, appId);
+            }
+
             StoreAppKey(appId, config.AdDomain, appKey);
-            var context = new AuthenticationContext(config.AdEndpoint + config.AdDomain, config.ValidateAuthority,
+
+            string authority = config.AdEndpoint + config.AdDomain;
+            var context = new AuthenticationContext(authority, config.ValidateAuthority,
                 ProtectedFileTokenCache.Instance);
             var credential = new ClientCredential(appId, appKey);
             return context.AcquireToken("https://management.core.windows.net/", credential);
@@ -73,7 +81,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             ServicePrincipalKeyStore.SaveKey(appId, tenantId, appKey);
         }
 
-        private static readonly TimeSpan expirationThreshold = new TimeSpan(0, 5, 0);
 
         private class ServicePrincipalAccessToken : IAccessToken
         {
@@ -92,7 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
             public void AuthorizeRequest(Action<string, string> authTokenSetter)
             {
-                if (AuthResult.ExpiresOn + expirationThreshold >= DateTime.Now)
+                if (IsExpired)
                 {
                     AuthResult = tokenProvider.Renew(Configuration, appId);
                 }
@@ -104,6 +111,21 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             public string AccessToken { get { return AuthResult.AccessToken; } }
             public LoginType LoginType { get { return LoginType.OrgId; } }
             public string TenantId { get { return AuthResult.TenantId; } }
+
+            private bool IsExpired
+            {
+                get
+                {
+#if DEBUG
+                    if (Environment.GetEnvironmentVariable("FORCE_EXPIRED_ACCESS_TOKEN") != null)
+                    {
+                        return true;
+                    }
+#endif
+
+                    return AuthResult.ExpiresOn - expirationThreshold < DateTimeOffset.Now;
+                }
+            }
         }
     }
 }
