@@ -318,7 +318,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             if (!string.IsNullOrEmpty(parameters.StorageAccountName))
             {
-                WriteWarning("The StorageAccountName parameter is not used anymore and will be removed soon in future releases");
+                WriteWarning("The StorageAccountName parameter is no longer used and will be removed in a future release. Please update scripts to remove this parameter.");
             }
 
             ResourceManagementClient.Deployments.CreateOrUpdate(parameters.ResourceGroupName, parameters.DeploymentName, deployment);
