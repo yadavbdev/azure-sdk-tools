@@ -27,7 +27,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
     {
         private IDataStore store;
         private string profilePath;
-        private AzureSubscription defaultSubscription;
         private string tokenCacheFile = Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.TokenCacheFile);
 
         public AzureProfile()
@@ -43,8 +42,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             this.profilePath = profilePath;
 
             Load();
-            defaultSubscription = Subscriptions.FirstOrDefault(
-                s => s.Value.Properties.ContainsKey(AzureSubscription.Property.Default)).Value;
         }
 
         private void Load()
@@ -115,26 +112,30 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public AzureSubscription DefaultSubscription
         {
-            get { return defaultSubscription; }
+            get
+            {
+                return Subscriptions.Values.FirstOrDefault(
+                    s => s.Properties.ContainsKey(AzureSubscription.Property.Default));
+            }
 
             set
             {
-                if (defaultSubscription != null)
+                if (value == null)
                 {
-                    defaultSubscription.Properties.Remove(AzureSubscription.Property.Default);
+                    foreach (var subscription in Subscriptions.Values)
+                    {
+                        subscription.SetProperty(AzureSubscription.Property.Default, null);
+                    }
                 }
-
-                if (value != null)
+                else if (Subscriptions.ContainsKey(value.Id))
                 {
-                    Debug.Assert(value.Id != Guid.Empty);
+                    foreach (var subscription in Subscriptions.Values)
+                    {
+                        subscription.SetProperty(AzureSubscription.Property.Default, null);
+                    }
 
+                    Subscriptions[value.Id].Properties[AzureSubscription.Property.Default] = "True";
                     value.Properties[AzureSubscription.Property.Default] = "True";
-                    Subscriptions[value.Id] = value;
-                    defaultSubscription = Subscriptions[value.Id];
-                }
-                else
-                {
-                    defaultSubscription = null;
                 }
             }
         }

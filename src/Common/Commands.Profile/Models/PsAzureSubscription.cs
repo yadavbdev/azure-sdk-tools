@@ -26,5 +26,6 @@ namespace Microsoft.WindowsAzure.Commands.Profile.Models
         public AzureAccount[] Accounts { get; set; }
         public bool IsDefault { get; set; }
         public bool IsCurrent { get; set; }
+        public string CurrentStorageAccountName { get; set; }
     }
 }

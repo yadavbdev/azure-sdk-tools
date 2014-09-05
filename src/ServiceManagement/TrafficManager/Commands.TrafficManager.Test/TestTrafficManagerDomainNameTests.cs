@@ -24,6 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager
     public class TestTrafficManagerDomainNameTests
     {
         private const string ProfileDomainName = "my.profile.trafficmanager.net";
+        private const string NakedProfileDomainName = "my.profile";
 
         private Mock<ICommandRuntime> mockCommandRuntime;
 
@@ -76,6 +77,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager
             // Assert
             clientMock.Verify(c => c.TestDomainAvailability(ProfileDomainName), Times.Once());
             mockCommandRuntime.Verify(c => c.WriteObject(false), Times.Once());
+        }
+
+        [TestMethod]
+        public void TestProfileDomainNameAppendsTrafficManagerSuffixTrue()
+        {
+            // Setup
+            clientMock.Setup(c => c.TestDomainAvailability(NakedProfileDomainName)).Returns(true);
+            cmdlet = new TestAzureTrafficManagerDomainName
+            {
+                DomainName = NakedProfileDomainName,
+                CommandRuntime = mockCommandRuntime.Object,
+                TrafficManagerClient = clientMock.Object
+            };
+
+            // Action
+            cmdlet.ExecuteCmdlet();
+
+            // Assert
+            clientMock.Verify(c => c.TestDomainAvailability(ProfileDomainName), Times.Once());
         }
     }
 }

@@ -148,7 +148,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureServiceManagement;
 
-            var account = client.AddAccount(new UserCredentials { UserName = "test" }, AzureEnvironment.PublicEnvironments[ EnvironmentName.AzureCloud]);
+            var account = client.AddAccountAndLoadSubscriptions(new AzureAccount { Id = "test", Type = AzureAccount.AccountType.User }, AzureEnvironment.PublicEnvironments[ EnvironmentName.AzureCloud], null);
 
             Assert.Equal("test", account.Id);
             Assert.Equal(3, account.GetSubscriptions(client.Profile).Count);
@@ -167,7 +167,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
 
-            var account = client.AddAccount(new UserCredentials { UserName = "test" }, AzureEnvironment.PublicEnvironments[ EnvironmentName.AzureCloud]);
+            var account = client.AddAccountAndLoadSubscriptions(new AzureAccount { Id = "test", Type = AzureAccount.AccountType.User }, AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud], null);
 
             Assert.Equal("test", account.Id);
             Assert.Equal(3, account.GetSubscriptions(client.Profile).Count);
@@ -427,7 +427,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(1, client.Profile.Accounts.Count);
         }
 
-
         [Fact]
         public void SetAzureEnvironmentUpdatesEnvironment()
         {
@@ -494,6 +493,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
 
+            client.AddOrSetAccount(azureAccount);
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
 
@@ -502,10 +502,47 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             var subscription = client.AddOrSetSubscription(azureSubscription1);
 
             Assert.Equal(1, client.Profile.Subscriptions.Count);
+            Assert.Equal(1, client.Profile.Accounts.Count);
             Assert.Equal(subscription, azureSubscription1);
             Assert.Throws<ArgumentNullException>(() => client.AddOrSetSubscription(null));
             Assert.Throws<ArgumentNullException>(() => client.AddOrSetSubscription(
                 new AzureSubscription { Id = new Guid(), Environment = null, Name = "foo"}));
+        }
+
+        [Fact]
+        public void AddOrSetAzureSubscriptionUpdatesInMemory()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+
+            client.AddOrSetAccount(azureAccount);
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            AzureSession.SetCurrentContext(azureSubscription1, azureEnvironment, azureAccount);
+            azureSubscription1.Properties[AzureSubscription.Property.StorageAccount] = "testAccount";
+            Assert.Equal(azureSubscription1.Id, AzureSession.CurrentContext.Subscription.Id);
+            Assert.Equal(azureSubscription1.Properties[AzureSubscription.Property.StorageAccount],
+                AzureSession.CurrentContext.Subscription.Properties[AzureSubscription.Property.StorageAccount]);
+
+            var newSubscription = new AzureSubscription
+            {
+                Id = azureSubscription1.Id,
+                Environment = azureSubscription1.Environment,
+                Account = azureSubscription1.Account,
+                Name = azureSubscription1.Name
+            };
+            newSubscription.Properties[AzureSubscription.Property.StorageAccount] = "testAccount1";
+
+            client.AddOrSetSubscription(newSubscription);
+            var newSubscriptionFromProfile = client.Profile.Subscriptions[newSubscription.Id];
+
+            Assert.Equal(newSubscription.Id, AzureSession.CurrentContext.Subscription.Id);
+            Assert.Equal(newSubscription.Id, newSubscriptionFromProfile.Id);
+            Assert.Equal(newSubscription.Properties[AzureSubscription.Property.StorageAccount],
+                AzureSession.CurrentContext.Subscription.Properties[AzureSubscription.Property.StorageAccount]);
+            Assert.Equal(newSubscription.Properties[AzureSubscription.Property.StorageAccount],
+                newSubscriptionFromProfile.Properties[AzureSubscription.Property.StorageAccount]);
         }
 
         [Fact]
@@ -542,7 +579,27 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
-        public void ListAzureSubscriptionsMergesFromServer()
+        public void RefreshSubscriptionsUpdatesAccounts()
+        {
+            SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+            client.AddOrSetSubscription(azureSubscription1);
+
+            var subscriptions = client.RefreshSubscriptions(azureEnvironment);
+
+            Assert.True(client.Profile.Accounts[azureAccount.Id].HasSubscription(new Guid(rdfeSubscription1.SubscriptionId)));
+            Assert.True(client.Profile.Accounts[azureAccount.Id].HasSubscription(new Guid(rdfeSubscription2.SubscriptionId)));
+            Assert.True(client.Profile.Accounts[azureAccount.Id].HasSubscription(new Guid(csmSubscription1.SubscriptionId)));
+            Assert.True(client.Profile.Accounts[azureAccount.Id].HasSubscription(new Guid(csmSubscription1withDuplicateId.SubscriptionId)));
+        }
+
+        [Fact]
+        public void RefreshSubscriptionsMergesFromServer()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
             MockDataStore dataStore = new MockDataStore();
@@ -565,15 +622,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
-        public void ListAzureSubscriptionsListsAllSubscriptions()
+        public void RefreshSubscriptionsListsAllSubscriptions()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
-            client.Profile.Accounts[azureAccount.Id] = azureAccount;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureServiceManagement;
 
             var subscriptions = client.RefreshSubscriptions(azureEnvironment);
@@ -587,21 +644,41 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
+        public void GetAzureSubscriptionByNameChecksAndReturnsOnlyLocal()
+        {
+            SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
+            PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            client.AddOrSetSubscription(azureSubscription2);
+
+            var subscriptions = client.GetSubscription(azureSubscription1.Name);
+
+            Assert.Equal(azureSubscription1.Id, subscriptions.Id);
+            Assert.Throws<ArgumentException>(() => client.GetSubscription(new Guid()));
+        }
+
+        [Fact]
         public void GetAzureSubscriptionByIdChecksAndReturnsOnlyLocal()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
 
-            var subscriptions = client.GetSubscriptionById(azureSubscription1.Id);
+            var subscriptions = client.GetSubscription(azureSubscription1.Id);
 
             Assert.Equal(azureSubscription1.Id, subscriptions.Id);
-            Assert.Throws<ArgumentException>(() => client.GetSubscriptionById(new Guid()));
+            Assert.Throws<ArgumentException>(() => client.GetSubscription(new Guid()));
         }
 
         [Fact]
@@ -612,7 +689,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             client.Profile.Accounts[azureAccount.Id] = azureAccount;
             client.AddOrSetEnvironment(azureEnvironment);
-            client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
 
             Assert.Null(client.Profile.DefaultSubscription);
@@ -633,7 +709,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient client = new ProfileClient();
             client.Profile.Accounts[azureAccount.Id] = azureAccount;
             client.AddOrSetEnvironment(azureEnvironment);
-            client.AddOrSetSubscription(azureSubscription1);
             client.AddOrSetSubscription(azureSubscription2);
 
             Assert.Null(client.Profile.DefaultSubscription);
@@ -797,6 +872,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ServiceEndpoint>https://umapi.rdfetest.dnsdemo4.com:8443/</ServiceEndpoint>
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <StorageEndpointSuffix i:nil=""true"" />
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureEnvironmentData>
                     <AzureEnvironmentData>
                       <ActiveDirectoryServiceEndpointResourceId>https://management.core.windows.net/</ActiveDirectoryServiceEndpointResourceId>
@@ -810,6 +886,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ServiceEndpoint>https://management-preview.core.windows-int.net/</ServiceEndpoint>
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <StorageEndpointSuffix i:nil=""true"" />
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureEnvironmentData>
                   </Environments>
                   <Subscriptions>
@@ -829,6 +906,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                     <AzureSubscriptionData>
                       <ActiveDirectoryEndpoint i:nil=""true"" />
@@ -846,6 +924,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                     <AzureSubscriptionData>
                       <ActiveDirectoryEndpoint>https://login.windows.net/</ActiveDirectoryEndpoint>
@@ -863,6 +942,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>d1e52cbc-b073-42e2-a0a0-c2f547118a6f</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                   </Subscriptions>
                 </ProfileData>";

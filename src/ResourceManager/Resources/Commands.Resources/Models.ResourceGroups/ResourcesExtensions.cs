@@ -31,20 +31,25 @@ namespace Microsoft.Azure.Commands.Resources.Models
 {
     public static class ResourcesExtensions
     {
-        public static PSResourceGroup ToPSResourceGroup(this ResourceGroup resourceGroup, ResourcesClient client)
+        public static PSResourceGroup ToPSResourceGroup(this ResourceGroup resourceGroup, ResourcesClient client, bool detailed)
         {
-            List<PSResource> resources = client.FilterResources(new FilterResourcesOptions { ResourceGroup = resourceGroup.Name })
-                .Select(r => r.ToPSResource(client, true)).ToList();
-            return new PSResourceGroup
+            var result = new PSResourceGroup
             {
                 ResourceGroupName = resourceGroup.Name,
                 Location = resourceGroup.Location,
-                Resources = resources,
                 ProvisioningState = resourceGroup.ProvisioningState,
                 Tags = TagsConversionHelper.CreateTagHashtable(resourceGroup.Tags),
-                Permissions = client.GetResourceGroupPermissions(resourceGroup.Name),
                 ResourceId = resourceGroup.Id
             };
+
+            if (detailed)
+            {
+                result.Resources = client.FilterResources(new FilterResourcesOptions { ResourceGroup = resourceGroup.Name })
+                    .Select(r => r.ToPSResource(client, true)).ToList();
+                result.Permissions = client.GetResourceGroupPermissions(resourceGroup.Name);
+            }
+
+            return result;
         }
 
         public static PSResourceGroupDeployment ToPSResourceGroupDeployment(this DeploymentGetResult result, string resourceGroup)
@@ -200,7 +205,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             StringBuilder resourcesTable = new StringBuilder();
 
-            if (resources.Count > 0)
+            if (resources != null && resources.Count > 0)
             {
                 int maxNameLength = Math.Max("Name".Length, resources.Where(r => r.Name != null).DefaultIfEmpty(EmptyResource).Max(r => r.Name.Length));
                 int maxTypeLength = Math.Max("Type".Length, resources.Where(r => r.ResourceType != null).DefaultIfEmpty(EmptyResource).Max(r => r.ResourceType.Length));

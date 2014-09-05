@@ -159,6 +159,8 @@ namespace Microsoft.Azure.Commands.Resources
                 {
                     Mail = Mail,
                     Id = ObjectId == Guid.Empty ? null : ObjectId.ToString(),
+                    UPN = UserPrincipalName,
+                    SPN = ServicePrincipalName
                 },
                 ResourceIdentifier = new ResourceIdentifier()
                 {

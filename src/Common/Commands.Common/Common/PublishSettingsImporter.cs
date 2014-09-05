@@ -34,6 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             var publishData = DeserializePublishData(stream);
             PublishDataPublishProfile profile = publishData.Items.Single();
+            stream.Close();
             return profile.Subscription.Select(s => PublishSubscriptionToAzureSubscription(profile, s, environment));
         }
 

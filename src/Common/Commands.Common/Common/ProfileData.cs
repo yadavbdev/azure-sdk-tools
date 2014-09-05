@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     { AzureEnvironment.Endpoint.ResourceManager, this.ResourceManagerEndpoint },
                     { AzureEnvironment.Endpoint.ServiceManagement, this.ServiceEndpoint },
                     { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, this.SqlDatabaseDnsSuffix },
-                    { AzureEnvironment.Endpoint.StorageEndpointSuffix, this.StorageEndpointSuffix }
+                    { AzureEnvironment.Endpoint.StorageEndpointSuffix, this.StorageEndpointSuffix },
                 }
             };
         }
@@ -106,6 +106,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         [DataMember]
         public string SqlDatabaseDnsSuffix { get; set; }
+
+        [DataMember]
+        public string TrafficManagerEndpointSuffix { get; set; }
     }
 
     /// <summary>
@@ -250,5 +253,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         [DataMember]
         public string SqlDatabaseDnsSuffix { get; set; }
+
+        [DataMember]
+        public string TrafficManagerEndpointSuffix { get; set; }
     }
 }
