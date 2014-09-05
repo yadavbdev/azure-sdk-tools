@@ -54,10 +54,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             dataFactoriesClientMock.Setup(c => c.GetDataFactory(ResourceGroupName, DataFactoryName))
                 .Returns(expected)
                 .Verifiable();
-            
-            // Action
+
             cmdlet.Name = DataFactoryName;
             cmdlet.ResourceGroupName = ResourceGroupName;
+            
+            // Action
             cmdlet.ExecuteCmdlet();
 
             // Assert
@@ -87,9 +88,10 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             dataFactoriesClientMock.Setup(c => c.ListDataFactories(ResourceGroupName))
                 .Returns(expected)
                 .Verifiable();
-            
-            // Action
+
             cmdlet.ResourceGroupName = ResourceGroupName;
+
+            // Action
             cmdlet.ExecuteCmdlet();
             
             // Assert
