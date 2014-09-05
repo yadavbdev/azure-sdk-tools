@@ -611,7 +611,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             try
             {
-
                 List<AzureSubscription> mergedSubscriptions = MergeSubscriptions(
                     ListServiceManagementSubscriptions(ref account, environment, password, ShowDialog.Never).ToList(),
                     ListResourceManagerSubscriptions(ref account, environment, password, ShowDialog.Never).ToList());
@@ -807,12 +806,17 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
+            if (environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager) == null)
+            {
+                return result;
+            }
+
             foreach (var tenant in account.GetPropertyAsArray(AzureAccount.Property.Tenants))
             {
                 try
                 {
                     var tenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment, tenant, password, ShowDialog.Never);
-                    
+
                     using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
                                 new TokenCloudCredentials(tenantToken.AccessToken),
                                 environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
@@ -851,6 +855,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
         private IEnumerable<AzureSubscription> ListServiceManagementSubscriptions(ref AzureAccount account, AzureEnvironment environment, SecureString password, ShowDialog promptBehavior)
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
+
+            if (environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement) == null)
+            {
+                return result;
+            }
 
             foreach (var tenant in account.GetPropertyAsArray(AzureAccount.Property.Tenants))
             {
