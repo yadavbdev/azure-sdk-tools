@@ -125,8 +125,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
             foreach (var galleryItem in galleryItems)
             {
                 // if CompareTo is greater then the present galleryItem is a higher version
-                string galleryItemVersion = galleryItem.Version.Replace("-preview", string.Empty);
-                string mostRecentVersion = mostRecent.Version.Replace("-preview", string.Empty);
+                string galleryItemVersion = galleryItem.Version == null ? "0.0.0.0" : galleryItem.Version.Replace("-preview", string.Empty);
+                string mostRecentVersion = mostRecent.Version == null ? "0.0.0.0" : mostRecent.Version.Replace("-preview", string.Empty);
                 galleryItemVersion = galleryItemVersion.Replace("-placeholder", string.Empty);
                 mostRecentVersion = mostRecentVersion.Replace("-placeholder", string.Empty);
                 if ((new Version(galleryItemVersion)).CompareTo(new Version(mostRecentVersion)) > 0)

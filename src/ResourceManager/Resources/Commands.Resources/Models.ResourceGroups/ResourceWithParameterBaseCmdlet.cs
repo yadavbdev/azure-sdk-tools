@@ -111,25 +111,28 @@ namespace Microsoft.Azure.Commands.Resources
 
         public object GetDynamicParameters()
         {
-            List<PSGalleryItem> galleryItems = new List<PSGalleryItem>();
-            try
+            if (!string.IsNullOrEmpty(GalleryTemplateIdentity))
             {
-                galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { Identity = GalleryTemplateIdentity });
-            }
-            catch (CloudException)
-            {
-                // we could not find a template with that identity
-            }
-            
-            if (galleryItems.Count == 0)
-            {
-                galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { ApplicationName = GalleryTemplateIdentity, AllVersions = false});
-                if (galleryItems == null || galleryItems.Count == 0)
+                List<PSGalleryItem> galleryItems = new List<PSGalleryItem>();
+                try
                 {
-                    throw new ArgumentException(string.Format(Properties.Resources.InvalidTemplateIdentity, GalleryTemplateIdentity));
+                    galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { Identity = GalleryTemplateIdentity });
+                }
+                catch (CloudException)
+                {
+                    // we could not find a template with that identity
                 }
 
-                GalleryTemplateIdentity = galleryItems[0].Identity;
+                if (galleryItems.Count == 0)
+                {
+                    galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { ApplicationName = GalleryTemplateIdentity, AllVersions = false });
+                    if (galleryItems == null || galleryItems.Count == 0)
+                    {
+                        throw new ArgumentException(string.Format(Properties.Resources.InvalidTemplateIdentity, GalleryTemplateIdentity));
+                    }
+
+                    GalleryTemplateIdentity = galleryItems[0].Identity;
+                }
             }
 
             if (!string.IsNullOrEmpty(GalleryTemplateIdentity) &&
