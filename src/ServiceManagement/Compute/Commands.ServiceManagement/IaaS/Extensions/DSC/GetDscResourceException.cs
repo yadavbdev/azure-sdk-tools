@@ -18,6 +18,7 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
 {
+    [Serializable]
     public class GetDscResourceException : UnauthorizedAccessException
     {
         public GetDscResourceException(string resourceName, Exception e) :

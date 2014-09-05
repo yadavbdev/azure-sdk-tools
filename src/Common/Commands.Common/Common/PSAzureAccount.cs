@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Resources.Models
+namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public class FilterGalleryTemplatesOptions
+    public class PSAzureAccount
     {
-        public string Identity { get; set; }
+        public string Id { get; set; }
 
-        public string Category { get; set; }
+        public AzureAccount.AccountType Type { get; set; }
 
-        public string Publisher { get; set; }
+        public string Subscriptions { get; set; }
 
-        public string ApplicationName { get; set; }
-
-        public bool AllVersions { get; set; }
+        public string Tenants { get; set; }
     }
 }

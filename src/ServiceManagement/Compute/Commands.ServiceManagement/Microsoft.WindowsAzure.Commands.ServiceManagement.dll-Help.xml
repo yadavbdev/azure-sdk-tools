@@ -37818,7 +37818,8 @@ PS C:\&gt; Set-AzureServiceAntimalwareExtension -ServiceName "ContosoService03" 
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 				<maml:name>ConfigurationArgument</maml:name>
 				<maml:description>
-					<maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.</maml:para>
+					<maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.
+  Supported types for values include: primitive types, string, hashtable, array, PSCredential.</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">hashtable</command:parameterValue>
 			</command:parameter>
@@ -37915,7 +37916,8 @@ If omitted, this parameter will default to the name of the file given by the Con
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
 			<maml:name>ConfigurationArgument</maml:name>
 			<maml:description>
-				<maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.</maml:para>
+				<maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.
+  Supported types for values include: primitive types, string, hashtable, array, PSCredential.</maml:para>
 								
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">hashtable</command:parameterValue>
@@ -38130,7 +38132,7 @@ If omitted, this parameter will default to the name of the file given by the Con
 				<maml:para>C:\PS&gt;</maml:para>
 			</maml:introduction> 
   			<dev:code>
-Set-AzureVMDscExtension -VM $vm -ConfigurationArchive MyConfiguration.ps1.zip  -ConfigurationName MyConfiguration -ConfigurationArgument @{ ServerName = 'C:\MyDirectory' }
+Set-AzureVMDscExtension -VM $vm -ConfigurationArchive MyConfiguration.ps1.zip  -ConfigurationName MyConfiguration -ConfigurationArgument @{ Path = 'C:\MyDirectory' }
 
 DeploymentName              : my-vm-svc
 Name                        : my-vm
@@ -38175,6 +38177,60 @@ The &quot;MyConfiguration&quot; argument indicates the specific DSC configuratio
 				</command:commandLine>
 			</command:commandLines>
 		</command:example>
+    <command:example>
+        <maml:title>
+          -------------------------- EXAMPLE 2 --------------------------
+        </maml:title> 
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+        </maml:introduction> 
+          <dev:code>
+  $vm | Set-AzureVMDscExtension -ConfigurationArchive MyConfiguration.ps1.zip  -ConfigurationName MyConfiguration -ConfigurationArgument @{ Credential = Get-Credential } -ConfigurationDataPath MyConfigurationData.psd1 
+
+
+  DeploymentName              : my-vm-svc
+  Name                        : my-vm
+  Label                       : 
+  VM                          : Microsoft.WindowsAzure.Commands.ServiceManagement.Model.PersistentVM
+  InstanceStatus              : ReadyRole
+  IpAddress                   : 10.10.10.10
+  InstanceStateDetails        : 
+  PowerState                  : Started
+  InstanceErrorCode           : 
+  InstanceFaultDomain         : 0
+  InstanceName                : my-vm
+  InstanceUpgradeDomain       : 0
+  InstanceSize                : Small
+  AvailabilitySetName         : 
+  DNSName                     : http://my-vm-svc.cloudapp.net/
+  Status                      : ReadyRole
+  GuestAgentStatus            : Microsoft.WindowsAzure.Commands.ServiceManagement.Model.PersistentVMModel.GuestAgentStatus
+  ResourceExtensionStatusList : {Microsoft.Compute.BGInfo, Microsoft.Powershell.DSC}
+  PublicIPAddress             : 
+  PublicIPName                : 
+  ServiceName                 : my-vm-svc
+  OperationDescription        : Get-AzureVM
+  OperationId                 : a0217a7af900c1f8a212299a3333cdbd7
+  OperationStatus             : OK                        </dev:code>
+              <dev:remarks>
+                                  <maml:para>Description</maml:para>
+                                  <maml:para>-----------</maml:para>
+                  <maml:para>You can pass -VM parameter from the pipeline.
+
+  -ConfigurationArgument parameter supports PSCredential as a value.
+
+  -ConfigurationDataPath parameter takes path to .psd1 file with ConfigurationData hashtable.</maml:para>
+                            <maml:para></maml:para>
+                            <maml:para></maml:para>
+                            <maml:para></maml:para>
+                            <maml:para></maml:para>
+          </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText></command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
 	</command:examples>
 	<!-- Link section  -->
 	<maml:relatedLinks>
