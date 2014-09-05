@@ -21,6 +21,8 @@ using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using Microsoft.WindowsAzure.Commands.Common;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
@@ -30,6 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     {
         public ImportAzurePublishSettingsCommand() : base(true)
         {
+            Environment = EnvironmentName.AzureCloud;
         }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
@@ -50,6 +53,16 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             else
             {
                 ImportFile();
+            }
+
+            AzureSubscription defaultSubscription = ProfileClient.Profile.DefaultSubscription;
+            Debug.Assert(AzureSession.CurrentContext != null);
+            if (defaultSubscription != null && AzureSession.CurrentContext.Subscription == null)
+            {
+                AzureSession.SetCurrentContext(
+                    defaultSubscription,
+                    ProfileClient.Profile.Environments[defaultSubscription.Environment],
+                    ProfileClient.Profile.Accounts[defaultSubscription.Account]);
             }
         }
 

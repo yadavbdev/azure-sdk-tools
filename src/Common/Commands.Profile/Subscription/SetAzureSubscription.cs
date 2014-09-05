@@ -30,32 +30,49 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [Cmdlet(VerbsCommon.Set, "AzureSubscription", DefaultParameterSetName = "CommonSettings"), OutputType(typeof(AzureSubscription))]
     public class SetAzureSubscriptionCommand : SubscriptionCmdletBase
     {
+        private const string UpdateSubscriptionByIdParameterSet = "UpdateSubscriptionByIdParameterSetName";
+
+        private const string UpdateSubscriptionByNameParameterSet = "UpdateSubscriptionByNameParameterSetName";
+
+        private const string AddSubscriptionParameterSet = "AddSubscriptionParameterSetName";
+
         public SetAzureSubscriptionCommand() : base(true)
         {
+            Environment = EnvironmentName.AzureCloud;
         }
 
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "CommonSettings")]
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "ResetCurrentStorageAccount")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = AddSubscriptionParameterSet)]
         [ValidateNotNullOrEmpty]
         public string SubscriptionName { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Account subscription ID.", ParameterSetName = "CommonSettings")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, 
+            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
         public string SubscriptionId { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Account certificate.", ParameterSetName = "CommonSettings")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
+        [Parameter(ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
+        [Parameter(Position = 0, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
         public X509Certificate2 Certificate { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Service endpoint.", ParameterSetName = "CommonSettings")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Service endpoint.")]
         public string ServiceEndpoint { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Cloud service endpoint.", ParameterSetName = "CommonSettings")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cloud service endpoint.")]
         public string ResourceManagerEndpoint { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "Current storage account name.", ParameterSetName = "CommonSettings")]
+        [Parameter(HelpMessage = "Current storage account name.")]
         [ValidateNotNullOrEmpty]
         public string CurrentStorageAccountName { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "Environment name.", ParameterSetName = "CommonSettings")]
+        [Parameter(HelpMessage = "Environment name.")]
         [ValidateNotNullOrEmpty]
         public string Environment { get; set; }
 
@@ -70,33 +87,22 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             AzureSubscription subscription = null;
             AzureEnvironment environment = null;
 
-            if (!string.IsNullOrEmpty(SubscriptionName))
-            {
-                subscription = profileClient.GetSubscription(SubscriptionName);
-            }
-
-            if (!string.IsNullOrEmpty(SubscriptionId))
+            if (ParameterSetName == UpdateSubscriptionByIdParameterSet)
             {
                 subscription = profileClient.GetSubscription(new Guid(SubscriptionId));
             }
-
-            if (!string.IsNullOrEmpty(CurrentStorageAccountName))
+            else if (ParameterSetName == UpdateSubscriptionByNameParameterSet)
             {
-                subscription.Properties[AzureSubscription.Property.StorageAccount] = CurrentStorageAccountName;
+                subscription = profileClient.GetSubscription(SubscriptionName);
+            }
+            else
+            {
+                subscription = new AzureSubscription();
+                subscription.Id = new Guid(SubscriptionId);
+                subscription.Name = SubscriptionName;
             }
 
-            if (Certificate != null)
-            {
-                ProfileClient.ImportCertificate(Certificate);
-                subscription.Account = Certificate.Thumbprint;
-            }
-
-            if (!string.IsNullOrEmpty(Environment))
-            {
-                environment = profileClient.Profile.Environments.Values
-                    .FirstOrDefault(e => e.Name.Equals(Environment, StringComparison.OrdinalIgnoreCase));
-            }
-            else if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
+            if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
             {
                 WriteWarning("Please use Environment parameter to specify subscription environment. This warning will be converted into an error in the upcoming release.");
 
@@ -109,13 +115,41 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     throw new Exception("ServiceEndpoint and ResourceManagerEndpoint values do not match existing environment. Please use Environment parameter.");
                 }
             }
+            else if (!string.IsNullOrEmpty(Environment))
+            {
+                environment = profileClient.Profile.Environments.Values
+                    .FirstOrDefault(e => e.Name.Equals(Environment, StringComparison.OrdinalIgnoreCase));
+            }
 
             if (environment != null)
             {
                 subscription.Environment = environment.Name;
             }
 
-            WriteObject(ProfileClient.AddOrSetSubscription(subscription));
+            if (Certificate != null)
+            {
+                ProfileClient.ImportCertificate(Certificate);
+                subscription.Account = Certificate.Thumbprint;
+                AzureAccount account = new AzureAccount
+                    {
+                        Id = Certificate.Thumbprint,
+                        Type = AzureAccount.AccountType.Certificate
+                    };
+                account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
+                profileClient.AddOrSetAccount(account);
+            }
+
+            if (!string.IsNullOrEmpty(CurrentStorageAccountName))
+            {
+                subscription.Properties[AzureSubscription.Property.StorageAccount] = CurrentStorageAccountName;
+            }
+
+            subscription = ProfileClient.AddOrSetSubscription(subscription);
+
+            if (PassThru)
+            {
+                WriteObject(subscription);
+            }
         }
     }
 }
