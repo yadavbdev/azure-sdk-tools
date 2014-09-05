@@ -130,6 +130,13 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             {
                 ProfileClient.ImportCertificate(Certificate);
                 subscription.Account = Certificate.Thumbprint;
+                AzureAccount account = new AzureAccount
+                    {
+                        Id = Certificate.Thumbprint,
+                        Type = AzureAccount.AccountType.Certificate
+                    };
+                account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
+                profileClient.AddOrSetAccount(account);
             }
 
             if (!string.IsNullOrEmpty(CurrentStorageAccountName))

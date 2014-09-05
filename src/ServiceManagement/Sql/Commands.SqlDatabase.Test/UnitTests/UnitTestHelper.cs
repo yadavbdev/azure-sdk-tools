@@ -302,14 +302,24 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
                         {AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, ".database.windows.net"}
                     }
                 };
+            
+            var account = new AzureAccount
+            {
+                Id = UnitTestHelper.GetUnitTestClientCertificate().Thumbprint,
+                Type = AzureAccount.AccountType.Certificate
+            };
+
             var subscription = new AzureSubscription
             {
                 Id = new Guid(UnitTestSubscriptionId),
                 Name = UnitTestSubscriptionName,
-                Environment = UnitTestEnvironmentName
+                Environment = UnitTestEnvironmentName,
+                Account = account.Id
             };
+
+            client.AddOrSetAccount(account);
             client.AddOrSetSubscription(subscription);
-            client.SetSubscriptionAsCurrent(UnitTestSubscriptionName, UnitTestHelper.GetUnitTestClientCertificate().Thumbprint);
+            client.SetSubscriptionAsCurrent(UnitTestSubscriptionName, account.Id);
             client.Profile.Save();
             
             return subscription;
