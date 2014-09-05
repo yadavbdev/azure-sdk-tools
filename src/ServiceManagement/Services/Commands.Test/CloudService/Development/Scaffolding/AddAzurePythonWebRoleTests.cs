@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             mockCommandRuntime = new MockCommandRuntime();
         }
 
-        [Fact(Skip="")]
+        [Fact]
         public void AddAzurePythonWebRoleProcess()
         {
             var pyInstall = AddAzureDjangoWebRoleCommand.FindPythonInterpreterPath();
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffold
             }
         }
 
-        [Fact(Skip="")]
+        [Fact]
         public void AddAzurePythonWebRoleWillRecreateDeploymentSettings()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
