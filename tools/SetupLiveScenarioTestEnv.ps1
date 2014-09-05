@@ -20,7 +20,7 @@ $scriptFolder = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 
 $resourceManagerVariables = Test-Path env:TEST_CSM_ORGID_AUTHENTICATION
 $serviceManagementVariables = Test-Path env:TEST_ORGID_AUTHENTICATION
-# Using storgage account is not recommended because of the complexity, but we will still support it
+# Using storage account is not recommended because of the complexity, but we will still support it
 $oldRdfeTestVariables = $(Test-Path env:AZURE_STORAGE_ACCESS_KEY) -and $(Test-Path env:AZURE_STORAGE_ACCOUNT)
 if (!$serviceManagementVariables -AND !$resourceManagerVariables -AND !$oldRdfeTestVariables) {
   Write-Host "You environment has NOT been set up for sceanrio testing. We will help you configure..." -ForegroundColor "Yellow"
@@ -40,7 +40,7 @@ if ($Record) {
   $env:TEST_HTTPMOCK_OUTPUT="$env:AzurePSRoot\src\Common\Commands.ScenarioTest\Resources\SessionRecords\"
   Write-Host "The HTTP traffic will be captured under $env:TEST_HTTPMOCK_OUTPUT." -ForegroundColor "Green"
 } else {
-  Remove-Item env:\AZURE_TEST_MODE   
+  Remove-Item env:\AZURE_TEST_MODE
 }
 
 Write-Host "Environment has been set up. You can launch Visual Studio to run tests by typing devenv.exe here; or, through msbuild.exe" -ForegroundColor "Green"

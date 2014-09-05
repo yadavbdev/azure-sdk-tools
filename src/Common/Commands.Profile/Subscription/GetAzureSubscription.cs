@@ -149,6 +149,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             psObject.Accounts = ProfileClient.Profile.Accounts.Values.Where(a => a.HasSubscription(subscription.Id)).ToArray();
             psObject.IsDefault = subscription.IsPropertySet(AzureSubscription.Property.Default);
             psObject.IsCurrent = AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == subscription.Id;
+            psObject.CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.StorageAccount);
             return psObject;
         }
 
@@ -158,6 +159,8 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             {
                 var response = client.Subscriptions.Get();
                 var environment = ProfileClient.GetEnvironmentOrDefault(subscription.Environment);
+                var account = profileClient.Profile.Accounts[subscription.Account];
+                bool isCert = account.Type == AzureAccount.AccountType.Certificate;
 
                 PSAzureSubscriptionExtended result = new PSAzureSubscriptionExtended(ConstructPsAzureSubscription(subscription))
                 {
@@ -178,7 +181,8 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     ServiceEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement).ToString(),
                     ResourceManagerEndpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager).ToString(),
                     IsDefault = subscription.GetProperty(AzureSubscription.Property.Default) != null,
-                    Certificate = ProfileClient.DataStore.GetCertificate(subscription.Account),
+                    Account = account,
+                    Certificate = isCert ? ProfileClient.DataStore.GetCertificate(subscription.Account) : null,
                     CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.StorageAccount)
                 };
 

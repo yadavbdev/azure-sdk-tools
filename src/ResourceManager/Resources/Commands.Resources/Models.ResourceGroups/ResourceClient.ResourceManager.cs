@@ -239,7 +239,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 createOrUpdateResourceGroup();
             }
 
-            return resourceGroup.ToPSResourceGroup(this);
+            return resourceGroup.ToPSResourceGroup(this, true);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             resourceGroup = CreateOrUpdateResourceGroup(parameters.ResourceGroupName, resourceGroup.Location, parameters.Tag);
             WriteVerbose(string.Format("Updated resource group '{0}' in location '{1}'", resourceGroup.Name, resourceGroup.Location));
 
-            return resourceGroup.ToPSResourceGroup(this);
+            return resourceGroup.ToPSResourceGroup(this, true);
         }
 
         /// <summary>
@@ -349,12 +349,19 @@ namespace Microsoft.Azure.Commands.Resources.Models
         /// <param name="name">The resource group name.</param>
         /// <param name="tag">The resource group tag.</param>
         /// <returns>The filtered resource groups</returns>
-        public virtual List<PSResourceGroup> FilterResourceGroups(string name, Hashtable tag)
+        public virtual List<PSResourceGroup> FilterResourceGroups(string name, Hashtable tag, bool detailed)
         {
             List<PSResourceGroup> result = new List<PSResourceGroup>();
             if (string.IsNullOrEmpty(name))
             {
-                IList<ResourceGroup> resourceGroups = ResourceManagementClient.ResourceGroups.List(null).ResourceGroups;
+                var response = ResourceManagementClient.ResourceGroups.List(null);
+                List<ResourceGroup> resourceGroups = ResourceManagementClient.ResourceGroups.List(null).ResourceGroups.ToList();
+
+                while (!string.IsNullOrEmpty(response.NextLink))
+                {
+                    resourceGroups.AddRange(response.ResourceGroups);
+                }
+
                 // TODO: Replace with server side filtering when available
                 if (tag != null && tag.Count >= 1)
                 {
@@ -381,13 +388,13 @@ namespace Microsoft.Azure.Commands.Resources.Models
                                 .Select(rg => rg).ToList();
                     }
                 }
-                result.AddRange(resourceGroups.Select(rg => rg.ToPSResourceGroup(this)));
+                result.AddRange(resourceGroups.Select(rg => rg.ToPSResourceGroup(this, detailed)));
             }
             else
             {
                 try
                 {
-                    result.Add(ResourceManagementClient.ResourceGroups.Get(name).ResourceGroup.ToPSResourceGroup(this));
+                    result.Add(ResourceManagementClient.ResourceGroups.Get(name).ResourceGroup.ToPSResourceGroup(this, detailed));
                 }
                 catch (CloudException)
                 {
