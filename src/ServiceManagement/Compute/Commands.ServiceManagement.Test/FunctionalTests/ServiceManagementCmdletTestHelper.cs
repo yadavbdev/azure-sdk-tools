@@ -884,9 +884,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return null;
         }
 
-        public AzureSubscription SelectAzureSubscription(string subscriptionName, bool clear = false, string subscriptionDataFile = null)
+        public AzureSubscription SelectAzureSubscription(string subscriptionName, bool isDefault = true, bool clear = false, string subscriptionDataFile = null)
         {
-            return RunPSCmdletAndReturnFirst<AzureSubscription>(new SelectAzureSubscriptionCmdletInfo(subscriptionName, clear, subscriptionDataFile));
+            return RunPSCmdletAndReturnFirst<AzureSubscription>(new SelectAzureSubscriptionCmdletInfo(subscriptionName, isDefault, clear, subscriptionDataFile));
         }
 
         #endregion
