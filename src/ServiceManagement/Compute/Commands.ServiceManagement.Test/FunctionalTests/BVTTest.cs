@@ -268,6 +268,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Assert.IsTrue(Verify.AzureEndpoint(vm, new[]{azureEndPointConfigInfo1, azureEndPointConfigInfo2}));
 
                 //
+                // Verify RDP & PowerShell Endpoints
+                //
+                var endpoints = vmPowershellCmdlets.GetAzureEndPoint(vm);
+                Assert.IsTrue(endpoints.Count(e => e.Name == "PowerShell" && e.LocalPort == 5986 && e.Protocol == "tcp") == 1);
+                Assert.IsTrue(endpoints.Count(e => e.Name == "RemoteDesktop" && e.LocalPort == 3389 && e.Protocol == "tcp") == 1);
+
+                //
                 // Verify AzureDns
                 //
                 Assert.IsTrue(Verify.AzureDns(vmPowershellCmdlets.GetAzureDeployment(serviceName).DnsSettings, dns));
