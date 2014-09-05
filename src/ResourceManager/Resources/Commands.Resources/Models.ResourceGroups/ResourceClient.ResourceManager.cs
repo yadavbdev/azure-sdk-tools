@@ -316,6 +316,11 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 WriteVerbose(ProjectResources.TemplateValid);
             }
 
+            if (!string.IsNullOrEmpty(parameters.StorageAccountName))
+            {
+                WriteWarning("The StorageAccountName parameter is not used anymore and will be removed soon in future releases");
+            }
+
             ResourceManagementClient.Deployments.CreateOrUpdate(parameters.ResourceGroupName, parameters.DeploymentName, deployment);
             WriteVerbose(string.Format("Create template deployment '{0}'.", parameters.DeploymentName));
             Deployment result = ProvisionDeploymentStatus(parameters.ResourceGroupName, parameters.DeploymentName, deployment);
