@@ -853,7 +853,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         public PSAzureSubscriptionExtended SetAzureSubscription(string subscriptionName, string subscriptionId, string currentStorageAccountName, bool debug = false)
         {
-            var setAzureSubscriptionCmdlet = new SetAzureSubscriptionCmdletInfo(subscriptionName, subscriptionId, currentStorageAccountName);
+            var setAzureSubscriptionCmdlet = new SetAzureSubscriptionCmdletInfo(subscriptionId, currentStorageAccountName);
             SelectAzureSubscription(subscriptionName);
             var azurePowershellCmdlet = new WindowsAzurePowershellCmdlet(setAzureSubscriptionCmdlet);
             azurePowershellCmdlet.Run(debug);
