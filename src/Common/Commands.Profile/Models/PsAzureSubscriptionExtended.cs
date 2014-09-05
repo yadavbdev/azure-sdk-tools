@@ -55,6 +55,5 @@ namespace Microsoft.WindowsAzure.Commands.Profile.Models
         public string ServiceEndpoint { get; set; }
         public string ResourceManagerEndpoint { get; set; }
         public string GalleryEndpoint { get; set; }
-        public string CurrentStorageAccountName { get; set; }
     }
 }

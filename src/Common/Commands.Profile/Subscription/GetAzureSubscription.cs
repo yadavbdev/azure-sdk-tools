@@ -149,6 +149,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             psObject.Accounts = ProfileClient.Profile.Accounts.Values.Where(a => a.HasSubscription(subscription.Id)).ToArray();
             psObject.IsDefault = subscription.IsPropertySet(AzureSubscription.Property.Default);
             psObject.IsCurrent = AzureSession.CurrentContext.Subscription != null && AzureSession.CurrentContext.Subscription.Id == subscription.Id;
+            psObject.CurrentStorageAccountName = subscription.GetProperty(AzureSubscription.Property.StorageAccount);
             return psObject;
         }
 
