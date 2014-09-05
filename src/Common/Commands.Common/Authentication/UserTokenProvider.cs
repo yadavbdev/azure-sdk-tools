@@ -71,7 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             if (IsExpired(token))
             {
-                AuthenticationResult result = AcquireToken(token.Configuration, ShowDialog.Never);
+                AuthenticationResult result = AcquireToken(token.Configuration, ShowDialog.Never, token.UserId, null);
 
                 if (result == null)
                 {
@@ -94,7 +94,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         // We have to run this in a separate thread to guarantee that it's STA. This method
         // handles the threading details.
-        private AuthenticationResult AcquireToken(AdalConfiguration config, ShowDialog promptBehavior, string userId = null, SecureString password = null)
+        private AuthenticationResult AcquireToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password)
         {
             AuthenticationResult result = null;
             Exception ex = null;

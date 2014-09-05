@@ -121,19 +121,26 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 throw new ArgumentNullException("environment");
             }
 
-            var subscriptionsFromServer = ListSubscriptionsFromServer(ref account, environment, password, ShowDialog.Always).ToList();
-            
-            // Update back Profile.Subscriptions
-            foreach (var subscription in subscriptionsFromServer)
+            if (account == null)
             {
-                AddOrSetSubscription(subscription);
+                throw new ArgumentNullException("account");
             }
 
-            // If credentials.UserName is null the login failed
-            if (account != null && account.Id != null)
+            var subscriptionsFromServer = ListSubscriptionsFromServer(ref account, environment, password, ShowDialog.Always).ToList();
+
+            Debug.Assert(account != null);
+
+            // If account id is null the login failed
+            if (account.Id != null)
             {
                 // Add the account to the profile
                 AddOrSetAccount(account);
+
+                // Update back Profile.Subscriptions
+                foreach (var subscription in subscriptionsFromServer)
+                {
+                    AddOrSetSubscription(subscription);
+                }
 
                 if (Profile.DefaultSubscription == null)
                 {
@@ -333,6 +340,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             else
             {
+                Debug.Assert(!string.IsNullOrEmpty(subscription.Account));
+                if (!Profile.Accounts.ContainsKey(subscription.Account))
+                {
+                    throw new KeyNotFoundException(string.Format("The specified account {0} does not exist in profile accounts", subscription.Account));
+                }
+
                 Profile.Subscriptions[subscription.Id] = subscription;
             }
 
@@ -452,23 +465,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage, "name");
-            }
-        }
-
-        public AzureSubscription GetSubscriptionOrDefault(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return AzureSession.CurrentContext.Subscription;
-            }
-            else if (AzureSession.CurrentContext.Subscription != null &&
-                     AzureSession.CurrentContext.Subscription.Name == name)
-            {
-                return AzureSession.CurrentContext.Subscription;
-            }
-            else
-            {
-                return GetSubscription(name);
             }
         }
 

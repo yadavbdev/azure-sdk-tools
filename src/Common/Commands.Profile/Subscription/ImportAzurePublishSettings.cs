@@ -30,6 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     {
         public ImportAzurePublishSettingsCommand() : base(true)
         {
+            Environment = EnvironmentName.AzureCloud;
         }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,

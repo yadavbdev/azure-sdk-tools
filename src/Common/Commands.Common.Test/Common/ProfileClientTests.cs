@@ -427,7 +427,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(1, client.Profile.Accounts.Count);
         }
 
-
         [Fact]
         public void SetAzureEnvironmentUpdatesEnvironment()
         {
@@ -494,6 +493,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
 
+            client.AddOrSetAccount(azureAccount);
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
 
@@ -502,6 +502,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             var subscription = client.AddOrSetSubscription(azureSubscription1);
 
             Assert.Equal(1, client.Profile.Subscriptions.Count);
+            Assert.Equal(1, client.Profile.Accounts.Count);
             Assert.Equal(subscription, azureSubscription1);
             Assert.Throws<ArgumentNullException>(() => client.AddOrSetSubscription(null));
             Assert.Throws<ArgumentNullException>(() => client.AddOrSetSubscription(
@@ -515,7 +516,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
 
-
+            client.AddOrSetAccount(azureAccount);
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
             AzureSession.SetCurrentContext(azureSubscription1, azureEnvironment, azureAccount);
@@ -627,9 +628,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
-            client.Profile.Accounts[azureAccount.Id] = azureAccount;
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureServiceManagement;
 
             var subscriptions = client.RefreshSubscriptions(azureEnvironment);
@@ -649,6 +650,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
@@ -667,6 +669,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             MockDataStore dataStore = new MockDataStore();
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
             PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
