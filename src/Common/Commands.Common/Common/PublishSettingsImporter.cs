@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             if (string.IsNullOrEmpty(environment))
             {
-                var azureEnvironment = azureProfileClient.GetEnvironment(environment, s.ServiceManagementUrl);
+                var azureEnvironment = azureProfileClient.GetEnvironment(environment, s.ServiceManagementUrl ?? profile.Url, null);
                 if (azureEnvironment != null)
                 {
                     environment = azureEnvironment.Name;

@@ -948,6 +948,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public AzureEnvironment GetEnvironment(string name, string serviceEndpoint, string resourceEndpoint)
         {
+            if (serviceEndpoint == null)
+            {
+                // Set to invalid value
+                serviceEndpoint = Guid.NewGuid().ToString();
+            }
+            if (resourceEndpoint == null)
+            {
+                // Set to invalid value
+                resourceEndpoint = Guid.NewGuid().ToString();
+            }
             if (name != null)
             {
                 if (Profile.Environments.ContainsKey(name))
@@ -963,43 +973,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
             else
             {
                 if (AzureSession.CurrentContext.Environment != null &&
-                    (AzureSession.CurrentContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == serviceEndpoint ||
-                    AzureSession.CurrentContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == resourceEndpoint))
+                    (AzureSession.CurrentContext.Environment.IsEndpointSetToValue(AzureEnvironment.Endpoint.ServiceManagement, serviceEndpoint) ||
+                    AzureSession.CurrentContext.Environment.IsEndpointSetToValue(AzureEnvironment.Endpoint.ResourceManager, resourceEndpoint)))
                 {
                     return AzureSession.CurrentContext.Environment;
                 }
 
                 return Profile.Environments.Values.FirstOrDefault(e =>
-                    e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == serviceEndpoint ||
-                    e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == resourceEndpoint);
-            }
-            return null;
-        }
-
-        public AzureEnvironment GetEnvironment(string name, string serviceManagementUrl)
-        {
-            if (name != null)
-            {
-                if (Profile.Environments.ContainsKey(name))
-                {
-                    return Profile.Environments[name];
-                }
-                else if (AzureSession.CurrentContext.Environment != null &&
-                         AzureSession.CurrentContext.Environment.Name == name)
-                {
-                    return AzureSession.CurrentContext.Environment;
-                }
-            }
-            else
-            {
-                if (AzureSession.CurrentContext.Environment != null &&
-                    AzureSession.CurrentContext.Environment.GetEndpoint(AzureEnvironment.Endpoint.ManagementPortalUrl) == serviceManagementUrl)
-                {
-                    return AzureSession.CurrentContext.Environment;
-                }
-
-                return Profile.Environments.Values.FirstOrDefault(e =>
-                    e.GetEndpoint(AzureEnvironment.Endpoint.ManagementPortalUrl) == serviceManagementUrl);
+                    e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ServiceManagement, serviceEndpoint) ||
+                    e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ResourceManager, resourceEndpoint));
             }
             return null;
         }

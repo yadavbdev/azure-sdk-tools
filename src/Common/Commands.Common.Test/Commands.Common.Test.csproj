@@ -222,6 +222,9 @@
     <EmbeddedResource Include="Resources\ValidProfileChina.PublishSettings">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ValidProfileChinaOld.PublishSettings">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\invalidsubscriptions.xml" />

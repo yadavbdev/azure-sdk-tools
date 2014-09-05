@@ -791,7 +791,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient.DataStore = dataStore;
             ProfileClient client = new ProfileClient();
             client.AddOrSetAccount(azureAccount);
-            azureEnvironment.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl] = "https://newmanagement.core.windows.net/";
+            azureEnvironment.Endpoints[AzureEnvironment.Endpoint.ServiceManagement] = "https://newmanagement.core.windows.net/";
             client.AddOrSetEnvironment(azureEnvironment);
             client.AddOrSetSubscription(azureSubscription1);
             client.SetSubscriptionAsDefault(azureSubscription1.Name, azureAccount.Id);
@@ -826,6 +826,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.True(subscriptions.All(s => s.Environment == EnvironmentName.AzureChinaCloud));
             Assert.Equal(6, subscriptions.Count);
             Assert.Equal(6, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsUsesProperEnvironmentWithChinaManagementUrlOld()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfileChinaOld);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", null);
+
+            Assert.True(subscriptions.All(s => s.Environment == EnvironmentName.AzureChinaCloud));
+            Assert.Equal(1, subscriptions.Count);
+            Assert.Equal(1, client.Profile.Subscriptions.Count);
         }
 
         [Fact]

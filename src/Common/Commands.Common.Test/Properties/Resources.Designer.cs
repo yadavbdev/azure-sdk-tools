@@ -199,6 +199,16 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] ValidProfileChinaOld {
+            get {
+                object obj = ResourceManager.GetObject("ValidProfileChinaOld", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Scaffold Name=&quot;TestScaffold&quot;&gt;
         ///  &lt;ScaffoldFile PathExpression=&quot;modules\.*&quot;/&gt;
         ///  &lt;ScaffoldFile TargetPath=&quot;/bin/node.exe&quot; Path=&quot;bin/node123dfx65.exe&quot;/&gt;

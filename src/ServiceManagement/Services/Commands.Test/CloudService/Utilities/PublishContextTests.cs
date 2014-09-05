@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             ProfileClient client = new ProfileClient();
             ProfileClient.DataStore.WriteFile(Test.Utilities.Common.Data.ValidPublishSettings.First(),
                 File.ReadAllText(Test.Utilities.Common.Data.ValidPublishSettings.First()));
-            client.ImportPublishSettings(Test.Utilities.Common.Data.ValidPublishSettings.First());
+            client.ImportPublishSettings(Test.Utilities.Common.Data.ValidPublishSettings.First(), null);
             client.Profile.Save();
         }
 
