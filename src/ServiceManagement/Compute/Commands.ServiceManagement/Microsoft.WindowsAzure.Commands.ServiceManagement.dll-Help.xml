@@ -7483,8 +7483,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
             <maml:para>
               Specifies the new or existing service name.
 
-              If the service does not exist, this cmdlet will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
-              If the service exists, the cmdlet will ignore the -Location or -AffinityGroup parameter if specified.
+              If the service does not exist, this parameter will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
+              If the service exists, the -Location or -AffinityGroup parameter is not needed.
             </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -7634,8 +7634,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
             <maml:para>
               Specifies the new or existing service name.
 
-              If the service does not exist, this cmdlet will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
-              If the service exists, the cmdlet will ignore the -Location or -AffinityGroup parameter if specified.
+              If the service does not exist, this parameter will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
+              If the service exists, the -Location or -AffinityGroup parameter is not needed.
             </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -8094,8 +8094,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
           <maml:para>
             Specifies the new or existing service name.
 
-            If the service does not exist, this cmdlet will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
-            If the service exists, the cmdlet will ignore the -Location or -AffinityGroup parameter if specified.
+            If the service does not exist, this parameter will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
+            If the service exists, the -Location or -AffinityGroup parameter is not needed.
           </maml:para>
 
         </maml:description>
@@ -8409,6 +8409,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
+
 
 
 
@@ -9329,8 +9331,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
             <maml:para>
               Specifies the new or existing service name.
 
-              If the service does not exist, this cmdlet will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
-              If the service exists, the cmdlet will ignore the -Location or -AffinityGroup parameter if specified.
+              If the service does not exist, this parameter will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
+              If the service exists, the -Location or -AffinityGroup parameter is not needed.
             </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -9545,8 +9547,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
           <maml:para>
             Specifies the new or existing service name.
 
-            If the service does not exist, this cmdlet will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
-            If the service exists, the cmdlet will ignore the -Location or -AffinityGroup parameter if specified.
+            If the service does not exist, this parameter will create it for you. Use the -Location or -AffinityGroup parameter to specify where to create the service.
+            If the service exists, the -Location or -AffinityGroup parameter is not needed.
           </maml:para>
 
         </maml:description>
@@ -9775,7 +9777,6 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
-
 
 
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
