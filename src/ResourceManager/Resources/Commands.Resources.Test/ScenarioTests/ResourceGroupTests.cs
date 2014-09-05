@@ -73,5 +73,12 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             RunPowerShellTest("Test-NewDeploymentAndProviderRegistration");
         }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestNewResourceGroupWithTemplateThenGetWithAndWithoutDetails()
+        {
+            RunPowerShellTest("Test-NewResourceGroupWithTemplateThenGetWithAndWithoutDetails");
+        }
     }
 }
