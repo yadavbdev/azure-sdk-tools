@@ -15,33 +15,37 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.Azure.Management.DataFactories;
-using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    public class DataFactoryClient : IDataFactoryClient
+    public class DataFactoryClient
     {
-        public IDataPipelineManagementClient DataPipelineManagementClient { get; internal set; }
+        public IDataPipelineManagementClient DataPipelineManagementClient { get; private set; }
 
-        public Action<string> Logger { get; set; }
-
-        public DataFactoryClient(WindowsAzureSubscription subscription, Action<string> logger)
+        public DataFactoryClient(WindowsAzureSubscription subscription)
         {
-            Logger = logger;
             DataPipelineManagementClient =
                 subscription.CreateClientFromResourceManagerEndpoint<DataPipelineManagementClient>();
         }
 
-        public PSDataFactory GetDataFactory(string resourceGroupName, string dataFactoryName)
+        /// <summary>
+        /// Parameterless constructor for Mocking.
+        /// </summary>
+        public DataFactoryClient()
+        {
+        }
+        
+        public virtual PSDataFactory GetDataFactory(string resourceGroupName, string dataFactoryName)
         {
             var response = DataPipelineManagementClient.DataFactories.Get(resourceGroupName, dataFactoryName);
 
             return new PSDataFactory(response.DataFactory) { ResourceGroupName = resourceGroupName };
         }
 
-        public List<PSDataFactory> ListDataFactories(string resourceGroupName)
+        public virtual List<PSDataFactory> ListDataFactories(string resourceGroupName)
         {
             List<PSDataFactory> dataFactories = new List<PSDataFactory>();
 
@@ -51,6 +55,34 @@ namespace Microsoft.Azure.Commands.DataFactories
             {
                 response.DataFactories.ForEach(
                     df => dataFactories.Add(new PSDataFactory(df) { ResourceGroupName = resourceGroupName }));
+            }
+
+            return dataFactories;
+        }
+
+        public virtual List<PSDataFactory> FilterPSDataFactories(DataFactoryFilterOptions filterOptions)
+        {
+            if (filterOptions == null)
+            {
+                throw new ArgumentNullException("filterOptions");
+            }
+            
+            // ToDo: make ResourceGroupName optional
+            if (string.IsNullOrWhiteSpace(filterOptions.ResourceGroupName))
+            {
+                throw new ArgumentException(Resources.ResourceGroupNameCannotBeEmpty);
+            }
+
+            List<PSDataFactory> dataFactories = new List<PSDataFactory>();
+
+            if (!string.IsNullOrWhiteSpace(filterOptions.Name))
+            {
+                dataFactories.Add(GetDataFactory(filterOptions.ResourceGroupName, filterOptions.Name));
+            }
+            else
+            {
+                // ToDo: Filter list results by Tag
+                dataFactories.AddRange(ListDataFactories(filterOptions.ResourceGroupName));
             }
 
             return dataFactories;

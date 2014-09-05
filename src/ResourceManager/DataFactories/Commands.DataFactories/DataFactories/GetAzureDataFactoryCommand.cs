@@ -12,11 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Management.Automation;
 using System.Security.Permissions;
-
 using Microsoft.Azure.Commands.DataFactories.Models;
 
 namespace Microsoft.Azure.Commands.DataFactories
@@ -31,22 +29,24 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            DataFactoryFilterOptions filterOptions = new DataFactoryFilterOptions()
             {
-                if (string.IsNullOrWhiteSpace(Name))
+                Name = Name,
+                ResourceGroupName = ResourceGroupName
+            };
+
+            List<PSDataFactory> dataFactories = DataFactoryClient.FilterPSDataFactories(filterOptions);
+
+            if (dataFactories != null)
+            {
+                if (dataFactories.Count == 1 && Name != null)
                 {
-                    var dataFactories = DataFactoryClient.ListDataFactories(ResourceGroupName);
-                    WriteObject(dataFactories, true);
+                    WriteObject(dataFactories[0]);
                 }
                 else
                 {
-                    PSDataFactory dataFactory = DataFactoryClient.GetDataFactory(ResourceGroupName, Name);
-                    WriteObject(dataFactory);    
+                    WriteObject(dataFactories, true);
                 }
-            }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
             }
         }
     }

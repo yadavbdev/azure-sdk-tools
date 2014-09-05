@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,77 +21,81 @@ using Moq;
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
     [TestClass]
-    public class GetDataFactoryTests : DataFactoriesUnitTestsBase
+    public class GetDataFactoryTests : DataFactoryUnitTestBase
     {
-        private GetAzureDataFactoryCommand _cmdlet;
-
+        private GetAzureDataFactoryCommand cmdlet;
+        
         [TestInitialize]
-        public override void SetupTest()
+        public void SetupTest()
         {
             base.SetupTest();
 
-            this._cmdlet = new GetAzureDataFactoryCommand()
+            cmdlet = new GetAzureDataFactoryCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
-                DataFactoryClient = this.dataFactoriesClientMock.Object,
-                ResourceGroupName = ResourceGroupName
+                DataFactoryClient = dataFactoriesClientMock.Object
             };
         }
 
         [TestMethod]
         public void CanGetDataFactory()
         {
+            PSDataFactory expected = new PSDataFactory() {DataFactoryName = DataFactoryName, ResourceGroupName = ResourceGroupName};
+
             // Arrange
-            PSDataFactory expectedOutput = new PSDataFactory()
-            {
-                DataFactoryName = DataFactoryName,
-                Location = Location
-            };
+            dataFactoriesClientMock.Setup(
+                c =>
+                    c.FilterPSDataFactories(
+                        It.Is<DataFactoryFilterOptions>(
+                            options => options.Name == DataFactoryName && options.ResourceGroupName == ResourceGroupName)))
+                .CallBase()
+                .Verifiable();
 
-            this.dataFactoriesClientMock.Setup(f => f.GetDataFactory(ResourceGroupName, DataFactoryName))
-                                    .Returns(expectedOutput);
-
-            this._cmdlet.Name = DataFactoryName;
-
+            dataFactoriesClientMock.Setup(c => c.GetDataFactory(ResourceGroupName, DataFactoryName))
+                .Returns(expected)
+                .Verifiable();
+            
             // Action
-            this._cmdlet.ExecuteCmdlet();
+            cmdlet.Name = DataFactoryName;
+            cmdlet.ResourceGroupName = ResourceGroupName;
+            cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.dataFactoriesClientMock.Verify(f => f.GetDataFactory(ResourceGroupName, DataFactoryName), Times.Once());
+            dataFactoriesClientMock.VerifyAll();
 
-            commandRuntimeMock.Verify(f => f.WriteObject(expectedOutput), Times.Once());
+            commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
         }
 
         [TestMethod]
         public void CanListDataFactories()
         {
+            List<PSDataFactory> expected = new List<PSDataFactory>()
+            {
+                new PSDataFactory() {DataFactoryName = DataFactoryName, ResourceGroupName = ResourceGroupName},
+                new PSDataFactory() {DataFactoryName = "datafactory1", ResourceGroupName = ResourceGroupName}
+            };
+
             // Arrange
-            var expectedOutputs = new List<PSDataFactory>()
-                                      {
-                                          new PSDataFactory()
-                                              {
-                                                  DataFactoryName = DataFactoryName,
-                                                  Location = Location
-                                              },
+            dataFactoriesClientMock.Setup(
+                c =>
+                    c.FilterPSDataFactories(
+                        It.Is<DataFactoryFilterOptions>(
+                            options => options.Name == null && options.ResourceGroupName == ResourceGroupName)))
+                .CallBase()
+                .Verifiable();
 
-                                          new PSDataFactory()
-                                              {
-                                                  DataFactoryName = "foo2",
-                                                  Location = Location
-                                              }
-                                      };
-
-
-            this.dataFactoriesClientMock.Setup(f => f.ListDataFactories(ResourceGroupName))
-                                    .Returns(expectedOutputs);
-
+            dataFactoriesClientMock.Setup(c => c.ListDataFactories(ResourceGroupName))
+                .Returns(expected)
+                .Verifiable();
+            
             // Action
-            this._cmdlet.ExecuteCmdlet();
-
+            cmdlet.ResourceGroupName = ResourceGroupName;
+            cmdlet.ExecuteCmdlet();
+            
             // Assert
-            this.dataFactoriesClientMock.Verify(f => f.ListDataFactories(ResourceGroupName), Times.Once());
+            dataFactoriesClientMock.VerifyAll();
 
-            commandRuntimeMock.Verify(f => f.WriteObject(expectedOutputs, true), Times.Once());
+            commandRuntimeMock.Verify(f => f.WriteObject(expected, true), Times.Once());
         }
     }
 }

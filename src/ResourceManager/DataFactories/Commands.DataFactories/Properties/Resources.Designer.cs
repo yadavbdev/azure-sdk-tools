@@ -61,11 +61,24 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;\nHTTP Status Code: {0}\nError Code: {1}\nError Message: {2}\nRequest Id: {3}\nTimestamp (Utc):{4}&quot;.
+        ///   Looks up a localized string similar to &quot;HTTP Status Code: {0}
+        ///Error Code: {1}
+        ///Error Message: {2}
+        ///Request Id: {3}
+        ///Timestamp (Utc):{4}&quot;.
         /// </summary>
         internal static string FormattedCloudExceptionMessageTemplate {
             get {
                 return ResourceManager.GetString("FormattedCloudExceptionMessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Resource group name cannot be null.&quot;.
+        /// </summary>
+        internal static string ResourceGroupNameCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("ResourceGroupNameCannotBeEmpty", resourceCulture);
             }
         }
     }
