@@ -12,18 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Resources.Models
+namespace Microsoft.Azure.Commands.Sql.Security.Model
 {
-    public class FilterGalleryTemplatesOptions
+    public class AuditingPolicy
     {
-        public string Identity { get; set; }
-
-        public string Category { get; set; }
-
-        public string Publisher { get; set; }
-
-        public string ApplicationName { get; set; }
-
-        public bool AllVersions { get; set; }
+        public string ResourceGroupName { get; set; }
+        
+        public string ServerName { get; set; }
+        
+        public string DatabaseName { get; set; }
+        
+        public string StorageAccountName { get; set; }
+        
+        public string[] EventType { get; set; }
+        
+        public bool IsEnabled { get; set; }
+        
+        public bool UseServerDefault { get; set; }
     }
 }

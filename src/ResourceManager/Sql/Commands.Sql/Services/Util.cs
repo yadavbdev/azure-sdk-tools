@@ -12,18 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Resources.Models
+using System;
+using System.Globalization;
+
+namespace Microsoft.Azure.Commands.Sql.Services
 {
-    public class FilterGalleryTemplatesOptions
+    public class Util
     {
-        public string Identity { get; set; }
-
-        public string Category { get; set; }
-
-        public string Publisher { get; set; }
-
-        public string ApplicationName { get; set; }
-
-        public bool AllVersions { get; set; }
+        /// <summary>
+        /// Generates a client side tracing Id of the format:
+        /// [Guid]-[Time in UTC]
+        /// </summary>
+        /// <returns>A string representation of the client side tracing Id.</returns>
+        public static string GenerateTracingId()
+        {
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}-{1}",
+                Guid.NewGuid().ToString(),
+                DateTime.UtcNow.ToString("u"));
+        }
     }
 }

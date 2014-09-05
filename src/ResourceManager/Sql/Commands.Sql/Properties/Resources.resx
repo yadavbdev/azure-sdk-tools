@@ -117,88 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutomationAccountNotFound" xml:space="preserve">
-    <value>The Automation accout was not found.</value>
-    <comment>Automation</comment>
+  <data name="InvalidEventTypeSet" xml:space="preserve">
+    <value>Cannot use the '{0}' option with other event types.</value>
   </data>
-  <data name="FileNotFound" xml:space="preserve">
-    <value>The file "{0}" was not found. Make sure the file exists and is accessible.</value>
-    <comment>Automation</comment>
+  <data name="NoServerStorageAccount" xml:space="preserve">
+    <value>Cannot use a server's auditing policy before it is configured.</value>
   </data>
-  <data name="InvalidDailyScheduleModel" xml:space="preserve">
-    <value>The daily schedule model is not valid. Schedule name: {0}.</value>
-    <comment>Automation</comment>
+  <data name="NoStorageAccountWhenConfiguringAuditingPolicy" xml:space="preserve">
+    <value>Cannot set auditing policy without a storage account name.</value>
   </data>
-  <data name="InvalidJobModel" xml:space="preserve">
-    <value>The job model is not valid.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="InvalidRunbookModel" xml:space="preserve">
-    <value>The runbook model is not valid.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="InvalidRunbookParameters" xml:space="preserve">
-    <value>At least one parameter provided is not expected by the runbook.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="JobNotFoundById" xml:space="preserve">
-    <value>The job was not found. Job ID: {0}.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RemoveAzureAutomationRunbookDescription" xml:space="preserve">
-    <value>Removing the Azure Automation runbook.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RemoveAzureAutomationRunbookWarning" xml:space="preserve">
-    <value>Are you sure you want to remove the Azure Automation runbook?</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RemoveAzureAutomationScheduleDescription" xml:space="preserve">
-    <value>Removing the Azure Automation schedule.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RemoveAzureAutomationScheduleWarning" xml:space="preserve">
-    <value>Are you sure you want to remove the Azure Automation schedule?</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RunbookAlreadyHasDraft" xml:space="preserve">
-    <value>Runbook already has a draft. Specify the parameter to force an overwrite of this draft.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RunbookHasNoPublishedVersionById" xml:space="preserve">
-    <value>The runbook has no published version. Runbook ID: {0}.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RunbookNotFoundById" xml:space="preserve">
-    <value>The runbook was not found. Runbook ID: {0}.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RunbookNotFoundByName" xml:space="preserve">
-    <value>The runbook was not found. Runbook name: {0}.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RunbookParameterCannotBeSerializedToJson" xml:space="preserve">
-    <value>The runbook parameter "{0}" cannot be serialized to JSON.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RunbookParameterValueRequired" xml:space="preserve">
-    <value>The runbook parameter "{0}" is mandatory.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="RunbookVersionNotFoundById" xml:space="preserve">
-    <value>The runbook version was not found. Runbook version ID: {0}.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="ScheduleNameExists" xml:space="preserve">
-    <value>The Automation schedule name is in use. Schedule name: {0}.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="ScheduleNotFoundById" xml:space="preserve">
-    <value>The schedule was not found. Schedule ID: {0}.</value>
-    <comment>Automation</comment>
-  </data>
-  <data name="ScheduleNotFoundByName" xml:space="preserve">
-    <value>The schedule was not found. Schedule name: {0}.</value>
-    <comment>Automation</comment>
+  <data name="StorageAccountNotFound" xml:space="preserve">
+    <value>Cannot find a storage account with the name '{0}'. It either does not exist, associated with a different subscription or you do not have the appropriate credentials to access it.</value>
   </data>
 </root>
