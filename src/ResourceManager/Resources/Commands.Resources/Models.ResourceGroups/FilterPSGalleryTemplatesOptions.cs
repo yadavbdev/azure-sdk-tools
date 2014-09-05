@@ -21,5 +21,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
         public string Category { get; set; }
 
         public string Publisher { get; set; }
+
+        public string ApplicationName { get; set; }
+
+        public bool AllVersions { get; set; }
     }
 }

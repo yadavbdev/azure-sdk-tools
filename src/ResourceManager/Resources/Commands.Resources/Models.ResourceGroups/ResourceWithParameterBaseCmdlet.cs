@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
+
+using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.Azure.Commands.Resources.Models;
 
@@ -109,6 +111,30 @@ namespace Microsoft.Azure.Commands.Resources
 
         public object GetDynamicParameters()
         {
+            if (!string.IsNullOrEmpty(GalleryTemplateIdentity))
+            {
+                List<PSGalleryItem> galleryItems = new List<PSGalleryItem>();
+                try
+                {
+                    galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { Identity = GalleryTemplateIdentity });
+                }
+                catch (CloudException)
+                {
+                    // we could not find a template with that identity
+                }
+
+                if (galleryItems.Count == 0)
+                {
+                    galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { ApplicationName = GalleryTemplateIdentity, AllVersions = false });
+                    if (galleryItems == null || galleryItems.Count == 0)
+                    {
+                        throw new ArgumentException(string.Format(Properties.Resources.InvalidTemplateIdentity, GalleryTemplateIdentity));
+                    }
+
+                    GalleryTemplateIdentity = galleryItems[0].Identity;
+                }
+            }
+
             if (!string.IsNullOrEmpty(GalleryTemplateIdentity) &&
                 !GalleryTemplateIdentity.Equals(galleryTemplateName, StringComparison.OrdinalIgnoreCase))
             {

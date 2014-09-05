@@ -24,6 +24,7 @@ using Microsoft.Azure.Commands.Automation.Properties;
 using Microsoft.Azure.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Commands.Automation.Common
 {
@@ -885,12 +886,21 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 if (parameters.Contains(runbookParameter.Name))
                 {
                     object paramValue = parameters[runbookParameter.Name];
-                    filteredParameters.Add(
-                        new AutomationManagement.Models.NameValuePair
-                        {
-                            Name = runbookParameter.Name,
-                            Value = paramValue.ToString()
-                        });
+                    try
+                    {
+                        filteredParameters.Add(
+                            new AutomationManagement.Models.NameValuePair
+                            {
+                                Name = runbookParameter.Name,
+                                Value = JsonConvert.SerializeObject(paramValue, new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat })
+                            });
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        throw new ArgumentException(
+                        string.Format(
+                            CultureInfo.CurrentCulture, Resources.RunbookParameterCannotBeSerializedToJson, runbookParameter.Name));
+                    }
                 }
                 else if (runbookParameter.IsMandatory)
                 {

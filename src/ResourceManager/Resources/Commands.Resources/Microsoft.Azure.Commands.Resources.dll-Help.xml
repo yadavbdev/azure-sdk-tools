@@ -1087,6 +1087,7 @@ ContosoLabsRG                       WordPress.WordPress                     Succ
       <maml:para>A resource group template is a JSON string that defines a resource group for a complex entity, such as a web portal, a blog, a photo gallery, a commerce site, or a wiki. The template defines the resources that are typically needed for the entity, such as web sites, database servers, databases and storage accounts, and includes parameters for user-defined values, such as the names and properties of the resources. To create a resource group with a template, just identify the template and provide values for its parameters.</maml:para>
       <maml:para>You can create your own templates or use the Get-AzureResourceGroupGalleryTemplate get a template from the template gallery that Azure hosts. You can also create templates by editing the gallery templates. If you create or edit a template, be sure to use the Test-AzureResourceGroupTemplate cmdlet to verify that your template and its parameters are valid.</maml:para>
       <maml:para>To create a resource group with a custom or gallery template, use the New-AzureResourceGroup or New-AzureResourceGroupDeployment cmdlets.</maml:para>
+      <maml:para>By default the cmdlet gets only the latest version of the template. To get all versions, use the -AllVersions parameter flag.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1159,7 +1160,20 @@ ContosoLabsRG                       WordPress.WordPress                     Succ
         <dev:defaultValue>
         </dev:defaultValue>
       </command:parameter>
-    </command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="2" aliases="">
+          <maml:name>AllVersions</maml:name>
+          <maml:description>
+              <maml:para>If specified, the cmdlet will return all versions of matching templates. By default only the latest version is returned.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
+          <dev:type>
+              <maml:name>String</maml:name>
+              <maml:uri />
+          </dev:type>
+          <dev:defaultValue>
+          </dev:defaultValue>
+      </command:parameter>
+      </command:parameters>
     <command:inputTypes>
       <command:inputType>
         <dev:type>
