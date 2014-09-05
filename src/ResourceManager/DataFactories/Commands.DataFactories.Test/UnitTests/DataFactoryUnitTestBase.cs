@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,15 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Moq;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    public class DataFactoriesUnitTestsBase : TestBase
+    public class DataFactoryUnitTestBase : TestBase
     {
-        protected const string subscriptionId = "foo";
+        protected const string subscriptionId = "subscriptionid";
 
         protected const string DataFactoryName = "foo";
 
@@ -31,17 +30,17 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         protected const string ResourceGroupName = "bar";
 
         protected const string Location = "centralus";
-
-        protected Mock<IDataFactoryClient> dataFactoriesClientMock;
+        
+        protected Mock<DataFactoryClient> dataFactoriesClientMock;
 
         protected Mock<ICommandRuntime> commandRuntimeMock;
-
+        
         [TestInitialize]
         public virtual void SetupTest()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
 
-            this.dataFactoriesClientMock = new Mock<IDataFactoryClient>();
+            dataFactoriesClientMock = new Mock<DataFactoryClient>();
 
             commandRuntimeMock = new Mock<ICommandRuntime>();
         }

@@ -12,16 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-using Microsoft.Azure.Commands.DataFactories.Models;
-
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    public interface IDataFactoryClient
+    public class DataFactoryFilterOptions
     {
-        PSDataFactory GetDataFactory(string resourceGroupName, string dataFactoryName);
+        public string Name { get; set; }
 
-        List<PSDataFactory> ListDataFactories(string resourceGroupName);
+        public string ResourceGroupName { get; set; }
     }
 }

@@ -112,7 +112,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTests\DataFactoriesUnitTestsBase.cs" />
+    <Compile Include="UnitTests\DataFactoryUnitTestBase.cs" />
     <Compile Include="UnitTests\GetDataFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioTests\DataFactoriesScenarioTestsBase.cs" />

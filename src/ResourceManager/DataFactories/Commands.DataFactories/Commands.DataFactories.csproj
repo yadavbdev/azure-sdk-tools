@@ -106,7 +106,7 @@
     <Compile Include="DataFactories\GetAzureDataFactoryCommand.cs" />
     <Compile Include="DataFactoryBaseCmdlet.cs" />
     <Compile Include="Models\DataFactoryClient.cs" />
-    <Compile Include="Models\IDataFactoryClient.cs" />
+    <Compile Include="Models\DataFactoryFilterOptions.cs" />
     <Compile Include="Models\PSDataFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

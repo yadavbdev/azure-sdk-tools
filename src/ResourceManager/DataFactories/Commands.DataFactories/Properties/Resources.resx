@@ -118,6 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FormattedCloudExceptionMessageTemplate" xml:space="preserve">
-    <value>"\nHTTP Status Code: {0}\nError Code: {1}\nError Message: {2}\nRequest Id: {3}\nTimestamp (Utc):{4}"</value>
+    <value>"HTTP Status Code: {0}
+Error Code: {1}
+Error Message: {2}
+Request Id: {3}
+Timestamp (Utc):{4}"</value>
+  </data>
+  <data name="ResourceGroupNameCannotBeEmpty" xml:space="preserve">
+    <value>"Resource group name cannot be null."</value>
   </data>
 </root>

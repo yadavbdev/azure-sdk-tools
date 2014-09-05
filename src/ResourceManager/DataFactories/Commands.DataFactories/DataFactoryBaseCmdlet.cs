@@ -21,20 +21,20 @@ namespace Microsoft.Azure.Commands.DataFactories
 {
     public abstract class DataFactoryBaseCmdlet : CmdletWithSubscriptionBase
     {
-        private IDataFactoryClient dataFactoryClient;
+        private DataFactoryClient dataFactoryClient;
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.")]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
-        internal IDataFactoryClient DataFactoryClient
+        internal DataFactoryClient DataFactoryClient
         {
             get
             {
                 if (this.dataFactoryClient == null)
                 {
-                    this.dataFactoryClient = new DataFactoryClient(CurrentSubscription, WriteDebug);
+                    this.dataFactoryClient = new DataFactoryClient(CurrentSubscription);
                 }
                 return this.dataFactoryClient;
             }
