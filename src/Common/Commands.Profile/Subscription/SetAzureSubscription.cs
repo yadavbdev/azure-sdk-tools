@@ -70,8 +70,8 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            AzureSubscription subscription = ProfileClient.Profile.Subscriptions.Values.FirstOrDefault(s => s.Id == new Guid(SubscriptionId) || 
-                    s.Name.Equals(SubscriptionName, StringComparison.InvariantCultureIgnoreCase));
+            AzureSubscription subscription = ProfileClient.Profile.Subscriptions.Values
+                .FirstOrDefault(s => s.Id == new Guid(SubscriptionId));
 
             if (subscription == null)
             {
