@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
                 Subscription = subscription;
                 SqlClient = null;
                 StorageClient = null;
-            //    ResourcesClient = null;
+                ResourcesClient = null;
             }
         }
 
