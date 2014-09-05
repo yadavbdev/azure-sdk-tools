@@ -27,25 +27,39 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     /// <summary>
     /// Sets an azure subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureSubscription", DefaultParameterSetName = "CommonSettings"), OutputType(typeof(AzureSubscription))]
+    [Cmdlet(VerbsCommon.Set, "AzureSubscription"), OutputType(typeof(AzureSubscription))]
     public class SetAzureSubscriptionCommand : SubscriptionCmdletBase
     {
+        private const string UpdateSubscriptionByIdParameterSet = "UpdateSubscriptionByIdParameterSetName";
+
+        private const string UpdateSubscriptionByNameParameterSet = "UpdateSubscriptionByNameParameterSetName";
+
+        private const string AddSubscriptionParameterSet = "AddSubscriptionParameterSetName";
+
         public SetAzureSubscriptionCommand() : base(true)
         {
             Environment = EnvironmentName.AzureCloud;
         }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Name of the subscription.")]
+            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = AddSubscriptionParameterSet)]
         [ValidateNotNullOrEmpty]
         public string SubscriptionName { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, 
-            HelpMessage = "Account subscription ID.")]
+            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
         public string SubscriptionId { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Certificate ID.")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
+        [Parameter(ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
+        [Parameter(Position = 0, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
         public X509Certificate2 Certificate { get; set; }
 
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Service endpoint.")]
@@ -70,20 +84,24 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            AzureSubscription subscription = ProfileClient.Profile.Subscriptions.Values
-                .FirstOrDefault(s => s.Id == new Guid(SubscriptionId));
+            AzureSubscription subscription = null;
 
-            if (subscription == null)
+            if (!string.IsNullOrEmpty(SubscriptionId) && string.IsNullOrEmpty(SubscriptionName))
             {
-                subscription = new AzureSubscription();
-                subscription.Id = new Guid(SubscriptionId);
+                subscription = ProfileClient.GetSubscription(new Guid(SubscriptionId));
+                Environment = subscription.Environment;
+            }
+            else if (string.IsNullOrEmpty(SubscriptionId) && !string.IsNullOrEmpty(SubscriptionName))
+            {
+                subscription = ProfileClient.GetSubscription(SubscriptionName);
+                Environment = subscription.Environment;
             }
             else
             {
-                Environment = subscription.Environment;
+                subscription = new AzureSubscription();
+                subscription.Id = new Guid(SubscriptionId);
+                subscription.Name = SubscriptionName;
             }
-
-            subscription.Name = SubscriptionName;
 
             AzureEnvironment environment = ProfileClient.GetEnvironment(Environment, ServiceEndpoint, ResourceManagerEndpoint);
             if (environment == null)

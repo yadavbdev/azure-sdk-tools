@@ -145,7 +145,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             cmdlt.CommandRuntime = commandRuntimeMock.Object;
             cmdlt.SubscriptionId = azureSubscription1.Id.ToString();
-            cmdlt.SubscriptionName = "NewSubscriptionName";
             cmdlt.CurrentStorageAccountName = "NewCloudStorage";
             cmdlt.Environment = azureEnvironment.Name;
 
@@ -157,7 +156,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             // Verify
             client = new ProfileClient();
             var newSubscription = client.Profile.Subscriptions[new Guid(cmdlt.SubscriptionId)];
-            Assert.Equal(cmdlt.SubscriptionName, newSubscription.Name);
             Assert.Equal(cmdlt.Environment, newSubscription.Environment);
             Assert.Equal(cmdlt.CurrentStorageAccountName, newSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
         }
@@ -175,7 +173,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             cmdlt.CommandRuntime = commandRuntimeMock.Object;
             cmdlt.SubscriptionId = azureSubscription1.Id.ToString();
-            cmdlt.SubscriptionName = "NewSubscriptionName";
             cmdlt.CurrentStorageAccountName = "NewCloudStorage";
             cmdlt.ServiceEndpoint = azureEnvironment.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement);
 
@@ -187,7 +184,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             // Verify
             client = new ProfileClient();
             var newSubscription = client.Profile.Subscriptions[new Guid(cmdlt.SubscriptionId)];
-            Assert.Equal(cmdlt.SubscriptionName, newSubscription.Name);
             Assert.Equal(cmdlt.Environment, newSubscription.Environment);
             Assert.Equal(cmdlt.CurrentStorageAccountName,
                 newSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
@@ -206,7 +202,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             cmdlt.CommandRuntime = commandRuntimeMock.Object;
             cmdlt.SubscriptionId = azureSubscription1.Id.ToString();
-            cmdlt.SubscriptionName = "NewSubscriptionName";
             cmdlt.CurrentStorageAccountName = "NewCloudStorage";
             cmdlt.ResourceManagerEndpoint = azureEnvironment.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager);
 
@@ -218,7 +213,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             // Verify
             client = new ProfileClient();
             var newSubscription = client.Profile.Subscriptions[new Guid(cmdlt.SubscriptionId)];
-            Assert.Equal(cmdlt.SubscriptionName, newSubscription.Name);
             Assert.Equal(cmdlt.Environment, newSubscription.Environment);
             Assert.Equal(cmdlt.CurrentStorageAccountName, newSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
         }
@@ -236,7 +230,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             cmdlt.CommandRuntime = commandRuntimeMock.Object;
             cmdlt.SubscriptionId = azureSubscription1.Id.ToString();
-            cmdlt.SubscriptionName = "NewSubscriptionName";
             cmdlt.CurrentStorageAccountName = "NewCloudStorage";
             cmdlt.ServiceEndpoint = azureEnvironment.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement);
             cmdlt.ResourceManagerEndpoint = azureEnvironment.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager);
@@ -249,7 +242,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             // Verify
             client = new ProfileClient();
             var newSubscription = client.Profile.Subscriptions[new Guid(cmdlt.SubscriptionId)];
-            Assert.Equal(cmdlt.SubscriptionName, newSubscription.Name);
             Assert.Equal(cmdlt.Environment, newSubscription.Environment);
             Assert.Equal(cmdlt.CurrentStorageAccountName, newSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
         }
@@ -268,7 +260,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             cmdlt.CommandRuntime = commandRuntimeMock.Object;
             cmdlt.SubscriptionId = azureSubscription1.Id.ToString();
-            cmdlt.SubscriptionName = "NewSubscriptionName";
             cmdlt.CurrentStorageAccountName = "NewCloudStorage";
             cmdlt.Certificate = SampleCertificate;
 
@@ -282,7 +273,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             var newSubscription = client.Profile.Subscriptions[new Guid(cmdlt.SubscriptionId)];
             var newAccount = client.Profile.Accounts[SampleCertificate.Thumbprint];
             var existingAccount = client.Profile.Accounts[azureAccount.Id];
-            Assert.Equal(cmdlt.SubscriptionName, newSubscription.Name);
             Assert.Equal(azureEnvironment.Name, newSubscription.Environment);
             Assert.Equal(cmdlt.CurrentStorageAccountName, newSubscription.GetProperty(AzureSubscription.Property.StorageAccount));
 
