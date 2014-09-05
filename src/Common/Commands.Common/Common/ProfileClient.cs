@@ -530,20 +530,27 @@ namespace Microsoft.WindowsAzure.Commands.Common
             var subscriptions = ListSubscriptionsFromPublishSettingsFile(filePath, azureEnvironment);
             if (subscriptions.Any())
             {
-                var thumbprint = subscriptions.First().Account;
-                Profile.Accounts[thumbprint] = new AzureAccount
-                {
-                    Id = thumbprint,
-                    Type = AzureAccount.AccountType.Certificate
-                };
-                Profile.Accounts[thumbprint].SetSubscriptions(subscriptions);
-
                 foreach (var subscription in subscriptions)
                 {
-                    subscription.Properties[AzureSubscription.Property.SupportedModes] =
-                        AzureModule.AzureServiceManagement.ToString();
+                    AzureAccount account = new AzureAccount
+                    {
+                        Id = subscription.Account,
+                        Type = AzureAccount.AccountType.Certificate
+                    };
+                    account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
+                    AddOrSetAccount(account);
+                    subscription.SetOrAppendProperty(AzureSubscription.Property.SupportedModes,
+                        AzureModule.AzureServiceManagement.ToString());
 
-                    AddOrSetSubscription(subscription);
+                    if (!Profile.Subscriptions.ContainsKey(subscription.Id))
+                    {
+                        AddOrSetSubscription(subscription);
+                    }
+
+                    if (Profile.DefaultSubscription == null)
+                    {
+                        Profile.DefaultSubscription = subscription;
+                    }
                 }
             }
             return subscriptions;
