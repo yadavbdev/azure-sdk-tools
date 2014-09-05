@@ -12,18 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Resources.Models
+using Microsoft.Azure.Commands.Sql.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
+namespace Microsoft.Azure.Commands.Sql
 {
-    public class FilterGalleryTemplatesOptions
+    /// <summary>
+    /// The base class for all Azure Sql Database Management Cmdlets
+    /// </summary>
+    public abstract class SqlDatabaseCmdletBase : AzurePSCmdlet 
     {
-        public string Identity { get; set; }
+        /// <summary>
+        /// Stores the per request session Id for all request made in this cmdlet call.
+        /// </summary>
+        protected string clientRequestId { get; set; }
 
-        public string Category { get; set; }
-
-        public string Publisher { get; set; }
-
-        public string ApplicationName { get; set; }
-
-        public bool AllVersions { get; set; }
+        internal SqlDatabaseCmdletBase()
+        {
+            this.clientRequestId = Util.GenerateTracingId();
+        }
     }
 }
