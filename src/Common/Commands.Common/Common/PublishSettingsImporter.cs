@@ -30,12 +30,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     /// </summary>
     public static class PublishSettingsImporter
     {
-        public static IEnumerable<AzureSubscription> ImportAzureSubscription(Stream stream, string environment)
+        public static IEnumerable<AzureSubscription> ImportAzureSubscription(Stream stream, ProfileClient azureProfileClient, string environment)
         {
             var publishData = DeserializePublishData(stream);
             PublishDataPublishProfile profile = publishData.Items.Single();
             stream.Close();
-            return profile.Subscription.Select(s => PublishSubscriptionToAzureSubscription(profile, s, environment));
+            return profile.Subscription.Select(s => PublishSubscriptionToAzureSubscription(azureProfileClient, profile, s, environment));
         }
 
         private static PublishData DeserializePublishData(Stream stream)
@@ -45,11 +45,25 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         }
 
         private static AzureSubscription PublishSubscriptionToAzureSubscription(
+            ProfileClient azureProfileClient, 
             PublishDataPublishProfile profile,
             PublishDataPublishProfileSubscription s,
             string environment)
         {
             var certificate = GetCertificate(profile, s);
+
+            if (string.IsNullOrEmpty(environment))
+            {
+                var azureEnvironment = azureProfileClient.GetEnvironment(environment, s.ServiceManagementUrl ?? profile.Url, null);
+                if (azureEnvironment != null)
+                {
+                    environment = azureEnvironment.Name;
+                }
+                else
+                {
+                    environment = EnvironmentName.AzureCloud;
+                }
+            }
             
             return new AzureSubscription
             {

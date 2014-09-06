@@ -752,7 +752,186 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             client.AddOrSetEnvironment(azureEnvironment);
             var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", azureEnvironment.Name);
-                
+            var account = client.Profile.Accounts.Values.First();
+
+            Assert.True(subscriptions.All(s => s.Account == account.Id));
+            Assert.Equal(6, subscriptions.Count);
+            Assert.Equal(6, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsDefaultsToAzureCloudEnvironmentWithManagementUrl()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            client.SetSubscriptionAsDefault(azureSubscription1.Name, azureAccount.Id);
+            client.Profile.Save();
+
+            client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfile);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", null);
+
+            Assert.True(subscriptions.All(s => s.Environment == EnvironmentName.AzureCloud));
+            Assert.Equal(6, subscriptions.Count);
+            Assert.Equal(7, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsUsesProperEnvironmentWithManagementUrl()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
+            azureEnvironment.Endpoints[AzureEnvironment.Endpoint.ServiceManagement] = "https://newmanagement.core.windows.net/";
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            client.SetSubscriptionAsDefault(azureSubscription1.Name, azureAccount.Id);
+            client.Profile.Save();
+
+            client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfile3);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", null);
+
+            Assert.True(subscriptions.All(s => s.Environment == azureEnvironment.Name));
+            Assert.Equal(6, subscriptions.Count);
+            Assert.Equal(7, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsUsesProperEnvironmentWithChinaManagementUrl()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfileChina);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", null);
+
+            Assert.True(subscriptions.All(s => s.Environment == EnvironmentName.AzureChinaCloud));
+            Assert.Equal(6, subscriptions.Count);
+            Assert.Equal(6, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsUsesProperEnvironmentWithChinaManagementUrlOld()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfileChinaOld);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", null);
+
+            Assert.True(subscriptions.All(s => s.Environment == EnvironmentName.AzureChinaCloud));
+            Assert.Equal(1, subscriptions.Count);
+            Assert.Equal(1, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsDefaultsToAzureCloudWithIncorrectManagementUrl()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            client.SetSubscriptionAsDefault(azureSubscription1.Name, azureAccount.Id);
+            client.Profile.Save();
+
+            client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfile3);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", null);
+
+            Assert.True(subscriptions.All(s => s.Environment == EnvironmentName.AzureCloud));
+            Assert.Equal(6, subscriptions.Count);
+            Assert.Equal(7, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsUsesPassedInEnvironment()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.AddOrSetAccount(azureAccount);
+            client.AddOrSetEnvironment(azureEnvironment);
+            client.AddOrSetSubscription(azureSubscription1);
+            client.SetSubscriptionAsDefault(azureSubscription1.Name, azureAccount.Id);
+            client.Profile.Save();
+
+            client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfile3);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", azureEnvironment.Name);
+
+            Assert.True(subscriptions.All(s => s.Environment == azureEnvironment.Name));
+            Assert.Equal(6, subscriptions.Count);
+            Assert.Equal(7, client.Profile.Subscriptions.Count);
+        }
+
+        [Fact]
+        public void ImportPublishSettingsAddsSecondCertificate()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            var newSubscription = new AzureSubscription
+            {
+                Id = new Guid("f62b1e05-af8f-4203-8f97-421089adc053"),
+                Name = "Microsoft Azure Sandbox 9-220",
+                Environment = EnvironmentName.AzureCloud,
+                Account = azureAccount.Id
+            };
+            azureAccount.SetProperty(AzureAccount.Property.Subscriptions, newSubscription.Id.ToString());
+            client.AddOrSetAccount(azureAccount);
+            client.AddOrSetSubscription(newSubscription);
+            client.Profile.Save();
+
+            client = new ProfileClient();
+
+            dataStore.WriteFile("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings",
+                Properties.Resources.ValidProfile);
+
+            client.AddOrSetEnvironment(azureEnvironment);
+            var subscriptions = client.ImportPublishSettings("ImportPublishSettingsLoadsAndReturnsSubscriptions.publishsettings", azureEnvironment.Name);
+
+            Assert.Equal(2, client.Profile.Accounts.Count());
+            var certAccount = client.Profile.Accounts.Values.First(a => a.Type == AzureAccount.AccountType.Certificate);
+            var userAccount = client.Profile.Accounts.Values.First(a => a.Type == AzureAccount.AccountType.User);
+
+            Assert.True(subscriptions.All(s => s.Account == certAccount.Id));
+            Assert.Equal(azureAccount.Id, client.Profile.Subscriptions.Values.First(s => s.Id == newSubscription.Id).Account);
+
+            Assert.True(userAccount.GetPropertyAsArray(AzureAccount.Property.Subscriptions).Contains(newSubscription.Id.ToString()));
+            Assert.True(certAccount.GetPropertyAsArray(AzureAccount.Property.Subscriptions).Contains(newSubscription.Id.ToString()));
+
             Assert.Equal(6, subscriptions.Count);
             Assert.Equal(6, client.Profile.Subscriptions.Count);
         }

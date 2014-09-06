@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Common.Utilities;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
@@ -140,6 +141,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             }
 
             return null;
+        }
+
+        public bool IsEndpointSetToValue(AzureEnvironment.Endpoint endpoint, string url)
+        {
+            if (Endpoints.IsPropertySet(endpoint))
+            {
+                return GetEndpoint(endpoint)
+                    .Trim(new[] {'/'})
+                    .Equals(url.Trim(new[] {'/'}), StringComparison.InvariantCultureIgnoreCase);
+            }
+            return false;
         }
 
         public string GetEndpointSuffix(AzureEnvironment.Endpoint endpointSuffix)
