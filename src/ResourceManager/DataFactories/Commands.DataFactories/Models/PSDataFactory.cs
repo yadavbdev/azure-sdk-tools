@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-
 using Microsoft.Azure.Management.DataFactories.Models;
 
 namespace Microsoft.Azure.Commands.DataFactories.Models
@@ -75,19 +74,5 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 this._dataFactory.Tags = value;
             }
         }
-
-/* ToDo: DataFactoryFactories will be introduced in the next Hydra spec update
-        public DataFactoryProperties Properties
-        {
-            get
-            {
-                return this._dataFactory.Properties;
-            }
-            internal set
-            {
-                this._dataFactory.Properties = value;
-            }
-        }
-*/
     }
 }
