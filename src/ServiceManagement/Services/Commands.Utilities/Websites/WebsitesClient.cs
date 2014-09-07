@@ -793,14 +793,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
                 {
                     ConnectionString = value,
                     Name = key,
-                    Type = (ConnectionStringType)Enum.Parse(typeof(ConnectionStringType), connectionStringType.ToString()),
+                    Type = (ConnectionStringType)Enum.Parse(typeof(ConnectionStringType), connectionStringType.ToString(), ignoreCase: true),
                 };
                 update.ConnectionStrings.Add(csToUpdate);
             }
             else
             {
                 csToUpdate.ConnectionString = value;
-                csToUpdate.Type = (ConnectionStringType) Enum.Parse(typeof (ConnectionStringType), connectionStringType.ToString());
+                csToUpdate.Type = (ConnectionStringType)Enum.Parse(typeof(ConnectionStringType), connectionStringType.ToString(), ignoreCase: true);
             }
 
             WebsiteManagementClient.WebSites.UpdateConfiguration(website.WebSpace, website.Name, update);

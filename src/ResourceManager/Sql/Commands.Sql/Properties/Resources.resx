@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InvalidEventTypeSet" xml:space="preserve">
+    <value>Cannot use the '{0}' option with other event types.</value>
+  </data>
   <data name="NoServerStorageAccount" xml:space="preserve">
     <value>Cannot use a server's auditing policy before it is configured.</value>
   </data>
@@ -124,6 +127,6 @@
     <value>Cannot set auditing policy without a storage account name.</value>
   </data>
   <data name="StorageAccountNotFound" xml:space="preserve">
-    <value>Cannot find a storage account with the name '{0}'. It either does not exist or is associated with a different subscription.</value>
+    <value>Cannot find a storage account with the name '{0}'. It either does not exist, associated with a different subscription or you do not have the appropriate credentials to access it.</value>
   </data>
 </root>

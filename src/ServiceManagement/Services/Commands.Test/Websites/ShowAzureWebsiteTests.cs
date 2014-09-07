@@ -28,7 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
     
     public class ShowAzureWebsiteTests : WebsitesTestBase
     {
-        [Fact]
+        [Fact(Skip = "Consider removing these.")]
         public void ProcessShowWebsiteTest()
         {
             // Setup

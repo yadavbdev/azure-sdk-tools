@@ -572,15 +572,18 @@ Tags:
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-AzureResourceGroup</maml:name>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="ResourceGroupName">
+        <maml:name>GetMultiple</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="ResourceGroupName">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Specifies the name of the resource group. Wildcards are not permitted. This parameter is optional. The default is all resource groups in the subscription</maml:para>
+            <maml:para>Specifies the name of the resource group. Wildcards are not permitted. This parameter is required.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="">
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>GetSingle</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="">
           <maml:name>Tag</maml:name>
           <maml:description>
             <maml:para>Gets resource groups that have the specified Azure tags. Enter a hash table with a Name key or Name and Value keys. Wildcard characters are not supported.</maml:para>
@@ -588,6 +591,13 @@ Tags:
             <maml:para>For help with hash tables in Windows PowerShell, type: Get-Help about_Hashtables.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" aliases="">
+          <maml:name>Detailed</maml:name>
+          <maml:description>
+            <maml:para>Return the details of each resource group if specified.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -615,6 +625,19 @@ Tags:
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
           <maml:name>Hashtable</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" aliases="">
+        <maml:name>Detailed</maml:name>
+        <maml:description>
+          <maml:para>Return the details of each resource group if specified.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>
@@ -661,12 +684,12 @@ Tags:
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>Example 1: Get all resource groups</maml:title>
+        <maml:title>Example 1: Get all resource groups and their details</maml:title>
         <maml:introduction>
           <maml:para>
           </maml:para>
         </maml:introduction>
-        <dev:code>PS C:\&gt;Get-AzureResourceGroup
+        <dev:code>PS C:\&gt;Get-AzureResourceGroup -Detailed
 Name:      Contoso
 Location:  West US
 Resources: 
@@ -725,7 +748,7 @@ Resources:
           <maml:para>
           </maml:para>
         </maml:introduction>
-        <dev:code>PS C:\&gt;Get-AzureResourceGroup | Where-Object {$_.Resources.Type -like "*serverFarms*"} | Select-Object -Property ResourceGroupName
+        <dev:code>PS C:\&gt;Get-AzureResourceGroup -Detailed | Where-Object {$_.Resources.Type -like "*serverFarms*"} | Select-Object -Property ResourceGroupName
 Contoso
 EngineerBlog
 
@@ -1064,6 +1087,7 @@ ContosoLabsRG                       WordPress.WordPress                     Succ
       <maml:para>A resource group template is a JSON string that defines a resource group for a complex entity, such as a web portal, a blog, a photo gallery, a commerce site, or a wiki. The template defines the resources that are typically needed for the entity, such as web sites, database servers, databases and storage accounts, and includes parameters for user-defined values, such as the names and properties of the resources. To create a resource group with a template, just identify the template and provide values for its parameters.</maml:para>
       <maml:para>You can create your own templates or use the Get-AzureResourceGroupGalleryTemplate get a template from the template gallery that Azure hosts. You can also create templates by editing the gallery templates. If you create or edit a template, be sure to use the Test-AzureResourceGroupTemplate cmdlet to verify that your template and its parameters are valid.</maml:para>
       <maml:para>To create a resource group with a custom or gallery template, use the New-AzureResourceGroup or New-AzureResourceGroupDeployment cmdlets.</maml:para>
+      <maml:para>By default the cmdlet gets only the latest version of the template. To get all versions, use the -AllVersions parameter flag.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1136,7 +1160,20 @@ ContosoLabsRG                       WordPress.WordPress                     Succ
         <dev:defaultValue>
         </dev:defaultValue>
       </command:parameter>
-    </command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="2" aliases="">
+          <maml:name>AllVersions</maml:name>
+          <maml:description>
+              <maml:para>If specified, the cmdlet will return all versions of matching templates. By default only the latest version is returned.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
+          <dev:type>
+              <maml:name>String</maml:name>
+              <maml:uri />
+          </dev:type>
+          <dev:defaultValue>
+          </dev:defaultValue>
+      </command:parameter>
+      </command:parameters>
     <command:inputTypes>
       <command:inputType>
         <dev:type>

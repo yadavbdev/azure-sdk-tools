@@ -115,7 +115,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             if (options.ADObjectFilter.HasFilter)
             {
                 // Filter first by principal
-                parameters.PrincipalId = ActiveDirectoryClient.GetObjectId(options.ADObjectFilter);
+                parameters.PrincipalId = string.IsNullOrEmpty(options.ADObjectFilter.Id) ? ActiveDirectoryClient.GetObjectId(options.ADObjectFilter) : Guid.Parse(options.ADObjectFilter.Id);
                 result.AddRange(AuthorizationManagementClient.RoleAssignments.List(parameters)
                     .RoleAssignments.Select(r => r.ToPSRoleAssignment(this, ActiveDirectoryClient)));
 
@@ -158,6 +158,10 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
             if (roleAssignment != null)
             {
                 AuthorizationManagementClient.RoleAssignments.DeleteById(roleAssignment.RoleAssignmentId);
+            }
+            else
+            {
+                throw new KeyNotFoundException("The provided information does not map to a role assignment.");
             }
 
             return roleAssignment;

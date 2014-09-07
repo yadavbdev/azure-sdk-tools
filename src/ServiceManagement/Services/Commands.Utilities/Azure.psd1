@@ -68,7 +68,8 @@ FormatsToProcess = @(
     '.\Storage\Microsoft.WindowsAzure.Commands.Storage.format.ps1xml',
     '.\Services\Microsoft.WindowsAzure.Commands.Store.format.ps1xml',
     '.\Services\Microsoft.WindowsAzure.Commands.Scheduler.format.ps1xml',
-    '.\Compute\Microsoft.WindowsAzure.Commands.ServiceManagement.format.ps1xml'
+    '.\Compute\Microsoft.WindowsAzure.Commands.ServiceManagement.format.ps1xml',
+    '.\Services\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml'
 )
 
 # Modules to import as nested modules of the module specified in ModuleToProcess

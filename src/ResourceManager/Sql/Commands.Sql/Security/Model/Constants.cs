@@ -15,13 +15,7 @@
 namespace Microsoft.Azure.Commands.Sql.Security.Model
 {
     public class Constants
-    {
-        // property names
-        public const string DefaultProperties = "DefaultProperties";
-        public const string EventTypes = "EventTypes";
-
-        public const int IndexOfSubscription = 2; // the index of the subscription in a resource Id
-        
+    {        
         // Event types
         public const string Access = "DataAccess";
         public const string Schema = "SchemaChanges";

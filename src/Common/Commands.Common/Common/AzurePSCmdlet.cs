@@ -26,18 +26,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     public abstract class AzurePSCmdlet : PSCmdlet
     {
         private readonly RecordingTracingInterceptor httpTracingInterceptor = new RecordingTracingInterceptor();
-        protected ProfileClient profileClient;
+        protected ProfileClient defaultProfileClient;
         
         public AzurePSCmdlet()
         {
-            profileClient = new ProfileClient();
+            defaultProfileClient = new ProfileClient();
             if (AzureSession.CurrentContext.Subscription == null &&
-                profileClient.Profile.DefaultSubscription != null)
+                defaultProfileClient.Profile.DefaultSubscription != null)
             {
                 AzureSession.SetCurrentContext(
-                    profileClient.Profile.DefaultSubscription,
-                    profileClient.GetEnvironmentOrDefault(profileClient.Profile.DefaultSubscription.Environment),
-                    profileClient.GetAccountOrNull(profileClient.Profile.DefaultSubscription.Account));
+                    defaultProfileClient.Profile.DefaultSubscription,
+                    defaultProfileClient.GetEnvironmentOrDefault(defaultProfileClient.Profile.DefaultSubscription.Environment),
+                    defaultProfileClient.GetAccountOrNull(defaultProfileClient.Profile.DefaultSubscription.Account));
             }
         }
 
@@ -122,6 +122,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         protected void WriteVerboseWithTimestamp(string message)
         {
             WriteVerbose(string.Format("{0:T} - {1}", DateTime.Now, message));
+        }
+
+        protected void WriteWarningWithTimestamp(string message)
+        {
+            WriteWarning(string.Format("{0:T} - {1}", DateTime.Now, message));
         }
 
         protected void WriteDebugWithTimestamp(string message, params object[] args)

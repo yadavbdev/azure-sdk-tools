@@ -12,16 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Security;
-
-namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.AvailabilitySets
 {
-    public struct UserCredentials
+    using System.Management.Automation;
+    using Model;
+
+    [Cmdlet(VerbsCommon.Remove, "AzureAvailabilitySet"), OutputType(typeof(IPersistentVM))]
+    public class RemoveAzureAvailabilitySet : VirtualMachineConfigurationCmdletBase
     {
-        public string UserName { get; set; }
-
-        public SecureString Password { get; set; }
-
-        public ShowDialog ShowDialog { get; set; }
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+            this.VM.GetInstance().AvailabilitySetName = null;
+            this.WriteObject(this.VM, true);
+        }
     }
 }

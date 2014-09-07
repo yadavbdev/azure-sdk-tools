@@ -27,35 +27,52 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     /// <summary>
     /// Sets an azure subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureSubscription", DefaultParameterSetName = "CommonSettings"), OutputType(typeof(AzureSubscription))]
+    [Cmdlet(VerbsCommon.Set, "AzureSubscription"), OutputType(typeof(AzureSubscription))]
     public class SetAzureSubscriptionCommand : SubscriptionCmdletBase
     {
+        private const string UpdateSubscriptionByIdParameterSet = "UpdateSubscriptionByIdParameterSetName";
+
+        private const string UpdateSubscriptionByNameParameterSet = "UpdateSubscriptionByNameParameterSetName";
+
+        private const string AddSubscriptionParameterSet = "AddSubscriptionParameterSetName";
+
         public SetAzureSubscriptionCommand() : base(true)
         {
+            Environment = EnvironmentName.AzureCloud;
         }
 
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "CommonSettings")]
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "ResetCurrentStorageAccount")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = AddSubscriptionParameterSet)]
         [ValidateNotNullOrEmpty]
         public string SubscriptionName { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Account subscription ID.", ParameterSetName = "CommonSettings")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, 
+            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
         public string SubscriptionId { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Account certificate.", ParameterSetName = "CommonSettings")]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = AddSubscriptionParameterSet)]
+        [Parameter(ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Account subscription ID.", ParameterSetName = UpdateSubscriptionByIdParameterSet)]
+        [Parameter(Position = 0, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Name of the subscription.", ParameterSetName = UpdateSubscriptionByNameParameterSet)]
         public X509Certificate2 Certificate { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Service endpoint.", ParameterSetName = "CommonSettings")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Service endpoint.")]
         public string ServiceEndpoint { get; set; }
 
-        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Cloud service endpoint.", ParameterSetName = "CommonSettings")]
+        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Cloud service endpoint.")]
         public string ResourceManagerEndpoint { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "Current storage account name.", ParameterSetName = "CommonSettings")]
+        [Parameter(HelpMessage = "Current storage account name.")]
         [ValidateNotNullOrEmpty]
         public string CurrentStorageAccountName { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "Environment name.", ParameterSetName = "CommonSettings")]
+        [Parameter(HelpMessage = "Environment name.")]
         [ValidateNotNullOrEmpty]
         public string Environment { get; set; }
 
@@ -67,47 +84,81 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            var subscription = new AzureSubscription
-            {
-                Name = SubscriptionName,
-                Id = new Guid(SubscriptionId)
-            };
+            AzureSubscription subscription = null;
 
-            if (CurrentStorageAccountName != null)
+            if (!string.IsNullOrEmpty(SubscriptionId) && string.IsNullOrEmpty(SubscriptionName))
             {
-                subscription.Properties[AzureSubscription.Property.StorageAccount] = CurrentStorageAccountName;
+                subscription = ProfileClient.GetSubscription(new Guid(SubscriptionId));
+                Environment = subscription.Environment;
             }
+            else if (string.IsNullOrEmpty(SubscriptionId) && !string.IsNullOrEmpty(SubscriptionName))
+            {
+                subscription = ProfileClient.GetSubscription(SubscriptionName);
+                Environment = subscription.Environment;
+            }
+            else
+            {
+                subscription = new AzureSubscription();
+                subscription.Id = new Guid(SubscriptionId);
+                subscription.Name = SubscriptionName;
+            }
+
+            AzureEnvironment environment = ProfileClient.GetEnvironment(Environment, ServiceEndpoint, ResourceManagerEndpoint);
+            if (environment == null)
+            {
+                environment = defaultProfileClient.GetEnvironment(Environment, ServiceEndpoint, ResourceManagerEndpoint);
+            }
+
+            if (environment == null)
+            {
+                throw new ArgumentException("ServiceEndpoint and ResourceManagerEndpoint values do not "+
+                    "match existing environment. Please use Environment parameter.");
+            }
+            else
+            {
+                subscription.Environment = environment.Name;
+            }
+
+            if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
+            {
+                WriteWarning("Please use Environment parameter to specify subscription environment. This "+
+                    "warning will be converted into an error in the upcoming release.");
+            }
+
             if (Certificate != null)
             {
                 ProfileClient.ImportCertificate(Certificate);
                 subscription.Account = Certificate.Thumbprint;
+                AzureAccount account = new AzureAccount
+                {
+                    Id = Certificate.Thumbprint,
+                    Type = AzureAccount.AccountType.Certificate
+                };
+                account.SetOrAppendProperty(AzureAccount.Property.Subscriptions, subscription.Id.ToString());
+                ProfileClient.AddOrSetAccount(account);
+
+                if (subscription.Account == null)
+                {
+                    subscription.Account = account.Id;
+                }
             }
 
-            AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);
-
-            if (ServiceEndpoint != null || ResourceManagerEndpoint != null)
+            if (subscription.Account == null)
             {
-                if (Environment == null)
-                {
-                    WriteWarning(
-                        "Please use Environment parameter to specify subscription environment. This warning will be converted into an error in the upcoming release.");
-                }
-                else
-                {
-                    environment = ProfileClient.Profile.Environments.Values
-                        .FirstOrDefault(e => e.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement) == ServiceEndpoint 
-                            && e.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager) == ResourceManagerEndpoint);
-
-                    if (environment == null)
-                    {
-                        throw new Exception("ServiceEndpoint and ResourceManagerEndpoint values do not match existing environment. Please use Environment parameter.");
-                    }
-                }
+                throw new ArgumentException("Certificate is required for creating a new subscription.");
             }
-           
-            subscription.Environment = environment.Name;
 
-            WriteObject(ProfileClient.AddOrSetSubscription(subscription));
+            if (!string.IsNullOrEmpty(CurrentStorageAccountName))
+            {
+                subscription.Properties[AzureSubscription.Property.StorageAccount] = CurrentStorageAccountName;
+            }
+
+            subscription = ProfileClient.AddOrSetSubscription(subscription);
+
+            if (PassThru)
+            {
+                WriteObject(subscription);
+            }
         }
     }
 }

@@ -26,7 +26,6 @@ using Microsoft.WindowsAzure.Commands.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Scaffolding
 {
-    
     public class AddAzurePythonWebRoleTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;

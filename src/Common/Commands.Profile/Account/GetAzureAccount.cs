@@ -13,8 +13,10 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using System.Collections.Generic;
 
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
@@ -35,7 +37,12 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            WriteObject(ProfileClient.ListAccounts(Name), true);
+            IEnumerable<AzureAccount> accounts = defaultProfileClient.ListAccounts(Name);
+            List<PSAzureAccount> output = new List<PSAzureAccount>();
+            foreach (AzureAccount account in accounts) {
+                output.Add(account.ToPSAzureAccount());
+            }
+            WriteObject(output, true);
         }
     }
 }

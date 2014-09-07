@@ -189,6 +189,24 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             this.RunPowerShellTest("Test-RemoveAzureTrafficManagerEndpoint");
         }
 
+        [Fact(Skip = "TODO: Fix failing test.")]
+        [Trait(Category.Service, Category.TrafficManager)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        public void TestAddAzureTrafficManagerEndpointNoMinChildEndpoints()
+        {
+            this.RunPowerShellTest("Test-AddAzureTrafficManagerEndpointNoMinChildEndpoints");
+        }
+
+        [Fact(Skip = "TODO: Fix the test.")]
+        [Trait(Category.Service, Category.TrafficManager)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        public void TestAddAzureTrafficManagerEndpointTypeTrafficManager()
+        {
+            this.RunPowerShellTest("Test-AddAzureTrafficManagerEndpointTypeTrafficManager");
+        }
+
         [Fact]
         [Trait(Category.Service, Category.TrafficManager)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]

@@ -59,11 +59,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Common
             var registeredProviders = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.RegisteredResourceProviders);
             var unregisteredProviders = providersToRegister.Where(p => !registeredProviders.Contains(p)).ToList();
             var successfullyRegisteredProvider = new List<string>();
+            SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
 
             if (unregisteredProviders.Count > 0)
             {
-                using (IResourceManagementClient client = new ResourceManagementClient(credentials,
-                    context.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
+                using (var client = CreateCustomClient<ResourceManagementClient>(creds, context.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
                 {
                     foreach (string provider in unregisteredProviders)
                     {
@@ -74,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Common
                         }
                         catch
                         {
-                            // Ignore this as the user may not have access to Sparta endpoint or the provider is already registered
+                            // Ignore this as the user may not have access to service management endpoint or the provider is already registered
                         }
                     }
                 }

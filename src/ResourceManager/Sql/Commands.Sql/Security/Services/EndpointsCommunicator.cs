@@ -12,19 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Commands.Sql.Security.Model;
 using Microsoft.Azure.Commands.Sql.Services;
+using Microsoft.Azure.Management.Resources;
+using Microsoft.Azure.Management.Resources.Models;
 using Microsoft.Azure.Management.Sql;
 using Microsoft.Azure.Management.Sql.Models;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Commands.Common.Storage;
-using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 using Microsoft.WindowsAzure.Management.Storage;
-using Microsoft.WindowsAzure.Storage;
-
 using System;
 using System.Collections.Generic;
 
@@ -41,7 +38,7 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
         
         private static AzureSubscription Subscription {get ; set; }
 
-        private static ResourcesClient ResourcesClient { get; set; }
+        private static ResourceManagementClient ResourcesClient { get; set; }
  
         public EndpointsCommunicator(AzureSubscription subscription)
         {
@@ -110,15 +107,26 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
 
         public string GetStorageResourceGroup(string storageAccountName)
         {
-            ResourcesClient resourcesClient = GetCurrentResourcesClient();
-            List<PSResource> allResources = resourcesClient.FilterPSResources(new BasePSResourceParameters());
+            ResourceManagementClient resourcesClient = GetCurrentResourcesClient();
+            
+            ResourceListResult res = resourcesClient.Resources.List(new ResourceListParameters
+                    {
+                        ResourceGroupName = null,
+                        ResourceType = "Microsoft.ClassicStorage/storageAccounts",
+                        TagName = null,
+                        TagValue = null
+                    });
+            List<Resource> allResources = new List<Resource>(res.Resources);
             
             if (allResources.Count != 0)
             {
-                PSResource account = allResources.Find(r => r.Name == storageAccountName && r.ResourceType == "Microsoft.ClassicStorage/storageAccounts");
+                Resource account = allResources.Find(r => r.Name == storageAccountName);
                 if (account != null)
                 {
-                    return account.ResourceGroupName;
+                    String resId =  account.Id;
+                    String[] segments = resId.Split('/');
+                    int indexOfResoureGroup = new List<string>(segments).IndexOf("resourceGroups") +1;
+                    return segments[indexOfResoureGroup];
                 }     
                 else
                 {
@@ -151,10 +159,10 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             return StorageClient;
         }
 
-        private ResourcesClient GetCurrentResourcesClient()
+        private ResourceManagementClient GetCurrentResourcesClient()
         {
             if (ResourcesClient == null)
-                ResourcesClient = new ResourcesClient(AzureSession.CurrentContext);
+                ResourcesClient = AzureSession.ClientFactory.CreateClient<ResourceManagementClient>(Subscription, AzureEnvironment.Endpoint.ResourceManager);
             return ResourcesClient;
         }
 
