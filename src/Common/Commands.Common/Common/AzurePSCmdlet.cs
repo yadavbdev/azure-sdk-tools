@@ -124,6 +124,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             WriteVerbose(string.Format("{0:T} - {1}", DateTime.Now, message));
         }
 
+        protected void WriteWarningWithTimestamp(string message)
+        {
+            WriteWarning(string.Format("{0:T} - {1}", DateTime.Now, message));
+        }
+
         protected void WriteDebugWithTimestamp(string message, params object[] args)
         {
             WriteDebug(string.Format("{0:T} - {1}", DateTime.Now, string.Format(message, args)));
