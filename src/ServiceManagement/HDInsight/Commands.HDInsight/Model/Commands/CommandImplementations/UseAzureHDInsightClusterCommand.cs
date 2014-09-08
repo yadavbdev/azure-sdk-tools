@@ -34,7 +34,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
             var cluster = await client.GetClusterAsync(this.Name);
             var connection = new AzureHDInsightClusterConnection();
             ProfileClient profileClient = new ProfileClient();
-            connection.Credential = this.GetSubscriptionCertificateCredentials(this.CurrentSubscription, profileClient.GetEnvironmentOrDefault(this.CurrentSubscription.Name));
+            connection.Credential = this.GetSubscriptionCertificateCredentials(this.CurrentSubscription, profileClient.GetAccount(this.CurrentSubscription.Account), profileClient.GetEnvironmentOrDefault(this.CurrentSubscription.Name));
 
             if (cluster == null)
             {

@@ -14,6 +14,7 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Hadoop.Client;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Factories;
@@ -39,17 +40,22 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
             if (profile.Accounts[accountId].Type == AzureAccount.AccountType.Certificate)
             {
-                return GetSubscriptionCertificateCredentials(command, currentSubscription, environment);
+                return GetSubscriptionCertificateCredentials(command, currentSubscription, profile.Accounts[accountId], environment);
             }
             else if (profile.Accounts[accountId].Type == AzureAccount.AccountType.User)
             {
-                return GetAccessTokenCredentials(command, currentSubscription, environment);
+                return GetAccessTokenCredentials(command, currentSubscription, profile.Accounts[accountId], environment);
+            }
+            else if (profile.Accounts[accountId].Type == AzureAccount.AccountType.ServicePrincipal)
+            {
+                return GetAccessTokenCredentials(command, currentSubscription, profile.Accounts[accountId], environment);
             }
 
             throw new NotSupportedException();
         }
 
-        public static IHDInsightSubscriptionCredentials GetSubscriptionCertificateCredentials(this IAzureHDInsightCommonCommandBase command, AzureSubscription currentSubscription, AzureEnvironment environment)
+        public static IHDInsightSubscriptionCredentials GetSubscriptionCertificateCredentials(this IAzureHDInsightCommonCommandBase command, 
+            AzureSubscription currentSubscription, AzureAccount azureAccount, AzureEnvironment environment)
         {
             return new HDInsightCertificateCredential
             {
@@ -59,18 +65,32 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             };
         }
 
-        public static IHDInsightSubscriptionCredentials GetAccessTokenCredentials(this IAzureHDInsightCommonCommandBase command, AzureSubscription currentSubscription, AzureEnvironment environment)
+        public static IHDInsightSubscriptionCredentials GetAccessTokenCredentials(this IAzureHDInsightCommonCommandBase command, 
+            AzureSubscription currentSubscription, AzureAccount azureAccount, AzureEnvironment environment)
         {
-            AzureAccount azureAccount = new AzureAccount
+            ProfileClient profileClient = new ProfileClient();
+            AzureContext azureContext = new AzureContext
             {
-                Id = currentSubscription.Account,
+                Subscription = currentSubscription,
+                Environment = environment,
+                Account = azureAccount
             };
-            var accessToken = AzureSession.AuthenticationFactory.Authenticate(ref azureAccount, environment, AuthenticationFactory.CommonAdTenant, null, ShowDialog.Auto);
-            return new HDInsightAccessTokenCredential()
+
+            var cloudCredentials = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(azureContext) as AccessTokenCredential;
+            if (cloudCredentials != null)
             {
-                SubscriptionId = currentSubscription.Id,
-                AccessToken = accessToken.AccessToken
-            };
+                var field= typeof(AccessTokenCredential).GetField("token", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance);
+                var accessToken = field.GetValue(cloudCredentials) as IAccessToken;
+                if (accessToken != null)
+                {
+                    return new HDInsightAccessTokenCredential()
+                    {
+                        SubscriptionId = currentSubscription.Id,
+                        AccessToken = accessToken.AccessToken
+                    };
+                }
+            }
+            return null;
         }
 
         public static IJobSubmissionClientCredential GetJobSubmissionClientCredentials(
