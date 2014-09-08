@@ -105,7 +105,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(".database.windows.net", client.Profile.Environments["Dogfood"].Endpoints[AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix]);
             
             // Verify subscriptions
-            Assert.Equal(2, client.Profile.Subscriptions.Count);
+            Assert.Equal(3, client.Profile.Subscriptions.Count);
             Assert.False(client.Profile.Subscriptions.ContainsKey(new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E")));
             Assert.True(client.Profile.Subscriptions.ContainsKey(new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F")));
             Assert.Equal("Test 2", client.Profile.Subscriptions[new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F")].Name);
@@ -119,6 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal("test@mail.com", client.Profile.Subscriptions[new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")].Account);
             Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", client.Profile.Subscriptions[new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")].Properties[AzureSubscription.Property.Tenants]);
             Assert.Equal(EnvironmentName.AzureCloud, client.Profile.Subscriptions[new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")].Environment);
+            Assert.Equal(EnvironmentName.AzureChinaCloud, client.Profile.Subscriptions[new Guid("c14d7dc5-ed4d-4346-a02f-9f1bcf78fb66")].Environment);
 
             // Verify accounts
             Assert.Equal(2, client.Profile.Accounts.Count);
@@ -128,6 +129,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 .Contains(new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F").ToString()));
             Assert.True(client.Profile.Accounts["test@mail.com"].GetPropertyAsArray(AzureAccount.Property.Subscriptions)
                 .Contains(new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f").ToString()));
+            Assert.True(client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Subscriptions)
+                .Contains(new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f").ToString()));
             Assert.True(client.Profile.Accounts["test@mail.com"].GetPropertyAsArray(AzureAccount.Property.Tenants)
                 .Contains("72f988bf-86f1-41af-91ab-2d7cd011db47"));
             Assert.True(client.Profile.Accounts["test@mail.com"].GetPropertyAsArray(AzureAccount.Property.Tenants)
@@ -135,7 +138,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal("3AF24D48B97730E5C4C9CCB12397B5E046F79E09", client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].Id);
             Assert.Equal(AzureAccount.AccountType.Certificate, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].Type);
             Assert.Equal(0, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Tenants).Length);
-            Assert.Equal(0, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Subscriptions).Length);
+            Assert.Equal(2, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Subscriptions).Length);
         }
 
         [Fact]
@@ -1121,6 +1124,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>d1e52cbc-b073-42e2-a0a0-c2f547118a6f</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
+                    </AzureSubscriptionData>
+                    <AzureSubscriptionData>
+                      <ActiveDirectoryEndpoint i:nil=""true"" />
+                      <ActiveDirectoryServiceEndpointResourceId i:nil=""true"" />
+                      <ActiveDirectoryTenantId i:nil=""true"" />
+                      <ActiveDirectoryUserId i:nil=""true"" />
+                      <CloudStorageAccount i:nil=""true"" />
+                      <GalleryEndpoint i:nil=""true"" />
+                      <IsDefault>false</IsDefault>
+                      <LoginType i:nil=""true"" />
+                      <ManagementCertificate>3AF24D48B97730E5C4C9CCB12397B5E046F79E09</ManagementCertificate>
+                      <ManagementEndpoint>https://management.core.chinacloudapi.cn/</ManagementEndpoint>
+                      <Name>Mooncake Test</Name>
+                      <RegisteredResourceProviders xmlns:d4p1=""http://schemas.microsoft.com/2003/10/Serialization/Arrays"" />
+                      <ResourceManagerEndpoint i:nil=""true"" />
+                      <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
+                      <SubscriptionId>c14d7dc5-ed4d-4346-a02f-9f1bcf78fb66</SubscriptionId>
                       <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                   </Subscriptions>
