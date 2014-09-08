@@ -132,9 +132,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 Id = new Guid(this.SubscriptionId),
                 Name = Name
             };
-
+            
             // Logic to detect what is the subscription environment rely's on having ManagementEndpoint (i.e. RDFE endpoint) set already on the subscription
-            AzureEnvironment env = envs.FirstOrDefault(e => e.Endpoints[AzureEnvironment.Endpoint.ServiceManagement].Equals(this.ManagementEndpoint));
+            List<AzureEnvironment> allEnvs = envs.Union(AzureEnvironment.PublicEnvironments.Values).ToList();
+            AzureEnvironment env = allEnvs.FirstOrDefault(e => e.IsEndpointSetToValue(AzureEnvironment.Endpoint.ServiceManagement, this.ManagementEndpoint));
 
             if (env != null)
             {
@@ -191,13 +192,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     Id = ActiveDirectoryUserId,
                     Type = AzureAccount.AccountType.User
                 };
+
                 userAccount.SetProperty(AzureAccount.Property.Subscriptions, new Guid(this.SubscriptionId).ToString());
+                
                 if (!string.IsNullOrEmpty(ActiveDirectoryTenantId))
                 {
                     userAccount.SetProperty(AzureAccount.Property.Tenants, ActiveDirectoryTenantId);
                 }
+
                 yield return userAccount;
             }
+
             if (!string.IsNullOrEmpty(ManagementCertificate))
             {
                 AzureAccount certificateAccount = new AzureAccount
@@ -205,6 +210,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     Id = ManagementCertificate,
                     Type = AzureAccount.AccountType.Certificate
                 };
+
+                certificateAccount.SetProperty(AzureAccount.Property.Subscriptions, new Guid(this.SubscriptionId).ToString());
+
                 yield return certificateAccount;
             }
         }
