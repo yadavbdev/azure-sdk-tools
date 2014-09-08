@@ -117,7 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void GuardFileExists(string fileName)
         {
-            if (!File.Exists(fileName))
+            if (!FileUtilities.DataStore.FileExists(fileName))
             {
                 throw new Exception();
             }
