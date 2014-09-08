@@ -108,7 +108,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void ImportFile(string fileName)
         {
-            var subscriptions = ProfileClient.ImportPublishSettings(fileName, Environment);
+            var subscriptions = ProfileClient.ImportPublishSettings(fileName, null);
             if (ProfileClient.Profile.DefaultSubscription != null)
             {
                 WriteVerbose(string.Format(
