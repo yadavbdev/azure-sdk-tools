@@ -833,6 +833,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant);
 
                             AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, account.Id)] = tenantToken;
+
                             result.Add(psSubscription);
                         }
                     }
