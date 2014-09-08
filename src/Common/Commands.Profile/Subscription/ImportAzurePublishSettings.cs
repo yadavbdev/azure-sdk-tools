@@ -30,10 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [OutputType(typeof(AzureSubscription))]
     public class ImportAzurePublishSettingsCommand : SubscriptionCmdletBase
     {
-        public ImportAzurePublishSettingsCommand() : base(true)
-        {
-            Environment = EnvironmentName.AzureCloud;
-        }
+        public ImportAzurePublishSettingsCommand() : base(true) { }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Path to the publish settings file.")]
@@ -108,7 +105,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void ImportFile(string fileName)
         {
-            var subscriptions = ProfileClient.ImportPublishSettings(fileName, null);
+            var subscriptions = ProfileClient.ImportPublishSettings(fileName, Environment);
             if (ProfileClient.Profile.DefaultSubscription != null)
             {
                 WriteVerbose(string.Format(
