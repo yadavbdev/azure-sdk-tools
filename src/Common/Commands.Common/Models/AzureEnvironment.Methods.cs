@@ -143,6 +143,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             return null;
         }
 
+        public bool IsEndpointSet(AzureEnvironment.Endpoint endpoint)
+        {
+            return Endpoints.IsPropertySet(endpoint);
+        }
+
         public bool IsEndpointSetToValue(AzureEnvironment.Endpoint endpoint, string url)
         {
             if (Endpoints.IsPropertySet(endpoint))
