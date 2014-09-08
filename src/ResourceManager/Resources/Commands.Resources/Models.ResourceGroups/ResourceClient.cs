@@ -55,6 +55,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public Action<string> ErrorLogger { get; set; }
 
+        public Action<string> WarningLogger { get; set; }
+
         /// <summary>
         /// Creates new ResourceManagementClient
         /// </summary>
@@ -184,6 +186,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
             if (VerboseLogger != null)
             {
                 VerboseLogger(progress);
+            }
+        }
+
+        private void WriteWarning(string warning)
+        {
+            if (WarningLogger != null)
+            {
+                WarningLogger(warning);
             }
         }
 
