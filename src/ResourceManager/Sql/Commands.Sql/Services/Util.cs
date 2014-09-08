@@ -12,16 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Security;
+using System;
+using System.Globalization;
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
+namespace Microsoft.Azure.Commands.Sql.Services
 {
-    public struct UserCredentials
+    public class Util
     {
-        public string UserName { get; set; }
-
-        public SecureString Password { get; set; }
-
-        public ShowDialog ShowDialog { get; set; }
+        /// <summary>
+        /// Generates a client side tracing Id of the format:
+        /// [Guid]-[Time in UTC]
+        /// </summary>
+        /// <returns>A string representation of the client side tracing Id.</returns>
+        public static string GenerateTracingId()
+        {
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}-{1}",
+                Guid.NewGuid().ToString(),
+                DateTime.UtcNow.ToString("u"));
+        }
     }
 }

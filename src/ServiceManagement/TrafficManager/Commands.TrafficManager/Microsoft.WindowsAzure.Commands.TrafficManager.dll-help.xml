@@ -42,6 +42,14 @@
           </maml:description>
           <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+          <maml:name>MinChildEndpoints</maml:name>
+          <maml:description>
+            <maml:para>Specifies the minimum amount of endpoints the nested profile has to have online for this endpoint to be considered online. The valid value for this parameter should be bigger than 0.</maml:para>
+            <maml:para>This parameter is only used for TrafficManager endpoint types.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+        </command:parameter>
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="none">
           <maml:name>DomainName</maml:name>
           <maml:description>
@@ -72,6 +80,7 @@ If you specify a value of Enabled, Traffic Manager monitors the endpoint and the
 -- CloudService
 -- AzureWebsite
 -- Any 
+-- TrafficManager 
 
 If there is more than one AzureWebsite endpoint, the endpoints must be in different datacenters. </maml:para>
           </maml:description>
@@ -79,6 +88,7 @@ If there is more than one AzureWebsite endpoint, the endpoints must be in differ
             <command:parameterValue required="true" variableLength="false">CloudService</command:parameterValue>
             <command:parameterValue required="true" variableLength="false">AzureWebsite</command:parameterValue>
             <command:parameterValue required="true" variableLength="false">Any</command:parameterValue>
+            <command:parameterValue required="true" variableLength="false">TrafficManager</command:parameterValue>
           </command:parameterValueGroup>
         </command:parameter>
       </command:syntaxItem>
@@ -146,6 +156,7 @@ If you specify a value of Enabled, Traffic Manager monitors the endpoint and the
 -- CloudService
 -- AzureWebsite
 -- Any 
+-- TrafficManager 
 
 If there is more than one AzureWebsite endpoint, the endpoints must be in different datacenters. </maml:para>
         </maml:description>
@@ -161,6 +172,20 @@ If there is more than one AzureWebsite endpoint, the endpoints must be in differ
         <maml:description>
           <maml:para>Specifies the weight of the endpoint the cmdlet adds. The valid value range for this parameter is [1,1000].</maml:para>
           <maml:para>This parameter is only used for RoundRobin load balancing policies.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+        <maml:name>MinChildEndpoints</maml:name>
+        <maml:description>
+        <maml:para>Specifies the minimum amount of endpoints the nested profile has to have online for this endpoint to be considered online. The valid value for this parameter should be bigger than 0.</maml:para>
+        <maml:para>This parameter is only used for TrafficManager endpoint types.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1423,13 +1448,15 @@ If you specify a value of Enabled, Traffic Manager monitors the endpoint and the
 -- CloudService
 -- AzureWebsite
 -- Any 
+-- TrafficManager 
 
 If there is more than one AzureWebsite endpoint, the endpoints must be in different datacenters. </maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" variableLength="false">CloudService</command:parameterValue>
-            <command:parameterValue required="false" variableLength="false">AzureWebsite</command:parameterValue>
             <command:parameterValue required="false" variableLength="false">Any</command:parameterValue>
+            <command:parameterValue required="false" variableLength="false">AzureWebsite</command:parameterValue>
+            <command:parameterValue required="false" variableLength="false">TrafficManager</command:parameterValue>
           </command:parameterValueGroup>
         </command:parameter>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
@@ -1437,6 +1464,14 @@ If there is more than one AzureWebsite endpoint, the endpoints must be in differ
           <maml:description>
             <maml:para>Specifies the weight of the endpoint the cmdlet adds. The valid value range for this parameter is [1,1000].</maml:para>
             <maml:para>This parameter is only used for RoundRobin load balancing policies.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+          <maml:name>MinChildEndpoints</maml:name>
+          <maml:description>
+            <maml:para>Specifies the minimum amount of endpoints the nested profile has to have online for this endpoint to be considered online. The valid value for this parameter should be bigger than 0.</maml:para>
+            <maml:para>This parameter is only used for TrafficManager endpoint types.</maml:para>
           </maml:description>
           <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
         </command:parameter>
@@ -1512,6 +1547,7 @@ If you specify a value of Enabled, Traffic Manager monitors the endpoint and the
 -- CloudService
 -- AzureWebsite
 -- Any 
+-- TrafficManager 
 
 If there is more than one AzureWebsite endpoint, the endpoints must be in different datacenters. </maml:para>
         </maml:description>

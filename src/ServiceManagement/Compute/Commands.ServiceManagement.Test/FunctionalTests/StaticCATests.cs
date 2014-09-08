@@ -46,6 +46,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public static void Intialize(TestContext context)
         {
             imageName = vmPowershellCmdlets.GetAzureVMImageName(new[] { "Windows" }, false);
+            var vnetConfig = vmPowershellCmdlets.GetAzureVNetConfig(null);
+            if (vnetConfig.Count > 0)
+            {
+                vmPowershellCmdlets.RunPSScript("Get-AzureService | Remove-AzureService -Force");
+                Utilities.RetryActionUntilSuccess(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "in use", 5, 30);
+            }
             ReadVnetConfig();
             SetVNetForStaticCAtest();
         }
@@ -300,6 +306,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Utilities.VerifyFailure(() => vmPowershellCmdlets.NewAzureVM(serviceName, new[] { vm }),IPUnavaialbleExceptionMessage);
                 Console.WriteLine("Deployment with Static CA {0} failed as expectd", nonStaticIpAddress);
 
+                Console.WriteLine("Waiting for 2 minutes...");
+                Thread.Sleep(TimeSpan.FromMinutes(2));
                 //Reserve the DIP of the VM1
                 vmRoleContext = vmPowershellCmdlets.GetAzureVM(vmName1,serviceName);
                 vm = vmPowershellCmdlets.SetAzureStaticVNetIP(nonStaticIpAddress, vmRoleContext.VM);

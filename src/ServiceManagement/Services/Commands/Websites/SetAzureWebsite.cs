@@ -108,6 +108,9 @@ namespace Microsoft.WindowsAzure.Commands.Websites
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The list of routing rules for testing in production.")]
         public List<Utilities.Websites.Services.WebEntities.RoutingRule> RoutingRules { get; set; }
 
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Indicates if 32-bit mode is enabled.")]
+        public bool? Use32BitWorkerProcess { get; set; }
+
         private Site website;
         private SiteConfig currentSiteConfig;
 

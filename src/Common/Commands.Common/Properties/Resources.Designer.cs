@@ -1295,6 +1295,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credential type invalid, only handles &apos;{0}&apos;.
+        /// </summary>
+        public static string InvalidCredentialType {
+            get {
+                return ResourceManager.GetString("InvalidCredentialType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No current subscription has been designated. Use Select-AzureSubscription -Current &lt;subscriptionName&gt; to set the current subscription..
         /// </summary>
         public static string InvalidCurrentSubscription {
@@ -2157,6 +2166,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         public static string NoPublishSettingsFilesFoundMessage {
             get {
                 return ResourceManager.GetString("NoPublishSettingsFilesFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no subscription associated with account {0}..
+        /// </summary>
+        public static string NoSubscriptionAddedMessage {
+            get {
+                return ResourceManager.GetString("NoSubscriptionAddedMessage", resourceCulture);
             }
         }
         
@@ -3969,6 +3987,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         public static string UnableToPatchJson {
             get {
                 return ResourceManager.GetString("UnableToPatchJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Illegal credential type.
+        /// </summary>
+        public static string UnknownCredentialType {
+            get {
+                return ResourceManager.GetString("UnknownCredentialType", resourceCulture);
             }
         }
         

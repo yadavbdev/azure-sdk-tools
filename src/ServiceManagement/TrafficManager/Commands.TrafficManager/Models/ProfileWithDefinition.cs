@@ -79,6 +79,7 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
                         endpoint.Type = endpointReponse.Type;
                         endpoint.Status = endpointReponse.Status;
                         endpoint.Weight = endpointReponse.Weight;
+                        endpoint.MinChildEndpoints = endpointReponse.MinChildEndpoints;
                         endpoint.MonitorStatus = endpointReponse.MonitorStatus;
 
                         this.endpoints.Add(endpoint);

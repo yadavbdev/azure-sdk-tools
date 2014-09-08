@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Common.Utilities;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
@@ -94,7 +95,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                         { AzureEnvironment.Endpoint.StorageEndpointSuffix, AzureEnvironmentConstants.AzureStorageEndpointSuffix },
                         { AzureEnvironment.Endpoint.Gallery, AzureEnvironmentConstants.GalleryEndpoint },
                         { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, AzureEnvironmentConstants.AzureSqlDatabaseDnsSuffix },
-                        { AzureEnvironment.Endpoint.Graph, AzureEnvironmentConstants.AzureGraphEndpoint }
+                        { AzureEnvironment.Endpoint.Graph, AzureEnvironmentConstants.AzureGraphEndpoint },
+                        { AzureEnvironment.Endpoint.TrafficManagerDnsSuffix, AzureEnvironmentConstants.AzureTrafficManagerDnsSuffix },
                     }
                 }
             },
@@ -115,6 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                         { AzureEnvironment.Endpoint.Gallery, null },
                         { AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, AzureEnvironmentConstants.ChinaSqlDatabaseDnsSuffix },
                         { AzureEnvironment.Endpoint.Graph, null },
+                        { AzureEnvironment.Endpoint.TrafficManagerDnsSuffix, AzureEnvironmentConstants.ChinaTrafficManagerDnsSuffix },
                     }
                 }
             }
@@ -138,6 +141,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             }
 
             return null;
+        }
+
+        public bool IsEndpointSetToValue(AzureEnvironment.Endpoint endpoint, string url)
+        {
+            if (Endpoints.IsPropertySet(endpoint))
+            {
+                return GetEndpoint(endpoint)
+                    .Trim(new[] {'/'})
+                    .Equals(url.Trim(new[] {'/'}), StringComparison.InvariantCultureIgnoreCase);
+            }
+            return false;
         }
 
         public string GetEndpointSuffix(AzureEnvironment.Endpoint endpointSuffix)
@@ -252,7 +266,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
             ActiveDirectory,
 
-            Graph
+            Graph,
+
+            TrafficManagerDnsSuffix,
         }
     }
 }
