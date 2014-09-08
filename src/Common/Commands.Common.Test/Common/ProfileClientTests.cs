@@ -622,6 +622,26 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
+        public void RefreshSubscriptionsWorksWithMooncake()
+        {
+            SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
+            
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+
+            var subscriptions = client.RefreshSubscriptions(client.Profile.Environments[EnvironmentName.AzureChinaCloud]);
+
+            Assert.Equal(2, subscriptions.Count);
+            Assert.Equal(2, subscriptions.Count(s => s.Account == "test"));
+            Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)));
+            Assert.Equal(1, subscriptions.First(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)).GetPropertyAsArray(AzureSubscription.Property.SupportedModes).Count());
+            Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription2.SubscriptionId)));
+        }
+
+        [Fact]
         public void RefreshSubscriptionsListsAllSubscriptions()
         {
             SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
