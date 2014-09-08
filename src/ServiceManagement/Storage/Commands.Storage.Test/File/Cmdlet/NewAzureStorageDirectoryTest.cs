@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.Commands.Storage.File;
 using Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet;
 using Microsoft.WindowsAzure.Management.Storage.Test.Common;
 using Microsoft.WindowsAzure.Storage.File;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
 {
@@ -90,6 +91,12 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
             }
             else
             {
+                Trace.WriteLine(string.Format("Creating a directory with name '{0}'", directoryName));
+                if (this.MockCmdRunTime.ErrorStream != null && this.MockCmdRunTime.ErrorStream.Count > 0)
+                {
+                    Trace.WriteLine(string.Format("ErrorStream:"));
+                    this.MockCmdRunTime.ErrorStream.ForEach(r => Trace.WriteLine(r.FullyQualifiedErrorId));
+                }
                 this.MockCmdRunTime.ErrorStream.AssertSingleObject(x => x.FullyQualifiedErrorId == expectedErrorId);
             }
         }
