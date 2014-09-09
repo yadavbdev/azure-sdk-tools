@@ -9194,6 +9194,7 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
+          New-AzureStorageAccount -StorageAccountName &quot;azure1&quot; -Label &quot;AzureOne&quot; -AffinityGroup &quot;prodapps&quot;
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
@@ -9219,6 +9220,7 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
+          New-AzureStorageAccount -StorageAccountName &quot;azuretwo&quot; -Label &quot;AzureTwo&quot; -Location &quot;North Central US&quot;
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
@@ -9244,6 +9246,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
+
 
 
 
@@ -15104,7 +15108,7 @@ Get-AzureVMImage `
       <dev:version></dev:version>
     </command:details>
     <maml:description>
-      <maml:para>The Set-AzureStorageAccount cmdlet updates the properties of a Microsoft Azure storage account in the current subscription. Properties that can be set are: &quot;Label&quot;, &quot;Description&quot; and &quot;GeoReplicationEnabled&quot;.</maml:para>
+      <maml:para>The Set-AzureStorageAccount cmdlet updates the properties of a Microsoft Azure storage account in the current subscription. Properties that can be set are: &quot;Label&quot;, &quot;Description&quot;, &quot;Type&quot; and &quot;GeoReplicationEnabled&quot;.</maml:para>
     </maml:description>
     <!-- Cmdlet syntax section-->
     <command:syntax>
@@ -15143,6 +15147,7 @@ Get-AzureVMImage `
           <maml:description>
             <maml:para>
               Specifies the type of the storage account. Valid values are
+
               Standard_LRS
               Standard_ZRS
               Standard_GRS
@@ -15269,6 +15274,7 @@ Get-AzureVMImage `
         <maml:description>
           <maml:para>
             Specifies the type of the storage account. Valid values are
+
             Standard_LRS
             Standard_ZRS
             Standard_GRS
@@ -15347,12 +15353,13 @@ Get-AzureVMImage `
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
+          Set-AzureStorageAccount -StorageAccountName qatest1 -Label &quot;QATestAccnt&quot; -Description &quot;QA test storage account&quot;
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
           <maml:para>
-            Description
+            This command updates the label and description of the 'qatest1' storage account in the specified subscription.
           </maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
@@ -15374,12 +15381,13 @@ Get-AzureVMImage `
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
+          Set-AzureStorageAccount -StorageAccountName qatest1 -GeoReplicationEnabled $false
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
           <maml:para>
-            Description
+            This command disables the geo-replication of the 'qatest1' storage account in the specified subscription.
           </maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
@@ -15401,12 +15409,13 @@ Get-AzureVMImage `
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
         <dev:code>
+          Set-AzureStorageAccount -StorageAccountName qatest1 -GeoReplicationEnabled $true
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
           <maml:para>-----------</maml:para>
           <maml:para>
-            Description
+            This command enables the geo-replication of the 'qatest1' storage account in the specified subscription.
           </maml:para>
           <maml:para></maml:para>
           <maml:para></maml:para>
@@ -15428,9 +15437,6 @@ Get-AzureVMImage `
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
-
-
-
 
 
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
