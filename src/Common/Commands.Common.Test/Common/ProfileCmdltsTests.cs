@@ -295,6 +295,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient.DataStore.WriteFile("ImportPublishSettingsFileSelectsCorrectEnvironment.publishsettings",
                 Properties.Resources.ValidProfileChina);
             ProfileClient client = new ProfileClient();
+            var oldDataStore = FileUtilities.DataStore;
             FileUtilities.DataStore = ProfileClient.DataStore;
             var expectedEnv = "AzureChinaCloud";
             var expected = client.ImportPublishSettings("ImportPublishSettingsFileSelectsCorrectEnvironment.publishsettings", null);
@@ -303,17 +304,25 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             cmdlt.ProfileClient = new ProfileClient();
             cmdlt.PublishSettingsFile = "ImportPublishSettingsFileSelectsCorrectEnvironment.publishsettings";
 
-            // Act
-            cmdlt.InvokeBeginProcessing();
-            cmdlt.ExecuteCmdlet();
-            cmdlt.InvokeEndProcessing();
-
-            // Verify
-            foreach (var subscription in expected)
+            try
             {
-                Assert.Equal(cmdlt.ProfileClient.GetSubscription(subscription.Id).Environment, expectedEnv);
+                // Act
+                cmdlt.InvokeBeginProcessing();
+                cmdlt.ExecuteCmdlet();
+                cmdlt.InvokeEndProcessing();
+
+                // Verify
+                foreach (var subscription in expected)
+                {
+                    Assert.Equal(cmdlt.ProfileClient.GetSubscription(subscription.Id).Environment, expectedEnv);
+                }
+                commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
             }
-            commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
+            finally
+            {
+                // Cleanup
+                FileUtilities.DataStore = oldDataStore;
+            }
         }
 
         [Fact]
@@ -325,6 +334,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             ProfileClient.DataStore.WriteFile("ImportPublishSettingsFileSelectsCorrectEnvironment.publishsettings",
                 Properties.Resources.ValidProfileChina);
             ProfileClient client = new ProfileClient();
+            var oldDataStore = FileUtilities.DataStore;
             FileUtilities.DataStore = ProfileClient.DataStore;
             var expectedEnv = "AzureCloud";
             var expected = client.ImportPublishSettings("ImportPublishSettingsFileSelectsCorrectEnvironment.publishsettings", expectedEnv);
@@ -334,17 +344,25 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             cmdlt.PublishSettingsFile = "ImportPublishSettingsFileSelectsCorrectEnvironment.publishsettings";
             cmdlt.Environment = expectedEnv;
 
-            // Act
-            cmdlt.InvokeBeginProcessing();
-            cmdlt.ExecuteCmdlet();
-            cmdlt.InvokeEndProcessing();
-
-            // Verify
-            foreach (var subscription in expected)
+            try
             {
-                Assert.Equal(cmdlt.ProfileClient.GetSubscription(subscription.Id).Environment, expectedEnv);
+                // Act
+                cmdlt.InvokeBeginProcessing();
+                cmdlt.ExecuteCmdlet();
+                cmdlt.InvokeEndProcessing();
+
+                // Verify
+                foreach (var subscription in expected)
+                {
+                    Assert.Equal(cmdlt.ProfileClient.GetSubscription(subscription.Id).Environment, expectedEnv);
+                }
+                commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
             }
-            commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
+            finally
+            {
+                // Cleanup
+                FileUtilities.DataStore = oldDataStore;
+            }
         }
 
         private void SetMockData()
