@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Security;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.WindowsAzure.Commands.Common.Authentication;
@@ -60,6 +61,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             using (SecureString appKey = LoadAppKey(appId, config.AdDomain))
             {
+                if (appKey == null)
+                {
+                    throw new KeyNotFoundException(string.Format(Resources.ServiceKeyNotFound, appId));
+                }
                 return AcquireToken(config, appId, appKey);
             }
         }

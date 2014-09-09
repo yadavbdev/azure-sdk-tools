@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Authentication
                 targetAlias = null,
                 comment = null,
                 lastWritten = new FILETIME {dwHighDateTime = 0, dwLowDateTime = 0},
-                persist = 1,
+                persist = 2, // persist on local machine
                 attibuteCount = 0,
                 attributes = IntPtr.Zero,
                 userName = keyStoreUserName

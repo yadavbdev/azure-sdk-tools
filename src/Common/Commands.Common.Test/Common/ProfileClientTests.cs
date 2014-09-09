@@ -333,6 +333,69 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         }
 
         [Fact]
+        public void RemoveAzureAccountRemovesDefaultAccountFromSubscription()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
+            client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+            azureSubscription3withoutUser.Account = "test2";
+            client.Profile.Accounts["test2"] = new AzureAccount
+            {
+                Id = "test2",
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                {
+                    {AzureAccount.Property.Subscriptions, azureSubscription1.Id.ToString()}
+                }
+            };
+            client.Profile.Subscriptions[azureSubscription1.Id].Account = azureAccount.Id;
+            client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
+
+            var account = client.RemoveAccount(azureAccount.Id);
+
+            Assert.Equal("test2", client.Profile.Subscriptions[azureSubscription1.Id].Account);
+        }
+
+        [Fact]
+        public void RemoveAzureAccountRemovesInMemoryAccount()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
+            client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+            azureSubscription3withoutUser.Account = "test2";
+            client.Profile.Accounts["test2"] = new AzureAccount
+            {
+                Id = "test2",
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                {
+                    {AzureAccount.Property.Subscriptions, azureSubscription1.Id.ToString()}
+                }
+            };
+            client.Profile.Subscriptions[azureSubscription1.Id].Account = azureAccount.Id;
+            client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
+            AzureSession.SetCurrentContext(azureSubscription1, azureEnvironment, azureAccount);
+
+            client.RemoveAccount(azureAccount.Id);
+
+            Assert.Equal("test2", AzureSession.CurrentContext.Account.Id);
+            Assert.Equal("test2", AzureSession.CurrentContext.Subscription.Account);
+            Assert.Equal(azureSubscription1.Id, AzureSession.CurrentContext.Subscription.Id);
+
+            client.RemoveAccount("test2");
+
+            Assert.Null(AzureSession.CurrentContext.Account);
+            Assert.Null(AzureSession.CurrentContext.Subscription);
+            Assert.Equal(EnvironmentName.AzureCloud, AzureSession.CurrentContext.Environment.Name);
+        }
+
+        [Fact]
         public void AddAzureEnvironmentAddsEnvironment()
         {
             MockDataStore dataStore = new MockDataStore();
