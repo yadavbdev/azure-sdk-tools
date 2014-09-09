@@ -8961,15 +8961,15 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
           <maml:description>
             <maml:para>
               Specifies the type of the storage account. Valid values are
-              • Standard_LRS
-              • Standard_ZRS
-              • Standard_GRS
-              • Standard_RAGRS
+              Standard_LRS
+              Standard_ZRS
+              Standard_GRS
+              Standard_RAGRS
 
               If this parameter is not specified, a default value of Standard_GRS is used
 
               Note:
-              • Standard_ZRS accounts cannot be changed to other account types, and vice versa.
+              Standard_ZRS accounts cannot be changed to other account types, and vice versa.
             </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -9017,15 +9017,15 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
           <maml:description>
             <maml:para>
               Specifies the type of the storage account. Valid values are
-              • Standard_LRS
-              • Standard_ZRS
-              • Standard_GRS
-              • Standard_RAGRS
+              Standard_LRS
+              Standard_ZRS
+              Standard_GRS
+              Standard_RAGRS
 
               If this parameter is not specified, a default value of Standard_GRS is used
 
               Note:
-              • Standard_ZRS accounts cannot be changed to other account types, and vice versa.
+              Standard_ZRS accounts cannot be changed to other account types, and vice versa.
             </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -9117,15 +9117,15 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
         <maml:description>
           <maml:para>
             Specifies the type of the storage account. Valid values are
-            • Standard_LRS
-            • Standard_ZRS
-            • Standard_GRS
-            • Standard_RAGRS
+            Standard_LRS
+            Standard_ZRS
+            Standard_GRS
+            Standard_RAGRS
 
             If this parameter is not specified, a default value of Standard_GRS is used
 
             Note:
-            • Standard_ZRS accounts cannot be changed to other account types, and vice versa.
+            Standard_ZRS accounts cannot be changed to other account types, and vice versa.
           </maml:para>
 
         </maml:description>
@@ -9244,6 +9244,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
+
 
 
 
@@ -15141,16 +15143,16 @@ Get-AzureVMImage `
           <maml:description>
             <maml:para>
               Specifies the type of the storage account. Valid values are
-              • Standard_LRS
-              • Standard_ZRS
-              • Standard_GRS
-              • Standard_RAGRS
+              Standard_LRS
+              Standard_ZRS
+              Standard_GRS
+              Standard_RAGRS
 
               If this parameter is not specified, a default value of Standard_GRS is used
 
               Note:
-              • The GeoReplicationEnabled parameter functionality is the same as specifying Standard_GRS in Type parameter
-              • Standard_ZRS accounts cannot be changed to other account types, and vice versa.
+              The GeoReplicationEnabled parameter functionality is the same as specifying Standard_GRS in Type parameter
+              Standard_ZRS accounts cannot be changed to other account types, and vice versa.
             </maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -15175,9 +15177,9 @@ Get-AzureVMImage `
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
           <maml:name>GeoReplicationEnabled</maml:name>
           <maml:description>
-            <maml:para></maml:para>
+            <maml:para>Specifies whether the storage account is created with the geo-replication enabled.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">bool</command:parameterValue>
         </command:parameter>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
           <maml:name>Label</maml:name>
@@ -15213,12 +15215,12 @@ Get-AzureVMImage `
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
         <maml:name>GeoReplicationEnabled</maml:name>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>Specifies whether the storage account is created with the geo-replication enabled.</maml:para>
 
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">bool</command:parameterValue>
         <dev:type>
-          <maml:name>System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</maml:name>
+          <maml:name>bool</maml:name>
           <maml:uri/>
         </dev:type>
         <dev:defaultValue></dev:defaultValue>
@@ -15267,16 +15269,16 @@ Get-AzureVMImage `
         <maml:description>
           <maml:para>
             Specifies the type of the storage account. Valid values are
-            • Standard_LRS
-            • Standard_ZRS
-            • Standard_GRS
-            • Standard_RAGRS
+            Standard_LRS
+            Standard_ZRS
+            Standard_GRS
+            Standard_RAGRS
 
             If this parameter is not specified, a default value of Standard_GRS is used
 
             Note:
-            • The GeoReplicationEnabled parameter functionality is the same as specifying Standard_GRS in Type parameter
-            • Standard_ZRS accounts cannot be changed to other account types, and vice versa.
+            The GeoReplicationEnabled parameter functionality is the same as specifying Standard_GRS in Type parameter
+            Standard_ZRS accounts cannot be changed to other account types, and vice versa.
           </maml:para>
 
         </maml:description>
@@ -15426,6 +15428,8 @@ Get-AzureVMImage `
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>
+
+
 
 
 
