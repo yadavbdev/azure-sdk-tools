@@ -46,19 +46,14 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.SqlTests
             {
                 // Configure recordings
                 context.Start(TestUtilities.GetCallingClass(2), TestUtilities.GetCurrentMethodName(2));
-               // context.Start(TestUtilities.GetCallingClass(), TestUtilities.GetCurrentMethodName());
 
-                // See explanation below
                 SetupManagementClients();
 
-                // Specify either ResourceManager or ServiceManagement mode
                 helper.SetupEnvironment(AzureModule.AzureResourceManager);
 
-                // Add all ps1 files used in the test
                 helper.SetupModules(AzureModule.AzureProfile, "ScenarioTests\\Common.ps1",
                     "ScenarioTests\\" + this.GetType().Name + ".ps1");
 
-                // Run actual test
                 helper.RunPowerShellTest(scripts);
             }
         }

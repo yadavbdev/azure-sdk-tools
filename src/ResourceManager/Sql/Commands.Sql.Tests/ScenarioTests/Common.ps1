@@ -32,17 +32,20 @@ Creates the test environment needed to perform the Sql auditing tests
 #>
 function Create-TestEnvironment 
 {
-	Switch-AzureMode AzureResourceManager
+#	Switch-AzureMode AzureResourceManager
 	$params = Get-SqlAuditingTestEnvironmentParameters
 	$storageResource = Get-AzureResource -ErrorAction SilentlyContinue | where {$_.Name -eq $params.storageAccount}
 	if($storageResource -ne $null)
 	{
 		Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
 	}
-	Switch-AzureMode AzureServiceManagement
+#	Switch-AzureMode AzureServiceManagement
 	New-AzureStorageAccount -StorageAccountName $params.storageAccount -Location "West US" 
-	Switch-AzureMode AzureResourceManager
-	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\cmdlet-test-env-setup.json" -server1Name $params.serverWithPolicy -server2Name $params.serverWithoutPolicy -database1Name $params.databaseWithPolicy -database2Name $params.databaseWithoutPolicy -EnvLocation "West US" -StorageAccountName $params.storageAccount -Force
+	$storageKey = Get-AzureStorageKey -StorageAccountName $params.storageAccount
+	$storageContext = New-AzureStorageContext  –StorageAccountName $params.storageAccount -StorageAccountKey $storageKey.Primary
+	New-AzureStorageTable -Name "justaname" -Context $storageContext
+#	Switch-AzureMode AzureResourceManager
+	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\cmdlet-test-env-setup1.json" -serverName $params.serverWithPolicy -databaseName $params.databaseWithPolicy -EnvLocation "West US" -StorageAccountName $params.storageAccount -Force
 }
 
 <#
@@ -51,9 +54,9 @@ Removes the test environment that was needed to perform the Sql auditing tests
 #>
 function Remove-TestEnvironment 
 {
-	Switch-AzureMode AzureResourceManager
+	#Switch-AzureMode AzureResourceManager
 	$params = Get-SqlAuditingTestEnvironmentParameters
-	Switch-AzureMode AzureServiceManagement
+	#Switch-AzureMode AzureServiceManagement
 	Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
-	Switch-AzureMode AzureResourceManager
+	#Switch-AzureMode AzureResourceManager
 }
