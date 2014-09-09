@@ -21,6 +21,7 @@ using Microsoft.WindowsAzure.Management.Monitoring.Events;
 using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Testing;
 using Microsoft.Azure.Management.Authorization;
+using Microsoft.Azure.Graph.RBAC;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
@@ -40,12 +41,19 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
             var authorizationManagementClient = GetAuthorizationManagementClient();
+            var graphClient = GetGraphClient();
 
             helper.SetupManagementClients(resourceManagementClient,
                 subscriptionsClient,
                 galleryClient,
                 eventsClient,
-                authorizationManagementClient);
+                authorizationManagementClient,
+                graphClient);
+        }
+
+        private object GetGraphClient()
+        {
+            return TestBase.GetGraphServiceClient<GraphRbacManagementClient>(new CSMTestEnvironmentFactory()/* , tenantId*/);
         }
 
         protected AuthorizationManagementClient GetAuthorizationManagementClient()
