@@ -943,9 +943,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             {
                 // New-AzureStorageAccount test for 'Standard_ZRS'
                 var zrsStorageName = Utilities.GetUniqueShortName(storageAccountPrefix);
+                string[] zrsStorageStaticProperties = new string[3] { zrsStorageName, locationName1, null };
                 vmPowershellCmdlets.NewAzureStorageAccount(zrsStorageName, locationName1, null, null, null, zrsAccountType);
                 Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(zrsStorageName)[0],
-                    storageStaticProperties[0], zrsStorageName, null, null, zrsAccountType));
+                    zrsStorageStaticProperties, zrsStorageName, null, null, zrsAccountType));
                 Console.WriteLine("{0} is created", zrsStorageName);
 
                 vmPowershellCmdlets.RemoveAzureStorageAccount(zrsStorageName);
