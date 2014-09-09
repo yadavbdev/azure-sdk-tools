@@ -1558,4 +1558,10 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="NoSubscriptionAddedMessage" xml:space="preserve">
     <value>There is no subscription associated with account {0}.</value>
   </data>
+  <data name="AccountIdDoesntMatchSubscription" xml:space="preserve">
+    <value>Account id doesn't match one in subscription.</value>
+  </data>
+  <data name="EnvironmentNameDoesntMatchSubscription" xml:space="preserve">
+    <value>Environment name doesn't match one in subscription.</value>
+  </data>
 </root>

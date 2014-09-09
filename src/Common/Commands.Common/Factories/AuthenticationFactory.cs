@@ -17,9 +17,7 @@ using System.Linq;
 using System.Security;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
-using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Factories
 {
