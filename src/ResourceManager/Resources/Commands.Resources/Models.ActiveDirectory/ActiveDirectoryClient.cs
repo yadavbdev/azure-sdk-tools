@@ -255,7 +255,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                     }
                     else
                     {
-                        result = GraphClient.Group.ListNext(result.NextLink);
+                        result = GraphClient.Group.ListNext(options.NextLink);
                     }
 
                     groups.AddRange(result.Groups.Select(g => g.ToPSADGroup()));
