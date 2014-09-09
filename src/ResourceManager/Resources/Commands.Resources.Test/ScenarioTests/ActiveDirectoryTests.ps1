@@ -22,17 +22,17 @@ function Test-GetADGroup
     # Select at most 10 groups. Groups are restricted to contain "test" to fasten the test
     $groups = Get-AzureADGroup -SearchString "test" | Select-Object -Last 10 -Wait
 
-	if ($groups.Count -eq 0) {
-		$groups =  Get-AzureADGroup | Select-Object -Last 10 -Wait
-	}
+    if ($groups.Count -eq 0) {
+        $groups =  Get-AzureADGroup | Select-Object -Last 10 -Wait
+    }
 
     # Assert
-	if ($groups.Count -gt 0) {
-		foreach($group in $groups) {
-			Assert-NotNull($group.DisplayName)
-			Assert-NotNull($group.Id)
-		}
-	}
+    if ($groups.Count -gt 0) {
+        foreach($group in $groups) {
+            Assert-NotNull($group.DisplayName)
+            Assert-NotNull($group.Id)
+        }
+    }
 }
 
 <#
@@ -45,20 +45,20 @@ function Test-GetADGroupMember
     # Select at most 10 groups. Groups are restricted to contain "test" to fasten the test
     $groups = Get-AzureADGroup -SearchString "test" | Select-Object Id -Last 10 -Wait
 
-	if ($groups.Count -eq 0) {
-		$groups =  Get-AzureADGroup | Select-Object Id -Last 10 -Wait
-	}
+    if ($groups.Count -eq 0) {
+        $groups =  Get-AzureADGroup | Select-Object Id -Last 10 -Wait
+    }
 
-	# Test
-	$members = $groups | ForEach-Object {Get-AzureADGroupMember -GroupObjectId $_.Id} | Select-Object -Last 10 -Wait
+    # Test
+    $members = $groups | ForEach-Object {Get-AzureADGroupMember -GroupObjectId $_.Id} | Select-Object -Last 10 -Wait
     
 
-	# Verify 
-	if ($members.Count -gt 0) {
-		foreach($member in $members) {
-			Assert-True {$member.Type -eq "User" -or $member.Type -eq "Group" -or $member.Type -eq "ServicePrincipal"}
-		}
-	}
+    # Verify 
+    if ($members.Count -gt 0) {
+        foreach($member in $members) {
+            Assert-True {$member.Type -eq "User" -or $member.Type -eq "Group" -or $member.Type -eq "ServicePrincipal"}
+        }
+    }
 }
 
 <#
@@ -71,18 +71,18 @@ function Test-GetADServicePrincipal
     # Select at most 10 service principals. Service principals are restricted to contain "test" to fasten the test
     $servicePrincipals = Get-AzureADServicePrincipal -SearchString "test" | Select-Object -Last 10 -Wait
 
-	if ($servicePrincipals.Count -eq 0) {
-		$servicePrincipals =  Get-AzureADServicePrincipal | Select-Object -Last 10 -Wait
-	}
+    if ($servicePrincipals.Count -eq 0) {
+        $servicePrincipals =  Get-AzureADServicePrincipal | Select-Object -Last 10 -Wait
+    }
 
     # Assert
-	if ($servicePrincipals.Count -gt 0) {
-		foreach($servicePrincipal in $servicePrincipals) {
-			Assert-NotNull($servicePrincipal.DisplayName)
-			Assert-NotNull($servicePrincipal.Id)
-			Assert-NotNull($servicePrincipal.ServicePrincipalName)
-		}
-	}
+    if ($servicePrincipals.Count -gt 0) {
+        foreach($servicePrincipal in $servicePrincipals) {
+            Assert-NotNull($servicePrincipal.DisplayName)
+            Assert-NotNull($servicePrincipal.Id)
+            Assert-NotNull($servicePrincipal.ServicePrincipalName)
+        }
+    }
 }
 
 <#
@@ -95,16 +95,16 @@ function Test-GetADUser
     # Select at most 10 users. Users are restricted to contain "test" to fasten the test
     $users = Get-AzureADUser -SearchString "test" | Select-Object -Last 10 -Wait
 
-	if ($users.Count -eq 0) {
-		$users =  Get-AzureADGroup | Select-Object -Last 10 -Wait
-	}
+    if ($users.Count -eq 0) {
+        $users =  Get-AzureADGroup | Select-Object -Last 10 -Wait
+    }
 
     # Assert
-	if ($users.Count -gt 0) {
-		foreach($user in $users) {
-			Assert-NotNull($user.DisplayName)
-			Assert-NotNull($user.Id)
-			Assert-NotNull($user.UserPrincipalName)
-		}
-	}
+    if ($users.Count -gt 0) {
+        foreach($user in $users) {
+            Assert-NotNull($user.DisplayName)
+            Assert-NotNull($user.Id)
+            Assert-NotNull($user.UserPrincipalName)
+        }
+    }
 }
