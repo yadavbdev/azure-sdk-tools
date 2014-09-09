@@ -41,3 +41,26 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         }
     }
 }
+
+
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedService
+{
+    using System.Linq;
+    using System.Management.Automation;
+    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+    using Microsoft.WindowsAzure.Commands.Utilities.Common;
+    using Microsoft.WindowsAzure.Management.Models;
+
+    [Cmdlet("Create", "HostedService"), OutputType(typeof(object))]
+    public class CreateHostedServiceCommand : ServiceManagementBaseCmdlet
+    {
+        protected override void OnProcessRecord()
+        {
+            ExecuteClientActionNewSM(null,
+                CommandRuntime.ToString(),
+                () => this.ManagementClient.Locations.List(),
+                (op, results) => results
+            );
+        }
+    }
+}
