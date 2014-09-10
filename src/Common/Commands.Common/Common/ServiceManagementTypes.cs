@@ -35,26 +35,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
     #region Constants
     public static class Constants
     {
-        public const string ContinuationTokenHeaderName = "x-ms-continuation-token";
-        public const string SubscriptionIdsHeaderName = "x-ms-subscription-ids";
-        public const string ClientRequestIdHeader = "x-ms-client-id";
-        public const string OperationTrackingIdHeader = "x-ms-request-id";
-        public const string PrincipalHeader = "x-ms-principal-id";
         public const string ServiceManagementNS = "http://schemas.microsoft.com/windowsazure";
-        public const string VersionHeaderName = "x-ms-version";
         public readonly static string StandardTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
         // Please put the newest version outside the #endif.MSFTINTERNAL We only want the newest version to show up in what we ship publically.
         // Also, update rdfe\Utilities\Common\VersionHeaders.cs StaticSupportedVersionsList.
         public const string VersionHeaderContent20130801 = "2013-08-01";
-        public const string VersionHeaderContentLatest = VersionHeaderContent20130801;
-    }
-
-
-    public static class PrincipalConstants
-    {
-        public const string AccountAdministrator = "AccountAdministrator";
-        public const string ServiceAdministrator = "ServiceAdministrator";
-        public const string CoAdministrator = "CoAdministrator";
     }
 
     public static class DeploymentStatus

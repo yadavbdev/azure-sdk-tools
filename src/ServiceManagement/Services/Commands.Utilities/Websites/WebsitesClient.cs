@@ -99,7 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
             Repository repository;
             ICredentials credentials;
             GetWebsiteDeploymentHttpConfiguration(websiteName, out repository, out credentials);
-            return HttpClientHelper.CreateClient(repository.RepositoryUri, credentials);
+            return AzureSession.ClientFactory.CreateHttpClient(repository.RepositoryUri, credentials);
         }
 
         private string GetWebsiteDeploymentHttpConfiguration(

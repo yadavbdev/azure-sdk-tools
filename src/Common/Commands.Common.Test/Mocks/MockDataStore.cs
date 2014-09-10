@@ -276,6 +276,14 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             }
         }
 
+        public void RemoveCertificate(string thumbprint)
+        {
+            if (thumbprint != null && certStore.ContainsKey(thumbprint))
+            {
+                certStore.Remove(thumbprint);
+            }
+        }
+
         /// <summary>
         /// Converts unix asterisk based file pattern to regex
         /// </summary>
