@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects
 {
-    using GetAzureHDInsightClusters.Extensions;
-    using Hadoop.Client;
-    using System.Collections.Generic;
-
     /// <summary>
     ///     Provides creation details for a new MapReduce jobDetails.
     /// </summary>

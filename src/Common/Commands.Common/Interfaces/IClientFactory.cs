@@ -12,18 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Common;
 using System.Net;
 using System.Net.Http;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Common;
+using System;
 
 namespace Microsoft.WindowsAzure.Commands.Common
 {
     public interface IClientFactory
     {
+        TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>;
+
         TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>;
 
-        TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
+        TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
 
         HttpClient CreateHttpClient(string endpoint, ICredentials credentials);
 

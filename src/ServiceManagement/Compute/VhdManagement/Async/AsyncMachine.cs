@@ -13,14 +13,14 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Common.General
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Threading;
-
     //
     // The asynchronous machine below supports two modes, either all operations are required to complete or 
     // only a subset of them (quorum) is required to proceed. There is also a completion port optimization 

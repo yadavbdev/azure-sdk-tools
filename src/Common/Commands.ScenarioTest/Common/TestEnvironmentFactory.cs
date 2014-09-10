@@ -13,15 +13,16 @@
 // limitations under the License.
 //
 
+using System;
+using System.Collections.Generic;
 using Microsoft.Azure.Utilities.HttpRecorder;
+using Microsoft.WindowsAzure.Common.Internals;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.WindowsAzure.Common.Internals;
-    using Newtonsoft.Json.Linq;
     using System;
-    using System.Collections.Generic;
-
+    using Microsoft.IdentityModel.Clients.ActiveDirectory;
     public abstract class TestEnvironmentFactory
     {
         /// <summary>
@@ -98,6 +99,12 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 string authEndpoint = authSettings.ContainsKey(AADAuthEndpoint) ? authSettings[AADAuthEndpoint] : AADAuthEndpointDefault;
                 string tenant = authSettings.ContainsKey(AADTenant) ? authSettings[AADTenant] : AADTenantDefault;
                 string user = null;
+                AuthenticationResult result = null;
+
+                if (authSettings.ContainsKey(AADUserIdKey))
+                {
+                    user = authSettings[AADUserIdKey];
+                }
 
                 // Preserve/restore subscription ID
                 if (HttpMockServer.Mode == HttpRecorderMode.Record)
@@ -105,7 +112,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                     HttpMockServer.Variables[SubscriptionIdKey] = subscription;
                     if (authSettings.ContainsKey(AADUserIdKey) && authSettings.ContainsKey(AADPasswordKey))
                     {
-                        user = authSettings[AADUserIdKey];
+                        
                         string password = authSettings[AADPasswordKey];
                         Tracing.Information("Using AAD auth with username and password combination");
                         token = TokenCloudCredentialsHelper.GetTokenFromBasicCredentials(user, password, authEndpoint, tenant);
@@ -120,7 +127,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                         }
                         else
                         {
-                            token = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                            result = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                            token = result.CreateAuthorizationHeader().Substring("Bearer ".Length);
                         }
                     }
                 }
@@ -135,7 +143,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 orgIdEnvironment = new TestEnvironment
                 {
                     Credentials = token == null ? null : new TokenCloudCredentials(subscription, token),
-                    UserName = user
+                    UserName = user,
+                    AuthenticationResult = result
                 };
 
                 if (authSettings.ContainsKey(BaseUriKey))

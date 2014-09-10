@@ -13,19 +13,19 @@
 // limitations under the License.
 //
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Packaging;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.IdentityModel.Clients.ActiveDirectory.Internal;
+using Microsoft.WindowsAzure.Common.Internals;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.IdentityModel.Clients.ActiveDirectory;
-    using Microsoft.IdentityModel.Clients.ActiveDirectory.Internal;
-    using Microsoft.WindowsAzure.Common.Internals;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.IO.Packaging;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-
     /// <summary>
     /// Helper for TokenCloudCredentials
     /// </summary>
@@ -46,7 +46,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// Returns token (requires user input)
         /// </summary>
         /// <returns></returns>
-        public static string GetToken(string authEndpoint, string tenant, string clientId)
+        public static AuthenticationResult GetToken(string authEndpoint, string tenant, string clientId)
         {
             var adalWinFormType = typeof(WebBrowserNavigateErrorEventArgs);
             Trace.WriteLine("Getting a random type from \'Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms\' to force it be deployed by mstest");
@@ -75,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             thread.Start();
             thread.Join();
 
-            return result.CreateAuthorizationHeader().Substring("Bearer ".Length);
+            return result;
 
         }
 

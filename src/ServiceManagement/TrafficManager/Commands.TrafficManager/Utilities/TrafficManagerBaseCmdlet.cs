@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
-    public abstract class TrafficManagerBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class TrafficManagerBaseCmdlet : AzurePSCmdlet
     {
         private ITrafficManagerClient trafficManagerClient;
 
@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
             {
                 if (this.trafficManagerClient == null)
                 {
-                    this.trafficManagerClient = new TrafficManagerClient(this.CurrentSubscription);
+                    this.trafficManagerClient = new TrafficManagerClient(this.CurrentContext.Subscription);
                 }
                 return this.trafficManagerClient;
             }

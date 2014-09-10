@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using ConfigDataInfo;
-    using PowershellCore;
-    using System;
-
     public class AddAzureVMImageCmdletInfo : CmdletsInfo
     {
         public AddAzureVMImageCmdletInfo(string imageName, string mediaLocation, OS os, string label)

@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Commands.Test.Utilities.Common;
-    using Commands.Utilities.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
-    using MockServer;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-
     [TestClass]
     public class NewAzureSqlDatabaseTests : TestBase
     {
@@ -309,7 +309,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         /// <summary>
         /// Helper function to create the test databases.
         /// </summary>
-        public static void CreateTestDatabasesWithCertAuth(PowerShell powershell)
+        public static void CreateTestDatabasesWithCertAuth(System.Management.Automation.PowerShell powershell)
         {
             HttpSession testSession = MockServerHelper.DefaultSessionCollection.GetSession(
                 "UnitTest.Common.CreateTestDatabasesWithCertAuth");
@@ -324,9 +324,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (AsyncExceptionManager exceptionManager = new AsyncExceptionManager())
@@ -402,7 +399,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         /// <summary>
         /// Helper function to remove the test databases.
         /// </summary>
-        public static void RemoveTestDatabasesWithCertAuth(PowerShell powershell)
+        public static void RemoveTestDatabasesWithCertAuth(System.Management.Automation.PowerShell powershell)
         {
             HttpSession testSession = MockServerHelper.DefaultSessionCollection.GetSession(
                 "UnitTest.Common.RemoveTestDatabasesWithCertAuth");
@@ -417,9 +414,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (AsyncExceptionManager exceptionManager = new AsyncExceptionManager())

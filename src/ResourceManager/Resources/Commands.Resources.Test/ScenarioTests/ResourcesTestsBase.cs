@@ -12,21 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Gallery;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Subscriptions;
-using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events;
 using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Testing;
+using Microsoft.Azure.Management.Authorization;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    public abstract class ResourcesTestsBase : IDisposable
+    public abstract class ResourcesTestsBase
     {
         private EnvironmentSetupHelper helper;
 
@@ -39,15 +37,20 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             var resourceManagementClient = GetResourceManagementClient();
             var subscriptionsClient = GetSubscriptionClient();
-            var storageClient = GetStorageManagementClient();
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
+            var authorizationManagementClient = GetAuthorizationManagementClient();
 
             helper.SetupManagementClients(resourceManagementClient,
                 subscriptionsClient,
-                storageClient,
                 galleryClient,
-                eventsClient);
+                eventsClient,
+                authorizationManagementClient);
+        }
+
+        protected AuthorizationManagementClient GetAuthorizationManagementClient()
+        {
+            return TestBase.GetServiceClient<AuthorizationManagementClient>(new CSMTestEnvironmentFactory());
         }
 
         protected void RunPowerShellTest(params string[] scripts)
@@ -76,11 +79,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             return TestBase.GetServiceClient<SubscriptionClient>(new CSMTestEnvironmentFactory());
         }
 
-        protected StorageManagementClient GetStorageManagementClient()
-        {
-            return TestBase.GetServiceClient<StorageManagementClient>(new RDFETestEnvironmentFactory());
-        }
-
         protected GalleryClient GetGalleryClient()
         {
             return TestBase.GetServiceClient<GalleryClient>(new CSMTestEnvironmentFactory());
@@ -91,9 +89,5 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             return TestBase.GetServiceClient<EventsClient>(new CSMTestEnvironmentFactory());
         }
 
-        public void Dispose()
-        {
-            helper.Dispose();
-        }
     }
 }

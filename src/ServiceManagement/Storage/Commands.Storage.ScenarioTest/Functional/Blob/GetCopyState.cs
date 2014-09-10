@@ -12,22 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MS.Test.Common.MsTestLib;
-using StorageTestLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Commands.Storage.ScenarioTest.Common;
+using Commands.Storage.ScenarioTest.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Storage;
+using MS.Test.Common.MsTestLib;
+using StorageTestLib;
 using StorageBlob = Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Commands.Storage.ScenarioTest.Functional.Blob
 {
-    using Common;
-    using Util;
-
     /// <summary>
     /// functional tests for Get-CopyState
     /// </summary>
@@ -57,10 +55,10 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
         [TestCategory(PsTag.GetBlobCopyState)]
         public void GetCopyStateFromMultiBlobsTest()
         {
-            CloudBlobContainer srcContainer = blobUtil.CreateContainer();
-            CloudBlobContainer destContainer = blobUtil.CreateContainer();
+            StorageBlob.CloudBlobContainer srcContainer = blobUtil.CreateContainer();
+            StorageBlob.CloudBlobContainer destContainer = blobUtil.CreateContainer();
 
-            List<ICloudBlob> blobs = blobUtil.CreateRandomBlob(srcContainer);
+            List<StorageBlob.ICloudBlob> blobs = blobUtil.CreateRandomBlob(srcContainer);
 
             try
             {
@@ -69,7 +67,7 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
 
                 Test.Assert(agent.GetAzureStorageBlobCopyState(string.Empty, string.Empty, true), "Get copy state for many blobs should be successed.");
                 Test.Assert(agent.Output.Count == blobs.Count, String.Format("Expected get {0} copy state, and actually get {1} copy state", blobs.Count, agent.Output.Count));
-                List<IListBlobItem> destBlobs = destContainer.ListBlobs().ToList();
+                List<StorageBlob.IListBlobItem> destBlobs = destContainer.ListBlobs().ToList();
                 Test.Assert(destBlobs.Count == blobs.Count, String.Format("Expected get {0} copied blobs, and actually get {1} copy state", blobs.Count, destBlobs.Count));
 
                 for (int i = 0, count = agent.Output.Count; i < count; i++)
@@ -127,7 +125,7 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
 
             try
             {
-                CloudBlobContainer srcContainer = blobUtil.CreateContainer(srcContainerName);
+                StorageBlob.CloudBlobContainer srcContainer = blobUtil.CreateContainer(srcContainerName);
                 Test.Assert(!agent.GetAzureStorageBlobCopyState(srcContainerName, blobName, false), "Get copy state should fail with not existing blob");
                 ExpectedEqualErrorMessage(errorMessage);
             }
@@ -148,19 +146,19 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
         [TestCategory(PsTag.GetBlobCopyState)]
         public void GetCopyStateFromRootContainerTest()
         {
-            CloudBlobContainer rootContainer = blobUtil.CreateContainer("$root");
+            StorageBlob.CloudBlobContainer rootContainer = blobUtil.CreateContainer("$root");
 
             string srcBlobName = Utility.GenNameString("src");
-            ICloudBlob srcBlob = blobUtil.CreateRandomBlob(rootContainer, srcBlobName);
-            ICloudBlob destBlob = blobUtil.CreateBlob(rootContainer, Utility.GenNameString("dest"), srcBlob.BlobType);
+            StorageBlob.ICloudBlob srcBlob = blobUtil.CreateRandomBlob(rootContainer, srcBlobName);
+            StorageBlob.ICloudBlob destBlob = blobUtil.CreateBlob(rootContainer, Utility.GenNameString("dest"), srcBlob.BlobType);
 
             if (destBlob.BlobType == StorageBlob.BlobType.BlockBlob)
             {
-                ((CloudBlockBlob)destBlob).StartCopyFromBlob((CloudBlockBlob)srcBlob);
+                ((StorageBlob.CloudBlockBlob)destBlob).StartCopyFromBlob((StorageBlob.CloudBlockBlob)srcBlob);
             }
             else
             {
-                ((CloudPageBlob)destBlob).StartCopyFromBlob((CloudPageBlob)srcBlob);
+                ((StorageBlob.CloudPageBlob)destBlob).StartCopyFromBlob((StorageBlob.CloudPageBlob)srcBlob);
             }
 
             Test.Assert(agent.GetAzureStorageBlobCopyState("$root", destBlob.Name, true), "Get copy state in $root container should be successed.");
@@ -183,7 +181,7 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
             object destContext = PowerShellAgent.GetStorageContext(secondaryAccount.ToString(true));
             CloudBlobUtil destBlobUtil = new CloudBlobUtil(secondaryAccount);
             string destContainerName = Utility.GenNameString("secondary");
-            CloudBlobContainer destContainer = destBlobUtil.CreateContainer(destContainerName);
+            StorageBlob.CloudBlobContainer destContainer = destBlobUtil.CreateContainer(destContainerName);
             blobUtil.SetupTestContainerAndBlob();
             //remove the same name container in source storage account, so we could avoid some conflicts.
             blobUtil.RemoveContainer(destContainer.Name);
@@ -193,7 +191,7 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
                 Test.Assert(agent.StartAzureStorageBlobCopy(blobUtil.Blob, destContainer.Name, string.Empty, destContext), "Start cross account copy should successed");
                 int expectedBlobCount = 1;
                 Test.Assert(agent.Output.Count == expectedBlobCount, String.Format("Expected get {0} copy blob, and actually it's {1}", expectedBlobCount, agent.Output.Count));
-                ICloudBlob destBlob = (ICloudBlob)agent.Output[0]["ICloudBlob"];
+                StorageBlob.ICloudBlob destBlob = (StorageBlob.ICloudBlob)agent.Output[0]["ICloudBlob"];
                 //make sure this context is different from the PowerShell.Context
                 object context = agent.Output[0]["Context"];
                 Test.Assert(PowerShellAgent.Context != context, "make sure you are using different context for cross account copy");
@@ -222,8 +220,8 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
             string copiedName = Utility.GenNameString("copied");
 
             //Set the blob permission, so the copy task could directly copy by uri
-            BlobContainerPermissions permission = new BlobContainerPermissions();
-            permission.PublicAccess = BlobContainerPublicAccessType.Blob;
+            StorageBlob.BlobContainerPermissions permission = new StorageBlob.BlobContainerPermissions();
+            permission.PublicAccess = StorageBlob.BlobContainerPublicAccessType.Blob;
             blobUtil.Container.SetPermissions(permission);
 
             try
@@ -249,10 +247,10 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
         [TestCategory(PsTag.GetBlobCopyState)]
         public void GetCopyStateWhenCopyingTest()
         {
-            CloudBlobContainer Container = blobUtil.CreateContainer();
+            StorageBlob.CloudBlobContainer Container = blobUtil.CreateContainer();
             string ContainerName = Container.Name;
             string BlobName = Utility.GenNameString("blockblob");
-            ICloudBlob Blob = blobUtil.CreateBlockBlob(Container, BlobName);
+            StorageBlob.ICloudBlob Blob = blobUtil.CreateBlockBlob(Container, BlobName);
             
             string uri = Test.Data.Get("BigFileUri");
             Test.Assert(!String.IsNullOrEmpty(uri), string.Format("Big file uri should be not empty, actually it's {0}", uri));
@@ -268,7 +266,7 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
             int checkCount = 0;
             int sleepInterval = 1000; //ms
 
-            CopyStatus status = CopyStatus.Pending;
+            StorageBlob.CopyStatus status = StorageBlob.CopyStatus.Pending;
 
             try
             {
@@ -280,12 +278,12 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
                     Test.Assert(agent.GetAzureStorageBlobCopyState(ContainerName, BlobName, false), "Get copy state in dest container should be successed.");
                     
                     Test.Assert(agent.Output.Count == expectedCopyStateCount, String.Format("Should contain {0} copy state, and actually it's {1}", expectedCopyStateCount, agent.Output.Count));
-                    status = (CopyStatus)agent.Output[0]["Status"];
-                    Test.Assert(status == CopyStatus.Pending, String.Format("Copy status should be Pending, actually it's {0}", status));
+                    status = (StorageBlob.CopyStatus)agent.Output[0]["Status"];
+                    Test.Assert(status == StorageBlob.CopyStatus.Pending, String.Format("Copy status should be Pending, actually it's {0}", status));
                     checkCount++;
                     Thread.Sleep(sleepInterval);
                 }
-                while (status == CopyStatus.Pending && checkCount < maxMonitorTime);
+                while (status == StorageBlob.CopyStatus.Pending && checkCount < maxMonitorTime);
 
                 Test.Info("Finish the monitor loop and try to abort copy");
 
@@ -309,8 +307,8 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
 
                 Test.Assert(agent.GetAzureStorageBlobCopyState(ContainerName, BlobName, false), "Get copy state in dest container should be successed.");
                 Test.Assert(agent.Output.Count == expectedCopyStateCount, String.Format("Should contain {0} copy state, and actually it's {1}", expectedCopyStateCount, agent.Output.Count));
-                status = (CopyStatus)agent.Output[0]["Status"];
-                Test.Assert(status == CopyStatus.Aborted, String.Format("Copy status should be Aborted, actually it's {0}", status));
+                status = (StorageBlob.CopyStatus)agent.Output[0]["Status"];
+                Test.Assert(status == StorageBlob.CopyStatus.Aborted, String.Format("Copy status should be Aborted, actually it's {0}", status));
             }
             finally
             {
@@ -324,8 +322,8 @@ namespace Commands.Storage.ScenarioTest.Functional.Blob
             Test.Assert(agent.Output.Count > startIndex, String.Format("Should contain the great than {0} copy state, and actually it's {1}", startIndex, agent.Output.Count));
             string sourceUri = ((Uri)agent.Output[startIndex]["Source"]).ToString();
             Test.Assert(sourceUri.StartsWith(expectedSourceUri), String.Format("source uri should start with {0}, and actualy it's {1}", expectedSourceUri, sourceUri));
-            CopyStatus status = (CopyStatus)agent.Output[startIndex]["Status"];
-            Test.Assert(status != CopyStatus.Pending, String.Format("Copy status should not be Pending, actually it's {0}", status));
+            StorageBlob.CopyStatus status = (StorageBlob.CopyStatus)agent.Output[startIndex]["Status"];
+            Test.Assert(status != StorageBlob.CopyStatus.Pending, String.Format("Copy status should not be Pending, actually it's {0}", status));
             string copyId = (string)agent.Output[startIndex]["CopyId"];
             Test.Assert(!String.IsNullOrEmpty(copyId), "Copy ID should be not empty");
         }

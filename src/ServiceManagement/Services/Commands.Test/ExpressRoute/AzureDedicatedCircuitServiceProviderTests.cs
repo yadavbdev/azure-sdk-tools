@@ -12,23 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ExpressRoute;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Management.ExpressRoute;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 {
-    using Commands.ExpressRoute;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.ExpressRoute;
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class AzureDedicatedCircuitServiceProviderTests : TestBase
     {
         private const string SubscriptionId = "foo";
@@ -41,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                     new Uri("http://someValue")));
         }
 
-        [TestMethod]
+        [Fact]
         public void ListAzureDedicatedCircuitServiceProviderSuccessful()
         {
             // Setup
@@ -114,7 +115,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             // Assert
             IEnumerable<AzureDedicatedCircuitServiceProvider> actual =
                 mockCommandRuntime.OutputPipeline[0] as IEnumerable<AzureDedicatedCircuitServiceProvider>;
-            Assert.AreEqual(actual.ToArray().Count(), 2);
+            Assert.Equal(actual.ToArray().Count(), 2);
         }
     }
 }

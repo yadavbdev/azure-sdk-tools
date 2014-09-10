@@ -12,14 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-
     /// <summary>
     /// Utility used to create files and directories and clean them up when
     /// complete.
@@ -111,10 +112,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 
             // Set the directory and create it if necessary.
             RootPath = rootPath;
-            if (!Directory.Exists(rootPath))
+            if (!FileUtilities.DataStore.DirectoryExists(rootPath))
             {
                 Log("Creating directory {0}", rootPath);
-                Directory.CreateDirectory(rootPath);
+                FileUtilities.DataStore.CreateDirectory(rootPath);
             }
         }
 
@@ -139,7 +140,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
                         try { new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(AzureSdkPath); }
                         catch { /* Cleanup failed, ignore*/ }
                         
-                        GlobalPathInfo.GlobalSettingsDirectory = null;
                         AzureSdkPath = null;
                     }
 
@@ -150,7 +150,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
                     }
 
                     Log("Deleting directory {0}", RootPath);
-                    Directory.Delete(RootPath, true);
+                    FileUtilities.DataStore.DeleteDirectory(RootPath);
 
                     DisposeWatcher();
 
@@ -235,10 +235,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(!string.IsNullOrEmpty(relativePath));
 
             string path = Path.Combine(RootPath, relativePath);
-            if (!Directory.Exists(path))
+            if (!FileUtilities.DataStore.DirectoryExists(path))
             {
                 Log("Creating directory {0}", path);
-                Directory.CreateDirectory(path);
+                FileUtilities.DataStore.CreateDirectory(path);
             }
 
             return path;
@@ -254,10 +254,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(!string.IsNullOrEmpty(relativePath));
 
             string path = Path.Combine(RootPath, relativePath);
-            if (!File.Exists(path))
+            if (!FileUtilities.DataStore.FileExists(path))
             {
                 Log("Creating empty file {0}", path);
-                File.WriteAllText(path, "");
+                FileUtilities.DataStore.WriteFile(path, "");
             }
 
             return path;
@@ -286,11 +286,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             Debug.Assert(string.IsNullOrEmpty(AzureSdkPath));
 
             AzureSdkPath = CreateDirectory("AzureSdk");
-            var profile = new WindowsAzureProfile(new PowershellProfileStore(AzureSdkPath, "WindowsAzureProfile.xml"));
-            profile.ImportPublishSettings(publishSettingsPath);
-            WindowsAzureProfile.Instance = profile;
-
-            GlobalPathInfo.GlobalSettingsDirectory = AzureSdkPath;
+            ProfileClient client = new ProfileClient();
+            ProfileClient.DataStore.WriteFile(publishSettingsPath, File.ReadAllText(publishSettingsPath));
+            client.ImportPublishSettings(publishSettingsPath, null);
+            client.Profile.Save();
 
             return AzureSdkPath;
         }
@@ -315,14 +314,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         {
             string serviceName = packageName;
             package = Path.Combine(RootPath, packageName + ".cspkg");
-            File.WriteAllText(package,"does not matter");
+            FileUtilities.DataStore.WriteFile(package, "does not matter");
             configuration = Path.Combine(RootPath, "ServiceConfiguration.Cloud.cscfg");
             string template = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" 
                 + Environment.NewLine
                 + "<ServiceConfiguration serviceName=\"" + serviceName + "\" " 
                 + "xmlns=\"http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration\" " 
                 + "osFamily=\"2\" osVersion=\"*\" />";
-            File.WriteAllText(configuration, template);
+            FileUtilities.DataStore.WriteFile(configuration, template);
             _previousDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = RootPath;
         }

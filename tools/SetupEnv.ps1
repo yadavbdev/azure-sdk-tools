@@ -66,6 +66,6 @@ if (Test-Path -Path "$env:ADXSDKProgramFiles\Microsoft Visual Studio 12.0") {
     $vsVersion="11.0"
 }
 
-$setVSEnv = '"{0}\Microsoft Visual Studio {1}\VC\vcvarsall.bat" x86' -f $env:ADXSDKProgramFiles, $vsVersion;
+$setVSEnv = '"{0}\Microsoft Visual Studio {1}\VC\vcvarsall.bat" x64' -f $env:ADXSDKProgramFiles, $vsVersion;
 
 Invoke-Environment -Command $setVSEnv;

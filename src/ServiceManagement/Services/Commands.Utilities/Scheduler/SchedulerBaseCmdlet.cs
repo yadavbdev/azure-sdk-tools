@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
 {
-    using Utilities.Common;
-
-    public abstract class SchedulerBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class SchedulerBaseCmdlet : AzurePSCmdlet
     {
         private SchedulerMgmntClient schedulerMgmntClient;
 
@@ -26,7 +26,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
             {
                 if (schedulerMgmntClient == null)
                 {
-                    schedulerMgmntClient = new SchedulerMgmntClient(CurrentSubscription);
+                    schedulerMgmntClient = new SchedulerMgmntClient(CurrentContext.Subscription);
                 }
                 return schedulerMgmntClient;
             }

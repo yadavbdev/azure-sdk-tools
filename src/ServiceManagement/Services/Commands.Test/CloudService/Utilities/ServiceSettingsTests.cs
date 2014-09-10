@@ -12,26 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using System;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-    using TestBase = Test.Utilities.Common.TestBase;
-    using Testing = Test.Utilities.Common.Testing;
-
-    [TestClass]
+    
     public class ServiceSettingsTests : TestBase
     {
-        [TestInitialize]
-        public void SetupTest()
+        public ServiceSettingsTests()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
         }
 
-        [TestMethod]
+        [Fact]
         public void ServiceSettingsTest()
         {
 
@@ -44,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         /// Verify that using an invalid storage account name throws an
         /// exception.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void InvalidStorageAccountName()
         {
             // Create a temp directory that we'll use to "publish" our service
@@ -65,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         /// Verify that a service name with invalid characters is correctly
         /// sanitized to a storage account name.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void SanitizeServiceNameForStorageAccountName()
         {
             // Create a temp directory that we'll use to "publish" our service
@@ -76,17 +74,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
                 string serviceName = null;
                 ServiceSettings settings = ServiceSettings.LoadDefault(null, null, null, null, null, null, "My-Custom-Service!", null, out serviceName);
-                Assert.AreEqual("myx2dcustomx2dservicex21", settings.StorageServiceName);
+                Assert.Equal("myx2dcustomx2dservicex21", settings.StorageServiceName);
 
                 settings = ServiceSettings.LoadDefault(null, null, null, null, null, null, "MyCustomServiceIsWayTooooooooooooooooooooooooLong", null, out serviceName);
-                Assert.AreEqual("mycustomserviceiswaytooo", settings.StorageServiceName);
+                Assert.Equal("mycustomserviceiswaytooo", settings.StorageServiceName);
             }
         }
 
         /// <summary>
         /// Verify that ServicSettings will accept unknown Microsoft Azure RDFE location.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void GetDefaultLocationWithUnknwonLocation()
         {
             // Create a temp directory that we'll use to "publish" our service
@@ -98,7 +96,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 string unknownLocation = "Unknown Location";
 
                 ServiceSettings settings = ServiceSettings.LoadDefault(null, null, unknownLocation, null, null, null, "My-Custom-Service!", null, out serviceName);
-                Assert.AreEqual<string>(unknownLocation.ToLower(), settings.Location.ToLower());
+                Assert.Equal<string>(unknownLocation.ToLower(), settings.Location.ToLower());
 
             }
         }

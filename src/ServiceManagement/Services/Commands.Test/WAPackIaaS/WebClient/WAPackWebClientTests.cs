@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Net;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-
-    [TestClass]
+    
     public class WAPackWebClientTests
     {
         private MockRequestChannel channel;
@@ -30,8 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
 
         private WebHeaderCollection responseHeaders;
 
-        [TestInitialize]
-        public void Initialize()
+        public WAPackWebClientTests()
         {
             this.channel = MockRequestChannel.Create();
 
@@ -44,9 +43,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             this.client = new WAPackIaaSClient(subscription, channel);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ExpectLanguageAndContentShouldBeSetToJson()
         {
             this.channel.AddExpectedValue("Accept", "application/json");
@@ -55,36 +54,36 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
         }
 
         #region Test request.Method
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void MethodShouldBeSetToGetOnGet()
         {
             this.channel.AddExpectedValue("Method", "GET");
             this.client.Get<string>(out responseHeaders);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void MethodShouldBeSetToPostOnCreate()
         {
             this.channel.AddExpectedValue("Method", "POST");
             this.client.Create<string>(null, out responseHeaders);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void MethodShouldBeSetToDeleteOnDelete()
         {
             this.channel.AddExpectedValue("Method", "DELETE");
             this.client.Delete<string>(out responseHeaders);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void MethodShouldBeSetToPutOnUpdate()
         {
             this.channel.AddExpectedValue("Method", "PUT");
@@ -92,18 +91,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
         }
         #endregion
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void PreferContentShouldBeSetOnUpdate()
         {
             this.channel.AddExpectedHeader("Prefer", "return-content");
             this.client.Update<string>(null, out responseHeaders);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void CanAddCustomerHeaders()
         {
             var customHeaders = new Dictionary<string, string>();

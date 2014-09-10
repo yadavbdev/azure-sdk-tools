@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.CloudService.Development;
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using Test.Utilities.CloudService;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class AzureServiceTests: TestBase
     {
         private const string serviceName = "AzureService";
@@ -87,29 +88,29 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 {
                     for (int i = 0, w = 0, wo = 0; i < webRole + workerRole; )
                     {
-                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Data.NodeWebRoleScaffoldingPath);
-                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
+                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
+                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
                     }
                 }
                 else if (order == 1)
                 {
                     for (int i = 0, w = 0, wo = 0; i < webRole + workerRole; )
                     {
-                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
-                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
+                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                     }
                 }
                 else if (order == 2)
                 {
-                    wrappedService.AddRole(Data.NodeWebRoleScaffoldingPath, Data.NodeWorkerRoleScaffoldingPath, webRole, workerRole);
+                    wrappedService.AddRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath, webRole, workerRole);
                     webRoles.CopyTo(roles, 0);
                     Array.Copy(workerRoles, 0, roles, webRole, workerRoles.Length);
                 }
                 else if (order == 3)
                 {
-                    wrappedService.AddRole(Data.NodeWebRoleScaffoldingPath, Data.NodeWorkerRoleScaffoldingPath, 0, workerRole);
+                    wrappedService.AddRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath, 0, workerRole);
                     workerRoles.CopyTo(roles, 0);
-                    wrappedService.AddRole(Data.NodeWebRoleScaffoldingPath, Data.NodeWorkerRoleScaffoldingPath, webRole, 0);
+                    wrappedService.AddRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath, webRole, 0);
                     Array.Copy(webRoles, 0, roles, workerRole, webRoles.Length);
                 }
                 else
@@ -117,7 +118,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                     throw new ArgumentException("value for order parameter is unknown");
                 }
 
-                AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, webRoles: webRoles, workerRoles: workerRoles, webScaff: Data.NodeWebRoleScaffoldingPath, workerScaff: Data.NodeWorkerRoleScaffoldingPath, roles: roles);
+                AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, webRoles: webRoles, workerRoles: workerRoles, webScaff: Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, workerScaff: Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath, roles: roles);
             }
         }
 
@@ -154,29 +155,29 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 {
                     for (int i = 0, w = 0, wo = 0; i < webRole + workerRole; )
                     {
-                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Data.PHPWebRoleScaffoldingPath);
-                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Data.PHPWorkerRoleScaffoldingPath);
+                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath);
+                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath);
                     }
                 }
                 else if (order == 1)
                 {
                     for (int i = 0, w = 0, wo = 0; i < webRole + workerRole; )
                     {
-                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Data.PHPWorkerRoleScaffoldingPath);
-                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Data.PHPWebRoleScaffoldingPath);
+                        if (wo++ < workerRole) roles[i++] = wrappedService.AddWorkerRole(Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath);
+                        if (w++ < webRole) roles[i++] = wrappedService.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath);
                     }
                 }
                 else if (order == 2)
                 {
-                    wrappedService.AddRole(Data.PHPWebRoleScaffoldingPath, Data.PHPWorkerRoleScaffoldingPath, webRole, workerRole);
+                    wrappedService.AddRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath, webRole, workerRole);
                     webRoles.CopyTo(roles, 0);
                     Array.Copy(workerRoles, 0, roles, webRole, workerRoles.Length);
                 }
                 else if (order == 3)
                 {
-                    wrappedService.AddRole(Data.PHPWebRoleScaffoldingPath, Data.PHPWorkerRoleScaffoldingPath, 0, workerRole);
+                    wrappedService.AddRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath, 0, workerRole);
                     workerRoles.CopyTo(roles, 0);
-                    wrappedService.AddRole(Data.PHPWebRoleScaffoldingPath, Data.PHPWorkerRoleScaffoldingPath, webRole, 0);
+                    wrappedService.AddRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath, webRole, 0);
                     Array.Copy(webRoles, 0, roles, workerRole, webRoles.Length);
                 }
                 else
@@ -184,15 +185,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                     throw new ArgumentException("value for order parameter is unknown");
                 }
 
-                AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, webRoles: webRoles, workerRoles: workerRoles, webScaff: Data.PHPWebRoleScaffoldingPath, workerScaff: Data.PHPWorkerRoleScaffoldingPath, roles: roles);
+                AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, webRoles: webRoles, workerRoles: workerRoles, webScaff: Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, workerScaff: Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath, roles: roles);
             }
         }
 
-        [TestInitialize]
-        public void SetupTest()
+        public AzureServiceTests()
         {
             AzureTool.IgnoreMissingSDKError = true;
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             enableCacheCmdlet = new EnableAzureMemcacheRoleCommand();
@@ -202,7 +202,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             enableCacheCmdlet.CommandRuntime = mockCommandRuntime;
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNew()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -212,34 +212,34 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewEmptyParentDirectoryFail()
         {
             Testing.AssertThrows<ArgumentException>(() => new CloudServiceProject(string.Empty, serviceName, null), string.Format(Resources.InvalidOrEmptyArgumentMessage, "service parent directory"));
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewNullParentDirectoryFail()
         {
             Testing.AssertThrows<ArgumentException>(() => new CloudServiceProject(null, serviceName, null), string.Format(Resources.InvalidOrEmptyArgumentMessage, "service parent directory"));
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewInvalidParentDirectoryFail()
         {
-            foreach (string invalidName in Data.InvalidFileName)
+            foreach (string invalidName in Test.Utilities.Common.Data.InvalidFileName)
             {
                 Testing.AssertThrows<ArgumentException>(() => new CloudServiceProject(string.Empty, serviceName, null), string.Format(Resources.InvalidOrEmptyArgumentMessage, "service parent directory"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewDoesNotExistParentDirectoryFail()
         {
             Testing.AssertThrows<FileNotFoundException>(() => new CloudServiceProject("DoesNotExist", serviceName, null), string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceParentDirectory, "DoesNotExist"));
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewEmptyServiceNameFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -248,7 +248,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewNullServiceNameFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -257,10 +257,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewInvalidServiceNameFail()
         {
-            foreach (string invalidFileName in Data.InvalidFileName)
+            foreach (string invalidFileName in Test.Utilities.Common.Data.InvalidFileName)
             {
                 using (FileSystemHelper files = new FileSystemHelper(this))
                 {
@@ -269,12 +269,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewInvalidDnsServiceNameFail()
         {
             char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
 
-            foreach (string invalidDnsName in Data.InvalidServiceNames)
+            foreach (string invalidDnsName in Test.Utilities.Common.Data.InvalidServiceNames)
             {
                 using (FileSystemHelper files = new FileSystemHelper(this))
                 {
@@ -286,7 +286,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceCreateNewExistingServiceFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -296,37 +296,37 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
         
-        [TestMethod]
+        [Fact]
         public void AzureNodeServiceLoadExistingSimpleService()
         {
             AddNodeRoleTest(0, 0, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureNodeServiceLoadExistingOneWebRoleService()
         {
             AddNodeRoleTest(1, 0, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureNodeServiceLoadExistingOneWorkerRoleService()
         {
             AddNodeRoleTest(0, 1, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureNodeServiceLoadExistingMultipleWebRolesService()
         {
             AddNodeRoleTest(5, 0, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureNodeServiceLoadExistingMultipleWorkerRolesService()
         {
             AddNodeRoleTest(0, 5, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureNodeServiceLoadExistingMultipleWebAndOneWorkerRolesService()
         {
             int order = 0;
@@ -336,37 +336,37 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             AddNodeRoleTest(3, 5, order++);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzurePHPServiceLoadExistingSimpleService()
         {
             AddPHPRoleTest(0, 0, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzurePHPServiceLoadExistingOneWebRoleService()
         {
             AddPHPRoleTest(1, 0, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzurePHPServiceLoadExistingOneWorkerRoleService()
         {
             AddPHPRoleTest(0, 1, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzurePHPServiceLoadExistingMultipleWebRolesService()
         {
             AddPHPRoleTest(5, 0, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzurePHPServiceLoadExistingMultipleWorkerRolesService()
         {
             AddPHPRoleTest(0, 5, 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void AzurePHPServiceLoadExistingMultipleWebAndOneWorkerRolesService()
         {
             int order = 0;
@@ -376,95 +376,95 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             AddPHPRoleTest(3, 5, order++);
         }
         
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddNewNodeWebRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                RoleInfo webRole = service.AddWebRole(Data.NodeWebRoleScaffoldingPath, "MyWebRole", 10);
+                RoleInfo webRole = service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, "MyWebRole", 10);
 
                 AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, webRoles: new WebRoleInfo[] { (WebRoleInfo)webRole }, webScaff: Path.Combine(Resources.NodeScaffolding, Resources.WebRole), roles: new RoleInfo[] { webRole });
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddNewPHPWebRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                RoleInfo webRole = service.AddWebRole(Data.PHPWebRoleScaffoldingPath, "MyWebRole", 10);
+                RoleInfo webRole = service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, "MyWebRole", 10);
 
                 AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, webRoles: new WebRoleInfo[] { (WebRoleInfo)webRole }, webScaff: Path.Combine(Resources.PHPScaffolding, Resources.WebRole), roles: new RoleInfo[] { webRole });
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddNewNodeWorkerRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                RoleInfo workerRole = service.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath, "MyWorkerRole", 10);
+                RoleInfo workerRole = service.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath, "MyWorkerRole", 10);
 
                 AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, workerRoles: new WorkerRoleInfo[] { (WorkerRoleInfo)workerRole }, workerScaff: Path.Combine(Resources.NodeScaffolding, Resources.WorkerRole), roles: new RoleInfo[] { workerRole });
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddNewPHPWorkerRoleTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                RoleInfo workerRole = service.AddWorkerRole(Data.PHPWorkerRoleScaffoldingPath, "MyWorkerRole", 10);
+                RoleInfo workerRole = service.AddWorkerRole(Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath, "MyWorkerRole", 10);
 
                 AzureAssert.AzureServiceExists(Path.Combine(files.RootPath, serviceName), Resources.GeneralScaffolding, serviceName, workerRoles: new WorkerRoleInfo[] { (WorkerRoleInfo)workerRole }, workerScaff: Path.Combine(Resources.PHPScaffolding, Resources.WorkerRole), roles: new RoleInfo[] { workerRole });
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddNewNodeWorkerRoleWithWhiteCharFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
-                Testing.AssertThrows<ArgumentException>(() => new CloudServiceProject(files.RootPath, serviceName, null).AddWebRole(Data.NodeWebRoleScaffoldingPath, "\tRole"), string.Format(Resources.InvalidRoleNameMessage, "\tRole"));
+                Testing.AssertThrows<ArgumentException>(() => new CloudServiceProject(files.RootPath, serviceName, null).AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, "\tRole"), string.Format(Resources.InvalidRoleNameMessage, "\tRole"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddNewPHPWorkerRoleWithWhiteCharFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
-                Testing.AssertThrows<ArgumentException>(() => new CloudServiceProject(files.RootPath, serviceName, null).AddWebRole(Data.PHPWebRoleScaffoldingPath, "\tRole"), string.Format(Resources.InvalidRoleNameMessage, "\tRole"));
+                Testing.AssertThrows<ArgumentException>(() => new CloudServiceProject(files.RootPath, serviceName, null).AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, "\tRole"), string.Format(Resources.InvalidRoleNameMessage, "\tRole"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddExistingNodeRoleFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath, "WebRole");
-                Testing.AssertThrows<ArgumentException>(() => service.AddWebRole(Data.NodeWebRoleScaffoldingPath, "WebRole"), string.Format(Resources.AddRoleMessageRoleExists, "WebRole"));
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, "WebRole");
+                Testing.AssertThrows<ArgumentException>(() => service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, "WebRole"), string.Format(Resources.AddRoleMessageRoleExists, "WebRole"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AzureServiceAddExistingPHPRoleFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.PHPWebRoleScaffoldingPath, "WebRole");
-                Testing.AssertThrows<ArgumentException>(() => service.AddWebRole(Data.PHPWebRoleScaffoldingPath, "WebRole"), string.Format(Resources.AddRoleMessageRoleExists, "WebRole"));
+                service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, "WebRole");
+                Testing.AssertThrows<ArgumentException>(() => service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, "WebRole"), string.Format(Resources.AddRoleMessageRoleExists, "WebRole"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetServiceNameTest()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -472,11 +472,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 NewAzureServiceProjectCommand newServiceCmdlet = new NewAzureServiceProjectCommand();
                 newServiceCmdlet.CommandRuntime = new MockCommandRuntime();
                 newServiceCmdlet.NewAzureServiceProcess(files.RootPath, serviceName);
-                Assert.AreEqual<string>(serviceName, new CloudServiceProject(Path.Combine(files.RootPath, serviceName), null).ServiceName);
+                Assert.Equal<string>(serviceName, new CloudServiceProject(Path.Combine(files.RootPath, serviceName), null).ServiceName);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ChangeServiceNameTest()
         {
             string newName = "NodeAppService";
@@ -485,13 +485,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
                 service.ChangeServiceName(newName, service.Paths);
-                Assert.AreEqual<string>(newName, service.Components.CloudConfig.serviceName);
-                Assert.AreEqual<string>(newName, service.Components.LocalConfig.serviceName);
-                Assert.AreEqual<string>(newName, service.Components.Definition.name);
+                Assert.Equal<string>(newName, service.Components.CloudConfig.serviceName);
+                Assert.Equal<string>(newName, service.Components.LocalConfig.serviceName);
+                Assert.Equal<string>(newName, service.Components.Definition.name);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetNodeRoleInstancesTest()
         {
             int newInstances = 10;
@@ -499,14 +499,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath, "WebRole", 1);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath, "WebRole", 1);
                 service.SetRoleInstances(service.Paths, "WebRole", newInstances);
-                Assert.AreEqual<int>(service.Components.CloudConfig.Role[0].Instances.count, newInstances);
-                Assert.AreEqual<int>(service.Components.LocalConfig.Role[0].Instances.count, newInstances);
+                Assert.Equal<int>(service.Components.CloudConfig.Role[0].Instances.count, newInstances);
+                Assert.Equal<int>(service.Components.LocalConfig.Role[0].Instances.count, newInstances);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void SetPHPRoleInstancesTest()
         {
             int newInstances = 10;
@@ -514,14 +514,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.PHPWebRoleScaffoldingPath, "WebRole", 1);
+                service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath, "WebRole", 1);
                 service.SetRoleInstances(service.Paths, "WebRole", newInstances);
-                Assert.AreEqual<int>(service.Components.CloudConfig.Role[0].Instances.count, newInstances);
-                Assert.AreEqual<int>(service.Components.LocalConfig.Role[0].Instances.count, newInstances);
+                Assert.Equal<int>(service.Components.CloudConfig.Role[0].Instances.count, newInstances);
+                Assert.Equal<int>(service.Components.LocalConfig.Role[0].Instances.count, newInstances);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestResolveRuntimePackageUrls()
         {
             // Create a temp directory that we'll use to "publish" our service

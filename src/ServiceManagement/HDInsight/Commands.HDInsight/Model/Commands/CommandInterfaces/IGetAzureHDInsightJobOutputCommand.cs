@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.IO;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    using BaseCommandInterfaces;
-    using GetAzureHDInsightClusters;
-    using System.IO;
-
     internal interface IGetAzureHDInsightJobOutputCommand : IAzureHDInsightCommand<Stream>, IGetAzureHDInsightJobOutputBase
     {
     }

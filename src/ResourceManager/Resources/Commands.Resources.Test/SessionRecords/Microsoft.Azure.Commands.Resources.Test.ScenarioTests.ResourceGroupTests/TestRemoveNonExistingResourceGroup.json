@@ -1,7 +1,8 @@
 {
   "Entries": [
     {
-      "RequestUri": "/subscriptions/db1ab6f0-4769-4b27-930e-01e2ef9c123c/resourcegroups/onesdk7999?api-version=2014-04-01-preview",
+      "RequestUri": "/subscriptions/c9cbd920-c00c-427c-852b-8aaf38badaeb/resourcegroups/onesdk1371?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvYzljYmQ5MjAtYzAwYy00MjdjLTg1MmItOGFhZjM4YmFkYWViL3Jlc291cmNlZ3JvdXBzL29uZXNkazEzNzE/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
       "RequestMethod": "HEAD",
       "RequestBody": "",
       "RequestHeaders": {
@@ -15,16 +16,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31991"
+          "31999"
         ],
         "x-ms-request-id": [
-          "e2b9a58c-ea5d-491f-886c-5cfd4f62880f"
+          "63329a6c-6c6f-4275-9aa6-c49cd4088d99"
         ],
         "x-ms-correlation-request-id": [
-          "e2b9a58c-ea5d-491f-886c-5cfd4f62880f"
+          "63329a6c-6c6f-4275-9aa6-c49cd4088d99"
         ],
         "x-ms-routing-request-id": [
-          "WESTUS:20140711T194254Z:e2b9a58c-ea5d-491f-886c-5cfd4f62880f"
+          "WESTUS:20140905T172807Z:63329a6c-6c6f-4275-9aa6-c49cd4088d99"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -33,7 +34,7 @@
           "no-cache"
         ],
         "Date": [
-          "Fri, 11 Jul 2014 19:42:54 GMT"
+          "Fri, 05 Sep 2014 17:28:06 GMT"
         ]
       },
       "StatusCode": 404
@@ -41,10 +42,10 @@
   ],
   "Names": {
     "Test-RemoveNonExistingResourceGroup": [
-      "onesdk7999"
+      "onesdk1371"
     ]
   },
   "Variables": {
-    "SubscriptionId": "db1ab6f0-4769-4b27-930e-01e2ef9c123c"
+    "SubscriptionId": "c9cbd920-c00c-427c-852b-8aaf38badaeb"
   }
 }

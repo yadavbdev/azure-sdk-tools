@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Management.Automation;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using System;
-    using System.Collections;
-    using System.Management.Automation;
-
     public abstract class StartAzureAutomationRunbookBase : AzureAutomationBaseCmdlet
     {
         /// <summary>

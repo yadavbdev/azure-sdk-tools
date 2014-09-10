@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using PowershellCore;
-    using System;
-
     public class UpdateAzureVMImageCmdletInfo : CmdletsInfo
     {
         public UpdateAzureVMImageCmdletInfo(string imageName, string label, string recommendedSize,VirtualMachineImageDiskConfigSet diskConfig )
@@ -25,8 +25,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             cmdletName = Utilities.UpdateAzureVMImageCmdletName;
 
             cmdletParams.Add(new CmdletParam("ImageName", imageName));
-            cmdletParams.Add(new CmdletParam("Label", label));
 
+            if (label != null)
+            {
+                cmdletParams.Add(new CmdletParam("Label", label));
+            }
             if (! string.IsNullOrEmpty(recommendedSize))
             {
                 cmdletParams.Add(new CmdletParam("RecommendedVMSize", recommendedSize));

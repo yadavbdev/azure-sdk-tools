@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.WebSites;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Management.WebSites;
-    using Management.WebSites.Models;
-    using Utilities.Common;
-    using WebEntities;
-    using Utilities = Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
-    using Models = Management.WebSites.Models;
+    using Utilities = WebEntities;
 
     /// <summary>
     /// Extension methods for converting return values from the websites
@@ -49,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 ManagedPipelineMode = getConfigResponse.ManagedPipelineMode,
                 WebSocketsEnabled = getConfigResponse.WebSocketsEnabled,
                 RemoteDebuggingEnabled = getConfigResponse.RemoteDebuggingEnabled,
-                RemoteDebuggingVersion = getConfigResponse.RemoteDebuggingVersion.GetValueOrDefault()
+                RemoteDebuggingVersion = getConfigResponse.RemoteDebuggingVersion.GetValueOrDefault(),
             };
 
             getConfigResponse.AppSettings.ForEach(kvp => update.AppSettings.Add(kvp.Key, kvp.Value));
@@ -71,9 +70,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return update;
         }
 
-        internal static SiteConfig ToSiteConfig(this WebSiteGetConfigurationResponse getConfigResponse)
+        internal static Utilities.SiteConfig ToSiteConfig(this WebSiteGetConfigurationResponse getConfigResponse)
         {
-            var config = new SiteConfig
+            var config = new Utilities.SiteConfig
             {
                 NumberOfWorkers = getConfigResponse.NumberOfWorkers,
                 DefaultDocuments = getConfigResponse.DefaultDocuments.ToArray(),
@@ -86,14 +85,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 PublishingPassword = getConfigResponse.PublishingPassword,
                 AppSettings = getConfigResponse.AppSettings.Select(ToNameValuePair).ToList(),
                 Metadata = getConfigResponse.Metadata.Select(ToNameValuePair).ToList(),
-                ConnectionStrings = new ConnStringPropertyBag(
-                    getConfigResponse.ConnectionStrings.Select(cs => new ConnStringInfo
+                ConnectionStrings = new Utilities.ConnStringPropertyBag(
+                    getConfigResponse.ConnectionStrings.Select(cs => new Utilities.ConnStringInfo
                     {
                         ConnectionString = cs.ConnectionString,
                         Name = cs.Name,
-                        Type = (DatabaseType)Enum.Parse(typeof(DatabaseType), cs.Type.ToString())
+                        Type = (Utilities.DatabaseType)Enum.Parse(typeof(Utilities.DatabaseType), cs.Type.ToString(), ignoreCase: true)
                     }).ToList()),
-                HandlerMappings = getConfigResponse.HandlerMappings.Select(hm => new HandlerMapping
+                HandlerMappings = getConfigResponse.HandlerMappings.Select(hm => new Utilities.HandlerMapping
                 {
                     Arguments = hm.Arguments,
                     Extension = hm.Extension,
@@ -103,17 +102,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 WebSocketsEnabled = getConfigResponse.WebSocketsEnabled,
                 RemoteDebuggingEnabled = getConfigResponse.RemoteDebuggingEnabled,
                 RemoteDebuggingVersion = getConfigResponse.RemoteDebuggingVersion.GetValueOrDefault(),
-                RoutingRules = getConfigResponse.RoutingRules.Select(r => r.ToRoutingRule()).ToList()
+                RoutingRules = getConfigResponse.RoutingRules.Select(r => r.ToRoutingRule()).ToList(),
+                Use32BitWorkerProcess = getConfigResponse.Use32BitWorkerProcess
             };
             return config;
         }
 
-        internal static Utilities.RoutingRule ToRoutingRule(this Models.RoutingRule rule)
+        internal static Utilities.RoutingRule ToRoutingRule(this Management.WebSites.Models.RoutingRule rule)
         {
             Utilities.RoutingRule result = null;
-            if (rule is Models.RampUpRule)
+            if (rule is Management.WebSites.Models.RampUpRule)
             {
-                Models.RampUpRule rampupRule = rule as Models.RampUpRule;
+                Management.WebSites.Models.RampUpRule rampupRule = rule as Management.WebSites.Models.RampUpRule;
                 result = new Utilities.RampUpRule()
                 {
                     ReroutePercentage = rampupRule.ReroutePercentage,
@@ -135,9 +135,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return result;
         }
           
-        internal static Site ToSite(this WebSiteGetResponse response)
+        internal static Utilities.Site ToSite(this WebSiteGetResponse response)
         {
-            return new Site
+            return new Utilities.Site
             {
                 Name = response.WebSite.Name,
                 State = response.WebSite.State.ToString(),
@@ -146,26 +146,26 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 SelfLink = response.WebSite.Uri,
                 RepositorySiteName = response.WebSite.RepositorySiteName,
                 Owner = response.WebSite.Owner,
-                UsageState = (UsageState)(int)response.WebSite.UsageState,
+                UsageState = (Utilities.UsageState)(int)response.WebSite.UsageState,
                 Enabled = response.WebSite.Enabled,
                 AdminEnabled = response.WebSite.AdminEnabled,
                 EnabledHostNames = response.WebSite.EnabledHostNames.ToArray(),
-                SiteProperties = new SiteProperties
+                SiteProperties = new Utilities.SiteProperties
                 {
                     Metadata = response.WebSite.SiteProperties.Metadata.Select(ToNameValuePair).ToList(),
                     Properties = response.WebSite.SiteProperties.Properties.Select(ToNameValuePair).ToList()
                 },
-                AvailabilityState = (SiteAvailabilityState)(int)response.WebSite.AvailabilityState,
+                AvailabilityState = (Utilities.SiteAvailabilityState)(int)response.WebSite.AvailabilityState,
                 SSLCertificates = response.WebSite.SslCertificates.Select(ToCertificate).ToArray(),
                 SiteMode = response.WebSite.SiteMode.ToString(),
-                HostNameSslStates = new HostNameSslStates(response.WebSite.HostNameSslStates.Select(ToNameSslState).ToList()),
+                HostNameSslStates = new Utilities.HostNameSslStates(response.WebSite.HostNameSslStates.Select(ToNameSslState).ToList()),
                 ComputeMode = response.WebSite.ComputeMode
             };
         }
 
-        internal static Site ToSite(this WebSite site)
+        internal static Utilities.Site ToSite(this WebSite site)
         {
-            return new Site
+            return new Utilities.Site
             {
                 Name = site.Name,
                 State = site.State.ToString(),
@@ -174,39 +174,39 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 SelfLink = site.Uri,
                 RepositorySiteName = site.RepositorySiteName,
                 Owner = site.Owner,
-                UsageState = (UsageState)(int)site.UsageState,
+                UsageState = (Utilities.UsageState)(int)site.UsageState,
                 Enabled = site.Enabled,
                 AdminEnabled = site.AdminEnabled,
                 EnabledHostNames = site.EnabledHostNames.ToArray(),
-                SiteProperties = new SiteProperties
+                SiteProperties = new Utilities.SiteProperties
                 {
                     Metadata = site.SiteProperties.Metadata.Select(ToNameValuePair).ToList(),
                     Properties = site.SiteProperties.Properties.Select(ToNameValuePair).ToList()
                 },
-                AvailabilityState = (SiteAvailabilityState)(int)site.AvailabilityState,
+                AvailabilityState = (Utilities.SiteAvailabilityState)(int)site.AvailabilityState,
                 SSLCertificates = site.SslCertificates.Select(ToCertificate).ToArray(),
                 SiteMode = site.SiteMode.ToString(),
-                HostNameSslStates = new HostNameSslStates(site.HostNameSslStates.Select(ToNameSslState).ToList()),
+                HostNameSslStates = new Utilities.HostNameSslStates(site.HostNameSslStates.Select(ToNameSslState).ToList()),
                 ComputeMode = site.ComputeMode
             };
         }
 
-        private static NameValuePair ToNameValuePair(KeyValuePair<string, string> kvp)
+        private static Utilities.NameValuePair ToNameValuePair(KeyValuePair<string, string> kvp)
         {
-            return new NameValuePair
+            return new Utilities.NameValuePair
             {
                 Name = kvp.Key,
                 Value = kvp.Value
             };
         }
 
-        private static KeyValuePair<string, string> ToKeyValuePair(NameValuePair nvp)
+        private static KeyValuePair<string, string> ToKeyValuePair(Utilities.NameValuePair nvp)
         {
             return new KeyValuePair<string, string>(nvp.Name, nvp.Value);
         }
-        internal static IList<MetricResponse> ToMetricResponses(this WebSiteGetHistoricalUsageMetricsResponse metricsResponse)
+        internal static IList<Utilities.MetricResponse> ToMetricResponses(this WebSiteGetHistoricalUsageMetricsResponse metricsResponse)
         {
-            var result = new List<MetricResponse>();
+            var result = new List<Utilities.MetricResponse>();
             if (metricsResponse == null || metricsResponse.UsageMetrics == null)
             {
                 return result;
@@ -215,7 +215,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             foreach (var response in metricsResponse.UsageMetrics)
             {
                 var metrics = response.Data.ToMetricSet();
-                var rsp = new MetricResponse
+                var rsp = new Utilities.MetricResponse
                 {
                     Code = response.Code,
                     Message = response.Message,
@@ -227,9 +227,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return result;
         }
 
-        internal static IList<MetricResponse> ToMetricResponses(this WebHostingPlanGetHistoricalUsageMetricsResponse metricsResponse)
+        internal static IList<Utilities.MetricResponse> ToMetricResponses(this WebHostingPlanGetHistoricalUsageMetricsResponse metricsResponse)
         {
-            var result = new List<MetricResponse>();
+            var result = new List<Utilities.MetricResponse>();
             if (metricsResponse == null || metricsResponse.UsageMetrics == null)
             {
                 return result;
@@ -238,7 +238,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             foreach (var response in metricsResponse.UsageMetrics)
             {
                 var metrics = response.Data.ToMetricSet();
-                var rsp = new MetricResponse
+                var rsp = new Utilities.MetricResponse
                 {
                     Code = response.Code,
                     Message = response.Message,
@@ -250,9 +250,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return result;
         }
         
-        internal static MetricSet ToMetricSet(this HistoricalUsageMetricData data)
+        internal static Utilities.MetricSet ToMetricSet(this HistoricalUsageMetricData data)
         {
-            var metrics = new MetricSet
+            var metrics = new Utilities.MetricSet
             {
                 Name = data.Name,
                 PrimaryAggregationType = data.PrimaryAggregationType,
@@ -266,13 +266,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return metrics;
         }
 
-        internal static IList<MetricSample> ToMetricSamples(this IList<HistoricalUsageMetricSample> samples)
+        internal static IList<Utilities.MetricSample> ToMetricSamples(this IList<HistoricalUsageMetricSample> samples)
         {
-            var result = new List<MetricSample>();
+            var result = new List<Utilities.MetricSample>();
 
             foreach (var s in samples)
             {
-                var converted = new MetricSample()
+                var converted = new Utilities.MetricSample()
                 {
                     Count = s.Count,
                     TimeCreated = s.TimeCreated,
@@ -304,9 +304,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return result;
         }
 
-        private static Certificate ToCertificate(WebSite.WebSiteSslCertificate certificate)
+        private static Utilities.Certificate ToCertificate(WebSite.WebSiteSslCertificate certificate)
         {
-            return new Certificate
+            return new Utilities.Certificate
             {
                 FriendlyName = certificate.FriendlyName,
                 SubjectName = certificate.SubjectName,
@@ -323,18 +323,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             };
         }
 
-        private static HostNameSslState ToNameSslState(WebSite.WebSiteHostNameSslState state)
+        private static Utilities.HostNameSslState ToNameSslState(WebSite.WebSiteHostNameSslState state)
         {
-            return new HostNameSslState
+            return new Utilities.HostNameSslState
             {
                 Name = state.Name,
-                SslState = (SslState)(int)state.SslState
+                SslState = (Utilities.SslState)(int)state.SslState
             };
         }
 
-        internal static WebSpace ToWebSpace(this WebSpacesListResponse.WebSpace webspace)
+        internal static Utilities.WebSpace ToWebSpace(this WebSpacesListResponse.WebSpace webspace)
         {
-            return new WebSpace
+            return new Utilities.WebSpace
             {
                 Name = webspace.Name,
                 Plan = webspace.Plan,
@@ -352,7 +352,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             };
         }
 
-        internal static WebSiteUpdateConfigurationParameters ToConfigUpdateParameters(this SiteConfig config)
+        internal static WebSiteUpdateConfigurationParameters ToConfigUpdateParameters(this Utilities.SiteConfig config)
         {
             var parameters = new WebSiteUpdateConfigurationParameters
             {
@@ -368,7 +368,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 WebSocketsEnabled = config.WebSocketsEnabled,
                 RemoteDebuggingEnabled = config.RemoteDebuggingEnabled,
                 RemoteDebuggingVersion = config.RemoteDebuggingVersion,
-                RoutingRules = config.RoutingRules.Select(r => r.ToRoutingRule()).ToArray()
+                RoutingRules = config.RoutingRules.Select(r => r.ToRoutingRule()).ToArray(),
+                Use32BitWorkerProcess = config.Use32BitWorkerProcess,
             };
             if (config.AppSettings != null)
                 config.AppSettings.ForEach(nvp => parameters.AppSettings.Add(ToKeyValuePair(nvp)));
@@ -379,7 +380,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 {
                     Name = csi.Name,
                     ConnectionString = csi.ConnectionString,
-                    Type = (Models.ConnectionStringType)Enum.Parse(typeof(Models.ConnectionStringType), csi.Type.ToString())
+                    Type = (Management.WebSites.Models.ConnectionStringType)Enum.Parse(typeof(Management.WebSites.Models.ConnectionStringType), csi.Type.ToString(), ignoreCase: true)
                 }));
 
             if (config.DefaultDocuments != null)
@@ -400,13 +401,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return parameters;
         }
 
-        internal static Models.RoutingRule ToRoutingRule(this Utilities.RoutingRule rule)
+        internal static Management.WebSites.Models.RoutingRule ToRoutingRule(this Utilities.RoutingRule rule)
         {
-            Models.RoutingRule result = null;
+            Management.WebSites.Models.RoutingRule result = null;
             if (rule is Utilities.RampUpRule)
             {
                 var rampupRule = rule as Utilities.RampUpRule;
-                result = new Models.RampUpRule()
+                result = new Management.WebSites.Models.RampUpRule()
                 {
                     ReroutePercentage = rampupRule.ReroutePercentage,
                     ActionHostName = rampupRule.ActionHostName,
@@ -427,7 +428,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return result;
         }
 
-        internal static Utilities.WebHostingPlan ToWebHostingPlan(this Models.WebHostingPlan plan, string webSpace)
+        internal static Utilities.WebHostingPlan ToWebHostingPlan(this Management.WebSites.Models.WebHostingPlan plan, string webSpace)
         {
             return new Utilities.WebHostingPlan
             {
@@ -446,7 +447,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             };
         }
 
-        internal static Utilities.WebHostingPlan ToWebHostingPlan(this Models.WebHostingPlanGetResponse plan)
+        internal static Utilities.WebHostingPlan ToWebHostingPlan(this Management.WebSites.Models.WebHostingPlanGetResponse plan)
         {
             return new Utilities.WebHostingPlan
             {
@@ -470,17 +471,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
     /// </summary>
     public static class WebSitesManagementExtensionMethods
     {
-        public static Site GetSiteWithCache(
+        public static Utilities.Site GetSiteWithCache(
             this IWebSiteManagementClient client,
             string website)
         {
             return GetFromCache(client, website) ?? GetFromAzure(client, website);
         }
 
-        private static Site GetFromCache(IWebSiteManagementClient client,
+        private static Utilities.Site GetFromCache(IWebSiteManagementClient client,
             string website)
         {
-            Site site = Cache.GetSite(client.Credentials.SubscriptionId, website);
+            Utilities.Site site = Cache.GetSite(client.Credentials.SubscriptionId, website);
             if (site != null)
             {
                 // Verify site still exists
@@ -503,7 +504,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             return null;
         }
 
-        private static Site GetFromAzure(IWebSiteManagementClient client,
+        private static Utilities.Site GetFromAzure(IWebSiteManagementClient client,
             string website)
         {
             // Get all available webspace using REST API

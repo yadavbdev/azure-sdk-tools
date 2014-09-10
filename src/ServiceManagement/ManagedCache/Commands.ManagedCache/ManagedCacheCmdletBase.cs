@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
     /// <summary>
     /// The base class for all Microsoft Azure Managed Cache Management Cmdlets
     /// </summary>
-    public abstract class ManagedCacheCmdletBase : CmdletWithSubscriptionBase
+    public abstract class ManagedCacheCmdletBase : AzurePSCmdlet
     {
         private PSCacheClient cacheClient;
 
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
             {
                 if (cacheClient == null)
                 {
-                    cacheClient = new PSCacheClient(CurrentSubscription);
+                    cacheClient = new PSCacheClient(CurrentContext.Subscription);
                 }
                 return cacheClient;
             }

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces
 {
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     public interface IPipelineResult : IRunspaceBase
     {
         ICollection<PSObject> Results { get; }

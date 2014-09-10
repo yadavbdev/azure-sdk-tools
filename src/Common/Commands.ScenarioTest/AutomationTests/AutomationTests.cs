@@ -12,75 +12,99 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.ScenarioTest.AutomationTests
-{
-    using Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Testing;
+using Xunit;
 
-    [TestClass]
-    public class AutomationTests : WindowsAzurePowerShellCertificateTest
+namespace Microsoft.WindowsAzure.Commands.ScenarioTest
+{
+    public class AutomationTests
     {
-        public AutomationTests() : base("Automation\\AutomationTests.ps1") { }
-        
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.CheckIn)]
-        [TestCategory(Category.Automation)]
+        private EnvironmentSetupHelper helper = new EnvironmentSetupHelper();
+
+        [Fact(Skip = "Fix to make x86 compatible.")]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Service, Category.Automation)]
         public void TestAutomationStartAndStopRunbook()
         {
-            RunPowerShellTest("Test-AutomationStartAndStopRunbook -runbookPath Automation\\Test-Workflow.ps1");
+            RunPowerShellTest("Test-AutomationStartAndStopRunbook -runbookPath Resources\\Automation\\Test-Workflow.ps1");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.CheckIn)]
-        [TestCategory(Category.Automation)]
+        [Fact(Skip = "Fix to make x86 compatible.")]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Service, Category.Automation)]
         public void TestAutomationPublishAndEditRunbook()
         {
-            RunPowerShellTest("Test-AutomationPublishAndEditRunbook -runbookPath Automation\\Test-Workflow.ps1 -editRunbookPath Automation\\Test-WorkflowV2.ps1");
+            RunPowerShellTest("Test-AutomationPublishAndEditRunbook -runbookPath Resources\\Automation\\Test-Workflow.ps1 -editRunbookPath Resources\\Automation\\Test-WorkflowV2.ps1");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.CheckIn)]
-        [TestCategory(Category.Automation)]
+        [Fact (Skip = "Fix to make x86 compatible.")]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Service, Category.Automation)]
         public void TestAutomationConfigureRunbook()
         {
-            RunPowerShellTest("Test-AutomationConfigureRunbook -runbookPath Automation\\Write-DebugAndVerboseOutput.ps1");
+            RunPowerShellTest("Test-AutomationConfigureRunbook -runbookPath Resources\\Automation\\Write-DebugAndVerboseOutput.ps1");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Automation)]
+        [Fact]
+        [Trait(Category.Service, Category.Automation)]
         public void TestAutomationSuspendAndResumeJob()
         {
-            RunPowerShellTest("Test-AutomationSuspendAndResumeJob -runbookPath Automation\\Use-WorkflowCheckpointSample.ps1");
+            if (XUnitHelper.IsCheckin()) return;
+
+            RunPowerShellTest("Test-AutomationSuspendAndResumeJob -runbookPath Resources\\Automation\\Use-WorkflowCheckpointSample.ps1");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.Automation)]
+        [Fact]
+        [Trait(Category.Service, Category.Automation)]
         public void TestAutomationStartRunbookOnASchedule()
         {
-            RunPowerShellTest("Test-AutomationStartRunbookOnASchedule -runbookPath Automation\\Test-Workflow.ps1");
+            if (XUnitHelper.IsCheckin()) return;
+
+            RunPowerShellTest("Test-AutomationStartRunbookOnASchedule -runbookPath Resources\\Automation\\Test-Workflow.ps1");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.CheckIn)]
-        [TestCategory(Category.Automation)]
+        [Fact(Skip = "Fix to make x86 compatible.")]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Service, Category.Automation)]
         public void TestAutomationStartUnpublishedRunbook()
         {
-            RunPowerShellTest("Test-AutomationStartUnpublishedRunbook -runbookPath Automation\\Test-WorkFlowWithVariousParameters.ps1");
+            RunPowerShellTest("Test-AutomationStartUnpublishedRunbook -runbookPath Resources\\Automation\\Test-WorkFlowWithVariousParameters.ps1");
         }
 
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.CheckIn)]
-        [TestCategory(Category.Automation)]
+        [Fact(Skip = "Fix to make x86 compatible.")]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Service, Category.Automation)]
         public void TestAutomationRunbookWithParameter()
         {
-            RunPowerShellTest("Test-RunbookWithParameter -runbookPath Automation\\fastJob.ps1  @{'nums'='[1,2,3,4,5,6,7]'}  28");
+            RunPowerShellTest("Test-RunbookWithParameter -runbookPath Resources\\Automation\\fastJob.ps1  @{'nums'='[1,2,3,4,5,6,7]'}  28");
+        }
+
+        protected void SetupManagementClients()
+        {
+            helper.SetupSomeOfManagementClients();
+        }
+
+        protected void RunPowerShellTest(params string[] scripts)
+        {
+            using (UndoContext context = UndoContext.Current)
+            {
+                context.Start(TestUtilities.GetCallingClass(1), TestUtilities.GetCurrentMethodName(2));
+
+                SetupManagementClients();
+
+                List<string> modules = Directory.GetFiles("Resources\\Automation", "*.ps1").ToList();
+                modules.Add("Common.ps1");
+
+                helper.SetupEnvironment(AzureModule.AzureServiceManagement);
+                helper.SetupModules(AzureModule.AzureServiceManagement, modules.ToArray());
+
+                helper.RunPowerShellTest(scripts);
+            }
         }
     }
 }

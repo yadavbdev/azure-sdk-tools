@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System;
-    using System.Globalization;
-    using Utilities.Common;
-
     public sealed class DiskContext : ManagementOperationContext
     {
         public string AffinityGroup { get; set; }

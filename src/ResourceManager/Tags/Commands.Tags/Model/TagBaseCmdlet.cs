@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Tags.Model;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.Azure.Commands.Tags.Model
 {
-    public abstract class TagBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class TagBaseCmdlet : AzurePSCmdlet
     {
         private TagsClient tagsClient;
 
@@ -27,7 +26,7 @@ namespace Microsoft.Azure.Commands.Tags.Model
             {
                 if (tagsClient == null)
                 {
-                    tagsClient = new TagsClient(CurrentSubscription)
+                    tagsClient = new TagsClient(CurrentContext.Subscription)
                     {
                         VerboseLogger = WriteVerboseWithTimestamp,
                         ErrorLogger = WriteErrorWithTimestamp

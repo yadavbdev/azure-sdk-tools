@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.Win32;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding
 {
-    using System.Diagnostics;
-    using System.IO;
-    using System.Management.Automation;
-    using Utilities.CloudService;
-    using Utilities.Common;
-    using Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Utilities.Properties;
-    using Win32;
-
     /// <summary>
     /// Create scaffolding for a new Python Django web role, change cscfg file and csdef to include the added web role
     /// </summary>
@@ -80,7 +80,8 @@ namespace Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding
 
         internal static string FindPythonInterpreterPath()
         {
-            foreach (var baseKey in new[] { Registry.LocalMachine, Registry.CurrentUser })
+            foreach (var baseKey in new[] { RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, 
+                RegistryView.Registry32), Registry.CurrentUser })
             {
                 using (var python = baseKey.OpenSubKey(PythonCorePath))
                 {

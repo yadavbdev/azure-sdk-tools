@@ -12,28 +12,51 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.ScenarioTest.SchedulerTests
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Testing;
+using Xunit;
+
+namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
-
-    [TestClass]
-    public class SchedulerTests : WindowsAzurePowerShellCertificateTest
+    public class SchedulerTests
     {
-        public SchedulerTests()
-            : base("Common.ps1",
-                   "Scheduler\\SchedulerTests.ps1")
-        {
-        }
-
-        [TestMethod]
-        [TestCategory(Category.All)]
-        [TestCategory(Category.CheckIn)]
-        [TestCategory(Category.BVT)]
-        [TestCategory(Category.Scheduler)]
+        private EnvironmentSetupHelper helper = new EnvironmentSetupHelper();
+        
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.AcceptanceType, Category.BVT)]
+        [Trait(Category.Service, Category.Scheduler)]
         public void TestSchedulerEndToEnd()
         {
             this.RunPowerShellTest("Test-SchedulerEndToEnd");
+        }
+
+        protected void SetupManagementClients()
+        {
+            helper.SetupSomeOfManagementClients();
+        }
+
+        protected void RunPowerShellTest(params string[] scripts)
+        {
+            using (UndoContext context = UndoContext.Current)
+            {
+                context.Start(TestUtilities.GetCallingClass(1), TestUtilities.GetCurrentMethodName(2));
+
+                SetupManagementClients();
+
+                List<string> modules = Directory.GetFiles("Resources\\Scheduler", "*.ps1").ToList();
+                modules.Add("Common.ps1");
+
+                helper.SetupEnvironment(AzureModule.AzureServiceManagement);
+                helper.SetupModules(AzureModule.AzureServiceManagement, modules.ToArray());
+
+                helper.RunPowerShellTest(scripts);
+            }
         }
     }
 }

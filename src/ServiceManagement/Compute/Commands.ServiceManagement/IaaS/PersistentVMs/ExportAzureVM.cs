@@ -12,20 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using AutoMapper;
-    using Helpers;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using DataVirtualHardDisk = Model.DataVirtualHardDisk;
-    using OSVirtualHardDisk = Model.OSVirtualHardDisk;
     using PVM = Model;
 
     [Cmdlet(VerbsData.Export, "AzureVM")]
@@ -73,7 +71,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             {
                 var vm = role;
                 var roleInstance = CurrentDeploymentNewSM.RoleInstances.First(r => r.RoleName == vm.RoleName);
-                var vmContext = new PersistentVMRoleContext
+                var vmContext = new PVM.PersistentVMRoleContext
                 {
                     ServiceName = ServiceName,
                     Name = vm.RoleName,
@@ -92,13 +90,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                     OperationDescription = CommandRuntime.ToString(),
                     OperationId = GetDeploymentOperationNewSM.Id,
                     OperationStatus = GetDeploymentOperationNewSM.Status.ToString(),
-                    VM = new PersistentVM
+                    VM = new PVM.PersistentVM
                     {
                         AvailabilitySetName = vm.AvailabilitySetName,
                         ConfigurationSets = PersistentVMHelper.MapConfigurationSets(vm.ConfigurationSets),
-                        DataVirtualHardDisks = new Collection<DataVirtualHardDisk>(),
+                        DataVirtualHardDisks = new Collection<PVM.DataVirtualHardDisk>(),
                         Label = vm.Label,
-                        OSVirtualHardDisk = Mapper.Map(vm.OSVirtualHardDisk, new OSVirtualHardDisk()),
+                        OSVirtualHardDisk = Mapper.Map(vm.OSVirtualHardDisk, new PVM.OSVirtualHardDisk()),
                         RoleName = vm.RoleName,
                         RoleSize = vm.RoleSize.ToString(),
                         RoleType = vm.RoleType,
@@ -111,7 +109,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                 if (vm.DataVirtualHardDisks != null)
                 {
                     vm.DataVirtualHardDisks.ForEach(
-                        d => vmContext.VM.DataVirtualHardDisks.Add(Mapper.Map<DataVirtualHardDisk>(d)));
+                        d => vmContext.VM.DataVirtualHardDisks.Add(Mapper.Map<PVM.DataVirtualHardDisk>(d)));
                 }
                 else
                 {

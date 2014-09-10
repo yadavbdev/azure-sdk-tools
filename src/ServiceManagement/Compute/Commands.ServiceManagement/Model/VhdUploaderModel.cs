@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Sync;
+using Microsoft.WindowsAzure.Commands.Sync.Upload;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Sync;
-    using Sync.Upload;
-
     public class VhdUploaderModel
     {
         public static VhdUploadContext Upload(UploadParameters uploadParameters)

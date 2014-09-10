@@ -12,21 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache;
+using Microsoft.Azure.Management.ManagedCache.Models;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    using Microsoft.Azure.Commands.ManagedCache.Models;
-    using Microsoft.Azure.Management.ManagedCache;
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
     class PSCacheClient
     {
         private const string CacheResourceType = "Caching";
@@ -34,9 +36,9 @@ namespace Microsoft.Azure.Commands.ManagedCache
         private const string CacheServiceReadyState = "Active";
 
         private ManagedCacheClient client;
-        public PSCacheClient(WindowsAzureSubscription currentSubscription)
+        public PSCacheClient(AzureSubscription currentSubscription)
         {
-            client = currentSubscription.CreateClient<ManagedCacheClient>();
+            client = AzureSession.ClientFactory.CreateClient<ManagedCacheClient>(currentSubscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
         public PSCacheClient() { }
 

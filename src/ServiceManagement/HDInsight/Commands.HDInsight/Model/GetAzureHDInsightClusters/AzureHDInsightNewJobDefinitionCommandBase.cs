@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using Commands.BaseCommandInterfaces;
-    using System.Collections;
-
     internal abstract class AzureHDInsightNewJobDefinitionCommandBase : AzureHDInsightCommandBase, INewAzureHDInsightJobConfigBase
     {
         public abstract Hashtable Defines { get; set; }

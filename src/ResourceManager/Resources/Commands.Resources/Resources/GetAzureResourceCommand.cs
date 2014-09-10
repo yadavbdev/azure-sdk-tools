@@ -12,9 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Linq;
 using Microsoft.Azure.Commands.Resources.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -30,7 +29,7 @@ namespace Microsoft.Azure.Commands.Resources
         internal const string ParameterSetNameWithId = "Get a single resource";
 
         [Alias("ResourceName")]
-        [Parameter(ParameterSetName = ParameterSetNameWithId, Position=0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name.")]
+        [Parameter(ParameterSetName = ParameterSetNameWithId, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
@@ -82,8 +81,9 @@ namespace Microsoft.Azure.Commands.Resources
                         "ResourceGroupName", r.ResourceGroupName,
                         "ResourceType", r.ResourceType,
                         "ParentResource", r.ParentResource,
-                        "Location", r.Location
-                        )));
+                        "Location", r.Location,
+                        "Permissions", r.PermissionsTable,
+                        "ResourceId", r.ResourceId)));
 
                     WriteObject(output, true);
                 }

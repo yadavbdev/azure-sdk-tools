@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-
     [Cmdlet(VerbsCommon.Remove, VirtualMachineDscExtensionCmdletNoun),
     OutputType(typeof(IPersistentVM))]
     public class RemoveAzureVMDscExtensionCommand : VirtualMachineDscExtensionCmdletBase

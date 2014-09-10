@@ -9,13 +9,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System;
-    using System.Management.Automation;
-    using System.Xml.Linq;
-    using Utilities.Websites.Services;
-    
     public abstract class BaseAzureServiceRemoteDesktopExtensionCmdlet : BaseAzureServiceExtensionCmdlet
     {
         protected const string UserNameElemStr = "UserName";

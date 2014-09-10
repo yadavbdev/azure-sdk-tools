@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model
 {
-    using System;
-    using System.Collections.Generic;
-
     public class PSHttpJobDetail : PSJobDetail
     {
         public string Method { get; internal set; }

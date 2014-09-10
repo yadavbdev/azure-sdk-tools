@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-    using WindowsAzure.Commands.ServiceManagement.Model;
-
     public class GetAzureDataDiskCmdletInfo : CmdletsInfo
     {
         public GetAzureDataDiskCmdletInfo(PersistentVM vM)

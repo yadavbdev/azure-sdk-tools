@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Web.Script.Serialization;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using Common;
-    using ServiceManagement.Model;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Web.Script.Serialization;
-
     public class ServiceSettings
     {
         /// <summary>
@@ -136,7 +136,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         {
             Validate.ValidateFileFull(path, Resources.ServiceSettings);
 
-            string text = File.ReadAllText(path);
+            string text = FileUtilities.DataStore.ReadFileAsText(path);
             ServiceSettings settings = new JavaScriptSerializer().Deserialize<ServiceSettings>(text);
             settings._shouldValidate = true;
             
@@ -358,7 +358,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             Validate.ValidateStringIsNullOrEmpty(path, Resources.ServiceSettings);
             Validate.ValidateDirectoryFull(Path.GetDirectoryName(path), Resources.ServiceSettings);
 
-            File.WriteAllText(path, new JavaScriptSerializer().Serialize(this));
+            FileUtilities.DataStore.WriteFile(path, new JavaScriptSerializer().Serialize(this));
         }
         
         public override bool Equals(object obj)
