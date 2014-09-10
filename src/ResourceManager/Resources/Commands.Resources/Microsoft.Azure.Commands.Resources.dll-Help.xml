@@ -5658,25 +5658,56 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
           <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         </command:parameter>
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
-          <maml:name>UserPrincipalName</maml:name>
+          <maml:name>RoleDefinitionName</maml:name>
           <maml:description>
-            <maml:para>UPN of the user.</maml:para>
+            <maml:para>Role to assign the principals with.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
           <maml:name>Mail</maml:name>
           <maml:description>
-            <maml:para>Mail of the user or group</maml:para>
+            <maml:para>The live id or group mail.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
-          <maml:name>ServicePrincipalName</maml:name>
-          <maml:description>
-            <maml:para>SPN of the service principal.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         </command:parameter>
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>RoleDefinitionName</maml:name>
@@ -5713,7 +5744,111 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>UserPrincipalName</maml:name>
+          <maml:description>
+            <maml:para>The UPN.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ServicePrincipalName</maml:name>
+          <maml:description>
+            <maml:para>The SPN.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ParentResource</maml:name>
           <maml:description>
             <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
@@ -5787,7 +5922,7 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>ParentResource</maml:name>
         <maml:description>
           <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
@@ -5930,70 +6065,70 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-AzureRoleAssignment</maml:name>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
           <maml:name>ObjectId</maml:name>
           <maml:description>
             <maml:para>Object id of the user, group or service principal.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>UserPrincipalName</maml:name>
           <maml:description>
             <maml:para>UPN of the user.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>Mail</maml:name>
           <maml:description>
             <maml:para>Mail of the user or group</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ServicePrincipalName</maml:name>
           <maml:description>
             <maml:para>SPN of the service principal.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>RoleDefinitionName</maml:name>
           <maml:description>
             <maml:para>Role to assign the principals with.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>Scope</maml:name>
           <maml:description>
             <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ResourceGroupName</maml:name>
           <maml:description>
             <maml:para>Resource group to assign the role to.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ResourceType</maml:name>
           <maml:description>
             <maml:para>Type of the resource to assign the role to.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ResourceName</maml:name>
           <maml:description>
             <maml:para>Name of the resource to assign the role to.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ParentResource</maml:name>
           <maml:description>
             <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
@@ -6003,42 +6138,42 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
         <maml:name>ObjectId</maml:name>
         <maml:description>
           <maml:para>Object id of the user, group or service principal.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>UserPrincipalName</maml:name>
         <maml:description>
           <maml:para>UPN of the user.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>Mail</maml:name>
         <maml:description>
           <maml:para>Mail of the user or group</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>ServicePrincipalName</maml:name>
         <maml:description>
           <maml:para>SPN of the service principal.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>RoleDefinitionName</maml:name>
         <maml:description>
           <maml:para>Role to assign the principals with.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>Scope</maml:name>
         <maml:description>
           <maml:para>
@@ -6046,28 +6181,28 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>ResourceGroupName</maml:name>
         <maml:description>
           <maml:para>Resource group to assign the role to.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>ResourceType</maml:name>
         <maml:description>
           <maml:para>Type of the resource to assign the role to.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>ResourceName</maml:name>
         <maml:description>
           <maml:para>Name of the resource to assign the role to.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>ParentResource</maml:name>
         <maml:description>
           <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
@@ -6293,7 +6428,7 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ParentResource</maml:name>
           <maml:description>
             <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
@@ -6367,7 +6502,7 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
         <maml:name>ParentResource</maml:name>
         <maml:description>
           <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
