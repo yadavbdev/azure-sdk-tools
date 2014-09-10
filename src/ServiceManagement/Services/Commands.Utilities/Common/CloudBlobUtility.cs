@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.IO;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Management.Storage;
-    using Management.Storage.Models;
-    using Storage;
-    using Storage.Auth;
-    using Storage.Blob;
-    using System;
-    using System.Globalization;
-    using System.IO;
-
     public class CloudBlobUtility
     {
         private const string BlobEndpointIdentifier = ".blob.";

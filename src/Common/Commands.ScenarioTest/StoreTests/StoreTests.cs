@@ -12,19 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation.Runspaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common.CustomPowerShell;
+using Microsoft.WindowsAzure.Commands.Utilities.Store;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.StoreTests
 {
-    using Commands.ScenarioTest.Common;
-    using Commands.ScenarioTest.Common.CustomPowerShell;
-    using Commands.Utilities.Store;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System.Collections.Generic;
-    using System.Management.Automation.Runspaces;
-
     [TestClass]
     [Ignore] // https://github.com/WindowsAzure/azure-sdk-tools/issues/1184
-    public class StoreTests : WindowsAzurePowerShellCertificateTest
+    public class StoreTests : AzurePowerShellCertificateTest
     {
         public static string StoreCredentialFile = "store.publishsettings";
 
@@ -345,10 +344,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.StoreTests
         public void TestNewAzureStoreAddOnConfirmationMessage()
         {
             expectedDefaultChoices.Add(PowerShellCustomConfirmation.No);
-            expectedPromptCaptions.Add(Resources.NewAddOnConformation);
+            expectedPromptCaptions.Add(Utilities.Properties.Resources.NewAddOnConformation);
             expectedPromptMessages.Add(string.Format(
-                Resources.NewNonMicrosoftAddOnMessage,
-                string.Format(Resources.AddOnUrl, "f131eadb-7aa3-401a-a2fb-1c7e71f45c3c"),
+                Utilities.Properties.Resources.NewNonMicrosoftAddOnMessage,
+                string.Format(Utilities.Properties.Resources.AddOnUrl, "f131eadb-7aa3-401a-a2fb-1c7e71f45c3c"),
                 "free",
                 "Sendgrid"));
             PromptSetup();

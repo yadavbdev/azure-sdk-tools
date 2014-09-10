@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [TestClass]
     public class RemoveWAPackVMTests : CmdletTestVirtualMachineStatusBase
     {
@@ -60,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
                 {"Id", expectedVMIdToDelete}
             };
 
-            var deletedVM = this.InvokeCmdlet("Get-WAPackVM", inputParams, string.Format(Resources.ResourceNotFound, expectedVMIdToDelete));
+            var deletedVM = this.InvokeCmdlet("Get-WAPackVM", inputParams, string.Format(Utilities.Properties.Resources.ResourceNotFound, expectedVMIdToDelete));
 
             Assert.AreEqual(0, deletedVM.Count);
         }
@@ -85,7 +84,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
             {
                 {"Id", expectedVMIdToDelete}
             };
-            var deletedVM = this.InvokeCmdlet("Get-WAPackVM", inputParams, string.Format(Resources.ResourceNotFound, expectedVMIdToDelete));
+            var deletedVM = this.InvokeCmdlet("Get-WAPackVM", inputParams, string.Format(Utilities.Properties.Resources.ResourceNotFound, expectedVMIdToDelete));
 
             Assert.AreEqual(0, deletedVM.Count);
         }

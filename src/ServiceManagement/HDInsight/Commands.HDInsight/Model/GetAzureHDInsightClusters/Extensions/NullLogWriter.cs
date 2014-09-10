@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions
 {
-    using HDInsight.Logging;
-
     internal class NullLogWriter : ILogWriter
     {
         public void Log(Severity severity, Verbosity verbosity, string content)

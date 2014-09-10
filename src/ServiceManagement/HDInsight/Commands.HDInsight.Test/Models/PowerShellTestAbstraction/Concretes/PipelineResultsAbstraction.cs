@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Concretes
 {
-    using Interfaces;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-
     public class PipelineResultsAbstraction : RunspaceAbstraction, IPipelineResult
     {
         public PipelineResultsAbstraction(ICollection<PSObject> results, Runspace runspace) : base(runspace)

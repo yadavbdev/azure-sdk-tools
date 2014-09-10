@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using DataObjects;
-    using HDInsight.Logging;
-    using System.Collections.ObjectModel;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using WindowsAzure.Commands.Utilities.Common;
-
     internal interface IInvokeAzureHDInsightJobCommand
     {
         CancellationToken CancellationToken { get; }
 
-        WindowsAzureSubscription CurrentSubscription { get; set; }
+        AzureSubscription CurrentSubscription { get; set; }
 
         AzureHDInsightClusterConnection Connection { get; set; }
 

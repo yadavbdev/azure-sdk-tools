@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Newtonsoft.Json;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities
 {
-    using Newtonsoft.Json;
-    using System;
-
     /// <summary>
     /// LogPath.
     /// </summary>

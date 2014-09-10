@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    
     [TestClass]
     public class GetWAPPackVMTests : CmdletTestBase
     {
@@ -109,7 +108,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
         public void GetWAPackVmByIdDoesNotExist()
         {
             var expectedVmId = Guid.NewGuid().ToString();
-            var expectedError = string.Format(Resources.ResourceNotFound, expectedVmId);
+            var expectedError = string.Format(Utilities.Properties.Resources.ResourceNotFound, expectedVmId);
             var inputParams = new Dictionary<string, object>()
             {
                 {"Id", expectedVmId}

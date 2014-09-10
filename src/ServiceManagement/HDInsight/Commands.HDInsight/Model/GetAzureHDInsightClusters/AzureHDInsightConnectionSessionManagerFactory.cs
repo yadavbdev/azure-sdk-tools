@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using System.Management.Automation;
-
     internal class AzureHDInsightConnectionSessionManagerFactory : IAzureHDInsightConnectionSessionManagerFactory
     {
         public IAzureHDInsightConnectionSessionManager Create(SessionState sessionState)

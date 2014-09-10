@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model;
+using Microsoft.WindowsAzure.Management.Scheduler.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Common
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model;
-    using Microsoft.WindowsAzure.Management.Scheduler.Models;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public static class ExtensionMethods
     {
         public static string ToCloudServiceName(this string region)

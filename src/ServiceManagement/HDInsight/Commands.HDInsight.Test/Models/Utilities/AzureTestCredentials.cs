@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-
     public class StorageAccountCredentials
     {
         public string Container { get; set; }

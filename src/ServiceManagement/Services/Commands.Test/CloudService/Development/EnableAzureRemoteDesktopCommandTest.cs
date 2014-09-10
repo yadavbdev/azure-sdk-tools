@@ -12,28 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Common;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 {
-    using Commands.CloudService.Development;
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-    using MockCommandRuntime = Test.Utilities.Common.MockCommandRuntime;
-    using TestBase = Test.Utilities.Common.TestBase;
-    using Testing = Test.Utilities.Common.Testing;
-
     /// <summary>
     /// Basic unit tests for the Enable-AzureServiceProjectRemoteDesktop enableRDCmdlet.
     /// </summary>
-    [TestClass]
     public class EnableAzureRemoteDesktopCommandTest : TestBase
     {
         static private MockCommandRuntime mockCommandRuntime;
@@ -44,10 +42,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 
         private AddAzureNodeWorkerRoleCommand addNodeWorkerCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public EnableAzureRemoteDesktopCommandTest()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             addNodeWebCmdlet = new AddAzureNodeWebRoleCommand();
@@ -94,14 +91,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 
         public static void VerifyWebRole(WebRole role, bool isForwarder)
         {
-            Assert.AreEqual(isForwarder ? 1 : 0, role.Imports.Where(i => i.moduleName == "RemoteForwarder").Count());
-            Assert.AreEqual(1, role.Imports.Where(i => i.moduleName == "RemoteAccess").Count());
+            Assert.Equal(isForwarder ? 1 : 0, role.Imports.Where(i => i.moduleName == "RemoteForwarder").Count());
+            Assert.Equal(1, role.Imports.Where(i => i.moduleName == "RemoteAccess").Count());
         }
 
         public static void VerifyWorkerRole(WorkerRole role, bool isForwarder)
         {
-            Assert.AreEqual(isForwarder ? 1 : 0, role.Imports.Where(i => i.moduleName == "RemoteForwarder").Count());
-            Assert.AreEqual(1, role.Imports.Where(i => i.moduleName == "RemoteAccess").Count());
+            Assert.Equal(isForwarder ? 1 : 0, role.Imports.Where(i => i.moduleName == "RemoteForwarder").Count());
+            Assert.Equal(1, role.Imports.Where(i => i.moduleName == "RemoteAccess").Count());
         }
 
         public static void VerifyRoleSettings(CloudServiceProject service)
@@ -112,7 +109,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                     service.Components.LocalConfig.Role);
             foreach (RoleSettings roleSettings in settings)
             {
-                Assert.AreEqual(
+                Assert.Equal(
                     1,
                     roleSettings
                         .Certificates
@@ -124,7 +121,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Perform basic parameter validation.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableRemoteDesktopBasicParameterValidation()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -154,7 +151,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable remote desktop for an empty service.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableRemoteDesktopForEmptyService()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -169,7 +166,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable remote desktop for a simple web role.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableRemoteDesktopForWebRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -191,7 +188,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable remote desktop for web and worker roles.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableRemoteDesktopForWebAndWorkerRoles()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -211,14 +208,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 VerifyWebRole(service.Components.Definition.WebRole[0], false);
                 VerifyWorkerRole(service.Components.Definition.WorkerRole[0], true);
                 VerifyRoleSettings(service);
-                Assert.AreEqual<int>(0, mockCommandRuntime.OutputPipeline.Count);
+                Assert.Equal<int>(0, mockCommandRuntime.OutputPipeline.Count);
             }
         }
 
         /// <summary>
         /// Enable remote desktop for multiple web and worker roles.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableRemoteDesktopForMultipleWebAndWorkerRolesTwice()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -249,15 +246,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 VerifyWorkerRole(service.Components.Definition.WorkerRole[0], true);
                 VerifyWorkerRole(service.Components.Definition.WorkerRole[1], false);
                 VerifyRoleSettings(service);
-                Assert.AreEqual<int>(1, mockCommandRuntime.OutputPipeline.Count);
-                Assert.IsTrue((bool)mockCommandRuntime.OutputPipeline[0]);
+                Assert.Equal<int>(1, mockCommandRuntime.OutputPipeline.Count);
+                Assert.True((bool)mockCommandRuntime.OutputPipeline[0]);
             }
         }
 
         /// <summary>
         /// Enable remote desktop for a simple web role.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableRemoteDesktopUnicode()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -285,7 +282,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable remote desktop using short unicode password.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableRemoteDesktopUnicodeAndShortPasswordFails()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))

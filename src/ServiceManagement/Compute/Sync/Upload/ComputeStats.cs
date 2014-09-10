@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.CsUpload
 {
-    using System.Collections.Generic;
-
     internal class ComputeStats
     {
         IList<double> history;

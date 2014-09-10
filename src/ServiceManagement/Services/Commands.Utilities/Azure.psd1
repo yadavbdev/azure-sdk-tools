@@ -9,7 +9,7 @@
 @{
 
 # Version number of this module.
-ModuleVersion = '0.8.7.1'
+ModuleVersion = '0.8.8'
 
 # ID used to uniquely identify this module
 GUID = 'D48CF693-4125-4D2D-8790-1514F44CE325'
@@ -68,7 +68,8 @@ FormatsToProcess = @(
     '.\Storage\Microsoft.WindowsAzure.Commands.Storage.format.ps1xml',
     '.\Services\Microsoft.WindowsAzure.Commands.Store.format.ps1xml',
     '.\Services\Microsoft.WindowsAzure.Commands.Scheduler.format.ps1xml',
-    '.\Compute\Microsoft.WindowsAzure.Commands.ServiceManagement.format.ps1xml'
+    '.\Compute\Microsoft.WindowsAzure.Commands.ServiceManagement.format.ps1xml',
+    '.\Services\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml'
 )
 
 # Modules to import as nested modules of the module specified in ModuleToProcess

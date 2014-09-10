@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Commands.Storage.ScenarioTest.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using MS.Test.Common.MsTestLib;
-using System;
 
 namespace Commands.Storage.ScenarioTest.Common
 {
-    using Util;
-
     /// <summary>
     /// general settings for container related tests
     /// </summary>

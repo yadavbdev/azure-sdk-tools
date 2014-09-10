@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.CloudService;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Moq;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService
 {
-    using Commands.CloudService;
-    using Commands.Utilities.CloudService;
-    using Moq;
-    using System.Management.Automation;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class RemoveAzureServiceTests : TestBase
     {
         private Mock<ICloudServiceClient> clientMock;
@@ -32,8 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService
 
         private string serviceName = "cloudService";
 
-        [TestInitialize]
-        public void SetupTest()
+        public RemoveAzureServiceTests()
         {
             clientMock = new Mock<ICloudServiceClient>();
             clientMock.Setup(f => f.RemoveCloudService(serviceName, false));
@@ -49,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRemoveAzureService()
         {
             // Setup
@@ -65,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRemoveAzureServiceNoForce()
         {
             // Setup

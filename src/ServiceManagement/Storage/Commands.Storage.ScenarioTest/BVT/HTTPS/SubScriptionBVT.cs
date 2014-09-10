@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Commands.Storage.ScenarioTest.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MS.Test.Common.MsTestLib;
 using StorageTestLib;
 
 namespace Commands.Storage.ScenarioTest.BVT.HTTPS
 {
-    using Common;
-
     /// <summary>
     /// bvt tests using Azure subscription
     /// </summary>

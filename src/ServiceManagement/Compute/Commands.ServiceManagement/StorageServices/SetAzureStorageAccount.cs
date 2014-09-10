@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Storage.Models;
-using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
             var upstorageinput = new StorageAccountUpdateParameters
             {
-                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardZRS : this.Type,
+                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardGRS : this.Type,
                 Description = this.Description,
                 Label = this.Label
             };

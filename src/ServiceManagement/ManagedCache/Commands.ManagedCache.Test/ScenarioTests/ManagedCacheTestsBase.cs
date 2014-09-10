@@ -12,7 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
 using Microsoft.Azure.Management.ManagedCache;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -20,7 +19,7 @@ using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.Azure.Commands.ManagedCache.Test.ScenarioTests
 {
-    public abstract class ManagedCacheTestsBase : IDisposable
+    public abstract class ManagedCacheTestsBase
     {
         private EnvironmentSetupHelper helper;
 
@@ -55,11 +54,6 @@ namespace Microsoft.Azure.Commands.ManagedCache.Test.ScenarioTests
         protected ManagedCacheClient GetManagedCacheClient()
         {
             return TestBase.GetServiceClient<ManagedCacheClient>(new RDFETestEnvironmentFactory());
-        }
-
-        public void Dispose()
-        {
-            helper.Dispose();
         }
     }
 }

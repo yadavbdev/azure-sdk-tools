@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System.Collections;
-
     public class BitMap
     {
         public BitMap(BitArray data)

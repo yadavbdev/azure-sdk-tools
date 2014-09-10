@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Globalization;
+using System.Xml.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Xml.Linq;
-
     public class RoleConfiguration
     {
         private readonly XNamespace ns = "http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration";

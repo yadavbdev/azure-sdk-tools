@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo
 {
-    using WindowsAzure.Commands.ServiceManagement.Model;
-
     public class SetAzureVMSizeConfig
     {
         public readonly string instanceSize;

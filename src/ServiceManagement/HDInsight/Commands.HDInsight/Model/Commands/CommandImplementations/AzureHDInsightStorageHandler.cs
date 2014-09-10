@@ -11,17 +11,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
-    using BaseCommandInterfaces;
-    using GetAzureHDInsightClusters.Extensions;
-    using System;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using WindowsAzure.Storage.Auth;
-    using WindowsAzure.Storage.Blob;
-
     internal class AzureHDInsightStorageHandler : IAzureHDInsightStorageHandler
     {
         private const string ProductionStorageAccountEndpointUriTemplate = "http://{0}.blob.core.windows.net/";

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    using PowershellCore;
-
     public class GetAzureServiceDiagnosticsExtensionCmdletInfo : CmdletsInfo
     {
         public GetAzureServiceDiagnosticsExtensionCmdletInfo(string serviceName, string slot)

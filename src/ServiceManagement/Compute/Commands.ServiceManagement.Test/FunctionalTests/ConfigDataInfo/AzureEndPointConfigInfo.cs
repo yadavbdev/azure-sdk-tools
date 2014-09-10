@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo
 {
-    using Model;
-
     public class AzureEndPointConfigInfo
     {        
         public enum ParameterSet { NoLB, LoadBalancedNoProbe, CustomProbe, DefaultProbe };

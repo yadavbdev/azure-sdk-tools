@@ -12,26 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ServiceBus;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    using Commands.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GetAzureSBNamespaceTests : TestBase
     {
         Mock<ServiceBusClientExtensions> client;
         MockCommandRuntime mockCommandRuntime;
         GetAzureSBNamespaceCommand cmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public GetAzureSBNamespaceTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
             client = new Mock<ServiceBusClientExtensions>();
@@ -41,9 +42,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 CommandRuntime = mockCommandRuntime,
                 Client = client.Object
             };
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureSBNamespaceSuccessfull()
         {
             // Setup
@@ -57,10 +59,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<string>(expected.Name, actual.Name);
+            Assert.Equal<string>(expected.Name, actual.Name);
         }
 
-        [TestMethod]
+        [Fact]
         public void ListNamespacesSuccessfull()
         {
             // Setup
@@ -76,26 +78,33 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             List<ExtendedServiceBusNamespace> actual = mockCommandRuntime.OutputPipeline[0] as List<ExtendedServiceBusNamespace>;
-            Assert.AreEqual<int>(expected.Count, actual.Count);
+            Assert.Equal<int>(expected.Count, actual.Count);
             for (int i = 0; i < expected.Count; i++)
             {
-                Assert.AreEqual<string>(expected[i].Name, actual[i].Name);
+                Assert.Equal<string>(expected[i].Name, actual[i].Name);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureSBNamespaceWithInvalidNamesFail()
         {
             // Setup
             string[] invalidNames = { "1test", "test#", "test invaid", "-test", "_test" };
+            Mock<ServiceBusClientExtensions> client = new Mock<ServiceBusClientExtensions>();
 
             foreach (string invalidName in invalidNames)
             {
                 MockCommandRuntime mockCommandRuntime = new MockCommandRuntime();
-                GetAzureSBNamespaceCommand cmdlet = new GetAzureSBNamespaceCommand() { Name = invalidName, CommandRuntime = mockCommandRuntime };
+                GetAzureSBNamespaceCommand cmdlet = new GetAzureSBNamespaceCommand()
+                {
+                    Name = invalidName,
+                    CommandRuntime = mockCommandRuntime,
+                    Client = client.Object
+                };
                 string expected = string.Format("{0}\r\nParameter name: Name", string.Format(Resources.InvalidNamespaceName, invalidName));
+                client.Setup(f => f.GetNamespace(invalidName)).Throws(new InvalidOperationException(expected));
 
-                Testing.AssertThrows<ArgumentException>(() => cmdlet.ExecuteCmdlet(), expected);
+                Testing.AssertThrows<InvalidOperationException>(() => cmdlet.ExecuteCmdlet(), expected);
             }
         }
     }

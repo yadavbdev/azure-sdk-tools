@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.TrafficManager;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.TrafficManager;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
-    using Moq;
-    using System.Management.Automation;
-
     [TestClass]
     public class TestTrafficManagerDomainNameTests
     {
         private const string ProfileDomainName = "my.profile.trafficmanager.net";
+        private const string NakedProfileDomainName = "my.profile";
 
         private Mock<ICommandRuntime> mockCommandRuntime;
 
@@ -76,6 +77,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager
             // Assert
             clientMock.Verify(c => c.TestDomainAvailability(ProfileDomainName), Times.Once());
             mockCommandRuntime.Verify(c => c.WriteObject(false), Times.Once());
+        }
+
+        [TestMethod]
+        public void TestProfileDomainNameAppendsTrafficManagerSuffixTrue()
+        {
+            // Setup
+            clientMock.Setup(c => c.TestDomainAvailability(NakedProfileDomainName)).Returns(true);
+            cmdlet = new TestAzureTrafficManagerDomainName
+            {
+                DomainName = NakedProfileDomainName,
+                CommandRuntime = mockCommandRuntime.Object,
+                TrafficManagerClient = clientMock.Object
+            };
+
+            // Action
+            cmdlet.ExecuteCmdlet();
+
+            // Assert
+            clientMock.Verify(c => c.TestDomainAvailability(ProfileDomainName), Times.Once());
         }
     }
 }

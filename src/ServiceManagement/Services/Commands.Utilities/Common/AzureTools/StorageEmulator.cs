@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools
 {
-    using Commands.Common.Properties;
-    using Common;
-    using System.IO;
-
     public class StorageEmulator
     {
         private string emulatorPath = string.Empty;

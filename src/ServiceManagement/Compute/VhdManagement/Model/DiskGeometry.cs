@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System;
-    using Vhd.Model.Persistence;
-
     [VhdEntity(Size = 4)]
     public class DiskGeometry
     {

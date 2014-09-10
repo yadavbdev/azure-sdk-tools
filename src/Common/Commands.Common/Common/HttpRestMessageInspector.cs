@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Net.Http;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.Threading;
+using System.Xml.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.IO;
-    using System.Net.Http;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Dispatcher;
-    using System.Threading;
-    using System.Xml.Linq;
-
     public class HttpRestMessageHandler : MessageProcessingHandler
     {
         private Action<string> logger;

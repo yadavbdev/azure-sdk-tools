@@ -12,23 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MS.Test.Common.MsTestLib;
-using StorageTestLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Text;
+using Commands.Storage.ScenarioTest.BVT;
+using Commands.Storage.ScenarioTest.Common;
+using Commands.Storage.ScenarioTest.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using MS.Test.Common.MsTestLib;
+using StorageTestLib;
 
 namespace Commands.Storage.ScenarioTest.Functional
 {
-    using BVT;
-    using Common;
-    using Util;
-
     /// <summary>
     /// function test for storage context
     /// </summary>

@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Common;
-    using Common.XmlSchema.ServiceConfigurationSchema;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Creates basic scaffolding structure for azure web/worker role.
     /// </summary>
-    public abstract class AddRole : CmdletBase
+    public abstract class AddRole : AzurePSCmdlet
     {
         private string successMessage;
 

@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Common
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Services;
-    using System;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     public abstract class WebsiteContextBaseCmdlet : WebsiteBaseCmdlet
     {
         protected bool websiteNameDiscovery;

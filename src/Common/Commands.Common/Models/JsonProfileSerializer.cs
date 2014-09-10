@@ -12,23 +12,44 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using System;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
     public class JsonProfileSerializer : IProfileSerializer
     {
-        public string Serialize(AzureProfile obj)
+        public string Serialize(AzureProfile profile)
         {
-            throw new NotImplementedException();
+            return JsonConvert.SerializeObject(new
+            {
+                Environments = profile.Environments.Values.ToList(),
+                Subscriptions = profile.Subscriptions.Values.ToList(),
+                Accounts = profile.Accounts.Values.ToList()
+            }, Formatting.Indented);
         }
 
-        public AzureProfile Deserialize(string contents)
+        public void Deserialize(string contents, AzureProfile profile)
         {
-            throw new NotImplementedException();
-        }
+            var jsonProfile = JObject.Parse(contents);
 
-        public string ProfileFile { get { return "AzureProfile.json"; } }
+            foreach (var env in jsonProfile["Environments"])
+            {
+                profile.Environments[(string)env["Name"]] = JsonConvert.DeserializeObject<AzureEnvironment>(env.ToString());
+            }
+
+            foreach (var subscription in jsonProfile["Subscriptions"])
+            {
+                profile.Subscriptions[new Guid((string)subscription["Id"])] = JsonConvert.DeserializeObject<AzureSubscription>(subscription.ToString());
+            }
+
+            foreach (var account in jsonProfile["Accounts"])
+            {
+                profile.Accounts[(string)account["Id"]] = JsonConvert.DeserializeObject<AzureAccount>(account.ToString());
+            }
+        }
     }
 }

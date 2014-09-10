@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
 {
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-    using System.Runtime.Serialization;
-
     public class TrafficManagerEndpoint
     {
         [DataMember(IsRequired = true)]
@@ -37,6 +37,9 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
         [DataMember(IsRequired = true)]
         public int Weight { get; set; }
 
+        [DataMember(IsRequired = true)]
+        public int MinChildEndpoints { get; set; }
+
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -55,7 +58,8 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
                    Type == endpoint.Type &&
                    Status == endpoint.Status &&
                    MonitorStatus == endpoint.MonitorStatus &&
-                   Weight == endpoint.Weight;
+                   Weight == endpoint.Weight &&
+                   MinChildEndpoints == endpoint.MinChildEndpoints;
         }
 
         public override int GetHashCode()
@@ -66,6 +70,7 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Models
             result = (result * 397) ^ Status.GetHashCode();
             result = (result * 397) ^ MonitorStatus.GetHashCode();
             result = (result * 397) ^ Weight.GetHashCode();
+            result = (result * 397) ^ MinChildEndpoints.GetHashCode();
             return result;
         }
     }

@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Management.Compute.Models;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Get, "AzureWinRMUri"), OutputType(typeof(Uri), typeof(List<Uri>))]
     public class GetAzureWinRMUri : IaaSDeploymentManagementCmdletBase
     {

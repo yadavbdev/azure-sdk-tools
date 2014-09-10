@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System.Reflection;
-
     public class VhdPropertyDescriptor
     {
         public VhdPropertyAttribute Attribute { get; set; }

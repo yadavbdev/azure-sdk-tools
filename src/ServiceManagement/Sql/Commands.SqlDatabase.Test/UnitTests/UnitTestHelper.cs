@@ -12,20 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Common helper functions for SqlDatabase UnitTests.
     /// </summary>
@@ -35,6 +37,11 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// Manifest file for SqlDatabase Tests.
         /// </summary>
         private static readonly string SqlDatabaseTestManifest = @".\ServiceManagement\Azure\Azure.psd1";
+
+        /// <summary>
+        /// The subscription name used in the unit tests.
+        /// </summary>
+        private static readonly string UnitTestEnvironmentName = "SqlUnitTestEnvironment";
 
         /// <summary>
         /// The subscription name used in the unit tests.
@@ -103,13 +110,12 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
             }
         }
 
-        public static WindowsAzureSubscription CreateUnitTestSubscription()
+        public static AzureSubscription CreateUnitTestSubscription()
         {
-            return new WindowsAzureSubscription
+            return new AzureSubscription
             {
-                SubscriptionName = "TestSubscription",
-                SubscriptionId = "00000000-0000-0000-0000-000000000000",
-                Certificate = new X509Certificate2()
+                Name = "TestSubscription",
+                Id = new Guid("00000000-0000-0000-0000-000000000000")
             };
         }
 
@@ -177,7 +183,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// <param name="powershell">The powershell instance that executes the scripts.</param>
         /// <param name="scripts">An array of script to execute.</param>
         public static Collection<PSObject> InvokeBatchScript(
-            this PowerShell powershell,
+            this System.Management.Automation.PowerShell powershell,
             params string[] scripts)
         {
             if (powershell == null)
@@ -202,7 +208,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// Dumps all powershell streams to the console.
         /// </summary>
         /// <param name="powershell">The powershell instance containing the streams.</param>
-        public static void DumpStreams(this PowerShell powershell)
+        public static void DumpStreams(this System.Management.Automation.PowerShell powershell)
         {
             if (powershell == null)
             {
@@ -239,7 +245,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// Imports the Azure Manifest to the given <paramref name="powershell"/> instance.
         /// </summary>
         /// <param name="powershell">An instance of the <see cref="PowerShell"/> object.</param>
-        public static void ImportAzureModule(PowerShell powershell)
+        public static void ImportAzureModule(System.Management.Automation.PowerShell powershell)
         {
             // Import the test manifest file
             powershell.InvokeBatchScript(
@@ -252,7 +258,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// user name "testuser" and password "testpass".
         /// </summary>
         /// <param name="powershell">An instance of the <see cref="PowerShell"/> object.</param>
-        public static void CreateTestCredential(PowerShell powershell)
+        public static void CreateTestCredential(System.Management.Automation.PowerShell powershell)
         {
             CreateTestCredential(powershell, "testuser", "testp@ss1");
         }
@@ -262,7 +268,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// the given user name and password.
         /// </summary>
         /// <param name="powershell">An instance of the <see cref="PowerShell"/> object.</param>
-        public static void CreateTestCredential(PowerShell powershell, string username, string password)
+        public static void CreateTestCredential(System.Management.Automation.PowerShell powershell, string username, string password)
         {
             // Create the test credential
             powershell.InvokeBatchScript(
@@ -277,7 +283,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
         /// that connects to the mock server.
         /// </summary>
         /// <param name="powershell">The powershell instance used for the test.</param>
-        public static WindowsAzureSubscription SetupUnitTestSubscription(PowerShell powershell)
+        public static AzureSubscription SetupUnitTestSubscription(System.Management.Automation.PowerShell powershell)
         {
             UnitTestHelper.ImportAzureModule(powershell);
 
@@ -286,38 +292,36 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests
                 "clientCertificate",
                 UnitTestHelper.GetUnitTestClientCertificate());
 
-            powershell.InvokeBatchScript(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    @"Set-AzureSubscription" +
-                    @" -SubscriptionName {0}" +
-                    @" -SubscriptionId {1}" +
-                    @" -Certificate $clientCertificate" +
-                    @" -ServiceEndpoint {2}",
-                    UnitTestSubscriptionName,
-                    UnitTestSubscriptionId,
-                    MockHttpServer.DefaultHttpsServerPrefixUri.AbsoluteUri));
-            powershell.InvokeBatchScript(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    @"Select-AzureSubscription" +
-                    @" -SubscriptionName {0}",
-                    UnitTestSubscriptionName));
-            Collection<PSObject> subscriptionResult = powershell.InvokeBatchScript(
-                string.Format(
-                    CultureInfo.InvariantCulture,
-                    @"Get-AzureSubscription" +
-                    @" -Current"));
+            ProfileClient client = new ProfileClient();
+            client.Profile.Environments[UnitTestEnvironmentName] = new AzureEnvironment
+                {
+                    Name = UnitTestEnvironmentName,
+                    Endpoints = new Dictionary<AzureEnvironment.Endpoint, string>
+                    {
+                        {AzureEnvironment.Endpoint.ServiceManagement, MockHttpServer.DefaultHttpsServerPrefixUri.AbsoluteUri},
+                        {AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix, ".database.windows.net"}
+                    }
+                };
+            
+            var account = new AzureAccount
+            {
+                Id = UnitTestHelper.GetUnitTestClientCertificate().Thumbprint,
+                Type = AzureAccount.AccountType.Certificate
+            };
 
-            Assert.AreEqual(0, powershell.Streams.Error.Count, "Errors during run!");
-            Assert.AreEqual(0, powershell.Streams.Warning.Count, "Warnings during run!");
-            powershell.Streams.ClearStreams();
+            var subscription = new AzureSubscription
+            {
+                Id = new Guid(UnitTestSubscriptionId),
+                Name = UnitTestSubscriptionName,
+                Environment = UnitTestEnvironmentName,
+                Account = account.Id
+            };
 
-            PSObject subscriptionPsObject = subscriptionResult.Single();
-            WindowsAzureSubscription subscription =
-                subscriptionPsObject.BaseObject as WindowsAzureSubscription;
-            Assert.IsTrue(subscription != null, "Expecting a WindowsAzureSubscription object");
-
+            client.AddOrSetAccount(account);
+            client.AddOrSetSubscription(subscription);
+            client.SetSubscriptionAsCurrent(UnitTestSubscriptionName, account.Id);
+            client.Profile.Save();
+            
             return subscription;
         }
 

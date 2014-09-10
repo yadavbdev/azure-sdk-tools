@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation.Runspaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Concretes
 {
-    using Interfaces;
-    using System.Management.Automation.Runspaces;
-
     public class CommandAbstraction : PipelineAbstraction, ICommand
     {
         internal CommandAbstraction(Command command, Pipeline pipeline, Runspace runsapce) : base(pipeline, runsapce)

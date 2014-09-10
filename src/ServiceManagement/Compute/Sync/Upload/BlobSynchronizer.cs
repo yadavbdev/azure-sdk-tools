@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using Microsoft.WindowsAzure.Commands.Sync.Threading;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Sync.Threading;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Cryptography;
-
     public class BlobSynchronizer
     {
         private readonly UploadContext context;

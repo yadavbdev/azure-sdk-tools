@@ -12,18 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Opens the azure portal.
     /// </summary>
     [Cmdlet(VerbsCommon.Show, "AzurePortal")]
-    public class ShowAzurePortalCommand : CmdletBase
+    public class ShowAzurePortalCommand : AzurePSCmdlet
     {
         private string name;
 
@@ -52,17 +54,17 @@ namespace Microsoft.WindowsAzure.Commands.Websites
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            WindowsAzureEnvironment environment;
+            AzureEnvironment environment;
             if (string.IsNullOrEmpty(Environment))
             {
-                environment = WindowsAzureProfile.Instance.CurrentEnvironment;
+                environment = AzureSession.CurrentContext.Environment;
             }
             else
             {
-                environment = WindowsAzureProfile.Instance.Environments[Environment];
+                environment = defaultProfileClient.Profile.Environments[Environment];
             }
 
-            string managementPortalUrl = environment.ManagementPortalUrlWithRealm(Realm);
+            string managementPortalUrl = environment.GetManagementPortalUrlWithRealm(Realm);
 
             if (!string.IsNullOrEmpty(Name))
             {

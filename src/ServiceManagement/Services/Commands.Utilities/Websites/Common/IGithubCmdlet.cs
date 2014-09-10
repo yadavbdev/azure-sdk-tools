@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Management.Automation.Host;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Common
 {
-    using Services.Github;
-    using System;
-    using System.Management.Automation;
-    using System.Management.Automation.Host;
-
     public interface IGithubCmdlet
     {
         IGithubServiceManagement GithubChannel { get; set; }

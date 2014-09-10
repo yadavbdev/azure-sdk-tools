@@ -12,8 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections;
 using Microsoft.Azure.Commands.Resources.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -26,16 +26,20 @@ namespace Microsoft.Azure.Commands.Resources
     public class GetAzureResourceGroupCommand : ResourcesBaseCmdlet
     {
         [Alias("ResourceGroupName")]
-        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the resource group.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = "GetSingle")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The resource group tag.")]
+        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "GetMultiple")]
         public Hashtable Tag { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "GetMultiple")]
+        public SwitchParameter Detailed { get; set; }
         
         public override void ExecuteCmdlet()
         {
-            WriteObject(ResourcesClient.FilterResourceGroups(Name, Tag), true);
+            var detailed = Detailed.IsPresent || !string.IsNullOrEmpty(Name);
+            WriteObject(ResourcesClient.FilterResourceGroups(Name, Tag, detailed), true);
         }
     }
 }

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class NewAzureStorageAccountCmdletInfo : CmdletsInfo
     {
         public NewAzureStorageAccountCmdletInfo(string storageAccountName, string location, string affinity, string label, string description, string accountType)
@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             if (!string.IsNullOrEmpty(accountType))
             {
-                this.cmdletParams.Add(new CmdletParam("AccountType", accountType));
+                this.cmdletParams.Add(new CmdletParam("Type", accountType));
             }
         }
     }

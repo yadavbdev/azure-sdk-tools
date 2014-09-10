@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Runtime.Serialization;
+using System.Text;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Download
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Specialized;
-    using System.Runtime.Serialization;
-    using System.Text;
-
     public class BlobUri
     {
         public static bool TryParseUri(Uri uri, out BlobUri blobUri)

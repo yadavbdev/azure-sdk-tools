@@ -13,17 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [TestClass]
     public class RemoveTrafficManagerEndpointTests : TestBase
     {
@@ -62,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
 
             cmdlet = new RemoveAzureTrafficManagerEndpoint
                 {
-                    DomainName = DomainName,
+                    DomainName = DomainName.ToUpper(),
                     TrafficManagerProfile = original,
                     CommandRuntime = mockCommandRuntime
                 };

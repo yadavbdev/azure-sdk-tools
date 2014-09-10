@@ -12,13 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using System.Globalization;
+using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Test
 {
-    [TestClass]
     public class IdnUtilitiesTests
     {
         private static string[] unicodeStrings = { null,
@@ -101,28 +99,28 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test
                                                         "xn----i68ae116lykweqn"
                                                     };
 
-        [TestMethod]
+        [Fact]
         public void UnicodeToPunycodeConversionTest()
         {
-            Assert.AreEqual(unicodeStrings.Length, punycodeStrings.Length);
-            Assert.AreEqual(unicodeUserStrings.Length, punycodeUserStrings.Length);
+            Assert.Equal(unicodeStrings.Length, punycodeStrings.Length);
+            Assert.Equal(unicodeUserStrings.Length, punycodeUserStrings.Length);
 
             // Test straight Unicode to Punycode conversion.
             for (int i = 0; i < unicodeStrings.Length; i++)
             {
-                Assert.AreEqual(IdnHelper.GetAscii(unicodeStrings[i]), punycodeStrings[i]);
+                Assert.Equal(IdnHelper.GetAscii(unicodeStrings[i]), punycodeStrings[i]);
             }
 
             // Test Unicode to Punycode conversion for user names.
             for (int i = 0; i < unicodeUserStrings.Length; i++)
             {
-                Assert.AreEqual(IdnHelper.GetAsciiForUserName(unicodeUserStrings[i]), punycodeUserStrings[i]);
+                Assert.Equal(IdnHelper.GetAsciiForUserName(unicodeUserStrings[i]), punycodeUserStrings[i]);
             }
 
             // Test user names that start with the $ sign.
             for (int i = 0; i < unicodeUserStrings.Length; i++)
             {
-                Assert.AreEqual(IdnHelper.GetAsciiForUserName("$" + unicodeUserStrings[i]), "$" + punycodeUserStrings[i]);
+                Assert.Equal(IdnHelper.GetAsciiForUserName("$" + unicodeUserStrings[i]), "$" + punycodeUserStrings[i]);
             }
 
             // Test user names in the email address format that has the @ sign in the middle.
@@ -144,33 +142,33 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test
 
                     string ustring = unicodeUserStrings[i] + "@" + unicodeStrings[j];
                     string pstring = punycodeUserStrings[i] + "@" + punycodeStrings[j];
-                    Assert.AreEqual(IdnHelper.GetAsciiForUserName(ustring), pstring);
+                    Assert.Equal(IdnHelper.GetAsciiForUserName(ustring), pstring);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void PunycodeToUnicodeConversionTest()
         {
-            Assert.AreEqual(punycodeStrings.Length, unicodeStrings.Length);
-            Assert.AreEqual(punycodeUserStrings.Length, unicodeUserStrings.Length);
+            Assert.Equal(punycodeStrings.Length, unicodeStrings.Length);
+            Assert.Equal(punycodeUserStrings.Length, unicodeUserStrings.Length);
 
             // Test straight Punycode to Unicode conversion.
             for (int i = 0; i < punycodeStrings.Length; i++)
             {
-                Assert.AreEqual(IdnHelper.GetUnicode(punycodeStrings[i]), unicodeStrings[i]);
+                Assert.Equal(IdnHelper.GetUnicode(punycodeStrings[i]), unicodeStrings[i]);
             }
 
             // Test Punycode to Unicode conversion for user names.
             for (int i = 0; i < punycodeUserStrings.Length; i++)
             {
-                Assert.AreEqual(IdnHelper.GetUnicodeForUserName(punycodeUserStrings[i]), unicodeUserStrings[i]);
+                Assert.Equal(IdnHelper.GetUnicodeForUserName(punycodeUserStrings[i]), unicodeUserStrings[i]);
             }
 
             // Test user names that start with the $ sign.
             for (int i = 0; i < punycodeUserStrings.Length; i++)
             {
-                Assert.AreEqual(IdnHelper.GetUnicodeForUserName("$" + punycodeUserStrings[i]), "$" + unicodeUserStrings[i]);
+                Assert.Equal(IdnHelper.GetUnicodeForUserName("$" + punycodeUserStrings[i]), "$" + unicodeUserStrings[i]);
             }
 
             // Test user names in the email address format that has the @ sign in the middle.
@@ -192,7 +190,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test
 
                     string pstring = punycodeUserStrings[i] + "@" + punycodeStrings[j];
                     string ustring = unicodeUserStrings[i] + "@" + unicodeStrings[j];
-                    Assert.AreEqual(IdnHelper.GetUnicodeForUserName(pstring), ustring);
+                    Assert.Equal(IdnHelper.GetUnicodeForUserName(pstring), ustring);
                 }
             }
         }

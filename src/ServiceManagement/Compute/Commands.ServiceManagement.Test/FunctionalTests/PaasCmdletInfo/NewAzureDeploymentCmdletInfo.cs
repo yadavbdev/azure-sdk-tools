@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    using Extensions;
-    using PowershellCore;
-
     public class NewAzureDeploymentCmdletInfo : CmdletsInfo
     {
         public NewAzureDeploymentCmdletInfo(string serviceName, string packagePath, string configName, string slot,
