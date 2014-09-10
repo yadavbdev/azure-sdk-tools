@@ -88,7 +88,6 @@ namespace Microsoft.Azure.Commands.Resources.Models.Authorization
         public PSRoleAssignment CreateRoleAssignment(FilterRoleAssignmentsOptions parameters)
         {
             Guid principalId = ActiveDirectoryClient.GetObjectId(parameters.ADObjectFilter);
-
             Guid roleAssignmentId = RoleAssignmentNames.Count == 0 ? Guid.NewGuid() : RoleAssignmentNames.Dequeue();
             string roleDefinitionId = GetRoleRoleDefinition(parameters.RoleDefinition).Id;
 

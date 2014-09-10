@@ -32,10 +32,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             if (AzureSession.CurrentContext.Subscription == null &&
                 defaultProfileClient.Profile.DefaultSubscription != null)
             {
-                AzureSession.SetCurrentContext(
-                    defaultProfileClient.Profile.DefaultSubscription,
-                    defaultProfileClient.GetEnvironmentOrDefault(defaultProfileClient.Profile.DefaultSubscription.Environment),
-                    defaultProfileClient.GetAccountOrNull(defaultProfileClient.Profile.DefaultSubscription.Account));
+                try
+                {
+                    AzureSession.SetCurrentContext(
+                        defaultProfileClient.Profile.DefaultSubscription,
+                        defaultProfileClient.GetEnvironmentOrDefault(defaultProfileClient.Profile.DefaultSubscription.Environment),
+                        defaultProfileClient.GetAccountOrNull(defaultProfileClient.Profile.DefaultSubscription.Account));
+                }
+                catch (ArgumentException)
+                {
+                    // if context cannot be loaded, start with no account/subscription
+                }
             }
         }
 

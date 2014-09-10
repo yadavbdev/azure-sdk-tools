@@ -27,12 +27,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             if (os == OS.Windows)
             {
                 cmdletParams.Add(new CmdletParam("Windows", null));
-                cmdletParams.Add(new CmdletParam("AdminUsername", userName));
+                if (!string.IsNullOrWhiteSpace(userName))
+                {
+                    cmdletParams.Add(new CmdletParam("AdminUsername", userName));
+                }
             }
             else
             {
                 cmdletParams.Add(new CmdletParam("Linux", null));
-                cmdletParams.Add(new CmdletParam("LinuxUser", userName));
+                if (!string.IsNullOrWhiteSpace(userName))
+                {
+                    cmdletParams.Add(new CmdletParam("LinuxUser", userName));
+                }
             }
             cmdletParams.Add(new CmdletParam("ImageName", imageName));
             cmdletParams.Add(new CmdletParam("Name", name));

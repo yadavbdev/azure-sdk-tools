@@ -108,7 +108,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             public string UserId { get { return appId; }}
             public string AccessToken { get { return AuthResult.AccessToken; } }
             public LoginType LoginType { get { return LoginType.OrgId; } }
-            public string TenantId { get { return AuthResult.TenantId; } }
+            public string TenantId { get { return this.Configuration.AdDomain; } }
 
             private bool IsExpired
             {
