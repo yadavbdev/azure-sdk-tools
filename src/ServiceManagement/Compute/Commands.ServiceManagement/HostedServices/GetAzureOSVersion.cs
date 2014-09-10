@@ -13,14 +13,14 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using Management.Compute.Models;
-    using Model;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Lists the versions of the guest operating system that are currently available in Microsoft Azure.
     /// </summary>

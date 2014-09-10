@@ -11,11 +11,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Data.Services.Client;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server
 {
-    using System;
-    using System.Data.Services.Client;
-
     /// <summary>
     /// A class that will temporarily change the merge option on a <see cref="DataServiceContext"/>
     /// object.

@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Data.Services.Client;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.ServiceModel;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common
 {
-    using Microsoft.WindowsAzure.Common;
-    using Properties;
-    using System;
-    using System.Data.Services.Client;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.ServiceModel;
-    using System.Xml.Linq;
-
     /// <summary>
     /// The handler for all Sql Database exceptions.
     /// </summary>

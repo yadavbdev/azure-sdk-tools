@@ -12,34 +12,39 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Management.Storage;
-    using Microsoft.WindowsAzure.Storage;
-
     public static class WindowsAzureSubscriptionExtensions
     {
-        public static CloudStorageAccount GetCloudStorageAccount(this WindowsAzureSubscription subscription)
+        private static Dictionary<Guid, CloudStorageAccount> storageAccountCache = new Dictionary<Guid,CloudStorageAccount>();
+
+        public static CloudStorageAccount GetCloudStorageAccount(this AzureSubscription subscription)
         {
-            if (subscription == null || subscription.SubscriptionId == null)
+            if (subscription == null)
             {
                 return null;
             }
 
-            if (subscription.currentCloudStorageAccount != null)
+            if (storageAccountCache.ContainsKey(subscription.Id))
             {
-                return subscription.currentCloudStorageAccount as CloudStorageAccount;
+                return storageAccountCache[subscription.Id];
             }
             else
             {
-                using (var storageClient = subscription.CreateClient<StorageManagementClient>())
+                using (var storageClient = AzureSession.ClientFactory.CreateClient<StorageManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement))
                 {
-                    subscription.currentCloudStorageAccount = StorageUtilities.GenerateCloudStorageAccount(
-                        storageClient,
-                        subscription.currentStorageAccountName);
+                    storageAccountCache[subscription.Id] = StorageUtilities.GenerateCloudStorageAccount(
+                        storageClient, subscription.GetProperty(AzureSubscription.Property.StorageAccount));
 
-                    return subscription.currentCloudStorageAccount as CloudStorageAccount;
+                    return storageAccountCache[subscription.Id];
                 }
             }
         }

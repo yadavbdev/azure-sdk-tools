@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Job = Microsoft.Azure.Commands.Automation.Model.Job;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
-    using Job = Microsoft.Azure.Commands.Automation.Model.Job;
-
     /// <summary>
     /// Gets azure automation jobs for a given account, filtered by one of multiple criteria.
     /// </summary>

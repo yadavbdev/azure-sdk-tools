@@ -99,15 +99,15 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Compute, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.4.1.1\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.4.2.0\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Network, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Network.2.3.1\lib\net40\Microsoft.WindowsAzure.Management.Network.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.1.2.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.2.0.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -171,6 +171,7 @@
     <Compile Include="Extensions\MicrosoftAntimalware\RemoveAzureServiceAntimalwareExtension.cs" />
     <Compile Include="Extensions\MicrosoftAntimalware\SetAzureServiceAntimalwareExtension.cs" />
     <Compile Include="Helpers\SecureStringHelper.cs" />
+    <Compile Include="IaaS\AvailabilitySets\RemoveAzureAvailabilitySet.cs" />
     <Compile Include="IaaS\DiskRepository\GetAzureVMImageDiskConfigSet.cs" />
     <Compile Include="IaaS\DiskRepository\RemoveAzureVMImageDataDiskConfig.cs" />
     <Compile Include="IaaS\DiskRepository\RemoveAzureVMImageOSDiskConfig.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="IaaS\Extensions\Diagnostics\VirtualMachineDiagnosticsExtensionCmdletBase.cs" />
     <Compile Include="IaaS\Extensions\DSC\DscPrivateSettings.cs" />
     <Compile Include="IaaS\Extensions\DSC\DscPublicSettings.cs" />
+    <Compile Include="IaaS\Extensions\DSC\GetDscResourceException.cs" />
     <Compile Include="IaaS\Extensions\DSC\RemoveAzureVMDscExtension.cs" />
     <Compile Include="IaaS\Extensions\DSC\GetAzureVMDscExtension.cs" />
     <Compile Include="IaaS\Extensions\DSC\SetAzureVMDscExtension.cs" />

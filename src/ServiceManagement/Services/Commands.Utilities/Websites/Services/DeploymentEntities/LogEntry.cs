@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities
 {
-    using System;
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// Log.
     /// </summary>

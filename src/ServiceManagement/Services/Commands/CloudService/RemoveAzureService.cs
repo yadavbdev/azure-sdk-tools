@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService
 {
-    using System.Management.Automation;
-    using Utilities.CloudService;
-    using Utilities.Common;
-    using Utilities.Properties;
-
     /// <summary>
     /// Deletes the specified hosted service from Microsoft Azure.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureService", SupportsShouldProcess = true), OutputType(typeof(bool))]
-    public class RemoveAzureServiceCommand : CmdletWithSubscriptionBase
+    public class RemoveAzureServiceCommand : AzurePSCmdlet
     {
         public ICloudServiceClient CloudServiceClient { get; set; }
 
@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudService
                 () =>
                 {
                     CloudServiceClient = CloudServiceClient ?? new CloudServiceClient(
-                        CurrentSubscription,
+                        CurrentContext.Subscription,
                         SessionState.Path.CurrentLocation.Path,
                         WriteDebug,
                         WriteVerbose,

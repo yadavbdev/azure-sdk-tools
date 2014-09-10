@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces
 {
-    using HDInsight.Logging;
-    using System;
-    using System.Security.Cryptography.X509Certificates;
-
     internal interface IAzureHDInsightCommonCommandBase
     {
         /// <summary>

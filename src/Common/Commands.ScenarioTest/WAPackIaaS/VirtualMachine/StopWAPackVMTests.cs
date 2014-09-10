@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System.Threading;
-
     [TestClass]
     public class StopWAPackVMTests : CmdletTestVirtualMachineStatusBase
     {
@@ -84,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 
             PowerShell.Commands.Clear();
             PowerShell.AddCommand("Stop-WAPackVM").AddParameter("VM", vm).AddParameter("PassThru");
-            PowerShell.InvokeAndAssertForErrors(string.Format(Resources.OperationFailedErrorMessage, Resources.Stop, vmId));
+            PowerShell.InvokeAndAssertForErrors(string.Format(Utilities.Properties.Resources.OperationFailedErrorMessage, Utilities.Properties.Resources.Stop, vmId));
         }
 
         [TestMethod]
@@ -119,7 +118,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 
             PowerShell.Commands.Clear();
             PowerShell.AddCommand("Stop-WAPackVM").AddParameter("VM", vm).AddParameter("Shutdown").AddParameter("PassThru");
-            PowerShell.InvokeAndAssertForErrors(string.Format(Resources.OperationFailedErrorMessage, Resources.Shutdown, vmId));
+            PowerShell.InvokeAndAssertForErrors(string.Format(Utilities.Properties.Resources.OperationFailedErrorMessage, Utilities.Properties.Resources.Shutdown, vmId));
         }
     }
 }

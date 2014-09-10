@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
 using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Moq;
-using System.Collections.Generic;
-using System.Management.Automation;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
                 Resources = new List<PSResource>() { new PSResource() { Name = "resource1" } }
             };
             result.Add(expected);
-            resourcesClientMock.Setup(f => f.FilterResourceGroups(resourceGroupName, null)).Returns(result);
+            resourcesClientMock.Setup(f => f.FilterResourceGroups(resourceGroupName, null, true)).Returns(result);
 
             cmdlet.Name = resourceGroupName;
 

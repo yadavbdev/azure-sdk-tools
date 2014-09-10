@@ -12,12 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ExpressRoute.Properties;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using System;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "AzureDedicatedCircuit"), OutputType(typeof(AzureDedicatedCircuit))]
     public class NewAzureDedicatedCircuitCommand : ExpressRouteBaseCmdlet
     {
@@ -35,12 +36,25 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Circuit Service Provider Name")]
         public string ServiceProviderName { get; set; }
-        
+
+        [Parameter(HelpMessage = "Do not confirm Azure Dedicated Circuit creation")]
+        public SwitchParameter Force { get; set; }
+
         public override void ExecuteCmdlet()
         {
-            var circuit = ExpressRouteClient.NewAzureDedicatedCircuit(CircuitName, Bandwidth, Location,
-                ServiceProviderName);
-            WriteObject(circuit);         
+            ConfirmAction(
+               Force.IsPresent,
+               string.Format(Resources.NewAzureDedicatedCircuitWarning, CircuitName, ServiceProviderName),
+               string.Format(Resources.NewAzureDedicatedCircuitMessage, CircuitName, ServiceProviderName),
+               CircuitName + " " + ServiceProviderName,
+               () =>
+               {
+                   var circuit = ExpressRouteClient.NewAzureDedicatedCircuit(CircuitName, Bandwidth, Location,
+               ServiceProviderName);
+                   WriteVerboseWithTimestamp(Resources.NewAzureDedicatedCircuitSucceeded);
+                   WriteObject(circuit);
+               });
+
         }
     }
 }

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ServiceBusTests
 {
-    using Commands.ScenarioTest.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class ServiceBusNamespaceTests : WindowsAzurePowerShellCertificateTest
+    public class ServiceBusNamespaceTests : AzurePowerShellCertificateTest
     {
         public ServiceBusNamespaceTests()
             : base("ServiceBus\\Common.ps1",

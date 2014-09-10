@@ -5,6 +5,7 @@
   <PropertyGroup>
     <TestSettings>.\src\Local.testsettings</TestSettings>
     <ScenarioTestDebug>.\src\Common\Commands.ScenarioTest\bin\Debug\Microsoft.WindowsAzure.Commands.ScenarioTest.dll</ScenarioTestDebug>
+	<CommonTestDebug>.\src\Common\Commands.Common.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Common.Test.dll</CommonTestDebug>
     <AzureRTTestSettings>.\src\AzureRT.testsettings</AzureRTTestSettings>
     <AzureRTTestContainer>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Test.dll</AzureRTTestContainer>
     <StorageScenarioTestDebug>src\ServiceManagement\Storage\Commands.Storage.ScenarioTest\bin\Debug\CLITest.dll</StorageScenarioTestDebug>
@@ -44,9 +45,7 @@
   </Target>
   
   <Target Name="TestManagement">
-    <MSBuild Targets="InvokeMSTest"
-             Properties="_testAssembly=$(ManagementTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\ManagementDebug.trx"
-             Projects="build.proj"/>
+	<Xunit.Runner.MSBuild.xunit Assembly="$(ManagementTestDebug)" Html="$(TestOutputDirectory)\ManagementDebug.xunit.dll.html" Verbose="true"/>
   </Target>
 
   <Target Name="TestManagedCache">
@@ -94,13 +93,17 @@
       Properties="_testAssembly=$(StorageScenarioTestDebug);_testSettings=$(TestSettings);_testFilter=$(ScenarioTestFilter);_testResult=$(TestOutputDirectory)\StorageScenarioTestDebug.trx"
       Projects="build.proj"/>
   </Target>
+  
+  <!-- Run the common tests -->
+  <Target Name="CommonTests">
+    <Message Importance="high" Text="Running Common tests" />
+	<Xunit.Runner.MSBuild.xunit Assembly="$(CommonTestDebug)" Html="$(TestOutputDirectory)\CommonTests.xunit.dll.html" Verbose="true"/>
+  </Target>
 
   <!-- Run the scenario tests with Mocks -->
   <Target Name="MockedScenarioTests">
     <Message Importance="high" Text="Running scenario tests with Mocks" />
-    <MSBuild Targets="InvokeMSTest"
-             Properties="_testAssembly=$(ScenarioTestDebug);_testSettings=$(TestSettings);_testFilter=$(MockTestFilter);_testResult=$(TestOutputDirectory)\MockedScenarioTests.trx"
-             Projects="build.proj"/>
+	<Xunit.Runner.MSBuild.xunit Assembly="$(ScenarioTestDebug)" Html="$(TestOutputDirectory)\MockedScenarioTests.xunit.dll.html" Verbose="true"/>
   </Target>
 
   <!-- Run the MediaService Scenario Tests -->

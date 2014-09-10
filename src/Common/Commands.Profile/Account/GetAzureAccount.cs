@@ -12,19 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using Utilities.Profile;
-
     /// <summary>
     /// Cmdlet to list the currently downloaded accounts and their
     /// associated subscriptions.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureAccount")]
+    [OutputType(typeof(AzureAccount))]
     public class GetAzureAccount : SubscriptionCmdletBase
     {
         [Parameter(Position = 0, Mandatory = false, HelpMessage = "Name of account to get information for")]
@@ -36,22 +37,12 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public override void ExecuteCmdlet()
         {
-            IEnumerable<WindowsAzureSubscription> subscriptions = Profile.Subscriptions.Where(s => s.ActiveDirectoryUserId != null);
-            if (!string.IsNullOrEmpty(Name))
-            {
-                subscriptions = subscriptions.Where(s => s.ActiveDirectoryUserId == Name);
+            IEnumerable<AzureAccount> accounts = defaultProfileClient.ListAccounts(Name);
+            List<PSAzureAccount> output = new List<PSAzureAccount>();
+            foreach (AzureAccount account in accounts) {
+                output.Add(account.ToPSAzureAccount());
             }
-
-            var sortedSubscriptions = from s in subscriptions
-                                      orderby s.ActiveDirectoryUserId ascending
-                                      group s by s.ActiveDirectoryUserId into g
-                                      select new
-                                      {
-                                          Name = g.Key,
-                                          ActiveDirectories = g.Select(s => new { s.ActiveDirectoryTenantId, s.ActiveDirectoryEndpoint }).Distinct()
-                                      };
-            
-            WriteObject(sortedSubscriptions, true);
+            WriteObject(output, true);
         }
     }
 }

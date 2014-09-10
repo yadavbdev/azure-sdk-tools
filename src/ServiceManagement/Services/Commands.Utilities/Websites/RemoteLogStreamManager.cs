@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
-    using Commands.Utilities.Common;
-    using System;
-    using System.IO;
-    using System.Net;
-    using System.Text;
-    using System.Threading.Tasks;
-
     public class RemoteLogStreamManager : KuduRemoteClientBase
     {
         public Action<string> Logger { get; set; }

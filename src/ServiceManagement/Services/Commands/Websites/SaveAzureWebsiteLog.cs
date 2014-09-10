@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using System.IO;
-    using System.Management.Automation;
-    using Utilities.Websites.Common;
-    using Utilities.Websites.Services;
-    
     /// <summary>
     /// Gets the azure logs.
     /// </summary>

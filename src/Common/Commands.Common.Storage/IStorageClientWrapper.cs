@@ -13,10 +13,10 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Common.Storage
 {
-    using System;
-
     public interface IStorageClientWrapper
     {
         void DeletePackageFromBlob(

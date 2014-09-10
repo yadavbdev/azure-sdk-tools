@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Download
 {
-    using System;
-
     public class DownloaderParameters
     {
         public BlobUri BlobUri { get; set; }

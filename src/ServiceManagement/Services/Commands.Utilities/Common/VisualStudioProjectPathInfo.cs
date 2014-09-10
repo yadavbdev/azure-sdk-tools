@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using System.IO;
-    using System.Linq;
-
     public class VisualStudioProjectPathInfo : CloudProjectPathInfo
     {
         public static bool IsVisualStudioProject(string rootPath)

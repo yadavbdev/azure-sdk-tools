@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net;
+using System.Net.Http;
+using Microsoft.WindowsAzure.Commands.Common.Factories;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Net;
-    using System.Net.Http;
-
     public static class HttpClientHelper
     {
         public static HttpClient CreateClient(string serviceUrl, ICredentials credentials = null, HttpMessageHandler handler = null)
         {
             if (credentials != null)
             {
-                return AzureSession.Current.ManagementClientHelper.CreateHttpClient(serviceUrl, credentials);
+                return ClientFactory.CreateHttpClientBase(serviceUrl, ClientFactory.CreateHttpClientHandler(serviceUrl, credentials));
             }
             else
             {
-                return AzureSession.Current.ManagementClientHelper.CreateHttpClient(serviceUrl, handler);
+                return ClientFactory.CreateHttpClientBase(serviceUrl, handler);
             }
         }
     }

@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     ///     Type to represent the HDInsight capabilities of a subscription.
     /// </summary>

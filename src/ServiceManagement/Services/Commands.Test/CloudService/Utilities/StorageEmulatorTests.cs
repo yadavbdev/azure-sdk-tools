@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService.AzureTools;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Moq;
-    using System.IO;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class StorageEmulatorTests : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void Start_StorageEmulatorInstalled_UseCorrectCommand()
         {
             // Setup 
@@ -44,7 +44,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             commandRunner.Verify();
         }
 
-        [TestMethod]
+        [Fact]
         public void Stop_StorageEmulatorInstalled_UseCorrectCommand()
         {
             // Setup 
@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             commandRunner.Verify();
         }
 
-        [TestMethod]
+        [Fact]
         public void Start_StorageEmulatorNotInstalled_GetWarning()
         {
             // Setup 
@@ -74,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             emulator.Start();
 
             // Assert
-            Assert.AreEqual(Resources.WarningWhenStorageEmulatorIsMissing, emulator.Error);
+            Assert.Equal(Resources.WarningWhenStorageEmulatorIsMissing, emulator.Error);
         }
     }
 }

@@ -12,27 +12,33 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using Utilities.Profile;
+
 
     [Cmdlet(VerbsCommon.Select, "AzureSubscription", DefaultParameterSetName = "Current")]
-    [OutputType(typeof(bool))]
+    [OutputType(typeof(AzureSubscription))]
     public class SelectAzureSubscriptionCommand : SubscriptionCmdletBase
     {
-        public SelectAzureSubscriptionCommand() : base(false)
+        public SelectAzureSubscriptionCommand() : base(true)
         {
         }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = "Current", HelpMessage = "Name of subscription to select")]
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = "Default", HelpMessage = "Name of subscription to select")]
         [ValidateNotNullOrEmpty]
+        [Alias("Name")]
         public string SubscriptionName { get; set; }
+
+        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "Current", HelpMessage = "Name of account to select")]
+        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "Default", HelpMessage = "Name of account to select")]
+        [ValidateNotNullOrEmpty]
+        public string Account { get; set; }
 
         [Parameter(Mandatory = false, ParameterSetName = "Current", HelpMessage = "Switch to set the chosen subscription as the current one")]
         public SwitchParameter Current { get; set; }
@@ -54,19 +60,19 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             switch (ParameterSetName)
             {
                 case "Current":
-                    SetCurrent();
+                    WriteObject(ProfileClient.SetSubscriptionAsCurrent(SubscriptionName, Account));
                     break;
 
                 case "Default":
-                    SetDefault();
+                    WriteObject(ProfileClient.SetSubscriptionAsDefault(SubscriptionName, Account));
                     break;
 
                 case "NoCurrent":
-                    ClearCurrent();
+                    AzureSession.SetCurrentContext(null, null, null);
                     break;
 
                 case "NoDefault":
-                    ClearDefault();
+                    ProfileClient.ClearDefaultSubscription();
                     break;
             }
 
@@ -74,49 +80,6 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             {
                 WriteObject(true);
             }
-        }
-
-        public void SetCurrent()
-        {
-            Profile.CurrentSubscription = FindNamedSubscription();
-            WindowsAzureProfile.Instance = Profile;
-        }
-
-        public void SetDefault()
-        {
-            var newDefault = FindNamedSubscription();
-            newDefault.IsDefault = true;
-            Profile.UpdateSubscription(newDefault);
-            if (!WindowsAzureProfile.Instance.CurrentSubscriptionIsSet)
-            {
-                WindowsAzureProfile.Instance = Profile;
-            }
-        }
-
-        public void ClearCurrent()
-        {
-            WindowsAzureProfile.ResetInstance();
-            WindowsAzureProfile.Instance.CurrentSubscription = null;
-        }
-
-        public void ClearDefault()
-        {
-            if (Profile.DefaultSubscription != null)
-            {
-                var defaultSubscription = Profile.DefaultSubscription;
-                defaultSubscription.IsDefault = false;
-                Profile.UpdateSubscription(defaultSubscription);
-            }
-        }
-
-        private WindowsAzureSubscription FindNamedSubscription()
-        {
-            var subscription = Profile.Subscriptions.FirstOrDefault(s => s.SubscriptionName == SubscriptionName);
-            if (subscription == null)
-            {
-                throw new Exception(string.Format(Resources.InvalidSubscription, SubscriptionName));
-            }
-            return subscription;
         }
     }
 }

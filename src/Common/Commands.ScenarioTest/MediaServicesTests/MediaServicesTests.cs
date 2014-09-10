@@ -13,14 +13,13 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.MediaServicesTests
 {
-
-    using Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class MediaServicesTests : WindowsAzurePowerShellCertificateTest
+    public class MediaServicesTests : AzurePowerShellCertificateTest
     {
         public MediaServicesTests()
             : base("MediaServices\\MediaServices.ps1")

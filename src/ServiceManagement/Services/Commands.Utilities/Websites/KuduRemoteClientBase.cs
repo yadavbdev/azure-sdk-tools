@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using System.Net.Http;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
-    using Commands.Utilities.Common;
-    using System;
-    using System.Net;
-    using System.Net.Http;
-
     public abstract class KuduRemoteClientBase
     {
         /// <summary>

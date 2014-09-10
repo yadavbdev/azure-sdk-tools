@@ -12,36 +12,64 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Commands.Utilities.Common;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities;
-
     internal class AzureHDInsightSubscriptionResolverSimulator : IAzureHDInsightSubscriptionResolver
     {
-        private IEnumerable<WindowsAzureSubscription> knownSubscriptions;
+        private IEnumerable<AzureSubscription> knownSubscriptions;
 
         internal AzureHDInsightSubscriptionResolverSimulator()
         {
-            this.knownSubscriptions = new WindowsAzureSubscription[]
-                {
-                    new WindowsAzureSubscription()
+            var certificate = new X509Certificate2(Convert.FromBase64String(IntegrationTestBase.TestCredentials.Certificate), string.Empty);
+            ProfileClient.DataStore.AddCertificate(certificate);
+            ProfileClient profileClient = new ProfileClient();
+            profileClient.Profile.Accounts[certificate.Thumbprint] = new AzureAccount
+            {
+                Id = certificate.Thumbprint,
+                Type = AzureAccount.AccountType.Certificate,
+                Properties =
+                    new Dictionary<AzureAccount.Property, string>
+                    {
                         {
-                            Certificate = new X509Certificate2(Convert.FromBase64String(IntegrationTestBase.TestCredentials.Certificate), string.Empty),
-                            SubscriptionId = IntegrationTestBase.TestCredentials.SubscriptionId.ToString()
+                            AzureAccount.Property.Subscriptions,
+                            IntegrationTestBase.TestCredentials.SubscriptionId.ToString()
+                        }
+                    }
+            };
+            profileClient.Profile.Save();
+
+            this.knownSubscriptions = new AzureSubscription[]
+                {
+                    new AzureSubscription()
+                        {
+                            Id = IntegrationTestBase.TestCredentials.SubscriptionId,
+                            Account = certificate.Thumbprint,
+                            Environment = EnvironmentName.AzureCloud
                         }, 
                 };
         }
 
-        public WindowsAzureSubscription ResolveSubscription(string subscription)
+        public AzureSubscription ResolveSubscription(string subscription)
         {
-            return this.knownSubscriptions.FirstOrDefault(s => s.SubscriptionId == subscription)
-                   ?? this.knownSubscriptions.FirstOrDefault(s => s.SubscriptionName == subscription);
+            Guid subId;
+            if (Guid.TryParse(subscription, out subId))
+            {
+                return this.knownSubscriptions.FirstOrDefault(s => s.Id == subId);
+            }
+            else
+            {
+                return this.knownSubscriptions.FirstOrDefault(s => s.Name == subscription);   
+            }
         }
     }
 }

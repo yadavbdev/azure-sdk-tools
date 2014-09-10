@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Common
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Storage.Common;
-
     [TestClass]
     public class ResourceNotFoundExceptionTest : StorageTestBase
     {

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using System.IO;
-
     public class PowerShellProjectPathInfo : CloudProjectPathInfo
     {
         public PowerShellProjectPathInfo(string rootPath) : base(rootPath)

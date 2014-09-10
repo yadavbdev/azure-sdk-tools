@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    using PowershellCore;
-    using System;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
-
     public class SetAzureServiceRemoteDesktopExtensionCmdletInfo : CmdletsInfo
     {
 

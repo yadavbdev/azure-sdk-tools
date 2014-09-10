@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Common;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 {
-    using Commands.CloudService.Development;
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Basic unit tests for the Enable-Enable-AzureServiceProjectRemoteDesktop command.
     /// </summary>
-    [TestClass]
     public class DisableAzureRemoteDesktopCommandTest : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
@@ -38,10 +39,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 
         private DisableAzureServiceProjectRemoteDesktopCommand disableRDCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public DisableAzureRemoteDesktopCommandTest()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             disableRDCmdlet = new DisableAzureServiceProjectRemoteDesktopCommand();
@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                     service.Components.LocalConfig.Role);
             foreach (RoleSettings roleSettings in settings)
             {
-                Assert.AreEqual(
+                Assert.Equal(
                     1,
                     roleSettings.ConfigurationSettings
                         .Where(c => c.name == "Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" && c.value == "false")
@@ -67,7 +67,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable remote desktop for an empty service.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DisableRemoteDesktopForEmptyService()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -81,7 +81,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Disable remote desktop for a simple web role.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DisableRemoteDesktopForWebRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -93,14 +93,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 disableRDCmdlet.PassThru = true;
                 disableRDCmdlet.DisableRemoteDesktop();
 
-                Assert.IsTrue((bool)mockCommandRuntime.OutputPipeline[1]);
+                Assert.True((bool)mockCommandRuntime.OutputPipeline[1]);
             }
         }
 
         /// <summary>
         /// Disable remote desktop for web and worker roles.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void DisableRemoteDesktopForWebAndWorkerRoles()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -118,7 +118,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable then disable remote desktop for a simple web role.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableDisableRemoteDesktopForWebRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -140,7 +140,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable then disable remote desktop for web and worker roles.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableDisableRemoteDesktopForWebAndWorkerRoles()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -165,7 +165,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
         /// <summary>
         /// Enable then disable remote desktop for web and worker roles.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableDisableEnableRemoteDesktopForWebAndWorkerRoles()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))

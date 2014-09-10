@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.StorageTests
 {
-    using Commands.ScenarioTest.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class StorageContextTest : WindowsAzurePowerShellCertificateTest
+    public class StorageContextTest : AzurePowerShellCertificateTest
     {
         public StorageContextTest()
             : base("Storage\\StorageContext.ps1")

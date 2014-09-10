@@ -12,20 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 {
-    [TestClass]
     public class JsonUtilitiesTests
     {
-        [TestMethod]
+        [Fact]
         public void PatchWorksWithStandardStructures()
         {
             var originalProperties = new Dictionary<string, object>
@@ -64,17 +63,17 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             JToken actualJson = JToken.Parse(JsonUtilities.Patch(originalPropertiesSerialized, patchPropertiesSerialized));
 
-            Assert.AreEqual("site1", actualJson["name"].ToObject<string>());
-            Assert.AreEqual("Dedicated", actualJson["siteMode"].ToObject<string>());
-            Assert.AreEqual("Dedicated", actualJson["computeMode"].ToObject<string>());
-            Assert.AreEqual("NewValue", actualJson["newMode"].ToObject<string>());
-            Assert.AreEqual("[4,5,6]", actualJson["list"].ToString(Formatting.None));
-            Assert.AreEqual("value1", actualJson["misc"]["key1"].ToObject<string>());
-            Assert.AreEqual("value2", actualJson["misc"]["key2"].ToObject<string>());
-            Assert.AreEqual("value3", actualJson["misc"]["key3"].ToObject<string>());
+            Assert.Equal("site1", actualJson["name"].ToObject<string>());
+            Assert.Equal("Dedicated", actualJson["siteMode"].ToObject<string>());
+            Assert.Equal("Dedicated", actualJson["computeMode"].ToObject<string>());
+            Assert.Equal("NewValue", actualJson["newMode"].ToObject<string>());
+            Assert.Equal("[4,5,6]", actualJson["list"].ToString(Formatting.None));
+            Assert.Equal("value1", actualJson["misc"]["key1"].ToObject<string>());
+            Assert.Equal("value2", actualJson["misc"]["key2"].ToObject<string>());
+            Assert.Equal("value3", actualJson["misc"]["key3"].ToObject<string>());
         }
 
-        [TestMethod]
+        [Fact]
         public void PatchWorksWithListInRoot()
         {
             var originalProperties = new[] {1, 2, 3};
@@ -95,10 +94,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             var actual = JsonUtilities.Patch(originalPropertiesSerialized, patchPropertiesSerialized);
 
-            Assert.AreEqual("[4,5,6]", actual);
+            Assert.Equal("[4,5,6]", actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void PatchWorksWithValueInRoot()
         {
             var originalProperties = "foo";
@@ -119,11 +118,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             var actual = JsonUtilities.Patch(originalPropertiesSerialized, patchPropertiesSerialized);
 
-            Assert.AreEqual("\"bar\"", actual);
+            Assert.Equal("\"bar\"", actual);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void PatchWorksWithMismatchInRoot()
         {
             var originalProperties = new Dictionary<string, object>
@@ -152,11 +150,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 TypeNameHandling = TypeNameHandling.None
             });
 
-            JsonUtilities.Patch(originalPropertiesSerialized, patchPropertiesSerialized);
+            Assert.Throws<ArgumentException>(() => JsonUtilities.Patch(originalPropertiesSerialized, patchPropertiesSerialized));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void PatchWorksWithMismatchInBody()
         {
             var originalProperties = new Dictionary<string, object>
@@ -192,10 +189,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 TypeNameHandling = TypeNameHandling.None
             });
 
-            JToken.Parse(JsonUtilities.Patch(originalPropertiesSerialized, patchPropertiesSerialized));
+             Assert.Throws<ArgumentException>(() => JToken.Parse(JsonUtilities.Patch(originalPropertiesSerialized, patchPropertiesSerialized)));
         }
 
-        [TestMethod]
+        [Fact]
         public void PatchWorksWithEmptyPatchValue()
         {
             var originalProperties = new Dictionary<string, object>
@@ -218,10 +215,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             var actual = JsonUtilities.Patch(originalPropertiesSerialized, "");
 
-            Assert.AreEqual(originalPropertiesSerialized, actual);
+            Assert.Equal(originalPropertiesSerialized, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void PatchWorksWithNullPatchValue()
         {
             var originalProperties = new Dictionary<string, object>
@@ -244,10 +241,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             var actual = JsonUtilities.Patch(originalPropertiesSerialized, null);
 
-            Assert.AreEqual(originalPropertiesSerialized, actual);
+            Assert.Equal(originalPropertiesSerialized, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void PatchWorksWithEmptySourceValue()
         {
             var patchProperties = new Dictionary<string, object>
@@ -268,10 +265,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             var actual = JsonUtilities.Patch("", patchPropertiesSerialized);
 
-            Assert.AreEqual(patchPropertiesSerialized, actual);
+            Assert.Equal(patchPropertiesSerialized, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void PatchWorksWithNullSourceValue()
         {
             var patchProperties = new Dictionary<string, object>
@@ -292,7 +289,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
             var actual = JsonUtilities.Patch("", patchPropertiesSerialized);
 
-            Assert.AreEqual(patchPropertiesSerialized, actual);
+            Assert.Equal(patchPropertiesSerialized, actual);
         }
     }
 }

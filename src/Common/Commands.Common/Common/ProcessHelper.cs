@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.Security.Permissions;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Diagnostics;
-    using System.Security.Permissions;
-
     public class ProcessHelper
     {
         public string StandardOutput { get; set;}

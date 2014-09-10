@@ -268,6 +268,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot deserialize settings string from DSC extension. Updating your Azure PowerShell SDK to the latest version may solve this problem. Settings string:
+        ///{0}.
+        /// </summary>
+        public static string AzureVMDscWrongSettingsFormat {
+            get {
+                return ResourceManager.GetString("AzureVMDscWrongSettingsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - Uploading WinRMCertificate: {1}.
         /// </summary>
         public static string AzureVMUploadingWinRMCertificate {
@@ -462,6 +472,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string DeploymentVIPLossWarning {
             get {
                 return ResourceManager.GetString("DeploymentVIPLossWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled property will be deprecated in a future release of Azure PowerShell. The value will be merged into the AccountType property..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled parameter will be deprecated in a future release of Azure PowerShell. The functionality will be merged into the Type parameter..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet", resourceCulture);
             }
         }
         
@@ -1313,6 +1341,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot get module for DscResource &apos;{0}&apos;. Possible solutions:
+        ///1) Specify -ModuleName for Import-DscResource in your configuration.
+        ///2) Unblock module that contains resource.
+        ///3) Move Import-DscResource inside Node block.
+        ///.
+        /// </summary>
+        public static string PublishVMDscExtensionGetDscResourceFailed {
+            get {
+                return ResourceManager.GetString("PublishVMDscExtensionGetDscResourceFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of required modules: [{0}]..
         /// </summary>
         public static string PublishVMDscExtensionRequiredModulesVerbose {
@@ -1356,6 +1397,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string PublishVMDscExtensionUploadArchiveConfigFileInvalidExtension {
             get {
                 return ResourceManager.GetString("PublishVMDscExtensionUploadArchiveConfigFileInvalidExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration file &apos;{0}&apos; not found..
+        /// </summary>
+        public static string PublishVMDscExtensionUploadArchiveConfigFileNotExist {
+            get {
+                return ResourceManager.GetString("PublishVMDscExtensionUploadArchiveConfigFileNotExist", resourceCulture);
             }
         }
         
@@ -1797,6 +1847,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string StorageCredentialsFactoryCurrentSubscriptionNotSet {
             get {
                 return ResourceManager.GetString("StorageCredentialsFactoryCurrentSubscriptionNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subnet should be specified when deploying VMs in a VNET: {0}.
+        /// </summary>
+        public static string SubnetShouldBeSpecifiedIfVnetPresent {
+            get {
+                return ResourceManager.GetString("SubnetShouldBeSpecifiedIfVnetPresent", resourceCulture);
             }
         }
         

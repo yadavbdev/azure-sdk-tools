@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.Common.Authentication;
-    using System;
-
     public class FakeAccessToken : IAccessToken
     {
         public void AuthorizeRequest(Action<string, string> authTokenSetter)
@@ -25,7 +25,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         }
 
         public string AccessToken { get; set; }
+        
         public string UserId { get; set; }
+        
         public LoginType LoginType { get; set; }
+
+        public string TenantId { get; set; }
     }
 }

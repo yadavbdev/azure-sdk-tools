@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
-    using GetAzureHDInsightClusters.Extensions;
-    using System;
-
     /// <summary>
     ///     This type generates the gateway Uri for an AzureHDInsight cluster given its DNS Name or Endpoint uri.
     /// </summary>

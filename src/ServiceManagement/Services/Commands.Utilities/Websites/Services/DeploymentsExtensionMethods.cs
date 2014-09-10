@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using DeploymentEntities;
-    using System.Collections.Generic;
-    using System.IO;
-
     public static class DeploymentsExtensionMethods
     {
         public static List<DeployResult> GetDeployments(this IDeploymentServiceManagement proxy, int maxItems)

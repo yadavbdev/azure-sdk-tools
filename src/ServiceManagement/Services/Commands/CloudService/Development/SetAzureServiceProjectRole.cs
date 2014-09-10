@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development
 {
-    using System;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.CloudService;
-    using Utilities.Common;
-    using Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-
     /// <summary>
     /// Configure the number of instances or installed runtimes for a web/worker role. Updates the cscfg with the number of instances
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "AzureServiceProjectRole"), OutputType(typeof(RoleSettings))]
-    public class SetAzureServiceProjectRoleCommand : CmdletBase
+    public class SetAzureServiceProjectRoleCommand : AzurePSCmdlet
     {
         const string InstancesParameterSet = "Instances";
 

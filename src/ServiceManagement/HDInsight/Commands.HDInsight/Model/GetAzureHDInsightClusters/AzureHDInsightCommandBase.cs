@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.HDInsight.Framework.Core;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using Framework.Core;
-    using HDInsight.Logging;
-    using System;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using WindowsAzure.Commands.Utilities.Common;
-
     internal abstract class AzureHDInsightCommandBase : DisposableObject, IAzureHDInsightCommandBase
     {
         public virtual CancellationToken CancellationToken
@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
         public string Subscription { get; set; }
 
-        public WindowsAzureSubscription CurrentSubscription { get; set; }
+        public AzureSubscription CurrentSubscription { get; set; }
 
         public virtual void Cancel()
         {

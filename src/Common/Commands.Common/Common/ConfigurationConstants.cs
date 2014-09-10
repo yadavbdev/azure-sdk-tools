@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-
     public static class ConfigurationConstants
     {
         public const string ServiceManagementEndpoint = "https://management.core.windows.net";

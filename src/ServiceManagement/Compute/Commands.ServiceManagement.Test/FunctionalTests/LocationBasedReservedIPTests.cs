@@ -12,19 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-
     [TestClass]
     public class LocationBasedReservedIPTests: ServiceManagementTest
     {
@@ -36,18 +32,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         private string serviceName;
 
         [ClassInitialize]
-        public static void SetAzureVNetConfig(TestContext context)
+        public static void ClassInitialize(TestContext context)
         {
             var vnetConfig = vmPowershellCmdlets.GetAzureVNetConfig(null);
-            if (vnetConfig.Count == 0)
+            if (vnetConfig.Count > 0)
             {
-                vmPowershellCmdlets.SetAzureVNetConfig(Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg");
+                vmPowershellCmdlets.RunPSScript("Get-AzureService | Remove-AzureService -Force");
+                Utilities.RetryActionUntilSuccess(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "in use", 5, 30);
             }
+            vmPowershellCmdlets.SetAzureVNetConfig(Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg");
             var sites = vmPowershellCmdlets.GetAzureVNetSite(null);
             subNet = sites[0].Subnets.First().Name;
             vnetName = sites[0].Name;
+        }
 
-
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            Utilities.ExecuteAndLog(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "Remove Azure Vnet config after tests");
         }
 
         [TestInitialize]
@@ -57,7 +59,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             cleanupIfPassed = true;
         }
 
-        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+        [TestCleanup]
+        public void Cleanup()
+        {
+            if (cleanupIfPassed)
+                Utilities.ExecuteAndLog(() => CleanupService(serviceName), "Delete service");
+        }
+
+        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenWindowsVM()
         {
             try
@@ -105,7 +114,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-         [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+         [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenLinuxVM()
         {
             try
@@ -160,7 +169,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenWindowsQuickVM()
         {
             try
@@ -207,7 +216,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Scenario), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
+        [TestMethod(), Priority(0), TestProperty("Feature", "IaaS"), TestCategory(Category.Sequential), Owner("hylee"), Description("Test the cmdlets (New-AzureReservedIP,Get-AzureReservedIP,Remove-AzureReservedIP)")]
         public void CreateReservedIPThenLinuxQuickVM()
         {
             try
@@ -253,20 +262,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
+        #region Helper Methods
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            if(cleanupIfPassed)
-            Utilities.ExecuteAndLog(() => CleanupService(serviceName),"Delete service");
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            Utilities.ExecuteAndLog(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "Remove Azure Vnet config after tests");
-        }
-        
         /// <summary>
         /// Verify the properties of the reserved ip
         /// </summary>
@@ -287,10 +284,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Utilities.LogAssert(() => Assert.AreEqual(input.ServiceName, reservedIpContext.ServiceName), "ServiceName");
             }
             else
+            {
                 Assert.Fail("Didnt find reserved ip with name {0}", input.ReservedIPName);
+            }
         }
 
-        #region Helper Methods
         private void VerifyReservedIpNotInUse(ReservedIPContext input)
         {
             input.ServiceName = null;
@@ -339,6 +337,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             vm = vmPowershellCmdlets.SetAzureAvailabilitySet(availabilitySetName, vm);
             return vm;
         }
+
         #endregion Helper Methods
     }
 }

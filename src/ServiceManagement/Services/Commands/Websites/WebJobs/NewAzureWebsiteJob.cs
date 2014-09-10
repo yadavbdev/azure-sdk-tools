@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Websites.WebJobs
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-    using System.Management.Automation;
-    using Utilities.Websites;
-    using Utilities.Websites.Common;
-    
     [Cmdlet(VerbsCommon.New, "AzureWebsiteJob")]
     public class NewAzureWebsiteJobCommand : WebsiteContextBaseCmdlet
     {
