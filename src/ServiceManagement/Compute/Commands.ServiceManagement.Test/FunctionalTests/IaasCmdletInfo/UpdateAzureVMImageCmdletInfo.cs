@@ -25,8 +25,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             cmdletName = Utilities.UpdateAzureVMImageCmdletName;
 
             cmdletParams.Add(new CmdletParam("ImageName", imageName));
-            cmdletParams.Add(new CmdletParam("Label", label));
 
+            if (label != null)
+            {
+                cmdletParams.Add(new CmdletParam("Label", label));
+            }
             if (! string.IsNullOrEmpty(recommendedSize))
             {
                 cmdletParams.Add(new CmdletParam("RecommendedVMSize", recommendedSize));

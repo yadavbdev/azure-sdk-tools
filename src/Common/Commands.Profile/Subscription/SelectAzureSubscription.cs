@@ -35,6 +35,11 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         [Alias("Name")]
         public string SubscriptionName { get; set; }
 
+        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "Current", HelpMessage = "Name of account to select")]
+        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "Default", HelpMessage = "Name of account to select")]
+        [ValidateNotNullOrEmpty]
+        public string Account { get; set; }
+
         [Parameter(Mandatory = false, ParameterSetName = "Current", HelpMessage = "Switch to set the chosen subscription as the current one")]
         public SwitchParameter Current { get; set; }
 
@@ -49,9 +54,6 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         [Parameter(Mandatory = false)]
         public SwitchParameter PassThru { get; set; }
-
-        [Parameter(Mandatory = false)]
-        public string Account { get; set; }
 
         public override void ExecuteCmdlet()
         {

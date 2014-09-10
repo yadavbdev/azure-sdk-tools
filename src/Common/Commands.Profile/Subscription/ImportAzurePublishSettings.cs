@@ -30,10 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
     [OutputType(typeof(AzureSubscription))]
     public class ImportAzurePublishSettingsCommand : SubscriptionCmdletBase
     {
-        public ImportAzurePublishSettingsCommand() : base(true)
-        {
-            Environment = EnvironmentName.AzureCloud;
-        }
+        public ImportAzurePublishSettingsCommand() : base(true) { }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Path to the publish settings file.")]
@@ -120,7 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void GuardFileExists(string fileName)
         {
-            if (!File.Exists(fileName))
+            if (!FileUtilities.DataStore.FileExists(fileName))
             {
                 throw new Exception();
             }

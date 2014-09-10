@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
             var upstorageinput = new StorageAccountUpdateParameters
             {
-                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardZRS : this.Type,
+                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardGRS : this.Type,
                 Description = this.Description,
                 Label = this.Label
             };

@@ -101,5 +101,47 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.SqlTests
         {
             RunPowerShellTest("Test-FailedUseServerDefault");
         }
+        
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestDatabaseUpdatePolicyWithEventTypeShortcuts()
+        {
+            RunPowerShellTest("Test-DatabaseUpdatePolicyWithEventTypeShortcuts");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestServerUpdatePolicyWithEventTypeShortcuts()
+        {
+            RunPowerShellTest("Test-ServerUpdatePolicyWithEventTypeShortcuts");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestDatabaseUpdatePolicyKeepPreviousStorage()
+        {
+            RunPowerShellTest("Test-DatabaseUpdatePolicyKeepPreviousStorage");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestServerUpdatePolicyKeepPreviousStorage()
+        {
+            RunPowerShellTest("Test-ServerUpdatePolicyKeepPreviousStorage");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestFailWithBadDatabaseIndentity()
+        {
+            RunPowerShellTest("Test-FailWithBadDatabaseIndentity");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestFailWithBadServerIndentity()
+        {
+            RunPowerShellTest("Test-FailWithBadServerIndentity");
+        }
     }
 }

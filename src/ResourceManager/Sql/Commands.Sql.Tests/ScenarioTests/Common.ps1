@@ -19,11 +19,10 @@ Gets the values of the parameters used at the auditing tests
 function Get-SqlAuditingTestEnvironmentParameters 
 {
 	return @{ rgname = "sql-audit-cmdlet-test-rg";
-			  serverWithPolicy = "audit-server-with-policy";
-			  serverWithoutPolicy = "audit-server-without-policy";
-			  databaseWithPolicy = "audit-database-with-policy";
-			  databaseWithoutPolicy = "audit-database-without-policy";
-			  storageAccount = "audittestscmdletsstorage"}
+			  serverName = "sql-audit-cmdlet-test-server";
+			  databaseName = "sql-audit-cmdlet-test-db";
+			  storageAccount = "yrubintest1"#"audittestscmdletsstorage"
+			  }
 }
 
 <#
@@ -34,18 +33,18 @@ function Create-TestEnvironment
 {
 #	Switch-AzureMode AzureResourceManager
 	$params = Get-SqlAuditingTestEnvironmentParameters
-	$storageResource = Get-AzureResource -ErrorAction SilentlyContinue | where {$_.Name -eq $params.storageAccount}
-	if($storageResource -ne $null)
-	{
-		Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
-	}
+#	$storageResource = Get-AzureResource -ErrorAction SilentlyContinue | where {$_.Name -eq $params.storageAccount}
+#	if($storageResource -ne $null)
+#	{
+#		Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
+#	}
 #	Switch-AzureMode AzureServiceManagement
-	New-AzureStorageAccount -StorageAccountName $params.storageAccount -Location "West US" 
-	$storageKey = Get-AzureStorageKey -StorageAccountName $params.storageAccount
-	$storageContext = New-AzureStorageContext  –StorageAccountName $params.storageAccount -StorageAccountKey $storageKey.Primary
-	New-AzureStorageTable -Name "justaname" -Context $storageContext
-#	Switch-AzureMode AzureResourceManager
-	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\cmdlet-test-env-setup1.json" -serverName $params.serverWithPolicy -databaseName $params.databaseWithPolicy -EnvLocation "West US" -StorageAccountName $params.storageAccount -Force
+#	New-AzureStorageAccount -StorageAccountName $params.storageAccount -Location "West US" 
+#	$storageKey = Get-AzureStorageKey -StorageAccountName $params.storageAccount
+#	$storageContext = New-AzureStorageContext  –StorageAccountName $params.storageAccount -StorageAccountKey $storageKey.Primary
+#	New-AzureStorageTable -Name "justaname" -Context $storageContext
+	Switch-AzureMode AzureResourceManager
+	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\cmdlet-test-env-setup1.json" -serverName $params.serverName -databaseName $params.databaseName -EnvLocation "West US" -StorageAccountName $params.storageAccount -Force
 }
 
 <#
@@ -56,7 +55,8 @@ function Remove-TestEnvironment
 {
 	#Switch-AzureMode AzureResourceManager
 	$params = Get-SqlAuditingTestEnvironmentParameters
+	Remove-AzureResourceGroup -Name $params.rgname -force
 	#Switch-AzureMode AzureServiceManagement
-	Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
+	#Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
 	#Switch-AzureMode AzureResourceManager
 }

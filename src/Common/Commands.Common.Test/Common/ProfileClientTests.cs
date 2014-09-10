@@ -105,7 +105,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(".database.windows.net", client.Profile.Environments["Dogfood"].Endpoints[AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix]);
             
             // Verify subscriptions
-            Assert.Equal(2, client.Profile.Subscriptions.Count);
+            Assert.Equal(3, client.Profile.Subscriptions.Count);
             Assert.False(client.Profile.Subscriptions.ContainsKey(new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E")));
             Assert.True(client.Profile.Subscriptions.ContainsKey(new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F")));
             Assert.Equal("Test 2", client.Profile.Subscriptions[new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F")].Name);
@@ -119,6 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal("test@mail.com", client.Profile.Subscriptions[new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")].Account);
             Assert.Equal("72f988bf-86f1-41af-91ab-2d7cd011db47", client.Profile.Subscriptions[new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")].Properties[AzureSubscription.Property.Tenants]);
             Assert.Equal(EnvironmentName.AzureCloud, client.Profile.Subscriptions[new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")].Environment);
+            Assert.Equal(EnvironmentName.AzureChinaCloud, client.Profile.Subscriptions[new Guid("c14d7dc5-ed4d-4346-a02f-9f1bcf78fb66")].Environment);
 
             // Verify accounts
             Assert.Equal(2, client.Profile.Accounts.Count);
@@ -128,6 +129,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 .Contains(new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F").ToString()));
             Assert.True(client.Profile.Accounts["test@mail.com"].GetPropertyAsArray(AzureAccount.Property.Subscriptions)
                 .Contains(new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f").ToString()));
+            Assert.True(client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Subscriptions)
+                .Contains(new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f").ToString()));
             Assert.True(client.Profile.Accounts["test@mail.com"].GetPropertyAsArray(AzureAccount.Property.Tenants)
                 .Contains("72f988bf-86f1-41af-91ab-2d7cd011db47"));
             Assert.True(client.Profile.Accounts["test@mail.com"].GetPropertyAsArray(AzureAccount.Property.Tenants)
@@ -135,7 +138,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal("3AF24D48B97730E5C4C9CCB12397B5E046F79E09", client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].Id);
             Assert.Equal(AzureAccount.AccountType.Certificate, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].Type);
             Assert.Equal(0, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Tenants).Length);
-            Assert.Equal(0, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Subscriptions).Length);
+            Assert.Equal(2, client.Profile.Accounts["3AF24D48B97730E5C4C9CCB12397B5E046F79E09"].GetPropertyAsArray(AzureAccount.Property.Subscriptions).Length);
         }
 
         [Fact]
@@ -320,7 +323,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             };
             client.Profile.Subscriptions[azureSubscription3withoutUser.Id] = azureSubscription3withoutUser;
             client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
-            PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
             List<string> log = new List<string>();
             client.WarningLog = log.Add;
 
@@ -335,6 +337,69 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(
                 "The default subscription is being removed. Use Select-AzureSubscription -Default <subscriptionName> to select a new default subscription.",
                 log[0]);
+        }
+
+        [Fact]
+        public void RemoveAzureAccountRemovesDefaultAccountFromSubscription()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
+            client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+            azureSubscription3withoutUser.Account = "test2";
+            client.Profile.Accounts["test2"] = new AzureAccount
+            {
+                Id = "test2",
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                {
+                    {AzureAccount.Property.Subscriptions, azureSubscription1.Id.ToString()}
+                }
+            };
+            client.Profile.Subscriptions[azureSubscription1.Id].Account = azureAccount.Id;
+            client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
+
+            var account = client.RemoveAccount(azureAccount.Id);
+
+            Assert.Equal("test2", client.Profile.Subscriptions[azureSubscription1.Id].Account);
+        }
+
+        [Fact]
+        public void RemoveAzureAccountRemovesInMemoryAccount()
+        {
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            client.Profile.Subscriptions[azureSubscription1.Id] = azureSubscription1;
+            client.Profile.Subscriptions[azureSubscription2.Id] = azureSubscription2;
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+            azureSubscription3withoutUser.Account = "test2";
+            client.Profile.Accounts["test2"] = new AzureAccount
+            {
+                Id = "test2",
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string>
+                {
+                    {AzureAccount.Property.Subscriptions, azureSubscription1.Id.ToString()}
+                }
+            };
+            client.Profile.Subscriptions[azureSubscription1.Id].Account = azureAccount.Id;
+            client.Profile.Environments[azureEnvironment.Name] = azureEnvironment;
+            AzureSession.SetCurrentContext(azureSubscription1, azureEnvironment, azureAccount);
+
+            client.RemoveAccount(azureAccount.Id);
+
+            Assert.Equal("test2", AzureSession.CurrentContext.Account.Id);
+            Assert.Equal("test2", AzureSession.CurrentContext.Subscription.Account);
+            Assert.Equal(azureSubscription1.Id, AzureSession.CurrentContext.Subscription.Id);
+
+            client.RemoveAccount("test2");
+
+            Assert.Null(AzureSession.CurrentContext.Account);
+            Assert.Null(AzureSession.CurrentContext.Subscription);
+            Assert.Equal(EnvironmentName.AzureCloud, AzureSession.CurrentContext.Environment.Name);
         }
 
         [Fact]
@@ -619,6 +684,26 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(2, subscriptions.First(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)).GetPropertyAsArray(AzureSubscription.Property.SupportedModes).Count());
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription2.SubscriptionId)));
             Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(csmSubscription1.SubscriptionId)));
+        }
+
+        [Fact]
+        public void RefreshSubscriptionsWorksWithMooncake()
+        {
+            SetMocks(new[] { rdfeSubscription1, rdfeSubscription2 }.ToList(), new[] { csmSubscription1, csmSubscription1withDuplicateId }.ToList());
+            MockDataStore dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+            ProfileClient client = new ProfileClient();
+            PowerShellUtilities.GetCurrentModeOverride = () => AzureModule.AzureResourceManager;
+            
+            client.Profile.Accounts[azureAccount.Id] = azureAccount;
+
+            var subscriptions = client.RefreshSubscriptions(client.Profile.Environments[EnvironmentName.AzureChinaCloud]);
+
+            Assert.Equal(2, subscriptions.Count);
+            Assert.Equal(2, subscriptions.Count(s => s.Account == "test"));
+            Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)));
+            Assert.Equal(1, subscriptions.First(s => s.Id == new Guid(rdfeSubscription1.SubscriptionId)).GetPropertyAsArray(AzureSubscription.Property.SupportedModes).Count());
+            Assert.Equal(1, subscriptions.Count(s => s.Id == new Guid(rdfeSubscription2.SubscriptionId)));
         }
 
         [Fact]
@@ -1121,6 +1206,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>d1e52cbc-b073-42e2-a0a0-c2f547118a6f</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
+                    </AzureSubscriptionData>
+                    <AzureSubscriptionData>
+                      <ActiveDirectoryEndpoint i:nil=""true"" />
+                      <ActiveDirectoryServiceEndpointResourceId i:nil=""true"" />
+                      <ActiveDirectoryTenantId i:nil=""true"" />
+                      <ActiveDirectoryUserId i:nil=""true"" />
+                      <CloudStorageAccount i:nil=""true"" />
+                      <GalleryEndpoint i:nil=""true"" />
+                      <IsDefault>false</IsDefault>
+                      <LoginType i:nil=""true"" />
+                      <ManagementCertificate>3AF24D48B97730E5C4C9CCB12397B5E046F79E09</ManagementCertificate>
+                      <ManagementEndpoint>https://management.core.chinacloudapi.cn/</ManagementEndpoint>
+                      <Name>Mooncake Test</Name>
+                      <RegisteredResourceProviders xmlns:d4p1=""http://schemas.microsoft.com/2003/10/Serialization/Arrays"" />
+                      <ResourceManagerEndpoint i:nil=""true"" />
+                      <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
+                      <SubscriptionId>c14d7dc5-ed4d-4346-a02f-9f1bcf78fb66</SubscriptionId>
                       <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                   </Subscriptions>

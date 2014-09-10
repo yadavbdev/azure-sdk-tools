@@ -19,14 +19,12 @@ using System.Linq;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Azure.Subscriptions;
-using Microsoft.Azure.Subscriptions.Models;
 using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace Microsoft.WindowsAzure.Commands.Common
 {
@@ -271,14 +269,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
             AzureAccount account = Profile.Accounts[accountId];
             Profile.Accounts.Remove(account.Id);
 
-            foreach (AzureSubscription subscription in account.GetSubscriptions(Profile))
+            foreach (AzureSubscription subscription in account.GetSubscriptions(Profile).ToArray())
             {
                 if (subscription.Account == accountId)
                 {
-                    AzureAccount defaultAccount = GetDefaultAccount(subscription.Id);
-
+                    AzureAccount remainingAccount = GetSubscriptionAccount(subscription.Id);
                     // There's no default account to use, remove the subscription.
-                    if (defaultAccount == null)
+                    if (remainingAccount == null)
                     {
                         // Warn the user if the removed subscription is the default one.
                         if (subscription.IsPropertySet(AzureSubscription.Property.Default))
@@ -290,9 +287,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         if (subscription.Equals(AzureSession.CurrentContext.Subscription))
                         {
                             WriteWarningMessage(Resources.RemoveCurrentSubscription);
+                            AzureSession.SetCurrentContext(null, null, null);
                         }
 
                         Profile.Subscriptions.Remove(subscription.Id);
+                    }
+                    else
+                    {
+                        subscription.Account = remainingAccount.Id;
+                        AddOrSetSubscription(subscription);
                     }
                 }
             }
@@ -300,7 +303,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return account;
         }
 
-        private AzureAccount GetDefaultAccount(Guid subscriptionId)
+        private AzureAccount GetSubscriptionAccount(Guid subscriptionId)
         {
             List<AzureAccount> accounts = ListSubscriptionAccounts(subscriptionId);
             AzureAccount account = accounts.FirstOrDefault(a => a.Type != AzureAccount.AccountType.Certificate);
@@ -642,12 +645,29 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             var commonTenantToken = AzureSession.AuthenticationFactory.Authenticate(ref account, environment,
                 AuthenticationFactory.CommonAdTenant, password, promptBehavior);
-            using (var subscriptionClient = AzureSession.ClientFactory.CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
-                new TokenCloudCredentials(commonTenantToken.AccessToken),
-                environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
+
+            if (environment.IsEndpointSet(AzureEnvironment.Endpoint.ResourceManager))
             {
-                account.SetOrAppendProperty(AzureAccount.Property.Tenants, 
-                    subscriptionClient.Tenants.List().TenantIds.Select(ti => ti.TenantId).ToArray());
+                using (var subscriptionClient = AzureSession.ClientFactory
+                        .CreateCustomClient<Azure.Subscriptions.SubscriptionClient>(
+                            new TokenCloudCredentials(commonTenantToken.AccessToken),
+                            environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager)))
+                {
+                    account.SetOrAppendProperty(AzureAccount.Property.Tenants,
+                        subscriptionClient.Tenants.List().TenantIds.Select(ti => ti.TenantId).ToArray());
+                }
+            }
+            else
+            {
+                using (var subscriptionClient = AzureSession.ClientFactory
+                        .CreateCustomClient<WindowsAzure.Subscriptions.SubscriptionClient>(
+                            new TokenCloudCredentials(commonTenantToken.AccessToken),
+                            environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement)))
+                {
+                    var subscriptionListResult = subscriptionClient.Subscriptions.List();
+                    account.SetOrAppendProperty(AzureAccount.Property.Tenants,
+                        subscriptionListResult.Subscriptions.Select(s => s.ActiveDirectoryTenantId).Distinct().ToArray());
+                }
             }
         }
 
@@ -805,7 +825,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
-            if (environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ResourceManager) == null)
+            if (!environment.IsEndpointSet(AzureEnvironment.Endpoint.ResourceManager))
             {
                 return result;
             }
@@ -855,7 +875,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             List<AzureSubscription> result = new List<AzureSubscription>();
 
-            if (environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement) == null)
+            if (!environment.IsEndpointSet(AzureEnvironment.Endpoint.ServiceManagement))
             {
                 return result;
             }
