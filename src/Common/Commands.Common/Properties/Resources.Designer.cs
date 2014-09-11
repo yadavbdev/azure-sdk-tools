@@ -70,6 +70,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account id doesn&apos;t match one in subscription..
+        /// </summary>
+        public static string AccountIdDoesntMatchSubscription {
+            get {
+                return ResourceManager.GetString("AccountIdDoesntMatchSubscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account &quot;{0}&quot; has been added..
         /// </summary>
         public static string AddAccountAdded {
@@ -1021,6 +1030,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         public static string EnvironmentExists {
             get {
                 return ResourceManager.GetString("EnvironmentExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Environment name doesn&apos;t match one in subscription..
+        /// </summary>
+        public static string EnvironmentNameDoesntMatchSubscription {
+            get {
+                return ResourceManager.GetString("EnvironmentNameDoesntMatchSubscription", resourceCulture);
             }
         }
         

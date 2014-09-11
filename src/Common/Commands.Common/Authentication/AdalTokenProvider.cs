@@ -26,7 +26,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     /// </summary>
     public class AdalTokenProvider : ITokenProvider
     {
-        private readonly IWin32Window parentWindow;
         private readonly ITokenProvider userTokenProvider;
         private readonly ITokenProvider servicePrincipalTokenProvider;
 
@@ -37,9 +36,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         public AdalTokenProvider(IWin32Window parentWindow)
         {
-            this.parentWindow = parentWindow;
             this.userTokenProvider = new UserTokenProvider(parentWindow);
-            servicePrincipalTokenProvider = new ServicePrincipalTokenProvider(parentWindow);
+            servicePrincipalTokenProvider = new ServicePrincipalTokenProvider();
         }
 
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password)

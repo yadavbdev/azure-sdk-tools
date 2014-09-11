@@ -102,8 +102,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             }
         }
 
-        public IDataStore DataStore { get { return store; } }
-
         public Dictionary<string, AzureEnvironment> Environments { get; set; }
 
         public Dictionary<Guid, AzureSubscription> Subscriptions { get; set; }
@@ -138,26 +136,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
                     value.Properties[AzureSubscription.Property.Default] = "True";
                 }
             }
-        }
-
-        public X509Certificate2 GetCertificate(string thumbprint)
-        {
-            return store.GetCertificate(thumbprint);
-        }
-
-        public void AddCertificate(X509Certificate2 cert)
-        {
-            store.AddCertificate(cert);
-        }
-
-        public void SaveTokenCache(byte[] data)
-        {
-            store.WriteFile(tokenCacheFile, data);
-        }
-
-        public byte[] LoadTokenCache()
-        {
-            return store.ReadFileAsBytes(tokenCacheFile);
         }
     }
 }
