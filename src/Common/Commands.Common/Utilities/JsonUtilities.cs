@@ -39,28 +39,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
         }
 
-        public static bool IsJson(string content)
-        {
-            content = content.Trim();
-            return content.StartsWith("{") && content.EndsWith("}")
-                   || content.StartsWith("[") && content.EndsWith("]");
-        }
-
-        public static void SerializeJsonFile<T>(T data, string path)
-        {
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            javaScriptSerializer.MaxJsonLength = Int32.MaxValue;
-            FileUtilities.DataStore.WriteFile(path, TryFormatJson(javaScriptSerializer.Serialize(data)));
-        }
-
-        public static T DeserializeJsonFile<T>(string path)
-        {
-            string json = FileUtilities.DataStore.ReadFileAsText(path);
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            javaScriptSerializer.MaxJsonLength = Int32.MaxValue;
-            return javaScriptSerializer.Deserialize<T>(json);
-        }
-
         public static Dictionary<string, object> DeserializeJson(string jsonString)
         {
             Dictionary<string, object> result = new Dictionary<string,object>();

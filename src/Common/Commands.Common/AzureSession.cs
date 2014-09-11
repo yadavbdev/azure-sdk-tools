@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.Common.Common;
 using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
@@ -67,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                     }
                     else
                     {
-                        throw new ArgumentException("Account id doesn't match one in subscription.", "account");
+                        throw new ArgumentException(Resources.AccountIdDoesntMatchSubscription, "account");
                     }
 
                     subscription.Account = account.Id;
@@ -77,7 +78,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
             if (subscription != null && subscription.Environment != environment.Name)
             {
-                throw new ArgumentException("Environment name doesn't match one in subscription.", "environment");
+                throw new ArgumentException(Resources.EnvironmentNameDoesntMatchSubscription, "environment");
             }
 
             CurrentContext = new AzureContext

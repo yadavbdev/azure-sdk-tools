@@ -166,7 +166,6 @@
     <Compile Include="Mocks\MockDataStore.cs" />
     <Compile Include="Mocks\MockClientFactory.cs" />
     <Compile Include="Mocks\MockAccessToken.cs" />
-    <Compile Include="Mocks\MockStorageService.cs" />
     <Compile Include="Common\PSObjectExtensions.cs" />
     <Compile Include="Common\RemoveAzurePublishSettings.cs" />
     <Compile Include="Common\SimpleServiceManagementAsyncResult.cs" />
@@ -174,7 +173,6 @@
     <Compile Include="Common\ConversionUtilitiesTests.cs" />
     <Compile Include="Common\Testing.cs" />
     <Compile Include="Common\TestingTracingInterceptor.cs" />
-    <Compile Include="Factories\TestAuthenticationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
