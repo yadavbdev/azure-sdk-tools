@@ -12,16 +12,17 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------------
 
+$randSuffix = Get-Random -Minimum 100 -Maximum 99999;
 <#
 .SYNOPSIS
 Gets the values of the parameters used at the auditing tests
 #>
 function Get-SqlAuditingTestEnvironmentParameters 
 {
-	return @{ rgname = "sql-audit-cmdlet-test-rg";
-			  serverName = "sql-audit-cmdlet-test-server";
-			  databaseName = "sql-audit-cmdlet-test-db";
-			  storageAccount = "yrubintest1"#"audittestscmdletsstorage"
+	return @{ rgname = "sql-audit-cmdlet-test-rg" +$randSuffix;
+			  serverName = "sql-audit-cmdlet-server" +$randSuffix;
+			  databaseName = "sql-audit-cmdlet-db" + $randSuffix;
+			  storageAccount = "auditcmdlets" +$randSuffix
 			  }
 }
 
@@ -31,20 +32,9 @@ Creates the test environment needed to perform the Sql auditing tests
 #>
 function Create-TestEnvironment 
 {
-#	Switch-AzureMode AzureResourceManager
 	$params = Get-SqlAuditingTestEnvironmentParameters
-#	$storageResource = Get-AzureResource -ErrorAction SilentlyContinue | where {$_.Name -eq $params.storageAccount}
-#	if($storageResource -ne $null)
-#	{
-#		Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
-#	}
-#	Switch-AzureMode AzureServiceManagement
-#	New-AzureStorageAccount -StorageAccountName $params.storageAccount -Location "West US" 
-#	$storageKey = Get-AzureStorageKey -StorageAccountName $params.storageAccount
-#	$storageContext = New-AzureStorageContext  –StorageAccountName $params.storageAccount -StorageAccountKey $storageKey.Primary
-#	New-AzureStorageTable -Name "justaname" -Context $storageContext
-	Switch-AzureMode AzureResourceManager
-	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\cmdlet-test-env-setup1.json" -serverName $params.serverName -databaseName $params.databaseName -EnvLocation "West US" -StorageAccountName $params.storageAccount -Force
+	New-AzureStorageAccount -StorageAccountName $params.storageAccount -Location "West US" 
+	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\sql-audit-test-env-setup.json" -serverName $params.serverName -databaseName $params.databaseName -EnvLocation "West US" -StorageAccountName $params.storageAccount -Force
 }
 
 <#
@@ -53,10 +43,7 @@ Removes the test environment that was needed to perform the Sql auditing tests
 #>
 function Remove-TestEnvironment 
 {
-	#Switch-AzureMode AzureResourceManager
 	$params = Get-SqlAuditingTestEnvironmentParameters
 	Remove-AzureResourceGroup -Name $params.rgname -force
-	#Switch-AzureMode AzureServiceManagement
-	#Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
-	#Switch-AzureMode AzureResourceManager
+	Remove-AzureStorageAccount -StorageAccountName $params.storageAccount
 }
