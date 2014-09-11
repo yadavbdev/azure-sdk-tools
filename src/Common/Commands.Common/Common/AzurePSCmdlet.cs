@@ -18,8 +18,6 @@ using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
-using System.Linq;
-using Microsoft.WindowsAzure.Commands.Common.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
@@ -34,10 +32,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             if (AzureSession.CurrentContext.Subscription == null &&
                 defaultProfileClient.Profile.DefaultSubscription != null)
             {
-                AzureSession.SetCurrentContext(
-                    defaultProfileClient.Profile.DefaultSubscription,
-                    defaultProfileClient.GetEnvironmentOrDefault(defaultProfileClient.Profile.DefaultSubscription.Environment),
-                    defaultProfileClient.GetAccountOrNull(defaultProfileClient.Profile.DefaultSubscription.Account));
+                try
+                {
+                    AzureSession.SetCurrentContext(
+                        defaultProfileClient.Profile.DefaultSubscription,
+                        defaultProfileClient.GetEnvironmentOrDefault(defaultProfileClient.Profile.DefaultSubscription.Environment),
+                        defaultProfileClient.GetAccountOrNull(defaultProfileClient.Profile.DefaultSubscription.Account));
+                }
+                catch (ArgumentException)
+                {
+                    // if context cannot be loaded, start with no account/subscription
+                }
             }
         }
 

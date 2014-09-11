@@ -17,9 +17,7 @@ using System.Linq;
 using System.Security;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
-using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Factories
 {
@@ -80,6 +78,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                 switch (account.Type)
                 {
                     case AzureAccount.AccountType.User:
+                    case AzureAccount.AccountType.ServicePrincipal:
                         if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, account.Id)))
                         {
                             throw new ArgumentException(Resources.InvalidSubscriptionState);
@@ -91,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
                         return new CertificateCloudCredentials(context.Subscription.Id.ToString(), certificate);
 
                     default:
-                        throw new NotImplementedException();
+                        throw new NotImplementedException("Error: couldn't do whatever it is we're trying to do here");
                 }
             }
             else

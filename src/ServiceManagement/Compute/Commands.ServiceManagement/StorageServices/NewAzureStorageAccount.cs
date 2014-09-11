@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
                 Description = this.Description,
                 AffinityGroup = this.AffinityGroup,
                 Location = this.Location,
-                AccountType = string.IsNullOrEmpty(this.Type) ? StorageAccountTypes.StandardZRS : this.Type
+                AccountType = string.IsNullOrEmpty(this.Type) ? StorageAccountTypes.StandardGRS : this.Type
             };
 
             ExecuteClientActionNewSM(

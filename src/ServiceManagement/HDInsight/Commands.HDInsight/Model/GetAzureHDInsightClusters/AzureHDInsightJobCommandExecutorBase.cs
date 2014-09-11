@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             IJobSubmissionClient client = null;
             ProfileClient profileClient = new ProfileClient();
 
-            string currentEnvironmentName = this.CurrentSubscription == null ? null : this.CurrentSubscription.Name;
+            string currentEnvironmentName = this.CurrentSubscription == null ? null : this.CurrentSubscription.Environment;
 
             var clientCredential = this.GetJobSubmissionClientCredentials(
                 this.CurrentSubscription,

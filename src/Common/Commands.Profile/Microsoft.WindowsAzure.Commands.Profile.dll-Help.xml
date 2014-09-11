@@ -19,7 +19,8 @@
       <maml:para>There are two different ways to make your Azure account available to Windows PowerShell. You can use the Add-AzureAccount cmdlet, which uses Azure Active Directory (Azure AD) authentication access tokens, or Import-AzurePublishSettingsFile, which uses a management certificate. For guidance on which method to use, see "<maml:navigationLink><maml:linkText>How to: Connect to your subscription</maml:linkText><maml:uri></maml:uri></maml:navigationLink>" (http://azure.microsoft.com/en-us/documentation/articles/install-configure-powershell/#Connect).</maml:para>
       <maml:para>When you run Add-AzureAccount, it displays an interactive window that prompts you to sign into your Azure account. This sign-in is valid until the access token expires. When it expires, cmdlets that require access to your account prompt you to run Add-AzureAccount again.</maml:para>
       <maml:para>If you have a Microsoft Organizational account, you can use the -Credential parameter to add the subscriptions associated with your account to Windows PowerShell without an interactive dialog.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>When specifying -ServicePrincipal switch a -Credential parameter is used to authenticate a Service Principal.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -30,6 +31,47 @@
             <maml:para>The username and password account credentials used to authenticate with Azure Active Directory.  The credentials must be for a Microsoft Organizational account and not another kind of Microsoft account.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+          <maml:name>Environment</maml:name>
+          <maml:description>
+            <maml:para>Specifies an Azure environment for  the user account. This parameter is optional. The default is the AzureCloud environment.</maml:para>
+            <maml:para>An Azure environment an independent deployment of Microsoft Azure, such as AzureCloud for global Azure and AzureChinaCloud for Azure operated by 21Vianet in China. You can also create on-premises Azure environments by using Azure Pack and the WAPack cmdlets. For more information, see <maml:navigationLink><maml:linkText>Azure Pack</maml:linkText><maml:uri></maml:uri></maml:navigationLink>.</maml:para>
+            <maml:para>To get the available Azure environments, use the Get-AzureEnvironment cmdlet. To add an environment, use the Add-AzureEnvironment cmdlet.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+          <maml:name>SubscriptionDataFile</maml:name>
+          <maml:description>
+            <maml:para>Specifies an alternate location for the subscription data file. This parameter is optional. By default, the subscription data file is saved in your roaming user profile.</maml:para>
+            <maml:para>If you use this parameter to specify an alternate location for the subscription data file, be sure to use the SubscriptionDataFile parameters of cmdlets that access your account. Otherwise, the cmdlets look for your account data in the default location.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Add-AzureAccount</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+          <maml:name>Credential</maml:name>
+          <maml:description>
+            <maml:para>The username and password account credentials used to authenticate with Azure Active Directory.  The credentials must be for a Microsoft Organizational account and not another kind of Microsoft account.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+          <maml:name>Tenant</maml:name>
+          <maml:description>
+            <maml:para>Used when logging in as a service principal. Specifies the AAD tenant the service principal is defined in. This can be either the tenant's domain name or id.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+          <maml:name>ServicePrincipal</maml:name>
+          <maml:description>
+            <maml:para>Specifies that your are logging in as a service principal. You must give a Credentials parameter for this case, with the service principal ID as the user name and the service principal key as the password.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
         </command:parameter>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
           <maml:name>Environment</maml:name>
@@ -219,7 +261,26 @@ PS C:\&gt;Add-AzureAccount -Credential $credential
         </command:commandLines>
       </command:example>
       <command:example>
-        <maml:title>---------- Example 4: Add an account in Azure China ----------</maml:title>
+        <maml:title>---------- Example 4: Add a Service Principal account using -Credential and -ServicePrincipal ----------</maml:title>
+        <maml:introduction>
+          <maml:para>
+          </maml:para>
+        </maml:introduction>
+        <dev:code>
+          PS C:\&gt;$credential = Get-Credential
+PS C:\&gt;Add-AzureAccount -Credential $credential -ServicePrincipal -Tenant "3EB32C56-E1E5-46A6-9410-F4A0572B3998"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>This command uses the Credential parameter to provide AAD authentication information of the Service Principal in the tenant 3EB32C56-E1E5-46A6-9410-F4A0572B3998.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>---------- Example 5: Add an account in Azure China ----------</maml:title>
         <maml:introduction>
           <maml:para>
           </maml:para>
@@ -282,7 +343,7 @@ PS C:\&gt;Add-AzureAccount -Credential $credential
       <maml:para>An Azure environment an independent deployment of Microsoft Azure, such as AzureCloud for global Azure and AzureChinaCloud for Azure operated by 21Vianet in China. You can also create on-premises Azure environments by using Azure Pack and the WAPack cmdlets. For more information, see <maml:navigationLink><maml:linkText>Azure Pack</maml:linkText><maml:uri></maml:uri></maml:navigationLink> (http://www.microsoft.com/en-us/server-cloud/products/windows-azure-pack/default.aspx).</maml:para>
       <maml:para>Only the Name parameter of this cmdlet is mandatory. If you omit a parameter, its value is null ($null), and the service that uses that endpoint might not function properly. To add or change the value of an environment property, use the Set-AzureEnvironment cmdlet.</maml:para>
       <maml:para>NOTE: Changing your environment can cause your account to fail. Typically, environments are added only for testing or troubleshooting.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -350,6 +411,20 @@ PS C:\&gt;Add-AzureAccount -Credential $credential
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="9" aliases="">
+          <maml:name>ActiveDirectoryServiceEndpointResourceId</maml:name>
+          <maml:description>
+            <maml:para>Specifies the resource ID of a management API whose access is managed by Azure Active Directory.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="10" aliases="">
+          <maml:name>GraphEndpoint</maml:name>
+          <maml:description>
+            <maml:para>Changes the endpoint for Azure Active Directory Graph API to the specified value.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -370,6 +445,19 @@ PS C:\&gt;Add-AzureAccount -Credential $credential
         <maml:name>ActiveDirectoryServiceEndpointResourceId</maml:name>
         <maml:description>
           <maml:para>Specifies the resource ID of a management API whose access is managed by Azure Active Directory.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="10" aliases="">
+        <maml:name>GraphEndpoint</maml:name>
+        <maml:description>
+          <maml:para>Changes the endpoint for Azure Active Directory Graph API to the specified value.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -538,6 +626,22 @@ GalleryEndpoint               :
 </dev:code>
         <dev:remarks>
           <maml:para>This command creates the ContosoEnv Azure environment.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Add an Azure environment with Parameters</maml:title>
+        <maml:introduction>
+          <maml:para>
+          </maml:para>
+        </maml:introduction>
+        <dev:code>PS C:\&gt;Add-AzureEnvironment -Name ContosoEnv -PublishSettingsFileUrl "https://contoso.com/fwlink/?LinkID=101" -ServiceEndpoint "https://contoso.com/fwlink/?LinkID=102" -ResourceManagerEndpoint "https://contoso.com/fwlink/?LinkID=103" -GraphEndpoint "https://contoso.com/fwlink/?LinkID=104"</dev:code>
+        <dev:remarks>
+          <maml:para>This command creates the ContosoEnv Azure environment with PublishSettingsFileUrl, ServiceEndpoint, ResourceManagerEndpoint, and GraphEndpoint specified. All other endpoints are ignored.</maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
@@ -747,7 +851,7 @@ contosoadmin@outlook.com     {{ ActiveDirectoryTenantId = abcde5cd-bcc3-441a-bd8
       <maml:para>The Get-AzureEnvironment cmdlet gets the Azure environments that are available to Windows PowerShell.</maml:para>
       <maml:para>An Azure environment an independent deployment of Microsoft Azure, such as AzureCloud for global Azure and AzureChinaCloud for Azure operated by 21Vianet in China. You can also create on-premises Azure environments by using Azure Pack and the WAPack cmdlets. For more information, see <maml:navigationLink><maml:linkText>Azure Pack</maml:linkText><maml:uri></maml:uri></maml:navigationLink> (http://www.microsoft.com/en-us/server-cloud/products/windows-azure-pack/default.aspx).</maml:para>
       <maml:para>The Get-AzureEnvironment cmdlet gets environments from your subscription data file, not from Azure. If the subscription data file is outdated, run the Add-AzureAccount or Import-PublishSettingsFile cmdlet to refresh it.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -956,7 +1060,7 @@ GalleryEndpoint               : https://gallery.azure.com/
       <maml:para>When you run Get-AzurePublishSettingsFile, it opens your default browser and prompts you to sign into your Azure account, select a subscription, and select a file system location for the publish settings file. Then, it downloads the publish settings file for your subscription into the file that you selected.</maml:para>
       <maml:para>A "publish settings file" is an XML file with a .publishsettings file name extension. The file contains an encoded certificate that provides management credentials for your Azure subscriptions.</maml:para>
       <maml:para>Security Note: Publish settings files contains credentials that are used to administer your Azure subscriptions and services. If  malicious users access your publish settings file,  they can edit, create, and delete your Azure services. As a security best practice, save the file to a location in your Downloads or Documents folder and then delete it after using Import-AzurePublishSettingsFile cmdlet to import the settings.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1127,7 +1231,7 @@ GalleryEndpoint               : https://gallery.azure.com/
     <maml:description>
       <maml:para>The Get-AzureSubscription cmdlet gets the subscriptions in your Azure account. You can use this cmdlet to get information about the subscription and to pipe the subscription to other cmdlets.</maml:para>
       <maml:para>Get-AzureSubscription requires access to your Azure accounts. Before you run Get-AzureSubscription, you must run the Add-AzureAccount cmdlet or the cmdlets that download and install a publish settings file (Get-AzurePublishSettingsFile, Import-AzurePublishSettingsFile.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1446,6 +1550,13 @@ GalleryEndpoint               : https://gallery.azure.com/
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="">
+          <maml:name>Environment</maml:name>
+          <maml:description>
+            <maml:para>Specifies the environment to use. This parameter is optional. If it is not provided, an environment will be chosen according to the endpoint in the publish settings file.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1466,6 +1577,19 @@ GalleryEndpoint               : https://gallery.azure.com/
         <maml:name>SubscriptionDataFile</maml:name>
         <maml:description>
           <maml:para>Specifies the path to a file where the subscription data is stored. This parameter is optional. If it is not provided, the subscription data is imported into a default file in the user's profile.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="">
+        <maml:name>Environment</maml:name>
+        <maml:description>
+          <maml:para>Specifies the environment to use. This parameter is optional. If it is not provided, an environment will be chosen according to the endpoint in the publish settings file.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1557,6 +1681,27 @@ GalleryEndpoint               : https://gallery.azure.com/
           </command:commandLine>
         </command:commandLines>
       </command:example>
+      <command:example>
+        <maml:title>
+--------------  Example 3 --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>
+          </maml:para>
+        </maml:introduction>
+        <dev:code>
+          PS C:\&gt;Import-AzurePublishSettingsFile –PublishSettingsFile C:\Temp\MyAccount.publishsettings -Environment AzureChinaCloud
+
+        </dev:code>
+        <dev:remarks>
+          <maml:para>This command imports the "C:\Temp\MyAccount.publishsettings" file and sets the Azure environment of all imported subscriptions to be AzureChinaCloud. This will overwrite the endpoints defined in the publish settings file.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
     </command:examples>
     <maml:relatedLinks>
       <maml:navigationLink>
@@ -1595,7 +1740,7 @@ GalleryEndpoint               : https://gallery.azure.com/
       <maml:para>The Remove-AzureAccount cmdlet deletes an Azure account and its subscriptions from the subscription data file in your roaming user profile. It does not delete the account from Microsoft Azure, or change the actual account in any way.</maml:para>
       <maml:para>Using this cmdlet is a lot like logging out of your Azure account. And, if you want to log into the account again, use the Add-AzureAccount or Import-AzurePublishSettingsFile to add the account to Windows PowerShell again. </maml:para>
       <maml:para>You can also use Remove-AzureAccount cmdlet to change the way the Azure PowerShell cmdlets sign into your Azure account. If your account has both a management certificate from Import-AzurePublishSettingsFile and an access token from Add-AzureAccount, the Azure PowerShell cmdlets use only the access token; they ignore the management certificate. To use the management certificate, run Remove-AzureAccount. When Remove-AzureAccount finds both a management certificate and an access token, it deletes only the access token, instead of deleting the account. The management certificate is still there, so account is still available to Windows PowerShell.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1955,7 +2100,7 @@ GalleryEndpoint               : https://gallery.azure.com/
     </command:details>
     <maml:description>
       <maml:para>The Remove-AzureSubscription cmdlet deletes an Azure subscription from your subscription data file so Windows PowerShell can't find it. This cmdlet does not delete the subscription from Microsoft Azure, or change the actual subscription in any way. </maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2210,7 +2355,7 @@ Are you sure you want to perform this action?
       <maml:para>The Select-AzureSubscription cmdlet sets and clears the current and default Azure subscriptions.</maml:para>
       <maml:para>The "current subscription" is the subscription that is used by default in the current Windows PowerShell session. The "default subscription" is used by default in all Windows PowerShell sessions. The "current subscription" label lets you specify a different subscription to be used by default for the current session without changing the "default subscription" for all other sessions.</maml:para>
       <maml:para>The "default" subscription designation is saved in your subscription data file. The session-specific "current" designation is not saved.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2219,6 +2364,13 @@ Are you sure you want to perform this action?
           <maml:name>SubscriptionName</maml:name>
           <maml:description>
             <maml:para>Specifies the subscription to change. Enter the subscription name. This parameter value is case-sensitive. Wildcard characters are not permitted.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="">
+          <maml:name>Account</maml:name>
+          <maml:description>
+            <maml:para>Specifies optionally the account to use with the subscription. This parameter value is case-sensitive. Wildcard characters are not permitted.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
@@ -2253,6 +2405,20 @@ Are you sure you want to perform this action?
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="">
+          <maml:name>Account</maml:name>
+          <maml:description>
+            <maml:para>Specifies optionally the account to use with the subscription. This parameter value is case-sensitive. Wildcard characters are not permitted.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+          <maml:name>Default</maml:name>
+          <maml:description>
+            <maml:para>Sets the "default" subscription. Use the SubscriptionName parameter to identify the subscription.</maml:para>
+            <maml:para>The "default subscription" is the subscription that is used by default in the all Windows PowerShell sessions, unless a different subscription is set to "current".</maml:para>
+          </maml:description>
+        </command:parameter>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
           <maml:name>PassThru</maml:name>
           <maml:description>
@@ -2266,14 +2432,7 @@ Are you sure you want to perform this action?
             <maml:para>Specifies an alternate subscription data file. Use this parameter if you used the SubscriptionDataFile parameter of Add-AzureAccount or Import-PublishSettingsFile to specify an alternate location for the subscription data file. By default, your subscription data file is saved in your roaming user profile.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
-          <maml:name>Default</maml:name>
-          <maml:description>
-            <maml:para>Sets the "default" subscription. Use the SubscriptionName parameter to identify the subscription.</maml:para>
-            <maml:para>The "default subscription" is the subscription that is used by default in the all Windows PowerShell sessions, unless a different subscription is set to "current".</maml:para>
-          </maml:description>
-        </command:parameter>
+        </command:parameter>        
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Select-AzureSubscription</maml:name>
@@ -2323,6 +2482,32 @@ Are you sure you want to perform this action?
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="">
+        <maml:name>SubscriptionName</maml:name>
+        <maml:description>
+          <maml:para>Specifies the subscription to change. Enter the subscription name. This parameter value is case-sensitive. Wildcard characters are not permitted.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
+        <maml:name>Account</maml:name>
+        <maml:description>
+          <maml:para>Specifies optionally the account to use with the subscription. This parameter value is case-sensitive. Wildcard characters are not permitted.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named" aliases="">
         <maml:name>Current</maml:name>
         <maml:description>
@@ -2403,20 +2588,7 @@ Are you sure you want to perform this action?
         </dev:type>
         <dev:defaultValue>
         </dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="">
-        <maml:name>SubscriptionName</maml:name>
-        <maml:description>
-          <maml:para>Specifies the subscription to change. Enter the subscription name. This parameter value is case-sensitive. Wildcard characters are not permitted.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>
-        </dev:defaultValue>
-      </command:parameter>
+      </command:parameter>      
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -2471,7 +2643,24 @@ Are you sure you want to perform this action?
         </command:commandLines>
       </command:example>
       <command:example>
-        <maml:title>Example 2: Set the default description</maml:title>
+        <maml:title>Example 2: Set the current subscription with account</maml:title>
+        <maml:introduction>
+          <maml:para>
+          </maml:para>
+        </maml:introduction>
+        <dev:code>C:\PS&gt; Select-AzureSubscription -Current -SubscriptionName ContosoEngineering -Account user@mail.contoso.com
+</dev:code>
+        <dev:remarks>
+          <maml:para>This command makes "ContosoEngineering" the current subscription and user@mail.contoso.com the current user.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Set the default description</maml:title>
         <maml:introduction>
           <maml:para>
           </maml:para>
@@ -2592,6 +2781,13 @@ Are you sure you want to perform this action?
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="10" aliases="">
+          <maml:name>GraphEndpoint</maml:name>
+          <maml:description>
+            <maml:para>Changes the endpoint for Azure Active Directory Graph API to the specified value.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2621,6 +2817,19 @@ Are you sure you want to perform this action?
         <dev:defaultValue>
         </dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="10" aliases="">
+          <maml:name>GraphEndpoint</maml:name>
+          <maml:description>
+            <maml:para>Changes the endpoint for Azure Active Directory Graph API to the specified value.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+        </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="8" aliases="">
         <maml:name>GalleryEndpoint</maml:name>
         <maml:description>
@@ -2753,18 +2962,18 @@ Are you sure you want to perform this action?
           <maml:para>
           </maml:para>
         </maml:introduction>
-        <dev:code>PS C:\&gt;Set-AzureEnvironment -Name ContosoEnv -PublishSettingsFileUrl "https://contoso.com" -StorageEndpoint "contoso.com"
+        <dev:code>PS C:\&gt;Set-AzureEnvironment -Name ContosoEnv -PublishSettingsFileUrl "https://contoso.com" -StorageEndpoint "contoso.com" -GraphEndpoint "https://contoso.com/fwlink/?LinkID=104"
 
 </dev:code>
         <dev:remarks>
-          <maml:para>This command changes the values of the PublishSettingsFileUrl and StorageEndpoint properties of the ContosoEnv environment.</maml:para>
+          <maml:para>This command changes the values of the PublishSettingsFileUrl, StorageEndpoint, and GraphEndpoint properties of the ContosoEnv environment.</maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
             <command:commandText />
           </command:commandLine>
         </command:commandLines>
-      </command:example>
+      </command:example>      
     </command:examples>
     <maml:relatedLinks>
       <maml:navigationLink>
@@ -2802,7 +3011,7 @@ Are you sure you want to perform this action?
       <maml:para>The Set-AzureSubscription cmdlet establishes and changes the properties of an Azure subscription. You can use this cmdlet to create a new subscription or change the properties of an existing subscription.</maml:para>
       <maml:para>To create a new subscription, select a unique name for the value of the SubscriptionName parameter. To change an existing subscription, use the SubscriptionName parameter to identify the subscription.</maml:para>
       <maml:para>This cmdlet changes the data in the subscription data file that you create when you use the Add-AzureAccount or Import-AzurePublishSettingsFile cmdlet to add an Azure account to Windows PowerShell.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.1 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+      <maml:para>This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

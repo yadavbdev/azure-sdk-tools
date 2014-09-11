@@ -269,14 +269,13 @@ namespace Microsoft.WindowsAzure.Commands.Common
             AzureAccount account = Profile.Accounts[accountId];
             Profile.Accounts.Remove(account.Id);
 
-            foreach (AzureSubscription subscription in account.GetSubscriptions(Profile))
+            foreach (AzureSubscription subscription in account.GetSubscriptions(Profile).ToArray())
             {
                 if (subscription.Account == accountId)
                 {
-                    AzureAccount defaultAccount = GetDefaultAccount(subscription.Id);
-
+                    AzureAccount remainingAccount = GetSubscriptionAccount(subscription.Id);
                     // There's no default account to use, remove the subscription.
-                    if (defaultAccount == null)
+                    if (remainingAccount == null)
                     {
                         // Warn the user if the removed subscription is the default one.
                         if (subscription.IsPropertySet(AzureSubscription.Property.Default))
@@ -288,9 +287,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         if (subscription.Equals(AzureSession.CurrentContext.Subscription))
                         {
                             WriteWarningMessage(Resources.RemoveCurrentSubscription);
+                            AzureSession.SetCurrentContext(null, null, null);
                         }
 
                         Profile.Subscriptions.Remove(subscription.Id);
+                    }
+                    else
+                    {
+                        subscription.Account = remainingAccount.Id;
+                        AddOrSetSubscription(subscription);
                     }
                 }
             }
@@ -298,7 +303,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return account;
         }
 
-        private AzureAccount GetDefaultAccount(Guid subscriptionId)
+        private AzureAccount GetSubscriptionAccount(Guid subscriptionId)
         {
             List<AzureAccount> accounts = ListSubscriptionAccounts(subscriptionId);
             AzureAccount account = accounts.FirstOrDefault(a => a.Type != AzureAccount.AccountType.Certificate);

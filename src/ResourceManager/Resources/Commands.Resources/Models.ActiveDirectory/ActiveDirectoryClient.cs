@@ -255,7 +255,7 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
                     }
                     else
                     {
-                        result = GraphClient.Group.ListNext(result.NextLink);
+                        result = GraphClient.Group.ListNext(options.NextLink);
                     }
 
                     groups.AddRange(result.Groups.Select(g => g.ToPSADGroup()));
@@ -323,14 +323,25 @@ namespace Microsoft.Azure.Commands.Resources.Models.ActiveDirectory
 
         public Guid GetObjectId(ADObjectFilterOptions options)
         {
-            PSADObject adObj = GetADObject(options);
-
-            if (adObj == null)
+            Guid principalId;
+            if (options != null && options.Id != null
+                && Guid.TryParse(options.Id, out principalId))
             {
-                throw new KeyNotFoundException("The provided information does not map to an AD object id.");
+                // do nothing, we have parsed the guid
+            }
+            else
+            {
+                PSADObject adObj = GetADObject(options);
+
+                if (adObj == null)
+                {
+                    throw new KeyNotFoundException("The provided information does not map to an AD object id.");
+                }
+
+                principalId = adObj.Id;
             }
 
-            return adObj.Id;
+            return principalId;
         }
     }
 }
