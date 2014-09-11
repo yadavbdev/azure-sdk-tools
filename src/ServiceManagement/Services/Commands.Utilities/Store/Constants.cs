@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Store
 {
-    using System;
-    using System.Collections.Generic;
-
     public class StoreConstants
     {
         //

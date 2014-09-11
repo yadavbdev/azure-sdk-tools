@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Security.Permissions;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using System;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Stops an azure automation job.
     /// </summary>

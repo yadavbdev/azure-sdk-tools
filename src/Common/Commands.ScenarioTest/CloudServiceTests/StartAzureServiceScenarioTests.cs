@@ -11,13 +11,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
-    using Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class StartAzureServiceScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class StartAzureServiceScenarioTests : AzurePowerShellCertificateTest
     {
         public StartAzureServiceScenarioTests()
             : base("CloudService\\Common.ps1",

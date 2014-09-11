@@ -1,5 +1,5 @@
-﻿using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities
 {

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache.Models;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.ManagedCache.Test
 {
-    using ManagedCache.Models;
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using System;
-    using Xunit;
-
     public class CacheSkuCountConvertTest
     {
         [Fact]

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS
 {
-    using System;
-
     public enum LogLevel
     {
         Off = 0,

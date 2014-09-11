@@ -12,19 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Common.Interfaces;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-
     public static class FileUtilities
     {
+        static FileUtilities()
+        {
+            DataStore = new DiskDataStore();
+        }
+        
+        public static IDataStore DataStore { get; set; }
+
         public static string GetAssemblyDirectory()
         {
             var assemblyPath = Uri.UnescapeDataString(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath);
@@ -41,15 +49,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             string path = Path.Combine(startDirectory, fileName);
 
             // Try search in the subdirectories in case that the file path does not exist in root path
-            if (!File.Exists(path) && !Directory.Exists(path))
+            if (!DataStore.FileExists(path) && !DataStore.DirectoryExists(path))
             {
                 try
                 {
-                    path = Directory.GetDirectories(startDirectory, fileName, SearchOption.AllDirectories).FirstOrDefault();
+                    path = DataStore.GetDirectories(startDirectory, fileName, SearchOption.AllDirectories).FirstOrDefault();
 
                     if (string.IsNullOrEmpty(path))
                     {
-                        path = Directory.GetFiles(startDirectory, fileName, SearchOption.AllDirectories).First();
+                        path = DataStore.GetFiles(startDirectory, fileName, SearchOption.AllDirectories).First();
                     }
                 }
                 catch
@@ -64,13 +72,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public static string GetWithProgramFilesPath(string directoryName, bool throwIfNotFound)
         {
             string programFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            if (Directory.Exists(Path.Combine(programFilesPath, directoryName)))
+            if (DataStore.DirectoryExists(Path.Combine(programFilesPath, directoryName)))
             {
                 return Path.Combine(programFilesPath, directoryName);
             }
             else
             {
-                if (programFilesPath.IndexOf(Resources.x86InProgramFiles) == -1)
+                if (programFilesPath.IndexOf(Resources.x86InProgramFiles, StringComparison.InvariantCultureIgnoreCase) == -1)
                 {
                     programFilesPath += Resources.x86InProgramFiles;
                     if (throwIfNotFound)
@@ -91,57 +99,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
         }
 
-        public static void CreateDirectories(IEnumerable<string> directories)
-        {
-            foreach (string directoryName in directories)
-            {
-                Directory.CreateDirectory(directoryName);
-            }
-        }
-
-        public static void CopyFilesFromResources(IDictionary<string, string> filesPair)
-        {
-            foreach (KeyValuePair<string, string> filePair in filesPair)
-            {
-                File.WriteAllBytes(filePair.Value, GeneralUtilities.GetResourceContents(filePair.Key));
-            }
-        }
-
-        /// <summary>
-        /// Write all of the given bytes to a file.
-        /// </summary>
-        /// <param name="path">Path to the file.</param>
-        /// <param name="mode">Mode to open the file.</param>
-        /// <param name="bytes">Contents of the file.</param>
-        public static void WriteAllBytes(string path, FileMode mode, byte[] bytes)
-        {
-            Debug.Assert(!String.IsNullOrEmpty(path));
-            Debug.Assert(Enum.IsDefined(typeof(FileMode), mode));
-            Debug.Assert(bytes != null && bytes.Length > 0);
-
-            // Note: We're not wrapping the file in a using statement because
-            // that could lead to a double dispose when the writer is disposed.
-            FileStream file = null;
-            try
-            {
-                file = new FileStream(path, mode);
-                using (BinaryWriter writer = new BinaryWriter(file))
-                {
-                    // Clear the reference to file so it won't get disposed twice
-                    file = null;
-
-                    writer.Write(bytes);
-                }
-            }
-            finally
-            {
-                if (file != null)
-                {
-                    file.Dispose();
-                }
-            }
-        }
-
         /// <summary>
         /// Copies a directory.
         /// </summary>
@@ -150,29 +107,28 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// <param name="copySubDirs">Should the copy be recursive</param>
         public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
+            var dirs = DataStore.GetDirectories(sourceDirName);
 
-            if (!dir.Exists)
+            if (!DataStore.DirectoryExists(sourceDirName))
             {
                 throw new DirectoryNotFoundException(String.Format(Resources.PathDoesNotExist, sourceDirName));
             }
 
-            Directory.CreateDirectory(destDirName);
+            DataStore.CreateDirectory(destDirName);
 
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
+            var files = DataStore.GetFiles(sourceDirName);
+            foreach (var file in files)
             {
-                string tempPath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(tempPath, false);
+                string tempPath = Path.Combine(destDirName, Path.GetFileName(file));
+                DataStore.CopyFile(file, tempPath);
             }
 
             if (copySubDirs)
             {
-                foreach (DirectoryInfo subdir in dirs)
+                foreach (var subdir in dirs)
                 {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    string temppath = Path.Combine(destDirName, Path.GetDirectoryName(subdir));
+                    DirectoryCopy(subdir, temppath, copySubDirs);
                 }
             }
         }
@@ -185,9 +141,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             Validate.ValidateStringIsNullOrEmpty(pathName, "Settings directory");
             string directoryPath = Path.GetDirectoryName(pathName);
-            if (!Directory.Exists(directoryPath))
+            if (!DataStore.DirectoryExists(directoryPath))
             {
-                Directory.CreateDirectory(directoryPath);
+                DataStore.CreateDirectory(directoryPath);
             }
         }
 
@@ -197,14 +153,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         /// <returns>Path to the temp directory.</returns>
         public static string CreateTempDirectory()
         {
-            string tempPath = null;
+            string tempPath;
             do
             {
                 tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             }
-            while (Directory.Exists(tempPath) || File.Exists(tempPath));
+            while (DataStore.DirectoryExists(tempPath) || DataStore.FileExists(tempPath));
 
-            Directory.CreateDirectory(tempPath);
+            DataStore.CreateDirectory(tempPath);
             return tempPath;
         }
 
@@ -220,7 +176,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             Debug.Assert(!String.IsNullOrEmpty(destinationDirectory), "destinationDirectory cannot be null or empty!");
             Debug.Assert(!Directory.Exists(destinationDirectory), "destinationDirectory must not exist!");
 
-            foreach (string file in Directory.GetFiles(sourceDirectory, "*", SearchOption.AllDirectories))
+            foreach (string file in DataStore.GetFiles(sourceDirectory, "*", SearchOption.AllDirectories))
             {
                 string relativePath = file.Substring(
                     sourceDirectory.Length + 1,
@@ -228,12 +184,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 string destinationPath = Path.Combine(destinationDirectory, relativePath);
 
                 string destinationDir = Path.GetDirectoryName(destinationPath);
-                if (!Directory.Exists(destinationDir))
+                if (!DataStore.DirectoryExists(destinationDir))
                 {
-                    Directory.CreateDirectory(destinationDir);
+                    DataStore.CreateDirectory(destinationDir);
                 }
 
-                File.Copy(file, destinationPath);
+                DataStore.CopyFile(file, destinationPath);
             }
         }
 
@@ -242,9 +198,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             Encoding encoding;
 
 
-            if (File.Exists(path))
+            if (DataStore.FileExists(path))
             {
-                using (StreamReader r = new StreamReader(path, true))
+                using (StreamReader r = new StreamReader(DataStore.ReadFileAsStream(path)))
                 {
                     encoding = r.CurrentEncoding;
                 }
@@ -276,7 +232,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             try
             {
-                FileAttributes attributes = File.GetAttributes(path);
+                FileAttributes attributes = DataStore.GetFileAttributes(path);
 
                 if ((attributes & FileAttributes.Directory) == FileAttributes.Directory)
                 {
@@ -295,12 +251,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public static void RecreateDirectory(string dir)
         {
-            if (Directory.Exists(dir))
+            if (DataStore.DirectoryExists(dir))
             {
-                Directory.Delete(dir, true);
+                DataStore.DeleteDirectory(dir);
             }
 
-            Directory.CreateDirectory(dir);
+            DataStore.CreateDirectory(dir);
         }
 
         /// <summary>

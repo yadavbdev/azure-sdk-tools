@@ -12,24 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Models;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement
 {
-    using AutoMapper;
-    using Extensions;
-    using Helpers;
-    using IaaS.Extensions;
-    using Management.Compute.Models;
-    using Management.Models;
-    using Management.Network.Models;
-    using Management.Storage.Models;
-    using Model;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Net;
-    using Utilities.Common;
     using NSM = Management.Compute.Models;
     using NVM = Management.Network.Models;
     using PVM = Model;
@@ -95,11 +93,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
-            Mapper.CreateMap<VirtualMachineExtensionListResponse.ResourceExtension, VirtualMachineExtensionImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineExtensionListResponse.ResourceExtension, VirtualMachineExtensionImageContext>()
                   .ForMember(c => c.ExtensionName, o => o.MapFrom(r => r.Name));
 
             //Image mapping
-            Mapper.CreateMap<VirtualMachineOSImageListResponse.VirtualMachineOSImage, OSImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageListResponse.VirtualMachineOSImage, PVM.OSImageContext>()
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystemType))
@@ -107,14 +105,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.IconUri, o => o.MapFrom(r => r.SmallIconUri))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<VirtualMachineOSImageGetResponse, OSImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageGetResponse, PVM.OSImageContext>()
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystemType))
                   .ForMember(c => c.PublishedDate, o => o.MapFrom(r => new DateTime?(r.PublishedDate)))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<VirtualMachineOSImageCreateResponse, OSImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageCreateResponse, PVM.OSImageContext>()
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.IconUri, o => o.MapFrom(r => r.SmallIconUri))
@@ -122,7 +120,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.PublishedDate, o => o.MapFrom(r => r.PublishedDate))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<VirtualMachineOSImageUpdateResponse, OSImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageUpdateResponse, PVM.OSImageContext>()
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.IconUri, o => o.MapFrom(r => r.SmallIconUri))
@@ -130,17 +128,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.PublishedDate, o => o.MapFrom(r => r.PublishedDate))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<OperationStatusResponse, OSImageContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.OSImageContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
-            Mapper.CreateMap<VirtualMachineDiskCreateResponse, OSImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineDiskCreateResponse, PVM.OSImageContext>()
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystem));
 
             // VM Image mapping
-            Mapper.CreateMap<VirtualMachineOSImageListResponse.VirtualMachineOSImage, VMImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageListResponse.VirtualMachineOSImage, PVM.VMImageContext>()
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystemType))
@@ -148,14 +146,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.IconUri, o => o.MapFrom(r => r.SmallIconUri))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<VirtualMachineOSImageGetResponse, VMImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageGetResponse, PVM.VMImageContext>()
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystemType))
                   .ForMember(c => c.PublishedDate, o => o.MapFrom(r => new DateTime?(r.PublishedDate)))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<VirtualMachineOSImageCreateResponse, VMImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageCreateResponse, PVM.VMImageContext>()
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.IconUri, o => o.MapFrom(r => r.SmallIconUri))
@@ -163,7 +161,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.PublishedDate, o => o.MapFrom(r => r.PublishedDate))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<VirtualMachineOSImageUpdateResponse, VMImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineOSImageUpdateResponse, PVM.VMImageContext>()
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.IconUri, o => o.MapFrom(r => r.SmallIconUri))
@@ -171,19 +169,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.PublishedDate, o => o.MapFrom(r => r.PublishedDate))
                   .ForMember(c => c.LogicalSizeInGB, o => o.MapFrom(r => (int)r.LogicalSizeInGB));
 
-            Mapper.CreateMap<OperationStatusResponse, VMImageContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.VMImageContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
-            Mapper.CreateMap<VirtualMachineDiskCreateResponse, VMImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineDiskCreateResponse, PVM.VMImageContext>()
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystem));
 
             // VM Image Disk Mapping
-            Mapper.CreateMap<VirtualMachineVMImageListResponse.OSDiskConfiguration, PVM.OSDiskConfiguration>()
+            Mapper.CreateMap<NSM.VirtualMachineVMImageListResponse.OSDiskConfiguration, PVM.OSDiskConfiguration>()
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystem));
-            Mapper.CreateMap<VirtualMachineVMImageListResponse.DataDiskConfiguration, PVM.DataDiskConfiguration>()
+            Mapper.CreateMap<NSM.VirtualMachineVMImageListResponse.DataDiskConfiguration, PVM.DataDiskConfiguration>()
                   .ForMember(c => c.Lun, o => o.MapFrom(r => r.LogicalUnitNumber));
 
             Mapper.CreateMap<IList<NSM.DataDiskConfigurationUpdateParameters>, List<PVM.DataDiskConfiguration>>();
@@ -202,10 +200,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
             Mapper.CreateMap<PVM.DataDiskConfigurationList, IList<NSM.DataDiskConfigurationUpdateParameters>>();
             Mapper.CreateMap<PVM.DataDiskConfigurationList, List<NSM.DataDiskConfigurationUpdateParameters>>();
 
-            Mapper.CreateMap<VirtualMachineVMImageListResponse.VirtualMachineVMImage, VMImageContext>()
+            Mapper.CreateMap<NSM.VirtualMachineVMImageListResponse.VirtualMachineVMImage, PVM.VMImageContext>()
                   .ForMember(c => c.ImageName, o => o.MapFrom(r => r.Name));
 
-            Mapper.CreateMap<OperationStatusResponse, VMImageContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.VMImageContext>()
                   .ForMember(c => c.OS, o => o.Ignore())
                   .ForMember(c => c.LogicalSizeInGB, o => o.Ignore())
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
@@ -318,7 +316,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
             // LoadBalancedEndpointList mapping
             Mapper.CreateMap<PVM.AccessControlListRule, NSM.AccessControlListRule>();
             Mapper.CreateMap<PVM.EndpointAccessControlList, NSM.EndpointAcl>();
-            Mapper.CreateMap<PVM.InputEndpoint, VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>()
+            Mapper.CreateMap<PVM.InputEndpoint, NSM.VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>()
                   .ForMember(c => c.Rules, o => o.MapFrom(r => r.EndpointAccessControlList == null ? null : r.EndpointAccessControlList.Rules))
                   .ForMember(c => c.VirtualIPAddress, o => o.MapFrom(r => r.Vip));
 
@@ -338,43 +336,43 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //AffinityGroup mapping
-            Mapper.CreateMap<AffinityGroupGetResponse, AffinityGroupContext>()
+            Mapper.CreateMap<AffinityGroupGetResponse, PVM.AffinityGroupContext>()
                   .ForMember(c => c.VirtualMachineRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.VirtualMachinesRoleSizes))
                   .ForMember(c => c.WebWorkerRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.WebWorkerRoleSizes));
-            Mapper.CreateMap<AffinityGroupListResponse.AffinityGroup, AffinityGroupContext>()
+            Mapper.CreateMap<AffinityGroupListResponse.AffinityGroup, PVM.AffinityGroupContext>()
                   .ForMember(c => c.VirtualMachineRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.VirtualMachinesRoleSizes))
                   .ForMember(c => c.WebWorkerRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.WebWorkerRoleSizes));
-            Mapper.CreateMap<AffinityGroupGetResponse.HostedServiceReference, AffinityGroupContext.Service>()
+            Mapper.CreateMap<AffinityGroupGetResponse.HostedServiceReference, PVM.AffinityGroupContext.Service>()
                   .ForMember(c => c.Url, o => o.MapFrom(r => r.Uri));
-            Mapper.CreateMap<AffinityGroupGetResponse.StorageServiceReference, AffinityGroupContext.Service>()
+            Mapper.CreateMap<AffinityGroupGetResponse.StorageServiceReference, PVM.AffinityGroupContext.Service>()
                   .ForMember(c => c.Url, o => o.MapFrom(r => r.Uri));
-            Mapper.CreateMap<OperationStatusResponse, AffinityGroupContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.AffinityGroupContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //Location mapping
-            Mapper.CreateMap<LocationsListResponse.Location, LocationsContext>()
+            Mapper.CreateMap<LocationsListResponse.Location, PVM.LocationsContext>()
                   .ForMember(c => c.VirtualMachineRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.VirtualMachinesRoleSizes))
                   .ForMember(c => c.WebWorkerRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.WebWorkerRoleSizes));
-            Mapper.CreateMap<OperationStatusResponse, LocationsContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.LocationsContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //Role sizes mapping
-            Mapper.CreateMap<RoleSizeListResponse.RoleSize, RoleSizeContext>()
+            Mapper.CreateMap<RoleSizeListResponse.RoleSize, PVM.RoleSizeContext>()
                   .ForMember(c => c.InstanceSize, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.RoleSizeLabel, o => o.MapFrom(r => r.Label));
-            Mapper.CreateMap<OperationStatusResponse, RoleSizeContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.RoleSizeContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
             
             //ServiceCertificate mapping
-            Mapper.CreateMap<ServiceCertificateGetResponse, CertificateContext>()
+            Mapper.CreateMap<NSM.ServiceCertificateGetResponse, PVM.CertificateContext>()
                   .ForMember(c => c.Data, o => o.MapFrom(r => r.Data != null ? Convert.ToBase64String(r.Data) : null));
-            Mapper.CreateMap<ServiceCertificateListResponse.Certificate, CertificateContext>()
+            Mapper.CreateMap<NSM.ServiceCertificateListResponse.Certificate, PVM.CertificateContext>()
                   .ForMember(c => c.Url, o => o.MapFrom(r => r.CertificateUri))
                   .ForMember(c => c.Data, o => o.MapFrom(r => r.Data != null ? Convert.ToBase64String(r.Data) : null));
-            Mapper.CreateMap<OperationStatusResponse, CertificateContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.CertificateContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
             Mapper.CreateMap<OperationStatusResponse, ManagementOperationContext>()
@@ -382,86 +380,89 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //OperatingSystems mapping
-            Mapper.CreateMap<OperatingSystemListResponse.OperatingSystem, OSVersionsContext>();
-            Mapper.CreateMap<OperationStatusResponse, OSVersionsContext>()
+            Mapper.CreateMap<NSM.OperatingSystemListResponse.OperatingSystem, PVM.OSVersionsContext>();
+            Mapper.CreateMap<OperationStatusResponse, PVM.OSVersionsContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //Service mapping
-            Mapper.CreateMap<NSM.HostedServiceProperties, HostedServiceDetailedContext>()
+            Mapper.CreateMap<NSM.HostedServiceProperties, PVM.HostedServiceDetailedContext>()
                   .ForMember(c => c.Description, o => o.MapFrom(r => string.IsNullOrEmpty(r.Description) ? null : r.Description))
                   .ForMember(c => c.DateModified, o => o.MapFrom(r => r.DateLastModified));
-            Mapper.CreateMap<HostedServiceGetResponse, HostedServiceDetailedContext>()
+            Mapper.CreateMap<NSM.HostedServiceGetResponse, PVM.HostedServiceDetailedContext>()
                   .ForMember(c => c.ExtendedProperties, o => o.MapFrom(r => r.Properties == null ? null : r.Properties.ExtendedProperties))
                   .ForMember(c => c.VirtualMachineRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.VirtualMachinesRoleSizes))
                   .ForMember(c => c.WebWorkerRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.WebWorkerRoleSizes))
                   .ForMember(c => c.Url, o => o.MapFrom(r => r.Uri));
-            Mapper.CreateMap<HostedServiceListResponse.HostedService, HostedServiceDetailedContext>()
+            Mapper.CreateMap<NSM.HostedServiceListResponse.HostedService, PVM.HostedServiceDetailedContext>()
                   .ForMember(c => c.ExtendedProperties, o => o.MapFrom(r => r.Properties == null ? null : r.Properties.ExtendedProperties))
                   .ForMember(c => c.VirtualMachineRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.VirtualMachinesRoleSizes))
                   .ForMember(c => c.WebWorkerRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.WebWorkerRoleSizes))
                   .ForMember(c => c.Url, o => o.MapFrom(r => r.Uri));
-            Mapper.CreateMap<OperationStatusResponse, HostedServiceDetailedContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.HostedServiceDetailedContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //Disk mapping
-            Mapper.CreateMap<VirtualMachineDiskListResponse.VirtualMachineDisk, DiskContext>()
+            Mapper.CreateMap<NSM.VirtualMachineDiskListResponse.VirtualMachineDisk, PVM.DiskContext>()
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.DiskSizeInGB, o => o.MapFrom(r => r.LogicalSizeInGB))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystemType))
                   .ForMember(c => c.DiskName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.AttachedTo, o => o.MapFrom(r => r.UsageDetails));
-            Mapper.CreateMap<VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails, DiskContext.RoleReference>();
+            Mapper.CreateMap<NSM.VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails, PVM.DiskContext.RoleReference>();
 
-            Mapper.CreateMap<VirtualMachineDiskGetResponse, DiskContext>()
+            Mapper.CreateMap<NSM.VirtualMachineDiskGetResponse, PVM.DiskContext>()
                   .ForMember(c => c.AttachedTo, o => o.MapFrom(r => r.UsageDetails))
                   .ForMember(c => c.DiskName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.DiskSizeInGB, o => o.MapFrom(r => r.LogicalSizeInGB))
                   .ForMember(c => c.IsCorrupted, o => o.MapFrom(r => r.IsCorrupted))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystemType));
-            Mapper.CreateMap<VirtualMachineDiskGetResponse.VirtualMachineDiskUsageDetails, DiskContext.RoleReference>();
+            Mapper.CreateMap<NSM.VirtualMachineDiskGetResponse.VirtualMachineDiskUsageDetails, PVM.DiskContext.RoleReference>();
 
-            Mapper.CreateMap<VirtualMachineDiskCreateResponse, DiskContext>()
+            Mapper.CreateMap<NSM.VirtualMachineDiskCreateResponse, PVM.DiskContext>()
                   .ForMember(c => c.DiskName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.OS, o => o.MapFrom(r => r.OperatingSystem))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.DiskSizeInGB, o => o.MapFrom(r => r.LogicalSizeInGB))
                   .ForMember(c => c.AttachedTo, o => o.MapFrom(r => r.UsageDetails));
-            Mapper.CreateMap<VirtualMachineDiskCreateResponse.VirtualMachineDiskUsageDetails, DiskContext.RoleReference>();
+            Mapper.CreateMap<NSM.VirtualMachineDiskCreateResponse.VirtualMachineDiskUsageDetails, PVM.DiskContext.RoleReference>();
 
-            Mapper.CreateMap<VirtualMachineDiskUpdateResponse, DiskContext>()
+            Mapper.CreateMap<NSM.VirtualMachineDiskUpdateResponse, PVM.DiskContext>()
                   .ForMember(c => c.DiskName, o => o.MapFrom(r => r.Name))
                   .ForMember(c => c.MediaLink, o => o.MapFrom(r => r.MediaLinkUri))
                   .ForMember(c => c.DiskSizeInGB, o => o.MapFrom(r => r.LogicalSizeInGB));
 
-            Mapper.CreateMap<OperationStatusResponse, DiskContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.DiskContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
             //Storage mapping
-            Mapper.CreateMap<StorageAccountGetResponse, StorageServicePropertiesOperationContext>()
+            Mapper.CreateMap<StorageAccountGetResponse, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.StorageAccountDescription, o => o.MapFrom(r => r.StorageAccount.Properties == null ? null : r.StorageAccount.Properties.Description))
-                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.StorageAccount.Name));
-            Mapper.CreateMap<StorageAccountProperties, StorageServicePropertiesOperationContext>()
+                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.StorageAccount.Name))
+                  .ForMember(c => c.GeoReplicationEnabled, o => o.MapFrom(r => string.Equals(r.StorageAccount.Properties.AccountType, StorageAccountTypes.StandardGRS) ? (bool?)true : null));
+            Mapper.CreateMap<StorageAccountProperties, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.StorageAccountDescription, o => o.MapFrom(r => r.Description))
                   .ForMember(c => c.GeoPrimaryLocation, o => o.MapFrom(r => r.GeoPrimaryRegion))
                   .ForMember(c => c.GeoSecondaryLocation, o => o.MapFrom(r => r.GeoSecondaryRegion))
                   .ForMember(c => c.StorageAccountStatus, o => o.MapFrom(r => r.Status))
                   .ForMember(c => c.StatusOfPrimary, o => o.MapFrom(r => r.StatusOfGeoPrimaryRegion))
-                  .ForMember(c => c.StatusOfSecondary, o => o.MapFrom(r => r.StatusOfGeoSecondaryRegion));
-            Mapper.CreateMap<StorageAccount, StorageServicePropertiesOperationContext>()
+                  .ForMember(c => c.StatusOfSecondary, o => o.MapFrom(r => r.StatusOfGeoSecondaryRegion))
+                  .ForMember(c => c.GeoReplicationEnabled, o => o.MapFrom(r => string.Equals(r.AccountType, StorageAccountTypes.StandardGRS) ? (bool?)true : null));
+            Mapper.CreateMap<StorageAccount, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.StorageAccountDescription, o => o.MapFrom(r => r.Properties == null ? null : r.Properties.Description))
-                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.Name));
-            Mapper.CreateMap<OperationStatusResponse, StorageServicePropertiesOperationContext>()
+                  .ForMember(c => c.StorageAccountName, o => o.MapFrom(r => r.Name))
+                  .ForMember(c => c.GeoReplicationEnabled, o => o.MapFrom(r => string.Equals(r.Properties.AccountType, StorageAccountTypes.StandardGRS) ? (bool?)true : null));
+            Mapper.CreateMap<OperationStatusResponse, PVM.StorageServicePropertiesOperationContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
-            Mapper.CreateMap<StorageAccountGetKeysResponse, StorageServiceKeyOperationContext>()
+            Mapper.CreateMap<StorageAccountGetKeysResponse, PVM.StorageServiceKeyOperationContext>()
                   .ForMember(c => c.Primary, o => o.MapFrom(r => r.PrimaryKey))
                   .ForMember(c => c.Secondary, o => o.MapFrom(r => r.SecondaryKey));
-            Mapper.CreateMap<OperationStatusResponse, StorageServiceKeyOperationContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.StorageServiceKeyOperationContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
@@ -514,20 +515,20 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
             Mapper.CreateMap<NVM.NetworkListResponse.VirtualNetworkSite, PVM.VirtualNetworkSite>();
             Mapper.CreateMap<IList<NVM.NetworkListResponse.VirtualNetworkSite>, PVM.VirtualNetworkSiteList>()
                   .ForItems<IList<NVM.NetworkListResponse.VirtualNetworkSite>, PVM.VirtualNetworkSiteList, PVM.VirtualNetworkSite>();
-            Mapper.CreateMap<NVM.NetworkListResponse.VirtualNetworkSite, VirtualNetworkSiteContext>()
+            Mapper.CreateMap<NVM.NetworkListResponse.VirtualNetworkSite, PVM.VirtualNetworkSiteContext>()
                   .ForMember(c => c.AddressSpacePrefixes, o => o.MapFrom(r => r.AddressSpace == null ? null : r.AddressSpace.AddressPrefixes == null ? null :
                                                                               r.AddressSpace.AddressPrefixes.Select(p => p)))
                   .ForMember(c => c.DnsServers, o => o.MapFrom(r => r.DnsServers.AsEnumerable()))
                   .ForMember(c => c.GatewayProfile, o => o.MapFrom(r => r.Gateway.Profile))
                   .ForMember(c => c.GatewaySites, o => o.MapFrom(r => r.Gateway.Sites));
-            Mapper.CreateMap<OperationStatusResponse, VirtualNetworkSiteContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.VirtualNetworkSiteContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()))
                   .ForMember(c => c.Id, o => o.Ignore());
 
             // Check Static IP Availability Response Mapping
-            Mapper.CreateMap<NVM.NetworkStaticIPAvailabilityResponse, VirtualNetworkStaticIPAvailabilityContext>();
-            Mapper.CreateMap<OperationStatusResponse, VirtualNetworkStaticIPAvailabilityContext>()
+            Mapper.CreateMap<NVM.NetworkStaticIPAvailabilityResponse, PVM.VirtualNetworkStaticIPAvailabilityContext>();
+            Mapper.CreateMap<OperationStatusResponse, PVM.VirtualNetworkStaticIPAvailabilityContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
 
@@ -552,13 +553,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
             Mapper.CreateMap<PVM.ResourceExtensionReference, NSM.ResourceExtensionReference>();
 
             // Reserved IP
-            Mapper.CreateMap<OperationStatusResponse, ReservedIPContext>()
+            Mapper.CreateMap<OperationStatusResponse, PVM.ReservedIPContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()))
                   .ForMember(c => c.Id, o => o.Ignore());
-            Mapper.CreateMap<NetworkReservedIPGetResponse, ReservedIPContext>()
+            Mapper.CreateMap<NVM.NetworkReservedIPGetResponse, PVM.ReservedIPContext>()
                   .ForMember(c => c.ReservedIPName, o => o.MapFrom(r => r.Name));
-            Mapper.CreateMap<NetworkReservedIPListResponse.ReservedIP, ReservedIPContext>()
+            Mapper.CreateMap<NVM.NetworkReservedIPListResponse.ReservedIP, PVM.ReservedIPContext>()
                   .ForMember(c => c.ReservedIPName, o => o.MapFrom(r => r.Name));
 
             // Public IP

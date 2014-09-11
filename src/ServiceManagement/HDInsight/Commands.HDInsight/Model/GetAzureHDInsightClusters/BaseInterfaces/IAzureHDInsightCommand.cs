@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using System.Collections.Generic;
-
     /// <summary>
     ///     Represents an underlying command for an AzureHDInsight Cmdlet.
     /// </summary>

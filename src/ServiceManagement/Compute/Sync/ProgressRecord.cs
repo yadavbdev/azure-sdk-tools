@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Sync
 {
-    using System;
-
     public class ProgressRecord
     {
         public double PercentComplete { get; set; }

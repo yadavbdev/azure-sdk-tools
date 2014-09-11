@@ -17,13 +17,15 @@ using System.Collections.Generic;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public class AzureSubscription
+    public partial class AzureSubscription
     {
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
         public string Environment { get; set; }
+
+        public string Account { get; set; }
 
         public Dictionary<Property, string> Properties { get; set; }
 
@@ -37,13 +39,19 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
             /// <summary>
             /// Comma separated mode names that this subscription supports, i.e.: AzureResourceManager,AzureServiceManagement
             /// </summary>
-            AzureMode,
+            SupportedModes,
 
-            CloudStorageAccount,
+            /// <summary>
+            /// Associated tenants
+            /// </summary>
+            Tenants,
 
-            UserAccount,
+            /// <summary>
+            /// If this property existed on the subscription indicates that it's default one.
+            /// </summary>
+            Default,
 
-            Thumbprint
+            StorageAccount
         }
     }
 }

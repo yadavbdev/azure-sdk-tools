@@ -11,11 +11,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.ImportExport
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
-
     /// <summary>
     /// Holds the necessary information to query or stop an import/export operation
     /// </summary>

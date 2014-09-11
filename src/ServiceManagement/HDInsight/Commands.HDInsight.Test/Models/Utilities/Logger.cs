@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
-    using Management.HDInsight.Logging;
-    using System.Collections.Generic;
-
     /// <summary>
     ///     The default implementation of the logger.  All messages are
     ///     simply passed into the LogWriter.

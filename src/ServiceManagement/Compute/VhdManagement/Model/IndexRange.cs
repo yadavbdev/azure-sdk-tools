@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public class IndexRange : IEquatable<IndexRange>
     {
         static IndexRangeComparer comparer = new IndexRangeComparer();

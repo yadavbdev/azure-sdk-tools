@@ -12,32 +12,30 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Commands.ScenarioTest;
-using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.Storage.Queue;
-using Microsoft.WindowsAzure.Storage.Table;
-using MS.Test.Common.MsTestLib;
-using StorageTestLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Management.Automation;
+using Commands.Storage.ScenarioTest.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.WindowsAzure.Storage.Table;
+using MS.Test.Common.MsTestLib;
+using StorageTestLib;
 using StorageBlob = Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Commands.Storage.ScenarioTest.BVT
 {
-    using Util;
-
     /// <summary>
     /// this class contain all the bvt cases for the full functional storage context such as local/connectionstring/namekey, anonymous and sas token are excluded.
     /// </summary>
     [TestClass]
-    public class StorageBVT: WindowsAzurePowerShellCertificateTest
+    public class StorageBVT: AzurePowerShellCertificateTest
     {
         private static CloudBlobHelper CommonBlobHelper;
         private static CloudStorageAccount CommonStorageAccount;
@@ -341,18 +339,18 @@ namespace Commands.Storage.ScenarioTest.BVT
         {
             CloudBlobUtil blobUtil = new CloudBlobUtil(CommonStorageAccount);
             blobUtil.SetupTestContainerAndBlob();
-            ICloudBlob destBlob = CopyBlobAndWaitForComplete(blobUtil);
+            StorageBlob.ICloudBlob destBlob = CopyBlobAndWaitForComplete(blobUtil);
 
             try
             {
-                Test.Assert(destBlob.CopyState.Status == CopyStatus.Success, String.Format("The blob copy using storage client should be success, actually it's {0}", destBlob.CopyState.Status));
+                Test.Assert(destBlob.CopyState.Status == StorageBlob.CopyStatus.Success, String.Format("The blob copy using storage client should be success, actually it's {0}", destBlob.CopyState.Status));
 
                 PowerShellAgent agent = new PowerShellAgent();
                 Test.Assert(agent.GetAzureStorageBlobCopyState(blobUtil.ContainerName, destBlob.Name, false), "Get copy state should be success");
                 int expectedStateCount = 1;
                 Test.Assert(agent.Output.Count == expectedStateCount, String.Format("Expected to get {0} copy state, actually it's {1}", expectedStateCount, agent.Output.Count));
-                CopyStatus copyStatus = (CopyStatus)agent.Output[0]["Status"];
-                Test.Assert(copyStatus == CopyStatus.Success, String.Format("The blob copy should be success, actually it's {0}", copyStatus));
+                StorageBlob.CopyStatus copyStatus = (StorageBlob.CopyStatus)agent.Output[0]["Status"];
+                Test.Assert(copyStatus == StorageBlob.CopyStatus.Success, String.Format("The blob copy should be success, actually it's {0}", copyStatus));
                 Uri sourceUri = (Uri)agent.Output[0]["Source"];
                 string expectedUri = CloudBlobUtil.ConvertCopySourceUri(blobUtil.Blob.Uri.ToString());
                 Test.Assert(sourceUri.ToString() == expectedUri, String.Format("Expected source uri is {0}, actully it's {1}", expectedUri, sourceUri.ToString()));
@@ -379,7 +377,7 @@ namespace Commands.Storage.ScenarioTest.BVT
         {
             CloudBlobUtil blobUtil = new CloudBlobUtil(CommonStorageAccount);
             blobUtil.SetupTestContainerAndBlob();
-            ICloudBlob destBlob = CopyBlobAndWaitForComplete(blobUtil);
+            StorageBlob.ICloudBlob destBlob = CopyBlobAndWaitForComplete(blobUtil);
 
             try
             {
@@ -402,30 +400,30 @@ namespace Commands.Storage.ScenarioTest.BVT
         }
 
 
-        internal ICloudBlob CopyBlobAndWaitForComplete(CloudBlobUtil blobUtil)
+        internal StorageBlob.ICloudBlob CopyBlobAndWaitForComplete(CloudBlobUtil blobUtil)
         {
             string destBlobName = Utility.GenNameString("copystate");
 
-            ICloudBlob destBlob = default(ICloudBlob);
+            StorageBlob.ICloudBlob destBlob = default(StorageBlob.ICloudBlob);
 
             Test.Info("Copy Blob using storage client");
 
             if (blobUtil.Blob.BlobType == StorageBlob.BlobType.BlockBlob)
             {
-                CloudBlockBlob blockBlob = blobUtil.Container.GetBlockBlobReference(destBlobName);
-                blockBlob.StartCopyFromBlob((CloudBlockBlob)blobUtil.Blob);
+                StorageBlob.CloudBlockBlob blockBlob = blobUtil.Container.GetBlockBlobReference(destBlobName);
+                blockBlob.StartCopyFromBlob((StorageBlob.CloudBlockBlob)blobUtil.Blob);
                 destBlob = blockBlob;
             }
             else
             {
-                CloudPageBlob pageBlob = blobUtil.Container.GetPageBlobReference(destBlobName);
-                pageBlob.StartCopyFromBlob((CloudPageBlob)blobUtil.Blob);
+                StorageBlob.CloudPageBlob pageBlob = blobUtil.Container.GetPageBlobReference(destBlobName);
+                pageBlob.StartCopyFromBlob((StorageBlob.CloudPageBlob)blobUtil.Blob);
                 destBlob = pageBlob;
             }
 
             CloudBlobUtil.WaitForCopyOperationComplete(destBlob);
 
-            Test.Assert(destBlob.CopyState.Status == CopyStatus.Success, String.Format("The blob copy using storage client should be success, actually it's {0}", destBlob.CopyState.Status));
+            Test.Assert(destBlob.CopyState.Status == StorageBlob.CopyStatus.Success, String.Format("The blob copy using storage client should be success, actually it's {0}", destBlob.CopyState.Status));
 
             return destBlob;
         }
@@ -439,8 +437,8 @@ namespace Commands.Storage.ScenarioTest.BVT
             if (useUri)
             {
                 //Set the blob permission, so the copy task could directly copy by uri
-                BlobContainerPermissions permission = new BlobContainerPermissions();
-                permission.PublicAccess = BlobContainerPublicAccessType.Blob;
+                StorageBlob.BlobContainerPermissions permission = new StorageBlob.BlobContainerPermissions();
+                permission.PublicAccess = StorageBlob.BlobContainerPublicAccessType.Blob;
                 blobUtil.Container.SetPermissions(permission);
             }
 
@@ -456,7 +454,7 @@ namespace Commands.Storage.ScenarioTest.BVT
                 }
 
                 Test.Info("Get destination blob in copy task");
-                ICloudBlob blob = blobUtil.Container.GetBlobReferenceFromServer(copiedName);
+                StorageBlob.ICloudBlob blob = blobUtil.Container.GetBlobReferenceFromServer(copiedName);
                 Test.Assert(blob != null, "Destination blob should exist after start copy. If not, please check it's a test issue or dev issue.");
 
                 string sourceUri = CloudBlobUtil.ConvertCopySourceUri(blobUtil.Blob.Uri.ToString());
@@ -479,7 +477,7 @@ namespace Commands.Storage.ScenarioTest.BVT
             Collection<Dictionary<string, object>> comp = new Collection<Dictionary<string, object>> { dic };
 
             // delete container if it exists
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.DeleteIfExists();
 
             try
@@ -505,7 +503,7 @@ namespace Commands.Storage.ScenarioTest.BVT
             Dictionary<string, object> dic = Utility.GenComparisonData(StorageObjectType.Container, NEW_CONTAINER_NAME);
 
             // create container if it does not exist
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.CreateIfNotExists();
 
             Collection<Dictionary<string, object>> comp = new Collection<Dictionary<string, object>> { dic };
@@ -533,7 +531,7 @@ namespace Commands.Storage.ScenarioTest.BVT
             string NEW_CONTAINER_NAME = Utility.GenNameString("astoria-");
 
             // create container if it does not exist
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.CreateIfNotExists();
 
             try
@@ -558,15 +556,15 @@ namespace Commands.Storage.ScenarioTest.BVT
             comp.Add(dic);
 
             // create container if it does not exist
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.CreateIfNotExists();
 
             try
             {
-                BlobContainerPublicAccessType[] accessTypes = new BlobContainerPublicAccessType[] { 
-                    BlobContainerPublicAccessType.Blob,
-                    BlobContainerPublicAccessType.Container,
-                    BlobContainerPublicAccessType.Off
+                StorageBlob.BlobContainerPublicAccessType[] accessTypes = new StorageBlob.BlobContainerPublicAccessType[] { 
+                    StorageBlob.BlobContainerPublicAccessType.Blob,
+                    StorageBlob.BlobContainerPublicAccessType.Container,
+                    StorageBlob.BlobContainerPublicAccessType.Off
                 };
 
                 // set PublicAccess as one value respetively
@@ -754,7 +752,7 @@ namespace Commands.Storage.ScenarioTest.BVT
             comp.Add(dic);
 
             // create the container
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.CreateIfNotExists();
 
             try
@@ -762,7 +760,7 @@ namespace Commands.Storage.ScenarioTest.BVT
                 //--------------Upload operation--------------
                 Test.Assert(agent.SetAzureStorageBlobContent(UploadFilePath, NEW_CONTAINER_NAME, Type), Utility.GenComparisonData("SendAzureStorageBlob", true));
 
-                ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
+                StorageBlob.ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
                 CloudBlobUtil.PackBlobCompareData(blob, dic);
                 // Verification for returned values
                 agent.OutputValidation(comp);
@@ -792,7 +790,7 @@ namespace Commands.Storage.ScenarioTest.BVT
             comp.Add(dic);
 
             // create the container
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.CreateIfNotExists();
 
             try
@@ -810,7 +808,7 @@ namespace Commands.Storage.ScenarioTest.BVT
 
                 // Verification for returned values
                 // get blob object using XSCL 
-                ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
+                StorageBlob.ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
                 blob.FetchAttributes();
                 CloudBlobUtil.PackBlobCompareData(blob, dic);
                 dic.Add("ICloudBlob", blob);
@@ -841,7 +839,7 @@ namespace Commands.Storage.ScenarioTest.BVT
             comp.Add(dic);
 
             // create the container
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.CreateIfNotExists();
 
             try
@@ -858,7 +856,7 @@ namespace Commands.Storage.ScenarioTest.BVT
                 string downloadFilePath = Path.Combine(DownloadDirPath, blobName);
                 Test.Assert(agent.GetAzureStorageBlobContent(blobName, downloadFilePath, NEW_CONTAINER_NAME),
                     Utility.GenComparisonData("GetAzureStorageBlobContent", true));
-                ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
+                StorageBlob.ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
                 CloudBlobUtil.PackBlobCompareData(blob, dic);
                 // Verification for returned values
                 agent.OutputValidation(comp);
@@ -890,7 +888,7 @@ namespace Commands.Storage.ScenarioTest.BVT
             comp.Add(dic);
 
             // create the container
-            CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
+            StorageBlob.CloudBlobContainer container = CommonStorageAccount.CreateCloudBlobClient().GetContainerReference(NEW_CONTAINER_NAME);
             container.CreateIfNotExists();
 
             try
@@ -905,7 +903,7 @@ namespace Commands.Storage.ScenarioTest.BVT
 
                 //--------------Remove operation--------------
                 Test.Assert(agent.RemoveAzureStorageBlob(blobName, NEW_CONTAINER_NAME), Utility.GenComparisonData("RemoveAzureStorageBlob", true));
-                ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
+                StorageBlob.ICloudBlob blob = CommonBlobHelper.QueryBlob(NEW_CONTAINER_NAME, blobName);
                 Test.Assert(blob == null, "blob {0} should not exist!", blobName);
             }
             finally
@@ -919,10 +917,10 @@ namespace Commands.Storage.ScenarioTest.BVT
         /// Create a container and then get it using powershell cmdlet
         /// </summary>
         /// <returns>A CloudBlobContainer object which is returned by PowerShell</returns>
-        protected CloudBlobContainer CreateAndPsGetARandomContainer()
+        protected StorageBlob.CloudBlobContainer CreateAndPsGetARandomContainer()
         {
             string containerName = Utility.GenNameString("bvt");
-            CloudBlobContainer container = SetUpStorageAccount.CreateCloudBlobClient().GetContainerReference(containerName);
+            StorageBlob.CloudBlobContainer container = SetUpStorageAccount.CreateCloudBlobClient().GetContainerReference(containerName);
             container.CreateIfNotExists();
 
             try
@@ -931,7 +929,7 @@ namespace Commands.Storage.ScenarioTest.BVT
                 Test.Assert(agent.GetAzureStorageContainer(containerName), Utility.GenComparisonData("GetAzureStorageContainer", true));
                 int count = 1;
                 Test.Assert(agent.Output.Count == count, string.Format("get container should return only 1 container, actully it's {0}", agent.Output.Count));
-                return (CloudBlobContainer)agent.Output[0]["CloudBlobContainer"];
+                return (StorageBlob.CloudBlobContainer)agent.Output[0]["CloudBlobContainer"];
             }
             finally
             {

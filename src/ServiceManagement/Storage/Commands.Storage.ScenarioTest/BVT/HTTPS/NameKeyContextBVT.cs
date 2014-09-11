@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Commands.Storage.ScenarioTest.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -20,8 +21,6 @@ using StorageTestLib;
 
 namespace Commands.Storage.ScenarioTest.BVT.HTTPS
 {
-    using Common;
-
     /// <summary>
     /// bvt test using name and key context in https mode
     /// </summary>

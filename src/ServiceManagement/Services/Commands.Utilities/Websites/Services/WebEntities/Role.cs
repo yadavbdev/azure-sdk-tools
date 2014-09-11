@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-
     // Role is a user friendly way of grouping together a set of permissions and their scopes
     [DataContract(Name = "Role", Namespace = UriElements.ServiceNamespace)]
     public class Role

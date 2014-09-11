@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Management.Compute.Models;
-    using System.Management.Automation;
-    using System.Net;
-    using Utilities.Common;
-
     [Cmdlet(
         VerbsCommon.Add,
         AzureInternalLoadBalancerNoun,

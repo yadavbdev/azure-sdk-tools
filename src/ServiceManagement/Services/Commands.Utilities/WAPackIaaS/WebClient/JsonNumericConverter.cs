@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Newtonsoft.Json;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
-    using Newtonsoft.Json;
-    using System;
-
     internal class JsonNumericConverter : JsonConverter
     {
         //We use this converter only for writing longs properly, not for reading them back

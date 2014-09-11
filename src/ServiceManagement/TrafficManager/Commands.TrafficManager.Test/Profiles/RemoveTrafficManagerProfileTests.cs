@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Profile;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Profiles
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Profile;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
-    using Moq;
-
     [TestClass]
     public class RemoveTrafficManagerProfileTests
     {

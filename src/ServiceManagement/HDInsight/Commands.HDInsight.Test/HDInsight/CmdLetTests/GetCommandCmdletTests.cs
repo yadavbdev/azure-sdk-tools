@@ -11,21 +11,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Net.Http;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Logging;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests
 {
-    using Management.HDInsight;
-    using Management.HDInsight.Cmdlet.DataObjects;
-    using Management.HDInsight.Cmdlet.Logging;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net.Http;
-    using Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
-    using Utilities.HDInsight.Simulators;
-    using Utilities.HDInsight.Utilities;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class GetCommandCmdletTests : HDInsightTestCaseBase
     {

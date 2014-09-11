@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github.Entities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github
 {
-    using Entities;
-    using System.Collections.Generic;
-
     public static class GithubExtensionMethods
     {
         public static GithubAuthorization CreateAuthorizationToken(this IGithubServiceManagement proxy, GithubAuthorizationRequest request)

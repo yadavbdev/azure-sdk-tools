@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.ServiceModel.Channels;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService
 {
-    using Common;
-    using ServiceManagement.Model;
-    using System;
-    using System.ServiceModel.Channels;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Simple implementation of the IServiceManagement interface that can be
     /// used for mocking basic interactions without involving Azure directly.

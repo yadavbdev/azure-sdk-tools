@@ -12,22 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Services;
-    using Commands.Utilities.Websites.Services.DeploymentEntities;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using Commands.Websites;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GetAzureWebsiteLogTests : WebsitesTestBase
     {
 
@@ -49,8 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         Predicate<string> stopCondition;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public GetAzureWebsiteLogTests()
         {
             base.SetupTest();
             websitesClientMock = new Mock<IWebsitesClient>();
@@ -86,12 +85,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                     }
                 }
             };
-            Cache.AddSite(getAzureWebsiteLogCmdlet.CurrentSubscription.SubscriptionId, website);
+            Cache.AddSite(getAzureWebsiteLogCmdlet.CurrentContext.Subscription.Id.ToString(), website);
             websitesClientMock.Setup(c => c.GetWebsite(websiteName, slot))
                 .Returns(website);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureWebsiteLogTest()
         {
             getAzureWebsiteLogCmdlet.Tail = true;
@@ -108,7 +107,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetAzureWebsiteLogWithPath()
         {
             getAzureWebsiteLogCmdlet.Tail = true;
@@ -126,7 +125,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGetAzureWebsiteLogListPath()
         {
             List<LogPath> paths = new List<LogPath>() { 
@@ -141,7 +140,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
             getAzureWebsiteLogCmdlet.ExecuteCmdlet();
 
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

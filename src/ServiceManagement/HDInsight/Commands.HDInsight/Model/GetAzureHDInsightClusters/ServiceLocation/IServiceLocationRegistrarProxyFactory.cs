@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation
 {
-    using System;
-
     internal interface IServiceLocationRegistrarProxyFactory
     {
         IServiceLocationRegistrar Create(Type type);

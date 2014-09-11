@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Xml;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services
 {
-    using System;
-    using System.Runtime.Serialization;
-    using System.Text;
-    using System.Xml;
-
     /// <summary>
     /// Data contract used for the serialization of the Error Information
     /// </summary>

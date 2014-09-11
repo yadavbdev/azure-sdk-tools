@@ -13,25 +13,24 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using ConfigDataInfo;
-    using Extensions;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class FunctionalTest : ServiceManagementTest
     {
@@ -531,6 +530,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         ///
         /// </summary>
         [TestMethod(), TestCategory(Category.Functional), TestCategory(Category.BVT), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionConfigTest()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -921,21 +921,41 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             bool?[] geoReplicationSettings = new bool?[3] { true, false, null };
 
             bool geoReplicationEnabled = true;
+            string zrsAccountType = "Standard_ZRS";
+            string grsAccountType = "Standard_GRS";
+            string[] accountTypes = new string[3] {
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_RAGRS"
+            };
 
-            string[] storageName = new string[2] {
+            string[] storageName = new string[3] {
+                Utilities.GetUniqueShortName(storageAccountPrefix),
                 Utilities.GetUniqueShortName(storageAccountPrefix),
                 Utilities.GetUniqueShortName(storageAccountPrefix)};
 
-            string[][] storageStaticProperties = new string[2][] {
+            string[][] storageStaticProperties = new string[3][] {
                 new string[3] {storageName[0], locationName1, null},
-                new string [3] {storageName[1], null, affinityGroupName}};
+                new string [3] {storageName[1], null, affinityGroupName},
+                new string[3] {storageName[2], locationName1, null},};
 
             try
             {
-                // New-AzureStorageAccount test
+                // New-AzureStorageAccount test for 'Standard_ZRS'
+                var zrsStorageName = Utilities.GetUniqueShortName(storageAccountPrefix);
+                string[] zrsStorageStaticProperties = new string[3] { zrsStorageName, locationName1, null };
+                vmPowershellCmdlets.NewAzureStorageAccount(zrsStorageName, locationName1, null, null, null, zrsAccountType);
+                Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(zrsStorageName)[0],
+                    zrsStorageStaticProperties, zrsStorageName, null, null, zrsAccountType));
+                Console.WriteLine("{0} is created", zrsStorageName);
+
+                vmPowershellCmdlets.RemoveAzureStorageAccount(zrsStorageName);
+                Assert.IsTrue(Utilities.CheckRemove(vmPowershellCmdlets.GetAzureStorageAccount, zrsStorageName), "The storage account was not removed");
+
+                // New-AzureStorageAccount test for default 'Standard_GRS'
                 vmPowershellCmdlets.NewAzureStorageAccount(storageName[0], locationName1, null, null, null);
                 Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[0])[0],
-                    storageStaticProperties[0], storageName[0], null, true));
+                    storageStaticProperties[0], storageName[0], null, true, grsAccountType));
                 Console.WriteLine("{0} is created", storageName[0]);
 
                 if (Utilities.CheckRemove(vmPowershellCmdlets.GetAzureAffinityGroup, affinityGroupName))
@@ -945,7 +965,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 vmPowershellCmdlets.NewAzureStorageAccount(storageName[1], null, affinityGroupName, null, null);
                 Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[1])[0],
-                    storageStaticProperties[1], storageName[1], null, true));
+                    storageStaticProperties[1], storageName[1], null, true, grsAccountType));
                 Console.WriteLine("{0} is created", storageName[1]);
 
                 // Set-AzureStorageAccount & Remove-AzureStorageAccount test
@@ -960,7 +980,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                             geoReplicationEnabled = geoReplicationSettings[j].Value;
                         }
                         Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[i])[0],
-                            storageStaticProperties[i], label[j], null, geoReplicationEnabled));
+                            storageStaticProperties[i], label[j], null, true, grsAccountType));
                     }
 
                     for (int j = 0; j < 3; j++)
@@ -971,7 +991,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                             geoReplicationEnabled = geoReplicationSettings[j].Value;
                         }
                         Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[i])[0],
-                            storageStaticProperties[i], label[2], description[j], geoReplicationEnabled));
+                            storageStaticProperties[i], label[2], description[j], true, grsAccountType));
                     }
 
                     for (int j = 0; j < 3; j++)
@@ -982,7 +1002,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                             geoReplicationEnabled = geoReplicationSettings[j].Value;
                         }
                         Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[i])[0],
-                            storageStaticProperties[i], label[2], description[2], geoReplicationEnabled));
+                            storageStaticProperties[i], label[2], description[2], true, grsAccountType));
                     }
 
                     for (int j = 0; j < 3; j++)
@@ -993,7 +1013,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                             geoReplicationEnabled = geoReplicationSettings[j].Value;
                         }
                         Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[i])[0],
-                            storageStaticProperties[i], label[j], description[j], geoReplicationEnabled));
+                            storageStaticProperties[i], label[j], description[j], true, grsAccountType));
                     }
 
                     vmPowershellCmdlets.RemoveAzureStorageAccount(storageName[i]);
@@ -1001,6 +1021,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 }
 
                 vmPowershellCmdlets.RemoveAzureAffinityGroup(affinityGroupName);
+
+                // Test Setting and Updating Account Types
+                vmPowershellCmdlets.NewAzureStorageAccount(storageName[2], locationName1, null, null, null, accountTypes[0]);
+                Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[2])[0],
+                    storageStaticProperties[2], storageName[2], null, accountTypes[0] == grsAccountType ? (bool?)true : null, accountTypes[0]));
+                Console.WriteLine("{0} is created", storageName[2]);
+
+                for (int j = 0; j < accountTypes.Length; j++)
+                {
+                    vmPowershellCmdlets.SetAzureStorageAccount(storageName[2], label[j], null, accountTypes[j]);
+                    Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName[2])[0],
+                        storageStaticProperties[2], label[j], null, accountTypes[j] == grsAccountType ? (bool?)true : null, accountTypes[j]));
+                }
+
+                vmPowershellCmdlets.RemoveAzureStorageAccount(storageName[2]);
+                Assert.IsTrue(Utilities.CheckRemove(vmPowershellCmdlets.GetAzureStorageAccount, storageName[2]), "The storage account was not removed");
 
                 pass = true;
             }
@@ -1032,19 +1068,20 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         }
 
         private bool StorageAccountVerify(StorageServicePropertiesOperationContext storageContext,
-            string[] staticParameters, string label, string description, bool geo)
+            string[] staticParameters, string label, string description, bool? geoReplicationEnabled, string accountType)
         {
             string name = staticParameters[0];
             string location = staticParameters[1];
             string affinity = staticParameters[2];
 
-            Console.WriteLine("Name: {0}, Label: {1}, Description: {2}, AffinityGroup: {3}, Location: {4}, GeoReplicationEnabled: {5}",
+            Console.WriteLine("Name: {0}, Label: {1}, Description: {2}, AffinityGroup: {3}, Location: {4}, GeoReplicationEnabled: {5}, AccountType: {6}",
                 storageContext.StorageAccountName,
                 storageContext.Label,
                 storageContext.StorageAccountDescription,
                 storageContext.AffinityGroup,
                 storageContext.Location,
-                storageContext.GeoReplicationEnabled);
+                storageContext.GeoReplicationEnabled,
+                storageContext.AccountType);
 
             try
             {
@@ -1053,7 +1090,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Assert.AreEqual(description, storageContext.StorageAccountDescription, "Error: Storage Account Description is not equal!");
                 Assert.AreEqual(affinity, storageContext.AffinityGroup, "Error: Affinity Group is not equal!");
                 Assert.AreEqual(location, storageContext.Location, "Error: Location is not equal!");
-                Assert.AreEqual(geo, storageContext.GeoReplicationEnabled, "Error: GeoReplicationEnabled is not equal!");
+                Assert.AreEqual(geoReplicationEnabled, storageContext.GeoReplicationEnabled, "Error: GeoReplicationEnabled is not equal!");
+                Assert.AreEqual(accountType, storageContext.AccountType, "Error: AccountType is not equal!");
                 Console.WriteLine("All contexts are matched!!\n");
             }
             catch (Exception e)

@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Linq;
-
     [TestClass]
     public class FunctionalTestCommonVM : ServiceManagementTest
     {
@@ -276,6 +276,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vm = vmPowershellCmdlets.SetAzureAvailabilitySet(defaultVm, defaultService, string.Empty);
                 vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
                 Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, string.Empty));
+
+                vm = vmPowershellCmdlets.SetAzureAvailabilitySet(defaultVm, defaultService, testAVSetName);
+                vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
+                Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, testAVSetName));
+
+                vm = vmPowershellCmdlets.SetAzureAvailabilitySet(defaultVm, defaultService, null);
+                vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
+                Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, testAVSetName));
+
+                vm = vmPowershellCmdlets.RemoveAzureAvailabilitySet(defaultVm, defaultService);
+                vmPowershellCmdlets.UpdateAzureVM(defaultVm, defaultService, vm);
+                Assert.IsTrue(Verify.AzureAvailabilitySet(vmPowershellCmdlets.GetAzureVM(defaultVm, defaultService).VM, testAVSetName));
 
                 pass = true;
             }

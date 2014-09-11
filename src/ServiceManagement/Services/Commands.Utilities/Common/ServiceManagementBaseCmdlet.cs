@@ -12,24 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using System.ServiceModel;
+using System.ServiceModel.Dispatcher;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Management;
+using Microsoft.WindowsAzure.Management.Compute;
+using Microsoft.WindowsAzure.Management.Network;
+using Microsoft.WindowsAzure.Management.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-    using System.ServiceModel;
-    using System.ServiceModel.Dispatcher;
-    using AutoMapper;
-    using Management;
-    using Management.Compute;
-    using Management.Network;
-    using Management.Storage;
-    using Properties;
-    using ServiceManagement.Model;
-    using WindowsAzure;
-
     public abstract class ServiceManagementBaseCmdlet : CloudBaseCmdlet<IServiceManagement>
     {
         private Lazy<Runspace> runspace;
@@ -49,37 +50,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public ManagementClient CreateClient()
         {
-            return this.CurrentSubscription.CreateClient<ManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public ComputeManagementClient CreateComputeClient()
         {
-            return this.CurrentSubscription.CreateClient<ComputeManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ComputeManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public StorageManagementClient CreateStorageClient()
         {
-            return this.CurrentSubscription.CreateClient<StorageManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<StorageManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public NetworkManagementClient CreateNetworkClient()
         {
-            return this.CurrentSubscription.CreateClient<NetworkManagementClient>();
-        }
-
-        private void LogDebug(string message)
-        {
-//            lock (runspaceLock)
-//            {
-//                using (var ps = PowerShell.Create())
-//                {
-//                    ps.Runspace = runspace.Value;
-//                    ps.AddCommand("Write-Debug");
-//                    ps.AddParameter("Message", message);
-//                    ps.AddParameter("Debug");
-//                    ps.Invoke();
-//                }
-//            }
+            return AzureSession.ClientFactory.CreateClient<NetworkManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         private Lazy<ManagementClient> client;
@@ -129,7 +115,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             /*
             var clientOptions = new ServiceManagementClientOptions(null, null, null, 0, RetryPolicy.NoRetryPolicy, ServiceManagementClientOptions.DefaultOptions.WaitTimeForOperationToComplete, messageInspectors);
-            var smClient = new ServiceManagementClient(new Uri(this.ServiceEndpoint), CurrentSubscription.SubscriptionId, CurrentSubscription.Certificate, clientOptions);
+            var smClient = new ServiceManagementClient(new Uri(this.ServiceEndpoint), CurrentContext.Subscription.SubscriptionId, CurrentContext.Subscription.Certificate, clientOptions);
 
             Type serviceManagementClientType = typeof(ServiceManagementClient);
             PropertyInfo propertyInfo = serviceManagementClientType.GetProperty("SyncService", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -278,29 +264,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             this.ExecuteClientActionNewSM(input, operationDescription, action, (s, response) => this.ContextFactory<OperationResponse, ManagementOperationContext>(response, s));
         }
 
-        protected void ExecuteClientActionNewSM<TResult>(object input, string operationDescription, Func<TResult> action, Func<string, string, OperationStatusResponse> waitOperation) where TResult : OperationResponse
-        {
-            this.ExecuteClientActionNewSM(input, operationDescription, action, waitOperation, (s, response) => this.ContextFactory<OperationResponse, ManagementOperationContext>(response, s));
-        }
-
-        protected T2 ContextFactory<T1, T2>(T1 source) where T2 : ManagementOperationContext
-        {
-            var context = Mapper.Map<T1, T2>(source);
-            context.OperationDescription = CommandRuntime.ToString();
-            return context;
-        }
-
         protected T2 ContextFactory<T1, T2>(T1 source, OperationStatusResponse response) where T2 : ManagementOperationContext
         {
             var context = Mapper.Map<T1, T2>(source);
             context = Mapper.Map(response, context);
             context.OperationDescription = CommandRuntime.ToString();
-            return context;
-        }
-
-        protected T2 ContextFactory<T1, T2>(T1 source, T2 destination) where T2 : ManagementOperationContext
-        {
-            var context = Mapper.Map(source, destination);
             return context;
         }
     }

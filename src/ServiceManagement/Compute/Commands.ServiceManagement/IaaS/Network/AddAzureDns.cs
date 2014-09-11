@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Network
 {
-    using System.Management.Automation;
-    using Management.Compute.Models;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Add, "AzureDns"), OutputType(typeof(ManagementOperationContext))]
     public class AddAzureDnsCommand : ServiceManagementBaseCmdlet
     {

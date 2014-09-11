@@ -761,6 +761,11 @@ The file needs to be a PowerShell script (.ps1 or .psm1).</value>
     <value>Cannot delete '{0}': {1}</value>
     <comment>{0} is the path of a file, {1} is an error message</comment>
   </data>
+  <data name="AzureVMDscWrongSettingsFormat" xml:space="preserve">
+    <value>Cannot deserialize settings string from DSC extension. Updating your Azure PowerShell SDK to the latest version may solve this problem. Settings string:
+{0}</value>
+    <comment>{0} settings json string</comment>
+  </data>
   <data name="UnableToDecodeBase64String" xml:space="preserve">
     <value>Unable to decode string from base 64. Please make sure the string is correctly encoded: {0}.</value>
     <comment>{0} is the string that is not in a valid base 64 format.</comment>
@@ -778,5 +783,11 @@ The file needs to be a PowerShell script (.ps1 or .psm1).</value>
   </data>
   <data name="SubnetShouldBeSpecifiedIfVnetPresent" xml:space="preserve">
     <value>Subnet should be specified when deploying VMs in a VNET: {0}</value>
+  </data>
+  <data name="DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet" xml:space="preserve">
+    <value>GeoReplicationEnabled parameter will be deprecated in a future release of Azure PowerShell. The functionality will be merged into the Type parameter.</value>
+  </data>
+  <data name="DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet" xml:space="preserve">
+    <value>GeoReplicationEnabled property will be deprecated in a future release of Azure PowerShell. The value will be merged into the AccountType property.</value>
   </data>
 </root>

@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Properties;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using Test.Utilities.CloudService;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
-    public class ServiceComponentsTests : TestBase
+    public class ServiceComponentsTests : TestBase, IDisposable
     {
         private const string serviceName = "NodeService";
 
@@ -33,15 +33,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         private MockCommandRuntime mockCommandRuntime;
 
-        [TestInitialize]
-        public void TestSetup()
+        public ServiceComponentsTests()
         {
             mockCommandRuntime = new MockCommandRuntime();
             newServiceCmdlet = new NewAzureServiceProjectCommand();
             newServiceCmdlet.CommandRuntime = mockCommandRuntime;
         }
 
-        [TestCleanup]
         public void TestCleanup()
         {
             if (Directory.Exists(serviceName))
@@ -50,8 +48,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             }
         }
 
+        public void Dispose()
+        {
+            TestCleanup();
+        }
 
-        [TestMethod]
+        [Fact]
         public void ServiceComponentsTest()
         {
             newServiceCmdlet.NewAzureServiceProcess(Directory.GetCurrentDirectory(), serviceName);
@@ -59,22 +61,22 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             AzureAssert.AreEqualServiceComponents(components);
         }
 
-        [TestMethod]
+        [Fact]
         public void ServiceComponentsTestNullPathsFail()
         {
             try
             {
                 ServiceComponents components = new ServiceComponents(null as CloudProjectPathInfo);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is ArgumentException);
-                Assert.AreEqual<string>(ex.Message, string.Format(Resources.NullObjectMessage, "paths"));
+                Assert.True(ex is ArgumentException);
+                Assert.Equal<string>(ex.Message, string.Format(Resources.NullObjectMessage, "paths"));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ServiceComponentsTestCloudConfigDoesNotExistFail()
         {
             newServiceCmdlet.NewAzureServiceProcess(Directory.GetCurrentDirectory(), serviceName);
@@ -84,16 +86,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             {
                 File.Delete(paths.CloudConfiguration);
                 ServiceComponents components = new ServiceComponents(paths);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is FileNotFoundException);
-                Assert.AreEqual<string>(ex.Message, string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceConfiguration, paths.CloudConfiguration));
+                Assert.True(ex is FileNotFoundException);
+                Assert.Equal<string>(ex.Message, string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceConfiguration, paths.CloudConfiguration));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ServiceComponentsTestLocalConfigDoesNotExistFail()
         {
             newServiceCmdlet.NewAzureServiceProcess(Directory.GetCurrentDirectory(), serviceName);
@@ -103,16 +105,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             {
                 File.Delete(paths.LocalConfiguration);
                 ServiceComponents components = new ServiceComponents(paths);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is FileNotFoundException);
-                Assert.AreEqual<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceConfiguration, paths.LocalConfiguration), ex.Message);
+                Assert.True(ex is FileNotFoundException);
+                Assert.Equal<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceConfiguration, paths.LocalConfiguration), ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ServiceComponentsTestSettingsDoesNotExistFail()
         {
             newServiceCmdlet.NewAzureServiceProcess(Directory.GetCurrentDirectory(), serviceName);
@@ -122,16 +124,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             {
                 File.Delete(paths.Definition);
                 ServiceComponents components = new ServiceComponents(paths);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is FileNotFoundException);
-                Assert.AreEqual<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceDefinition, paths.Definition), ex.Message);
+                Assert.True(ex is FileNotFoundException);
+                Assert.Equal<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceDefinition, paths.Definition), ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ServiceComponentsTestDefinitionDoesNotExistFail()
         {
             newServiceCmdlet.NewAzureServiceProcess(Directory.GetCurrentDirectory(), serviceName);
@@ -141,16 +143,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             {
                 File.Delete(paths.Definition);
                 ServiceComponents components = new ServiceComponents(paths);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is FileNotFoundException);
-                Assert.AreEqual<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceDefinition, paths.Definition), ex.Message);
+                Assert.True(ex is FileNotFoundException);
+                Assert.Equal<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceDefinition, paths.Definition), ex.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortAllNull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -158,157 +160,157 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 int expectedPort = int.Parse(Resources.DefaultWebPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortNodeWorkerRoleNull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortPHPWorkerRoleNull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.PHPWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortNodeWebRoleNull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortPHPWebRoleNull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWorkerRole(Data.PHPWorkerRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortNullNodeWebEndpointAndNullWorkerRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultWebPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 service.Components.Definition.WebRole.ToList().ForEach(wr => wr.Endpoints = null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortNullPHPWebEndpointAndNullWorkerRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultWebPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.PHPWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 service.Components.Definition.WebRole.ToList().ForEach(wr => wr.Endpoints = null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortNullNodeWebEndpointAndWorkerRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                 service.Components.Definition.WebRole.ToList().ForEach(wr => wr.Endpoints = null);
-                service.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
         
-        [TestMethod]
+        [Fact]
         public void GetNextPortNullPHPWebEndpointAndWorkerRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.PHPWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath);
                 service.Components.Definition.WebRole.ToList().ForEach(wr => wr.Endpoints = null);
-                service.AddWorkerRole(Data.PHPWorkerRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.PHPWorkerRoleScaffoldingPath);
                 service = new CloudServiceProject(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
         
-        [TestMethod]
+        [Fact]
         public void GetNextPortWithEmptyPortIndpoints()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort);
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                 service.Components.Definition.WebRole[0].Endpoints.InputEndpoint = null;
                 service.Components.Save(service.Paths);
-                service.AddWebRole(Data.PHPWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath);
                 service = new AzureServiceWrapper(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void GetNextPortAddingThirdEndpoint()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
             {
                 int expectedPort = int.Parse(Resources.DefaultPort) + 1;
                 CloudServiceProject service = new CloudServiceProject(files.RootPath, serviceName, null);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
-                service.AddWebRole(Data.PHPWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.PHPWebRoleScaffoldingPath);
                 service = new AzureServiceWrapper(service.Paths.RootPath, null);
                 int nextPort = service.Components.GetNextPort();
-                Assert.AreEqual<int>(expectedPort, nextPort);
+                Assert.Equal<int>(expectedPort, nextPort);
             }
         }
     }

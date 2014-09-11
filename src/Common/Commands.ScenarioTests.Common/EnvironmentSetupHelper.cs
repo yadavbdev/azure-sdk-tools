@@ -17,19 +17,37 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using Microsoft.Azure.Utilities.HttpRecorder;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Testing;
-
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 {
-    public class EnvironmentSetupHelper : IDisposable
+    public class EnvironmentSetupHelper
     {
         private static string testEnvironmentName = "__test-environment";
-        private WindowsAzureSubscription testSubscription;
-        private TestEnvironment testEnvironment;
+        private static string testSubscriptionName = "__test-subscriptions";
+        private AzureSubscription testSubscription;
+        private AzureAccount testAccount;
         protected List<string> modules;
+        private ProfileClient client;
+
+        public EnvironmentSetupHelper()
+        {
+            ProfileClient.DataStore = new MockDataStore();
+            client = new ProfileClient();
+
+            // Ignore SSL errors
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) => true;
+            // Set RunningMocked
+            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
+            {
+                TestMockSupport.RunningMocked = true;
+            }
+        }
 
         /// <summary>
         /// Loads DummyManagementClientHelper with clients and throws exception if any client is missing.
@@ -37,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         /// <param name="initializedManagementClients"></param>
         public void SetupManagementClients(params object[] initializedManagementClients)
         {
-            AzureSession.Current.ManagementClientHelper = new DummyManagementClientHelper(initializedManagementClients);
+            AzureSession.ClientFactory = new MockClientFactory(initializedManagementClients);
         }
 
         /// <summary>
@@ -46,37 +64,21 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         /// <param name="initializedManagementClients"></param>
         public void SetupSomeOfManagementClients(params object[] initializedManagementClients)
         {
-            AzureSession.Current.ManagementClientHelper = new DummyManagementClientHelper(initializedManagementClients, false);
+            AzureSession.ClientFactory = new MockClientFactory(initializedManagementClients, false);
         }
 
         public void SetupEnvironment(AzureModule mode)
         {
-            // Ignore SSL errors
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) => true;
-
-            // Set RunningMocked
-            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
-            {
-                TestMockSupport.RunningMocked = true;
-            }
-
-            WindowsAzureProfile.Instance = new WindowsAzureProfile(new MockProfileStore());
-
-            if (!WindowsAzureProfile.Instance.Environments.ContainsKey(testEnvironmentName))
-            {
-                WindowsAzureProfile.Instance.AddEnvironment(new WindowsAzureEnvironment { Name = testEnvironmentName });
-            }
-
             SetupAzureEnvironmentFromEnvironmentVariables(mode);
+
+            client.Profile.Save();
         }
 
         private void SetupAzureEnvironmentFromEnvironmentVariables(AzureModule mode)
         {
             TestEnvironment rdfeEnvironment = new RDFETestEnvironmentFactory().GetTestEnvironment();
             TestEnvironment csmEnvironment = new CSMTestEnvironmentFactory().GetTestEnvironment();
-            TestEnvironment currentEnvironment = (mode == AzureModule.AzureResourceManager
-                ? csmEnvironment
-                : rdfeEnvironment);
+            TestEnvironment currentEnvironment = (mode == AzureModule.AzureResourceManager ? csmEnvironment : rdfeEnvironment);
 
             string jwtToken;
 
@@ -97,84 +99,111 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
             SetEndpointsToDefaults(rdfeEnvironment, csmEnvironment);
 
-            WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(jwtToken, csmEnvironment.UserName);
+            /*
+                WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(
+                jwtToken,
+                csmEnvironment.UserName,
+                csmEnvironment.AuthorizationContext == null ? null : csmEnvironment.AuthorizationContext.TenatId);
+            */
+            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
+            {
+                AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+            }
+            else
+            {
+                AzureSession.AuthenticationFactory = new MockAuthenticationFactory(currentEnvironment.UserName, jwtToken);
+            }
 
-            WindowsAzureProfile.Instance.CurrentEnvironment = WindowsAzureProfile.Instance.Environments[testEnvironmentName];
+            AzureEnvironment environment = new AzureEnvironment { Name = testEnvironmentName };
 
-            WindowsAzureProfile.Instance.CurrentEnvironment.ActiveDirectoryEndpoint =
-                currentEnvironment.ActiveDirectoryEndpoint.AbsoluteUri;
-            WindowsAzureProfile.Instance.CurrentEnvironment.GalleryEndpoint =
-                currentEnvironment.GalleryUri.AbsoluteUri;
-            WindowsAzureProfile.Instance.CurrentEnvironment.ResourceManagerEndpoint =
-                csmEnvironment.BaseUri.AbsoluteUri;
-            WindowsAzureProfile.Instance.CurrentEnvironment.ServiceEndpoint =
-                rdfeEnvironment.BaseUri.AbsoluteUri;
+            Debug.Assert(currentEnvironment != null);
+            environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectory] = currentEnvironment.ActiveDirectoryEndpoint.AbsoluteUri;
+            environment.Endpoints[AzureEnvironment.Endpoint.Gallery] = currentEnvironment.GalleryUri.AbsoluteUri;
+
+            if (csmEnvironment != null)
+            {
+                environment.Endpoints[AzureEnvironment.Endpoint.ResourceManager] = csmEnvironment.BaseUri.AbsoluteUri;                
+            }
+
+            if (rdfeEnvironment != null)
+            {
+                environment.Endpoints[AzureEnvironment.Endpoint.ServiceManagement] = rdfeEnvironment.BaseUri.AbsoluteUri;                
+            }
 
             if (currentEnvironment.UserName == null)
             {
                 currentEnvironment.UserName = "fakeuser@microsoft.com";
             }
 
-            testSubscription = new WindowsAzureSubscription(false, false)
+            if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
             {
-                SubscriptionId = currentEnvironment.SubscriptionId,
-                ActiveDirectoryEndpoint =
-                    WindowsAzureProfile.Instance.CurrentEnvironment.ActiveDirectoryEndpoint,
-                ActiveDirectoryUserId = currentEnvironment.UserName,
-                SubscriptionName = currentEnvironment.SubscriptionId,
-                ServiceEndpoint = new Uri(WindowsAzureProfile.Instance.CurrentEnvironment.ServiceEndpoint),
-                ResourceManagerEndpoint = new Uri(WindowsAzureProfile.Instance.CurrentEnvironment.ResourceManagerEndpoint),
-                TokenProvider = WindowsAzureProfile.Instance.TokenProvider,
-                GalleryEndpoint = new Uri(WindowsAzureProfile.Instance.CurrentEnvironment.GalleryEndpoint),
-                SqlDatabaseDnsSuffix = WindowsAzureProfile.Instance.CurrentEnvironment.SqlDatabaseDnsSuffix,
-                CurrentStorageAccountName = Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT"),
-                IsDefault = true
+                client.AddOrSetEnvironment(environment);
+            }
+
+            testSubscription = new AzureSubscription()
+            {
+                Id = new Guid(currentEnvironment.SubscriptionId),
+                Name = testSubscriptionName,
+                Environment = testEnvironmentName,
+                Account = currentEnvironment.UserName,
+                Properties = new Dictionary<AzureSubscription.Property,string> 
+                {
+                     { AzureSubscription.Property.Default, "True"},
+                     { AzureSubscription.Property.StorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
+                }
             };
 
-            testEnvironment = currentEnvironment;
-            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
+            testAccount = new AzureAccount()
             {
-                testSubscription.SetAccessToken(new FakeAccessToken
+                Id = currentEnvironment.UserName,
+                Type = AzureAccount.AccountType.User,
+                Properties = new Dictionary<AzureAccount.Property, string> 
                 {
-                    AccessToken = "123",
-                    UserId = testEnvironment.UserName
-                });
-            }
-            else
-            {
-                testSubscription.SetAccessToken(WindowsAzureProfile.Instance.TokenProvider.GetNewToken(WindowsAzureProfile.Instance.CurrentEnvironment));
-            }
+                     { AzureAccount.Property.Subscriptions, currentEnvironment.SubscriptionId},
+                }
+            };
 
-            WindowsAzureProfile.Instance.AddSubscription(testSubscription);
-            WindowsAzureProfile.Instance.Save();
+            client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
+            client.Profile.Accounts[testAccount.Id] = testAccount;
+            client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
         {
-            // Set endpoints to default
-            if (rdfeEnvironment.BaseUri == null)
+            if (rdfeEnvironment != null)
             {
-                rdfeEnvironment.BaseUri = new Uri(WindowsAzureEnvironmentConstants.AzureServiceEndpoint);
+                if (rdfeEnvironment.BaseUri == null)
+                {
+                    rdfeEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureServiceEndpoint);
+                }
+
+                if (rdfeEnvironment.GalleryUri == null)
+                {
+                    rdfeEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
+                }
+
+                if (rdfeEnvironment.ActiveDirectoryEndpoint == null)
+                {
+                    rdfeEnvironment.ActiveDirectoryEndpoint = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
+                }
             }
-            if (csmEnvironment.BaseUri == null)
+
+            if (csmEnvironment != null)
             {
-                csmEnvironment.BaseUri = new Uri(WindowsAzureEnvironmentConstants.AzureResourceManagerEndpoint);
-            }
-            if (rdfeEnvironment.GalleryUri == null)
-            {
-                rdfeEnvironment.GalleryUri = new Uri(WindowsAzureEnvironmentConstants.GalleryEndpoint);
-            }
-            if (csmEnvironment.GalleryUri == null)
-            {
-                csmEnvironment.GalleryUri = new Uri(WindowsAzureEnvironmentConstants.GalleryEndpoint);
-            }
-            if (rdfeEnvironment.ActiveDirectoryEndpoint == null)
-            {
-                rdfeEnvironment.ActiveDirectoryEndpoint = new Uri("https://login.windows.net/");
-            }
-            if (csmEnvironment.ActiveDirectoryEndpoint == null)
-            {
-                csmEnvironment.ActiveDirectoryEndpoint = new Uri("https://login.windows.net/");
+                if (csmEnvironment.BaseUri == null)
+                {
+                    csmEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureResourceManagerEndpoint);
+                }
+
+                if (csmEnvironment.GalleryUri == null)
+                {
+                    csmEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
+                }
+
+                if (csmEnvironment.ActiveDirectoryEndpoint == null)
+                {
+                    csmEnvironment.ActiveDirectoryEndpoint = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
+                }
             }
         }
 
@@ -248,14 +277,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             powershell.AddScript("$ErrorActionPreference='Stop'");
             powershell.AddScript("Write-Debug \"AZURE_TEST_MODE = $env:AZURE_TEST_MODE\"");
             powershell.AddScript("Write-Debug \"TEST_HTTPMOCK_OUTPUT = $env:TEST_HTTPMOCK_OUTPUT\"");
-        }
-
-        public void Dispose()
-        {
-            if (WindowsAzureProfile.Instance.Environments.ContainsKey(testEnvironmentName))
-            {
-                WindowsAzureProfile.Instance.RemoveEnvironment(testEnvironmentName);
-            }
         }
     }
 }

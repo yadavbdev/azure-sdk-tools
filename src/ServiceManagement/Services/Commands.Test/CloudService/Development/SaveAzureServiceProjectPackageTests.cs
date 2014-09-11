@@ -12,25 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Common;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 {
-    using Commands.CloudService.Development;
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Properties;
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Basic unit tests for the Enable-AzureServiceProjectRemoteDesktop enableRDCmdlet.
     /// </summary>
-    [TestClass]
-    [Ignore]
-    public class SaveAzureServiceProjectPackageCommandTest : TestBase
+    internal class SaveAzureServiceProjectPackageCommandTest : TestBase
     {
         static private MockCommandRuntime mockCommandRuntime;
 
@@ -40,10 +40,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
 
         private AddAzureNodeWorkerRoleCommand addNodeWorkerCmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public SaveAzureServiceProjectPackageCommandTest()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             addNodeWebCmdlet = new AddAzureNodeWebRoleCommand();
@@ -55,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
             cmdlet.CommandRuntime = mockCommandRuntime;
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreatePackageSuccessfull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -66,18 +65,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 string packagePath = Path.Combine(rootPath, Resources.CloudPackageFileName);
 
                 CloudServiceProject service = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
                 cmdlet.ExecuteCmdlet();
 
                 PSObject obj = mockCommandRuntime.OutputPipeline[0] as PSObject;
-                Assert.AreEqual<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
-                Assert.AreEqual<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
-                Assert.IsTrue(File.Exists(packagePath));
+                Assert.Equal<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
+                Assert.True(File.Exists(packagePath));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreatePackageWithEmptyServiceSuccessfull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -90,13 +89,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 cmdlet.ExecuteCmdlet();
 
                 PSObject obj = mockCommandRuntime.OutputPipeline[0] as PSObject;
-                Assert.AreEqual<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
-                Assert.AreEqual<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
-                Assert.IsTrue(File.Exists(packagePath));
+                Assert.Equal<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
+                Assert.True(File.Exists(packagePath));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreatePackageWithMultipleRolesSuccessfull()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -107,21 +106,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 string packagePath = Path.Combine(rootPath, Resources.CloudPackageFileName);
 
                 CloudServiceProject service = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
-                service.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
-                service.AddWorkerRole(Data.NodeWorkerRoleScaffoldingPath);
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
+                service.AddWorkerRole(Test.Utilities.Common.Data.NodeWorkerRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
 
                 cmdlet.ExecuteCmdlet();
 
                 PSObject obj = mockCommandRuntime.OutputPipeline[0] as PSObject;
-                Assert.AreEqual<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
-                Assert.AreEqual<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
-                Assert.IsTrue(File.Exists(packagePath));
+                Assert.Equal<string>(string.Format(Resources.PackageCreated, packagePath), mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(packagePath, obj.GetVariableValue<string>(Parameters.PackagePath));
+                Assert.True(File.Exists(packagePath));
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ThrowsErrorForInvalidCacheVersion()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -142,7 +141,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development
                 };
 
                 CloudServiceProject service = new CloudServiceProject(rootPath, FileUtilities.GetContentFilePath("Services"));
-                service.AddWebRole(Data.NodeWebRoleScaffoldingPath);
+                service.AddWebRole(Test.Utilities.Common.Data.NodeWebRoleScaffoldingPath);
                 addCacheWorkerCmdlet.AddAzureCacheWorkerRoleProcess(cacheRoleName, 1, rootPath);
                 enableCacheCmdlet.EnableAzureMemcacheRoleProcess("WebRole1", cacheRoleName, rootPath);
 

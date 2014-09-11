@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Management.Compute;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
 {
-    using Management.Compute;
-    using Model;
-    using System;
-    using System.Linq;
-    using System.Net;
-
     public class VirtualMachineImageHelper
     {
         private ComputeManagementClient computeClient;

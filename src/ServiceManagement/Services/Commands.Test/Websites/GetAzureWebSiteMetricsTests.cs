@@ -12,25 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Common.Properties;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using Commands.Websites;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Utilities.Common;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GetAzureWebsiteMetricsTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void GetWebsiteMetricsBasicTest()
         {
             // Setup
@@ -63,18 +63,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 Name = "website1",
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = subscriptionId },
                 WebsitesClient = clientMock.Object
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(subscriptionId) }, null, null);
 
             command.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
             var metrics = (MetricResponse)((MockCommandRuntime)command.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(metrics);
-            Assert.AreEqual("CPU Time", metrics.Data.Name);
-            Assert.IsNotNull(metrics.Data.Values);
-            Assert.IsNotNull(metrics.Data.Values[0]);
-            Assert.AreEqual(201, metrics.Data.Values[0].Total);
+            Assert.NotNull(metrics);
+            Assert.Equal("CPU Time", metrics.Data.Name);
+            Assert.NotNull(metrics.Data.Values);
+            Assert.NotNull(metrics.Data.Values[0]);
+            Assert.Equal(201, metrics.Data.Values[0].Total);
         }
     }
 }

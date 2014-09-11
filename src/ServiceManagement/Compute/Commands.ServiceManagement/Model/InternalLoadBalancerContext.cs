@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Utilities.Common;
-
     public class InternalLoadBalancerContext : ManagementOperationContext
     {
         public string InternalLoadBalancerName { get; set; }

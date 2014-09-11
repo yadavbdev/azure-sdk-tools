@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-
     public class VirtualMachineDscExtensionCmdletBase : VirtualMachineExtensionCmdletBase
     {
         internal static readonly string ExtensionPublishedNamespace = "Microsoft.Powershell";
         internal static readonly string ExtensionPublishedName = "DSC";
         internal static readonly string DefaultContainerName = "windows-powershell-dsc";
         internal static readonly string DefaultExtensionVersion = "1.*";
+        internal static readonly Version CurrentProtocolVersion = new Version(2, 0, 0, 0);
 
         protected const string VirtualMachineDscExtensionCmdletNoun = "AzureVMDscExtension";
 
