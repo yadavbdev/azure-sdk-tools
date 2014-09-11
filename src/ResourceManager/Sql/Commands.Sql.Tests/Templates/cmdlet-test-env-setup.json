@@ -1,0 +1,100 @@
+{
+  "$schema": "http://schemas.management.azure.com/deploymentTemplate?api-version=2014-04-01-preview",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "administratorLogin": {
+      "type": "string",
+      "defaultValue": "testlogin"
+      
+    },
+    "administratorLoginPassword": {
+      "type": "securestring",
+      "defaultValue": "testp@ssMakingIt1007Longer"
+    },
+    "collation": {
+      "type": "string",
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "database1Name": {
+      "type": "string"
+    },
+    "database2Name": {
+      "type": "string"
+    },
+    "edition": {
+        "type": "string",
+        "defaultValue": "Basic"
+    }, 
+    "configuredServiceLevelObjectiveId": {
+        "type": "string",
+        "defaultValue": "910b4fcb-8a29-4c3e-958f-f7ba794388b2"
+    }, 
+    "EnvLocation": {
+      "type": "string"
+    },
+    "server1Name": {
+      "type": "string"
+    },
+    "server2Name": {
+      "type": "string"
+    }
+
+  },
+  "resources": [
+
+    {
+      "apiVersion": "2.0",
+      "location": "[parameters('EnvLocation')]",
+      "name": "[parameters('server1Name')]",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2.0",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('server1Name'))]"
+          ],
+          "location": "[parameters('EnvLocation')]",
+          "name": "[parameters('database1Name')]",
+          "properties": {
+            "collation": "[parameters('collation')]",
+            "edition": "[parameters('edition')]",
+            "maxSizeBytes": "1073741824"
+          },
+          "type": "databases"
+        }
+
+      ],
+      "type": "Microsoft.Sql/servers"
+    },
+    {
+      "apiVersion": "2.0",
+      "location": "[parameters('EnvLocation')]",
+      "name": "[parameters('server2Name')]",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2.0",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('server2Name'))]"
+          ],
+          "location": "[parameters('EnvLocation')]",
+          "name": "[parameters('database2Name')]",
+          "properties": {
+            "collation": "[parameters('collation')]",
+            "edition": "[parameters('edition')]",
+            "maxSizeBytes": "1073741824"
+          },
+          "type": "databases"
+        }
+      ],
+      "type": "Microsoft.Sql/servers"
+    }
+
+  ]
+}
