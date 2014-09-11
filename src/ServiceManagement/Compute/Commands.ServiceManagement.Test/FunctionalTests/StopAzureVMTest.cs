@@ -1126,7 +1126,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     totalWaitTimeInSeconds += waitTimeInSeconds;
                     Console.WriteLine("Total wait time = {0} second(s), by {1} {2}.", totalWaitTimeInSeconds, (i + 1), i == 0 ? "retry" : "retries");
                     Console.WriteLine("Current VM state is {0}. Keep waiting for {1} second(s)...", vmStatus, waitTimeInSeconds);
-                    Thread.Sleep(waitTimeInSeconds * 1000);
+                    Thread.Sleep(TimeSpan.FromSeconds(waitTimeInSeconds));
                 }
                 else
                 {
