@@ -159,10 +159,12 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             Assert.Equal(2, client.Profile.Environments.Count);
             
             // Verify subscriptions
-            Assert.Equal(2, client.Profile.Subscriptions.Count);
+            Assert.Equal(3, client.Profile.Subscriptions.Count);
             Assert.True(client.Profile.Subscriptions.ContainsKey(new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F")));
             Assert.Equal("Test Bad Management Endpoint", client.Profile.Subscriptions[new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F")].Name);
             Assert.Equal(EnvironmentName.AzureCloud, client.Profile.Subscriptions[new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F")].Environment);
+            Assert.Equal("Test Null Management Endpoint", client.Profile.Subscriptions[new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2ADFF")].Name);
+            Assert.Equal(EnvironmentName.AzureCloud, client.Profile.Subscriptions[new Guid("06E3F6FD-A3AA-439A-8FC4-1F5C41D2ADFF")].Environment);
 
             Assert.True(client.Profile.Subscriptions.ContainsKey(new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")));
             Assert.Equal("Test Bad Cert", client.Profile.Subscriptions[new Guid("d1e52cbc-b073-42e2-a0a0-c2f547118a6f")].Name);
@@ -1376,6 +1378,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                       <ResourceManagerEndpoint i:nil=""true"" />
                       <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
                       <SubscriptionId>06E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1F</SubscriptionId>
+                      <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
+                    </AzureSubscriptionData>
+                    <AzureSubscriptionData>
+                      <ActiveDirectoryEndpoint i:nil=""true"" />
+                      <ActiveDirectoryServiceEndpointResourceId i:nil=""true"" />
+                      <ActiveDirectoryTenantId i:nil=""true"" />
+                      <ActiveDirectoryUserId>test@mail.com</ActiveDirectoryUserId>
+                      <CloudStorageAccount i:nil=""true"" />
+                      <GalleryEndpoint i:nil=""true"" />
+                      <IsDefault>true</IsDefault>
+                      <LoginType i:nil=""true"" />
+                      <ManagementCertificate i:nil=""true""/>
+                      <ManagementEndpoint i:nil=""true""/>
+                      <Name>Test Null Management Endpoint</Name>
+                      <RegisteredResourceProviders xmlns:d4p1=""http://schemas.microsoft.com/2003/10/Serialization/Arrays"" />
+                      <ResourceManagerEndpoint i:nil=""true"" />
+                      <SqlDatabaseDnsSuffix>.database.windows.net</SqlDatabaseDnsSuffix>
+                      <SubscriptionId>06E3F6FD-A3AA-439A-8FC4-1F5C41D2ADFF</SubscriptionId>
                       <TrafficManagerDnsSuffix>trafficmanager.net</TrafficManagerDnsSuffix>
                     </AzureSubscriptionData>
                     <AzureSubscriptionData>
