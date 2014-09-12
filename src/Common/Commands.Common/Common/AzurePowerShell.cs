@@ -34,6 +34,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public const string OldProfileFile = "WindowsAzureProfile.xml";
 
+        public const string OldProfileFileBackup = "WindowsAzureProfile.xml.bak";
+
         public const string TokenCacheFile = "TokenCache.dat";
 
         public static string ProfileDirectory = Path.Combine(
