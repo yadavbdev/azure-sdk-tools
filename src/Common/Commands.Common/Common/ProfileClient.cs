@@ -69,6 +69,9 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
                 try
                 {
+                    // Backup old profile
+                    DataStore.CopyFile(oldProfilePath, oldProfileFilePathBackup);
+                    
                     AzureProfile oldProfile = new AzureProfile(DataStore, oldProfilePath);
                 
                     if (DataStore.FileExists(newProfileFilePath))
@@ -86,15 +89,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
                         DataStore.DeleteFile(newProfileFilePath);
                     }
 
-                    // If there were load errors - create a backup file
-                    if (oldProfile.ProfileLoadErrors.Count > 0)
+                    // If there were no load errors - delete backup file
+                    if (oldProfile.ProfileLoadErrors.Count == 0)
                     {
                         try
                         {
-                            if (DataStore.FileExists(oldProfilePath))
-                            {
-                                DataStore.WriteFile(oldProfileFilePathBackup, DataStore.ReadFileAsText(oldProfilePath));
-                            }
+                            DataStore.DeleteFile(oldProfileFilePathBackup);
                         }
                         catch
                         {
@@ -107,22 +107,12 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 
                     // Rename WindowsAzureProfile.xml to WindowsAzureProfile.json
                     DataStore.RenameFile(oldProfilePath, newProfileFilePath);
+
                 }
                 catch
                 {
                     // Something went wrong. Try backing up the old file and resume.
-                    try
-                    {
-                        if (DataStore.FileExists(oldProfilePath))
-                        {
-                            DataStore.WriteFile(oldProfileFilePathBackup, DataStore.ReadFileAsText(oldProfilePath));
-                            DataStore.DeleteFile(oldProfilePath);
-                        }
-                    }
-                    catch
-                    {
-                        // Give up
-                    }
+                    DataStore.DeleteFile(oldProfilePath);
                 }
             }
         }

@@ -29,35 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public AzurePSCmdlet()
         {
-            try
-            {
-                DefaultProfileClient = new ProfileClient();
-            }
-            catch (Exception)
-            {
-                // if context cannot be loaded, start with no account/subscription
-                // if defaultProfileClient is null delete profile files and re-create empty profile
-                try
-                {
-                    string oldProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory,
-                        AzurePowerShell.OldProfileFile);
-                    string newProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory,
-                        AzurePowerShell.ProfileFile);
-                    if (ProfileClient.DataStore.FileExists(oldProfileFilePath))
-                    {
-                        ProfileClient.DataStore.DeleteFile(oldProfileFilePath);
-                    }
-                    if (ProfileClient.DataStore.FileExists(newProfileFilePath))
-                    {
-                        ProfileClient.DataStore.DeleteFile(newProfileFilePath);
-                    }
-                    DefaultProfileClient = new ProfileClient();
-                }
-                catch
-                {
-                    // Ignore anything at this point
-                }
-            }
+            DefaultProfileClient = new ProfileClient();
 
             if (AzureSession.CurrentContext.Subscription == null &&
                DefaultProfileClient.Profile.DefaultSubscription != null)
@@ -70,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                             DefaultProfileClient.Profile.DefaultSubscription.Environment),
                         DefaultProfileClient.GetAccountOrNull(DefaultProfileClient.Profile.DefaultSubscription.Account));
                 }
-                catch (Exception)
+                catch
                 {
                     // Ignore anything at this point
                 }
