@@ -26,24 +26,46 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     public abstract class AzurePSCmdlet : PSCmdlet
     {
         private readonly RecordingTracingInterceptor httpTracingInterceptor = new RecordingTracingInterceptor();
-        protected ProfileClient defaultProfileClient;
-        
+        private ProfileClient defaultProfileClient;
+
         public AzurePSCmdlet()
         {
-            defaultProfileClient = new ProfileClient();
-            if (AzureSession.CurrentContext.Subscription == null &&
-                defaultProfileClient.Profile.DefaultSubscription != null)
+            try
             {
-                try
+                defaultProfileClient = new ProfileClient();
+                if (AzureSession.CurrentContext.Subscription == null &&
+                    defaultProfileClient.Profile.DefaultSubscription != null)
                 {
+
                     AzureSession.SetCurrentContext(
                         defaultProfileClient.Profile.DefaultSubscription,
                         defaultProfileClient.GetEnvironmentOrDefault(defaultProfileClient.Profile.DefaultSubscription.Environment),
                         defaultProfileClient.GetAccountOrNull(defaultProfileClient.Profile.DefaultSubscription.Account));
                 }
-                catch (ArgumentException)
+            }
+            catch (Exception)
+            {
+                // if context cannot be loaded, start with no account/subscription
+                // if defaultProfileClient is null delete profile files and re-create empty profile
+                try
                 {
-                    // if context cannot be loaded, start with no account/subscription
+                    string oldProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory,
+                        AzurePowerShell.OldProfileFile);
+                    string newProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory,
+                        AzurePowerShell.ProfileFile);
+                    if (ProfileClient.DataStore.FileExists(oldProfileFilePath))
+                    {
+                        ProfileClient.DataStore.DeleteFile(oldProfileFilePath);
+                    }
+                    if (ProfileClient.DataStore.FileExists(newProfileFilePath))
+                    {
+                        ProfileClient.DataStore.DeleteFile(newProfileFilePath);
+                    }
+                    defaultProfileClient = new ProfileClient();
+                }
+                catch
+                {
+                    // Ignore anything at this point
                 }
             }
         }
@@ -56,6 +78,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public bool HasCurrentSubscription
         {
             get { return AzureSession.CurrentContext.Subscription != null; }
+        }
+
+        public ProfileClient DefaultProfileClient
+        {
+            get
+            {
+                return defaultProfileClient;
+            }
         }
 
         protected string CurrentPath()

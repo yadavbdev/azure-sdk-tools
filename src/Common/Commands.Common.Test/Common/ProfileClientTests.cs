@@ -1431,6 +1431,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                   ""Account"": ""test@mail.com"",
                   ""Properties"": {
                     ""SupportedModes"": ""AzureServiceManagement"",
+                    ""Default"": ""True"",
                     ""StorageAccount"": ""rjfmmanagement""
                   }
                 }
@@ -1448,6 +1449,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                   ""Account"": ""test@mail.com"",
                   ""Properties"": {
                     ""SupportedModes"": ""AzureServiceManagement"",
+                    ""Default"": ""True"",
                     ""StorageAccount"": ""rjfmmanagement""
                   }
                 }
