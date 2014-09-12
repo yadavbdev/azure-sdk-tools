@@ -69,9 +69,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
                 try
                 {
-                    // Backup old profile
-                    DataStore.CopyFile(oldProfilePath, oldProfileFilePathBackup);
-                    
+                    // Try to backup old profile
+                    try
+                    {
+                        DataStore.CopyFile(oldProfilePath, oldProfileFilePathBackup);
+                    }
+                    catch
+                    {
+                        // Ignore any errors here
+                    }
+
                     AzureProfile oldProfile = new AzureProfile(DataStore, oldProfilePath);
                 
                     if (DataStore.FileExists(newProfileFilePath))
@@ -111,8 +118,15 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 }
                 catch
                 {
-                    // Something went wrong. Try backing up the old file and resume.
-                    DataStore.DeleteFile(oldProfilePath);
+                    // Something really bad happened - try to delete the old profile
+                    try
+                    {
+                        DataStore.DeleteFile(oldProfilePath);
+                    }
+                    catch
+                    {
+                        // Ignore any errors
+                    }
                 }
             }
         }
@@ -130,9 +144,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public ProfileClient(string profilePath)
         {
-            ProfileClient.UpgradeProfile();
+            try
+            {
+                ProfileClient.UpgradeProfile();
 
-            Profile = new AzureProfile(DataStore, profilePath);
+                Profile = new AzureProfile(DataStore, profilePath);
+            }
+            catch
+            {
+                // Should never fail in constructor
+            }
 
             WarningLog = (s) => Debug.WriteLine(s);
         }
