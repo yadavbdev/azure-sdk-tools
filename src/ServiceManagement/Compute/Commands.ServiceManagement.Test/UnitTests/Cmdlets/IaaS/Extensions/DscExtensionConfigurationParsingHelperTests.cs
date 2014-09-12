@@ -23,7 +23,7 @@ using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdlets.IaaS.Extensions
 {
     /// <summary>
-    /// Tests for DSC ConfigurationParsingHelper class.
+    /// Tests for DSC <see cref="ConfigurationParsingHelper"/> class.
     /// </summary>
     /// <remarks>
     /// ConfigurationParsingHelper.ParseConfiguration() API requires tests to be run in x64 host.
@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
     /// xActiveDirectory
     /// </remarks>
     [TestClass]
-    public class VirtualMachineDscExtensionTests
+    public class DscExtensionConfigurationParsingHelperTests
     {
         private const string CorporateClientConfigurationPath = @"DSC\Configurations\CorporateClientConfiguration.ps1";
         private const string DomainControllerConfigurationPath = @"DSC\Configurations\DomainControllerConfiguration.ps1";

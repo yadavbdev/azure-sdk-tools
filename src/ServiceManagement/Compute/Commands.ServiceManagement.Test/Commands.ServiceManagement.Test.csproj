@@ -390,7 +390,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="UnitTests\Cmdlets\IaaS\Extensions\VirtualMachineDscExtensionTests.cs" />
+    <Compile Include="UnitTests\Cmdlets\IaaS\Extensions\DscExtensionConfigurationParsingHelperTests.cs" />
+    <Compile Include="UnitTests\Cmdlets\IaaS\Extensions\DscExtensionSettingsSerializerTests.cs" />
     <Compile Include="UnitTests\Cmdlets\IaaS\Extensions\VirtualMachineExtensionImageFactoryTests.cs" />
     <Compile Include="FunctionalTests\VMTemplateTests.cs" />
   </ItemGroup>
