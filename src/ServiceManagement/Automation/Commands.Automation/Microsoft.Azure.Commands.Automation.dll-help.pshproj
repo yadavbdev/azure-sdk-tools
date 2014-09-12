@@ -1,0 +1,3323 @@
+<?xml version="1.0"?>
+<ModuleObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Microsoft.Azure.Commands.Automation.dll-help</Name>
+  <ModuleType>Manifest</ModuleType>
+  <Version>0.8.8</Version>
+  <Description />
+  <ModuleClass>External</ModuleClass>
+  <ModulePath>E:\work\azure-sdk-tools\src\ServiceManagement\Automation\Commands.Automation\Microsoft.Azure.Commands.Automation.dll-help.psd1</ModulePath>
+  <UseSupports>false</UseSupports>
+  <OverridePostCount>false</OverridePostCount>
+  <FetchPostCount xsi:nil="true" />
+  <Cmdlets>
+    <CmdletObject>
+      <Name>Get-AzureAutomationAccount</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureAutomationAccount</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets Azure Automation accounts.</Synopsis>
+        <Description>The Get-AzureAutomationAccount cmdlet gets the Microsoft Azure Automation accounts for your subscription. An Automation account is a container for Automation resources that is isolated from the resources of other Automation accounts. Automation resources include runbooks, jobs, and assets.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureAutomationAccount [[-Name] &lt;String&gt;] [[-Location] &lt;String&gt;]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Location</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies an Azure location associated with Automation accounts.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get an Automation account</Name>
+          <Cmd>PS C:\&gt;Get-AzureAutomationAccount -Name "Contoso17"</Cmd>
+          <Description>This command gets the Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397902</LinkUrl>
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Get-AzureAutomationJob</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureAutomationJob</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets one or more Azure Automation runbook jobs.</Synopsis>
+        <Description>The Get-AzureAutomationJob cmdlet gets one or more runbook jobs in Microsoft Azure Automation.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureAutomationJob [-StartTime &lt;Nullable`1[DateTime]&gt;] [-EndTime &lt;Nullable`1[DateTime]&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationJob -Id &lt;Nullable`1[Guid]&gt; [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationJob -RunbookId &lt;Nullable`1[Guid]&gt; [-StartTime &lt;Nullable`1[DateTime]&gt;] [-EndTime &lt;Nullable`1[DateTime]&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationJob -RunbookName &lt;String&gt; [-StartTime &lt;Nullable`1[DateTime]&gt;] [-EndTime &lt;Nullable`1[DateTime]&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>StartTime</Name>
+          <Type>Nullable`1[DateTime]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the start time of a job as a DateTime object. This cmdlet gets jobs that have a start time at or after the value that this parameter specifies. To obtain a DateTime object, use the Get-Date cmdlet.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>EndTime</Name>
+          <Type>Nullable`1[DateTime]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the end time for a job as a DateTime object. This cmdlet gets jobs that have an end time at or before the value that this parameter specifies. To obtain a DateTime object, use the Get-Date cmdlet. For more information, type Get-Help Get-Date.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>JobId</string>
+          </Aliases>
+          <Description>Specifies the ID of a job.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>RunbookId</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>RunbookName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get a runbook job</Name>
+          <Cmd>PS C:\&gt;Get-AzureAutomationJob -AutomationAccountName "Contoso17" -Id 2989b069-24fe-40b9-b3bd-cb7e5eac4b647</Cmd>
+          <Description>This command gets the job that has the specified GUID.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397903</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Resume-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Stop-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Suspend-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Get-AzureAutomationJobOutput</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureAutomationJobOutput</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets the output of an Azure Automation job.</Synopsis>
+        <Description>The Get-AzureAutomationJobOutput cmdlet gets the output of a Microsoft Azure Automation job.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureAutomationJobOutput [-Id] &lt;Guid&gt; [[-StartTime] &lt;DateTime&gt;] -Stream &lt;String&gt; {Any | Progress | Output | Warning | Error | Debug | Verbose}  [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Guid</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>JobId</string>
+          </Aliases>
+          <Description>Specifies the ID of a job.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>StartTime</Name>
+          <Type>DateTime</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>2</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a start time as a DateTime object. The cmdlet retrieves output created after this time. To obtain a DateTime object, use the Get-Date cmdlet. For more information, type Get-Help Get-Date.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Stream</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>OutputType</string>
+          </Aliases>
+          <Description>Specifies the type of output. Valid values are:
+
+            -- Any
+            -- Debug
+            -- Error
+            -- Output
+            -- Progress
+            -- Verbose
+            -- Warning</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get the output of an Azure Automation job</Name>
+          <Cmd>PS C:\&gt;Get-AzureAutomationJobOutput -AutomationAccountName "Contoso17" -Id 2989b069-24fe-40b9-b3bd-cb7e5eac4b64 -Stream "Any"</Cmd>
+          <Description>This command gets all of the output of the job that has the specified ID.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397904</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Resume-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Stop-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Suspend-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Get-AzureAutomationRunbook</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureAutomationRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets a runbook.</Synopsis>
+        <Description>The Get-AzureAutomationRunbook cmdlet gets one or more Microsoft Azure Automation runbooks. By default, all runbooks are returned. To get a specific runbook, specify its name or ID. To get all runbooks linked to a specific schedule, specify the schedule name.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureAutomationRunbook [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationRunbook -Id &lt;Nullable`1[Guid]&gt; [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationRunbook -Name &lt;String&gt; [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationRunbook -ScheduleName &lt;String&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>ScheduleName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get all runbooks</Name>
+          <Cmd>PS C:\&gt;Get-AzureAutomationRunbook -AutomationAccountName "Contoso17"</Cmd>
+          <Description>This command gets all runbooks in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397905</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Publish-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Start-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Get-AzureAutomationRunbookDefinition</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureAutomationRunbookDefinition</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets a runbook definition.</Synopsis>
+        <Description>The Get-AzureAutomationRunbookDefinition cmdlet gets the draft definition, the published definition, or both definitions of an Azure Automation runbook. By default, both runbook definitions are returned.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureAutomationRunbookDefinition -Name &lt;String&gt; [-Slot &lt;String&gt; {Published | Draft} ] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationRunbookDefinition -Id &lt;Nullable`1[Guid]&gt; [-Slot &lt;String&gt; {Published | Draft} ] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationRunbookDefinition -VersionId &lt;Nullable`1[Guid]&gt; [-Slot &lt;String&gt; {Published | Draft} ] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Slot</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a runbook definition type. Valid values are:
+
+            -- Published
+            -- Draft</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>VersionId</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the ID of a runbook version.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get a runbook definition</Name>
+          <Cmd>PS C:\&gt;Get-AzureAutomationRunbookDefinition -AutomationAccountName "Contoso17" -Name "RunbookDef01" -Slot "Published"</Cmd>
+          <Description>This command gets the published runbook definition of the runbook named RunbookDef01 in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397906</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationRunbookDefinition</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Get-AzureAutomationSchedule</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureAutomationSchedule</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets an Azure Automation schedule.</Synopsis>
+        <Description>The Get-AzureAutomationSchedule cmdlet gets a Microsoft Azure Automation schedule.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureAutomationSchedule [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationSchedule [-Id] &lt;Nullable`1[Guid]&gt; [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Get-AzureAutomationSchedule [-Name] &lt;String&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the ID of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get a schedule</Name>
+          <Cmd>PS C:\&gt;Get-AzureAutomationSchedule -AutomationAccountName "Contoso17" -Name "DailySchedule08"</Cmd>
+          <Description>This command gets the schedule named DailySchedule08.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId= 397907</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>New-AzureAutomationRunbook</Name>
+      <Verb>New</Verb>
+      <Noun>AzureAutomationRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Creates a new runbook.</Synopsis>
+        <Description>The New-AzureAutomationRunbook cmdlet creates a new, empty Microsoft Azure Automation runbook. Specify a name to create a new runbook.You can also specify the path to a Windows PowerShell? script (.ps1 ) file to import a runbook. The script to import must contain a single Windows PowerShell? Workflow definition. The name of this Windows PowerShell Workflow becomes the name of the runbook.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>New-AzureAutomationRunbook -Name &lt;String&gt; [-Description &lt;String&gt;] [-Tags &lt;String[]&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>New-AzureAutomationRunbook -Path &lt;String&gt; [-Description &lt;String&gt;] [-Tags &lt;String[]&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name for the runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Description</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a description for the runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Tags</Name>
+          <Type>String[]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies one or more runbook tags.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Path</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookPath</string>
+          </Aliases>
+          <Description>Specifies the path to a runbook to import.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Create a runbook</Name>
+          <Cmd>PS C:\&gt;New-AzureAutomationRunbook -AutomationAccountName "Contoso17" -Name "Runbook02"</Cmd>
+          <Description>This command creates a new runbook named Runbook02 in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397908</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Publish-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Start-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>New-AzureAutomationSchedule</Name>
+      <Verb>New</Verb>
+      <Noun>AzureAutomationSchedule</Noun>
+      <GeneralHelp>
+        <Synopsis>Creates an Azure Automation schedule.</Synopsis>
+        <Description>The New-AzureAutomationSchedule cmdlet creates a schedule in Microsoft Azure Automation.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>New-AzureAutomationSchedule [-Name] &lt;String&gt; [-StartTime] &lt;DateTime&gt; [[-Description] &lt;String&gt;] [[-ExpiryTime] &lt;DateTime&gt;] [[-DayInterval] &lt;Int32&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>New-AzureAutomationSchedule [-Name] &lt;String&gt; [-StartTime] &lt;DateTime&gt; [[-Description] &lt;String&gt;] -OneTime &lt;SwitchParameter&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a name for the schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>StartTime</Name>
+          <Type>DateTime</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>2</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the start time of a schedule as a DateTime object. To obtain a DateTime object, use the Get-Date cmdlet.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Description</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>3</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a description.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>ExpiryTime</Name>
+          <Type>DateTime</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>4</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the expiry time of a schedule as a DateTime object. To obtain a DateTime object, use the Get-Date cmdlet. For more information, type Get-Help Get-Date.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>DayInterval</Name>
+          <Type>Int32</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>5</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies an interval for the schedule in days. If you do not specify this parameter, and you do not specify the OneTime parameter, then the day interval of the schedule is 1.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>OneTime</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies that the cmdlet creates a one-time schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Create a schedule</Name>
+          <Cmd>PS C:\&gt;$StartDate = Get-Date -Day 12 -Month 6 -Year 2016
+          PS C:\&gt; $EndDate = Get-Date -Day 12 -Month 6 -Year 2023
+          PS C:\&gt; New-AzureAutomationSchedule -AutomationAccountName "Contoso17" -Name "Schedule01" -StartTime $StartDate -ExpiryTime $EndDate</Cmd>
+          <Description>The first command creates a date object by using the Get-Date cmdlet, and then stores the object in the $StartDate variable. Specify a time that is at least five minutes in the future. For more information, type Get-Help Get-Date.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397909</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Publish-AzureAutomationRunbook</Name>
+      <Verb>Publish</Verb>
+      <Noun>AzureAutomationRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Publishes a runbook.</Synopsis>
+        <Description>The Publish-AzureAutomationRunbook cmdlet publishes a runbook for use in the production environment of Microsoft Azure Automation.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Publish-AzureAutomationRunbook -Name &lt;String&gt; [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Publish-AzureAutomationRunbook -Id &lt;Nullable`1[Guid]&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Publish a runbook</Name>
+          <Cmd>PS C:\&gt;Publish-AzureAutomationRunbook -AutomationAccountName "Contoso17" -Name "Runbk01"</Cmd>
+          <Description>This command publishes the runbook named Runbk01 in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397910</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Start-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Register-AzureAutomationScheduledRunbook</Name>
+      <Verb>Register</Verb>
+      <Noun>AzureAutomationScheduledRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Associates a runbook with a schedule.</Synopsis>
+        <Description>The Register-AzureAutomationScheduledRunbook cmdlet associates a runbook with a schedule. The runbook starts based on the schedule you specify using the ScheduleName parameter.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Register-AzureAutomationScheduledRunbook -ScheduleName &lt;String&gt; -Name &lt;String&gt; [-Parameters &lt;IDictionary&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Register-AzureAutomationScheduledRunbook -ScheduleName &lt;String&gt; -Id &lt;Nullable`1[Guid]&gt; [-Parameters &lt;IDictionary&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>ScheduleName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of a schedule. To create a schedule in Azure Automation, use the New-AzureAutomationSchedule cmdlet.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Parameters</Name>
+          <Type>IDictionary</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a hash table of key/value pairs. The keys in the hash table are the runbook parameter names. The values in the hash table are the runbook parameter values. When the runbook starts in response to when the associated schedule fires, these parameters are passed to the runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Associate a runbook with a schedule</Name>
+          <Cmd>PS C:\&gt;Register-AzureAutomationScheduledRunbook -AutomationAccountName "Contoso17" -Name "Runbk01" -ScheduleName "Sched01"</Cmd>
+          <Description>This command associates the runbook named Runbk01 with the schedule named Sched01 in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397911</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Unregister-AzureAutomationScheduledRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Remove-AzureAutomationRunbook</Name>
+      <Verb>Remove</Verb>
+      <Noun>AzureAutomationRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Removes a runbook.</Synopsis>
+        <Description>The Remove-AzureAutomationRunbook cmdlet removes a runbook from Microsoft Azure Automation.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Remove-AzureAutomationRunbook -Name &lt;String&gt; [-Force] [-AutomationAccountName] &lt;String&gt; [-WhatIf] [-Confirm]</string>
+        <string>Remove-AzureAutomationRunbook -Id &lt;Nullable`1[Guid]&gt; [-Force] [-AutomationAccountName] &lt;String&gt; [-WhatIf] [-Confirm]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Force</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Forces the command to run without asking for user confirmation.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>WhatIf</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>wi</string>
+          </Aliases>
+          <Description>Shows what would happen if the cmdlet runs. The cmdlet is not run.Shows what would happen if the cmdlet runs. The cmdlet is not run.</Description>
+          <DefaultValue>false</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Confirm</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>cf</string>
+          </Aliases>
+          <Description>Prompts you for confirmation before running the cmdlet.Prompts you for confirmation before running the cmdlet.</Description>
+          <DefaultValue>false</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Remove a runbook</Name>
+          <Cmd>PS C:\&gt;Remove-AzureAutomationRunbook -AutomationAccountName "Contoso17" -Name "MyRunbook"</Cmd>
+          <Description>This command removes the runbook named MyRunbook in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397912</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Publish-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Start-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Remove-AzureAutomationSchedule</Name>
+      <Verb>Remove</Verb>
+      <Noun>AzureAutomationSchedule</Noun>
+      <GeneralHelp>
+        <Synopsis>Deletes an Azure Automation schedule.</Synopsis>
+        <Description>The Remove-AzureAutomationSchedule cmdlet deletes a schedule from Microsoft Azure Automation.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Remove-AzureAutomationSchedule [-Name] &lt;String&gt; [-Force] [-AutomationAccountName] &lt;String&gt; [-WhatIf] [-Confirm]</string>
+        <string>Remove-AzureAutomationSchedule [-Id] &lt;Nullable`1[Guid]&gt; [-Force] [-AutomationAccountName] &lt;String&gt; [-WhatIf] [-Confirm]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Force</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Forces the command to run without asking for user confirmation.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>WhatIf</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>wi</string>
+          </Aliases>
+          <Description>Shows what would happen if the cmdlet runs. The cmdlet is not run.Shows what would happen if the cmdlet runs. The cmdlet is not run.</Description>
+          <DefaultValue>false</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Confirm</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>cf</string>
+          </Aliases>
+          <Description>Prompts you for confirmation before running the cmdlet.Prompts you for confirmation before running the cmdlet.</Description>
+          <DefaultValue>false</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the ID of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Remove a schedule</Name>
+          <Cmd>PS C:\&gt;Remove-AzureAutomationSchedule -AutomationAccountName "Contoso17" -Name "MySchedule"</Cmd>
+          <Description>This command removes the schedule named MySchedule.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397913</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Resume-AzureAutomationJob</Name>
+      <Verb>Resume</Verb>
+      <Noun>AzureAutomationJob</Noun>
+      <GeneralHelp>
+        <Synopsis>Resumes a suspended Azure Automation job.</Synopsis>
+        <Description>The Resume-AzureAutomationJob cmdlet resumes a suspended Microsoft Azure Automation job. Specify the suspended job. To suspend a job, use the Suspend-AzureAutomationJob cmdlet.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Resume-AzureAutomationJob [-Id] &lt;Guid&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Guid</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>JobId</string>
+          </Aliases>
+          <Description>Specifies the ID of a job.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Resume a suspended job</Name>
+          <Cmd>PS C:\&gt;Resume-AzureAutomationJob -AutomationAccountName "Contoso17" -Id 2989b069-24fe-40b9-b3bd-cb7e5eac4b64</Cmd>
+          <Description>This command resumes the job that has the specified ID.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397914</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Stop-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Suspend-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Set-AzureAutomationRunbook</Name>
+      <Verb>Set</Verb>
+      <Noun>AzureAutomationRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Modifies the configuration of a runbook.</Synopsis>
+        <Description>The Set-AzureAutomationRunbook cmdlet modifies the configuration of a Microsoft Azure Automation runbook.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Set-AzureAutomationRunbook -Name &lt;String&gt; [-Description &lt;String&gt;] [-Tags &lt;String[]&gt;] [-LogDebug &lt;Nullable`1[Boolean]&gt;] [-LogProgress &lt;Nullable`1[Boolean]&gt;] [-LogVerbose &lt;Nullable`1[Boolean]&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Set-AzureAutomationRunbook -Id &lt;Nullable`1[Guid]&gt; [-Description &lt;String&gt;] [-Tags &lt;String[]&gt;] [-LogDebug &lt;Nullable`1[Boolean]&gt;] [-LogProgress &lt;Nullable`1[Boolean]&gt;] [-LogVerbose &lt;Nullable`1[Boolean]&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Description</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a description for the runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Tags</Name>
+          <Type>String[]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies one or more runbook tags.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>LogDebug</Name>
+          <Type>Nullable`1[Boolean]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Indicates whether debug output is logged for jobs of this runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>LogProgress</Name>
+          <Type>Nullable`1[Boolean]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Indicates whether progress output is logged for jobs of this runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>LogVerbose</Name>
+          <Type>Nullable`1[Boolean]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Indicates whether verbose output is logged for jobs of this runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Enable verbose logging for a runbook</Name>
+          <Cmd>PS C:\&gt;Set-AzureAutomationRunbook -AutomationAccountName "Contoso17" -Name "MyRunbook" -LogVerbose $True</Cmd>
+          <Description>This command enables verbose logging for the jobs of the specified runbook in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397915</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Publish-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Start-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Set-AzureAutomationRunbookDefinition</Name>
+      <Verb>Set</Verb>
+      <Noun>AzureAutomationRunbookDefinition</Noun>
+      <GeneralHelp>
+        <Synopsis>Updates the draft definition of a runbook.</Synopsis>
+        <Description>The Set-AzureAutomationRunbookDefinition cmdlet updates the draft definition of a Microsoft Azure Automation runbook. Provide a Windows PowerShell? script (.ps1) file that contains a runbook which becomes the draft runbook. If a draft already exists, use the Overwrite parameter to force the cmdlet to overwrite the existing draft.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Set-AzureAutomationRunbookDefinition -Name &lt;String&gt; -Path &lt;String&gt; [-Overwrite] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Set-AzureAutomationRunbookDefinition -Id &lt;Nullable`1[Guid]&gt; -Path &lt;String&gt; [-Overwrite] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Path</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookPath</string>
+          </Aliases>
+          <Description>Specifies the path to the new draft runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Overwrite</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Indicates that the new draft runbook overwrites the existing draft, if one exists.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Overwrite an existing draft definition of a runbook</Name>
+          <Cmd>PS C:\&gt;Set-AzureAutomationRunbookDefinition -AutomationAccountName "Contoso17" -Name "Runbk01" -Path App01.ps1 -Overwrite</Cmd>
+          <Description>This command overwrites the existing draft definition of a runbook.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397916</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationRunbookDefinition</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Set-AzureAutomationSchedule</Name>
+      <Verb>Set</Verb>
+      <Noun>AzureAutomationSchedule</Noun>
+      <GeneralHelp>
+        <Synopsis>Modifies an Azure Automation schedule.</Synopsis>
+        <Description>The Set-AzureAutomationSchedule cmdlet modifies a schedule in Microsoft Azure Automation.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Set-AzureAutomationSchedule [-Name] &lt;String&gt; [-IsEnabled &lt;Nullable`1[Boolean]&gt;] [-Description &lt;String&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Set-AzureAutomationSchedule [-Id] &lt;Nullable`1[Guid]&gt; [-IsEnabled &lt;Nullable`1[Boolean]&gt;] [-Description &lt;String&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>IsEnabled</Name>
+          <Type>Nullable`1[Boolean]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Description</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a description.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the ID of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Modify a schedule</Name>
+          <Cmd>PS C:\&gt;Set-AzureAutomationSchedule -AutomationAccountName "Contoso17" -Name "Schedule01" -Description "Automation Schedule"</Cmd>
+          <Description>This command modifies the description of the schedule named Schedule01.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397917</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationSchedule</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Start-AzureAutomationRunbook</Name>
+      <Verb>Start</Verb>
+      <Noun>AzureAutomationRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Starts a runbook job.</Synopsis>
+        <Description>The Start-AzureAutomationRunbook cmdlet starts a Microsoft Azure Automation runbook job. Specify the ID or name of a runbook.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Start-AzureAutomationRunbook -Name &lt;String&gt; [-Parameters &lt;IDictionary&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Start-AzureAutomationRunbook -Id &lt;Nullable`1[Guid]&gt; [-Parameters &lt;IDictionary&gt;] [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Parameters</Name>
+          <Type>IDictionary</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a hash table of key/value pairs. The keys in the hash table are the runbook parameter names. The values in the hash table are the runbook parameter values.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Start a runbook job</Name>
+          <Cmd>PS C:\&gt;Start-AzureAutomationRunbook -AutomationAccountName "Contoso17" -Name "Runbk01"</Cmd>
+          <Description>This command starts a runbook job for the runbook named Runbk01 in the Azure Automation account named Contoso17.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397918</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Publish-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureAutomationRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Stop-AzureAutomationJob</Name>
+      <Verb>Stop</Verb>
+      <Noun>AzureAutomationJob</Noun>
+      <GeneralHelp>
+        <Synopsis>Stops an Azure Automation job.</Synopsis>
+        <Description>The Stop-AzureAutomationJob cmdlet stops a Microsoft Azure Automation job. Specify a running automation job.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Stop-AzureAutomationJob [-Id] &lt;Guid&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Guid</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>JobId</string>
+          </Aliases>
+          <Description>Specifies the ID of a job.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Stop a job</Name>
+          <Cmd>PS C:\&gt;Stop-AzureAutomationJob -AutomationAccountName "Contoso17" -Id 2989b069-24fe-40b9-b3bd-cb7e5eac4b64</Cmd>
+          <Description>This command stops the job that has the specified ID.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397919</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Resume-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Suspend-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Suspend-AzureAutomationJob</Name>
+      <Verb>Suspend</Verb>
+      <Noun>AzureAutomationJob</Noun>
+      <GeneralHelp>
+        <Synopsis>Suspends an Azure Automation job.</Synopsis>
+        <Description>The Suspend-AzureAutomationJob cmdlet suspends a Microsoft Azure Automation job. Specify a running Automation job. To resume a suspended job, use the Resume-AzureAutomationJob cmdlet.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Suspend-AzureAutomationJob [-Id] &lt;Guid&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Guid</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>JobId</string>
+          </Aliases>
+          <Description>Specifies the ID of a job.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Suspend a job</Name>
+          <Cmd>PS C:\&gt;Suspend-AzureAutomationJob -AutomationAccountName "Contoso17" -Id 2989b069-24fe-40b9-b3bd-cb7e5eac4b64</Cmd>
+          <Description>This command suspends the job that has the specified ID.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397920</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Resume-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Stop-AzureAutomationJob</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Unregister-AzureAutomationScheduledRunbook</Name>
+      <Verb>Unregister</Verb>
+      <Noun>AzureAutomationScheduledRunbook</Noun>
+      <GeneralHelp>
+        <Synopsis>Removes an association between a runbook and a schedule.</Synopsis>
+        <Description>The Unregister-AzureAutomationScheduledRunbook cmdlet removes the association between a Microsoft Azure Automation runbook and a schedule, which stops the runbook from starting when the schedule fires.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType />
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Unregister-AzureAutomationScheduledRunbook -Name &lt;String&gt; -ScheduleName &lt;String&gt; [-AutomationAccountName] &lt;String&gt;</string>
+        <string>Unregister-AzureAutomationScheduledRunbook -Id &lt;Nullable`1[Guid]&gt; -ScheduleName &lt;String&gt; [-AutomationAccountName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookName</string>
+          </Aliases>
+          <Description>Specifies the name of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>ScheduleName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of a schedule.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>AutomationAccountName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of an Azure Automation account.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Id</Name>
+          <Type>Nullable`1[Guid]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.AliasAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases>
+            <string>RunbookId</string>
+          </Aliases>
+          <Description>Specifies the ID of a runbook.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Remove the association between a runbook and a schedule</Name>
+          <Cmd>PS C:\&gt;Unregister-AzureAutomationScheduledRunbook -AutomationAccountName "Contoso17" -Name "Runbk01" -ScheduleName "Runbk01Sched"</Cmd>
+          <Description>This command removes the association between the runbook named Runbk01 and the schedule named Runbk01Sched.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=397921</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Register-AzureAutomationScheduledRunbook</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+  </Cmdlets>
+</ModuleObject>

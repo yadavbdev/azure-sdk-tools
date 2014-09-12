@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ModuleObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Microsoft.WindowsAzure.Commands.ServiceManagement.Preview.dll-Help</Name>
+  <ModuleType>Manifest</ModuleType>
+  <Version>0.8.8</Version>
+  <Description />
+  <ModuleClass>External</ModuleClass>
+  <ModulePath>E:\work\azure-sdk-tools\src\ServiceManagement\Compute\Commands.ServiceManagement.Preview\Microsoft.WindowsAzure.Commands.ServiceManagement.Preview.dll-Help.psd1</ModulePath>
+  <UseSupports>false</UseSupports>
+  <OverridePostCount>false</OverridePostCount>
+  <FetchPostCount xsi:nil="true" />
+  <Cmdlets />
+</ModuleObject>

@@ -1,0 +1,1698 @@
+<?xml version="1.0"?>
+<ModuleObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Microsoft.WindowsAzure.Commands.TrafficManager.dll-help</Name>
+  <ModuleType>Manifest</ModuleType>
+  <Version>0.8.8</Version>
+  <Description />
+  <ModuleClass>External</ModuleClass>
+  <ModulePath>E:\work\azure-sdk-tools\src\ServiceManagement\TrafficManager\Commands.TrafficManager\Microsoft.WindowsAzure.Commands.TrafficManager.dll-help.psd1</ModulePath>
+  <UseSupports>false</UseSupports>
+  <OverridePostCount>false</OverridePostCount>
+  <FetchPostCount xsi:nil="true" />
+  <Cmdlets>
+    <CmdletObject>
+      <Name>Add-AzureTrafficManagerEndpoint</Name>
+      <Verb>Add</Verb>
+      <Noun>AzureTrafficManagerEndpoint</Noun>
+      <GeneralHelp>
+        <Synopsis>Adds an endpoint to a Traffic Manager profile.</Synopsis>
+        <Description>The Add-AzureTrafficManagerEndpoint cmdlet adds an endpoint to a Microsoft Azure Traffic Manager profile. After you add an endpoint, pass the result to the Set-AzureTrafficManagerProfile cmdlet by using the pipeline operator. That cmdlet connects to Azure to save your changes.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>Microsoft.WindowsAzure.Commands.Utilities.TrafficManager.Models.IProfileWithDefinition</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Add-AzureTrafficManagerEndpoint -DomainName &lt;String&gt; [-Location &lt;String&gt;] -Type &lt;String&gt; {CloudService | AzureWebsite | Any | TrafficManager}  -Status &lt;String&gt; {Enabled | Disabled}  [-Weight &lt;Nullable`1[Int32]&gt;] [-MinChildEndpoints &lt;Nullable`1[Int32]&gt;] [-TrafficManagerProfile] &lt;IProfileWithDefinition&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>DomainName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the domain name of the endpoint to add.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Location</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the location of the endpoint the cmdlet adds. This must be an Azure location.This parameter must contain a value for endpoints of the type "Any" in a profile that has the load balancing method set to "Performance". You can find a list of possible values for this parameter under Name by calling List Locations. For more information, see List Locations at http://msdn.microsoft.com/en-us/library/gg441293.aspx.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Type</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the type of endpoint. Valid values are: 
+
+-- CloudService
+-- AzureWebsite
+-- Any 
+-- TrafficManager 
+
+If there is more than one AzureWebsite endpoint, the endpoints must be in different datacenters.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Status</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the status of the monitoring endpoint. Valid values are: 
+
+-- Enabled
+-- Disabled
+
+If you specify a value of Enabled, Traffic Manager monitors the endpoint and the load-balancing method considers it when managing traffic.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Weight</Name>
+          <Type>Nullable`1[Int32]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the weight of the endpoint the cmdlet adds. The valid value range for this parameter is [1,1000].This parameter is only used for RoundRobin load balancing policies.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MinChildEndpoints</Name>
+          <Type>Nullable`1[Int32]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the minimum amount of endpoints the nested profile has to have online for this endpoint to be considered online. The valid value for this parameter should be bigger than 0.This parameter is only used for TrafficManager endpoint types.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>TrafficManagerProfile</Name>
+          <Type>IProfileWithDefinition</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>true</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the Traffic Manager profile object to which to add the endpoint.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Add an endpoint to a profile</Name>
+          <Cmd>PS C:\&gt;$TrafficManagerProfile = Get-AzureTrafficManagerProfile -Name "ContosoProfile"
+PS C:\&gt; Add-AzureTrafficManagerEndpoint -TrafficManagerProfile $TrafficManagerProfile -DomainName "Contoso02App.cloudapp.net" -Status "Enabled" -Type "CloudService" | Set-AzureTrafficManagerProfile</Cmd>
+          <Description>The first command uses the Get-AzureTrafficManagerProfile cmdlet to get the profile named ContosoProfile, and then stores it in the $TrafficManagerProfile variable.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Add an endpoint that has a specified location and weight</Name>
+          <Cmd>PS C:\&gt;Add-AzureTrafficManagerEndpoint -TrafficManagerProfile ContosoTrafficManagerProfile -DomainName " Contoso02App.cloudapp.net" -Status Enabled -Type CloudService -Weight 2 -Location myLocation | Set-AzureTrafficManagerProfile</Cmd>
+          <Description>This command adds an endpoint to a Traffic Manager profile. The endpoint has the domain name Contoso02App.couldapp.net. The command also specifies whether it is enabled and its type. The command also specifies the weight and location for the endpoint. The command passes the profile object to Set-AzureTrafficManagerProfile to connect to Azure to save your changes.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398281</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTrafficManagerEndpoint</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerEndpoint</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Disable-AzureTrafficManagerProfile</Name>
+      <Verb>Disable</Verb>
+      <Noun>AzureTrafficManagerProfile</Noun>
+      <GeneralHelp>
+        <Synopsis>Disables a Traffic Manager profile.</Synopsis>
+        <Description>The Disable-AzureTrafficManagerProfile cmdlet disables a Microsoft Azure Traffic Manager profile. You can use the PassThru parameter to display whether the operation succeeds.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>System.Boolean</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Disable-AzureTrafficManagerProfile [-Name] &lt;String&gt; [-PassThru]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of the Traffic Manager profile to disable.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>PassThru</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Returns $True if the operation succeeded; otherwise, $False. By default, this cmdlet does not generate any output.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Disable a Traffic Manager profile and display the results</Name>
+          <Cmd>PS C:\&gt;Disable-AzureTrafficManagerProfile -Name "MyProfile" -PassThru
+True</Cmd>
+          <Description>This command disables the Traffic Manager profile named MyProfile. The command specifies the PassThru parameter to display whether the command succeeded.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Disable a Traffic Manager profile and display no results</Name>
+          <Cmd>PS C:\&gt;Disable-AzureTrafficManagerProfile -Name "MyProfile"</Cmd>
+          <Description>This command disables the Traffic Manager profile named MyProfile but does not display whether the command succeeded.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398282</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Enable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Enable-AzureTrafficManagerProfile</Name>
+      <Verb>Enable</Verb>
+      <Noun>AzureTrafficManagerProfile</Noun>
+      <GeneralHelp>
+        <Synopsis>Enables a Traffic Manager profile.</Synopsis>
+        <Description>The Enable-AzureTrafficManagerProfile cmdlet enables a Microsoft Azure Traffic Manager profile. Specify the PassThru parameter to display whether the operation succeeds.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>System.Boolean</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Enable-AzureTrafficManagerProfile [-Name] &lt;String&gt; [-PassThru]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of the Traffic Manager profile to enable.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>PassThru</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Returns $True if the operation succeeded; otherwise, $False. By default, this cmdlet does not generate any output.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Enable a Traffic Manager profile</Name>
+          <Cmd>PS C:\&gt;Enable-AzureTrafficManagerProfile -Name "MyProfile"</Cmd>
+          <Description>This command enables the Traffic Manager profile named MyProfile.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Enable a Traffic Manager profile and display the results</Name>
+          <Cmd>PS C:\&gt;Enable-AzureTrafficManagerProfile -Name "MyProfile" -PassThru
+True</Cmd>
+          <Description>This command enables the Traffic Manager profile named MyProfile and displays whether the command succeeded.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398283</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Disable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Get-AzureTrafficManagerProfile</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureTrafficManagerProfile</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets the details of a Traffic Manager profile.</Synopsis>
+        <Description>The Get-AzureTrafficManagerProfile cmdlet gets the details of a Microsoft Azure Traffic Manager profile. If you do not specify the Name parameter, the cmdlet lists the Traffic Manager profiles in the current subscription.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>Microsoft.WindowsAzure.Commands.Utilities.TrafficManager.Models.IProfileWithDefinition</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureTrafficManagerProfile [[-Name] &lt;String&gt;]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of the Traffic Manager profile to get.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get the list of Traffic Manager profiles in a subscription</Name>
+          <Cmd>PS C:\&gt;Get-AzureTrafficManagerProfile</Cmd>
+          <Description>This command gets the list of Traffic Manager profiles in your subscription.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Get a Traffic Manager profile</Name>
+          <Cmd>PS C:\&gt;Get-AzureTrafficManagerProfile -Name "MyProfile"</Cmd>
+          <Description>This command gets the Traffic Manager profile named MyProfile.</Description>
+        </Example>
+        <Example>
+          <Name>Example 3: Add an endpoint to a Traffic Manager profile</Name>
+          <Cmd>PS C:\&gt;Get-AzureTrafficManagerProfile -Name "MyProfile" | Add-AzureTrafficManagerEndpoint -DomainName "Myapp2.cloudapp.net" -TrafficManagerProfile $MyTrafficManagerProfile -Type "CloudService" -Status "Enabled" | Set-AzureTrafficManagerProfile</Cmd>
+          <Description>This command adds an endpoint to a Traffic Manager profile, and then saves the profile.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398284</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Add-AzureTrafficManagerEndpoint</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Disable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Enable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>New-AzureTrafficManagerProfile</Name>
+      <Verb>New</Verb>
+      <Noun>AzureTrafficManagerProfile</Noun>
+      <GeneralHelp>
+        <Synopsis>Creates a Traffic Manager profile.</Synopsis>
+        <Description>The New-AzureTrafficManagerProfile cmdlet creates a Microsoft Azure Traffic Manager profile.After you create a profile where you set the LoadBalancingMethod value to "Failover", you can determine the failover order of the endpoints you add to your profile with the Add-AzureTrafficManagerEndpoint cmdlet. For more information, see Example 2 below.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>Microsoft.WindowsAzure.Commands.Utilities.TrafficManager.Models.IProfileWithDefinition</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>New-AzureTrafficManagerProfile [-Name] &lt;String&gt; [-DomainName] &lt;String&gt; -LoadBalancingMethod &lt;String&gt; {Performance | Failover | RoundRobin}  -MonitorPort &lt;Int32&gt; -MonitorProtocol &lt;String&gt; {Http | Https}  -MonitorRelativePath &lt;String&gt; -Ttl &lt;Int32&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of the Traffic Manager profile to create.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>DomainName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the domain name of the Traffic Manager profile. This must be a subdomain of trafficmanager.net.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>LoadBalancingMethod</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the load balancing method to use to distribute the connection.
+Valid values are: 
+
+-- Performance
+-- Failover
+-- RoundRobin</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MonitorPort</Name>
+          <Type>Int32</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the port used to monitor endpoint health. Valid values are integer values greater than 0 and less than or equal to 65,535.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MonitorProtocol</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the protocol to use to monitor endpoint health.
+Valid values are: 
+
+-- Http
+
+-- Https</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MonitorRelativePath</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the path relative to the endpoint domain name to probe for health state. The path must meet the following restrictions: 
+
+-- The path must be from 1 through 1000 characters.
+
+-- It must start with a forward slash, /.
+
+-- It must contain no XML elements, &lt;&gt;.
+
+-- It must contain no double slashes, //.
+
+-- It must contain no invalid HTML escape characters. For example, %XY.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Ttl</Name>
+          <Type>Int32</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the DNS Time-to-Live (TTL) that informs the Local DNS resolvers how long to cache DNS entries. Valid values are integers from 30 through 999,999.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Create a Traffic Manager profile</Name>
+          <Cmd>PS C:\&gt;New-AzureTrafficManagerProfile -Name "MyProfile" -DomainName "My.profile.trafficmanager.net" -LoadBalancingMethod "RoundRobin" -Ttl 30 -MonitorProtocol "Http" -MonitorPort 80 -MonitorRelativePath "/"</Cmd>
+          <Description>This command creates a Traffic Manager profile named MyProfile in the specified Traffic Manager domain with a Round Robin load balancing method, a TTL of 30 seconds, HTTP monitoring protocol, monitoring port 80, and with the specified path.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Reorder endpoints to desired failover order</Name>
+          <Cmd>PS C:\&gt;$Profile = Get-AzureTrafficManagerProfile -Name "MyProfile"
+PS C:\&gt; $Profile.Endpoints[0],$Profile.Endpoints[1] = $Profile.Endpoints[1],$Profile.Endpoints[0]
+PS C:\&gt; $Profile = Set-AzureTrafficManagerProfile</Cmd>
+          <Description>This example reorders the endpoints added to MyProfile to the desired failover order.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398285</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Disable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Enable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Remove-AzureTrafficManagerEndpoint</Name>
+      <Verb>Remove</Verb>
+      <Noun>AzureTrafficManagerEndpoint</Noun>
+      <GeneralHelp>
+        <Synopsis>Removes an endpoint from a Traffic Manager profile.</Synopsis>
+        <Description>The Remove-AzureTrafficManagerEndpoint cmdlet removes an endpoint from a Microsoft Azure Traffic Manager profile. After you remove an endpoint, pass the result to the Set-AzureTrafficManagerProfile cmdlet by using the pipeline operator. That cmdlet connects to Azure to save your changes.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>Microsoft.WindowsAzure.Commands.Utilities.TrafficManager.Models.IProfileWithDefinition</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Remove-AzureTrafficManagerEndpoint -DomainName &lt;String&gt; [-Force] [-TrafficManagerProfile] &lt;IProfileWithDefinition&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>DomainName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the domain name of the endpoint to remove.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Force</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>TrafficManagerProfile</Name>
+          <Type>IProfileWithDefinition</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>true</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the Traffic Manager profile object from which to remove the endpoint.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Remove an endpoint from a profile</Name>
+          <Cmd>PS C:\&gt;$TrafficManagerProfile = Get-AzureTrafficManagerProfile -Name "ContosoProfile"
+PS C:\&gt; Remove-AzureTrafficManagerEndpoint -TrafficManagerProfile $TrafficManagerProfile -DomainName "Contoso02App.cloudapp.net" | Set-AzureTrafficManagerProfile</Cmd>
+          <Description>The first command uses the Get-AzureTrafficManagerProfile cmdlet to get the profile named ContosoProfile, and then stores it in the $TrafficManagerProfile variable.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398286</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Add-AzureTrafficManagerEndpoint</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerEndpoint</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Remove-AzureTrafficManagerProfile</Name>
+      <Verb>Remove</Verb>
+      <Noun>AzureTrafficManagerProfile</Noun>
+      <GeneralHelp>
+        <Synopsis>Removes a Traffic Manager profile.</Synopsis>
+        <Description>The Remove-AzureTrafficManagerProfile cmdlet removes a Microsoft Azure Traffic Manager profile from the current subscription.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>System.Boolean</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Remove-AzureTrafficManagerProfile [-Name] &lt;String&gt; [-Force] [-PassThru]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of the Traffic Manager profile to delete.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Force</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Forces the command to run without asking for user confirmation.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>PassThru</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Returns $True if the operation succeeded; otherwise, $False. By default, this cmdlet does not generate any output.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Remove a Traffic Manager profile</Name>
+          <Cmd>PS C:\&gt;Remove-AzureTrafficManagerProfile -Name "MyProfile"</Cmd>
+          <Description>This command removes the Traffic Manager profile named MyProfile.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Remove a Traffic Manager profile</Name>
+          <Cmd>PS C:\&gt;Remove-AzureTrafficManagerProfile -Name "MyProfile" -Force -PassThru</Cmd>
+          <Description>This command removes the Traffic Manager profile named MyProfile without prompting you for confirmation, and returns the results.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398286</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Disable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Enable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Set-AzureTrafficManagerEndpoint</Name>
+      <Verb>Set</Verb>
+      <Noun>AzureTrafficManagerEndpoint</Noun>
+      <GeneralHelp>
+        <Synopsis>Updates the properties of an endpoint in a Traffic Manager profile.</Synopsis>
+        <Description>The Set-AzureTrafficManagerEndpoint cmdlet updates the properties of an endpoint in a Microsoft Azure Traffic Manager profile. If the endpoint does not exist in the current profile, this cmdlet creates it. After you add an endpoint, pass the result to the Set-AzureTrafficManagerProfile cmdlet by using the pipeline operator. That cmdlet connects to Azure to save your changes.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>Microsoft.WindowsAzure.Commands.Utilities.TrafficManager.Models.IProfileWithDefinition</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Set-AzureTrafficManagerEndpoint -DomainName &lt;String&gt; [-Location &lt;String&gt;] [-Type &lt;String&gt; {CloudService | AzureWebsite | Any | TrafficManager} ] [-Status &lt;String&gt; {Enabled | Disabled} ] [-Weight &lt;Nullable`1[Int32]&gt;] [-MinChildEndpoints &lt;Nullable`1[Int32]&gt;] [-TrafficManagerProfile] &lt;IProfileWithDefinition&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>DomainName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the domain name of the endpoint to modify.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Location</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the location of the endpoint the cmdlet adds. This must be an Azure location.This parameter must contain a value for endpoints of the type "Any" in a profile that has the load balancing method set to "Performance". You can find a list of possible values for this parameter under Name by calling List Locations. For more information, see List Locations at http://msdn.microsoft.com/en-us/library/gg441293.aspx.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Type</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the type of endpoint. Valid values are: 
+
+-- CloudService
+-- AzureWebsite
+-- Any 
+-- TrafficManager 
+
+If there is more than one AzureWebsite endpoint, the endpoints must be in different datacenters.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Status</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the status of the monitoring endpoint. Valid values are: 
+
+-- Enabled
+-- Disabled
+
+If you specify a value of Enabled, Traffic Manager monitors the endpoint and the load-balancing method considers it when managing traffic.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Weight</Name>
+          <Type>Nullable`1[Int32]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the weight of the endpoint the cmdlet adds. The valid value range for this parameter is [1,1000].This parameter is only used for RoundRobin load balancing policies.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MinChildEndpoints</Name>
+          <Type>Nullable`1[Int32]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>TrafficManagerProfile</Name>
+          <Type>IProfileWithDefinition</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>true</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the Traffic Manager profile object for which to modify the endpoint.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Update an endpoint for a profile</Name>
+          <Cmd>PS C:\&gt;$TrafficManagerProfile = Get-AzureTrafficManagerProfile -Name "ContosoProfile"
+PS C:\&gt; Set-AzureTrafficManagerEndpoint -TrafficManagerProfile $TrafficManagerProfile -DomainName "ContosoApp02.cloudapp.net" -Status "Enabled" -Type "CloudService" -Weight 2 -Location myLocation | Set-AzureTrafficManagerProfile</Cmd>
+          <Description>The first command uses the Get-AzureTrafficManagerProfile cmdlet to get the profile named ContosoProfile, and then stores it in the $TrafficManagerProfile variable.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398288</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Add-AzureTrafficManagerEndpoint</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTrafficManagerEndpoint</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Set-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Set-AzureTrafficManagerProfile</Name>
+      <Verb>Set</Verb>
+      <Noun>AzureTrafficManagerProfile</Noun>
+      <GeneralHelp>
+        <Synopsis>Updates the properties of a Traffic Manager profile.</Synopsis>
+        <Description>The Set-AzureTrafficManagerProfile cmdlet updates the properties of a Microsoft Azure Traffic Manager profile.For profiles for which you have set the LoadBalancingMethod value to "Failover", you can determine the failover order of the endpoints you have added to your profile with the Add-AzureTrafficManagerEndpoint cmdlet. For more information, see Example 3 below.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>Microsoft.WindowsAzure.Commands.Utilities.TrafficManager.Models.IProfileWithDefinition</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Set-AzureTrafficManagerProfile [-Name &lt;String&gt;] [-LoadBalancingMethod &lt;String&gt; {Performance | Failover | RoundRobin} ] [-MonitorPort &lt;Nullable`1[Int32]&gt;] [-MonitorProtocol &lt;String&gt; {Http | Https} ] [-MonitorRelativePath &lt;String&gt;] [-Ttl &lt;Nullable`1[Int32]&gt;] [-TrafficManagerProfile] &lt;IProfileWithDefinition&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of the Traffic Manager profile to update.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>LoadBalancingMethod</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the load balancing method to use to distribute the connection. Valid values are: 
+
+-- Performance
+-- Failover
+-- RoundRobin</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MonitorPort</Name>
+          <Type>Nullable`1[Int32]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the port used to monitor endpoint health. Valid values are integer values greater than 0 and less than or equal to 65,535.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MonitorProtocol</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateSetAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the protocol to use to monitor endpoint health.
+Valid values are: 
+
+-- Http
+-- Https</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>MonitorRelativePath</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the path relative to the endpoint domain name to probe for health state. The path must meet the following restrictions: 
+
+-- The path must be from 1 through 1000 characters.
+-- It must start with a forward slash, /.
+-- It must contain no XML elements, &lt;&gt;.
+-- It must contain no double slashes, //.
+-- It must contain no invalid HTML escape characters. For example, %XY.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Ttl</Name>
+          <Type>Nullable`1[Int32]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the DNS Time-to-Live (TTL) that informs the Local DNS resolvers how long to cache DNS entries. Valid values are an integer from 30 through 999,999.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>TrafficManagerProfile</Name>
+          <Type>IProfileWithDefinition</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>true</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the Traffic Manager profile object you use to set the profile.</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Set the TTL for a Traffic Manager profile</Name>
+          <Cmd>PS C:\&gt;Set-AzureTrafficManagerProfile -TrafficManagerProfile $MyTrafficManagerProfile -Ttl 60</Cmd>
+          <Description>This command sets the TTL to 60 seconds for the Traffic Manager profile object MyTrafficManagerProfile.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Set several values for a profile</Name>
+          <Cmd>PS C:\&gt;Get-AzureTrafficManagerProfile -Name "MyProfile" | Set-AzureTrafficManagerProfile -LoadBalancingMethod "RoundRobin" -Ttl 30 -MonitorProtocol "Http" -MonitorPort 80 -MonitorRelativePath "/"</Cmd>
+          <Description>This command gets a Traffic Manager profile named MyProfile by using the Get-AzureTrafficManagerProfile cmdlet. The profile uses the RoundRobin load balancing method, a TTL of 30 seconds,  the monitor protocol HTTP, the monitor port, and the relative path for a Traffic Manager profile.</Description>
+        </Example>
+        <Example>
+          <Name>Example 3: Reorder endpoints to desired failover order</Name>
+          <Cmd>PS C:\&gt;$Profile = Get-AzureTrafficManagerProfile -Name "MyProfile"
+PS C:\&gt; $Profile.Endpoints[0],$Profile.Endpoints[1] = $Profile.Endpoints[1],$Profile.Endpoints[0]
+PS C:\&gt; $Profile = Set-AzureTrafficManagerProfile</Cmd>
+          <Description>This example reorders the endpoints added to MyProfile to the desired failover order.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398289</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Disable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Enable-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTrafficManagerProfile</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Test-AzureTrafficManagerDomainName</Name>
+      <Verb>Test</Verb>
+      <Noun>AzureTrafficManagerDomainName</Noun>
+      <GeneralHelp>
+        <Synopsis>Checks whether a domain name is available as a Traffic Manager profile.</Synopsis>
+        <Description>The Test-AzureTrafficManagerDomainName cmdlet checks whether a domain name is available as a Microsoft Azure Traffic Manager profile. If the domain name is available, this cmdlet returns a value of $True.</Description>
+        <InputType />
+        <InputTypeDescription />
+        <ReturnType>System.Boolean</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Test-AzureTrafficManagerDomainName [-DomainName] &lt;String&gt;</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>DomainName</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>false</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the domain name to test. You must include the following string: 
+
+.trafficmanager.net</Description>
+          <DefaultValue>none</DefaultValue>
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Check whether a domain name is available</Name>
+          <Cmd>PS C:\&gt;Test-AzureTrafficManagerDomainName -DomainName "ContosoApp.trafficmanager.net"
+$True</Cmd>
+          <Description>This command checks whether the domain name ContosoApp.trafficmanager.net is available as a Traffic Manager profile.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkID=398290</LinkUrl>
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+  </Cmdlets>
+</ModuleObject>

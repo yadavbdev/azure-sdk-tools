@@ -1,0 +1,574 @@
+<?xml version="1.0"?>
+<ModuleObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Microsoft.Azure.Commands.Tags.dll-help</Name>
+  <ModuleType>Manifest</ModuleType>
+  <Version>0.8.8</Version>
+  <Description />
+  <ModuleClass>External</ModuleClass>
+  <ModulePath>E:\work\azure-sdk-tools\src\ResourceManager\Tags\Commands.Tags\Microsoft.Azure.Commands.Tags.dll-help.psd1</ModulePath>
+  <UseSupports>false</UseSupports>
+  <OverridePostCount>false</OverridePostCount>
+  <FetchPostCount xsi:nil="true" />
+  <Cmdlets>
+    <CmdletObject>
+      <Name>Get-AzureTag</Name>
+      <Verb>Get</Verb>
+      <Noun>AzureTag</Noun>
+      <GeneralHelp>
+        <Synopsis>Gets predefined Azure tags</Synopsis>
+        <Description>The Get-AzureTag cmdlet gets predefined Azure tags in your subscription. This cmdlet returns basic information about the tags or detailed information about tags and their values. All output objects include a Count property that represents the number of resources and resource groups to which the tags and values have been applied. Get-AzureTag is part of a set of cmdlets (New/Get/Remove) that help you manage predefined Azure tags.An Azure "tag" is a name-value pair that you can use to categorize your Azure resources and resource groups, such as by department or cost center, or to track notes or comments about the resources and groups. You can define and apply tags in a single step, but predefined tags let you establish standard, consistent, predictable names and values for the tags in your subscription. If the subscription includes any predefined tags, you cannot apply undefined tags or values to any resource or resource group in the subscription.To create a predefined tag, use the New-AzureTag cmdlet. To apply a predefined tag to a resource or resource group. use the Tag parameters of the New and Set cmdlets in the AzureResourceManager module. To search for resources or resource groups with a specified tag name or name and value, use the Tag parameters of the Get-AzureResource and Get-AzureResourceGroup cmdlets.</Description>
+        <InputType>None</InputType>
+        <InputTypeDescription />
+        <ReturnType>Microsoft.Azure.Commands.Tags.Model.PSTag, Microsoft.Azure.Commands.Tags</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Get-AzureTag [[-Name] &lt;String&gt;] [-Detailed]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Gets detailed information about the predefined tag with the specified name. By default, Get-AzureTag gets basic information about all predefined tags in the subscription.When you use the Name parameter, the Detailed parameter has no effect.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Detailed</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Adds information about tag values to the output.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Get all predefined tags</Name>
+          <Cmd>PS C:\&gt;Get-AzureTag
+Name      Count
+
+========  =====
+
+Department    5
+
+FY2015        2
+
+CostCenter   20</Cmd>
+          <Description>This command gets all predefined tags in the subscription. The Count property shows how many times the tag has been applied to resources and resource groups in the subscription.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Get a tag by name</Name>
+          <Cmd>PS C:\&gt;Get-AzureTag -Name Department
+Name:   Department
+
+Count:  5
+
+Values: 
+
+        Name        Count
+
+        ==========  =====
+
+        Finance       2
+
+        IT            3</Cmd>
+          <Description>This command gets detailed information about the Department tag and its values. The Count property shows how many times the tag and each of its values has been applied to resources and resource groups in the subscription.</Description>
+        </Example>
+        <Example>
+          <Name>Example 3: Get values of all tags</Name>
+          <Cmd>PS C:\&gt;Get-AzureTag -Detailed
+Name:   Department
+
+Count:  5
+
+Values: 
+
+        Name        Count
+
+        ==========  =====
+
+        Finance       2
+
+        IT            3
+
+
+Name:   FY2015
+
+Count:  2
+
+
+Name:   CostCenter
+
+Count:  20
+
+Values: 
+
+        Name        Count
+
+        ==========  =====
+
+        0001          5
+
+        0002         10
+
+        0003          5</Cmd>
+          <Description>This command uses the Detailed parameter to get detailed information about all predefined tags in the subscription. It's the equivalent of using the Name parameter for every tag.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=404173</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureTag</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTag</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>New-AzureTag</Name>
+      <Verb>New</Verb>
+      <Noun>AzureTag</Noun>
+      <GeneralHelp>
+        <Synopsis>Creates a predefined Azure tag or adds values to an existing tag</Synopsis>
+        <Description>The New-AzureTag cmdlet creates a predefined Azure tag with an optional predefined value. You can also use it to add additional values to existing predefined tags. To create a new predefined tag, enter a unique tag name. To add a value to an existing predefined tag, specify the name of the existing tag and the new value. This cmdlet returns an object that represents the new or changed tag with its values and the number of resources to which it has been applied. New-AzureTag is part of a set of cmdlets (New/Get/Remove) that let you manage predefined Azure tags.An Azure "tag" is a name-value pair that you can use to categorize your Azure resources and resource groups, such as by department or cost center, or to track notes or comments about the resources and groups. You can define and apply tags in a single step, but predefined tags let you establish standard, consistent, predictable names and values for the tags in your subscription. If the subscription includes any predefined tags, you cannot apply undefined tags or values to any resource or resource group in the subscription.To apply a predefined tag to a resource or resource group. use the Tag parameters of the New and Set cmdlets in the AzureResourceManager module. To search for resources or resource groups with a specified tag name or name and value, use the Tag parameters of the Get-AzureResource and Get-AzureResourceGroup cmdlets.Every tag has a name. The values are optional. A predefined Azure tag can have multiple values, but when you apply the tag to a resource or resource group, you apply the tag name and only one of its values. For example, you can create a predefined Department tag with a value for each department, such as Finance, Human Resources, and IT. When you apply the Department tag to a resource, you apply only one predefined value, such as Finance.</Description>
+        <InputType>None</InputType>
+        <InputTypeDescription />
+        <ReturnType>Microsoft.Azure.Commands.Tags.Model.PSTag</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>New-AzureTag [-Name] &lt;String&gt; [[-Value] &lt;String&gt;]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the tag name. To create a new predefined tag, enter a unique name. To add a new value to an existing tag, enter the name of the existing tag.If an existing predefined tag has the specified name, New-AzureTag adds the specified value, if any, to the tag with that name, instead of creating a new tag.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Value</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies a tag value. Predefined tags can have multiple value, but you can enter only one value in each command. This parameter is optional, because tags can have names and no values.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Create a predefined tag</Name>
+          <Cmd>PS C:\&gt;New-AzureTag -Name FY2015
+Name:   Department
+
+Count:  0
+
+Values: 
+
+        Name        Count
+
+        =========   =====
+
+        Finance     0</Cmd>
+          <Description>This command creates a predefined tag named "FY2015". This tag has no values. You can apply a tag with no values to a resource or resource group, or use New-AzureTag to add values to the tag. You can also specify a value when you apply the tag to the resource or resource group.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Create a predefined tag with a value</Name>
+          <Cmd>PS C:\&gt;New-AzureTag -Name Department -Value Finance
+Name:   Department
+
+Count:  0
+
+Values: 
+
+        Name        Count
+
+        =========   =====
+
+        Finance     0</Cmd>
+          <Description>This command creates a Department predefined tag with a value of Finance.</Description>
+        </Example>
+        <Example>
+          <Name>Example 3: Add a value to a predefined tag</Name>
+          <Cmd>PS C:\&gt;New-AzureTag -Name Department -Value Finance
+Name:   Department
+
+Count:  0
+Values: 
+        Name        Count
+        =========   =====
+        Finance     0
+
+
+PS C:\&gt;New-AzureTag -Name Department -Value IT
+
+Name:   Department
+Count:  0
+Values: 
+        Name        Count
+        =========   =====
+        Finance     0
+        IT          0</Cmd>
+          <Description>These commands creates a Department predefined tag with two values. When the tag name exists, New-AzureTag adds the value to the existing tag, instead of creating a new one.</Description>
+        </Example>
+        <Example>
+          <Name>Example 4: Use a predefined tag</Name>
+          <Cmd>PS C:\&gt;New-AzureTag -Name CostCenter -Value 0001
+
+
+Name:   CostCenter
+Count:  0
+Values: 
+        Name        Count
+        =========   =====
+        0001        0
+
+
+PS C:\&gt;Set-AzureResourceGroup -Name EngineerBlog -Tag @{Name="CostCenter";Value="0001"}
+
+
+Name:      EngineerBlog
+Location:  East US
+Resources: 
+            
+    Name             Type                     Location
+    ===============  =======================  ========
+    EngineerBlog     Microsoft.Web/sites      West US
+    EngSvr01         Microsoft.Sql/servers    West US
+    EngDB02          Microsoft.Sql/databases  West US
+Tags: 
+    Name         Value
+    ==========   =====
+    CostCenter   0001
+
+
+PS C:\&gt;Get-AzureTag -Name CostCenter
+
+
+Name:   CostCenter
+Count:  1
+Values: 
+        Name        Count
+        =========   =====
+        0001        1
+
+PS C:\&gt;Get-AzureResourceGroup -Tag @{Name="CostCenter"}
+
+Name:      EngineerBlog
+Location:  East US
+Resources: 
+     Name             Type                     Location
+    ===============  =======================  ========
+    EngineerBlog     Microsoft.Web/sites      West US
+
+    EngSvr01         Microsoft.Sql/servers    West US
+    EngDB02          Microsoft.Sql/databases  West US
+Tags: 
+    Name         Value
+    ==========   =====
+    CostCenter   0001</Cmd>
+          <Description>The commands in this example create and use a predefined tag.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=404172</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTag</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Remove-AzureTag</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+    <CmdletObject>
+      <Name>Remove-AzureTag</Name>
+      <Verb>Remove</Verb>
+      <Noun>AzureTag</Noun>
+      <GeneralHelp>
+        <Synopsis>Deletes predefined Azure tags or values</Synopsis>
+        <Description>The Remove-AzureTag cmdlet deletes predefined Azure tags and values from your subscription. To delete particular values from a predefined tag, use the Value parameter. By default, Remove-AzureTag deletes the specified tag and all of its values.You cannot delete a tag or value that is currently applied to a resource or resource group. Before using Remove-AzureTag, use the Tag parameter of the Set-AzureResource or Set-AzureResourceGroup cmdlets to delete the tag or values from the resource or resource group. The Remove-AzureTag cmdlet is part of a set of cmdlets (New/Get/Remove) that help you to manage your predefined Azure tags.An Azure "tag" is a name-value pair that you can use to categorize your Azure resources and resource groups, such as by department or cost center, or to track notes or comments about the resources and groups.You can define and apply tags in a single step, but predefined tags let you establish standard, consistent, predictable names and values for the tags in your subscription. If the subscription includes any predefined tags, you cannot apply undefined tags or values to any resource or resource group in the subscription.</Description>
+        <InputType>None</InputType>
+        <InputTypeDescription />
+        <ReturnType>None or Microsoft.Azure.Commands.Tags.Model.PSTag</ReturnType>
+        <ReturnTypeDescription />
+      </GeneralHelp>
+      <Syntax>
+        <string>Remove-AzureTag [-Name] &lt;String&gt; [[-Value] &lt;String[]&gt;] [-Force] [-PassThru]</string>
+      </Syntax>
+      <Parameters>
+        <ParameterDescription>
+          <Name>Name</Name>
+          <Type>String</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>true</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>0</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Specifies the name of the tag to be deleted. This parameter is required. By default, Remove-AzureTag removes the specified tag and all of its values. To delete selected values, but not delete the tag, use the Value parameter.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Value</Name>
+          <Type>String[]</Type>
+          <AcceptsArray>true</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>true</Positional>
+          <Position>1</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ValidateNotNullOrEmptyAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Deletes the specified values from the predefined tag, but does not delete the tag.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>Force</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Suppresses the confirmation prompt. By default, Remove-AzureTag prompts for confirmation before deleting a predefined Azure tag.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+        <ParameterDescription>
+          <Name>PassThru</Name>
+          <Type>SwitchParameter</Type>
+          <AcceptsArray>false</AcceptsArray>
+          <Mandatory>false</Mandatory>
+          <Dynamic>false</Dynamic>
+          <RemainingArgs>false</RemainingArgs>
+          <Pipeline>false</Pipeline>
+          <PipelinePropertyName>true</PipelinePropertyName>
+          <Positional>false</Positional>
+          <Position>named</Position>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Returns an object that represents the deleted tag or the resulting tag with deleted valued.</Description>
+          <DefaultValue />
+          <Globbing>false</Globbing>
+        </ParameterDescription>
+      </Parameters>
+      <Examples>
+        <Example>
+          <Name>Example 1: Delete a predefined tag</Name>
+          <Cmd>PS C:\&gt;Remove-AzureTag -Name Department</Cmd>
+          <Description>This command deletes the predefined Department tag and all of its resources. If the tag has been applied to any resources or resource groups, the command fails.</Description>
+        </Example>
+        <Example>
+          <Name>Example 2: Delete a value from a predefined tag</Name>
+          <Cmd>PS C:\&gt;Remove-AzureTag -Name Department -Value HumanResources -PassThru
+Name:   Department
+
+Count:  14
+
+Values: 
+
+        Name        Count
+
+        =========   =====
+
+        Finance        2
+
+        IT            12</Cmd>
+          <Description>This command deletes the HumanResources value from the predefined Department tag. It does not delete the tag. If the value has been applied to any resources or resource groups, the command fails.</Description>
+        </Example>
+      </Examples>
+      <RelatedLinks>
+        <RelatedLink>
+          <LinkText>Online Version:</LinkText>
+          <LinkUrl>http://go.microsoft.com/fwlink/?LinkId=404174</LinkUrl>
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>Get-AzureTag</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+        <RelatedLink>
+          <LinkText>New-AzureTag</LinkText>
+          <LinkUrl />
+        </RelatedLink>
+      </RelatedLinks>
+      <SupportInformation>
+        <ADChecked>false</ADChecked>
+        <RsatChecked>false</RsatChecked>
+        <Ps2Checked>false</Ps2Checked>
+        <Ps3Checked>false</Ps3Checked>
+        <Ps4Checked>false</Ps4Checked>
+        <WinXpChecked>false</WinXpChecked>
+        <WinVistaChecked>false</WinVistaChecked>
+        <Win7Checked>false</Win7Checked>
+        <Win8Checked>false</Win8Checked>
+        <Win81Checked>false</Win81Checked>
+        <Win2003Checked>false</Win2003Checked>
+        <Win2003StdChecked>false</Win2003StdChecked>
+        <Win2003EEChecked>false</Win2003EEChecked>
+        <Win2003DCChecked>false</Win2003DCChecked>
+        <Win2008Checked>false</Win2008Checked>
+        <Win2008StdChecked>false</Win2008StdChecked>
+        <Win2008EEChecked>false</Win2008EEChecked>
+        <Win2008DCChecked>false</Win2008DCChecked>
+        <Win2008R2Checked>false</Win2008R2Checked>
+        <Win2008R2StdChecked>false</Win2008R2StdChecked>
+        <Win2008R2EEChecked>false</Win2008R2EEChecked>
+        <Win2008R2DCChecked>false</Win2008R2DCChecked>
+        <Win2012Checked>false</Win2012Checked>
+        <Win2012StdChecked>false</Win2012StdChecked>
+        <Win2012DCChecked>false</Win2012DCChecked>
+        <Win2012R2Checked>false</Win2012R2Checked>
+        <Win2012R2StdChecked>false</Win2012R2StdChecked>
+        <Win2012R2DCChecked>false</Win2012R2DCChecked>
+      </SupportInformation>
+      <Publish>false</Publish>
+    </CmdletObject>
+  </Cmdlets>
+</ModuleObject>
