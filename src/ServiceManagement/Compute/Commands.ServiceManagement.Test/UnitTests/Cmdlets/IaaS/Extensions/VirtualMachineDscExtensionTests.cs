@@ -12,6 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
@@ -34,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
     /// xActiveDirectory
     /// </remarks>
     [TestClass]
-    public class VirtualMachineDscExtensionTests : TestBase
+    public class VirtualMachineDscExtensionTests
     {
         private const string CorporateClientConfigurationPath = @"DSC\Configurations\CorporateClientConfiguration.ps1";
         private const string DomainControllerConfigurationPath = @"DSC\Configurations\DomainControllerConfiguration.ps1";
@@ -51,6 +54,29 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         private const string ModuleImportSingleOutsideNodeConfigurationPath = @"DSC\Configurations\Dummy\ModuleImportSingleOutsideNode.ps1";
         private const string IEEScGoodConfigurationPath = @"DSC\Configurations\IEEScGood.ps1";
         private const string IEEScBadConfigurationPath = @"DSC\Configurations\IEEScBad.ps1";
+
+        private const string TestDscResourceModulesDirectory = @"azure-sdk-tools-dsc-test";
+
+        private const string xDscResourcesArchivePath = @"DSC\DSC Resource Kit Wave 6 08282014.zip";
+
+        private const string PSModulePathEnvVar = "PSModulePath";
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext a)
+        {
+            string testDscResourceModulesPath = Path.Combine(Path.GetTempPath(), TestDscResourceModulesDirectory);
+            if (Directory.Exists(testDscResourceModulesPath))
+            {
+                // cleanup
+                Directory.Delete(testDscResourceModulesPath, true);
+            }
+            // unpack xPSDSC resources
+            ZipFile.ExtractToDirectory(xDscResourcesArchivePath, testDscResourceModulesPath);
+
+            // Set $env:PSModulePath to include temp folder, so resources can be explored.
+            string psModulePath = Environment.GetEnvironmentVariable(PSModulePathEnvVar);
+            Environment.SetEnvironmentVariable(PSModulePathEnvVar, psModulePath + ";" + testDscResourceModulesPath);
+        }
 
         [TestMethod]
         [TestCategory("Scenario")]
@@ -74,7 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestExtractConfigurationNames1()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(CorporateClientConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
         }
@@ -85,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestExtractConfigurationNames2()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(DomainControllerConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(2, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
             Assert.AreEqual("xActiveDirectory", results.RequiredModules[1]);
@@ -97,7 +123,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestExtractConfigurationNames3()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(VisualStudioPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xPSDesiredStateConfiguration", results.RequiredModules[0]);
         }
@@ -108,7 +134,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestExtractConfigurationNamesMulti()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(SHMulptiConfigurationsPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(3, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
             Assert.AreEqual("xNetworking", results.RequiredModules[1]);
@@ -121,7 +147,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestNameImportListInsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(NameImportListInsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(2, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
             Assert.AreEqual("xActiveDirectory", results.RequiredModules[1]);
@@ -133,7 +159,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestNameImportListOutsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(NameImportListOutsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(2, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
             Assert.AreEqual("xActiveDirectory", results.RequiredModules[1]);
@@ -145,7 +171,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestNameImportSingleInsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(NameImportSingleInsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
         }
@@ -156,7 +182,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestNameImportSingleOutsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(NameImportSingleOutsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
         }
@@ -167,7 +193,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestNameModuleImportSingleInsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(NameModuleImportSingleInsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xComputerManagement", results.RequiredModules[0]);
         }
@@ -178,7 +204,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestModuleImportListInsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(ModuleImportListInsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(2, results.RequiredModules.Count);
             Assert.AreEqual("xPSDesiredStateConfiguration", results.RequiredModules[0]);
             Assert.AreEqual("xNetworking", results.RequiredModules[1]);
@@ -190,7 +216,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestModuleImportListOutsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(ModuleImportListOutsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(2, results.RequiredModules.Count);
             Assert.AreEqual("xPSDesiredStateConfiguration", results.RequiredModules[0]);
             Assert.AreEqual("xNetworking", results.RequiredModules[1]);
@@ -202,7 +228,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestModuleImportSingleInsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(ModuleImportSingleInsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xNetworking", results.RequiredModules[0]);
         }
@@ -213,7 +239,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestModuleImportSingleOutsideNode()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(ModuleImportSingleOutsideNodeConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xNetworking", results.RequiredModules[0]);
         }
@@ -224,7 +250,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestIEEScGood()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(IEEScGoodConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xSystemSecurity", results.RequiredModules[0]);
         }
@@ -235,7 +261,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         public void TestIEEScBad()
         {
             ConfigurationParseResult results = ConfigurationParsingHelper.ParseConfiguration(IEEScBadConfigurationPath);
-            Assert.AreEqual(0, results.Errors.Count());
+            Assert.AreEqual(0, results.Errors.Count(), "Parsing errors");
             Assert.AreEqual(1, results.RequiredModules.Count);
             Assert.AreEqual("xSystemSecurity", results.RequiredModules[0]);
         }

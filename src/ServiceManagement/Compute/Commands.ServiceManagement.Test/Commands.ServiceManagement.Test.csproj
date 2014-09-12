@@ -127,6 +127,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Net" />
@@ -421,6 +422,7 @@
     <None Include="Resources\DSC\Configurations\DomainControllerConfiguration.ps1" />
     <None Include="Resources\DSC\Configurations\SHMulptiConfigurations.ps1" />
     <None Include="Resources\download_VHD.csv" />
+    <None Include="Resources\DSC\DSC Resource Kit Wave 6 08282014.zip" />
     <None Include="Resources\DSC\DscExtensionTestConfigurationData.psd1" />
     <None Include="Resources\HelloNoDiag.cscfg" />
     <None Include="Resources\HelloNoDiag.cspkg" />
