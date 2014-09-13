@@ -19,7 +19,7 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    public abstract class DataFactoryBaseCmdlet : CmdletWithSubscriptionBase
+    public abstract class DataFactoryBaseCmdlet : AzurePSCmdlet
     {
         private DataFactoryClient dataFactoryClient;
 
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             {
                 if (this.dataFactoryClient == null)
                 {
-                    this.dataFactoryClient = new DataFactoryClient(CurrentSubscription);
+                    this.dataFactoryClient = new DataFactoryClient(CurrentContext);
                 }
                 return this.dataFactoryClient;
             }

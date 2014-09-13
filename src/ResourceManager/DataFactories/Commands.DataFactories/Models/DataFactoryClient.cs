@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.Azure.Management.DataFactories;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.Azure.Commands.DataFactories
@@ -25,10 +27,10 @@ namespace Microsoft.Azure.Commands.DataFactories
     {
         public IDataPipelineManagementClient DataPipelineManagementClient { get; private set; }
 
-        public DataFactoryClient(WindowsAzureSubscription subscription)
+        public DataFactoryClient(AzureContext context)
         {
-            DataPipelineManagementClient =
-                subscription.CreateClientFromResourceManagerEndpoint<DataPipelineManagementClient>();
+            DataPipelineManagementClient = AzureSession.ClientFactory.CreateClient<DataPipelineManagementClient>(
+                context, AzureEnvironment.Endpoint.ResourceManager);
         }
 
         /// <summary>

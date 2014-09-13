@@ -12,13 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Gallery;
 using Microsoft.Azure.Management.DataFactories;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Subscriptions;
-using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events;
@@ -27,7 +24,7 @@ using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    public abstract class DataFactoriesScenarioTestsBase : IDisposable
+    public abstract class DataFactoriesScenarioTestsBase
     {
         private EnvironmentSetupHelper helper;
 
@@ -97,11 +94,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         protected EventsClient GetEventsClient()
         {
             return TestBase.GetServiceClient<EventsClient>(new CSMTestEnvironmentFactory());
-        }
-
-        public void Dispose()
-        {
-            helper.Dispose();
         }
     }
 }
