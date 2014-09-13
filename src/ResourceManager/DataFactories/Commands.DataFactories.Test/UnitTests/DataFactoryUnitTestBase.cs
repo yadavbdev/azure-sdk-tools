@@ -19,6 +19,7 @@ using Moq;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
+    [TestClass]
     public class DataFactoryUnitTestBase : TestBase
     {
         protected const string subscriptionId = "subscriptionid";

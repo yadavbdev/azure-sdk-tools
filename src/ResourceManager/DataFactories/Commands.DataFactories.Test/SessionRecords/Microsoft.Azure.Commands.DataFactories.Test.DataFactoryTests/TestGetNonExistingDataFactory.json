@@ -2,11 +2,12 @@
   "Entries": [
     {
       "RequestUri": "/subscriptions/b23b2c11-e7e0-4d26-9760-97bd8f7209bd/resourcegroups/mdw/providers/Microsoft.DataFactory/datafactories/Non-ExistingDF?api-version=2014-07-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvYjIzYjJjMTEtZTdlMC00ZDI2LTk3NjAtOTdiZDhmNzIwOWJkL3Jlc291cmNlZ3JvdXBzL21kdy9wcm92aWRlcnMvTWljcm9zb2Z0LkRhdGFGYWN0b3J5L2RhdGFmYWN0b3JpZXMvTm9uLUV4aXN0aW5nREY/YXBpLXZlcnNpb249MjAxNC0wNy0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "74a3a454-0c3c-41a6-b8e7-ece480eb8562"
+          "728be442-d511-4bac-969c-8ca64896c66b"
         ],
         "User-Agent": [
           "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
@@ -18,13 +19,13 @@
           "no-cache"
         ],
         "x-ms-request-id": [
-          "6a0084c1-5fc6-47df-b140-94fc4345b828"
+          "5a326df9-6eab-497f-ab4a-0f517222ca2f"
         ],
         "x-ms-correlation-request-id": [
-          "6a0084c1-5fc6-47df-b140-94fc4345b828"
+          "5a326df9-6eab-497f-ab4a-0f517222ca2f"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20140829T052526Z:6a0084c1-5fc6-47df-b140-94fc4345b828"
+          "CENTRALUS:20140913T045853Z:5a326df9-6eab-497f-ab4a-0f517222ca2f"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -33,7 +34,7 @@
           "no-cache"
         ],
         "Date": [
-          "Fri, 29 Aug 2014 05:25:25 GMT"
+          "Sat, 13 Sep 2014 04:58:53 GMT"
         ]
       },
       "StatusCode": 404
