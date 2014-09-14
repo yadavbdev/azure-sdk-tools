@@ -34,7 +34,7 @@ function Create-TestEnvironment
 {
 	$params = Get-SqlAuditingTestEnvironmentParameters
 	New-AzureStorageAccount -StorageAccountName $params.storageAccount -Location "West US" 
-	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\sql-audit-test-env-setup.json" -serverName $params.serverName -databaseName $params.databaseName -EnvLocation "West US" -StorageAccountName $params.storageAccount -Force
+	New-AzureResourceGroup -Name $params.rgname -Location "West US" -TemplateFile ".\Templates\sql-audit-test-env-setup.json" -serverName $params.serverName -databaseName $params.databaseName -EnvLocation "West US" -Force
 }
 
 <#
