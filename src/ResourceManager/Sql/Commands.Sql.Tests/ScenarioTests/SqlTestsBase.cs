@@ -12,13 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Management.Storage;
-using Microsoft.WindowsAzure.Management.WebSites;
-using Microsoft.WindowsAzure.Testing;
 using Microsoft.Azure.Management.Sql;
 using Microsoft.Azure.Management.Resources;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.SqlTests
 {
