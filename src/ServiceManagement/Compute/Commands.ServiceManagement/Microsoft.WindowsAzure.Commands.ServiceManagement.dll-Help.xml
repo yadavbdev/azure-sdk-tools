@@ -901,7 +901,7 @@
                      Add-AzureDns
       </command:name>
       <maml:description>
-        <maml:para>Add-AzureDns [-Name] &lt;string&gt; [-IPAddress] &lt;string&gt; [-ServiceName] &lt;string&gt; [&lt;CommonParameters&gt;]</maml:para>
+        <maml:para>Adds a DNS server to an existing cloud service. </maml:para>
       </maml:description>
       <maml:copyright>
         <maml:para></maml:para>
@@ -11495,7 +11495,8 @@ This command gets the virtual machine object with the name "MyDemoVM01" running 
                      Remove-AzureDns
       </command:name>
       <maml:description>
-        <maml:para>Remove-AzureDns [-Name] &lt;string&gt; [-ServiceName] &lt;string&gt; [-Force] [&lt;CommonParameters&gt;]</maml:para>
+        <maml:para>Removes a DNS server to an existing cloud service. 
+  </maml:para>
       </maml:description>
       <maml:copyright>
         <maml:para></maml:para>
@@ -11505,7 +11506,7 @@ This command gets the virtual machine object with the name "MyDemoVM01" running 
       <dev:version></dev:version>
     </command:details>
     <maml:description>
-      <maml:para></maml:para>
+      <maml:para>The Remove-AzureDns cmdlet removes the specified DNS server from a cloud service. </maml:para>
     </maml:description>
     <!-- Cmdlet syntax section-->
     <command:syntax>
@@ -14201,7 +14202,7 @@ Get-AzureVMImage `
                      Set-AzureDns
       </command:name>
       <maml:description>
-        <maml:para>Set-AzureDns [-Name] &lt;string&gt; [-IPAddress] &lt;string&gt; [-ServiceName] &lt;string&gt; [&lt;CommonParameters&gt;]</maml:para>
+        <maml:para>Updates the IP Address of the specified DNS server. </maml:para>
       </maml:description>
       <maml:copyright>
         <maml:para></maml:para>
@@ -14211,7 +14212,7 @@ Get-AzureVMImage `
       <dev:version></dev:version>
     </command:details>
     <maml:description>
-      <maml:para></maml:para>
+      <maml:para>The Set-AzureDns cmdlets updates the IP Address of the specified DNS server. </maml:para>
     </maml:description>
     <!-- Cmdlet syntax section-->
     <command:syntax>
@@ -14227,7 +14228,7 @@ Get-AzureVMImage `
         <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="2">
           <maml:name>IPAddress</maml:name>
           <maml:description>
-            <maml:para></maml:para>
+            <maml:para>Specifies the IP address of the DNS server</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -14252,7 +14253,7 @@ Get-AzureVMImage `
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="2">
         <maml:name>IPAddress</maml:name>
         <maml:description>
-          <maml:para></maml:para>
+          <maml:para>Specifies the IP address of the DNS server</maml:para>
                   
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
