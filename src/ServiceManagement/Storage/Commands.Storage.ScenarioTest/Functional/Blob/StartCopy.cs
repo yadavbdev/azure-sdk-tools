@@ -12,19 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using Commands.Storage.ScenarioTest.Common;
+using Commands.Storage.ScenarioTest.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MS.Test.Common.MsTestLib;
 using StorageTestLib;
-using System;
-using System.Linq;
 
 namespace Commands.Storage.ScenarioTest.Functional.Blob
 {
-    using Common;
-    using Util;
-
     /// <summary>
     /// functional tests for Start-CopyBlob
     /// </summary>

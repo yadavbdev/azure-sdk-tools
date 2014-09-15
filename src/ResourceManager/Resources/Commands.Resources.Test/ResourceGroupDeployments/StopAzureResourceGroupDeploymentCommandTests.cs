@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
 using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Commands.Resources.ResourceGroups;
 using Moq;
-using System.Management.Automation;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.Resources

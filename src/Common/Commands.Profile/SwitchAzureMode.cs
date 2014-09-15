@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Management.Automation;
-
     /// <summary>
     /// Switches between ServiceManagement and ResourceManager modes.
     /// </summary>
     [Cmdlet(VerbsCommon.Switch, "AzureMode")]
-    public class SwitchAzureMode : CmdletBase
+    public class SwitchAzureMode : AzurePSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "Name of the mode to switch to. Valid values are AzureServiceManagement and AzureResourceManager")]
         [ValidateSet("AzureServiceManagement", "AzureResourceManager", IgnoreCase = false)]

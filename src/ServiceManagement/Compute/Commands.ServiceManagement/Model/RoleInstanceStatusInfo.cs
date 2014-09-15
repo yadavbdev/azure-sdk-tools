@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Globalization;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Globalization;
-
     public class RoleInstanceStatusInfo
     {
         public string InstanceStatus { get; set; }

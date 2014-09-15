@@ -1,12 +1,47 @@
+2014.09.10 Version 0.8.8
+* Role-based access control support
+    * Query role definition
+        * Get-AzureRoleDefinition
+        * Manage role assignment
+        * New-AzureRoleAssignment
+        * Get-AzureRoleAssignment
+        * Remove-AzureRoleAssignment
+    * Query Active Directory object
+        * Get-AzureADUser
+        * Get-AzureADGroup
+        * Get-AzureADGroupMember
+        * Get-AzureADServicePrincipal
+    * Show user's permissions on
+        * Get-AzureResourceGroup
+        * Get-AzureResource
+* Active Directory service principal login support in Azure Resource Manager mode
+    * Add-AzureAccount -Credential -ServicePrincipal -Tenant
+* SQL Database auditing support in Azure Resource Manager mode
+    * Use-AzureSqlServerAuditingSetting
+    * Set-AzureSqlServerAuditingSetting
+    * Set-AzureSqlDatabaseAuditingSetting
+    * Get-AzureSqlServerAuditingSetting
+    * Get-AzureSqlDatabaseAuditingSetting
+    * Disable-AzureSqlServerAuditing
+    * Disable-AzureSqlDatabaseAuditing
+* Other improvements
+    * Virtual Machine DSC extension supports PSCredential as configuration argument
+    * Virtual Machine Antimalware extension supports native JSON configuration
+    * Storage supports creating storage account with different geo-redundant options
+    * Traffic Manager supports nesting of profiles
+    * Website supports configuring x32/x64 worker process
+    * -Detail parameter on Get-AzureResourceGroup to improve performance
+    * Major refactoring around account and subscription management
+
 2014.08.22 Version 0.8.7.1
 * AzureResourceManager
     * Update Gallery and Monitoring management clients to fix Gallery commands
 *HDInsight
     * Update Microsoft.Net API for Hadoop
-    
+
 2014.08.18 Version 0.8.7
 * Update Newtonsoft.Json dependency to 6.0.4
-* Compute 
+* Compute
     * Windows Azure Diagnostics (WAD) Version 1.2: extension cmdlets for Iaas And PaaS
         * Set-AzureVMDiagnosticsExtension
         * Get-AzureVMDiagnosticsExtension

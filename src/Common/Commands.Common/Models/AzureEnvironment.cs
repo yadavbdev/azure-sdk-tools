@@ -12,16 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
     public partial class AzureEnvironment
     {
-        public string Name { get; set; }
+        public AzureEnvironment()
+        {
+            Endpoints = new Dictionary<Endpoint, string>();
+        }
 
-        public Guid? DefaultSubscriptionId { get; set; }
+        public string Name { get; set; }
 
         public Dictionary<Endpoint, string> Endpoints { get; set; }
     }

@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
 {
-    using Model;
-    using Properties;
-    using System;
-    using System.Linq;
-    using System.Security.Cryptography.X509Certificates;
-
     public class WinRmConfigurationBuilder
     {
         private const string Http = "Http";

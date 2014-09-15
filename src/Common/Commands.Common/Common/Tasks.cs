@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Helper functions for <see cref="System.Threading.Tasks.Task{TResult}"/>
     /// </summary>

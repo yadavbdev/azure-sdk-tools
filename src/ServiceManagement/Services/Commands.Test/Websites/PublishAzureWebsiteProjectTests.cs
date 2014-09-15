@@ -1,20 +1,20 @@
-﻿namespace Microsoft.WindowsAzure.Commands.Test.Websites
-{
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using Microsoft.WindowsAzure.Commands.Websites;
-    using Microsoft.WindowsAzure.Management.WebSites.Models;
-    using Moq;
-    using System.Collections;
-    using System.IO;
-    using System.Management.Automation;
+﻿using System.Collections;
+using System.IO;
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+using Moq;
 
-    [TestClass]
+namespace Microsoft.WindowsAzure.Commands.Test.Websites
+{
+    
     public class PublishAzureWebsiteProjectTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void PublishFromPackage()
         {
             var websiteName = "test-site";
@@ -38,10 +38,10 @@
             clientMock.Setup(c => c.PublishWebProject(websiteName, slot, package, connectionStrings))
                 .Callback((string n, string s, string p, Hashtable cs) =>
                 {
-                    Assert.AreEqual(websiteName, n);
-                    Assert.AreEqual(slot, s);
-                    Assert.AreEqual(package, p);
-                    Assert.AreEqual(connectionStrings, cs);
+                    Assert.Equal(websiteName, n);
+                    Assert.Equal(slot, s);
+                    Assert.Equal(package, p);
+                    Assert.Equal(connectionStrings, cs);
                     published = true;
                 });
 
@@ -59,10 +59,10 @@
             command.ExecuteCmdlet();
 
             powerShellMock.Verify(f => f.WriteVerbose(string.Format("[Complete] Publishing package {0}", package)), Times.Once());
-            Assert.IsTrue(published);
+            Assert.True(published);
         }
 
-        [TestMethod]
+        [Fact]
         public void PublishFromProjectFile()
         {
             var websiteName = "test-site";
@@ -95,10 +95,10 @@
             clientMock.Setup(c => c.PublishWebProject(websiteName, slot, package, connectionStrings))
                 .Callback((string n, string s, string p, Hashtable cs) =>
                 {
-                    Assert.AreEqual(websiteName, n);
-                    Assert.AreEqual(slot, s);
-                    Assert.AreEqual(package, p);
-                    Assert.AreEqual(connectionStrings, cs);
+                    Assert.Equal(websiteName, n);
+                    Assert.Equal(slot, s);
+                    Assert.Equal(package, p);
+                    Assert.Equal(connectionStrings, cs);
                     published = true;
                 });
 
@@ -117,7 +117,7 @@
             command.ExecuteCmdlet();
 
             powerShellMock.Verify(f => f.WriteVerbose(string.Format("[Complete] Publishing package {0}", package)), Times.Once());
-            Assert.IsTrue(published);
+            Assert.True(published);
         }
     }
 }

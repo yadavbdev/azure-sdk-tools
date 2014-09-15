@@ -20,13 +20,13 @@ Tests any cloud based cmdlet with invalid credentials and expect it'll throw an 
 #>
 function Test-WithInvalidCredentials
 {
-	param([ScriptBlock] $cloudCmdlet)
-	
-	# Setup
-	Remove-AllSubscriptions
+    param([ScriptBlock] $cloudCmdlet)
+    
+    # Setup
+    Remove-AllSubscriptions
 
-	# Test
-	Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current <subscriptionName> to set the current subscription."
+    # Test
+    Assert-Throws $cloudCmdlet "No current subscription has been designated. Use Select-AzureSubscription -Current <subscriptionName> to set the current subscription."
 }
 
 ########################################################################### Publish-AzureServiceProject Scenario Tests ###################################################################
@@ -37,7 +37,7 @@ Tests Publishing a Cache Service.
 #>
 function Test-PublishCacheService
 {
-	PublishAndUpdate-CloudService 1 {New-CacheCloudServiceProject $args[0]} {Verify-CacheApp $args[0].Url.ToString()}
+    PublishAndUpdate-CloudService 1 {New-CacheCloudServiceProject $args[0]} {Verify-CacheApp $args[0].Url.ToString()}
 }
 
 <#
@@ -46,7 +46,7 @@ Tests Publishing and updating a Cache Service.
 #>
 function Test-UpdateCacheService
 {
-	PublishAndUpdate-CloudService 1 {New-CacheCloudServiceProject $args[0]} {Verify-CacheApp $args[0].Url.ToString()} {Test-RemoteDesktop}
+    PublishAndUpdate-CloudService 1 {New-CacheCloudServiceProject $args[0]} {Verify-CacheApp $args[0].Url.ToString()} {Test-RemoteDesktop}
 }
 
 <#
@@ -55,21 +55,21 @@ Tests Publish-AzureServiceProject with using ServiceSettings.Location
 #>
 function Test-PublishUsesSettingsLocation
 {
-	# Setup
-	$name = Get-CloudServiceName
-	$locations = Get-AzureLocation
-	$location = $locations[1].Name
-	New-AzureServiceProject $name
-	Add-AzureNodeWebRole
-	Set-AzureServiceProject -Location $location
+    # Setup
+    $name = Get-CloudServiceName
+    $locations = Get-AzureLocation
+    $location = $locations[1].Name
+    New-AzureServiceProject $name
+    Add-AzureNodeWebRole
+    Set-AzureServiceProject -Location $location
 
-	# Test
-	Publish-AzureServiceProject
+    # Test
+    Publish-AzureServiceProject
 
-	# Assert
-	$service = Get-AzureService $name
-	$actual = $service.Location
-	Assert-AreEqual $location $actual
+    # Assert
+    $service = Get-AzureService $name
+    $actual = $service.Location
+    Assert-AreEqual $location $actual
 }
 
 ########################################################################### Remove-AzureService Scenario Tests ###########################################################################
@@ -80,8 +80,8 @@ Tests Remove-AzureService with non-existing service.
 #>
 function Test-RemoveAzureServiceWithNonExistingService
 {
-	# Test
-	Assert-Throws { Remove-AzureService "DoesNotExist" -Force } "The specified cloud service `"DoesNotExist`" does not exist."
+    # Test
+    Assert-Throws { Remove-AzureService "DoesNotExist" -Force } "The specified cloud service `"DoesNotExist`" does not exist."
 }
 
 <#
@@ -90,7 +90,7 @@ Tests Remove-AzureService with an existing service that does not have any deploy
 #>
 function Test-RemoveAzureServiceWithCloudService
 {
-	<# To Do: implement when we have unsigned version from Management.ServiceManagement assembly #>
+    <# To Do: implement when we have unsigned version from Management.ServiceManagement assembly #>
 }
 
 <#
@@ -99,15 +99,15 @@ Tests Remove-AzureService with an existing service that has production deploymen
 #>
 function Test-RemoveAzureServiceWithProductionDeployment
 {
-	# Setup
-	New-CloudService 1
-	$name = $global:createdCloudServices[0]
+    # Setup
+    New-CloudService 1
+    $name = $global:createdCloudServices[0]
 
-	# Test
-	$removed = Remove-AzureService $name -Force -PassThru
+    # Test
+    $removed = Remove-AzureService $name -Force -PassThru
 
-	# Assert
-	Assert-True { $removed }
+    # Assert
+    Assert-True { $removed }
 }
 
 <#
@@ -116,7 +116,7 @@ Tests Remove-AzureService with an existing service that has staging deployment o
 #>
 function Test-RemoveAzureServiceWithStagingDeployment
 {
-	<# To Do: implement when we have unsigned version from Management.ServiceManagement assembly #>
+    <# To Do: implement when we have unsigned version from Management.ServiceManagement assembly #>
 }
 
 <#
@@ -125,7 +125,7 @@ Tests Remove-AzureService with an existing service that has production and stagi
 #>
 function Test-RemoveAzureServiceWithFullCloudService
 {
-	<# To Do: implement when we have unsigned version from Management.ServiceManagement assembly #>
+    <# To Do: implement when we have unsigned version from Management.ServiceManagement assembly #>
 }
 
 <#
@@ -134,16 +134,16 @@ Tests Remove-AzureService with WhatIf
 #>
 function Test-RemoveAzureServiceWhatIf
 {
-	# Setup
-	New-CloudService 1
-	$name = $global:createdCloudServices[0]
+    # Setup
+    New-CloudService 1
+    $name = $global:createdCloudServices[0]
 
-	# Test
-	Remove-AzureService $name -Force -WhatIf
-	$removed = Remove-AzureService $name -Force -PassThru
+    # Test
+    Remove-AzureService $name -Force -WhatIf
+    $removed = Remove-AzureService $name -Force -PassThru
 
-	# Assert
-	Assert-True { $removed }
+    # Assert
+    Assert-True { $removed }
 }
 
 <#
@@ -152,11 +152,11 @@ Tests Remove-AzureService with WhatIf by passing invalid cloud service name and 
 #>
 function Test-RemoveAzureServiceWhatIfWithInvalidName
 {
-	# Test
-	Remove-AzureService "InvalidName" -Force -WhatIf
+    # Test
+    Remove-AzureService "InvalidName" -Force -WhatIf
 
-	# Assert
-	Assert-True { $true }
+    # Assert
+    Assert-True { $true }
 }
 
 <#
@@ -165,15 +165,15 @@ Tests Remove-AzureService with service piped from Get-AzureService cmdlet
 #>
 function Test-RemoveAzureServicePipedFromGetAzureService
 {
-	# Setup
-	$name = Get-CloudServiceName
-	New-AzureService $name -Location $(Get-DefaultLocation)
+    # Setup
+    $name = Get-CloudServiceName
+    New-AzureService $name -Location $(Get-DefaultLocation)
 
-	# Test
-	$removed = Get-AzureService $name | Remove-AzureService -Force -PassThru
+    # Test
+    $removed = Get-AzureService $name | Remove-AzureService -Force -PassThru
 
-	# Assert
-	Assert-True { $removed }
+    # Assert
+    Assert-True { $removed }
 }
 
 ########################################################################### Start-AzureService Scenario Tests ###########################################################################
@@ -184,8 +184,8 @@ Tests Start-AzureService with non-existing service.
 #>
 function Test-StartAzureServiceWithNonExistingService
 {
-	# Test
-	Assert-Throws { Start-AzureService "DoesNotExist" } "The specified cloud service `"DoesNotExist`" does not exist."
+    # Test
+    Assert-Throws { Start-AzureService "DoesNotExist" } "The specified cloud service `"DoesNotExist`" does not exist."
 }
 
 <#
@@ -194,13 +194,13 @@ Tests Start-AzureService with an existing service that does not have any deploym
 #>
 function Test-StartAzureServiceWithEmptyDeployment
 {
-	# Setup
-	$name = Get-CloudServiceName
-	$msg = [string]::Format("Deployment for service {0} with Staging slot doesn't exist", $name)
-	New-AzureService $name -Location $(Get-DefaultLocation)
+    # Setup
+    $name = Get-CloudServiceName
+    $msg = [string]::Format("Deployment for service {0} with Staging slot doesn't exist", $name)
+    New-AzureService $name -Location $(Get-DefaultLocation)
 
-	# Test
-	Assert-Throws { Start-AzureService $name -Slot Staging } $msg
+    # Test
+    Assert-Throws { Start-AzureService $name -Slot Staging } $msg
 }
 
 <#
@@ -209,17 +209,17 @@ Tests Start-AzureService with an existing service that has production deployment
 #>
 function Test-StartAzureServiceWithProductionDeployment
 {
-	# Setup
-	New-CloudService 1
-	$name = $global:createdCloudServices[0]
-	Stop-AzureService $name
-	Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
+    # Setup
+    New-CloudService 1
+    $name = $global:createdCloudServices[0]
+    Stop-AzureService $name
+    Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
 
-	# Test
-	$started = Get-AzureService $name | Start-AzureService -PassThru
+    # Test
+    $started = Get-AzureService $name | Start-AzureService -PassThru
 
-	# Assert
-	Assert-True { $started }
+    # Assert
+    Assert-True { $started }
 }
 
 <#
@@ -228,17 +228,17 @@ Tests Start-AzureService with an existing service that has staging deployment on
 #>
 function Test-StartAzureServiceWithStagingDeployment
 {
-	# Setup
-	New-CloudService 1 $null Staging
-	$name = $global:createdCloudServices[0]
-	Stop-AzureService $name -Slot Staging
-	Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
+    # Setup
+    New-CloudService 1 $null Staging
+    $name = $global:createdCloudServices[0]
+    Stop-AzureService $name -Slot Staging
+    Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
 
-	# Test
-	$started = Start-AzureService $name -Slot Staging -PassThru
+    # Test
+    $started = Start-AzureService $name -Slot Staging -PassThru
 
-	# Assert
-	Assert-True { $started }
+    # Assert
+    Assert-True { $started }
 }
 
 <#
@@ -247,16 +247,16 @@ Tests Start-AzureService works without passing name in cloud service project.
 #>
 function Test-StartAzureServiceWithoutName
 {
-	# Setup
-	New-CloudService 1
-	Stop-AzureService
-	Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
+    # Setup
+    New-CloudService 1
+    Stop-AzureService
+    Wait-Seconds 30 # Wait for a bit, sometimes the deployment status is stopped but still stopping
 
-	# Test
-	$started = Start-AzureService -PassThru
+    # Test
+    $started = Start-AzureService -PassThru
 
-	# Assert
-	Assert-True { $started }
+    # Assert
+    Assert-True { $started }
 }
 
 ########################################################################### Test-AzureName Scenario Tests ###########################################################################
@@ -267,11 +267,11 @@ Tests Test-AzureName with not existing hosted service and expects $false.
 #>
 function Test-AzureNameWithNotExistingHostedService
 {
-	# Test
-	$actual = Test-AzureName -Service "onesdknotexisting"
+    # Test
+    $actual = Test-AzureName -Service "onesdknotexisting"
 
-	# Assert
-	Assert-False { $actual }
+    # Assert
+    Assert-False { $actual }
 }
 
 <#
@@ -280,15 +280,15 @@ Tests Test-AzureName with existing hosted service and expects $true.
 #>
 function Test-AzureNameWithExistingHostedService
 {
-	# Setup
-	$name = $(Get-CloudServiceName)
-	New-AzureService $name -Location $(Get-DefaultLocation)
+    # Setup
+    $name = $(Get-CloudServiceName)
+    New-AzureService $name -Location $(Get-DefaultLocation)
 
-	# Test
-	$actual = Test-AzureName -Service $name
+    # Test
+    $actual = Test-AzureName -Service $name
 
-	# Assert
-	Assert-True { $actual }
+    # Assert
+    Assert-True { $actual }
 }
 
 <#
@@ -297,11 +297,11 @@ Tests Test-AzureName with invalid hosted service name and expects $true
 #>
 function Test-AzureNameWithInvalidHostedService
 {
-	# Test
-	$actual = Test-AzureName -Service "Invalid Name"
+    # Test
+    $actual = Test-AzureName -Service "Invalid Name"
 
-	# Assert
-	Assert-True { $actual }
+    # Assert
+    Assert-True { $actual }
 }
 
 <#
@@ -310,11 +310,11 @@ Tests Test-AzureName with not existing Storage service and expects $false.
 #>
 function Test-AzureNameWithNotExistingStorageService
 {
-	# Test
-	$actual = Test-AzureName -Storage "onesdknotexisting"
+    # Test
+    $actual = Test-AzureName -Storage "onesdknotexisting"
 
-	# Assert
-	Assert-False { $actual }
+    # Assert
+    Assert-False { $actual }
 }
 
 <#
@@ -323,18 +323,18 @@ Tests Test-AzureName with existing Storage service and expects $true.
 #>
 function Test-AzureNameWithExistingStorageService
 {
-	# Setup
-	$name = $(Get-CloudServiceName)
-	New-AzureStorageAccount $name -Location $(Get-DefaultLocation)
+    # Setup
+    $name = $(Get-CloudServiceName)
+    New-AzureStorageAccount $name -Location $(Get-DefaultLocation)
 
-	# Test
-	$actual = Test-AzureName -Storage $name
+    # Test
+    $actual = Test-AzureName -Storage $name
 
-	# Assert
-	Assert-True { $actual }
+    # Assert
+    Assert-True { $actual }
 
-	# Cleanup
-	Initialize-CloudServiceTest
+    # Cleanup
+    Initialize-CloudServiceTest
 }
 
 <#
@@ -343,8 +343,8 @@ Tests Test-AzureName with invalid Storage service name and expects $false
 #>
 function Test-AzureNameWithInvalidStorageService
 {
-	# Test
-	Assert-Throws { Test-AzureName -Storage "Invalid Name" }
+    # Test
+    Assert-Throws { Test-AzureName -Storage "Invalid Name" }
 }
 
 <#
@@ -353,11 +353,11 @@ Tests Test-AzureName with not existing service bus namespace and expects $false.
 #>
 function Test-AzureNameWithNotExistingServiceBusNamespace
 {
-	# Test
-	$actual = Test-AzureName -ServiceBusNamespace "onesdknotexisting"
+    # Test
+    $actual = Test-AzureName -ServiceBusNamespace "onesdknotexisting"
 
-	# Assert
-	Assert-False { $actual }
+    # Assert
+    Assert-False { $actual }
 }
 
 <#
@@ -366,15 +366,15 @@ Tests Test-AzureName with existing service bus namespace and expects $true.
 #>
 function Test-AzureNameWithExistingServiceBusNamespace
 {
-	# Setup
-	$name = $(Get-NamespaceName)
-	New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
+    # Setup
+    $name = $(Get-NamespaceName)
+    New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation)
 
-	# Test
-	$actual = Test-AzureName -ServiceBusNamespace $name
+    # Test
+    $actual = Test-AzureName -ServiceBusNamespace $name
 
-	# Assert
-	Assert-True { $actual }
+    # Assert
+    Assert-True { $actual }
 }
 
 <#
@@ -383,8 +383,8 @@ Tests Test-AzureName with invalid service bus namespace name and expects $false
 #>
 function Test-AzureNameWithInvalidServiceBusNamespace
 {
-	# Test
-	Assert-Throws { Test-AzureName -ServiceBusNamespace "Invalid Name" }
+    # Test
+    Assert-Throws { Test-AzureName -ServiceBusNamespace "Invalid Name" }
 }
 
 ########################################################################### Stop-AzureService Scenario Tests ###########################################################################
@@ -395,8 +395,8 @@ Tests Stop-AzureService with non-existing service.
 #>
 function Test-StopAzureServiceWithNonExistingService
 {
-	# Test
-	Assert-Throws { Stop-AzureService "DoesNotExist" } "The specified cloud service `"DoesNotExist`" does not exist."
+    # Test
+    Assert-Throws { Stop-AzureService "DoesNotExist" } "The specified cloud service `"DoesNotExist`" does not exist."
 }
 
 <#
@@ -405,13 +405,13 @@ Tests Stop-AzureService with an existing service that does not have any deployme
 #>
 function Test-StopAzureServiceWithEmptyDeployment
 {
-	# Setup
-	$name = Get-CloudServiceName
-	$msg = [string]::Format("Deployment for service {0} with Staging slot doesn't exist", $name)
-	New-AzureService $name -Location $(Get-DefaultLocation)
+    # Setup
+    $name = Get-CloudServiceName
+    $msg = [string]::Format("Deployment for service {0} with Staging slot doesn't exist", $name)
+    New-AzureService $name -Location $(Get-DefaultLocation)
 
-	# Test
-	Assert-Throws { Stop-AzureService $name -Slot Staging } $msg
+    # Test
+    Assert-Throws { Stop-AzureService $name -Slot Staging } $msg
 }
 
 <#
@@ -420,15 +420,15 @@ Tests Stop-AzureService with an existing service that has production deployment 
 #>
 function Test-StopAzureServiceWithProductionDeployment
 {
-	# Setup
-	New-CloudService 1
-	$name = $global:createdCloudServices[0]
+    # Setup
+    New-CloudService 1
+    $name = $global:createdCloudServices[0]
 
-	# Test
-	$Stopped = Get-AzureService $name | Stop-AzureService -PassThru
+    # Test
+    $Stopped = Get-AzureService $name | Stop-AzureService -PassThru
 
-	# Assert
-	Assert-True { $Stopped }
+    # Assert
+    Assert-True { $Stopped }
 }
 
 <#
@@ -437,15 +437,15 @@ Tests Stop-AzureService with an existing service that has staging deployment onl
 #>
 function Test-StopAzureServiceWithStagingDeployment
 {
-	# Setup
-	New-CloudService 1 $null "Staging"
-	$name = $global:createdCloudServices[0]
+    # Setup
+    New-CloudService 1 $null "Staging"
+    $name = $global:createdCloudServices[0]
 
-	# Test
-	$Stopped = Stop-AzureService $name -PassThru -Slot "Staging"
+    # Test
+    $Stopped = Stop-AzureService $name -PassThru -Slot "Staging"
 
-	# Assert
-	Assert-True { $Stopped }
+    # Assert
+    Assert-True { $Stopped }
 }
 
 <#
@@ -454,14 +454,14 @@ Tests Stop-AzureService works without passing name in cloud service project.
 #>
 function Test-StopAzureServiceWithoutName
 {
-	# Setup
-	New-CloudService 1
+    # Setup
+    New-CloudService 1
 
-	# Test
-	$stopped = Stop-AzureService -PassThru
+    # Test
+    $stopped = Stop-AzureService -PassThru
 
-	# Assert
-	Assert-True { $stopped }
+    # Assert
+    Assert-True { $stopped }
 }
 
 ########################################################################### Start-AzureEmulator Scenario Tests ###################################################################
@@ -514,12 +514,12 @@ Executes New-AzureService using the ReverseDnsFqdn parameter.
 function Test-NewAzureServiceWithReverseDnsFqdn
 {
     # Setup
-	$name = Get-CloudServiceName
-	$reverseFqdn = "$name.cloudapp.net."
-	
+    $name = Get-CloudServiceName
+    $reverseFqdn = "$name.cloudapp.net."
+    
     # Test
-	New-AzureService $name -Location $(Get-DefaultLocation) -ReverseDnsFqdn $reverseFqdn
-	$service = Get-AzureService $name
+    New-AzureService $name -Location $(Get-DefaultLocation) -ReverseDnsFqdn $reverseFqdn
+    $service = Get-AzureService $name
    
     # Assert
     Assert-AreEqual $reverseFqdn $service.ReverseDnsFqdn
@@ -532,19 +532,19 @@ Executes Set-AzureService using the ReverseDnsFqdn parameter.
 function Test-SetAzureServiceWithReverseDnsFqdn
 {
     # Setup
-	$name = Get-CloudServiceName
-	$reverseFqdn = "$name.cloudapp.net."
-	
-	New-AzureService $name -Location $(Get-DefaultLocation)
-	$service = Get-AzureService $name
+    $name = Get-CloudServiceName
+    $reverseFqdn = "$name.cloudapp.net."
+    
+    New-AzureService $name -Location $(Get-DefaultLocation)
+    $service = Get-AzureService $name
    
     Assert-Null $service.ReverseDnsFqdn
-	
-	# Test
-	Set-AzureService $name -ReverseDnsFqdn $reverseFqdn
-	$service = Get-AzureService $name
-	
-	# Assert
+    
+    # Test
+    Set-AzureService $name -ReverseDnsFqdn $reverseFqdn
+    $service = Get-AzureService $name
+    
+    # Assert
     Assert-AreEqual $reverseFqdn $service.ReverseDnsFqdn
 }
 
@@ -555,19 +555,19 @@ Executes Set-AzureService using the ReverseDnsFqdn parameter setting it to empty
 function Test-SetAzureServiceWithEmptyReverseDnsFqdn
 {
     # Setup
-	$name = Get-CloudServiceName
-	$reverseFqdn = "$name.cloudapp.net."
-	
-	New-AzureService $name -Location $(Get-DefaultLocation) -ReverseDnsFqdn $reverseFqdn
-	$service = Get-AzureService $name
+    $name = Get-CloudServiceName
+    $reverseFqdn = "$name.cloudapp.net."
+    
+    New-AzureService $name -Location $(Get-DefaultLocation) -ReverseDnsFqdn $reverseFqdn
+    $service = Get-AzureService $name
    
     Assert-AreEqual $reverseFqdn $service.ReverseDnsFqdn
 
-	# Test
-	Set-AzureService $name -ReverseDnsFqdn ''
-	$service = Get-AzureService $name
-	
-	# Assert
+    # Test
+    Set-AzureService $name -ReverseDnsFqdn ''
+    $service = Get-AzureService $name
+    
+    # Assert
     Assert-AreEqual '' $service.ReverseDnsFqdn
 }
 

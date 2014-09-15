@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.Common;
+    
     /// <summary>
     /// Sets a Microsoft Azure environment.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureEnvironment"), OutputType(typeof(WindowsAzureEnvironment))]
-    public class SetAzureEnvironmentCommand : CmdletBase
+    [Cmdlet(VerbsCommon.Set, "AzureEnvironment"), OutputType(typeof(AzureEnvironment))]
+    public class SetAzureEnvironmentCommand : SubscriptionCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true)]
         public string Name { get; set; }
@@ -54,28 +55,40 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             HelpMessage = "Identifier of the target resource that is the recipient of the requested token.")]
         public string ActiveDirectoryServiceEndpointResourceId { get; set; }
 
+        [Parameter(Position = 9, Mandatory = false, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The AD Graph Endpoint.")]
+        public string GraphEndpoint { get; set; }
+
+        public SetAzureEnvironmentCommand() : base(true) { }
+
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            try
+            var newEnvironment = new AzureEnvironment { Name = Name };
+            if (ProfileClient.Profile.Environments.ContainsKey(Name))
             {
-                var env = WindowsAzureProfile.Instance.Environments[Name];
-                env.PublishSettingsFileUrl = Value(PublishSettingsFileUrl, env.PublishSettingsFileUrl);
-                env.ServiceEndpoint = Value(ServiceEndpoint, env.ServiceEndpoint);
-                env.ResourceManagerEndpoint = Value(ResourceManagerEndpoint, env.ResourceManagerEndpoint);
-                env.ManagementPortalUrl = Value(ManagementPortalUrl, env.ManagementPortalUrl);
-                env.StorageEndpointSuffix = Value(StorageEndpoint, env.StorageEndpointSuffix);
-                env.ActiveDirectoryEndpoint = Value(ActiveDirectoryEndpoint, env.ActiveDirectoryEndpoint);
-                env.ActiveDirectoryServiceEndpointResourceId = Value(ActiveDirectoryServiceEndpointResourceId, env.ActiveDirectoryServiceEndpointResourceId);
-                env.GalleryEndpoint = Value(GalleryEndpoint, env.GalleryEndpoint);
-
-                WindowsAzureProfile.Instance.UpdateEnvironment(env);
-
-                WriteObject(env);
+                newEnvironment = ProfileClient.Profile.Environments[Name];
             }
-            catch (KeyNotFoundException ex)
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.PublishSettingsFileUrl, PublishSettingsFileUrl);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.ServiceManagement, ServiceEndpoint);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.ResourceManager, ResourceManagerEndpoint);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.ManagementPortalUrl, ManagementPortalUrl);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.StorageEndpointSuffix, StorageEndpoint);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.ActiveDirectory, ActiveDirectoryEndpoint);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId, ActiveDirectoryServiceEndpointResourceId);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.Gallery, GalleryEndpoint);
+            SetEndpointIfProvided(newEnvironment, AzureEnvironment.Endpoint.Graph, GraphEndpoint);
+
+            ProfileClient.AddOrSetEnvironment(newEnvironment);
+
+            WriteObject(newEnvironment);
+        }
+
+        private void SetEndpointIfProvided(AzureEnvironment newEnvironment, AzureEnvironment.Endpoint endpoint, string property)
+        {
+            if (!string.IsNullOrEmpty(property))
             {
-                throw new KeyNotFoundException(string.Format(Resources.EnvironmentNotFound, Name), ex);
+                newEnvironment.Endpoints[endpoint] = property;
             }
         }
 

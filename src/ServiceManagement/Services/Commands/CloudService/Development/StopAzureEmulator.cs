@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development
 {
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.CloudService;
-    using Utilities.CloudService.AzureTools;
-    using Utilities.Common;
-    using Utilities.Properties;
-
     /// <summary>
     /// Runs the service in the emulator
     /// </summary>
     [Cmdlet(VerbsLifecycle.Stop, "AzureEmulator"), OutputType(typeof(bool))]
-    public class StopAzureEmulatorCommand : CmdletBase
+    public class StopAzureEmulatorCommand : AzurePSCmdlet
     {
         [Parameter(Mandatory = false)]
         public SwitchParameter PassThru { get; set; }

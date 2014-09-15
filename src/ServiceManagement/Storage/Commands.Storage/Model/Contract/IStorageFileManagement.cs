@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.File;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.File;
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// File management interface
     /// </summary>

@@ -1394,8 +1394,8 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="SubscriptionIdNotFoundMessage" xml:space="preserve">
     <value>The provided subscription name doesn't exist in the imported publish profile. If subscriptions have changed for the hosted service, retrieve an updated profile by using Get-AzurePublishSettingsFile then import the profile using Import-AzurePublishSettingsFile</value>
   </data>
-  <data name="SubscriptionIdNotFoundMessage1" xml:space="preserve">
-    <value>The provided subscription name doesn't exist in the imported publish profile. If subscriptions have changed for the hosted service, retrieve an updated profile by using Get-AzurePublishSettingsFile then import the profile using Import-AzurePublishSettingsFile</value>
+  <data name="SubscriptionNameNotFoundMessage" xml:space="preserve">
+    <value>The subscription name {0} doesn't exist.</value>
   </data>
   <data name="SubscriptionMustNotBeNull" xml:space="preserve">
     <value>Subscription must not be null</value>
@@ -1533,5 +1533,38 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   </data>
   <data name="CredentialOrganizationIdMessage" xml:space="preserve">
     <value>-Credential parameter can only be used with Organization ID credentials. For more information, please refer to http://go.microsoft.com/fwlink/?linkid=331007&amp;clcid=0x409 for more information about the difference between an organizational account and a Microsoft account.</value>
+  </data>
+  <data name="AddAccountNonInteractiveGuestOrFpo" xml:space="preserve">
+    <value>Skipping external tenant {0}, because you are using a guest or a foreign principal object identity. In order to access this tenant, please run Add-AzureAccount without "-Credential".</value>
+  </data>
+  <data name="RemoveEnvironmentConfirmation" xml:space="preserve">
+    <value>Removing an environment will remove all associated subscriptions and accounts. Are you sure you want to remove an environment '{0}'?</value>
+  </data>
+  <data name="RemoveEnvironmentMessage" xml:space="preserve">
+    <value>Removing environment</value>
+  </data>
+  <data name="RemovingDefaultEnvironmentsNotSupported" xml:space="preserve">
+    <value>Removing public environment is not supported.</value>
+  </data>
+  <data name="ChangingDefaultEnvironmentNotSupported" xml:space="preserve">
+    <value>Changing public environment is not supported.</value>
+  </data>
+  <data name="InvalidCredentialType" xml:space="preserve">
+    <value>Credential type invalid, only handles '{0}'</value>
+  </data>
+  <data name="UnknownCredentialType" xml:space="preserve">
+    <value>Illegal credential type</value>
+  </data>
+  <data name="NoSubscriptionAddedMessage" xml:space="preserve">
+    <value>There is no subscription associated with account {0}.</value>
+  </data>
+  <data name="AccountIdDoesntMatchSubscription" xml:space="preserve">
+    <value>Account id doesn't match one in subscription.</value>
+  </data>
+  <data name="EnvironmentNameDoesntMatchSubscription" xml:space="preserve">
+    <value>Environment name doesn't match one in subscription.</value>
+  </data>
+  <data name="ServiceKeyNotFound" xml:space="preserve">
+    <value>Unable to retrieve service key for ServicePrincipal account {0}. Please run the Add-AzureAccount cmdlet to supply the credentials for this service principal.</value>
   </data>
 </root>

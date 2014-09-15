@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Data.Services.Client;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Xml.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common
 {
-    using System;
-    using System.Data.Services.Client;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Xml.Linq;
-
     /// <summary>
     /// Connection-level utilities.
     /// </summary>

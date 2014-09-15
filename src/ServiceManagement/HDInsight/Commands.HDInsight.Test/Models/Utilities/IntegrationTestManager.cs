@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
-    using System;
-    using System.Collections.Generic;
-
     public class IntegrationTestManager
     {
         public IntegrationTestManager()

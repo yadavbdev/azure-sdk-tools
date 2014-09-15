@@ -54,12 +54,3 @@ function Clean-ResourceGroup($rgname)
         Remove-AzureResourceGroup -Name $rgname -Force
     }
 }
-
-<#
-.SYNOPSIS
-Cleans the created tags
-#>
-function Clean-Tags
-{
-    Get-AzureTag | Remove-AzureTag -Force
-}

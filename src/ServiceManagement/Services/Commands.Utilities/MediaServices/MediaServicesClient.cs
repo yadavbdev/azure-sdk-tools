@@ -12,14 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
-using Microsoft.WindowsAzure.Management.MediaServices;
-using Microsoft.WindowsAzure.Management.MediaServices.Models;
-using Microsoft.WindowsAzure.Management.Storage;
-using Microsoft.WindowsAzure.Management.Storage.Models;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
@@ -29,6 +21,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Management.MediaServices;
+using Microsoft.WindowsAzure.Management.MediaServices.Models;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.MediaServices
 {
@@ -61,8 +62,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.MediaServices
         /// </summary>
         /// <param name="subscription">The Microsoft Azure subscription data object</param>
         /// <param name="logger">The logger action</param>
-        public MediaServicesClient(WindowsAzureSubscription subscription, Action<string> logger)
-            : this(logger, subscription.CreateClient<MediaServicesManagementClient>(), subscription.CreateClient<StorageManagementClient>())
+        public MediaServicesClient(AzureSubscription subscription, Action<string> logger)
+            : this(logger, AzureSession.ClientFactory.CreateClient<MediaServicesManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement), AzureSession.ClientFactory.CreateClient<StorageManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement))
         {
         }
 
@@ -75,7 +76,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.MediaServices
         /// <value>
         ///     The subscription.
         /// </value>
-        public WindowsAzureSubscription Subscription { get; set; }
+        public AzureSubscription Subscription { get; set; }
 
         /// <summary>
         ///     Gets or sets the logger
@@ -160,8 +161,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.MediaServices
         /// <typeparam name="T"></typeparam>
         /// <param name="responseMessage">The response message.</param>
         /// <returns></returns>
-        /// <exception cref="Microsoft.WindowsAzure.ServiceManagement.ServiceManagementClientException"></exception>
-        /// <exception cref="ServiceManagementError"></exception>
         private static T ProcessJsonResponse<T>(Task<HttpResponseMessage> responseMessage)
         {
             HttpResponseMessage message = responseMessage.Result;

@@ -13,23 +13,26 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Management.Automation;
+using System.Runtime.InteropServices;
+using System.Security;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Newtonsoft.Json;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using DSC;
-    using Model;
-    using Properties;
-    using Utilities.Common;
-    using System.Collections;
-    using System.Globalization;
-    using System.IO;
-    using Newtonsoft.Json;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
 
     [Cmdlet(VerbsCommon.Set, VirtualMachineDscExtensionCmdletNoun, SupportsShouldProcess = true)]
     [OutputType(typeof(IPersistentVM))]
@@ -230,8 +233,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         private void CreateConfiguration()
         {
             var publicSettings = new DscPublicSettings();
-            
             var privateSettings = new DscPrivateSettings();
+            publicSettings.ProtocolVersion = CurrentProtocolVersion;
 
             if (!string.IsNullOrEmpty(this.ConfigurationArchive))
             {
@@ -239,21 +242,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 // Get a reference to the container in blob storage
                 //
                 var storageAccount = string.IsNullOrEmpty(this.StorageEndpointSuffix)
-                                   ? new CloudStorageAccount(this._storageCredentials, true)
-                                   : new CloudStorageAccount(this._storageCredentials, this.StorageEndpointSuffix, true);
+                                            ? new CloudStorageAccount(this._storageCredentials, true)
+                                            : new CloudStorageAccount(this._storageCredentials,
+                                                                    this.StorageEndpointSuffix, true);
 
                 var blobClient = storageAccount.CreateCloudBlobClient();
 
                 var containerReference = blobClient.GetContainerReference(this.ContainerName);
-            
+
                 //
                 // Get a reference to the configuration blob and create a SAS token to access it
                 //
                 var blobAccessPolicy = new SharedAccessBlobPolicy()
-                {
-                    SharedAccessExpiryTime = DateTime.UtcNow.AddHours(1),
-                    Permissions = SharedAccessBlobPermissions.Read
-                };
+                    {
+                        SharedAccessExpiryTime = DateTime.UtcNow.AddHours(1),
+                        Permissions = SharedAccessBlobPermissions.Read
+                    };
 
                 var configurationBlobName = this.ConfigurationArchive;
 
@@ -268,36 +272,58 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
                 if (this.ConfigurationDataPath != null)
                 {
-                    this.ConfirmAction(true, string.Empty, string.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscUploadToBlobStorageAction, this.ConfigurationDataPath), configurationBlobReference.Uri.AbsoluteUri, ()=>
-                    {
-                        var guid = Guid.NewGuid(); // there may be multiple VMs using the same configuration
+                    this.ConfirmAction(true, string.Empty,
+                                        string.Format(CultureInfo.CurrentUICulture,
+                                                        Resources.AzureVMDscUploadToBlobStorageAction,
+                                                        this.ConfigurationDataPath),
+                                        configurationBlobReference.Uri.AbsoluteUri, () =>
+                                            {
+                                                var guid = Guid.NewGuid();
+                                                // there may be multiple VMs using the same configuration
 
-                        var configurationDataBlobName = string.Format(CultureInfo.InvariantCulture, "{0}-{1}.psd1", this.ConfigurationName, guid);
+                                                var configurationDataBlobName =
+                                                    string.Format(CultureInfo.InvariantCulture, "{0}-{1}.psd1",
+                                                                    this.ConfigurationName, guid);
 
-                        var configurationDataBlobReference = containerReference.GetBlockBlobReference(configurationDataBlobName);
+                                                var configurationDataBlobReference =
+                                                    containerReference.GetBlockBlobReference(
+                                                        configurationDataBlobName);
 
-                        if (!this.Force && configurationDataBlobReference.Exists())
-                        {
-                            this.ThrowTerminatingError(
-                                new ErrorRecord(
-                                    new UnauthorizedAccessException(string.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscStorageBlobAlreadyExists, configurationDataBlobName)),
-                                    string.Empty,
-                                    ErrorCategory.PermissionDenied,
-                                    null));
-                        }
+                                                if (!this.Force && configurationDataBlobReference.Exists())
+                                                {
+                                                    this.ThrowTerminatingError(
+                                                        new ErrorRecord(
+                                                            new UnauthorizedAccessException(
+                                                                string.Format(CultureInfo.CurrentUICulture,
+                                                                                Resources.AzureVMDscStorageBlobAlreadyExists,
+                                                                                configurationDataBlobName)),
+                                                            string.Empty,
+                                                            ErrorCategory.PermissionDenied,
+                                                            null));
+                                                }
 
-                        configurationDataBlobReference.UploadFromFile(this.ConfigurationDataPath, FileMode.Open);
+                                                configurationDataBlobReference.UploadFromFile(
+                                                    this.ConfigurationDataPath, FileMode.Open);
 
-                        var configurationDataBlobSasToken = configurationDataBlobReference.GetSharedAccessSignature(blobAccessPolicy);
+                                                var configurationDataBlobSasToken =
+                                                    configurationDataBlobReference.GetSharedAccessSignature(
+                                                        blobAccessPolicy);
 
-                        configurationDataBlobUri = configurationDataBlobReference.StorageUri.PrimaryUri.AbsoluteUri + configurationDataBlobSasToken;
-                    });
+                                                configurationDataBlobUri =
+                                                    configurationDataBlobReference.StorageUri.PrimaryUri.AbsoluteUri +
+                                                    configurationDataBlobSasToken;
+                                            });
                 }
 
-                publicSettings.SasToken              = configurationBlobSasToken;
-                publicSettings.ModulesUrl            = configurationBlobReference.StorageUri.PrimaryUri.AbsoluteUri;
-                publicSettings.ConfigurationFunction = string.Format(CultureInfo.InvariantCulture, "{0}\\{1}", Path.GetFileNameWithoutExtension(this.ConfigurationArchive), this.ConfigurationName);
-                publicSettings.Properties            = this.ConfigurationArgument;
+                publicSettings.SasToken = configurationBlobSasToken;
+                publicSettings.ModulesUrl = configurationBlobReference.StorageUri.PrimaryUri.AbsoluteUri;
+                publicSettings.ConfigurationFunction = string.Format(CultureInfo.InvariantCulture, "{0}\\{1}",
+                                                                        Path.GetFileNameWithoutExtension(
+                                                                            this.ConfigurationArchive),
+                                                                        this.ConfigurationName);
+                Tuple<DscPublicSettings.Property[], Hashtable> settings = ConvertSettings(this.ConfigurationArgument);
+                publicSettings.Properties = settings.Item1;
+                privateSettings.Items = settings.Item2;
 
                 privateSettings.DataBlobUri = configurationDataBlobUri;
             }
@@ -305,8 +331,113 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             //
             // Define the public and private property bags that will be passed to the extension.
             //
-            this.PublicConfiguration = JsonUtilities.TryFormatJson(JsonConvert.SerializeObject(publicSettings));
-            this.PrivateConfiguration = JsonUtilities.TryFormatJson(JsonConvert.SerializeObject(privateSettings));
+            this.PublicConfiguration = JsonConvert.SerializeObject(publicSettings);
+            //
+            // PrivateConfuguration contains sensitive data in a plain text.
+            //
+            this.PrivateConfiguration = JsonConvert.SerializeObject(privateSettings);
+        }
+
+        /// <summary>
+        /// Convert hashtable of public settings into two parts:
+        /// 1) Array of public settings in format:
+        /// [
+        ///             {
+        ///                 "Name":  "String Parameter",
+        ///                 "Value":  "String Value",
+        ///                 "TypeName":  "System.String"
+        ///             }
+        /// ]
+        /// 2) Private settings hashtable. We extract all sensitive information (like password from PSCredential)
+        ///    and store it in private settings. Public settings will reference them in form:
+        ///             {
+        ///                 "Name":  "AdminCredential",
+        ///                 "Value":  
+        ///                 {
+        ///                     "Password" : "PrivateSettings:28AC4D36-A99B-41DE-8421-2BCC1C7C1A3B"
+        ///                     "UserName" : "DOMAIN\LOGIN"
+        ///                 },
+        ///                 "TypeName":  "System.Management.Automation.PSCredential"
+        ///             }
+        /// and private hashtable will look like that:
+        /// {
+        ///     "28AC4D36-A99B-41DE-8421-2BCC1C7C1A3B" : "password"
+        /// }
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns>tuple of array (public settings) and hashtable (private settings)</returns>
+        private Tuple<DscPublicSettings.Property[], Hashtable> ConvertSettings(Hashtable arguments)
+        {
+            var publicSettings = new List<DscPublicSettings.Property>();
+            var privateSettings = new Hashtable();
+            if (arguments != null)
+            {
+                foreach (DictionaryEntry argument in arguments)
+                {
+                    object entryValue = argument.Value;
+                    string entryType = argument.Value == null ? "null" : argument.Value.GetType().ToString();
+                    string entryName = argument.Key.ToString();
+                    // Special case for PSCredential
+                    PSCredential credential = argument.Value as PSCredential;
+                    if (credential == null)
+                    {
+                        PSObject psObject = argument.Value as PSObject;
+                        if (psObject != null)
+                        {
+                            credential = psObject.BaseObject as PSCredential;
+                        }
+                    }
+                    if (credential != null)
+                    {
+                        // plainTextPassword is a string object with sensitive information  in plain text. 
+                        // We pass it to 3rd party serializer which may create copies of the string.
+                        string plainTextPassword = ConvertToUnsecureString(credential.Password);
+                        string userName = credential.UserName;
+                        string passwordRef = Guid.NewGuid().ToString();
+                        privateSettings.Add(passwordRef, plainTextPassword);
+                        var newValue = new Hashtable();
+                        newValue["UserName"] = String.Format(CultureInfo.InvariantCulture, userName);
+                        newValue["Password"] = String.Format(CultureInfo.InvariantCulture, "PrivateSettingsRef:{0}",
+                            passwordRef);
+                        entryValue = newValue;
+                        entryType = typeof (PSCredential).ToString();
+                    }
+
+                    var entry = new DscPublicSettings.Property()
+                    {
+                        Name = entryName,
+                        TypeName = entryType,
+                        Value = entryValue,
+                    };
+                    publicSettings.Add(entry);
+                }
+            }
+            return new Tuple<DscPublicSettings.Property[], Hashtable>(publicSettings.ToArray(), privateSettings);
+        }
+
+        /// <summary>
+        /// Converte SecureString to String.
+        /// </summary>
+        /// <remarks>
+        /// This method creates a managed object with sensitive information and undetermined lifecycle.
+        /// </remarks>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        private static string ConvertToUnsecureString(SecureString source)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            IntPtr unmanagedString = IntPtr.Zero;
+            try
+            {
+                unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(source);
+                return Marshal.PtrToStringUni(unmanagedString);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
+            }
         }
     }
 }

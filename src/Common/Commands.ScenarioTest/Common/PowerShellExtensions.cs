@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-
     public static class PowerShellExtensions
     {
         public static string PowerShellEnvironmentFormat = "Set-Item env:{0} \"{1}\"";
@@ -34,7 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// <param name="powershell">The PowerShell instance</param>
         /// <param name="name">The variable name</param>
         /// <returns>The variable object</returns>
-        public static T GetPowerShellVariable<T>(this PowerShell powershell, string name)
+        public static T GetPowerShellVariable<T>(this System.Management.Automation.PowerShell powershell, string name)
         {
             object obj = powershell.Runspace.SessionStateProxy.GetVariable(name);
 
@@ -55,7 +55,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// <param name="powershell">The PowerShell instance</param>
         /// <param name="name">The variable name</param>
         /// <returns>The collection in list</returns>
-        public static List<T> GetPowerShellCollection<T>(this PowerShell powershell, string name)
+        public static List<T> GetPowerShellCollection<T>(this System.Management.Automation.PowerShell powershell, string name)
         {
             List<T> result = new List<T>();
 
@@ -86,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// <param name="powershell">The PowerShell instance</param>
         /// <param name="name">The variable name</param>
         /// <param name="value">The variable value</param>
-        public static void SetVariable(this PowerShell powershell, string name, object value)
+        public static void SetVariable(this System.Management.Automation.PowerShell powershell, string name, object value)
         {
             powershell.Runspace.SessionStateProxy.SetVariable(name, value);
         }
@@ -96,7 +96,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// PowerShell error record if available
         /// </summary>
         /// <param name="runtimeException">The exception to parse</param>
-        public static void LogPowerShellException(this PowerShell powershell, Exception runtimeException, TestContext context)
+        public static void LogPowerShellException(this System.Management.Automation.PowerShell powershell, Exception runtimeException, TestContext context)
         {
             context.WriteLine("Caught Exception: {0}\n", runtimeException);
             context.WriteLine("Message: {0}\n", runtimeException.Message);
@@ -117,7 +117,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// Log the PowerShell Streams from a PowerShell invocation
         /// </summary>
         /// <param name="powershell">The PowerShell instance to log</param>
-        public static void LogPowerShellResults(this PowerShell powershell, TestContext context)
+        public static void LogPowerShellResults(this System.Management.Automation.PowerShell powershell, TestContext context)
         {
             powershell.LogPowerShellResults(null, context);
         }
@@ -126,7 +126,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// Log the PowerShell Streams from a PowerShell invocation
         /// </summary>
         /// <param name="powershell">The PowerShell instance to log</param>
-        public static void LogPowerShellResults(this PowerShell powershell, Collection<PSObject> output, TestContext context)
+        public static void LogPowerShellResults(this System.Management.Automation.PowerShell powershell, Collection<PSObject> output, TestContext context)
         {
             if (output != null)
             {
@@ -157,7 +157,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// <param name="powerShell">The powershell instance to alter</param>
         /// <param name="variableKey">The variable name</param>
         /// <param name="variableValue">The variable value</param>
-        public static void AddEnvironmentVariable(this PowerShell powerShell, string variableKey, string variableValue)
+        public static void AddEnvironmentVariable(this System.Management.Automation.PowerShell powerShell, string variableKey, string variableValue)
         {
             powerShell.AddScript(string.Format(PowerShellEnvironmentFormat, variableKey, variableValue));
         }
@@ -168,7 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// <param name="powerShell">The powershell instance to alter</param>
         /// <param name="variableKey">The variable name</param>
         /// <param name="variableValue">The variable value</param>
-        public static void AddPowerShellVariable(this PowerShell powerShell, string variableKey, string variableValue)
+        public static void AddPowerShellVariable(this System.Management.Automation.PowerShell powerShell, string variableKey, string variableValue)
         {
             powerShell.AddScript(string.Format(PowerShellVariableFormat, variableKey, variableValue));
         }
@@ -177,7 +177,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// </summary>
         /// <param name="powerShell">The PowerShell instance to alter</param>
         /// <param name="credentialPath">The fully qualified path top the credentials</param>
-        public static void ImportCredentials(this PowerShell powerShell, string credentialPath)
+        public static void ImportCredentials(this System.Management.Automation.PowerShell powerShell, string credentialPath)
         {
             powerShell.AddScript(string.Format(CredentialImportFormat, credentialPath));
         }
@@ -186,7 +186,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         /// Remove all credentials for the current user
         /// </summary>
         /// <param name="powerShell">The PowerShell instance to use for removing credentials</param>
-        public static void RemoveCredentials(this PowerShell powerShell)
+        public static void RemoveCredentials(this System.Management.Automation.PowerShell powerShell)
         {
             powerShell.AddScript("try {$sub = Get-AzureSubscription | Remove-AzureSubscription -Force} catch {}");
         }

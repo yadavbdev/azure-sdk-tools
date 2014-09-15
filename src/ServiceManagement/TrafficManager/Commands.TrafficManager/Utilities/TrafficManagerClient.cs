@@ -12,23 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
+using Microsoft.WindowsAzure.Management.TrafficManager;
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 {
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.TrafficManager;
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public class TrafficManagerClient : ITrafficManagerClient
     {
         public TrafficManagerManagementClient Client { get; internal set; }
 
-        public TrafficManagerClient(WindowsAzureSubscription subscription)
+        public TrafficManagerClient(AzureSubscription subscription)
         {
-            this.Client = subscription.CreateClient<TrafficManagerManagementClient>();
+            this.Client = AzureSession.ClientFactory.CreateClient<TrafficManagerManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public TrafficManagerClient(TrafficManagerManagementClient client)
@@ -76,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 
         public ProfileWithDefinition GetTrafficManagerProfileWithDefinition(string profileName)
         {
-            Profile profile = this.GetProfile(profileName).Profile;
+            Management.TrafficManager.Models.Profile profile = this.GetProfile(profileName).Profile;
             Definition definition = null;
             try
             {
@@ -129,7 +130,8 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
                         Location = endpoint.Location,
                         Status = endpoint.Status,
                         Type = endpoint.Type,
-                        Weight = endpoint.Weight
+                        Weight = endpoint.Weight,
+                        MinChildEndpoints = endpoint.MinChildEndpoints
                     };
 
                 policyParameter.Endpoints.Add(endpointParam);
@@ -156,7 +158,8 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
                         Location = endpointReponse.Location,
                         Type = endpointReponse.Type,
                         Status = endpointReponse.Status,
-                        Weight = endpointReponse.Weight
+                        Weight = endpointReponse.Weight,
+                        MinChildEndpoints = endpointReponse.MinChildEndpoints
                     };
 
                 endpoints.Add(endpoint);
@@ -210,7 +213,7 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 
         public IEnumerable<SimpleProfile> ListProfiles()
         {
-            IList<Profile> respProfiles = this.Client.Profiles.List().Profiles;
+            IList<Management.TrafficManager.Models.Profile> respProfiles = this.Client.Profiles.List().Profiles;
 
             IEnumerable<SimpleProfile> resultProfiles =
                 respProfiles.Select(respProfile => new SimpleProfile(respProfile));

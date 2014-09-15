@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Globalization;
-
     public static class IdnHelper
     {
         private const string idnHostNamePrefix = "xn--";
@@ -101,16 +101,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
 
             return name;
-        }
-
-        public static bool IsPunyCodeName(string name)
-        {
-            if (!string.IsNullOrWhiteSpace(name) && name.Contains(idnHostNamePrefix))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

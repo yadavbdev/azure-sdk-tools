@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.Management.MediaServices.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities
 {
-    using Newtonsoft.Json;
-    using System;
-    using System.Runtime.Serialization;
-
     [DataContract(Namespace = MediaServicesUriElements.ServiceNamespace, Name = "ServiceResource")]
     [JsonObject(Title = "ServiceResource")]
     public class MediaServiceAccount

@@ -13,13 +13,12 @@
 // ----------------------------------------------------------------------------------
 
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
+using System.Management.Automation;
 using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Moq;
-using System.Collections.Generic;
-using System.Management.Automation;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test

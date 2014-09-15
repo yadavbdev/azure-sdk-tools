@@ -12,10 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server
 {
-    using System;
-    using DatabaseCopyModel = Microsoft.WindowsAzure.Commands.SqlDatabase.Model.DatabaseCopy;
+    using DatabaseCopyModel = Model.DatabaseCopy;
 
     /// <summary>
     /// Common interface for all server based operations.

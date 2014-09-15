@@ -12,11 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache.Models;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.ManagedCache.Test
 {
-    using Microsoft.Azure.Commands.ManagedCache.Models;
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using Xunit;
     public class CacheAccessKeysTest
     {
         [Fact]

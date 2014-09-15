@@ -12,14 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Net;
-    using System.Security;
-    using System.Security.Cryptography.X509Certificates;
-
     internal enum CredentialType
     {
         None = 0,
@@ -48,17 +50,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
             this.Certificate = new X509Certificate2();
         }
 
-        internal Subscription(WindowsAzureSubscription azureSubscription)
+        internal Subscription(AzureSubscription azureSubscription)
         {
             if (azureSubscription == null)
             {
                 throw new ArgumentNullException();
             }
 
-            this.SubscriptionName = azureSubscription.SubscriptionName;
-            this.SubscriptionId = azureSubscription.SubscriptionId;
-            this.ServiceEndpoint = new Uri(String.Format("{0}/{1}/services/systemcenter/vmm", azureSubscription.ServiceEndpoint.ToString().TrimEnd(new[]{'/'}), SubscriptionId));
-            this.Certificate = azureSubscription.Certificate;
+            ProfileClient client = new ProfileClient();
+            var environment = client.GetEnvironmentOrDefault(azureSubscription.Name);
+
+            this.SubscriptionName = azureSubscription.Name;
+            this.SubscriptionId = azureSubscription.Id.ToString();
+            this.ServiceEndpoint = new Uri(String.Format("{0}/{1}/services/systemcenter/vmm", environment.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement).TrimEnd(new[] { '/' }), SubscriptionId));
+            this.Certificate = FileUtilities.DataStore.GetCertificate(azureSubscription.Account);
             this.CredentialType = CredentialType.UseCertificate;
         }
 

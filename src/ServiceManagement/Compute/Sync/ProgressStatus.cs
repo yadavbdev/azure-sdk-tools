@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Sync
 {
-    using System;
-
     public class ProgressStatus
     {
         const double MB = 1024.0 * 1024.0;

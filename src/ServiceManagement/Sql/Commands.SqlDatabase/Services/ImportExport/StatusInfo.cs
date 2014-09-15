@@ -11,78 +11,78 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.ImportExport
 {
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// Represents the result of querying the status of an import or export database operation
     /// </summary>
-    [SerializableAttribute]
-    [DataContractAttribute(Name = "StatusInfo",
+    [Serializable]
+    [DataContract(Name = "StatusInfo",
         Namespace = "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes")]
     public class StatusInfo : IExtensibleDataObject
     {
         /// <summary>
         /// Gets or sets the blob uri
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public string BlobUri { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the database
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public string DatabaseName { get; set; }
 
         /// <summary>
         /// Gets or sets the error message if any
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public string ErrorMessage { get; set; }
 
         /// <summary>
         /// Gets or sets date the database was last modified
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public DateTime LastModifiedTime { get; set; }
 
         /// <summary>
         /// Gets or sets how long the operation has been queued
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public DateTime QueuedTime { get; set; }
 
         /// <summary>
         /// Gets or sets the import/export request id
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public string RequestId { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the request
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public string RequestType { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the server the database resides in
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public string ServerName { get; set; }
 
         /// <summary>
         /// Gets or sets the status of the import/export operation
         /// </summary>
-        [DataMemberAttribute]
+        [DataMember]
         public string Status { get; set; }
 
         /// <summary>
         /// Gets or sets the import/export status info extension data
         /// </summary>
-        [BrowsableAttribute(false)]
+        [Browsable(false)]
         public ExtensionDataObject ExtensionData { get; set; }
     }
 }

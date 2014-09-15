@@ -12,21 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding
 {
-    using System.IO;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.CloudService;
-    using Utilities.Common;
-    using Utilities.Properties;
-
     /// <summary>
     /// Create scaffolding for a new hosted service. Generates a basic folder structure, 
     /// default cscfg file which wires up node/iisnode at startup in Azure as well as startup.js. 
     /// </summary>
     [Cmdlet(VerbsCommon.New, "AzureServiceProject"), OutputType(typeof(CloudServiceProject))]
-    public class NewAzureServiceProjectCommand : CmdletBase
+    public class NewAzureServiceProjectCommand : AzurePSCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the cloud project")]
         [ValidateNotNullOrEmpty]

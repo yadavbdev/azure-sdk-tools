@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Cmdlet;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Blob
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Model.ResourceModel;
-    using Storage.Cmdlet;
-    using Storage.Common;
-    using System;
-    using System.Linq;
-
     /// <summary>
     /// unit test for SetAzureStorageContainer
     /// </summary>

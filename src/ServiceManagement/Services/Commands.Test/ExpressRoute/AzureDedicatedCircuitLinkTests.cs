@@ -12,23 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ExpressRoute;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Management.ExpressRoute;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 {
-    using Commands.ExpressRoute;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.ExpressRoute;
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class AzureDedicatedCircuitLinkTests : TestBase
     {
         private const string SubscriptionId = "foo";
@@ -41,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                     new Uri("http://someValue")));
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureDedicatedCircuitLinkSuccessful()
         {
             // Setup
@@ -82,11 +83,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             // Assert
             AzureDedicatedCircuitLink actual = mockCommandRuntime.OutputPipeline[0] as AzureDedicatedCircuitLink;
-            Assert.AreEqual<string>(expected.DedicatedCircuitLink.VnetName, actual.VnetName);
-            Assert.AreEqual(expected.DedicatedCircuitLink.State.ToString(), actual.State.ToString());
+            Assert.Equal<string>(expected.DedicatedCircuitLink.VnetName, actual.VnetName);
+            Assert.Equal(expected.DedicatedCircuitLink.State.ToString(), actual.State.ToString());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureDedicatedCircuitLinkSuccessful()
         {
             // Setup
@@ -127,12 +128,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             // Assert
             AzureDedicatedCircuitLink actual = mockCommandRuntime.OutputPipeline[0] as AzureDedicatedCircuitLink;
-            Assert.AreEqual<string>(expected.DedicatedCircuitLink.VnetName, actual.VnetName);
-            Assert.AreEqual(expected.DedicatedCircuitLink.State.ToString(), actual.State.ToString());
+            Assert.Equal<string>(expected.DedicatedCircuitLink.VnetName, actual.VnetName);
+            Assert.Equal(expected.DedicatedCircuitLink.State.ToString(), actual.State.ToString());
 
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveAzureDedicatedCircuitSuccessful()
         {
             string serviceKey = "aa28cd19-b10a-41ff-981b-53c6bbf15ead";
@@ -164,12 +165,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             cmdlet.ExecuteCmdlet();
 
-            Assert.IsTrue(mockCommandRuntime.VerboseStream[0].Contains(serviceKey));
+            Assert.True(mockCommandRuntime.VerboseStream[0].Contains(serviceKey));
         }
 
 
 
-        [TestMethod]
+        [Fact]
         public void ListAzureDedicatedCircuitLinkSuccessful()
         {
             // Setup
@@ -213,7 +214,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             // Assert
             IEnumerable<AzureDedicatedCircuitLink> actual =
                 mockCommandRuntime.OutputPipeline[0] as IEnumerable<AzureDedicatedCircuitLink>;
-            Assert.AreEqual(actual.ToArray().Count(), 2);
+            Assert.Equal(actual.ToArray().Count(), 2);
         }
     }
 }

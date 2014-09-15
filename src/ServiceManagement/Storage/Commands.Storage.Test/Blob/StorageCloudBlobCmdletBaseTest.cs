@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Blob
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using System;
-
     [TestClass]
     public class StorageCloudBlobCmdletBaseTest : StorageBlobTestBase
     {

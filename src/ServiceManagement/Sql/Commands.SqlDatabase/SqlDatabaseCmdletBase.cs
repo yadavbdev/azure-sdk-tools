@@ -12,19 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Sql;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.Sql;
-    using System;
-    using System.Globalization;
-
     /// <summary>
     /// The base class for all Microsoft Azure Sql Database Management Cmdlets
     /// </summary>
-    public abstract class SqlDatabaseCmdletBase : CmdletBase
+    public abstract class SqlDatabaseCmdletBase : AzurePSCmdlet
     {
         /// <summary>
         /// Stores the session Id for all the request made in this session.
@@ -58,9 +60,9 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase
         protected SqlManagementClient GetCurrentSqlClient()
         {
             // Get the SQL management client for the current subscription
-            WindowsAzureSubscription subscription = WindowsAzureProfile.Instance.CurrentSubscription;
+            AzureSubscription subscription = AzureSession.CurrentContext.Subscription;
             SqlDatabaseCmdletBase.ValidateSubscription(subscription);
-            SqlManagementClient client = subscription.CreateClient<SqlManagementClient>();
+            SqlManagementClient client = AzureSession.ClientFactory.CreateClient<SqlManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
             client.HttpClient.DefaultRequestHeaders.Add(Constants.ClientSessionIdHeaderName, clientSessionId);
             client.HttpClient.DefaultRequestHeaders.Add(Constants.ClientRequestIdHeaderName, clientRequestId);
             return client;
@@ -69,19 +71,13 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase
         /// <summary>
         /// Validates that the given subscription is valid.
         /// </summary>
-        /// <param name="subscription">The <see cref="WindowsAzureSubscription"/> to validate.</param>
-        public static void ValidateSubscription(WindowsAzureSubscription subscription)
+        /// <param name="subscription">The <see cref="AzureSubscription"/> to validate.</param>
+        public static void ValidateSubscription(AzureSubscription subscription)
         {
             if (subscription == null)
             {
                 throw new ArgumentException(
                     Common.Properties.Resources.InvalidCurrentSubscription);
-            }
-
-            if (string.IsNullOrEmpty(subscription.SubscriptionId))
-            {
-                throw new ArgumentException(
-                    Common.Properties.Resources.InvalidCurrentSubscriptionId);
             }
         }
 

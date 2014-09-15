@@ -13,15 +13,16 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Commands.Utilities.Common;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "AzureVMConfig", DefaultParameterSetName = "ImageName"), OutputType(typeof(PersistentVM))]
     public class NewAzureVMConfigCommand : ServiceManagementBaseCmdlet
     {
@@ -131,8 +132,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
         protected void ValidateParameters()
         {
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
-            if ((currentSubscription == null || string.IsNullOrEmpty(currentSubscription.CurrentStorageAccountName)) && string.IsNullOrEmpty(MediaLocation))
+            AzureSubscription currentSubscription = CurrentContext.Subscription;
+            if ((currentSubscription == null || string.IsNullOrEmpty(currentSubscription.GetProperty(AzureSubscription.Property.StorageAccount))) && string.IsNullOrEmpty(MediaLocation))
             {
                 throw new ArgumentException(Resources.MustSpecifyMediaLocationOrHaveCurrentStorageAccount);
             }

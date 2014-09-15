@@ -14,8 +14,6 @@
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System;
-
     public class VirtualMachineDiagnosticsExtensionCmdletBase : VirtualMachineExtensionCmdletBase
     {
         protected const string DiagnosticsExtensionNamespace = "Microsoft.Azure.Diagnostics";

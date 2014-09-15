@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.Networking
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "WAPackStaticIPAddressPool")]
     public class NewWAPackStaticIPAddressPool : IaaSCmdletBase
     {

@@ -12,20 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 {
-    using AutoMapper;
-    using IaaS;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using NSM = Microsoft.WindowsAzure.Management.Compute.Models;
-    using PVM = Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+    using NSM = Management.Compute.Models;
+    using PVM = Model;
 
     [Cmdlet(VerbsCommon.Set, "AzureLoadBalancedEndpoint", DefaultParameterSetName = SetAzureLoadBalancedEndpoint.DefaultProbeParameterSet), OutputType(typeof(ManagementOperationContext))]
     public class SetAzureLoadBalancedEndpoint : IaaSDeploymentManagementCmdletBase
@@ -53,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 
         [Parameter(Mandatory = false, HelpMessage = "ACLs to specify with the endpoint.")]
         [ValidateNotNull]
-        public NetworkAclObject ACL { get; set; }
+        public PVM.NetworkAclObject ACL { get; set; }
 
         [Parameter(Mandatory = true, ParameterSetName = SetAzureLoadBalancedEndpoint.TCPProbeParameterSet, HelpMessage = "Should a TCP probe should be used.")]
         public SwitchParameter ProbeProtocolTCP { get; set; }
@@ -111,14 +109,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 
             this.UpdateEndpointProperties(endpoint);
             
-            var endpointList = new LoadBalancedEndpointList();
+            var endpointList = new PVM.LoadBalancedEndpointList();
             endpointList.Add(endpoint);
 
-            var endPointParams = new VirtualMachineUpdateLoadBalancedSetParameters
+            var endPointParams = new NSM.VirtualMachineUpdateLoadBalancedSetParameters
             {
                 //TODO: AutoMapper doesn't seem to work for this conversion.
                 //LoadBalancedEndpoints = Mapper.Map<IList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>>(endpointList)
-                LoadBalancedEndpoints = new int[1].Select(e => new VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint
+                LoadBalancedEndpoints = new int[1].Select(e => new NSM.VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint
                 {
                     EnableDirectServerReturn = endpoint.EnableDirectServerReturn,
                     LoadBalancedEndpointSetName = endpoint.LoadBalancedEndpointSetName,
@@ -127,7 +125,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
                         IntervalInSeconds = endpoint.LoadBalancerProbe.IntervalInSeconds,
                         Path = endpoint.LoadBalancerProbe.Path,
                         Port = endpoint.LoadBalancerProbe.Port,
-                        Protocol = (LoadBalancerProbeTransportProtocol)Enum.Parse(typeof(LoadBalancerProbeTransportProtocol), endpoint.LoadBalancerProbe.Protocol, true),
+                        Protocol = (NSM.LoadBalancerProbeTransportProtocol)Enum.Parse(typeof(NSM.LoadBalancerProbeTransportProtocol), endpoint.LoadBalancerProbe.Protocol, true),
                         TimeoutInSeconds = endpoint.LoadBalancerProbe.TimeoutInSeconds
                     },
                     LocalPort = endpoint.LocalPort,

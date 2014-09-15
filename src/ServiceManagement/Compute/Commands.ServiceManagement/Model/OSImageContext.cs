@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System;
-    using Utilities.Common;
-
     public class OSImageContext : ManagementOperationContext
     {
         public virtual string ImageName { get; set; }

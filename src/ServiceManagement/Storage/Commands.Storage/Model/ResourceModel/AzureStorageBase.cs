@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using System;
-
     /// <summary>
     /// Base class for all azure storage object
     /// </summary>

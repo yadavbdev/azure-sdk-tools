@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Service.Gateway;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Service.Gateway;
-    using System;
-    using Utilities.Common;
-
     public class VirtualNetworkGatewayContext : ManagementOperationContext
     {
         public string LastEventData { get; set; }

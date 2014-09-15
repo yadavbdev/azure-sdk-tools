@@ -13,14 +13,14 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+using Microsoft.WindowsAzure.Commands.Sync.Upload;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.RetryPolicies;
-    using Sync.Download;
-    using Sync.Upload;
-    using System;
-
     public class CloudPageBlobObjectFactory : ICloudPageBlobObjectFactory
     {
         private readonly TimeSpan delayBetweenRetries = TimeSpan.FromSeconds(10);

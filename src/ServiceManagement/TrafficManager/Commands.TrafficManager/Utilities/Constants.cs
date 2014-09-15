@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Utilities
 {
-    using System.Net;
-
     public class Constants
     {
         public const string monitorHttpOptionVerb = "GET";

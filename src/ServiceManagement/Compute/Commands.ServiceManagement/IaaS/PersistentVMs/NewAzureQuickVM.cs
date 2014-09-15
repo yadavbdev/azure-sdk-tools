@@ -13,28 +13,29 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Common;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Microsoft.WindowsAzure.Storage;
+using ConfigurationSet = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.ConfigurationSet;
+using InputEndpoint = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.InputEndpoint;
+using OSVirtualHardDisk = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.OSVirtualHardDisk;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
-    using AutoMapper;
-    using Common;
-    using Extensions;
-    using Helpers;
-    using Management.Compute.Models;
-    using Microsoft.WindowsAzure.Storage;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities.Common;
-    using ConfigurationSet = Model.ConfigurationSet;
-    using InputEndpoint = Model.InputEndpoint;
-    using OSVirtualHardDisk = Model.OSVirtualHardDisk;
-
     /// <summary>
     /// Creates a VM without advanced provisioning configuration options
     /// </summary>
@@ -167,7 +168,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 
         public void NewAzureVMProcess()
         {
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
+            AzureSubscription currentSubscription = CurrentContext.Subscription;
             CloudStorageAccount currentStorage = null;
             try
             {
@@ -556,6 +557,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
             if (this.DnsSettings != null && string.IsNullOrEmpty(this.VNetName))
             {
                 throw new ArgumentException(Resources.VNetNameRequiredWhenSpecifyingDNSSettings);
+            }
+
+            if (!string.IsNullOrEmpty(this.VNetName) && (this.SubnetNames == null || this.SubnetNames.Length == 0))
+            {
+                WriteWarning(Resources.SubnetShouldBeSpecifiedIfVnetPresent);
             }
 
             if (this.ParameterSetName.Contains(LinuxParamSet) && this.Password != null && !ValidationHelpers.IsLinuxPasswordValid(this.Password))

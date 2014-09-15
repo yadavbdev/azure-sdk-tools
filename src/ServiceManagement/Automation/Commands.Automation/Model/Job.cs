@@ -12,15 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Microsoft.Azure.Commands.Automation.Common;
+using Microsoft.Azure.Commands.Automation.Properties;
+
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using Microsoft.Azure.Commands.Automation.Common;
-    using Microsoft.Azure.Commands.Automation.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The job.

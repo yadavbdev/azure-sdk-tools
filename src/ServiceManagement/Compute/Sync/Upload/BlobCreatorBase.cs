@@ -12,24 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Permissions;
+using System.ServiceModel.Channels;
+using System.Text;
+using System.Threading;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Sync.Download;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Security.Permissions;
-    using System.ServiceModel.Channels;
-    using System.Text;
-    using System.Threading;
-    using Tools.Vhd;
-    using Tools.Vhd.Model;
-
     public interface ICloudPageBlobObjectFactory
     {
         CloudPageBlob Create(BlobUri destination);

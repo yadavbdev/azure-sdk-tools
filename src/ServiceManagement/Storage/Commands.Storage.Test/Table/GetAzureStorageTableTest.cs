@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.Table.Cmdlet;
+using Microsoft.WindowsAzure.Storage.Table;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Table
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using Storage.Common;
-    using Storage.Table.Cmdlet;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [TestClass]
     public class GetAzureStorageTableTest : StorageTableStorageTestBase
     {

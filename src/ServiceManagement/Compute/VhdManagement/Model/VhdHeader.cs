@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [VhdEntity(Size = 1024)]
     public class VhdHeader
     {

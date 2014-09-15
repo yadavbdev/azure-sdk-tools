@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.GeoEntities
 {
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using System.Xml.Serialization;
-
     [DataContract]
     [XmlRoot("GeoRegion", Namespace = UriElements.ServiceNamespace)]
     public class GeoRegion

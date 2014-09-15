@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
 {
-    using Microsoft.WindowsAzure.Management.ServiceBus.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-
     public class ExtendedServiceBusNamespace
     {
         public ExtendedServiceBusNamespace()
