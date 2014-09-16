@@ -16,11 +16,11 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdlets.IaaS.Extensions
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 {
     /// <summary>
     /// Tests for DSC <see cref="ConfigurationParsingHelper"/> class.

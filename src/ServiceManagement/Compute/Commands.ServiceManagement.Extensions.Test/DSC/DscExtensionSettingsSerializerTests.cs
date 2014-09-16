@@ -14,21 +14,19 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdlets.IaaS.Extensions
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 {
     /// <summary>
     /// Tests for <see cref="DscSettingsSerializer"/> class.

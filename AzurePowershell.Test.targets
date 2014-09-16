@@ -13,6 +13,7 @@
     <ManagementTestDebug>.\src\ServiceManagement\Services\Commands.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Test.dll</ManagementTestDebug>
     <ResourceManagerTestDebug>.\src\ResourceManager\Resources\Commands.Resources.Test\bin\Debug\Microsoft.Azure.Commands.Resources.Test.dll</ResourceManagerTestDebug>
     <ServiceManagementTestDebug>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Test.dll</ServiceManagementTestDebug>
+    <ServiceManagementExtensionsTestDebug>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Extensions.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.dll</ServiceManagementExtensionsTestDebug>
     <SqlDatabaseTestDebug>.\src\ServiceManagement\Sql\Commands.SqlDatabase.Test\bin\Debug\Microsoft.WindowsAzure.Commands.SqlDatabase.Test.dll</SqlDatabaseTestDebug>
     <HDInsightTestDebug>.\src\ServiceManagement\HDInsight\Commands.HDInsight.Test\bin\Debug\Microsoft.WindowsAzure.Commands.HDInsight.Test.dll</HDInsightTestDebug>
     <StorageTestDebug>.\src\ServiceManagement\Storage\Commands.Storage.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Storage.Test.dll</StorageTestDebug>
@@ -63,6 +64,12 @@
   <Target Name="TestServiceManagement">
     <MSBuild Targets="InvokeMSTest"
              Properties="_testAssembly=$(ServiceManagementTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\ServiceManagementDebug.trx"
+             Projects="build.proj"/>
+  </Target>
+
+  <Target Name="TestServiceManagementExtensions">
+    <MSBuild Targets="InvokeMSTest"
+             Properties="_testAssembly=$(ServiceManagementExtensionsTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\ServiceManagementExtensionsDebug.trx"
              Projects="build.proj"/>
   </Target>
 
@@ -250,7 +257,7 @@
     <Message Importance="high" Text="Running DSC extension BVT tests..." />
     <Delete Files="$(TestOutputDirectory)\DSCExtensionDebug.trx" />
     <Exec
-      Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /test:VirtualMachineDscExtensionTests /testsettings:$(TestSettings_x64) /category:Scenario /resultsfile:$(TestOutputDirectory)\DSCExtensionDebug.trx"
+      Command="MSTest.exe /testcontainer:$(ServiceManagementExtensionsTestDebug) /test:VirtualMachineDscExtensionTests /testsettings:$(TestSettings_x64) /category:Scenario /resultsfile:$(TestOutputDirectory)\DSCExtensionDebug.trx"
       ContinueOnError="false" />
   </Target>
 
