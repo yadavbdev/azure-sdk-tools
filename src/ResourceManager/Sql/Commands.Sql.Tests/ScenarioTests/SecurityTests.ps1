@@ -12,8 +12,6 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------------
 
-
-
 <#
 .SYNOPSIS
 Tests that when setting the storage account property's value in a database's auditing policy, that value is later fetched properly
