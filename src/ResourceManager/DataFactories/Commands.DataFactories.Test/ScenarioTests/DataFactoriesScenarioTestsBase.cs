@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Gallery;
+using Microsoft.Azure.Management.Authorization;
 using Microsoft.Azure.Management.DataFactories;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Subscriptions;
@@ -41,13 +42,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             var storageClient = GetStorageManagementClient();
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
+            var authorizationManagementClient = GetAuthorizationManagementClient();
 
             helper.SetupManagementClients(dataPipelineManagementClient,
                 resourceManagementClient,
                 subscriptionsClient,
                 storageClient,
                 galleryClient,
-                eventsClient);
+                eventsClient,
+                authorizationManagementClient);
         }
 
         protected void RunPowerShellTest(params string[] scripts)
@@ -94,6 +97,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         protected EventsClient GetEventsClient()
         {
             return TestBase.GetServiceClient<EventsClient>(new CSMTestEnvironmentFactory());
+        }
+
+        protected AuthorizationManagementClient GetAuthorizationManagementClient()
+        {
+            return TestBase.GetServiceClient<AuthorizationManagementClient>(new CSMTestEnvironmentFactory());
         }
     }
 }

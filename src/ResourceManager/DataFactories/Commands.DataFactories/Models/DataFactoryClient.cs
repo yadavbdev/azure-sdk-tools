@@ -14,9 +14,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Net;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Commands.DataFactories.Properties;
+using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories;
+using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -88,6 +92,96 @@ namespace Microsoft.Azure.Commands.DataFactories
             }
 
             return dataFactories;
+        }
+
+        public virtual DataFactory CreateOrUpdateDataFactory(string resourceGroupName, string dataFactoryName,
+            string location, IDictionary<string, string> tags)
+        {
+            var response = DataPipelineManagementClient.DataFactories.CreateOrUpdate(
+                resourceGroupName,
+                new DataFactoryCreateOrUpdateParameters()
+                {
+                    DataFactory =
+                        new DataFactory()
+                        {
+                            Name = dataFactoryName,
+                            Location = location,
+                            Tags = tags
+                        }
+                });
+
+            return response.DataFactory;
+        }
+
+        public virtual PSDataFactory CreatePSDataFactory(CreatePSDataFactoryParameters parameters)
+        {
+            DataFactory dataFactory = null;
+            Action createDataFactory = () =>
+            {
+                Dictionary<string, string> tags = new Dictionary<string, string>();
+                if (parameters.Tags != null)
+                {
+                    tags = parameters.Tags.ToDictionary();
+                }
+
+                dataFactory = CreateOrUpdateDataFactory(parameters.ResourceGroupName, parameters.DataFactoryName,
+                    parameters.Location, tags);
+            };
+
+            if (parameters.Force)
+            {
+                // If user decides to overwrite anyway, then there is no need to check if the data factory exists or not.
+                createDataFactory();
+            }
+            else
+            {
+                bool dataFactoryExists = CheckDataFactoryExists(parameters.ResourceGroupName, parameters.DataFactoryName);
+
+                parameters.ConfirmAction(
+                    !dataFactoryExists,    // prompt only if the data factory exists
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        Resources.DataFactoryExists,
+                        parameters.DataFactoryName,
+                        parameters.ResourceGroupName),
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        Resources.DataFactoryCreating,
+                        parameters.DataFactoryName,
+                        parameters.ResourceGroupName),
+                    parameters.DataFactoryName,
+                    createDataFactory);
+            }
+
+            return dataFactory == null ? null : new PSDataFactory(dataFactory);
+        }
+
+        private bool CheckDataFactoryExists(string resourceGroupName, string dataFactoryName)
+        {
+            // ToDo: use HEAD to check if a resource exists or not
+            try
+            {
+                PSDataFactory dataFactory = GetDataFactory(resourceGroupName, dataFactoryName);
+
+                return dataFactory != null;
+            }
+            catch (CloudException e)
+            {
+                //Get throws NotFound exception if data factory not exists
+                if (e.Response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+
+                throw;
+            }
+        }
+        
+        public virtual HttpStatusCode DeleteDataFactory(string resourceGroupName, string dataFactoryName)
+        {
+            OperationResponse response = DataPipelineManagementClient.DataFactories.Delete(resourceGroupName,
+                dataFactoryName);
+            return response.StatusCode;
         }
     }
 }
