@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="RedisCacheExists" xml:space="preserve">
+    <value>Redis cache with name '{0}' already exists.</value>
+  </data>
   <data name="RegenerateRedisCacheKey" xml:space="preserve">
     <value>Regenerating {1} key for redis cache '{0}' ...</value>
   </data>
@@ -128,11 +131,5 @@
   </data>
   <data name="RemovingRedisCache" xml:space="preserve">
     <value>Are you sure you want to remove redis cache '{0}'?</value>
-  </data>
-  <data name="UpdateRedisCache" xml:space="preserve">
-    <value>Updating redis cache '{0}' ...</value>
-  </data>
-  <data name="UpdatingRedisCache" xml:space="preserve">
-    <value>Are you sure you want to update redis cache '{0}'?</value>
   </data>
 </root>

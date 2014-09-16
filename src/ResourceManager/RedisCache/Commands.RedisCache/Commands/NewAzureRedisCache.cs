@@ -12,7 +12,7 @@ namespace Microsoft.Azure.Commands.RedisCache
     [Cmdlet(VerbsCommon.New, "AzureRedisCache"), OutputType(typeof(RedisCacheAttributesWithAccessKeys))]
     public class NewAzureRedisCache : RedisCacheCmdletBase
     {
-        [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Name of resource group under whcih want to create cache.")]
+        [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Name of resource group under which you want to create cache.")]
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
@@ -41,16 +41,11 @@ namespace Microsoft.Azure.Commands.RedisCache
             MaxMemoryPolicyStrings.VolatileLRU, MaxMemoryPolicyStrings.VolatileRandom, MaxMemoryPolicyStrings.VolatileTTL, IgnoreCase = false)]
         public string MaxMemoryPolicy { get; set;}
 
-        [Parameter(Mandatory = false, HelpMessage = "Do not ask for confirmation.")]
-        public SwitchParameter Force { get; set; }
-
         public override void ExecuteCmdlet()
         {
             string skuFamily;
 
             int skuCapacity = 1;
-
-            bool confirmationRequired = true;
 
             if (string.IsNullOrEmpty(RedisVersion))
             {
@@ -76,45 +71,28 @@ namespace Microsoft.Azure.Commands.RedisCache
             }
 
             // If Force flag is not avaliable than check if cache is already available or not
-            if (!Force.IsPresent)
+            try
             {
-                try
+                CacheClient.GetCache(ResourceGroupName, Name);
+                throw new CloudException(string.Format(Resources.RedisCacheExists, Name));
+            }
+            catch (CloudException ex)
+            {
+                if (ex.ErrorCode == "ResourceNotFound" || ex.Message.Contains("ResourceNotFound"))
                 {
-                    CacheClient.GetCache(ResourceGroupName, Name);
+                    // cache does not exists so go ahead and create one
                 }
-                catch (CloudException ex)
+                else if (ex.ErrorCode == "ResourceGroupNotFound" || ex.Message.Contains("ResourceGroupNotFound"))
                 {
-                    if (ex.ErrorCode == "ResourceNotFound" || ex.Message.Contains("ResourceNotFound"))
-                    {
-                        // cache does not exists so confirmation is not required
-                        confirmationRequired = false;
-                    }
-                    else if (ex.ErrorCode == "ResourceGroupNotFound" || ex.Message.Contains("ResourceGroupNotFound"))
-                    {
-                        // resource group not found that let create or update throw error don't throw from here
-                    }
-                    else
-                    { 
-                        // all other exceptions should be thrown
-                        throw;
-                    }
+                    // resource group not found, let create throw error don't throw from here
+                }
+                else
+                { 
+                    // all other exceptions should be thrown
+                    throw;
                 }
             }
-
-            // If Force is not present and cache exists than 
-            if (!Force.IsPresent && confirmationRequired)
-            {
-                ConfirmAction(
-                Force.IsPresent,
-                string.Format(Resources.UpdatingRedisCache, Name),
-                string.Format(Resources.UpdateRedisCache, Name),
-                Name,
-                () => WriteObject(new RedisCacheAttributesWithAccessKeys(CacheClient.CreateOrUpdateCache(ResourceGroupName, Name, Location, RedisVersion, skuFamily, skuCapacity, Sku, MaxMemoryPolicy), ResourceGroupName)));
-            }
-            else
-            {
-                WriteObject(new RedisCacheAttributesWithAccessKeys(CacheClient.CreateOrUpdateCache(ResourceGroupName, Name, Location, RedisVersion, skuFamily, skuCapacity, Sku, MaxMemoryPolicy), ResourceGroupName));
-            }
+            WriteObject(new RedisCacheAttributesWithAccessKeys(CacheClient.CreateOrUpdateCache(ResourceGroupName, Name, Location, RedisVersion, skuFamily, skuCapacity, Sku, MaxMemoryPolicy), ResourceGroupName));
         }
     }
 }

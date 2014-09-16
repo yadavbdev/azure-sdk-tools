@@ -61,6 +61,15 @@ namespace Microsoft.Azure.Commands.RedisCache.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redis cache with name &apos;{0}&apos; already exists..
+        /// </summary>
+        internal static string RedisCacheExists {
+            get {
+                return ResourceManager.GetString("RedisCacheExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regenerating {1} key for redis cache &apos;{0}&apos; ....
         /// </summary>
         internal static string RegenerateRedisCacheKey {
@@ -93,24 +102,6 @@ namespace Microsoft.Azure.Commands.RedisCache.Properties {
         internal static string RemovingRedisCache {
             get {
                 return ResourceManager.GetString("RemovingRedisCache", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Updating redis cache &apos;{0}&apos; ....
-        /// </summary>
-        internal static string UpdateRedisCache {
-            get {
-                return ResourceManager.GetString("UpdateRedisCache", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to update redis cache &apos;{0}&apos;?.
-        /// </summary>
-        internal static string UpdatingRedisCache {
-            get {
-                return ResourceManager.GetString("UpdatingRedisCache", resourceCulture);
             }
         }
     }

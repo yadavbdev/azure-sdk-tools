@@ -5,13 +5,18 @@ using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.RedisCache
 {
-    [Cmdlet(VerbsCommon.Get, "AzureRedisCache"), OutputType(typeof(List<RedisCacheAttributes>))]
+    [Cmdlet(VerbsCommon.Get, "AzureRedisCache", DefaultParameterSetName = BaseParameterSetName), OutputType(typeof(List<RedisCacheAttributes>))]
     public class GetAzureRedisCache : RedisCacheCmdletBase
     {
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Name of resource group under whcih want to create cache.")]
+        internal const string BaseParameterSetName = "All In Subscription";
+        internal const string ResourceGroupParameterSetName = "All In Resource Group";
+        internal const string RedisCacheParameterSetName = "Specific Redis Cache";
+
+        [Parameter(ParameterSetName = ResourceGroupParameterSetName, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Name of resource group under whcih want to create cache.")]
+        [Parameter(ParameterSetName = RedisCacheParameterSetName, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Name of resource group under whcih want to create cache.")]
         public string ResourceGroupName { get; set; }
 
-        [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "Name of redis cache.")]
+        [Parameter(ParameterSetName = RedisCacheParameterSetName, ValueFromPipelineByPropertyName = true, Mandatory = true, HelpMessage = "Name of redis cache.")]
         public string Name { get; set; }
 
         public override void ExecuteCmdlet()
