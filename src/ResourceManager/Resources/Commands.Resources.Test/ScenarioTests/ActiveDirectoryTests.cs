@@ -21,30 +21,176 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
     {
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetADGroupSingle()
+        public void TestGetAllADGroups()
         {
-            RunPowerShellTest("Test-GetADGroup");
+            RunPowerShellTest("Test-GetAllADGroups");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetADGroupMember()
+        public void TestGetADGroupWithSearchString()
         {
-            RunPowerShellTest("Test-GetADGroupMember");
+            RunPowerShellTest("Test-GetADGroupWithSearchString");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetADServicePrincipal()
+        public void TestGetADGroupWithBadSearchString()
         {
-            RunPowerShellTest("Test-GetADServicePrincipal");
+            RunPowerShellTest("Test-GetADGroupWithBadSearchString");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetADUser()
+        public void TestGetADGroupWithBadObjectId()
         {
-            RunPowerShellTest("Test-GetADUser");
+            RunPowerShellTest("Test-GetADGroupWithBadObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADGroupWithUserObjectId()
+        {
+            RunPowerShellTest("Test-GetADGroupWithUserObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADGroupMemberWithGroupObjectId()
+        {
+            RunPowerShellTest("Test-GetADGroupMemberWithGroupObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADGroupMemberWithBadGroupObjectId()
+        {
+            RunPowerShellTest("Test-GetADGroupMemberWithBadGroupObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADGroupMemberWithUserObjectId()
+        {
+            RunPowerShellTest("Test-GetADGroupMemberWithUserObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADGroupMemberFromEmptyGroup()
+        {
+            RunPowerShellTest("Test-GetADGroupMemberFromEmptyGroup");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADServicePrincipalWithObjectId()
+        {
+            RunPowerShellTest("Test-GetADServicePrincipalWithObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADServicePrincipalWithBadObjectId()
+        {
+            RunPowerShellTest("Test-GetADServicePrincipalWithBadObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADServicePrincipalWithUserObjectId()
+        {
+            RunPowerShellTest("Test-GetADServicePrincipalWithUserObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADServicePrincipalWithSPN()
+        {
+            RunPowerShellTest("Test-GetADServicePrincipalWithSPN");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADServicePrincipalWithBadSPN()
+        {
+            RunPowerShellTest("Test-GetADServicePrincipalWithBadSPN");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADServicePrincipalWithSearchString()
+        {
+            RunPowerShellTest("Test-GetADServicePrincipalWithSearchString");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADServicePrincipalWithBadSearchString()
+        {
+            RunPowerShellTest("Test-GetADServicePrincipalWithBadSearchString");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetAllADUser()
+        {
+            RunPowerShellTest("Test-GetAllADUser");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADUserWithObjectId()
+        {
+            RunPowerShellTest("Test-GetADUserWithObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADUserWithBadObjectId()
+        {
+            RunPowerShellTest("Test-GetADUserWithBadObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADUserWithGroupObjectId()
+        {
+            RunPowerShellTest("Test-GetADUserWithGroupObjectId");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADUserWithUPN()
+        {
+            RunPowerShellTest("Test-GetADUserWithUPN");
+        }
+
+        [Fact(Skip = "Currently not working.")]
+        public void TestGetADUserWithFPOUPN()
+        {
+            RunPowerShellTest("Test-GetADUserWithFPOUPN");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADUserWithBadUPN()
+        {
+            RunPowerShellTest("Test-GetADUserWithBadUPN");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADUserWithSearchString()
+        {
+            RunPowerShellTest("Test-GetADUserWithSearchString");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADUserWithBadSearchString()
+        {
+            RunPowerShellTest("Test-GetADUserWithBadSearchString");
         }
     }
 }

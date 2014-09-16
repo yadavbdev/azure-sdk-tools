@@ -1,0 +1,61 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "/1449d5b7-8a83-47db-ae4c-9b03e888bad0/users/d5fbb343-cf1d-47bb-9aa8-5c3dd57b336f?api-version=1.42-previewInternal",
+      "EncodedRequestUri": "LzE0NDlkNWI3LThhODMtNDdkYi1hZTRjLTliMDNlODg4YmFkMC91c2Vycy9kNWZiYjM0My1jZjFkLTQ3YmItOWFhOC01YzNkZDU3YjMzNmY/YXBpLXZlcnNpb249MS40Mi1wcmV2aWV3SW50ZXJuYWw=",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "User-Agent": [
+          "Microsoft.Azure.Graph.RBAC.GraphRbacManagementClient/1.0.0.0"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"odata.error\": {\r\n    \"code\": \"Request_ResourceNotFound\",\r\n    \"message\": {\r\n      \"lang\": \"en\",\r\n      \"value\": \"Resource 'd5fbb343-cf1d-47bb-9aa8-5c3dd57b336f' does not exist or one of its queried reference-property objects are not present.\"\r\n    }\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "ocp-aad-diagnostics-server-name": [
+          "MsH+7bNxSLKcmuX3JqvzScisCtZwuMTpgstB41T1Viw="
+        ],
+        "request-id": [
+          "ba8b4903-1585-4ebb-8697-a758752becae"
+        ],
+        "client-request-id": [
+          "2aabe863-ac4f-4573-ab4c-be7b7905201f"
+        ],
+        "x-ms-gateway-rewrite": [
+          "false"
+        ],
+        "x-ms-dirapi-data-contract-version": [
+          "1.42-previewInternal"
+        ],
+        "ocp-aad-session-key": [
+          "E8fpm33Uv2k9gbOgIpjPFlSgQzeDSiVtU02Xy5Hh6xi1DdTp0UwgON0oP47D1FQ5Dgws0l_yn3U-k4hYTuLuYIR6-NA615-uKKklvvEOcw8.YQKTiEVoU4fmHN5jH9hv0U8GoXA3w1Gt-pFYtrUTGkY"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "private"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-AspNet-Version": [
+          "4.0.30319"
+        ],
+        "X-Powered-By": [
+          "ASP.NET",
+          "ASP.NET"
+        ],
+        "Date": [
+          "Tue, 16 Sep 2014 00:31:30 GMT"
+        ]
+      },
+      "StatusCode": 404
+    }
+  ],
+  "Names": {},
+  "Variables": {
+    "SubscriptionId": "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
+    "TenantId": "1449d5b7-8a83-47db-ae4c-9b03e888bad0"
+  }
+}
