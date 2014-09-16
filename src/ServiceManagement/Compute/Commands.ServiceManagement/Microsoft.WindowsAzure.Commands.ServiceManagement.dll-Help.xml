@@ -1089,7 +1089,7 @@
     <command:details>
       <command:name>
                    Add-AzureEndpoint
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Add endpoint to the persistent VM object.
 </maml:para>
@@ -1441,962 +1441,962 @@
 
 <!-- v 1.3.0.36 -->
 <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
-	<command:details>
-		<command:name>
+  <command:details>
+    <command:name>
                    Add-AzureProvisioningConfig
-		</command:name>
-		<maml:description>
-			<maml:para>Adds the provisioning configuration to a Microsoft Azure virtual machine.</maml:para>
-		</maml:description>
-		<maml:copyright>
-			<maml:para></maml:para>
-		</maml:copyright>
-		<command:verb>Add</command:verb>
-		<command:noun>AzureProvisioningConfig</command:noun>
-		<dev:version></dev:version>
-	</command:details>
-	<maml:description>
-		<maml:para>The Add-AzureProvisioningConfig cmdlet adds configuration information to a virtual machine configuration used to create a new Virtual Machine.
+    </command:name>
+    <maml:description>
+      <maml:para>Adds the provisioning configuration to a Microsoft Azure virtual machine.</maml:para>
+    </maml:description>
+    <maml:copyright>
+      <maml:para></maml:para>
+    </maml:copyright>
+    <command:verb>Add</command:verb>
+    <command:noun>AzureProvisioningConfig</command:noun>
+    <dev:version></dev:version>
+  </command:details>
+  <maml:description>
+    <maml:para>The Add-AzureProvisioningConfig cmdlet adds configuration information to a virtual machine configuration used to create a new Virtual Machine.
 Different provisioning configurations are supported including standalone Windows servers, Windows servers joined to an Active Directory domain, and Linux-based servers.
 When creating an Active Directory domain joined server, the provisioning configuration must specify the fully qualified domain name of the Active Directory domain, as well as the domain credentials of a user with permission to join the machine to the domain.</maml:para>
-	</maml:description>
-	<!-- Cmdlet syntax section-->
-	<command:syntax>
-		<command:syntaxItem>
-			<maml:name>Add-AzureProvisioningConfig</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Linux</maml:name>
-				<maml:description>
-					<maml:para>Specify to create a Linux provisioning configuration.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
-				<maml:name>VM</maml:name>
-				<maml:description>
-					<maml:para>Specifies the virtual machine object.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>CustomDataFile</maml:name>
-				<maml:description>
-					<maml:para>This parameter takes a file name as an argument. PowerShell will then base64 encode the contents of the file and send it along with the provisioning configuration information.  The file must be less than 64KB or the Azure API will not accept the request. 
+  </maml:description>
+  <!-- Cmdlet syntax section-->
+  <command:syntax>
+    <command:syntaxItem>
+      <maml:name>Add-AzureProvisioningConfig</maml:name>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>Linux</maml:name>
+        <maml:description>
+          <maml:para>Specify to create a Linux provisioning configuration.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
+        <maml:name>VM</maml:name>
+        <maml:description>
+          <maml:para>Specifies the virtual machine object.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>CustomDataFile</maml:name>
+        <maml:description>
+          <maml:para>This parameter takes a file name as an argument. PowerShell will then base64 encode the contents of the file and send it along with the provisioning configuration information.  The file must be less than 64KB or the Azure API will not accept the request. 
 
 On Windows this data ends up in %SYSTEMDRIVE%\AzureData\CustomData.bin as a binary file.  
 On Linux, this data is passed to the VM via the ovf-env.xml file, which is copied to the /var/lib/waagent directory during provisioning. The agent will also place the base-64 encoded data in /var/lib/waagent/CustomData during provisioning.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DisableGuestAgent</maml:name>
-				<maml:description>
-					<maml:para>To disable IaaS provision guest agent.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DisableSSH</maml:name>
-				<maml:description>
-					<maml:para>If specified, the virtual machine is created with SSH disabled.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>LinuxUser</maml:name>
-				<maml:description>
-					<maml:para>Specifies the Linux administrative account name to create.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>NoSSHEndpoint</maml:name>
-				<maml:description>
-					<maml:para>If specified, create the virtual machine without an SSH endpoint.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>NoSSHPassword</maml:name>
-				<maml:description>
-					<maml:para>Not Specified</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>PipelineVariable</maml:name>
-				<maml:description>
-					<maml:para>Not Specified</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>SSHKeyPairs</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHKeyPairList</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>SSHPublicKeys</maml:name>
-				<maml:description>
-					<maml:para></maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHPublicKeyList</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-		<command:syntaxItem>
-			<maml:name>Add-AzureProvisioningConfig</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>AdminUsername</maml:name>
-				<maml:description>
-					<maml:para>Specifies the Administrator account to create.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Domain</maml:name>
-				<maml:description>
-					<maml:para>Specifies the name of the domain of the account with permission to add the computer to a domain.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DomainPassword</maml:name>
-				<maml:description>
-					<maml:para>Specifies the password of the user account with permission to add the computer to a domain.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DomainUserName</maml:name>
-				<maml:description>
-					<maml:para>Specifies the name of the user account with permission to add the computer to a domain.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>JoinDomain</maml:name>
-				<maml:description>
-					<maml:para>Specifies the fully qualified domain name (FQDN) of the Windows domain to join.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
-				<maml:name>VM</maml:name>
-				<maml:description>
-					<maml:para>Specifies the virtual machine object.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Windows</maml:name>
-				<maml:description>
-					<maml:para>Specify to create a standalone Windows provisioning configuration.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>WindowsDomain</maml:name>
-				<maml:description>
-					<maml:para>Specify to create a provisioning configuration for a Windows server joined to an Active Directory domain.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Certificates</maml:name>
-				<maml:description>
-					<maml:para>Specifies a set of certificates to install in the virtual machine.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">CertificateSettingList</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>CustomDataFile</maml:name>
-				<maml:description>
-					<maml:para>This parameter takes a file name as an argument. PowerShell will then base64 encode the contents of the file and send it along with the provisioning configuration information.  The file must be less than 64KB or the Azure API will not accept the request. 
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>DisableGuestAgent</maml:name>
+        <maml:description>
+          <maml:para>To disable IaaS provision guest agent.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>DisableSSH</maml:name>
+        <maml:description>
+          <maml:para>If specified, the virtual machine is created with SSH disabled.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>LinuxUser</maml:name>
+        <maml:description>
+          <maml:para>Specifies the Linux administrative account name to create.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>NoSSHEndpoint</maml:name>
+        <maml:description>
+          <maml:para>If specified, create the virtual machine without an SSH endpoint.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>NoSSHPassword</maml:name>
+        <maml:description>
+          <maml:para>Not Specified</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>PipelineVariable</maml:name>
+        <maml:description>
+          <maml:para>Not Specified</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>SSHKeyPairs</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHKeyPairList</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>SSHPublicKeys</maml:name>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHPublicKeyList</command:parameterValue>
+      </command:parameter>
+    </command:syntaxItem>
+    <command:syntaxItem>
+      <maml:name>Add-AzureProvisioningConfig</maml:name>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>AdminUsername</maml:name>
+        <maml:description>
+          <maml:para>Specifies the Administrator account to create.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>Domain</maml:name>
+        <maml:description>
+          <maml:para>Specifies the name of the domain of the account with permission to add the computer to a domain.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>DomainPassword</maml:name>
+        <maml:description>
+          <maml:para>Specifies the password of the user account with permission to add the computer to a domain.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>DomainUserName</maml:name>
+        <maml:description>
+          <maml:para>Specifies the name of the user account with permission to add the computer to a domain.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>JoinDomain</maml:name>
+        <maml:description>
+          <maml:para>Specifies the fully qualified domain name (FQDN) of the Windows domain to join.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
+        <maml:name>VM</maml:name>
+        <maml:description>
+          <maml:para>Specifies the virtual machine object.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>Windows</maml:name>
+        <maml:description>
+          <maml:para>Specify to create a standalone Windows provisioning configuration.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>WindowsDomain</maml:name>
+        <maml:description>
+          <maml:para>Specify to create a provisioning configuration for a Windows server joined to an Active Directory domain.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>Certificates</maml:name>
+        <maml:description>
+          <maml:para>Specifies a set of certificates to install in the virtual machine.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">CertificateSettingList</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>CustomDataFile</maml:name>
+        <maml:description>
+          <maml:para>This parameter takes a file name as an argument. PowerShell will then base64 encode the contents of the file and send it along with the provisioning configuration information.  The file must be less than 64KB or the Azure API will not accept the request. 
 
 On Windows this data ends up in %SYSTEMDRIVE%\AzureData\CustomData.bin as a binary file.  
 On Linux, this data is passed to the VM via the ovf-env.xml file, which is copied to the /var/lib/waagent directory during provisioning. The agent will also place the base-64 encoded data in /var/lib/waagent/CustomData during provisioning.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DisableAutomaticUpdates</maml:name>
-				<maml:description>
-					<maml:para>If specified, the configuration will have automatic updates disabled.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DisableGuestAgent</maml:name>
-				<maml:description>
-					<maml:para>To disable IaaS provision guest agent.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DisableWinRMHttps</maml:name>
-				<maml:description>
-					<maml:para>Disables WinRM on https which is added by default.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>EnableWinRMHttp</maml:name>
-				<maml:description>
-					<maml:para>Enables WinRM over http.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>MachineObjectOU</maml:name>
-				<maml:description>
-					<maml:para>Specifies the fully qualified name of the organizational unit (OU) in which the computer account is created.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>NoExportPrivateKey</maml:name>
-				<maml:description>
-					<maml:para>Prevents the private key from being uploaded</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>NoRDPEndpoint</maml:name>
-				<maml:description>
-					<maml:para>If specified, create the virtual machine without a remote desktop endpoint.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>NoWinRMEndpoint</maml:name>
-				<maml:description>
-					<maml:para>Prevents the WinRM endpoint from being added</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Password</maml:name>
-				<maml:description>
-					<maml:para>Specifies the password of the administrator account for the role.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>PipelineVariable</maml:name>
-				<maml:description>
-					<maml:para>Not Specified</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ResetPasswordOnFirstLogon</maml:name>
-				<maml:description>
-					<maml:para>If specified, forces the user to change their password on first logon.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>TimeZone</maml:name>
-				<maml:description>
-					<maml:para>Specifies the Microsoft Time Zone value to use to set the time zone for the virtual machine. Examples are: &quot;Pacific Standard Time&quot; and &quot;Canada Central Standard Time&quot;.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>WinRMCertificate</maml:name>
-				<maml:description>
-					<maml:para>Certificate that will be associated with WinRM endpoint.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">X509Certificate2</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-				<maml:name>X509Certificates</maml:name>
-				<maml:description>
-					<maml:para>X509 certificates that will be deployed to hosted service.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="true">X509Certificate2[]</command:parameterValue>
-			</command:parameter>
-		</command:syntaxItem>
-	</command:syntax>
-	<!-- Cmdlet parameter section  -->
-	<command:parameters>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>AdminUsername</maml:name>
-			<maml:description>
-				<maml:para>Specifies the Administrator account to create.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Certificates</maml:name>
-			<maml:description>
-				<maml:para>Specifies a set of certificates to install in the virtual machine.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">CertificateSettingList</command:parameterValue>
-			<dev:type>
-				<maml:name>CertificateSettingList</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>CustomDataFile</maml:name>
-			<maml:description>
-				<maml:para>This parameter takes a file name as an argument. PowerShell will then base64 encode the contents of the file and send it along with the provisioning configuration information.  The file must be less than 64KB or the Azure API will not accept the request. 
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>DisableAutomaticUpdates</maml:name>
+        <maml:description>
+          <maml:para>If specified, the configuration will have automatic updates disabled.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>DisableGuestAgent</maml:name>
+        <maml:description>
+          <maml:para>To disable IaaS provision guest agent.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>DisableWinRMHttps</maml:name>
+        <maml:description>
+          <maml:para>Disables WinRM on https which is added by default.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>EnableWinRMHttp</maml:name>
+        <maml:description>
+          <maml:para>Enables WinRM over http.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>MachineObjectOU</maml:name>
+        <maml:description>
+          <maml:para>Specifies the fully qualified name of the organizational unit (OU) in which the computer account is created.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>NoExportPrivateKey</maml:name>
+        <maml:description>
+          <maml:para>Prevents the private key from being uploaded</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>NoRDPEndpoint</maml:name>
+        <maml:description>
+          <maml:para>If specified, create the virtual machine without a remote desktop endpoint.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>NoWinRMEndpoint</maml:name>
+        <maml:description>
+          <maml:para>Prevents the WinRM endpoint from being added</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>Password</maml:name>
+        <maml:description>
+          <maml:para>Specifies the password of the administrator account for the role.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>PipelineVariable</maml:name>
+        <maml:description>
+          <maml:para>Not Specified</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>ResetPasswordOnFirstLogon</maml:name>
+        <maml:description>
+          <maml:para>If specified, forces the user to change their password on first logon.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>TimeZone</maml:name>
+        <maml:description>
+          <maml:para>Specifies the Microsoft Time Zone value to use to set the time zone for the virtual machine. Examples are: &quot;Pacific Standard Time&quot; and &quot;Canada Central Standard Time&quot;.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>WinRMCertificate</maml:name>
+        <maml:description>
+          <maml:para>Certificate that will be associated with WinRM endpoint.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">X509Certificate2</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+        <maml:name>X509Certificates</maml:name>
+        <maml:description>
+          <maml:para>X509 certificates that will be deployed to hosted service.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="true">X509Certificate2[]</command:parameterValue>
+      </command:parameter>
+    </command:syntaxItem>
+  </command:syntax>
+  <!-- Cmdlet parameter section  -->
+  <command:parameters>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>AdminUsername</maml:name>
+      <maml:description>
+        <maml:para>Specifies the Administrator account to create.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>Certificates</maml:name>
+      <maml:description>
+        <maml:para>Specifies a set of certificates to install in the virtual machine.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">CertificateSettingList</command:parameterValue>
+      <dev:type>
+        <maml:name>CertificateSettingList</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>CustomDataFile</maml:name>
+      <maml:description>
+        <maml:para>This parameter takes a file name as an argument. PowerShell will then base64 encode the contents of the file and send it along with the provisioning configuration information.  The file must be less than 64KB or the Azure API will not accept the request. 
 
 On Windows this data ends up in %SYSTEMDRIVE%\AzureData\CustomData.bin as a binary file.  
 On Linux, this data is passed to the VM via the ovf-env.xml file, which is copied to the /var/lib/waagent directory during provisioning. The agent will also place the base-64 encoded data in /var/lib/waagent/CustomData during provisioning.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DisableAutomaticUpdates</maml:name>
-			<maml:description>
-				<maml:para>If specified, the configuration will have automatic updates disabled.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DisableGuestAgent</maml:name>
-			<maml:description>
-				<maml:para>To disable IaaS provision guest agent.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DisableSSH</maml:name>
-			<maml:description>
-				<maml:para>If specified, the virtual machine is created with SSH disabled.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DisableWinRMHttps</maml:name>
-			<maml:description>
-				<maml:para>Disables WinRM on https which is added by default.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Domain</maml:name>
-			<maml:description>
-				<maml:para>Specifies the name of the domain of the account with permission to add the computer to a domain.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DomainPassword</maml:name>
-			<maml:description>
-				<maml:para>Specifies the password of the user account with permission to add the computer to a domain.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DomainUserName</maml:name>
-			<maml:description>
-				<maml:para>Specifies the name of the user account with permission to add the computer to a domain.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>EnableWinRMHttp</maml:name>
-			<maml:description>
-				<maml:para>Enables WinRM over http.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>JoinDomain</maml:name>
-			<maml:description>
-				<maml:para>Specifies the fully qualified domain name (FQDN) of the Windows domain to join.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Linux</maml:name>
-			<maml:description>
-				<maml:para>Specify to create a Linux provisioning configuration.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>LinuxUser</maml:name>
-			<maml:description>
-				<maml:para>Specifies the Linux administrative account name to create.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>MachineObjectOU</maml:name>
-			<maml:description>
-				<maml:para>Specifies the fully qualified name of the organizational unit (OU) in which the computer account is created.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>NoExportPrivateKey</maml:name>
-			<maml:description>
-				<maml:para>Prevents the private key from being uploaded</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>NoRDPEndpoint</maml:name>
-			<maml:description>
-				<maml:para>If specified, create the virtual machine without a remote desktop endpoint.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>NoSSHEndpoint</maml:name>
-			<maml:description>
-				<maml:para>If specified, create the virtual machine without an SSH endpoint.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>NoSSHPassword</maml:name>
-			<maml:description>
-				<maml:para>Not Specified</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>NoWinRMEndpoint</maml:name>
-			<maml:description>
-				<maml:para>Prevents the WinRM endpoint from being added</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Password</maml:name>
-			<maml:description>
-				<maml:para>Specifies the password of the administrator account for the role.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>PipelineVariable</maml:name>
-			<maml:description>
-				<maml:para>Not Specified</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>ResetPasswordOnFirstLogon</maml:name>
-			<maml:description>
-				<maml:para>If specified, forces the user to change their password on first logon.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>SSHKeyPairs</maml:name>
-			<maml:description>
-				<maml:para></maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHKeyPairList</command:parameterValue>
-			<dev:type>
-				<maml:name>LinuxProvisioningConfigurationSet+SSHKeyPairList</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>SSHPublicKeys</maml:name>
-			<maml:description>
-				<maml:para></maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHPublicKeyList</command:parameterValue>
-			<dev:type>
-				<maml:name>LinuxProvisioningConfigurationSet+SSHPublicKeyList</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>TimeZone</maml:name>
-			<maml:description>
-				<maml:para>Specifies the Microsoft Time Zone value to use to set the time zone for the virtual machine. Examples are: &quot;Pacific Standard Time&quot; and &quot;Canada Central Standard Time&quot;.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
-			<maml:name>VM</maml:name>
-			<maml:description>
-				<maml:para>Specifies the virtual machine object.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
-			<dev:type>
-				<maml:name>IPersistentVM</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Windows</maml:name>
-			<maml:description>
-				<maml:para>Specify to create a standalone Windows provisioning configuration.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>WindowsDomain</maml:name>
-			<maml:description>
-				<maml:para>Specify to create a provisioning configuration for a Windows server joined to an Active Directory domain.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>WinRMCertificate</maml:name>
-			<maml:description>
-				<maml:para>Certificate that will be associated with WinRM endpoint.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">X509Certificate2</command:parameterValue>
-			<dev:type>
-				<maml:name>X509Certificate2</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-			<maml:name>X509Certificates</maml:name>
-			<maml:description>
-				<maml:para>X509 certificates that will be deployed to hosted service.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="true">X509Certificate2[]</command:parameterValue>
-			<dev:type>
-				<maml:name>X509Certificate2[]</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-	</command:parameters>
-	<!-- Input - Output section-->
-	<command:inputTypes>
-		<command:inputType>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri/>
-				<maml:description />
-			</dev:type>
-			<maml:description>
-				<maml:para>
-					<!-- description  -->
-					
-				</maml:para>
-			</maml:description>
-		</command:inputType>
-	</command:inputTypes>
-	<command:returnValues>
-		<command:returnValue>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri />
-				<maml:description />
-			</dev:type>   
-			<maml:description>
-				<maml:para>
-					<!-- description  -->
-					
-				</maml:para>
-			</maml:description> 
-		</command:returnValue>
-	</command:returnValues>
-	<!-- Error section-->
-	<command:terminatingErrors />
-	<command:nonTerminatingErrors />
-		<!-- Notes section  -->
-	<maml:alertSet>
-		<maml:title></maml:title>
-		<maml:alert>
-			<maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>DisableAutomaticUpdates</maml:name>
+      <maml:description>
+        <maml:para>If specified, the configuration will have automatic updates disabled.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>DisableGuestAgent</maml:name>
+      <maml:description>
+        <maml:para>To disable IaaS provision guest agent.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>DisableSSH</maml:name>
+      <maml:description>
+        <maml:para>If specified, the virtual machine is created with SSH disabled.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>DisableWinRMHttps</maml:name>
+      <maml:description>
+        <maml:para>Disables WinRM on https which is added by default.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>Domain</maml:name>
+      <maml:description>
+        <maml:para>Specifies the name of the domain of the account with permission to add the computer to a domain.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>DomainPassword</maml:name>
+      <maml:description>
+        <maml:para>Specifies the password of the user account with permission to add the computer to a domain.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>DomainUserName</maml:name>
+      <maml:description>
+        <maml:para>Specifies the name of the user account with permission to add the computer to a domain.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>EnableWinRMHttp</maml:name>
+      <maml:description>
+        <maml:para>Enables WinRM over http.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>JoinDomain</maml:name>
+      <maml:description>
+        <maml:para>Specifies the fully qualified domain name (FQDN) of the Windows domain to join.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>Linux</maml:name>
+      <maml:description>
+        <maml:para>Specify to create a Linux provisioning configuration.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>LinuxUser</maml:name>
+      <maml:description>
+        <maml:para>Specifies the Linux administrative account name to create.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>MachineObjectOU</maml:name>
+      <maml:description>
+        <maml:para>Specifies the fully qualified name of the organizational unit (OU) in which the computer account is created.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>NoExportPrivateKey</maml:name>
+      <maml:description>
+        <maml:para>Prevents the private key from being uploaded</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>NoRDPEndpoint</maml:name>
+      <maml:description>
+        <maml:para>If specified, create the virtual machine without a remote desktop endpoint.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>NoSSHEndpoint</maml:name>
+      <maml:description>
+        <maml:para>If specified, create the virtual machine without an SSH endpoint.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>NoSSHPassword</maml:name>
+      <maml:description>
+        <maml:para>Not Specified</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>NoWinRMEndpoint</maml:name>
+      <maml:description>
+        <maml:para>Prevents the WinRM endpoint from being added</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>Password</maml:name>
+      <maml:description>
+        <maml:para>Specifies the password of the administrator account for the role.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>PipelineVariable</maml:name>
+      <maml:description>
+        <maml:para>Not Specified</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>ResetPasswordOnFirstLogon</maml:name>
+      <maml:description>
+        <maml:para>If specified, forces the user to change their password on first logon.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>SSHKeyPairs</maml:name>
+      <maml:description>
+        <maml:para></maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHKeyPairList</command:parameterValue>
+      <dev:type>
+        <maml:name>LinuxProvisioningConfigurationSet+SSHKeyPairList</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>SSHPublicKeys</maml:name>
+      <maml:description>
+        <maml:para></maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">LinuxProvisioningConfigurationSet+SSHPublicKeyList</command:parameterValue>
+      <dev:type>
+        <maml:name>LinuxProvisioningConfigurationSet+SSHPublicKeyList</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>TimeZone</maml:name>
+      <maml:description>
+        <maml:para>Specifies the Microsoft Time Zone value to use to set the time zone for the virtual machine. Examples are: &quot;Pacific Standard Time&quot; and &quot;Canada Central Standard Time&quot;.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="named">
+      <maml:name>VM</maml:name>
+      <maml:description>
+        <maml:para>Specifies the virtual machine object.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
+      <dev:type>
+        <maml:name>IPersistentVM</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>Windows</maml:name>
+      <maml:description>
+        <maml:para>Specify to create a standalone Windows provisioning configuration.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>WindowsDomain</maml:name>
+      <maml:description>
+        <maml:para>Specify to create a provisioning configuration for a Windows server joined to an Active Directory domain.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>WinRMCertificate</maml:name>
+      <maml:description>
+        <maml:para>Certificate that will be associated with WinRM endpoint.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">X509Certificate2</command:parameterValue>
+      <dev:type>
+        <maml:name>X509Certificate2</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+      <maml:name>X509Certificates</maml:name>
+      <maml:description>
+        <maml:para>X509 certificates that will be deployed to hosted service.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="true">X509Certificate2[]</command:parameterValue>
+      <dev:type>
+        <maml:name>X509Certificate2[]</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+  </command:parameters>
+  <!-- Input - Output section-->
+  <command:inputTypes>
+    <command:inputType>
+      <dev:type>
+        <maml:name></maml:name>
+        <maml:uri/>
+        <maml:description />
+      </dev:type>
+      <maml:description>
+        <maml:para>
+          <!-- description  -->
+          
+        </maml:para>
+      </maml:description>
+    </command:inputType>
+  </command:inputTypes>
+  <command:returnValues>
+    <command:returnValue>
+      <dev:type>
+        <maml:name></maml:name>
+        <maml:uri />
+        <maml:description />
+      </dev:type>   
+      <maml:description>
+        <maml:para>
+          <!-- description  -->
+          
+        </maml:para>
+      </maml:description> 
+    </command:returnValue>
+  </command:returnValues>
+  <!-- Error section-->
+  <command:terminatingErrors />
+  <command:nonTerminatingErrors />
+    <!-- Notes section  -->
+  <maml:alertSet>
+    <maml:title></maml:title>
+    <maml:alert>
+      <maml:para>
                           
                         </maml:para>
-		</maml:alert>
-		<maml:alert>
-			<maml:para></maml:para>
-		</maml:alert>
-	</maml:alertSet>
-	<!-- Example section  --> 
-	<command:examples>
+    </maml:alert>
+    <maml:alert>
+      <maml:para></maml:para>
+    </maml:alert>
+  </maml:alertSet>
+  <!-- Example section  --> 
+  <command:examples>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 1 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 1 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName $img `
 | Add-AzureProvisioningConfig -Windows -Pass word $Password -AdminUsername PsTestAdmin `
 | New-AzureVM -ServiceName $svcName 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is enabled by default on the VM.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is enabled by default on the VM.</maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 2 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 2 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 New-AzureVMConfig -Name &quot;MyDomainVM&quot; -InstanceSize Small -ImageName $img `
 | Add-AzureProvisioningConfig -WindowsDomain -Password $Password -AdminUsername PsTestAdmin -ResetPasswordOnFirstLogon -JoinDomain &quot;contoso.com&quot; -Domain &quot;contoso&quot; -DomainUserName &quot;domainadminuser&quot; -DomainPassword &quot;domainPassword&quot; -MachineObjectOU 'OU=AzureVMs,DC=contoso,DC=com'
 | New-AzureVM -ServiceName $svcName 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new, domain-joined Windows virtual machine and adds it to the specified service.
+                <maml:para>This example creates a new, domain-joined Windows virtual machine and adds it to the specified service.
 </maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 3 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 3 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 New-AzureVMConfig -Name &quot;MyLinuxVM&quot; -InstanceSize Small -ImageName $LnxImg `
 | Add-AzureProvisioningConfig -Linux -LinuxUser $linuxUser -Password $Password `
 | New-AzureVM -ServiceName $svcName 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new Linux virtual machine and adds it to the specified service.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                <maml:para>This example creates a new Linux virtual machine and adds it to the specified service.</maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 4 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 4 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 $certs = Get-ChildItem  Cert:\CurrentUser\My
 New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName $img `
 | Add-AzureProvisioningConfig -Windows -Password $Password -AdminUsername PsTestAdmin -WinRMCertificate $certs[0] -X509Certificates $certs[1], $certs[2] `
 | New-AzureVM -ServiceName $svcName -WaitForBoot 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is enabled by default on the VM. WaitForBoot option enables to wait for VM to boot. WinRMCertificate and X509Certificates are uploaded to hosted service by New-AzureVM.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is enabled by default on the VM. WaitForBoot option enables to wait for VM to boot. WinRMCertificate and X509Certificates are uploaded to hosted service by New-AzureVM.</maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 5 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 5 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName $img `
 | Add-AzureProvisioningConfig -Windows -Password $Password -AdminUsername PsTestAdmin -EnableWinRMHttp `
 | New-AzureVM -ServiceName $svcName -WaitForBoot 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. Both WinRM Https and Http listener is enabled on the VM. WaitForBoot option enables to wait for VM to boot.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. Both WinRM Https and Http listener is enabled on the VM. WaitForBoot option enables to wait for VM to boot.</maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 6 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 6 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName $img `
 | Add-AzureProvisioningConfig -Windows -Password $Password -AdminUsername PsTestAdmin -DisableWinRMHttps `
 | New-AzureVM -ServiceName $svcName -WaitForBoot 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is not enabled on the VM. WaitForBoot option enables to wait for VM to boot.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is not enabled on the VM. WaitForBoot option enables to wait for VM to boot.</maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 7 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 7 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 $certs = Get-ChildItem  Cert:\CurrentUser\My
 New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName $img `
 | Add-AzureProvisioningConfig -Windows -Password $Password -AdminUsername PsTestAdmin -X509Certificates $certs[0], $certs[1] -NoExportPrivateKey `
 | New-AzureVM -ServiceName $svcName -WaitForBoot 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is enabled by default on the VM. WaitForBoot option enables to wait for VM to boot. WinRMCertificate and X509Certificates are uploaded to hosted service by New-AzureVM. PrivateKeys are removed from X509Certificates before uploading them.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                <maml:para>This example creates a new Windows standalone virtual machine and adds it to the specified service. WinRM Https listener is enabled by default on the VM. WaitForBoot option enables to wait for VM to boot. WinRMCertificate and X509Certificates are uploaded to hosted service by New-AzureVM. PrivateKeys are removed from X509Certificates before uploading them.</maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 8 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 8 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName $img `
 | Add-AzureProvisioningConfig -Windows -Pass word $Password -AdminUsername PsTestAdmin `
 | New-AzureVM -ServiceName $svcName -DisableGuestAgent 
                         </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This example creates a new Windows standalone virtual machine without enabling the provision guest agent and adds it to the specified service. WinRM Https listener is enabled by default on the VM.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-	</command:examples>
-	<!-- Link section  -->
-	<maml:relatedLinks>
-		<maml:navigationLink>
-			<maml:linkText></maml:linkText>
-			<maml:uri/>
-		</maml:navigationLink>
-	</maml:relatedLinks>
+                <maml:para>This example creates a new Windows standalone virtual machine without enabling the provision guest agent and adds it to the specified service. WinRM Https listener is enabled by default on the VM.</maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
+  </command:examples>
+  <!-- Link section  -->
+  <maml:relatedLinks>
+    <maml:navigationLink>
+      <maml:linkText></maml:linkText>
+      <maml:uri/>
+    </maml:navigationLink>
+  </maml:relatedLinks>
 </command:command>
 
 
@@ -10916,7 +10916,7 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
     <command:details>
       <command:name>
                    Remove-AzureDataDisk
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Removes a data disk from a virtual machine object.</maml:para>
       </maml:description>
@@ -11051,8 +11051,8 @@ New-AzureVMConfig -Name &quot;MyNonDomainVM&quot; -InstanceSize Small -ImageName
     <command:examples>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 1 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 1 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -11080,8 +11080,8 @@ Get-AzureVM -ServiceName MyDemoService01 -Name MyDemoVM01 | Remove-AzureDataDisk
       </command:example>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 2 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 2 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -12068,8 +12068,8 @@ This command gets the virtual machine object with the name "MyDemoVM01" running 
       </command:example>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 2 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 2 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -12127,7 +12127,7 @@ Remove-AzureVM -ServiceName "MySvc1" -Name "MyVM" -DeleteVHD                    
     <command:details>
       <command:name>
                    Remove-AzureVMImage
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Removes an OS or VM image from the Image Repository.</maml:para>
       </maml:description>
@@ -12242,8 +12242,8 @@ Remove-AzureVM -ServiceName "MySvc1" -Name "MyVM" -DeleteVHD                    
     <command:examples>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 1 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 1 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -12271,8 +12271,8 @@ Remove-AzureVMImage -ImageName MyOSImage                        </dev:code>
       </command:example>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 2 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 2 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -12300,8 +12300,8 @@ Remove-AzureVMImage -ImageName MyOSImage -DeleteVHD                        </dev
       </command:example>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 3 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 3 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -19227,16 +19227,16 @@ Configuration for Microsoft Azure diagnostics. The schema is:
       </xs:restriction>
     </xs:simpleType>
 
-	<xs:simpleType name="guidType">
-	  <xs:annotation>
+  <xs:simpleType name="guidType">
+    <xs:annotation>
           <xs:documentation>
             A GUID. Brackets (and only brakets) before and/or after are ignored. e.g. {12345678-1234-1234-1234-123456789abc}, {12345678-1234-1234-1234-123456789abc, 12345678-1234-1234-1234-123456789abc} and 12345678-1234-1234-1234-123456789abc are valid.
           </xs:documentation>
       </xs:annotation>
-	  <xs:restriction base="xs:string">
-	    <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
-	  </xs:restriction>
-	</xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:attributeGroup name="BasicConfiguration">
     <xs:attribute name="scheduledTransferPeriod" type="PositiveDuration" use="optional" default="PT0S">
@@ -19870,16 +19870,16 @@ Configuration for Microsoft Azure diagnostics. The schema is:
       </xs:restriction>
     </xs:simpleType>
 
-	<xs:simpleType name="guidType">
-	  <xs:annotation>
+  <xs:simpleType name="guidType">
+    <xs:annotation>
           <xs:documentation>
             A GUID. Brackets (and only brakets) before and/or after are ignored. e.g. {12345678-1234-1234-1234-123456789abc}, {12345678-1234-1234-1234-123456789abc, 12345678-1234-1234-1234-123456789abc} and 12345678-1234-1234-1234-123456789abc are valid.
           </xs:documentation>
       </xs:annotation>
-	  <xs:restriction base="xs:string">
-	    <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
-	  </xs:restriction>
-	</xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:attributeGroup name="BasicConfiguration">
     <xs:attribute name="scheduledTransferPeriod" type="PositiveDuration" use="optional" default="PT0S">
@@ -20513,16 +20513,16 @@ Configuration for Microsoft Azure diagnostics. The schema is:
       </xs:restriction>
     </xs:simpleType>
 
-	<xs:simpleType name="guidType">
-	  <xs:annotation>
+  <xs:simpleType name="guidType">
+    <xs:annotation>
           <xs:documentation>
             A GUID. Brackets (and only brakets) before and/or after are ignored. e.g. {12345678-1234-1234-1234-123456789abc}, {12345678-1234-1234-1234-123456789abc, 12345678-1234-1234-1234-123456789abc} and 12345678-1234-1234-1234-123456789abc are valid.
           </xs:documentation>
       </xs:annotation>
-	  <xs:restriction base="xs:string">
-	    <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
-	  </xs:restriction>
-	</xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:attributeGroup name="BasicConfiguration">
     <xs:attribute name="scheduledTransferPeriod" type="PositiveDuration" use="optional" default="PT0S">
@@ -22196,16 +22196,16 @@ Configuration for Microsoft Azure diagnostics. The schema is:
       </xs:restriction>
     </xs:simpleType>
 
-	<xs:simpleType name="guidType">
-	  <xs:annotation>
+  <xs:simpleType name="guidType">
+    <xs:annotation>
           <xs:documentation>
             A GUID. Brackets (and only brakets) before and/or after are ignored. e.g. {12345678-1234-1234-1234-123456789abc}, {12345678-1234-1234-1234-123456789abc, 12345678-1234-1234-1234-123456789abc} and 12345678-1234-1234-1234-123456789abc are valid.
           </xs:documentation>
       </xs:annotation>
-	  <xs:restriction base="xs:string">
-	    <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
-	  </xs:restriction>
-	</xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:attributeGroup name="BasicConfiguration">
     <xs:attribute name="scheduledTransferPeriod" type="PositiveDuration" use="optional" default="PT0S">
@@ -22853,16 +22853,16 @@ Configuration for Microsoft Azure diagnostics. The schema is:
       </xs:restriction>
     </xs:simpleType>
 
-	<xs:simpleType name="guidType">
-	  <xs:annotation>
+  <xs:simpleType name="guidType">
+    <xs:annotation>
           <xs:documentation>
             A GUID. Brackets (and only brakets) before and/or after are ignored. e.g. {12345678-1234-1234-1234-123456789abc}, {12345678-1234-1234-1234-123456789abc, 12345678-1234-1234-1234-123456789abc} and 12345678-1234-1234-1234-123456789abc are valid.
           </xs:documentation>
       </xs:annotation>
-	  <xs:restriction base="xs:string">
-	    <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
-	  </xs:restriction>
-	</xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:attributeGroup name="BasicConfiguration">
     <xs:attribute name="scheduledTransferPeriod" type="PositiveDuration" use="optional" default="PT0S">
@@ -23496,16 +23496,16 @@ Configuration for Microsoft Azure diagnostics. The schema is:
       </xs:restriction>
     </xs:simpleType>
 
-	<xs:simpleType name="guidType">
-	  <xs:annotation>
+  <xs:simpleType name="guidType">
+    <xs:annotation>
           <xs:documentation>
             A GUID. Brackets (and only brakets) before and/or after are ignored. e.g. {12345678-1234-1234-1234-123456789abc}, {12345678-1234-1234-1234-123456789abc, 12345678-1234-1234-1234-123456789abc} and 12345678-1234-1234-1234-123456789abc are valid.
           </xs:documentation>
       </xs:annotation>
-	  <xs:restriction base="xs:string">
-	    <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
-	  </xs:restriction>
-	</xs:simpleType>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:attributeGroup name="BasicConfiguration">
     <xs:attribute name="scheduledTransferPeriod" type="PositiveDuration" use="optional" default="PT0S">
@@ -25674,7 +25674,7 @@ C:\PS&gt; Get-AzureVM -ServiceName "MyService" -Name "MyVM" | Set-AzureEndpoint 
     <command:details>
       <command:name>
                    Set-AzureServiceADDomainExtension
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Set AD Domain Extension for Cloud Service</maml:para>
       </maml:description>
@@ -26359,7 +26359,7 @@ C:\PS&gt; Get-AzureVM -ServiceName "MyService" -Name "MyVM" | Set-AzureEndpoint 
     <command:details>
       <command:name>
                    New-AzureServiceADDomainExtensionConfig
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>This cmdlet generates the configuration for AD Domain extension for cloud services.</maml:para>
       </maml:description>
@@ -26977,8 +26977,8 @@ C:\PS&gt; Get-AzureVM -ServiceName "MyService" -Name "MyVM" | Set-AzureEndpoint 
     <command:examples>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 1 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 1 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -27254,7 +27254,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:details>
       <command:name>
                    Test-AzureStaticVNetIP
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Test the availability of a static virtual network IP address, and get a list of suggestion if the queried one not available.</maml:para>
       </maml:description>
@@ -27382,7 +27382,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:details>
       <command:name>
                    Get-AzureStaticVNetIP
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Get the static VNet IP address information from a VM object, if any.</maml:para>
       </maml:description>
@@ -27490,7 +27490,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:details>
       <command:name>
                    Remove-AzureStaticVNetIP
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Remove the static VNet IP address information from a VM object, if any.</maml:para>
       </maml:description>
@@ -32521,7 +32521,7 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:details>
       <command:name>
                    Remove-AzureVMCustomScriptExtension
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Remove Azure VM Custom Script Extension from a VM.</maml:para>
       </maml:description>
@@ -32617,8 +32617,8 @@ New-AzureDeployment -ServiceName $cloudSvc -Slot Production -Package $pkg -Confi
     <command:examples>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 1 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 1 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -33193,7 +33193,7 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
     <command:details>
       <command:name>
                    Set-AzureVNetGatewayKey
-		</command:name>
+    </command:name>
       <maml:description>
         <maml:para>Sets the IPsec/IKE pre-shared key for the cross premises site-to-site VPN tunnel between the Azure virtual network and your on-premises local site.</maml:para>
       </maml:description>
@@ -33329,8 +33329,8 @@ Remove-AzureVMCustomScriptExtension -VM $vm;                        </dev:code>
     <command:examples>
       <command:example>
         <maml:title>
-				-------------------------- EXAMPLE 1 --------------------------
-			</maml:title>
+        -------------------------- EXAMPLE 1 --------------------------
+      </maml:title>
         <maml:introduction>
           <maml:para>C:\PS&gt;</maml:para>
         </maml:introduction>
@@ -35859,42 +35859,42 @@ The default value is Production.</maml:para>
       <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true(ByPropertyName)" position="2" aliases="none">
         <maml:name>AntimalwareConfiguration</maml:name>
         <maml:description>
-			<maml:para>Specifies a string object that contains the Microsoft Antimalware configuration. This object must not be $Null or empty. Do not specify this parameter if you specify the AntimalwareConfigFile parameter. The configuration object must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
+      <maml:para>Specifies a string object that contains the Microsoft Antimalware configuration. This object must not be $Null or empty. Do not specify this parameter if you specify the AntimalwareConfigFile parameter. The configuration object must include, at a minimum, the following content to enable the Microsoft Antimalware extension: 
 
-	{ &quot;AntimalwareEnabled&quot;: true }</maml:para>
-			<maml:para>Microsoft Antimalware JSON configuration sample:
+  { &quot;AntimalwareEnabled&quot;: true }</maml:para>
+      <maml:para>Microsoft Antimalware JSON configuration sample:
 
-			{
-				&quot;AntimalwareEnabled&quot;: true,
-				&quot;RealtimeProtectionEnabled&quot;: true,
-				&quot;ScheduledScanSettings&quot;: {
-					&quot;isEnabled&quot;: true,
-					&quot;day&quot;: 1,
-					&quot;time&quot;: 120,
-					&quot;scanType&quot;: &quot;Full&quot;
-				},
-				&quot;Exclusions&quot;: {
-					&quot;Extensions&quot;: &quot;.ext1;.ext2&quot;,
-					&quot;Paths&quot;: &quot;c:\\excluded-path-1;c:\\excluded-path-2&quot;,
-					&quot;Processes&quot;: &quot;excludedproc1.exe;excludedproc2.exe&quot;
-				}
-			}
+      {
+        &quot;AntimalwareEnabled&quot;: true,
+        &quot;RealtimeProtectionEnabled&quot;: true,
+        &quot;ScheduledScanSettings&quot;: {
+          &quot;isEnabled&quot;: true,
+          &quot;day&quot;: 1,
+          &quot;time&quot;: 120,
+          &quot;scanType&quot;: &quot;Full&quot;
+        },
+        &quot;Exclusions&quot;: {
+          &quot;Extensions&quot;: &quot;.ext1;.ext2&quot;,
+          &quot;Paths&quot;: &quot;c:\\excluded-path-1;c:\\excluded-path-2&quot;,
+          &quot;Processes&quot;: &quot;excludedproc1.exe;excludedproc2.exe&quot;
+        }
+      }
 
-			Notes:
-			AntimalwareEnabled is a required parameter. Values:  true= Enable. false= Error out as false is not a supported value
+      Notes:
+      AntimalwareEnabled is a required parameter. Values:  true= Enable. false= Error out as false is not a supported value
 
-			RealtimeProtectionEnabled: true/false.   true = Enable. false = Disable. Default is true
+      RealtimeProtectionEnabled: true/false.   true = Enable. false = Disable. Default is true
 
-			ScheduledScanSettings:  
-			  isEnabled=true/false
-			  day=0-8 (0-daily, 1-Sunday, 2-Monday, ...., 7-Saturday, 8-Disabled)
-			  time=0-1440 (measured in minutes after midnight - 60-&gt;1AM, 120 -&gt; 2AM, ... )
-			  scanType=&quot;Quick&quot; or &quot;Full&quot; (Default is Quick)
-			  Note: If isEnabled=true is the only setting provided, the following defaults are set: day=7 (Saturday), time=120 (2 AM), scanType=&quot;Quick&quot; 
+      ScheduledScanSettings:  
+        isEnabled=true/false
+        day=0-8 (0-daily, 1-Sunday, 2-Monday, ...., 7-Saturday, 8-Disabled)
+        time=0-1440 (measured in minutes after midnight - 60-&gt;1AM, 120 -&gt; 2AM, ... )
+        scanType=&quot;Quick&quot; or &quot;Full&quot; (Default is Quick)
+        Note: If isEnabled=true is the only setting provided, the following defaults are set: day=7 (Saturday), time=120 (2 AM), scanType=&quot;Quick&quot; 
 
-			Exclusions:
-			Multiple exclusions in the same list are specified by using semicolon delimiters.
-			If no exclusions are specified, then the existing exclusions, if any, are overwritten by blank on the system.</maml:para>
+      Exclusions:
+      Multiple exclusions in the same list are specified by using semicolon delimiters.
+      If no exclusions are specified, then the existing exclusions, if any, are overwritten by blank on the system.</maml:para>
 
         </maml:description>
         <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
@@ -36212,12 +36212,12 @@ The default value is Production.</maml:para>
             <command:parameterValue required="false" variableLength="false">OFF</command:parameterValue>
           </command:parameterValueGroup>
         </command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-		<maml:name>NoConfig</maml:name>
-		<maml:description>
-			<maml:para>To set monitoring on or off when no update to the configuration is needed, the NoConfig parameter may be specified.</maml:para>
-		</maml:description>
-		</command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+    <maml:name>NoConfig</maml:name>
+    <maml:description>
+      <maml:para>To set monitoring on or off when no update to the configuration is needed, the NoConfig parameter may be specified.</maml:para>
+    </maml:description>
+    </command:parameter>
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true(ByPropertyName)" position="6" aliases="none">
           <maml:name>StorageContext</maml:name>
           <maml:description>
@@ -37967,358 +37967,358 @@ PS C:\&gt; Set-AzureServiceAntimalwareExtension -ServiceName "ContosoService03" 
     </maml:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
-	<command:details>
-		<command:name>
+  <command:details>
+    <command:name>
                    Set-AzureVMDscExtension
-		</command:name>
-		<maml:description>
-			<maml:para>Configure the Windows PowerShell Desired State Configuration extension on a VM.</maml:para>
-		</maml:description>
-		<maml:copyright>
-			<maml:para></maml:para>
-		</maml:copyright>
-		<command:verb>Set</command:verb>
-		<command:noun>AzureVMDscExtension</command:noun>
-		<dev:version></dev:version>
-	</command:details>
-	<maml:description>
-		<maml:para>Configure the Windows PowerShell Desired State Configuration extension on a VM.</maml:para>
-	</maml:description>
-	<!-- Cmdlet syntax section-->
-	<command:syntax>
-		<command:syntaxItem>
-			<maml:name>Set-AzureVMDscExtension</maml:name>
-			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
-				<maml:name>VM</maml:name>
-				<maml:description>
-					<maml:para>The persistent VM object.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ConfigurationArchive</maml:name>
-				<maml:description>
-					<maml:para>The name of the configuration package (.zip file) that was previously uploaded by Publish-AzureVMDscConfiguration. This parameter must specify only the name of the file, without any path.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>ConfigurationArgument</maml:name>
-				<maml:description>
-					<maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.
+    </command:name>
+    <maml:description>
+      <maml:para>Configure the Windows PowerShell Desired State Configuration extension on a VM.</maml:para>
+    </maml:description>
+    <maml:copyright>
+      <maml:para></maml:para>
+    </maml:copyright>
+    <command:verb>Set</command:verb>
+    <command:noun>AzureVMDscExtension</command:noun>
+    <dev:version></dev:version>
+  </command:details>
+  <maml:description>
+    <maml:para>Configure the Windows PowerShell Desired State Configuration extension on a VM.</maml:para>
+  </maml:description>
+  <!-- Cmdlet syntax section-->
+  <command:syntax>
+    <command:syntaxItem>
+      <maml:name>Set-AzureVMDscExtension</maml:name>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <maml:name>VM</maml:name>
+        <maml:description>
+          <maml:para>The persistent VM object.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>ConfigurationArchive</maml:name>
+        <maml:description>
+          <maml:para>The name of the configuration package (.zip file) that was previously uploaded by Publish-AzureVMDscConfiguration. This parameter must specify only the name of the file, without any path.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>ConfigurationArgument</maml:name>
+        <maml:description>
+          <maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.
   Supported types for values include: primitive types, string, hashtable, array, PSCredential.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">hashtable</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ConfigurationDataPath</maml:name>
-				<maml:description>
-					<maml:para>The path to a .psd1 file that specifies the data for the configuration function. This file must contain a hashtable as described in http://technet.microsoft.com/en-us/library/dn249925.aspx.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ConfigurationName</maml:name>
-				<maml:description>
-					<maml:para>Name of the configuration script or module that will be invoked by the DSC Extension. 
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">hashtable</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>ConfigurationDataPath</maml:name>
+        <maml:description>
+          <maml:para>The path to a .psd1 file that specifies the data for the configuration function. This file must contain a hashtable as described in http://technet.microsoft.com/en-us/library/dn249925.aspx.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>ConfigurationName</maml:name>
+        <maml:description>
+          <maml:para>Name of the configuration script or module that will be invoked by the DSC Extension. 
 
 The value of this parameter  must be the name of one of the configurations functions contained in the scripts or modules packaged in the ConfigurationArchive.
 
 If omitted, this parameter will default to the name of the file given by the ConfigurationArchive parameter, excluding any extension, for example if ConfigurationArchive is &quot;SalesWebSite.ps1.zip&quot;, the default value for ConfigurationName will be &quot;SalesWebSite&quot;.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>ContainerName</maml:name>
-				<maml:description>
-					<maml:para>Name of the Azure Storage Container where the ConfigurationArchive is located. </maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>Force</maml:name>
-				<maml:description>
-					<maml:para>By default Set-AzureVMDscExtension will not overwrite any existing blobs. Use -Force to overwrite them.</maml:para>
-				</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>ReferenceName</maml:name>
-				<maml:description>
-					<maml:para>The Extension Reference Name</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>StorageContext</maml:name>
-				<maml:description>
-					<maml:para>The Azure Storage Context that provides the security settings used to access the configuration script. This context should provide read access  to the container specified by ContainerName.
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>ContainerName</maml:name>
+        <maml:description>
+          <maml:para>Name of the Azure Storage Container where the ConfigurationArchive is located. </maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>Force</maml:name>
+        <maml:description>
+          <maml:para>By default Set-AzureVMDscExtension will not overwrite any existing blobs. Use -Force to overwrite them.</maml:para>
+        </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>ReferenceName</maml:name>
+        <maml:description>
+          <maml:para>The Extension Reference Name</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+        <maml:name>StorageContext</maml:name>
+        <maml:description>
+          <maml:para>The Azure Storage Context that provides the security settings used to access the configuration script. This context should provide read access  to the container specified by ContainerName.
 
 </maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">AzureStorageContext</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>StorageEndpointSuffix</maml:name>
-				<maml:description>
-					<maml:para>The DNS endpoint suffix for all storage services, e.g. &quot;core.windows.net&quot;.</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-				<maml:name>Version</maml:name>
-				<maml:description>
-					<maml:para>The specific version of the DSC Extension to use. If not given, it will default to &quot;1.*&quot;</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-   			 <maml:name>Confirm</maml:name>
-    			<maml:description>
-				<maml:para>Prompts you for confirmation before executing the command.</maml:para>
-    			</maml:description>
-			</command:parameter>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-   			 <maml:name>WhatIf</maml:name>
-    			<maml:description>
-				<maml:para>Describes what would happen if you executed the command without actually executing the command.</maml:para>
-    			</maml:description>
-			</command:parameter>
-		</command:syntaxItem>
-	</command:syntax>
-	<!-- Cmdlet parameter section  -->
-	<command:parameters>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>ConfigurationArchive</maml:name>
-			<maml:description>
-				<maml:para>The name of the configuration package (.zip file) that was previously uploaded by Publish-AzureVMDscConfiguration. This parameter must specify only the name of the file, without any path.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-			<maml:name>ConfigurationArgument</maml:name>
-			<maml:description>
-				<maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">AzureStorageContext</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>StorageEndpointSuffix</maml:name>
+        <maml:description>
+          <maml:para>The DNS endpoint suffix for all storage services, e.g. &quot;core.windows.net&quot;.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Version</maml:name>
+        <maml:description>
+          <maml:para>The specific version of the DSC Extension to use. If not given, it will default to &quot;1.*&quot;</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+         <maml:name>Confirm</maml:name>
+          <maml:description>
+        <maml:para>Prompts you for confirmation before executing the command.</maml:para>
+          </maml:description>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+         <maml:name>WhatIf</maml:name>
+          <maml:description>
+        <maml:para>Describes what would happen if you executed the command without actually executing the command.</maml:para>
+          </maml:description>
+      </command:parameter>
+    </command:syntaxItem>
+  </command:syntax>
+  <!-- Cmdlet parameter section  -->
+  <command:parameters>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>ConfigurationArchive</maml:name>
+      <maml:description>
+        <maml:para>The name of the configuration package (.zip file) that was previously uploaded by Publish-AzureVMDscConfiguration. This parameter must specify only the name of the file, without any path.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+      <maml:name>ConfigurationArgument</maml:name>
+      <maml:description>
+        <maml:para>A hashtable specifying the arguments to the configuration function. The keys correspond to the parameter names and the values to the parameter values.
   Supported types for values include: primitive types, string, hashtable, array, PSCredential.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">hashtable</command:parameterValue>
-			<dev:type>
-				<maml:name>hashtable</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>ConfigurationDataPath</maml:name>
-			<maml:description>
-				<maml:para>The path to a .psd1 file that specifies the data for the configuration function. This file must contain a hashtable as described in http://technet.microsoft.com/en-us/library/dn249925.aspx.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>ConfigurationName</maml:name>
-			<maml:description>
-				<maml:para>Name of the configuration script or module that will be invoked by the DSC Extension. 
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">hashtable</command:parameterValue>
+      <dev:type>
+        <maml:name>hashtable</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>ConfigurationDataPath</maml:name>
+      <maml:description>
+        <maml:para>The path to a .psd1 file that specifies the data for the configuration function. This file must contain a hashtable as described in http://technet.microsoft.com/en-us/library/dn249925.aspx.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>ConfigurationName</maml:name>
+      <maml:description>
+        <maml:para>Name of the configuration script or module that will be invoked by the DSC Extension. 
 
 The value of this parameter  must be the name of one of the configurations functions contained in the scripts or modules packaged in the ConfigurationArchive.
 
 If omitted, this parameter will default to the name of the file given by the ConfigurationArchive parameter, excluding any extension, for example if ConfigurationArchive is &quot;SalesWebSite.ps1.zip&quot;, the default value for ConfigurationName will be &quot;SalesWebSite&quot;.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>ContainerName</maml:name>
-			<maml:description>
-				<maml:para>Name of the Azure Storage Container where the ConfigurationArchive is located. </maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue>WindowsPowerShellDSC</dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>Force</maml:name>
-			<maml:description>
-				<maml:para>By default Set-AzureVMDscExtension will not overwrite any existing blobs. Use -Force to overwrite them.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-			<maml:name>ReferenceName</maml:name>
-			<maml:description>
-				<maml:para>The Extension Reference Name</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>StorageContext</maml:name>
-			<maml:description>
-				<maml:para>The Azure Storage Context that provides the security settings used to access the configuration script. This context should provide read access  to the container specified by ContainerName.
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>ContainerName</maml:name>
+      <maml:description>
+        <maml:para>Name of the Azure Storage Container where the ConfigurationArchive is located. </maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue>WindowsPowerShellDSC</dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>Force</maml:name>
+      <maml:description>
+        <maml:para>By default Set-AzureVMDscExtension will not overwrite any existing blobs. Use -Force to overwrite them.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      <dev:type>
+        <maml:name>SwitchParameter</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+      <maml:name>ReferenceName</maml:name>
+      <maml:description>
+        <maml:para>The Extension Reference Name</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+      <maml:name>StorageContext</maml:name>
+      <maml:description>
+        <maml:para>The Azure Storage Context that provides the security settings used to access the configuration script. This context should provide read access  to the container specified by ContainerName.
 
 </maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">AzureStorageContext</command:parameterValue>
-			<dev:type>
-				<maml:name>AzureStorageContext</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-			<maml:name>StorageEndpointSuffix</maml:name>
-			<maml:description>
-				<maml:para>The DNS endpoint suffix for all storage services, e.g. &quot;core.windows.net&quot;.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-			<maml:name>Version</maml:name>
-			<maml:description>
-				<maml:para>The specific version of the DSC Extension to use. If not given, it will default to &quot;1.*&quot;</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-			<dev:type>
-				<maml:name>string</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue>1.*</dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
-			<maml:name>VM</maml:name>
-			<maml:description>
-				<maml:para>The persistent VM object.</maml:para>
-								
-			</maml:description>
-			<command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
-			<dev:type>
-				<maml:name>IPersistentVM</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-   			 <maml:name>Confirm</maml:name>
-    			<maml:description>
-				<maml:para>Prompts you for confirmation before executing the command.</maml:para>
-    			</maml:description>
-    			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>	
-				<dev:type>
-  				<maml:name>SwitchParameter</maml:name> 
-					<maml:uri /> 
-					</dev:type>
- 			<dev:defaultValue /> 
-			</command:parameter>
-			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
-   			 <maml:name>WhatIf</maml:name>
-    			<maml:description>
-				<maml:para>Describes what would happen if you executed the command without actually executing the command.</maml:para>
-    			</maml:description>
-    			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>	
-				<dev:type>
-  				<maml:name>SwitchParameter</maml:name> 
-					<maml:uri /> 
-					</dev:type>
- 			<dev:defaultValue /> 
-			</command:parameter>
-	</command:parameters>
-	<!-- Input - Output section-->
-	<command:inputTypes>
-		<command:inputType>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri/>
-				<maml:description />
-			</dev:type>
-			<maml:description>
-				<maml:para>
-					<!-- description  -->
-					
-				</maml:para>
-			</maml:description>
-		</command:inputType>
-	</command:inputTypes>
-	<command:returnValues>
-		<command:returnValue>
-			<dev:type>
-				<maml:name></maml:name>
-				<maml:uri />
-				<maml:description />
-			</dev:type>   
-			<maml:description>
-				<maml:para>
-					<!-- description  -->
-					
-				</maml:para>
-			</maml:description> 
-		</command:returnValue>
-	</command:returnValues>
-	<!-- Error section-->
-	<command:terminatingErrors />
-	<command:nonTerminatingErrors />
-		<!-- Notes section  -->
-	<maml:alertSet>
-		<maml:title></maml:title>
-		<maml:alert>
-			<maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">AzureStorageContext</command:parameterValue>
+      <dev:type>
+        <maml:name>AzureStorageContext</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+      <maml:name>StorageEndpointSuffix</maml:name>
+      <maml:description>
+        <maml:para>The DNS endpoint suffix for all storage services, e.g. &quot;core.windows.net&quot;.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+      <maml:name>Version</maml:name>
+      <maml:description>
+        <maml:para>The specific version of the DSC Extension to use. If not given, it will default to &quot;1.*&quot;</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+      <dev:type>
+        <maml:name>string</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue>1.*</dev:defaultValue>
+    </command:parameter>
+    <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+      <maml:name>VM</maml:name>
+      <maml:description>
+        <maml:para>The persistent VM object.</maml:para>
+                
+      </maml:description>
+      <command:parameterValue required="true" variableLength="false">IPersistentVM</command:parameterValue>
+      <dev:type>
+        <maml:name>IPersistentVM</maml:name>
+        <maml:uri/>
+      </dev:type>
+      <dev:defaultValue></dev:defaultValue>
+    </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+         <maml:name>Confirm</maml:name>
+          <maml:description>
+        <maml:para>Prompts you for confirmation before executing the command.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>  
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name> 
+          <maml:uri /> 
+          </dev:type>
+      <dev:defaultValue /> 
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="false" position="named">
+         <maml:name>WhatIf</maml:name>
+          <maml:description>
+        <maml:para>Describes what would happen if you executed the command without actually executing the command.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>  
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name> 
+          <maml:uri /> 
+          </dev:type>
+      <dev:defaultValue /> 
+      </command:parameter>
+  </command:parameters>
+  <!-- Input - Output section-->
+  <command:inputTypes>
+    <command:inputType>
+      <dev:type>
+        <maml:name></maml:name>
+        <maml:uri/>
+        <maml:description />
+      </dev:type>
+      <maml:description>
+        <maml:para>
+          <!-- description  -->
+          
+        </maml:para>
+      </maml:description>
+    </command:inputType>
+  </command:inputTypes>
+  <command:returnValues>
+    <command:returnValue>
+      <dev:type>
+        <maml:name></maml:name>
+        <maml:uri />
+        <maml:description />
+      </dev:type>   
+      <maml:description>
+        <maml:para>
+          <!-- description  -->
+          
+        </maml:para>
+      </maml:description> 
+    </command:returnValue>
+  </command:returnValues>
+  <!-- Error section-->
+  <command:terminatingErrors />
+  <command:nonTerminatingErrors />
+    <!-- Notes section  -->
+  <maml:alertSet>
+    <maml:title></maml:title>
+    <maml:alert>
+      <maml:para>
                           
                         </maml:para>
-		</maml:alert>
-		<maml:alert>
-			<maml:para></maml:para>
-		</maml:alert>
-	</maml:alertSet>
-	<!-- Example section  --> 
-	<command:examples>
+    </maml:alert>
+    <maml:alert>
+      <maml:para></maml:para>
+    </maml:alert>
+  </maml:alertSet>
+  <!-- Example section  --> 
+  <command:examples>
 
-		<command:example>
-			<maml:title>
-				-------------------------- EXAMPLE 1 --------------------------
-			</maml:title> 
-			<maml:introduction>
-				<maml:para>C:\PS&gt;</maml:para>
-			</maml:introduction> 
-  			<dev:code>
+    <command:example>
+      <maml:title>
+        -------------------------- EXAMPLE 1 --------------------------
+      </maml:title> 
+      <maml:introduction>
+        <maml:para>C:\PS&gt;</maml:para>
+      </maml:introduction> 
+        <dev:code>
 Set-AzureVMDscExtension -VM $vm -ConfigurationArchive MyConfiguration.ps1.zip  -ConfigurationName MyConfiguration -ConfigurationArgument @{ Path = 'C:\MyDirectory' }
 
 DeploymentName              : my-vm-svc
@@ -38345,25 +38345,25 @@ ServiceName                 : my-vm-svc
 OperationDescription        : Get-AzureVM
 OperationId                 : a0217a7af900c1f8a212299a3333cdbd6
 OperationStatus             : OK                        </dev:code>
-       			<dev:remarks>
+            <dev:remarks>
                                 <maml:para>Description</maml:para>
                                 <maml:para>-----------</maml:para>
-  			        <maml:para>This command configures the DSC extension on a VM. 
+                <maml:para>This command configures the DSC extension on a VM. 
 
 The &quot;MyConfiguration.ps1.zip&quot; package must have been previously uploaded to Azure storage using the Publish-AzureVMDscConfiguration command and includes the &quot;MyConfiguration.ps1&quot; script and the modules it depends on.
 
 The &quot;MyConfiguration&quot; argument indicates the specific DSC configuration within the script to execute. The -ConfigurationArgument parameter specifies a hashtable with the arguments that will be passed to the configuration function.</maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-	                        <maml:para></maml:para>
-  			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText></command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+                          <maml:para></maml:para>
+        </dev:remarks>
+      <command:commandLines>
+        <command:commandLine>
+          <command:commandText></command:commandText>
+        </command:commandLine>
+      </command:commandLines>
+    </command:example>
     <command:example>
         <maml:title>
           -------------------------- EXAMPLE 2 --------------------------
@@ -38418,14 +38418,14 @@ The &quot;MyConfiguration&quot; argument indicates the specific DSC configuratio
           </command:commandLine>
         </command:commandLines>
       </command:example>
-	</command:examples>
-	<!-- Link section  -->
-	<maml:relatedLinks>
-		<maml:navigationLink>
-			<maml:linkText></maml:linkText>
-			<maml:uri/>
-		</maml:navigationLink>
-	</maml:relatedLinks>
+  </command:examples>
+  <!-- Link section  -->
+  <maml:relatedLinks>
+    <maml:navigationLink>
+      <maml:linkText></maml:linkText>
+      <maml:uri/>
+    </maml:navigationLink>
+  </maml:relatedLinks>
 </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
     <command:details>
