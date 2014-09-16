@@ -20,9 +20,12 @@ function Test-GetNonExistingDataFactory
 {	
     $dfname = Get-DataFactoryName
     $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
     
     # Test
-    Assert-ThrowsContains { Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname } "ResourceNotFound"
+    Assert-ThrowsContains { Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname } "ResourceNotFound"    
 }
 
 <#
@@ -34,11 +37,14 @@ function Test-CreateDataFactory
 {
     $dfname = Get-DataFactoryName
     $rgname = Get-ResourceGroupName
-    $location = Get-ProviderLocation DataFactoryManagement
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
     
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+
     try
     {
-        $actual = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $location -Force
+        $actual = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
         $expected = Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname
 
         Assert-AreEqual $expected.ResourceGroupName $expected.ResourceGroupName

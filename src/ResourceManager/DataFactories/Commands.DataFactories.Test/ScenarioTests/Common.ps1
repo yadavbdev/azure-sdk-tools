@@ -18,7 +18,7 @@ Gets valid resource group name
 #>
 function Get-ResourceGroupName
 {
-    return "mdw"
+    return getAssetName
 }
 
 <#

@@ -163,7 +163,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             {
                 PSDataFactory dataFactory = GetDataFactory(resourceGroupName, dataFactoryName);
 
-                return dataFactory != null;
+                return true;
             }
             catch (CloudException e)
             {
