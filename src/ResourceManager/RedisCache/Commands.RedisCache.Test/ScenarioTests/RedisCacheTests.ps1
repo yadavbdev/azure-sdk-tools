@@ -52,7 +52,7 @@ function Test-RedisCache
     }
 
 	# Updating Cache
-	$cacheUpdated = New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Basic -MaxMemoryPolicy AllKeysLRU -Force
+	$cacheUpdated = Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU
     
     Assert-AreEqual $cacheName $cacheUpdated.Name
     Assert-AreEqual $location $cacheUpdated.Location
@@ -133,4 +133,37 @@ function Test-RedisCache
 
     # Delete cache
     Assert-True {Remove-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Force -PassThru} "Remove cache failed."
+}
+
+
+<#
+.SYNOPSIS
+Tests set redis cache that do not exists.
+#>
+function Test-SetNonExistingRedisCacheTest
+{
+	# Setup
+	# resource group should exists
+	$resourceGroupName = "redisruntimetestrg"
+	$cacheName = "NonExistingRedisCache"
+	$location = "North Central US"
+	
+    # Creating Cache
+	Assert-Throws {Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU}
+}
+
+<#
+.SYNOPSIS
+Tests creating redis cache that already exists.
+#>
+function Test-CreateExistingRedisCacheTest
+{
+	# Setup
+	# resource group should exists
+	$resourceGroupName = "redisruntimetestrg"
+	$cacheName = "powershell004"
+	$location = "North Central US"
+	
+    # Creating Cache
+	Assert-ThrowsContains {New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Standard} "already exists"
 }
