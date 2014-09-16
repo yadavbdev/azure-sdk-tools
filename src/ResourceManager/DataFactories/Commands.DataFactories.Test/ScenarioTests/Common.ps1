@@ -27,7 +27,7 @@ Gets valid data factory name
 #>
 function Get-DataFactoryName
 {
-    return "adfdatafactorymock"
+    return getAssetName
 }
 
 <#
