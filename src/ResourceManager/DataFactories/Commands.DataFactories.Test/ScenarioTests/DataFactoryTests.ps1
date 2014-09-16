@@ -28,6 +28,7 @@ function Test-GetNonExistingDataFactory
 <#
 .SYNOPSIS
 Positive test. Create a data factory and then do a Get to compare the result are identical.
+The datafactory will be removed when the test finishes.
 #>
 function Test-CreateDataFactory
 {
