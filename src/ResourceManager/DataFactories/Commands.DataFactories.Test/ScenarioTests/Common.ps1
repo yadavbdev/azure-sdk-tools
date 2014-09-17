@@ -23,9 +23,9 @@ function Get-ResourceGroupName
 
 <#
 .SYNOPSIS
-Gets valid resource name
+Gets valid data factory name
 #>
-function Get-ResourceName
+function Get-DataFactoryName
 {
     return getAssetName
 }
@@ -46,12 +46,12 @@ function Get-ProviderLocation($provider)
 
 <#
 .SYNOPSIS
-Cleans the created resource groups
+Cleans the created data factory
 #>
-function Clean-ResourceGroup($rgname)
+function Clean-DataFactory($rgname, $dfname)
 {
     if ([Microsoft.Azure.Utilities.HttpRecorder.HttpMockServer]::Mode -ne [Microsoft.Azure.Utilities.HttpRecorder.HttpRecorderMode]::Playback) {
-        Remove-AzureResourceGroup -Name $rgname -Force
+        Remove-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Force
     }
 }
 

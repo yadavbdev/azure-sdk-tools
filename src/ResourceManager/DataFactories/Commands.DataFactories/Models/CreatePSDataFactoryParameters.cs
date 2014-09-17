@@ -12,25 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.ScenarioTest;
-using Xunit;
+using System;
+using System.Collections;
 
-namespace Microsoft.Azure.Commands.DataFactories.Test
+namespace Microsoft.Azure.Commands.DataFactories
 {
-    public class DataFactoryTests : DataFactoriesScenarioTestsBase
+    public class CreatePSDataFactoryParameters : DataFactoryParametersBase
     {
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetNonExistingDataFactory()
-        {
-            RunPowerShellTest("Test-GetNonExistingDataFactory");
-        }
+        public string Location { get; set; }
 
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestCreateDataFactory()
-        {
-            RunPowerShellTest("Test-CreateDataFactory");
-        }
+        public bool Force { get; set; }
+
+        public Hashtable Tags { get; set; }
+
+        public Action<bool, string, string, string, Action> ConfirmAction { get; set; }
     }
 }

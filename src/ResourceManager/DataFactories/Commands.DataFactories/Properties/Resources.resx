@@ -117,14 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DataFactoryConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to remove data factory '{0}' in resource group '{1}'?</value>
+  </data>
+  <data name="DataFactoryCreating" xml:space="preserve">
+    <value>Creating data factory '{0}' in resource group '{1}'.</value>
+  </data>
+  <data name="DataFactoryExists" xml:space="preserve">
+    <value>A data factory with the name {0} in the resource group {1} exists. Continuing execution may overwrite the exisiting one. Are you sure you want to continue?</value>
+  </data>
+  <data name="DataFactoryNotFound" xml:space="preserve">
+    <value>Data factory '{0}' does not exist in the resource group '{1}'.</value>
+  </data>
+  <data name="DataFactoryRemoving" xml:space="preserve">
+    <value>Removing data factory '{0}' in resource group '{1}'.</value>
+  </data>
   <data name="FormattedCloudExceptionMessageTemplate" xml:space="preserve">
-    <value>"HTTP Status Code: {0}
+    <value>HTTP Status Code: {0}
 Error Code: {1}
 Error Message: {2}
 Request Id: {3}
-Timestamp (Utc):{4}"</value>
+Timestamp (Utc):{4}</value>
   </data>
   <data name="ResourceGroupNameCannotBeEmpty" xml:space="preserve">
-    <value>"Resource group name cannot be null."</value>
+    <value>Resource group name cannot be null.</value>
   </data>
 </root>

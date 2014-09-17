@@ -18,6 +18,40 @@ Nagative test. Get resources from an non-existing empty group.
 #>
 function Test-GetNonExistingDataFactory
 {	
-	# Test
-	Assert-ThrowsContains { Get-AzureDataFactory -ResourceGroupName "mdw" -Name "Non-ExistingDF" } "ResourceNotFound"
+    $dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+    
+    # Test
+    Assert-ThrowsContains { Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname } "ResourceNotFound"    
+}
+
+<#
+.SYNOPSIS
+Create a data factory and then do a Get to compare the result are identical.
+The datafactory will be removed when the test finishes.
+#>
+function Test-CreateDataFactory
+{
+    $dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+
+    try
+    {
+        $actual = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+        $expected = Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname
+
+        Assert-AreEqual $expected.ResourceGroupName $expected.ResourceGroupName
+        Assert-AreEqual $expected.DataFactoryName $expected.DataFactoryName
+    }
+    finally
+    {
+        Clean-DataFactory $rgname $dfname
+    }
 }

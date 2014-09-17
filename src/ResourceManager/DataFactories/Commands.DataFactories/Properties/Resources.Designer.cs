@@ -61,11 +61,56 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;HTTP Status Code: {0}
+        ///   Looks up a localized string similar to Are you sure you want to remove data factory &apos;{0}&apos; in resource group &apos;{1}&apos;?.
+        /// </summary>
+        internal static string DataFactoryConfirmationMessage {
+            get {
+                return ResourceManager.GetString("DataFactoryConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating data factory &apos;{0}&apos; in resource group &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataFactoryCreating {
+            get {
+                return ResourceManager.GetString("DataFactoryCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A data factory with the name {0} in the resource group {1} exists. Continuing execution may overwrite the exisiting one. Are you sure you want to continue?.
+        /// </summary>
+        internal static string DataFactoryExists {
+            get {
+                return ResourceManager.GetString("DataFactoryExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data factory &apos;{0}&apos; does not exist in the resource group &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataFactoryNotFound {
+            get {
+                return ResourceManager.GetString("DataFactoryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing data factory &apos;{0}&apos; in resource group &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataFactoryRemoving {
+            get {
+                return ResourceManager.GetString("DataFactoryRemoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP Status Code: {0}
         ///Error Code: {1}
         ///Error Message: {2}
         ///Request Id: {3}
-        ///Timestamp (Utc):{4}&quot;.
+        ///Timestamp (Utc):{4}.
         /// </summary>
         internal static string FormattedCloudExceptionMessageTemplate {
             get {
@@ -74,7 +119,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Resource group name cannot be null.&quot;.
+        ///   Looks up a localized string similar to Resource group name cannot be null..
         /// </summary>
         internal static string ResourceGroupNameCannotBeEmpty {
             get {

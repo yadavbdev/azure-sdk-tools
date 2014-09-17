@@ -101,9 +101,16 @@
   <ItemGroup>
     <Compile Include="CloudExceptionExtensions.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DataFactories\RemoveAzureDataFactoryCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\CreatePSDataFactoryParameters.cs" />
     <Compile Include="DataFactories\GetAzureDataFactoryCommand.cs" />
+    <Compile Include="DataFactories\NewAzureDataFactoryCommand.cs" />
     <Compile Include="DataFactoryBaseCmdlet.cs" />
+    <Compile Include="DataFactoryCommonUtilities.cs" />
     <Compile Include="Models\DataFactoryClient.cs" />
+    <Compile Include="Models\DataFactoryParametersBase.cs" />
     <Compile Include="Models\DataFactoryFilterOptions.cs" />
     <Compile Include="Models\PSDataFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
