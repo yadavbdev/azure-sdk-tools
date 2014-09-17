@@ -59,15 +59,15 @@ function Test-RaByScope
 	# Test
 	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("8D7DD69E-9AE2-44A1-94D8-F7BC8E12645E")
 	$newAssignment = New-AzureRoleAssignment `
-						-ObjectId $users[0].Id.Guid `
-						-RoleDefinitionName $definitionName `
-						-Scope $scope 
+                        -ObjectId $users[0].Id.Guid `
+                        -RoleDefinitionName $definitionName `
+                        -Scope $scope 
 	
 	# cleanup 
-	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
-								-Scope $newAssignment.Scope `
-								-RoleDefinitionName $newAssignment.RoleDefinitionName `
-								-Force
+	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+                               -Scope $newAssignment.Scope `
+                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
+                               -Force
 
 	# Assert
 	Assert-NotNull $newAssignment
@@ -76,8 +76,8 @@ function Test-RaByScope
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
 
 	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-													 -Scope $newAssignment.Scope `
-													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
+                                                     -Scope $newAssignment.Scope `
+                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
@@ -99,15 +99,15 @@ function Test-RaByResourceGroup
 	# Test
 	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("A4B82891-EBEE-4568-B606-632899BF9453")
 	$newAssignment = New-AzureRoleAssignment `
-						-ObjectId $users[0].Id.Guid `
-						-RoleDefinitionName $definitionName `
-						-ResourceGroupName $resourceGroups[0].ResourceGroupName
+                        -ObjectId $users[0].Id.Guid `
+                        -RoleDefinitionName $definitionName `
+                        -ResourceGroupName $resourceGroups[0].ResourceGroupName
 	
 	# cleanup 
-	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
-								-Scope $newAssignment.Scope `
-								-RoleDefinitionName $newAssignment.RoleDefinitionName `
-								-Force
+	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+                               -Scope $newAssignment.Scope `
+                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
+                               -Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
@@ -115,8 +115,8 @@ function Test-RaByResourceGroup
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
 
 	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-													 -Scope $newAssignment.Scope `
-													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
+                                                     -Scope $newAssignment.Scope `
+                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
@@ -141,17 +141,17 @@ function Test-RaByResource
 	# Test
 	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("78D6502F-74FC-4800-BB0A-0E1A7BEBECA4")
 	$newAssignment = New-AzureRoleAssignment `
-						-ObjectId $groups[0].Id.Guid `
-						-RoleDefinitionName $definitionName `
-						-ResourceGroupName $resourceGroups[0].ResourceGroupName `
-						-ResourceType $resource.ResourceType `
-						-ResourceName $resource.Name
+                        -ObjectId $groups[0].Id.Guid `
+                        -RoleDefinitionName $definitionName `
+                        -ResourceGroupName $resourceGroups[0].ResourceGroupName `
+                        -ResourceType $resource.ResourceType `
+                        -ResourceName $resource.Name
 	
 	# cleanup 
-	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
-								-Scope $newAssignment.Scope `
-								-RoleDefinitionName $newAssignment.RoleDefinitionName `
-								-Force
+	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+                               -Scope $newAssignment.Scope `
+                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
+                               -Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
@@ -159,8 +159,8 @@ function Test-RaByResource
 	Assert-AreEqual	$groups[0].DisplayName $newAssignment.DisplayName
 
 	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-													 -Scope $newAssignment.Scope `
-													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
+                                                     -Scope $newAssignment.Scope `
+                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
@@ -182,16 +182,16 @@ function Test-RaByServicePrincipal
 	# Test
 	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("FA1A4D3B-2CCA-406B-8956-6B6B32377641")
 	$newAssignment = New-AzureRoleAssignment `
-						-ServicePrincipalName $servicePrincipals[0].DisplayName `
-						-RoleDefinitionName $definitionName `
-						-Scope $scope 
+                        -ServicePrincipalName $servicePrincipals[0].DisplayName `
+                        -RoleDefinitionName $definitionName `
+                        -Scope $scope 
 						
 	
 	# cleanup 
-	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
-								-Scope $newAssignment.Scope `
-								-RoleDefinitionName $newAssignment.RoleDefinitionName `
-								-Force
+	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+                               -Scope $newAssignment.Scope `
+                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
+                               -Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
@@ -200,8 +200,8 @@ function Test-RaByServicePrincipal
 	Assert-AreEqual	$servicePrincipals[0].DisplayName $newAssignment.DisplayName
 
 	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-													 -Scope $newAssignment.Scope `
-													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
+                                                     -Scope $newAssignment.Scope `
+                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
@@ -223,15 +223,15 @@ function Test-RaByUpn
 	# Test
 	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("7A750D57-9D92-4BE1-AD66-F099CECFFC01")
 	$newAssignment = New-AzureRoleAssignment `
-						-UPN $users[0].Mail `
-						-RoleDefinitionName $definitionName `
-						-ResourceGroupName $resourceGroups[0].ResourceGroupName
+                        -UPN $users[0].Mail `
+                        -RoleDefinitionName $definitionName `
+                        -ResourceGroupName $resourceGroups[0].ResourceGroupName
 	
 	# cleanup 
-	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
-								-Scope $newAssignment.Scope `
-								-RoleDefinitionName $newAssignment.RoleDefinitionName `
-								-Force
+	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+                               -Scope $newAssignment.Scope `
+                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
+                               -Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
@@ -239,8 +239,8 @@ function Test-RaByUpn
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
 
 	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-													 -Scope $newAssignment.Scope `
-													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
+                                                     -Scope $newAssignment.Scope `
+                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
