@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
@@ -23,6 +24,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
         private const string CommonAdTenant = "Common";
 
         public IAccessToken Token { get; set; }
+
+        public X509Certificate2 Certificate { get; set; }
 
         public MockAuthenticationFactory()
         {
@@ -42,6 +45,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 LoginType = LoginType.OrgId,
                 AccessToken = accessToken
             };
+        }
+
+        public MockAuthenticationFactory(string userId, X509Certificate2 certificate)
+        {
+            Certificate = certificate;
         }
 
         public IAccessToken Authenticate(ref AzureAccount account, AzureEnvironment environment, string tenant, SecureString password,
@@ -64,7 +72,14 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureContext context)
         {
-            return new AccessTokenCredential(context.Subscription.Id, Token);
+            if (Certificate != null)
+            {
+                return new CertificateCloudCredentials(context.Subscription.Id.ToString(), Certificate);
+            }
+            else
+            {
+                return new AccessTokenCredential(context.Subscription.Id, Token);
+            }
         }
     }
 }
