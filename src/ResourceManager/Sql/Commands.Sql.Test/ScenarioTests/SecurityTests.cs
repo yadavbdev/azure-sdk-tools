@@ -12,9 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Xunit;
 
-namespace Microsoft.WindowsAzure.Commands.ScenarioTest.SqlTests
+namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
 {
     public class SecurityTests : SqlTestsBase
     {
