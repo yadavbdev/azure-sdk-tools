@@ -70,6 +70,24 @@
       <Name>Commands.ServiceManagement</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DSC\Configurations\CorporateClientConfiguration.ps1" />
+    <None Include="Resources\DSC\Configurations\DomainControllerConfiguration.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\ModuleImportListInsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\ModuleImportListOutsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\ModuleImportSingleInsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\ModuleImportSingleOutsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\NameImportListInsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\NameImportListOutsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\NameImportSingleInsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\NameImportSingleOutsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\Dummy\NameModuleImportSingleInsideNode.ps1" />
+    <None Include="Resources\DSC\Configurations\IEEScBad.ps1" />
+    <None Include="Resources\DSC\Configurations\IEEScGood.ps1" />
+    <None Include="Resources\DSC\Configurations\SHMulptiConfigurations.ps1" />
+    <None Include="Resources\DSC\Configurations\VisualStudio.ps1" />
+    <Content Include="Resources\DSC\DSC Resource Kit Wave 6 08282014.zip" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
