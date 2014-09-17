@@ -61,12 +61,5 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             RunPowerShellTest("Test-RaByUpn");
         }
-        
-        [Fact(Skip = "Skipped till Graph management client will alow user creation")]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void RaUserPermissions()
-        {
-            RunPowerShellTest("Test-RaUserPermissions 'user' 'pass' 'actionToVerify e.g. */reader'");
-        }
     }
 }
