@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Management.HDInsight.Cmdlet;
-    using Management.HDInsight.Cmdlet.DataObjects;
-
     internal class AzureHDInsightConnectionSessionManagerSimulator : IAzureHDInsightConnectionSessionManager
     {
         private AzureHDInsightClusterConnection currentCluster;

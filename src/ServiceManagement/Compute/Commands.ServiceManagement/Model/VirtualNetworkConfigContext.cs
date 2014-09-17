@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Properties;
-    using System;
-    using System.IO;
-    using Utilities.Common;
-
     public class VirtualNetworkConfigContext : ManagementOperationContext
     {
         public string XMLConfiguration { get; set; }

@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Security.Cryptography;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Model;
-    using Sync.Download;
-    using System;
-    using System.IO;
-    using System.Security.Cryptography;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class AzureVhdTest : ServiceManagementTest
     {
@@ -134,7 +134,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             Assert.IsNotNull(vhdUploadContext);
             Assert.AreEqual(new Uri(destination), vhdUploadContext.DestinationUri);
-            Assert.AreEqual(vhdUploadContext.LocalFilePath.FullName, localFile.FullName);
+            Assert.IsTrue(string.Compare(vhdUploadContext.LocalFilePath.FullName, localFile.FullName, StringComparison.InvariantCultureIgnoreCase) == 0);
         }
     }
 }

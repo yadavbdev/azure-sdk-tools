@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class SaveAzureVMImageCmdletInfo : CmdletsInfo
     {
         public SaveAzureVMImageCmdletInfo(string serviceName, string vmName, string newName, string newLabel, string osState)

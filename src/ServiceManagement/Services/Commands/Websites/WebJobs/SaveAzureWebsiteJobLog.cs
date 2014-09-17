@@ -12,13 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Websites.WebJobs
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-    using System.Management.Automation;
-    using Utilities.Websites.Common;
-
     public class SaveAzureWebsiteJobLogCommand : WebsiteContextBaseCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The web job name.")]

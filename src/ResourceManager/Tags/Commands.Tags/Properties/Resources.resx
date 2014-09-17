@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CanNotDeleteTag" xml:space="preserve">
+    <value>Can not remove tag/tag value because it's being referenced by other resources.</value>
+  </data>
   <data name="RemoveTagMessage" xml:space="preserve">
     <value>Removing tag ....</value>
   </data>

@@ -12,12 +12,12 @@
 // limitations under the License.
 // ---------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Model.Contract
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Storage table management interface
     /// </summary>

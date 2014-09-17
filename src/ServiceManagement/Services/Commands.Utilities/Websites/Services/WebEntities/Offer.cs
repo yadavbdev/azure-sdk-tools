@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// Offer Contract (has to be implemented by all resource providers called by the RDFE)
     /// </summary>

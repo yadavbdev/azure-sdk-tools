@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Disposable
 {
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Threading;
-
     /// <summary>
     ///     An interlocked Boolean.
     /// </summary>

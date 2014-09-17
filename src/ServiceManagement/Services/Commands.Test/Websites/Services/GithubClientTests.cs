@@ -12,25 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Host;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github.Entities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
 {
-    using Commands.Utilities.Websites.Common;
-    using Commands.Utilities.Websites.Services;
-    using Commands.Utilities.Websites.Services.Github;
-    using Commands.Utilities.Websites.Services.Github.Entities;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Management.Automation.Host;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GithubClientTests
     {
-        [TestMethod]
+        [Fact]
         public void TestGetRepositories()
         {
             // Setup
@@ -61,13 +61,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
             GithubClientAccessor githubClientAccessor = new GithubClientAccessor(cmdletAccessor, null, null);
             var repositories = githubClientAccessor.GetRepositoriesAccessor();
 
-            Assert.AreEqual(3, repositories.Count);
-            Assert.IsNotNull(repositories.FirstOrDefault(r => r.Name.Equals("userrepo1")));
-            Assert.IsNotNull(repositories.FirstOrDefault(r => r.Name.Equals("org1repo1")));
-            Assert.IsNotNull(repositories.FirstOrDefault(r => r.Name.Equals("org2repo1")));
+            Assert.Equal(3, repositories.Count);
+            Assert.NotNull(repositories.FirstOrDefault(r => r.Name.Equals("userrepo1")));
+            Assert.NotNull(repositories.FirstOrDefault(r => r.Name.Equals("org1repo1")));
+            Assert.NotNull(repositories.FirstOrDefault(r => r.Name.Equals("org2repo1")));
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreateOrUpdateHookAlreadyExists()
         {
             // Setup
@@ -109,15 +109,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
             try
             {
                 githubClientAccessor.CreateOrUpdateHookAccessor("owner", "repository", website);
-                Assert.Fail();
+                Assert.True(false, "Fail");
             }
             catch (Exception e)
             {
-                Assert.AreEqual("Link already established", e.Message);
+                Assert.Equal("Link already established", e.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreateOrUpdateHookCreate()
         {
             // Setup
@@ -173,11 +173,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
 
             GithubClientAccessor githubClientAccessor = new GithubClientAccessor(cmdletAccessor, null, null);
             githubClientAccessor.CreateOrUpdateHookAccessor("owner", "repository", website);
-            Assert.IsNotNull(createdHook);
-            Assert.IsTrue(tested);
+            Assert.NotNull(createdHook);
+            Assert.True(tested);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreateOrUpdateHookUpdate()
         {
             // Setup
@@ -233,8 +233,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
 
             GithubClientAccessor githubClientAccessor = new GithubClientAccessor(cmdletAccessor, null, null);
             githubClientAccessor.CreateOrUpdateHookAccessor("owner", "repository", website);
-            Assert.IsNotNull(createdHook);
-            Assert.IsTrue(tested);
+            Assert.NotNull(createdHook);
+            Assert.True(tested);
         }
     }
 

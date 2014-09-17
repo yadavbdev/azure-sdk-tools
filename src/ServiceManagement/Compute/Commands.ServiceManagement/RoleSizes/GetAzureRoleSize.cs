@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using Management.Models;
-    using Model;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Retrieve a Microsoft Azure Role Size.
     /// </summary>

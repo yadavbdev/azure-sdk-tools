@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Websites.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
-
     /// <summary>
     /// Gets an azure website.
     /// </summary>

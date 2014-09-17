@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System;
-
     [VhdEntity(Size = 512)]
     public class VhdFooter
     {

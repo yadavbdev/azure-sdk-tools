@@ -13,18 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.IO;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using System.IO;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GeneralTests : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void SerializationTestWithGB18030()
         {
             // Setup

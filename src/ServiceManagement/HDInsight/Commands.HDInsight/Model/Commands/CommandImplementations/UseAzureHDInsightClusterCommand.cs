@@ -11,16 +11,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
-    using CommandInterfaces;
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-    using GetAzureHDInsightClusters.Extensions;
-    using System;
-    using System.Globalization;
-    using System.Threading.Tasks;
-
     internal class UseAzureHDInsightClusterCommand : AzureHDInsightClusterCommand<AzureHDInsightClusterConnection>, IUseAzureHDInsightClusterCommand
     {
         private const string GrantHttpAccessCmdletName = "Grant Azure HDInsight Http Services Access";
@@ -31,7 +33,10 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
             IHDInsightClient client = this.GetClient();
             var cluster = await client.GetClusterAsync(this.Name);
             var connection = new AzureHDInsightClusterConnection();
-            connection.Credential = this.GetSubscriptionCertificateCredentials(this.CurrentSubscription);
+            ProfileClient profileClient = new ProfileClient();
+            connection.Credential = this.GetSubscriptionCredentials(this.CurrentSubscription,
+                profileClient.GetEnvironmentOrDefault(this.CurrentSubscription.Environment),
+                profileClient.Profile);
 
             if (cluster == null)
             {

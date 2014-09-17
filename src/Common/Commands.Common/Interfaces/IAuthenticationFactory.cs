@@ -12,12 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Security;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
 namespace Microsoft.WindowsAzure.Commands.Common
 {
     public interface IAuthenticationFactory
     {
-        SubscriptionCloudCredentials Authenticate(AzureSubscription subscription);
+        /// <summary>
+        /// Returns IAccessToken if authentication succeeds or throws an exception if authentication fails.
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <param name="account"></param>
+        /// <param name="tenant"></param>
+        /// <param name="password"></param>
+        /// <param name="promptBehavior"></param>
+        /// <returns></returns>
+        IAccessToken Authenticate(ref AzureAccount account, AzureEnvironment environment, string tenant, SecureString password, ShowDialog promptBehavior);
+
+        SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureContext context);
     }
 }

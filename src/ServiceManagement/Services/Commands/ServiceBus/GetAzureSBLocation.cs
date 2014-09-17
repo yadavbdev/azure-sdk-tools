@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Management.ServiceBus.Models;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     /// <summary>
     /// Lists all service bus locations available for a subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSBLocation"), OutputType(typeof(List<ServiceBusLocation>))]
-    public class GetAzureSBLocationCommand : CmdletWithSubscriptionBase
+    public class GetAzureSBLocationCommand : AzurePSCmdlet
     {
         internal ServiceBusClientExtensions Client { get; set; }
 
@@ -33,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Client = Client ?? new ServiceBusClientExtensions(CurrentSubscription);
+            Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
             WriteObject(Client.GetServiceBusRegions(), true);
         }
     }

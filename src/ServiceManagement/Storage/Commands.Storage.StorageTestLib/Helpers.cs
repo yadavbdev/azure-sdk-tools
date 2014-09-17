@@ -12,11 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.Storage.Blob.Protocol;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
-using MS.Test.Common.MsTestLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,8 +22,11 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-
-
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob.Protocol;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+using MS.Test.Common.MsTestLib;
 
 namespace StorageTestLib
 {

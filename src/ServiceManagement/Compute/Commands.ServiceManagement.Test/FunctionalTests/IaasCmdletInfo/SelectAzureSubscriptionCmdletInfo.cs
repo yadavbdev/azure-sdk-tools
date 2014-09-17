@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class SelectAzureSubscriptionCmdletInfo : CmdletsInfo
     {
         public SelectAzureSubscriptionCmdletInfo(string subscriptionName)
@@ -25,10 +25,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             cmdletParams.Add(new CmdletParam("Default"));
         }
 
-        public SelectAzureSubscriptionCmdletInfo(string subscriptionName, bool clear, string subscriptionDataFile)
+        public SelectAzureSubscriptionCmdletInfo(string subscriptionName, bool isDefault, bool clear, string subscriptionDataFile)
         {
             cmdletName = "Select-AzureSubscription";
             cmdletParams.Add(new CmdletParam("SubscriptionName", subscriptionName));
+            if (isDefault)
+            {
+                cmdletParams.Add(new CmdletParam("Default"));
+            }
             if (clear)
             {
                 cmdletParams.Add(new CmdletParam("Clear"));

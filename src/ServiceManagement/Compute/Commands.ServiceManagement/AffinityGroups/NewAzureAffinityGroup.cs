@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.AffinityGroups
 {
-    using Management.Models;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Creates and returns a new affinity group in the specified data center location.
     /// </summary>

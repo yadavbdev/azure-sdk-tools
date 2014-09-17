@@ -13,32 +13,34 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Management;
+using Microsoft.WindowsAzure.Management.Compute;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+using Microsoft.WindowsAzure.Storage.Blob;
+using DeploymentStatus = Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model.DeploymentStatus;
+using RoleInstance = Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model.RoleInstance;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using AzureTools;
-    using Common;
-    using Management;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Management.Storage;
-    using Management.Storage.Models;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Model;
-    using Properties;
-    using Storage.Blob;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
     using ConfigCertificate = Common.XmlSchema.ServiceConfigurationSchema.Certificate;
     using ConfigConfigurationSetting = Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
-    using DeploymentStatus = Model.DeploymentStatus;
-    using RoleInstance = Model.RoleInstance;
-    using RoleInstanceStatus = Management.Compute.Models.RoleInstanceStatus;
 
     public class CloudServiceClient : ICloudServiceClient
     {
@@ -50,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 
         internal ComputeManagementClient ComputeClient { get; set; }
 
-        public WindowsAzureSubscription Subscription { get; set; }
+        public AzureSubscription Subscription { get; set; }
 
         public Action<string> DebugStream { get; set; }
 
@@ -497,7 +499,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             // If there's no storage service provided, try using the default one
             if (string.IsNullOrEmpty(storageServiceName))
             {
-                storageServiceName = Subscription.CurrentStorageAccountName;
+                storageServiceName = Subscription.GetProperty(AzureSubscription.Property.StorageAccount);
             }
 
             ServiceSettings serviceSettings = ServiceSettings.LoadDefault(
@@ -505,7 +507,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
                 slot,
                 location,
                 affinityGroup,
-                Subscription.SubscriptionName,
+                Subscription.Name,
                 storageServiceName,
                 name,
                 cloudServiceProject.ServiceName,
@@ -539,7 +541,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         /// <param name="verboseStream">Action used to log detailed client progress</param>
         /// <param name="warningStream">Action used to log warning messages</param>
         public CloudServiceClient(
-            WindowsAzureSubscription subscription,
+            AzureSubscription subscription,
             string currentLocation = null,
             Action<string> debugStream = null,
             Action<string> verboseStream = null,
@@ -549,9 +551,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             Subscription = subscription;
             CloudBlobUtility = new CloudBlobUtility();
 
-            ManagementClient = subscription.CreateClient<ManagementClient>();
-            StorageClient = subscription.CreateClient<StorageManagementClient>();
-            ComputeClient = subscription.CreateClient<ComputeManagementClient>();
+            ManagementClient = AzureSession.ClientFactory.CreateClient<ManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
+            StorageClient = AzureSession.ClientFactory.CreateClient<StorageManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
+            ComputeClient = AzureSession.ClientFactory.CreateClient<ComputeManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         private CloudServiceClient(string currentLocation, Action<string> debugStream, Action<string> verboseStream,
@@ -564,7 +566,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         }
 
         internal CloudServiceClient(
-            WindowsAzureSubscription subscription,
+            AzureSubscription subscription,
             ManagementClient managementClient,
             StorageManagementClient storageManagementClient,
             ComputeManagementClient computeManagementClient)
@@ -712,7 +714,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             WriteVerboseWithTimestamp(
                     Resources.PublishPreparingDeploymentMessage,
                     context.ServiceName,
-                    Subscription.SubscriptionId);
+                    Subscription.Id);
             UpdateCacheWorkerRolesCloudConfiguration(context);
 
             // Create cloud package

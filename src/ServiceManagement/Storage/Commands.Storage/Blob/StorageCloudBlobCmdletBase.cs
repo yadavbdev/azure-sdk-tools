@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
+using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Storage
 {
-    using Common;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Model.Contract;
-    using Model.ResourceModel;
-    using System;
-
     /// <summary>
     /// Base cmdlet for storage blob/container cmdlet
     /// </summary>

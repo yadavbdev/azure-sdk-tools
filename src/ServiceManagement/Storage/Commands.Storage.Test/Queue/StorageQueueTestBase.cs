@@ -11,14 +11,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Storage.Test.Service;
+using Microsoft.WindowsAzure.Storage.Queue;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Queue
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Service;
-    using System;
-
     public class StorageQueueTestBase : StorageTestBase
     {
         public MockStorageQueueManagement queueMock = null;

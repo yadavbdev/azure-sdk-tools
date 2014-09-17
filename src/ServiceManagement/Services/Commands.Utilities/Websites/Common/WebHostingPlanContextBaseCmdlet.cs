@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Common
 {
-    using System;
-    using System.Management.Automation;
-
     public abstract class WebHostingPlanContextBaseCmdlet : WebsiteBaseCmdlet
     {
         [Alias("WebSpace")]

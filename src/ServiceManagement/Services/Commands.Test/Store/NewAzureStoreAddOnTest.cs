@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Store;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Store;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Store
 {
-    using Commands.Store;
-    using Commands.Utilities.Store;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Moq;
-    using System;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class NewAzureStoreAddOnTests : TestBase
     {
         Mock<ICommandRuntime> mockCommandRuntime;
@@ -34,8 +34,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
 
         NewAzureStoreAddOnCommand cmdlet;
 
-        [TestInitialize]
-        public void SetupTest()
+        public NewAzureStoreAddOnTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
             mockCommandRuntime = new Mock<ICommandRuntime>();
@@ -49,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureStoreAddOnWithSuccessful()
         {
             // Setup
@@ -78,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             mockCommandRuntime.Verify(f => f.WriteObject(expected), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureStoreAddOnWithNoConfirmation()
         {
             // Setup
@@ -107,7 +106,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Store
             mockCommandRuntime.Verify(f => f.WriteObject(expected), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureStoreAddOnWithNameAlreadyUsed()
         {
             // Setup

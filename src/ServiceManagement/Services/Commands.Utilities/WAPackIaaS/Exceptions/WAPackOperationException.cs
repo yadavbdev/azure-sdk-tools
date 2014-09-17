@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions
 {
-    using System;
-
     [Serializable]
     public class WAPackOperationException : Exception
     {

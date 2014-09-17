@@ -13,15 +13,15 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using System;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     /// <summary>
     /// Requests a reboot/reimage of a single role instance or for all role instances of a role.
     /// </summary>

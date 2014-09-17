@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using System.Management.Automation;
-    
     [Cmdlet(VerbsCommon.Get, "AzureDedicatedCircuitLink"), OutputType(typeof(AzureDedicatedCircuitLink))]
     public class GetAzureDedicatedCircuitLinkCommand : ExpressRouteBaseCmdlet
     {

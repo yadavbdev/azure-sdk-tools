@@ -13,15 +13,17 @@
 // ----------------------------------------------------------------------------------
 
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Language;
+using System.Management.Automation.Runspaces;
+
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC 
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Management.Automation.Language;
 
     public static class ConfigurationParsingHelper
     {
@@ -36,26 +38,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
                 return false;
             }
             return String.Equals(constantAst.ParameterName, name, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private static bool IsCommandImportDscResource(Ast ast)
-        {
-            CommandAst commandAst = ast as CommandAst;
-            if (commandAst == null)
-            {
-                return false;
-            }
-            if (commandAst.CommandElements.Count == 0)
-            {
-                return false;
-            }
-            StringConstantExpressionAst constantExpressionAst = commandAst.CommandElements[0] as StringConstantExpressionAst;
-            if (constantExpressionAst != null && 
-                String.Compare(constantExpressionAst.Value, "Import-DscResource", StringComparison.InvariantCultureIgnoreCase) == 0)
-            {
-                return true;
-            }
-            return false;
         }
 
         private static List<string> GetLegacyTopLevelParametersFromAst(CommandAst ast, string parameterName)
@@ -74,64 +56,66 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             return parameters;
         }
 
-        private static List<string> GetNodeLevelRequiredModules(Ast ast)
+
+        private static bool IsCandidateForImportDscResourceAst(Ast ast, int startOffset)
         {
-            IEnumerable<CommandAst> importAsts = ast.FindAll(IsCommandImportDscResource, true).OfType<CommandAst>();
+            return ast.Extent.StartOffset == startOffset && !(ast is StatementBlockAst) && !(ast is NamedBlockAst);
+        }
+        private static List<string> GetSingleAstRequiredModules(Ast ast, Token[] tokens)
+        {
             List<string> modules = new List<string>();
             List<string> resources = new List<string>();
-            foreach (CommandAst importAst in importAsts)
-            {
-                // TODO: refactor code to avoid calling a script, just use StaticBindingResult directly,
-                // once System.Management.Automation.dll version will be updated from 3.0.0.0.
+            var imports = tokens.Where(token =>
+                    String.Compare(token.Text, "Import-DscResource", StringComparison.OrdinalIgnoreCase) == 0);
 
-                using (PowerShell powerShell = PowerShell.Create()) 
+            //
+            // Create a function with the same name as Import-DscResource keyword and use powershell
+            // argument function binding to emulate Import-DscResource argument binding.
+            //
+            InitialSessionState initialSessionState = InitialSessionState.Create();
+            SessionStateFunctionEntry importDscResourcefunctionEntry = new SessionStateFunctionEntry(
+                "Import-DscResource", @"param($Name, $ModuleName)
+                if ($ModuleName) 
                 {
-                    powerShell.AddScript(
-                     @"function BindArguments($ast, $outModules, $outResources) 
-                        {
-                            function GetListFromBinding($binding) 
-                            {
-                                if ($binding.Value.Value.Elements)
-                                # ArrayAst case
-                                { 
-                                    foreach ($x in $binding.Value.Value.Elements) { Write-Output $x } 
-                                }
-                                else 
-                                { 
-                                    Write-Output $binding.Value.Value.Value
-                                }
-                            }
+                    foreach ($m in $ModuleName) { $global:modules.Add($m) }
+                } else {
+                    foreach ($n in $Name) { $global:resources.Add($n) }
+                }
+            ");
+            initialSessionState.Commands.Add(importDscResourcefunctionEntry);
+            initialSessionState.LanguageMode = PSLanguageMode.RestrictedLanguage;
+            var moduleVarEntry = new SessionStateVariableEntry("modules", modules, "");
+            var resourcesVarEntry = new SessionStateVariableEntry("resources", resources, "");
+            initialSessionState.Variables.Add(moduleVarEntry);
+            initialSessionState.Variables.Add(resourcesVarEntry);
 
-                            $dic = ([System.Management.Automation.Language.StaticParameterBinder]::BindCommand($ast)).BoundParameters 
-                            $modulePresent = $false
-                            foreach ($binding in $dic.GetEnumerator()) 
-                            {
-                                if ($binding.Key -like ""[M]*"") { $modulePresent = $true; break; } 
-                            }
-                            foreach ($binding in $dic.GetEnumerator()) 
-                            {
-                                # ModuleName case
-                                if ($binding.Key -like ""[M]*"") 
-                                { 
-                                    GetListFromBinding($binding) | %{$outModules.Add( $_ )}
-                                }
-                                else 
-                                { 
-                                    # Name case, ignore if module specified
-                                    if ( (-not $modulePresent) -and ($binding.Key -like ""[N]*"") ) 
-                                    { 
-                                        GetListFromBinding($binding) | %{$outResources.Add( $_ )}
-                                    } 
-                                }
-                            }
-                        }");
-                    powerShell.Invoke();
-                    powerShell.Commands.Clear();
-                    powerShell.AddCommand("BindArguments")
-                        .AddParameter("ast", importAst)
-                        .AddParameter("outModules", modules)
-                        .AddParameter("outResources", resources);
-                    powerShell.Invoke();
+            using (System.Management.Automation.PowerShell powerShell = System.Management.Automation.PowerShell.Create(initialSessionState))
+            {
+                foreach (var import in imports)
+                {
+                    int startOffset = import.Extent.StartOffset;
+                    var asts = ast.FindAll(a => IsCandidateForImportDscResourceAst(a, startOffset), true);
+                    int longestLen = -1;
+                    Ast longestCandidate = null;
+                    foreach (var candidatAst in asts)
+                    {
+                        int curLen = candidatAst.Extent.EndOffset - candidatAst.Extent.StartOffset;
+                        if (curLen > longestLen)
+                        {
+                            longestCandidate = candidatAst;
+                            longestLen = curLen;
+                        }
+                    }
+                    // longestCandidate should contain AST for import-dscresource, like "Import-DSCResource -Module x -Name y".
+                    if (longestCandidate != null)
+                    {
+                        string importText = longestCandidate.Extent.Text;
+                        // We invoke-command "importText" here. Script injection is prevented:
+                        // We checked that file represents a valid AST without errors.
+                        powerShell.AddScript(importText);
+                        powerShell.Invoke();
+                        powerShell.Commands.Clear();
+                    }
                 }
             }
             modules.AddRange(resources.Select(GetModuleNameForDscResource));
@@ -145,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             {
                 try
                 {
-                    using (PowerShell powershell = PowerShell.Create())
+                    using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
                     {
                         powershell.AddCommand("Get-DscResource").AddParameter("Name", resourceName).
                             AddCommand("Foreach-Object").AddParameter("MemberName", "Module").
@@ -162,7 +146,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             return moduleName;
         }
 
-        private static List<string> GetRequiredModulesFromAst(Ast ast)
+        private static List<string> GetRequiredModulesFromAst(Ast ast, Token[] tokens)
         {
             List<string> modules = new List<string>();
 
@@ -206,8 +190,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
                 modules.AddRange(GetLegacyTopLevelParametersFromAst(legacyConfigurationAst, "ResourceDefinition").Select(GetModuleNameForDscResource));    
             }
             
-            // Both cases in new version and 2 case in old version:
-            modules.AddRange(GetNodeLevelRequiredModules(ast));
+            // Both cases in new version and 2nd case in old version:
+            modules.AddRange(GetSingleAstRequiredModules(ast, tokens));
 
             return modules.Distinct().ToList();
         }
@@ -241,10 +225,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC
             Token[] tokens;
             ParseError[] errors;
             // Parse the script into an AST, capturing parse errors. Note - even with errors, the
-            // file may still successfully define one or more configurations.
+            // file may still successfully define one or more configurations. We don't process
+            // required modules in case of parsing errors to avoid script injection.
             ScriptBlockAst ast = Parser.ParseFile(fullPath, out tokens, out errors);
-            List<string> requiredModules = GetRequiredModulesFromAst(ast).Distinct().ToList();
-
+            List<string> requiredModules = new List<string>();
+            if (!errors.Any())
+            {
+                requiredModules = GetRequiredModulesFromAst(ast, tokens).Distinct().ToList();
+            }
             return new ConfigurationParseResult()
             {
                 Path = fullPath,

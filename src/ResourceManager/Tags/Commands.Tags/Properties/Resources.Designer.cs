@@ -61,6 +61,15 @@ namespace Microsoft.Azure.Commands.Tags.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not remove tag/tag value because it&apos;s being referenced by other resources..
+        /// </summary>
+        internal static string CanNotDeleteTag {
+            get {
+                return ResourceManager.GetString("CanNotDeleteTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removing tag .....
         /// </summary>
         internal static string RemoveTagMessage {

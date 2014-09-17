@@ -13,15 +13,15 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Helpers;
-    using Model;
-    using System;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities.Common;
-
     public class ProvisioningConfigurationCmdletBase : ServiceManagementBaseCmdlet
     {
         public const string LinuxParameterSetName = OS.Linux;

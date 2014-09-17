@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Store;
+
 namespace Microsoft.WindowsAzure.Commands.Store
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Store;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Purchase a new Add-On from Microsoft Azure Store.
     /// </summary>
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Store
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            StoreClient = StoreClient ?? new StoreClient(CurrentSubscription);
+            StoreClient = StoreClient ?? new StoreClient(CurrentContext.Subscription);
             CustomConfirmation = CustomConfirmation ?? new PowerShellCustomConfirmation(Host);
             WindowsAzureAddOn addon;
 

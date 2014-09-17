@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System;
-
     public class VhdTimeStamp
     {
         private static readonly DateTime VhdBaseTime = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);

@@ -12,25 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Web;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using ServiceManagement.Model;
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Net;
-    using System.Net.Http;
-    using System.Runtime.Serialization;
-    using System.Security.Cryptography.X509Certificates;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Dispatcher;
-    using System.ServiceModel.Web;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-
     public static class ChannelHelper
     {
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposing the factory would also dispose the channel we are returning.")]
@@ -234,7 +234,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
             if (response.Headers != null)
             {
-                operationId = response.Headers[Constants.OperationTrackingIdHeader];
+                operationId = response.Headers[ApiConstants.OperationTrackingIdHeader];
             }
 
             // Don't wrap responseStream in a using statement to prevent it
@@ -331,9 +331,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     property.Headers.Remove(VSDebuggerCausalityDataHeaderName);
                 }
 
-                if (property.Headers[Constants.VersionHeaderName] == null)
+                if (property.Headers[ApiConstants.VersionHeaderName] == null)
                 {
-                    property.Headers.Add(Constants.VersionHeaderName, Constants.VersionHeaderContentLatest);
+                    property.Headers.Add(ApiConstants.VersionHeaderName, ApiConstants.VersionHeaderContentLatest);
                 }
 
                 if (property.Headers[UserAgentHeaderName] == null)

@@ -13,11 +13,10 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class GetAzureAclConfigCmdletInfo : CmdletsInfo
     {
         public GetAzureAclConfigCmdletInfo(PersistentVM vm, string ep)

@@ -103,11 +103,11 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Compute, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.4.1.1\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.4.2.0\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.ExpressRoute, Version=0.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.ExpressRoute.0.11.0-preview\lib\net40\Microsoft.WindowsAzure.Management.ExpressRoute.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.ExpressRoute.0.11.2-preview\lib\net40\Microsoft.WindowsAzure.Management.ExpressRoute.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.MediaServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -125,9 +125,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.ServiceBus.0.11.0-preview\lib\net40\Microsoft.WindowsAzure.Management.ServiceBus.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.1.2.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.2.0.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Store, Version=0.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -161,9 +161,6 @@
     <Reference Include="System.Net.Http.Extensions, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -228,9 +225,7 @@
     <Compile Include="Common\Scaffolding\ScaffoldParams.cs" />
     <Compile Include="Common\ServiceComponents.cs" />
     <Compile Include="Common\ServiceSettings.cs" />
-    <Compile Include="Common\StandardHeadersHandler.cs" />
     <Compile Include="Common\ServiceManagementBaseCmdlet.cs" />
-    <Compile Include="Common\CloudServiceProjectConfiguration.cs" />
     <Compile Include="Common\AzureBlob.cs" />
     <Compile Include="Common\VisualStudioProjectPathInfo.cs" />
     <Compile Include="Common\WebRoleInfo.cs" />
@@ -284,7 +279,6 @@
     <Compile Include="Store\MarketplaceClient.cs" />
     <Compile Include="Store\Parameter.cs" />
     <Compile Include="Store\PowerShellCustomConfirmation.cs" />
-    <Compile Include="Common\SetHeaderInspector.cs" />
     <Compile Include="Store\StoreClient.cs" />
     <Compile Include="Store\ValidateCountryLengthAttribute.cs" />
     <Compile Include="Store\WindowsAzureAddOn.cs" />
@@ -533,7 +527,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <None Include="Performance\Microsoft.ServiceBus.MessagingPerformanceCounters.man" />
     <None Include="PostBuild.ps1" />
     <None Include="Resources\Scaffolding\General\WorkerRole\startup.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

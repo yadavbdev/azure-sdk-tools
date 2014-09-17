@@ -21,10 +21,10 @@ Gets valid website name.
 #>
 function Get-WebsiteName
 {
-	$name = getAssetName
-	Write-Debug "Creating website with name $name"
-	Store-Website $name
-	return $name
+    $name = getAssetName
+    Write-Debug "Creating website with name $name"
+    Store-Website $name
+    return $name
 }
 
 <#
@@ -35,25 +35,25 @@ function Get-WebsiteDefaultLocation
 {
     param([string] $defaultLoc = $null)
     if ($global:DefaultLocation -ne $null)
-	{
-	   $location = $global:DefaultLocation
-	}
-	else 
-	{
-	   $locations = Get-AzureWebsiteLocation
+    {
+       $location = $global:DefaultLocation
+    }
+    else 
+    {
+       $locations = Get-AzureWebsiteLocation
        $locations | % {
-	     if ($_.ToLower() -eq $defaultLoc)
-		 {
-		    $location = $defaultLoc
-		 }
-	  }
-	  if ($location -eq $null)
-	  {
-	      $location = $locations[0]
-	  }
-	}
+         if ($_.ToLower() -eq $defaultLoc)
+         {
+            $location = $defaultLoc
+         }
+      }
+      if ($location -eq $null)
+      {
+          $location = $locations[0]
+      }
+    }
 
-	return $location;
+    return $location;
 }
 
 <#
@@ -62,7 +62,7 @@ Gets valid website job name.
 #>
 function Get-WebsiteJobName
 {
-	return "OneSDKWebsiteJob" + (Get-Random).ToString()
+    return "OneSDKWebsiteJob" + (Get-Random).ToString()
 }
 
 <#
@@ -74,13 +74,13 @@ The number of websites to create.
 #>
 function New-Website
 {
-	param([int] $count)
-	
-	1..$count | % {
-		$name = Get-WebsiteName
-		New-AzureWebsite $name
-		$global:createdWebsites += $name
-	}
+    param([int] $count)
+    
+    1..$count | % {
+        $name = Get-WebsiteName
+        New-AzureWebsite $name
+        $global:createdWebsites += $name
+    }
 }
 
 <#
@@ -110,21 +110,21 @@ Removes all created websites.
 function Cleanup-SingleWebsiteTest
 {
     $global:createdWebsites | % {
-	   if ($_ -ne $null)
-	   {
-	     try
-	     {
-	        Write-Debug "Removing website with name $_"
-	        $catch = Remove-AzureWebsite -Name $_ -Slot Production -Force
-	     }
-	     catch 
-	     {
-	     }
-	  }
-	}
+       if ($_ -ne $null)
+       {
+         try
+         {
+            Write-Debug "Removing website with name $_"
+            $catch = Remove-AzureWebsite -Name $_ -Slot Production -Force
+         }
+         catch 
+         {
+         }
+      }
+    }
 
-	$global:createdWebsites.Clear()
-	Set-Location $global:testLocation
+    $global:createdWebsites.Clear()
+    Set-Location $global:testLocation
 }
 
 <#
@@ -162,22 +162,22 @@ Clones git repo
 #>
 function Clone-GitRepo
 {
-	param([string] $repo, [string] $dir)
+    param([string] $repo, [string] $dir)
 
-	$cloned = $false
-	do
-	{
-		try
-		{
-			git clone $repo $dir
-			$cloned = $true
-		}
-		catch
-		{
-			# Do nothing
-		}
-	}
-	while (!$cloned)
+    $cloned = $false
+    do
+    {
+        try
+        {
+            git clone $repo $dir
+            $cloned = $true
+        }
+        catch
+        {
+            # Do nothing
+        }
+    }
+    while (!$cloned)
 }
 
 <#
@@ -186,12 +186,12 @@ Creates new website using the sample log app template.
 #>
 function New-BasicLogWebsite
 {
-	$name = Get-WebsiteName
-	Clone-GitRepo https://github.com/wapTestApps/basic-log-app.git $name
-	$password = ConvertTo-SecureString $githubPassword -AsPlainText -Force
-	$credentials = New-Object System.Management.Automation.PSCredential $githubUsername,$password 
-	cd $name
-	$global:currentWebsite = New-AzureWebsite -Name $name -Github -GithubCredentials $credentials -GithubRepository wapTestApps/basic-log-app
+    $name = Get-WebsiteName
+    Clone-GitRepo https://github.com/wapTestApps/basic-log-app.git $name
+    $password = ConvertTo-SecureString $githubPassword -AsPlainText -Force
+    $credentials = New-Object System.Management.Automation.PSCredential $githubUsername,$password 
+    cd $name
+    $global:currentWebsite = New-AzureWebsite -Name $name -Github -GithubCredentials $credentials -GithubRepository wapTestApps/basic-log-app
 }
 
 <#
@@ -218,12 +218,12 @@ function Wait-WebsiteFunction
         Wait-Seconds 5
         $current = [DateTime]::Now
         $diff = $current - $start
-		$result = $null
-		try
-		{
+        $result = $null
+        try
+        {
            $result = &$scriptBlock
-		}
-		catch {}
+        }
+        catch {}
     }
     while(($result -ne $breakCondition) -and ($diff.TotalSeconds -lt $timeout))
 
@@ -240,24 +240,24 @@ Retries DownloadString
 #>
 function Retry-DownloadString
 {
-	param([object] $client, [string] $uri)
+    param([object] $client, [string] $uri)
 
-	$retry = $false
+    $retry = $false
 
-	do
-	{
-		try
-		{
-			$client.DownloadString($uri)
-			$retry = $false
-		}
-		catch
-		{
-			$retry = $true
-			Write-Warning "Retry calling $client.DownloadString"
-		}
-	}
-	while ($retry)
+    do
+    {
+        try
+        {
+            $client.DownloadString($uri)
+            $retry = $false
+        }
+        catch
+        {
+            $retry = $true
+            Write-Warning "Retry calling $client.DownloadString"
+        }
+    }
+    while ($retry)
 }
 
 <#
@@ -282,22 +282,22 @@ The npm command to run
 
 function Npm-InstallExpress
 {
-	try
-	{
-		$command = "install -g express@3.4.8";
-		Start-Process npm $command -WAIT
-		"Y" | express
-		if([system.IO.File]::Exists("server.js"))
-		{
-			del server.js
-		}
-		mv app.js server.js
-		npm install 
-	}
-	catch
-	{
-		Write-Warning "Expected warning exist when npm install, ignore it"
-	}
+    try
+    {
+        $command = "install -g express@3.4.8";
+        Start-Process npm $command -WAIT
+        "Y" | express
+        if([system.IO.File]::Exists("server.js"))
+        {
+            del server.js
+        }
+        mv app.js server.js
+        npm install 
+    }
+    catch
+    {
+        Write-Warning "Expected warning exist when npm install, ignore it"
+    }
 }
 
 <#
@@ -310,23 +310,23 @@ Target site name to push
 
 function Git-PushLocalGitToWebSite
 {
-	param([string] $siteName)
-	$webSite = Get-AzureWebsite -Name $siteName -Slot Production
+    param([string] $siteName)
+    $webSite = Get-AzureWebsite -Name $siteName -Slot Production
 
-	# Expected warning: LF will be replaced by CRLF in node_modules/.bin/express." when run git command
-	Assert-Throws { git add -A } 
-	$commitString = "Update azurewebsite with local git"
-	Assert-Throws { git commit -m $commitString }
+    # Expected warning: LF will be replaced by CRLF in node_modules/.bin/express." when run git command
+    Assert-Throws { git add -A } 
+    $commitString = "Update azurewebsite with local git"
+    Assert-Throws { git commit -m $commitString }
 
-	$remoteAlias = "azureins"
-	$remoteUri = "https://" + $env:GIT_USERNAME + ":" + $env:GIT_PASSWORD + "@" + $webSite.EnabledHostNames[1] + "/" + $webSite.Name + ".git"
-	git remote add $remoteAlias $remoteUri
+    $remoteAlias = "azureins"
+    $remoteUri = "https://" + $env:GIT_USERNAME + ":" + $env:GIT_PASSWORD + "@" + $webSite.EnabledHostNames[1] + "/" + $webSite.Name + ".git"
+    git remote add $remoteAlias $remoteUri
 
-	# Disable Git SSL verification for Windows Azure Pack
-	git config --local http.sslVerify false
-	
-	# Expected message "remote: Updating branch 'master'"
-	Assert-Throws { git push $remoteAlias master }
+    # Disable Git SSL verification for Windows Azure Pack
+    git config --local http.sslVerify false
+    
+    # Expected message "remote: Updating branch 'master'"
+    Assert-Throws { git push $remoteAlias master }
 }
 
 <#

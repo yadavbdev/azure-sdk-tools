@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Text.RegularExpressions;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Common
 {
-    using System.Linq;
-    using System.Text.RegularExpressions;
-
     public class ValidationHelpers
     {
         private static readonly char[] WindowsComputerNameInvalidChars = @"`~!@#$%^&*()=+_[]{}\|;:.'"",<>/?".ToCharArray();

@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
     /// <summary>
     ///     Provides the details of an HDInsight jobDetails when creating the jobDetails.
     /// </summary>

@@ -12,23 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Management.Automation;
+using System.Security.Principal;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development
 {
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Security.Principal;
-    using System.Text;
-    using Utilities.CloudService;
-    using Utilities.CloudService.AzureTools;
-    using Utilities.Common;
-    using Utilities.Properties;
-
     /// <summary>
     /// Runs the service in the emulator
     /// </summary>
     [Cmdlet(VerbsLifecycle.Start, "AzureEmulator"), OutputType(typeof(CloudServiceProject))]
-    public class StartAzureEmulatorCommand : CmdletBase
+    public class StartAzureEmulatorCommand : AzurePSCmdlet
     {
         [Parameter(Mandatory = false)]
         [Alias("ln")]

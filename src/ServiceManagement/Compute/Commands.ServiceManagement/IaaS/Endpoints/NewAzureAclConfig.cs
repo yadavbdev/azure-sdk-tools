@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 {
-    using Model;
-    using System;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "AzureAclConfig"), OutputType(typeof(NetworkAclObject))]
     public class NewAzureAclConfig : PSCmdlet
     {

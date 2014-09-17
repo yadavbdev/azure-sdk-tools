@@ -12,23 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using Commands.Websites;
-    using Moq;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Utilities.Common;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class SetAzureWebsiteTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void SetAzureWebsiteProcess()
         {
             const string websiteName = "website1";
@@ -49,17 +51,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             clientMock.Setup(c => c.UpdateWebsiteConfiguration(websiteName, It.IsAny<SiteConfig>(), null))
                 .Callback((string name, SiteConfig config, string slot) =>
                     {
-                        Assert.IsNotNull(config);
-                        Assert.AreEqual(config.NumberOfWorkers, 3);
+                        Assert.NotNull(config);
+                        Assert.Equal(config.NumberOfWorkers, 3);
                         updatedSiteConfig = true;
                     }).Verifiable();
 
             clientMock.Setup(c => c.UpdateWebsiteHostNames(It.IsAny<Site>(), It.IsAny<IEnumerable<string>>(), null))
                 .Callback((Site site, IEnumerable<string> names, string slot) =>
                     {
-                        Assert.AreEqual(websiteName, site.Name);
-                        Assert.IsTrue(names.Any(hostname => hostname.Equals(string.Format("{0}.{1}", websiteName, suffix))));
-                        Assert.IsTrue(names.Any(hostname => hostname.Equals("stuff.com")));
+                        Assert.Equal(websiteName, site.Name);
+                        Assert.True(names.Any(hostname => hostname.Equals(string.Format("{0}.{1}", websiteName, suffix))));
+                        Assert.True(names.Any(hostname => hostname.Equals("stuff.com")));
                         updatedSite = true;
                     });
             clientMock.Setup(f => f.GetHostName(websiteName, null)).Returns(string.Format("{0}.{1}", websiteName, suffix));
@@ -69,14 +71,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = new MockCommandRuntime(),
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 NumberOfWorkers = 3,
                 WebsitesClient = clientMock.Object
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
-            Assert.IsTrue(updatedSiteConfig);
-            Assert.IsFalse(updatedSite);
+            Assert.True(updatedSiteConfig);
+            Assert.False(updatedSite);
 
             // Test updating site only and not configurations
             updatedSite = false;
@@ -85,17 +87,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = new MockCommandRuntime(),
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 HostNames = new [] { "stuff.com" },
                 WebsitesClient = clientMock.Object
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
-            Assert.IsFalse(updatedSiteConfig);
-            Assert.IsTrue(updatedSite);
+            Assert.False(updatedSiteConfig);
+            Assert.True(updatedSite);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetsWebsiteSlot()
         {
             const string websiteName = "website1";
@@ -117,17 +119,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             clientMock.Setup(c => c.UpdateWebsiteConfiguration(websiteName, It.IsAny<SiteConfig>(), slot))
                 .Callback((string name, SiteConfig config, string slotName) =>
                 {
-                    Assert.IsNotNull(config);
-                    Assert.AreEqual(config.NumberOfWorkers, 3);
+                    Assert.NotNull(config);
+                    Assert.Equal(config.NumberOfWorkers, 3);
                     updatedSiteConfig = true;
                 }).Verifiable();
 
             clientMock.Setup(c => c.UpdateWebsiteHostNames(It.IsAny<Site>(), It.IsAny<IEnumerable<string>>(), slot))
                 .Callback((Site site, IEnumerable<string> names, string slotName) =>
                 {
-                    Assert.AreEqual(websiteName, site.Name);
-                    Assert.IsTrue(names.Any(hostname => hostname.Equals(string.Format("{0}.{1}", websiteName, suffix))));
-                    Assert.IsTrue(names.Any(hostname => hostname.Equals("stuff.com")));
+                    Assert.Equal(websiteName, site.Name);
+                    Assert.True(names.Any(hostname => hostname.Equals(string.Format("{0}.{1}", websiteName, suffix))));
+                    Assert.True(names.Any(hostname => hostname.Equals("stuff.com")));
                     updatedSite = true;
                 });
             clientMock.Setup(f => f.GetHostName(websiteName, slot)).Returns(string.Format("{0}.{1}", websiteName, suffix));
@@ -137,15 +139,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = new MockCommandRuntime(),
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 NumberOfWorkers = 3,
                 WebsitesClient = clientMock.Object,
                 Slot = slot
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
-            Assert.IsTrue(updatedSiteConfig);
-            Assert.IsFalse(updatedSite);
+            Assert.True(updatedSiteConfig);
+            Assert.False(updatedSite);
 
             // Test updating site only and not configurations
             updatedSite = false;
@@ -154,15 +156,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = new MockCommandRuntime(),
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 HostNames = new[] { "stuff.com" },
                 WebsitesClient = clientMock.Object,
                 Slot = slot
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             setAzureWebsiteCommand.ExecuteCmdlet();
-            Assert.IsFalse(updatedSiteConfig);
-            Assert.IsTrue(updatedSite);
+            Assert.False(updatedSiteConfig);
+            Assert.True(updatedSite);
         }
     }
 }

@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
-    using Microsoft.WindowsAzure.Storage;
-    using System;
-    using Utilities.Common;
-
     public class MediaLinkFactory
     {
         private CloudStorageAccount currentStorage;

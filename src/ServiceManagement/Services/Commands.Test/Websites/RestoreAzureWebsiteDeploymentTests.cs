@@ -12,24 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Services.DeploymentEntities;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using Commands.Websites;
-    using Moq;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Utilities.Common;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class RestoreAzureWebsiteDeploymentTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void RestoreAzureWebsiteDeploymentTest()
         {
             // Setup
@@ -81,16 +83,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId }
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             restoreAzureWebsiteDeploymentCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime) restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime) restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
             var responseDeployments = (IEnumerable<DeployResult>)((MockCommandRuntime) restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(responseDeployments);
-            Assert.AreEqual(2, responseDeployments.Count());
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id2") && d.Complete));
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id1") && !d.Complete));
+            Assert.NotNull(responseDeployments);
+            Assert.Equal(2, responseDeployments.Count());
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id2") && d.Complete));
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id1") && !d.Complete));
 
             // Change active deployment to id1
             restoreAzureWebsiteDeploymentCommand = new RestoreAzureWebsiteDeploymentCommand(deploymentChannel)
@@ -100,19 +102,19 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId }
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             restoreAzureWebsiteDeploymentCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
             responseDeployments = (IEnumerable<DeployResult>)((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(responseDeployments);
-            Assert.AreEqual(2, responseDeployments.Count());
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id1") && d.Complete));
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id2") && !d.Complete));
+            Assert.NotNull(responseDeployments);
+            Assert.Equal(2, responseDeployments.Count());
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id1") && d.Complete));
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id2") && !d.Complete));
         }
 
-        [TestMethod]
+        [Fact]
         public void RestoresDeploymentForSlot()
         {
             string slot = "staging";
@@ -165,17 +167,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                     ShareChannel = true,
                     WebsitesClient = clientMock.Object,
                     CommandRuntime = new MockCommandRuntime(),
-                    CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                     Slot = slot
                 };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
+
 
             restoreAzureWebsiteDeploymentCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
             var responseDeployments = (IEnumerable<DeployResult>)((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(responseDeployments);
-            Assert.AreEqual(2, responseDeployments.Count());
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id2") && d.Complete));
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id1") && !d.Complete));
+            Assert.NotNull(responseDeployments);
+            Assert.Equal(2, responseDeployments.Count());
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id2") && d.Complete));
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id1") && !d.Complete));
 
             // Change active deployment to id1
             restoreAzureWebsiteDeploymentCommand = new RestoreAzureWebsiteDeploymentCommand(deploymentChannel)
@@ -185,17 +188,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 Slot = slot
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(base.subscriptionId) }, null, null);
 
             restoreAzureWebsiteDeploymentCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
             responseDeployments = (IEnumerable<DeployResult>)((MockCommandRuntime)restoreAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(responseDeployments);
-            Assert.AreEqual(2, responseDeployments.Count());
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id1") && d.Complete));
-            Assert.IsTrue(responseDeployments.Any(d => d.Id.Equals("id2") && !d.Complete));
+            Assert.NotNull(responseDeployments);
+            Assert.Equal(2, responseDeployments.Count());
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id1") && d.Complete));
+            Assert.True(responseDeployments.Any(d => d.Id.Equals("id2") && !d.Complete));
         }
     }
 }

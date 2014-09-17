@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Runtime.Serialization;
-    using System.Security.Cryptography.X509Certificates;
-
     /// <summary>
     /// Stores information about a Http Web Response.
     /// </summary>

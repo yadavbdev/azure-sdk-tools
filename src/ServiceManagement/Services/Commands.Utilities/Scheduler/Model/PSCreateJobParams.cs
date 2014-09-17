@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model
 {
-    using System;
-    using System.Collections;
-
     public class PSCreateJobParams
     {
         public string Region { get; set; }

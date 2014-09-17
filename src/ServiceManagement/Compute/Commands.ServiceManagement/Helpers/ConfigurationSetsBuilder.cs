@@ -13,14 +13,14 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
 {
-    using IaaS;
-    using Model;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-
     public class ConfigurationSetsBuilder
     {
         private ConfigurationSetBuilder<WindowsProvisioningConfigurationSet> windowsBuilder;
@@ -96,7 +96,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
         private const int WinRMPortNumber = 5986;
         private const int SSHPortNumber = 22;
         private const string TcpProtocol = "tcp";
-        private const string RdpEndpointName = "RemoteDeskotp";
+        private const string RdpEndpointName = "RemoteDesktop";
         private const string SSHEndpointName = "SSH";
 
         protected Collection<ConfigurationSet> ConfigurationSets { get; set; }

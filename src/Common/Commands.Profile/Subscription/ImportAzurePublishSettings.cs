@@ -12,27 +12,33 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using Microsoft.WindowsAzure.Commands.Common;
+using System.Diagnostics;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.Common;
-    using Utilities.Profile;
-
     [Cmdlet(VerbsData.Import, "AzurePublishSettingsFile")]
+    [OutputType(typeof(AzureSubscription))]
     public class ImportAzurePublishSettingsCommand : SubscriptionCmdletBase
     {
-        public ImportAzurePublishSettingsCommand() : base(true)
-        {
-        }
+        public ImportAzurePublishSettingsCommand() : base(true) { }
 
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Path to the publish settings file.")]
         public string PublishSettingsFile { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "Environment name.", ParameterSetName = "CommonSettings")]
+        [ValidateNotNullOrEmpty]
+        public string Environment { get; set; }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
@@ -44,6 +50,16 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             else
             {
                 ImportFile();
+            }
+
+            AzureSubscription defaultSubscription = ProfileClient.Profile.DefaultSubscription;
+            Debug.Assert(AzureSession.CurrentContext != null);
+            if (defaultSubscription != null && AzureSession.CurrentContext.Subscription == null)
+            {
+                AzureSession.SetCurrentContext(
+                    defaultSubscription,
+                    ProfileClient.Profile.Environments[defaultSubscription.Environment],
+                    ProfileClient.Profile.Accounts[defaultSubscription.Account]);
             }
         }
 
@@ -78,8 +94,6 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             {
                 WriteWarning(string.Format(Resources.MultiplePublishSettingsFilesFoundMessage, fileToImport));
             }
-
-            WriteObject(fileToImport);
         }
 
         private void ImportFile()
@@ -91,18 +105,19 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         private void ImportFile(string fileName)
         {
-            Profile.ImportPublishSettings(fileName);
-            if (Profile.DefaultSubscription != null)
+            var subscriptions = ProfileClient.ImportPublishSettings(fileName, Environment);
+            if (ProfileClient.Profile.DefaultSubscription != null)
             {
                 WriteVerbose(string.Format(
                     Resources.DefaultAndCurrentSubscription,
-                    Profile.DefaultSubscription.SubscriptionName));
+                    ProfileClient.Profile.DefaultSubscription));
             }
+            WriteObject(subscriptions);
         }
 
         private void GuardFileExists(string fileName)
         {
-            if (!File.Exists(fileName))
+            if (!FileUtilities.DataStore.FileExists(fileName))
             {
                 throw new Exception();
             }

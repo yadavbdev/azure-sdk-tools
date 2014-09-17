@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Net;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
-    using System.Collections.Generic;
-    using System.Net;
-
     internal interface IRequestChannel
     {
         List<T> IssueRequestAndGetResponse<T>(HttpWebRequest request, out WebHeaderCollection responseHeaders, string payload = null);

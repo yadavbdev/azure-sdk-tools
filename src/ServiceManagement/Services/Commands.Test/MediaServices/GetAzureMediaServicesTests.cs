@@ -10,35 +10,36 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Commands.MediaServices;
-using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
-using Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities;
-using Microsoft.WindowsAzure.Management.MediaServices.Models;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.MediaServices;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities;
+using Microsoft.WindowsAzure.Management.MediaServices.Models;
+using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
 {
-    [TestClass]
+    
     public class GetAzureMediaServicesTests : TestBase
     {
-        protected string SubscriptionId = "foo";
+        protected string SubscriptionId = "DE8C2681-0BCD-47DB-A8A6-A103D2D4A1B9";
 
-        [TestInitialize]
-        public virtual void SetupTest()
+        public GetAzureMediaServicesTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcessGetMediaServicesTest()
         {
             // Setup
@@ -67,23 +68,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             {
                 CommandRuntime = new MockCommandRuntime(),
                 MediaServicesClient = clientMock.Object,
-                CurrentSubscription = new WindowsAzureSubscription
-                {
-                    SubscriptionId = SubscriptionId
-                }
             };
 
+            AzureSession.SetCurrentContext(new AzureSubscription {Id = new Guid(SubscriptionId)}, null, null);
+
             getAzureMediaServiceCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
             IEnumerable<MediaServiceAccount> accounts = (IEnumerable<MediaServiceAccount>)((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(accounts);
-            Assert.IsTrue(accounts.Any(mediaservice => (mediaservice).AccountId == id1));
-            Assert.IsTrue(accounts.Any(mediaservice => (mediaservice).AccountId == id2));
-            Assert.IsTrue(accounts.Any(mediaservice => (mediaservice).Name.Equals("WAMS Account 1")));
-            Assert.IsTrue(accounts.Any(mediaservice => (mediaservice).Name.Equals("WAMS Account 2")));
+            Assert.NotNull(accounts);
+            Assert.True(accounts.Any(mediaservice => (mediaservice).AccountId == id1));
+            Assert.True(accounts.Any(mediaservice => (mediaservice).AccountId == id2));
+            Assert.True(accounts.Any(mediaservice => (mediaservice).Name.Equals("WAMS Account 1")));
+            Assert.True(accounts.Any(mediaservice => (mediaservice).Name.Equals("WAMS Account 2")));
         }
 
-        [TestMethod]
+        [Fact]
         public void ProcessGetMediaServiceByNameShouldReturnOneMatchingEntry()
         {
             Mock<IMediaServicesClient> clientMock = new Mock<IMediaServicesClient>();
@@ -102,21 +101,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             {
                 CommandRuntime = new MockCommandRuntime(),
                 MediaServicesClient = clientMock.Object,
-                CurrentSubscription = new WindowsAzureSubscription
-                {
-                    SubscriptionId = SubscriptionId
-                },
                 Name = expectedName
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(SubscriptionId) }, null, null);
             getAzureMediaServiceCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
             MediaServiceAccountDetails accounts = (MediaServiceAccountDetails)((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(accounts);
-            Assert.AreEqual(expectedName, accounts.Name);
+            Assert.NotNull(accounts);
+            Assert.Equal(expectedName, accounts.Name);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ServiceManagementClientException))]
+        [Fact]
         public void ProcessGetMediaServiceByNameShouldNotReturnEntriesForNoneMatchingName()
         {
             Mock<IMediaServicesClient> clientMock = new Mock<IMediaServicesClient>();
@@ -143,16 +138,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             {
                 CommandRuntime = new MockCommandRuntime(),
                 MediaServicesClient = clientMock.Object,
-                CurrentSubscription = new WindowsAzureSubscription
-                {
-                    SubscriptionId = SubscriptionId
-                },
                 Name = mediaServicesAccountName
             };
 
-
-            getAzureMediaServiceCommand.ExecuteCmdlet();
-            Assert.AreEqual(0, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(SubscriptionId) }, null, null);
+            Assert.Throws<ServiceManagementClientException>(()=> getAzureMediaServiceCommand.ExecuteCmdlet());
+            Assert.Equal(0, ((MockCommandRuntime)getAzureMediaServiceCommand.CommandRuntime).OutputPipeline.Count);
         }
     }
 }

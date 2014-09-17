@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Store
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Management.Automation;
-
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public sealed class ValidateCountryLengthAttribute : ValidateEnumeratedArgumentsAttribute
     {

@@ -12,20 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Microsoft.WindowsAzure.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
-    using AutoMapper;
-    using Helpers;
-    using Management.Compute.Models;
-    using Microsoft.WindowsAzure.Storage;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.New, "AzureVM", DefaultParameterSetName = "ExistingService"), OutputType(typeof(ManagementOperationContext))]
     public class NewAzureVMCommand : IaaSDeploymentManagementCmdletBase
     {
@@ -153,7 +154,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 
         public void NewAzureVMProcess()
         {
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
+            AzureSubscription currentSubscription = CurrentContext.Subscription;
             CloudStorageAccount currentStorage = null;
             try
             {
@@ -191,7 +192,31 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 {
                     if (string.Equals(ex.ErrorCode, "ConflictError"))
                     {
-                        this.WriteWarning(ex.ErrorMessage);
+                        HostedServiceGetResponse existingService = this.ComputeClient.HostedServices.Get(this.ServiceName);
+
+                        if (existingService == null || existingService.Properties == null)
+                        {
+                            // The same service name is already used by another subscription.
+                            this.WriteExceptionDetails(ex);
+                            return;
+                        }
+                        else if ((string.IsNullOrEmpty(existingService.Properties.Location) &&
+                            string.Compare(existingService.Properties.AffinityGroup, this.AffinityGroup, StringComparison.InvariantCultureIgnoreCase) == 0)
+                            || (string.IsNullOrEmpty(existingService.Properties.AffinityGroup) &&
+                            string.Compare(existingService.Properties.Location, this.Location, StringComparison.InvariantCultureIgnoreCase) == 0))
+                        {
+                            // The same service name is already created under the same subscription,
+                            // and its affinity group or location is matched with the given parameter.
+                            this.WriteWarning(ex.ErrorMessage);
+                        }
+                        else
+                        {
+                            // The same service name is already created under the same subscription,
+                            // but its affinity group or location is not matched with the given parameter.
+                            this.WriteWarning("Location or AffinityGroup name is not matched with the existing service");
+                            this.WriteExceptionDetails(ex);
+                            return;
+                        }
                     }
                     else
                     {
@@ -464,6 +489,25 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 if (this.DnsSettings != null && string.IsNullOrEmpty(this.VNetName))
                 {
                     throw new ArgumentException(Resources.VNetNameRequiredWhenSpecifyingDNSSettings);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(this.VNetName))
+            {
+                List<string> vmNames = new List<string>();
+                foreach (Model.PersistentVM VM in this.VMs)
+                {
+                    Model.NetworkConfigurationSet networkConfig = VM.ConfigurationSets.OfType<Model.NetworkConfigurationSet>().SingleOrDefault();
+                    if (networkConfig == null || networkConfig.SubnetNames == null ||
+                        networkConfig.SubnetNames.Count == 0)
+                    {
+                        vmNames.Add(VM.RoleName);
+                    }
+                }
+
+                if (vmNames.Count != 0)
+                {
+                    WriteWarning(string.Format(Resources.SubnetShouldBeSpecifiedIfVnetPresent, string.Join(", ", vmNames)));
                 }
             }
 

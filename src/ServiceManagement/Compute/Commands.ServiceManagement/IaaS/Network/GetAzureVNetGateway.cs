@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Service.Gateway;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Model;
-    using Service.Gateway;
-    using System;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Get, "AzureVNetGateway"), OutputType(typeof(VirtualNetworkGatewayContext))]
     public class GetAzureVNetGatewayCommand : ServiceManagementBaseCmdlet
     {

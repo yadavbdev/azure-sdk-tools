@@ -27,6 +27,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release</OutputPath>
@@ -46,10 +47,12 @@
     <DelaySign>true</DelaySign>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Azure.ResourceManager">
-      <HintPath>..\..\packages\Microsoft.Azure.Management.Resources.2.6.0-preview\lib\net40\Microsoft.Azure.ResourceManager.dll</HintPath>
+    <Reference Include="Microsoft.Azure.ResourceManager, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Azure.Management.Resources.2.7.0-preview\lib\net40\Microsoft.Azure.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
@@ -61,11 +64,11 @@
       <HintPath>..\..\packages\Microsoft.Data.Services.Client.5.6.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.7.10707.1513-rc\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.9.10826.1824\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.7.10707.1513-rc\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.9.10826.1824\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -104,8 +107,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -131,77 +135,74 @@
   <ItemGroup>
     <Compile Include="Authentication\AadAuthenticationException.cs" />
     <Compile Include="Authentication\AccessTokenCredential.cs" />
+    <Compile Include="Authentication\CredStore.cs" />
+    <Compile Include="Authentication\ServicePrincipalKeyStore.cs" />
+    <Compile Include="Authentication\ServicePrincipalTokenProvider.cs" />
+    <Compile Include="Authentication\ShowDialog.cs" />
     <Compile Include="Authentication\AdalConfiguration.cs" />
-    <Compile Include="Authentication\ProtectedFileTokenCache.cs" />
+    <Compile Include="Authentication\ProtectedFileTokenCache.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Authentication\AdalTokenProvider.cs" />
     <Compile Include="Authentication\ConsoleParentWindow.cs" />
     <Compile Include="Authentication\IAccessToken.cs" />
     <Compile Include="Authentication\ITokenProvider.cs" />
     <Compile Include="Authentication\LoginType.cs" />
-    <Compile Include="Authentication\RegistryBackedDictionary.cs" />
+    <Compile Include="Authentication\UserTokenProvider.cs" />
+    <Compile Include="Common\ProfileClientExtensions.cs" />
+    <Compile Include="Common\AzurePowerShell.cs" />
+    <Compile Include="Common\AzurePowerShellClientFactory.cs" />
+    <Compile Include="Common\ProfileClient.cs" />
+    <Compile Include="Common\ProfileData.cs" />
+    <Compile Include="Common\ServiceManagementTypes.cs" />
     <Compile Include="Factories\AuthenticationFactory.cs" />
     <Compile Include="Factories\ClientFactory.cs" />
-    <Compile Include="Common\AzureException.cs" />
     <Compile Include="Common\AzureModule.cs" />
-    <Compile Include="Common\AzureSession.cs" />
     <Compile Include="Common\ChannelHelper.cs" />
     <Compile Include="Common\ClientCreatedArgs.cs" />
     <Compile Include="Common\CloudBaseCmdlet.cs" />
-    <Compile Include="Common\CmdletBase.cs" />
+    <Compile Include="Common\AzurePSCmdlet.cs" />
     <Compile Include="Common\CmdletExtensions.cs" />
-    <Compile Include="Common\CmdletWithSubscriptionBase.cs" />
     <Compile Include="Common\ConfigurationConstants.cs" />
     <Compile Include="Common\ErrorHelper.cs" />
-    <Compile Include="Common\IManagementClientHelper.cs" />
-    <Compile Include="Common\ManagementClientHelper.cs" />
     <Compile Include="Common\IdnHelper.cs" />
     <Compile Include="Common\ManagementOperationContext.cs" />
     <Compile Include="Common\Parameters.cs" />
-    <Compile Include="Common\ServiceManagementTypes.cs" />
-    <Compile Include="Common\ServiceManagementClientExtensions.cs" />
     <Compile Include="Common\SubscriptionCmdletBase.cs" />
-    <Compile Include="Common\SubscriptionDataExtended.cs" />
     <Compile Include="Common\TestMockSupport.cs" />
-    <Compile Include="Common\GlobalPathInfo.cs" />
     <Compile Include="Common\HttpClientExtensions.cs" />
-    <Compile Include="Common\HttpClientHelper.cs" />
     <Compile Include="Common\HttpRestCallLogger.cs" />
     <Compile Include="Common\HttpRestMessageInspector.cs" />
-    <Compile Include="Common\InnerDataServiceException.cs" />
-    <Compile Include="Common\IProfileStore.cs" />
     <Compile Include="Common\ManagementConstants.cs" />
-    <Compile Include="Common\PowershellDefaultProfileStore.cs" />
-    <Compile Include="Common\PowershellOldSettingsProfileStore.cs" />
-    <Compile Include="Common\PowershellProfileStore.cs" />
     <Compile Include="Common\ProcessHelper.cs" />
-    <Compile Include="Common\ProfileData.cs" />
     <Compile Include="Common\PublishSettingsImporter.cs" />
     <Compile Include="Common\RequiredResourceLookup.cs" />
     <Compile Include="Common\Tasks.cs" />
     <Compile Include="Common\Validate.cs" />
-    <Compile Include="Common\WindowsAzureCertificate.cs" />
-    <Compile Include="Common\WindowsAzureEnvironment.cs" />
-    <Compile Include="Common\WindowsAzureProfile.cs" />
-    <Compile Include="Common\WindowsAzureSubscription.cs" />
     <Compile Include="Interfaces\IProfileSerializer.cs" />
     <Compile Include="Interfaces\IClientFactory.cs" />
     <Compile Include="Interfaces\IAuthenticationFactory.cs" />
     <Compile Include="Interfaces\IDataStore.cs" />
+    <Compile Include="Models\AzureAccount.cs" />
     <Compile Include="Models\AzureEnvironment.cs" />
     <Compile Include="Models\AzureProfile.cs" />
-    <Compile Include="Models\VirtualDiskDataStore.cs" />
+    <Compile Include="Models\AzureSubscription.Methods.cs" />
+    <Compile Include="Models\AzureContext.cs" />
     <Compile Include="Models\JsonProfileSerializer.cs" />
+    <Compile Include="Common\PSAzureAccount.cs" />
     <Compile Include="Models\XmlProfileSerializer.cs" />
     <Compile Include="Models\AzureSubscription.cs" />
     <Compile Include="Models\DiskDataStore.cs" />
     <Compile Include="Models\AzureEnvironment.Methods.cs" />
+    <Compile Include="Models\RecordingTracingInterceptor.cs" />
     <Compile Include="Utilities\ConversionUtilities.cs" />
+    <Compile Include="Utilities\DictionaryExtensions.cs" />
     <Compile Include="Utilities\GeneralUtilities.cs" />
     <Compile Include="Utilities\XmlUtilities.cs" />
     <Compile Include="Utilities\FileUtilities.cs" />
     <Compile Include="Utilities\JsonUtilities.cs" />
     <Compile Include="Utilities\PowerShellUtilities.cs" />
-    <Compile Include="AzurePowerShell.cs" />
+    <Compile Include="AzureSession.cs" />
     <Compile Include="XmlSchema\PublishProfile.cs" />
     <Compile Include="XmlSchema\ServiceConfigurationSchema.cs" />
     <Compile Include="XmlSchema\ServiceDefinitionSchema.cs" />
@@ -219,7 +220,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="Models\AzureAccount.Methods.cs" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using AutoMapper;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Preview
 {
-    using AutoMapper;
-    using System;
-
     public class ServiceManagementPreviewProfile : Profile
     {
         private static readonly Lazy<bool> initialize;

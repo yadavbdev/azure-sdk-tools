@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    using GetAzureHDInsightClusters;
-    using Hadoop.Client;
-
     internal interface IInvokeHiveCommand : IInvokeAzureHDInsightJobCommand
     {
         JobDetails JobDetailsStatus { get; }

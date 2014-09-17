@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-
     [TestClass]
     public class RestartWAPackVMTests : CmdletTestVirtualMachineStatusBase
     {
@@ -76,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
             ps.AddCommand("Restart-WAPackVM");
             ps.AddParameter("VM", vm);
             ps.AddParameter("PassThru");
-            ps.InvokeAndAssertForErrors(string.Format(Resources.OperationFailedErrorMessage, Resources.Restart, vm.Properties["ID"].Value));
+            ps.InvokeAndAssertForErrors(string.Format(Utilities.Properties.Resources.OperationFailedErrorMessage, Utilities.Properties.Resources.Restart, vm.Properties["ID"].Value));
         }
     }
 }
