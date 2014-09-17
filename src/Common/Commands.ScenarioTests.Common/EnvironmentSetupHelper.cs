@@ -140,32 +140,38 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 client.AddOrSetEnvironment(environment);
             }
 
-            testSubscription = new AzureSubscription()
+            if (currentEnvironment.SubscriptionId != null)
             {
-                Id = new Guid(currentEnvironment.SubscriptionId),
-                Name = testSubscriptionName,
-                Environment = testEnvironmentName,
-                Account = currentEnvironment.UserName,
-                Properties = new Dictionary<AzureSubscription.Property,string> 
+                testSubscription = new AzureSubscription()
                 {
-                     { AzureSubscription.Property.Default, "True"},
-                     { AzureSubscription.Property.StorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
-                }
-            };
+                    Id = new Guid(currentEnvironment.SubscriptionId),
+                    Name = testSubscriptionName,
+                    Environment = testEnvironmentName,
+                    Account = currentEnvironment.UserName,
+                    Properties = new Dictionary<AzureSubscription.Property, string>
+                    {
+                        {AzureSubscription.Property.Default, "True"},
+                        {
+                            AzureSubscription.Property.StorageAccount,
+                            Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")
+                        },
+                    }
+                };
 
-            testAccount = new AzureAccount()
-            {
-                Id = currentEnvironment.UserName,
-                Type = AzureAccount.AccountType.User,
-                Properties = new Dictionary<AzureAccount.Property, string> 
+                testAccount = new AzureAccount()
                 {
-                     { AzureAccount.Property.Subscriptions, currentEnvironment.SubscriptionId},
-                }
-            };
+                    Id = currentEnvironment.UserName,
+                    Type = AzureAccount.AccountType.User,
+                    Properties = new Dictionary<AzureAccount.Property, string>
+                    {
+                        {AzureAccount.Property.Subscriptions, currentEnvironment.SubscriptionId},
+                    }
+                };
 
-            client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
-            client.Profile.Accounts[testAccount.Id] = testAccount;
-            client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
+                client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
+                client.Profile.Accounts[testAccount.Id] = testAccount;
+                client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
+            }
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
