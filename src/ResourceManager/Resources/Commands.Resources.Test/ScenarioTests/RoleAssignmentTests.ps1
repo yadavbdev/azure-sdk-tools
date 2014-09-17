@@ -48,20 +48,26 @@ Tests verifies creation and deletion of a RoleAssignments by Scope
 function Test-RaByScope
 {
 	# Setup
+	Add-Type -Path ".\\Microsoft.Azure.Commands.Resources.dll"
+
 	$definitionName = 'Reader'
-	$users = Get-AzureADUser | Select-Object -Last 1 -Wait
+	$users = Get-AzureADUser | Select-Object -First 1 -Wait
 	$subscription = Get-AzureSubscription -Current
-	$scope = '/subscriptions/'+ $subscription.SubscriptionId +'/resourceGroups/' + 'nonexistentRG'
+	$scope = '/subscriptions/'+ $subscription.SubscriptionId +'/resourceGroups/' + 'SomeResourceGroup'
 	Assert-AreEqual 1 $users.Count "There should be at least one user to run the test."
 	
 	# Test
+	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("8D7DD69E-9AE2-44A1-94D8-F7BC8E12645E")
 	$newAssignment = New-AzureRoleAssignment `
 						-ObjectId $users[0].Id.Guid `
 						-RoleDefinitionName $definitionName `
 						-Scope $scope 
 	
 	# cleanup 
-	$newAssignment | Remove-AzureRoleAssignment -Force
+	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
+								-Scope $newAssignment.Scope `
+								-RoleDefinitionName $newAssignment.RoleDefinitionName `
+								-Force
 
 	# Assert
 	Assert-NotNull $newAssignment
@@ -69,7 +75,9 @@ function Test-RaByScope
 	Assert-AreEqual	$scope $newAssignment.Scope 
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
 
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid
+	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+													 -Scope $newAssignment.Scope `
+													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
@@ -80,6 +88,8 @@ Tests verifies creation and deletion of a RoleAssignments by Resource Group
 function Test-RaByResourceGroup
 {
 	# Setup
+	Add-Type -Path ".\\Microsoft.Azure.Commands.Resources.dll"
+
 	$definitionName = 'Contributor'
 	$users = Get-AzureADUser | Select-Object -Last 1 -Wait
 	$resourceGroups = Get-AzureResourceGroup | Select-Object -Last 1 -Wait
@@ -87,20 +97,26 @@ function Test-RaByResourceGroup
 	Assert-AreEqual 1 $resourceGroups.Count "No resource group found. Unable to run the test."
 
 	# Test
+	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("A4B82891-EBEE-4568-B606-632899BF9453")
 	$newAssignment = New-AzureRoleAssignment `
 						-ObjectId $users[0].Id.Guid `
 						-RoleDefinitionName $definitionName `
 						-ResourceGroupName $resourceGroups[0].ResourceGroupName
 	
 	# cleanup 
-	$newAssignment | Remove-AzureRoleAssignment -Force
+	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
+								-Scope $newAssignment.Scope `
+								-RoleDefinitionName $newAssignment.RoleDefinitionName `
+								-Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
 
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid
+	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+													 -Scope $newAssignment.Scope `
+													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
@@ -111,6 +127,8 @@ Tests verifies creation and deletion of a RoleAssignments by Resource
 function Test-RaByResource
 {
 	# Setup
+	Add-Type -Path ".\\Microsoft.Azure.Commands.Resources.dll"
+
 	$definitionName = 'Owner'
 	$groups = Get-AzureADGroup | Select-Object -Last 1 -Wait
 	$resourceGroups = Get-AzureResourceGroup | Select-Object -First 1 -Wait
@@ -121,6 +139,7 @@ function Test-RaByResource
 	Assert-NotNull $resource "Cannot find any resource to continue test execution."
 
 	# Test
+	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("78D6502F-74FC-4800-BB0A-0E1A7BEBECA4")
 	$newAssignment = New-AzureRoleAssignment `
 						-ObjectId $groups[0].Id.Guid `
 						-RoleDefinitionName $definitionName `
@@ -129,12 +148,20 @@ function Test-RaByResource
 						-ResourceName $resource.Name
 	
 	# cleanup 
-	$newAssignment | Remove-AzureRoleAssignment -Force
+	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
+								-Scope $newAssignment.Scope `
+								-RoleDefinitionName $newAssignment.RoleDefinitionName `
+								-Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$groups[0].DisplayName $newAssignment.DisplayName
+
+	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+													 -Scope $newAssignment.Scope `
+													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
+	Assert-Null $deletedRoleAssignment
 }
 
 <#
@@ -144,13 +171,16 @@ Tests verifies creation and deletion of a RoleAssignments for Service principal 
 function Test-RaByServicePrincipal
 {
 	# Setup
+	Add-Type -Path ".\\Microsoft.Azure.Commands.Resources.dll"
+
 	$definitionName = 'Reader'
 	$servicePrincipals = Get-AzureADServicePrincipal | Select-Object -Last 1 -Wait
 	$subscription = Get-AzureSubscription -Current
-	$scope = '/subscriptions/'+ $subscription.SubscriptionId +'/resourceGroups/' + 'nonexistentRGForSpn'
+	$scope = '/subscriptions/'+ $subscription.SubscriptionId +'/resourceGroups/' + 'SomeResourceGroupForSpn'
 	Assert-AreEqual 1 $servicePrincipals.Count "No service principals found. Unable to run the test."
 
 	# Test
+	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("FA1A4D3B-2CCA-406B-8956-6B6B32377641")
 	$newAssignment = New-AzureRoleAssignment `
 						-ServicePrincipalName $servicePrincipals[0].DisplayName `
 						-RoleDefinitionName $definitionName `
@@ -158,7 +188,10 @@ function Test-RaByServicePrincipal
 						
 	
 	# cleanup 
-	$newAssignment | Remove-AzureRoleAssignment -Force
+	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
+								-Scope $newAssignment.Scope `
+								-RoleDefinitionName $newAssignment.RoleDefinitionName `
+								-Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
@@ -166,7 +199,9 @@ function Test-RaByServicePrincipal
 	Assert-AreEqual	$scope $newAssignment.Scope 
 	Assert-AreEqual	$servicePrincipals[0].DisplayName $newAssignment.DisplayName
 
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid
+	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+													 -Scope $newAssignment.Scope `
+													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
@@ -177,6 +212,8 @@ Tests verifies creation and deletion of a RoleAssignments for User Principal Nam
 function Test-RaByUpn
 {
 	# Setup
+	Add-Type -Path ".\\Microsoft.Azure.Commands.Resources.dll"
+
 	$definitionName = 'Contributor'
 	$users = Get-AzureADUser | Select-Object -Last 1 -Wait
 	$resourceGroups = Get-AzureResourceGroup | Select-Object -Last 1 -Wait
@@ -184,20 +221,26 @@ function Test-RaByUpn
 	Assert-AreEqual 1 $resourceGroups.Count "No resource group found. Unable to run the test."
 
 	# Test
+	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue("7A750D57-9D92-4BE1-AD66-F099CECFFC01")
 	$newAssignment = New-AzureRoleAssignment `
 						-UPN $users[0].Mail `
 						-RoleDefinitionName $definitionName `
 						-ResourceGroupName $resourceGroups[0].ResourceGroupName
 	
 	# cleanup 
-	$newAssignment | Remove-AzureRoleAssignment -Force
+	Remove-AzureRoleAssignment	-ObjectId $newAssignment.ObjectId.Guid `
+								-Scope $newAssignment.Scope `
+								-RoleDefinitionName $newAssignment.RoleDefinitionName `
+								-Force
 	
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
 
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid
+	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
+													 -Scope $newAssignment.Scope `
+													 -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
 
