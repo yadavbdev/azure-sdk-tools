@@ -58,5 +58,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Interfaces
         X509Certificate2 GetCertificate(string thumbprint);
 
         void AddCertificate(X509Certificate2 cert);
+
+        void RemoveCertificate(string thumbprint);
     }
 }
