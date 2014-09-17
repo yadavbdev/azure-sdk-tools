@@ -255,9 +255,14 @@
   <!-- DSC extension related targets -->
   <Target Name="TestDSCExtension">
     <Message Importance="high" Text="Running DSC extension BVT tests..." />
-    <Delete Files="$(TestOutputDirectory)\DSCExtensionDebug.trx" />
+    <CallTarget Targets="TestDSCExtension_x64"/>
+  </Target>
+
+  <Target Name="TestDSCExtension_x64">
+    <Message Importance="high" Text="Running DSC extension BVT x64 tests..." />
+    <Delete Files="$(TestOutputDirectory)\DSCExtensionDebug_x64.trx" />
     <Exec
-      Command="MSTest.exe /testcontainer:$(ServiceManagementExtensionsTestDebug) /test:VirtualMachineDscExtensionTests /testsettings:$(TestSettings_x64) /category:Scenario /resultsfile:$(TestOutputDirectory)\DSCExtensionDebug.trx"
+      Command="MSTest.exe /testcontainer:$(ServiceManagementExtensionsTestDebug) /testsettings:$(TestSettings_x64) /category:x64_only /resultsfile:$(TestOutputDirectory)\DSCExtensionDebug_x64.trx"
       ContinueOnError="false" />
   </Target>
 

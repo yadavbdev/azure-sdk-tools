@@ -80,6 +80,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         public void TestGetModuleNameForDscResourceXComputer()
         {
             string moduleName = ConfigurationParsingHelper.GetModuleNameForDscResource("MSFT_xComputer");
@@ -88,6 +89,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         public void TestGetModuleNameForDscResourceXADDomain()
         {
             string moduleName = ConfigurationParsingHelper.GetModuleNameForDscResource("MSFT_xADDomain");
@@ -96,6 +98,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(CorporateClientConfigurationPath)]
         public void TestExtractConfigurationNames1()
         {
@@ -107,6 +110,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(DomainControllerConfigurationPath)]
         public void TestExtractConfigurationNames2()
         {
@@ -119,6 +123,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(VisualStudioPath)]
         public void TestExtractConfigurationNames3()
         {
@@ -130,6 +135,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(SHMulptiConfigurationsPath)]
         public void TestExtractConfigurationNamesMulti()
         {
@@ -143,6 +149,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(NameImportListInsideNodeConfigurationPath)]
         public void TestNameImportListInsideNode()
         {
@@ -155,6 +162,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(NameImportListOutsideNodeConfigurationPath)]
         public void TestNameImportListOutsideNode()
         {
@@ -167,6 +175,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(NameImportSingleInsideNodeConfigurationPath)]
         public void TestNameImportSingleInsideNode()
         {
@@ -178,6 +187,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(NameImportSingleOutsideNodeConfigurationPath)]
         public void TestNameImportSingleOutsideNode()
         {
@@ -189,6 +199,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(NameModuleImportSingleInsideNodeConfigurationPath)]
         public void TestNameModuleImportSingleInsideNode()
         {
@@ -200,6 +211,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(ModuleImportListInsideNodeConfigurationPath)]
         public void TestModuleImportListInsideNode()
         {
@@ -212,6 +224,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(ModuleImportListOutsideNodeConfigurationPath)]
         public void TestModuleImportListOutsideNode()
         {
@@ -224,6 +237,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(ModuleImportSingleInsideNodeConfigurationPath)]
         public void TestModuleImportSingleInsideNode()
         {
@@ -235,6 +249,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(ModuleImportSingleOutsideNodeConfigurationPath)]
         public void TestModuleImportSingleOutsideNode()
         {
@@ -246,6 +261,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(IEEScGoodConfigurationPath)]
         public void TestIEEScGood()
         {
@@ -257,6 +273,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         [TestMethod]
         [TestCategory("Scenario")]
+        [TestCategory("x64_only")]
         [DeploymentItem(IEEScBadConfigurationPath)]
         public void TestIEEScBad()
         {
