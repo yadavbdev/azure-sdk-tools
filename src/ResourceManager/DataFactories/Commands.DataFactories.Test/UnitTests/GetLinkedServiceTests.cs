@@ -112,7 +112,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
 
             dataFactoriesClientMock
                 .Setup(f => f.ListLinkedServices(ResourceGroupName, DataFactoryName))
-                .Returns(expected);
+                .Returns(expected)
+                .Verifiable();
 
             // Action
             cmdlet.ExecuteCmdlet();

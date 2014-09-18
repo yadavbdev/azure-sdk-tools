@@ -22,14 +22,14 @@ namespace Microsoft.Azure.Commands.DataFactories
     [Cmdlet(VerbsCommon.Get, Constants.LinkedService), OutputType(typeof(List<PSLinkedService>), typeof(PSLinkedService))]
     public class GetAzureDataFactoryLinkedServiceCommand : DataFactoryBaseCmdlet
     {
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The linked service name.")]
-        public string Name { get; set; }
-
-        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true, 
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true, 
             HelpMessage = "The data factory name.")]
         [ValidateNotNullOrEmpty]
         public string DataFactoryName { get; set; }
+
+        [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The linked service name.")]
+        public string Name { get; set; }
 
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
