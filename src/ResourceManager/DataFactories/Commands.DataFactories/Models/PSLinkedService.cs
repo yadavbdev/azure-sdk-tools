@@ -66,7 +66,10 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 
         public string PropertiesText
         {
-            get { return linkedService.Properties.ToFormattedString(); }
+            get
+            {
+                return linkedService.Properties == null ? string.Empty : linkedService.Properties.ToFormattedString();
+            }
         }
     }
 }
