@@ -19,11 +19,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 {
     public class PSLinkedService
     {
-        private LinkedService _linkedService;
+        private LinkedService linkedService;
 
         public PSLinkedService()
         {
-            this._linkedService = new LinkedService();
+            linkedService = new LinkedService();
         }
 
         public PSLinkedService(LinkedService linkedService)
@@ -33,18 +33,18 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("linkedService");
             }
 
-            this._linkedService = linkedService;
+            this.linkedService = linkedService;
         }
 
         public string LinkedServiceName
         {
             get
             {
-                return this._linkedService.Name;
+                return linkedService.Name;
             }
             set
             {
-                this._linkedService.Name = value;
+                linkedService.Name = value;
             }
         }
         
@@ -56,11 +56,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._linkedService.Properties;
+                return linkedService.Properties;
             }
             set
             {
-                this._linkedService.Properties = value;
+                linkedService.Properties = value;
             }
         }
     }
