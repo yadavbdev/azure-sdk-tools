@@ -13,20 +13,19 @@
 // ----------------------------------------------------------------------------------
 
 using System.Net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Moq;
+using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 {
-    [TestClass]
     public class RemoveLinkedServiceTests : DataFactoryUnitTestBase
     {
         private const string linkedServiceName = "foo";
 
         private RemoveAzureDataFactoryLinkedServiceCommand cmdlet;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public RemoveLinkedServiceTests()
         {
             base.SetupTest();
 
@@ -41,7 +40,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
             };
         }
 
-        [TestMethod]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanRemoveLinkedService()
         {
             HttpStatusCode expectedStatusCode = HttpStatusCode.OK;

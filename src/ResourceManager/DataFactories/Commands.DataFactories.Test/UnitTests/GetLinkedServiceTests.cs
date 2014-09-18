@@ -14,20 +14,19 @@
 
 using System.Collections.Generic;
 using Microsoft.Azure.Commands.DataFactories.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Moq;
+using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    [TestClass]
     public class GetLinkedServiceTests : DataFactoryUnitTestBase
     {
         private const string linkedServiceName = "foo";
 
         private GetAzureDataFactoryLinkedServiceCommand cmdlet;
-        
-        [TestInitialize]
-        public void SetupTest()
+
+        public GetLinkedServiceTests()
         {
             base.SetupTest();
 
@@ -40,7 +39,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             };
         }
 
-        [TestMethod]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanGetLinkedService()
         {
             // Arrange
@@ -78,7 +78,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanListLinkedServices()
         {
             // Arrange

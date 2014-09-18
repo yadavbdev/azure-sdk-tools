@@ -15,21 +15,20 @@
 using System.Collections.Generic;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Moq;
+using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 {
-    [TestClass]
     public class NewDataFactoryTests : DataFactoryUnitTestBase
     {
         private NewAzureDataFactoryCommand cmdlet;
         
         private IDictionary<string, string> tags;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public NewDataFactoryTests()
         {
             base.SetupTest();
 
@@ -45,7 +44,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
             };
         }
 
-        [TestMethod]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanCreateDataFactory()
         {
             // Arrange
