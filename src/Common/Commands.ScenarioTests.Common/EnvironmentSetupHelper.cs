@@ -210,7 +210,12 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         public void SetupModules(AzureModule mode, params string[] modules)
         {
             this.modules = new List<string>();
-            if (mode == AzureModule.AzureServiceManagement)
+            if (mode == AzureModule.AzureProfile)
+            {
+                this.modules.Add(@"ServiceManagement\Azure\Azure.psd1");
+                this.modules.Add(@"ResourceManager\AzureResourceManager\AzureResourceManager.psd1");
+            }
+            else if (mode == AzureModule.AzureServiceManagement)
             {
                 this.modules.Add(@"ServiceManagement\Azure\Azure.psd1");
             }

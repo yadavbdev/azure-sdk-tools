@@ -30,14 +30,8 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 {
     public class ProfileCmdltsTests
     {
-        private WindowsAzure.Subscriptions.Models.SubscriptionListOperationResponse.Subscription rdfeSubscription1;
-        private WindowsAzure.Subscriptions.Models.SubscriptionListOperationResponse.Subscription rdfeSubscription2;
-        private Azure.Subscriptions.Models.Subscription csmSubscription1;
-        private Azure.Subscriptions.Models.Subscription csmSubscription1withDuplicateId;
-        private Azure.Subscriptions.Models.Subscription csmSubscription2;
         private AzureSubscription azureSubscription1;
         private AzureSubscription azureSubscription2;
-        private AzureSubscription azureSubscription3withoutUser;
         private AzureEnvironment azureEnvironment;
         private AzureAccount azureAccount;
         private Mock<ICommandRuntime> commandRuntimeMock;
@@ -367,41 +361,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 
         private void SetMockData()
         {
-            rdfeSubscription1 = new Subscriptions.Models.SubscriptionListOperationResponse.Subscription
-            {
-                SubscriptionId = "16E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E",
-                SubscriptionName = "RdfeSub1",
-                SubscriptionStatus = Subscriptions.Models.SubscriptionStatus.Active,
-                ActiveDirectoryTenantId = "Common"
-            };
-            rdfeSubscription2 = new Subscriptions.Models.SubscriptionListOperationResponse.Subscription
-            {
-                SubscriptionId = "26E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E",
-                SubscriptionName = "RdfeSub2",
-                SubscriptionStatus = Subscriptions.Models.SubscriptionStatus.Active,
-                ActiveDirectoryTenantId = "Common"
-            };
-            csmSubscription1 = new Azure.Subscriptions.Models.Subscription
-            {
-                Id = "Subscriptions/36E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E",
-                DisplayName = "CsmSub1",
-                State = "Active",
-                SubscriptionId = "36E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"
-            };
-            csmSubscription1withDuplicateId = new Azure.Subscriptions.Models.Subscription
-            {
-                Id = "Subscriptions/16E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E",
-                DisplayName = "RdfeSub1",
-                State = "Active",
-                SubscriptionId = "16E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"
-            };
-            csmSubscription2 = new Azure.Subscriptions.Models.Subscription
-            {
-                Id = "Subscriptions/46E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E",
-                DisplayName = "CsmSub2",
-                State = "Active",
-                SubscriptionId = "46E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"
-            };
             azureSubscription1 = new AzureSubscription
             {
                 Id = new Guid("56E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"),
@@ -419,12 +378,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
                 Name = "LocalSub2",
                 Environment = "Test",
                 Account = "test"
-            };
-            azureSubscription3withoutUser = new AzureSubscription
-            {
-                Id = new Guid("76E3F6FD-A3AA-439A-8FC4-1F5C41D2AD1E"),
-                Name = "LocalSub3",
-                Environment = "Test",
             };
             azureEnvironment = new AzureEnvironment
             {

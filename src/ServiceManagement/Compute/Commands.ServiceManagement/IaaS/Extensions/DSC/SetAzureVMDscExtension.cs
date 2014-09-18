@@ -275,9 +275,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             };
 
             var configurationBlobName = this.ConfigurationArchive;
-
             var configurationBlobReference = containerReference.GetBlockBlobReference(configurationBlobName);
-
             var configurationBlobSasToken = configurationBlobReference.GetSharedAccessSignature(blobAccessPolicy);
 
             //
@@ -318,7 +316,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                                             CultureInfo.CurrentUICulture,
                                             Resources.AzureVMDscStorageBlobAlreadyExists,
                                             configurationDataBlobName)),
-                                    string.Empty,
+                                    "StorageBlobAlreadyExists",
                                     ErrorCategory.PermissionDenied,
                                     null));
                         }

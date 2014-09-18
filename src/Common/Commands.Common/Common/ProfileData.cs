@@ -47,13 +47,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
     [DataContract]
     public class AzureEnvironmentData
     {
-        /// <summary>
-        /// Constructor used by data contract serializer
-        /// </summary>
-        public AzureEnvironmentData()
-        {
-        }
-
         public AzureEnvironment ToAzureEnvironment()
         {
             return new AzureEnvironment
