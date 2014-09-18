@@ -107,6 +107,7 @@
     <Compile Include="Models\CreatePSLinkedServiceParameters.cs" />
     <Compile Include="LinkedServices\GetAzureDataFactoryLinkedServiceCommand.cs" />
     <Compile Include="LinkedServices\LinkedServiceContextBaseCmdlet.cs" />
+    <Compile Include="Models\DataFactoryClientExtensions.cs" />
     <Compile Include="Models\LinkedServiceFilterOptions.cs" />
     <Compile Include="LinkedServices\NewAzureDataFactoryLinkedServiceCommand.cs" />
     <Compile Include="LinkedServices\RemoveAzureDataFactoryLinkedServiceCommand.cs" />
@@ -144,6 +145,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Microsoft.Azure.Commands.DataFactories.format.ps1xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="MSSharedLibKey.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
