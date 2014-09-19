@@ -12,11 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Model;
-    using System;
-
     public class VMImageContext : OSImageContext
     {
         public override string ImageName { get; set; }

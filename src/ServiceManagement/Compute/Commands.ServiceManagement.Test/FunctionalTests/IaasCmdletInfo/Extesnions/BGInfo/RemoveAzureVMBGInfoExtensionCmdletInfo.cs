@@ -13,11 +13,11 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.Extensions.BGInfo
 {
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
-
     public class RemoveAzureVMBGInfoExtensionCmdletInfo : CmdletsInfo
     {
         public RemoveAzureVMBGInfoExtensionCmdletInfo(IPersistentVM vm, string version = null, string referenceName = null)

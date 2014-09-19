@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using System.Runtime.Serialization;
-
     [DataContract(Namespace = UriElements.ServiceNamespace)]
     public class ConfigurationSettings
     {

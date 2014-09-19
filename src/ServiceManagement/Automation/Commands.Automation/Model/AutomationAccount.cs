@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Automation.Common;
+
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using Microsoft.Azure.Commands.Automation.Common;
-
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     /// <summary>
     /// The automation account.

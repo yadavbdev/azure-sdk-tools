@@ -11,19 +11,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
+using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
-    using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
-    using Microsoft.WindowsAzure.Management.WebSites.Models;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-    using Services.DeploymentEntities;
-    using Services.WebEntities;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using Utilities = Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
-    using Models = Management.WebSites.Models;
+    using Utilities = Services.WebEntities;
 
     public interface IWebsitesClient
     {
@@ -114,7 +113,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="name">The website name</param>
         /// <returns>The website instance</returns>
-        Site GetWebsite(string name);
+        Utilities.Site GetWebsite(string name);
 
         /// <summary>
         /// Create a new website in a given slot.
@@ -124,14 +123,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="siteToCreate">Details about the site to create.</param>
         /// <param name="slot">The slot name.</param>
         /// <returns>The created site object</returns>
-        Site CreateWebsite(string webspaceName, SiteWithWebSpace siteToCreate, string slot);
+        Utilities.Site CreateWebsite(string webspaceName, Utilities.SiteWithWebSpace siteToCreate, string slot);
 
         /// <summary>
         /// Update the set of host names for a website.
         /// </summary>
         /// <param name="site">The website name.</param>
         /// <param name="hostNames">The new host names.</param>
-        void UpdateWebsiteHostNames(Site site, IEnumerable<string> hostNames);
+        void UpdateWebsiteHostNames(Utilities.Site site, IEnumerable<string> hostNames);
 
         /// <summary>
         /// Update the set of host names for a website slot.
@@ -139,14 +138,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="site">The website name.</param>
         /// <param name="hostNames">The new host names.</param>
         /// <param name="slot">The website slot name.</param>
-        void UpdateWebsiteHostNames(Site site, IEnumerable<string> hostNames, string slot);
+        void UpdateWebsiteHostNames(Utilities.Site site, IEnumerable<string> hostNames, string slot);
 
         /// <summary>
         /// Gets the website configuration.
         /// </summary>
         /// <param name="name">The website name</param>
         /// <returns>The website configuration object</returns>
-        SiteConfig GetWebsiteConfiguration(string name);
+        Utilities.SiteConfig GetWebsiteConfiguration(string name);
 
         /// <summary>
         /// Create a git repository for the web site.
@@ -160,7 +159,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// </summary>
         /// <param name="name">The website name</param>
         /// <param name="newConfiguration">The website configuration object containing updates.</param>
-        void UpdateWebsiteConfiguration(string name, SiteConfig newConfiguration);
+        void UpdateWebsiteConfiguration(string name, Utilities.SiteConfig newConfiguration);
 
         /// <summary>
         /// Update the website slot configuration
@@ -168,7 +167,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         /// <param name="newConfiguration">The website configuration object containing updates.</param>
         /// <param name="slot">The website slot name</param>
-        void UpdateWebsiteConfiguration(string name, SiteConfig newConfiguration, string slot);
+        void UpdateWebsiteConfiguration(string name, Utilities.SiteConfig newConfiguration, string slot);
 
         /// <summary>
         /// Delete a website.
@@ -191,14 +190,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// Get the WebSpaces.
         /// </summary>
         /// <returns>Collection of WebSpace objects</returns>
-        IList<WebSpace> ListWebSpaces();
+        IList<Utilities.WebSpace> ListWebSpaces();
 
         /// <summary>
         /// Get the sites in the given webspace
         /// </summary>
         /// <param name="spaceName">Name of webspace</param>
         /// <returns>The sites</returns>
-        IList<Site> ListSitesInWebSpace(string spaceName);
+        IList<Utilities.Site> ListSitesInWebSpace(string spaceName);
 
         /// <summary>
         /// Get a list of the user names configured to publish to the space.
@@ -219,7 +218,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slotView">Represent the metrics for the hostnames that receive the traffic at the current slot. 
         /// If swap occured in the middle of the period mereics will be merged</param>
         /// <returns>The list of site metrics for the specified period.</returns>
-        IList<MetricResponse> GetHistoricalUsageMetrics(string siteName, string slot, IList<string> metricNames, DateTime? starTime, 
+        IList<Utilities.MetricResponse> GetHistoricalUsageMetrics(string siteName, string slot, IList<string> metricNames, DateTime? starTime, 
             DateTime? endTime, string timeGrain, bool instanceDetails, bool slotView);
         
         /// <summary>
@@ -281,7 +280,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="key">Connection string key.</param>
         /// <param name="value">Value for the connection string.</param>
         /// <param name="connectionStringType">Type of connection string.</param>
-        void SetConnectionString(string name, string key, string value, DatabaseType connectionStringType);
+        void SetConnectionString(string name, string key, string value, Utilities.DatabaseType connectionStringType);
 
         /// <summary>
         /// Lists available website locations.
@@ -320,7 +319,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// Updates a website compute mode.
         /// </summary>
         /// <param name="websiteToUpdate">The website to update</param>
-        void UpdateWebsiteComputeMode(Site websiteToUpdate);
+        void UpdateWebsiteComputeMode(Utilities.Site websiteToUpdate);
 
         /// <summary>
         /// Gets a website slot DNS name.
@@ -336,27 +335,27 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="Name">The website name</param>
         /// <param name="Slot">The website slot name</param>
         /// <returns>The website slot object</returns>
-        Site GetWebsite(string name, string slot);
+        Utilities.Site GetWebsite(string name, string slot);
 
         /// <summary>
         /// Gets all slots for a website
         /// </summary>
         /// <param name="Name">The website name</param>
         /// <returns>The website slots list</returns>
-        List<Site> GetWebsiteSlots(string name);
+        List<Utilities.Site> GetWebsiteSlots(string name);
 
         /// <summary>
         /// Lists all websites under the current subscription
         /// </summary>
         /// <returns>List of websites</returns>
-        List<Site> ListWebsites();
+        List<Utilities.Site> ListWebsites();
 
         /// <summary>
         /// Lists all websites with the provided slot name.
         /// </summary>
         /// <param name="slot">The slot name</param>
         /// <returns>The list if websites</returns>
-        List<Site> ListWebsites(string slot);
+        List<Utilities.Site> ListWebsites(string slot);
 
         /// <summary>
         /// Gets a website slot configuration
@@ -364,7 +363,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="name">The website name</param>
         /// <param name="slot">The website slot name</param>
         /// <returns>The website cobfiguration object</returns>
-        SiteConfig GetWebsiteConfiguration(string name, string slot);
+        Utilities.SiteConfig GetWebsiteConfiguration(string name, string slot);
 
         /// <summary>
         /// Enables application diagnostic on website slot.
@@ -584,7 +583,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="timeGrain">Time grains for the metrics.</param>
         /// <param name="instanceDetails">Include details for the server instances in which the site is running.</param>
         /// <returns>The list of site metrics for the specified period.</returns>
-        IList<MetricResponse> GetPlanHistoricalUsageMetrics(string webSpaceName, string planName, IList<string> metricNames,
+        IList<Utilities.MetricResponse> GetPlanHistoricalUsageMetrics(string webSpaceName, string planName, IList<string> metricNames,
             DateTime? starTime, DateTime? endTime, string timeGrain, bool instanceDetails);
     }
 

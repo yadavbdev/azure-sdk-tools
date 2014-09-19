@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
-    using System;
-
     /// <summary>
     /// Marks a field as PII, so it won't be traced down to the logs
     /// </summary>

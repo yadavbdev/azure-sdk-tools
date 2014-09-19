@@ -13,18 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Security.Cryptography;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Sync.IO;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using Sync.IO;
-    using System;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Runtime.Serialization;
-    using System.Security.Cryptography;
-    using System.Security.Permissions;
-    using Tools.Vhd;
-
     [DataContract]
     public class FileMetaData
     {

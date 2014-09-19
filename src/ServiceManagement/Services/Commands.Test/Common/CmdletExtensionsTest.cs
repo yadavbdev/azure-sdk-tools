@@ -12,25 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Common
 {
-    using Commands.Utilities.Common;
-    using System.Management.Automation;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class CmdletExtensionsTest
     {
-        [TestMethod]
+        [Fact]
         public void ResolvePathTest()
         {
             StubCmdlet stubCmdlet = new StubCmdlet();
 
             // Null path
-            Assert.AreEqual(null, stubCmdlet.ResolvePath(null));
+            Assert.Equal(null, stubCmdlet.ResolvePath(null));
 
             // No session state
-            Assert.AreEqual(".\\", stubCmdlet.ResolvePath(".\\"));
+            Assert.Equal(".\\", stubCmdlet.ResolvePath(".\\"));
         }
     }
 

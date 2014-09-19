@@ -12,32 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using System.Net;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using System.Diagnostics;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using ServiceManagement.Model;
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.ServiceModel.Web;
-
-    public abstract class CloudBaseCmdlet<T> : CmdletWithSubscriptionBase
+    public abstract class CloudBaseCmdlet<T> : AzurePSCmdlet
         where T : class
     {
         private Binding _serviceBinding;
-
-        private string _serviceEndpoint;
-
-        private string _resourceManagerEndpoint;
-
-        public string CurrentServiceEndpoint { get; set; }
-
-        public string CurrentResourceManagerEndpoint { get; set; }
 
         public Binding ServiceBinding
         {
@@ -54,67 +47,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             set { _serviceBinding = value; }
         }
 
-        public string ServiceEndpoint
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(CurrentServiceEndpoint))
-                {
-                    _serviceEndpoint = CurrentServiceEndpoint;
-                }
-                else if (CurrentSubscription != null && CurrentSubscription.ServiceEndpoint != null)
-                {
-                    _serviceEndpoint = CurrentSubscription.ServiceEndpoint.ToString();
-                }
-                else
-                {
-                    // Use default endpoint
-                    _serviceEndpoint = Profile.CurrentEnvironment.ServiceEndpoint;
-                }
-
-                return _serviceEndpoint;
-            }
-
-            set
-            {
-                _serviceEndpoint = value;
-            }
-        }
-
-        public string ResourceManagerEndpoint
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(CurrentResourceManagerEndpoint))
-                {
-                    _resourceManagerEndpoint = CurrentResourceManagerEndpoint;
-                }
-                else if (CurrentSubscription != null && CurrentSubscription.ResourceManagerEndpoint != null)
-                {
-                    _resourceManagerEndpoint = CurrentSubscription.ResourceManagerEndpoint.ToString();
-                }
-                else
-                {
-                    // Use default endpoint
-                    _resourceManagerEndpoint = Profile.CurrentEnvironment.ResourceManagerEndpoint;
-                }
-
-                return _resourceManagerEndpoint;
-            }
-
-            set
-            {
-                _resourceManagerEndpoint = value;
-            }
-        }
-
         public T Channel
         {
             get;
             set;
         }
 
-        protected override void OnCurrentSubscriptionUpdated()
+        protected void OnCurrentSubscriptionUpdated()
         {
             // Recreate the channel if necessary
             if (!ShareChannel)
@@ -129,17 +68,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             set;
         }
 
-        /// <summary>
-        /// Sets the current subscription to the passed subscription name. If null, no changes.
-        /// </summary>
-        /// <param name="subscriptionName">The subscription name</param>
-        public void SetCurrentSubscription(string subscriptionName)
-        {
-            if (!string.IsNullOrEmpty(subscriptionName))
-            {
-                CurrentSubscription = Profile.Subscriptions.First(s => s.SubscriptionName == subscriptionName);
-            }
-        }
 
         protected void InitChannelCurrentSubscription()
         {
@@ -153,19 +81,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         protected void DoInitChannelCurrentSubscription(bool force)
         {
-            if (CurrentSubscription == null)
+            if (CurrentContext.Subscription == null)
             {
                 throw new ArgumentException(Resources.InvalidCurrentSubscription);
             }
 
-            if (CurrentSubscription.Certificate == null)
+            if (CurrentContext.Account == null)
             {
                 throw new ArgumentException(Resources.InvalidCurrentSuscriptionCertificate);
-            }
-
-            if (string.IsNullOrEmpty(CurrentSubscription.SubscriptionId))
-            {
-                throw new ArgumentException(Resources.InvalidCurrentSubscriptionId);
             }
 
             if (Channel == null || force)
@@ -203,24 +126,27 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 return Channel;
             }
-            
+
+            string certificateThumbprint = CurrentContext.Account.Id;
+            Debug.Assert(defaultProfileClient.Profile.Accounts[certificateThumbprint].Type == AzureAccount.AccountType.Certificate);
+
             return ChannelHelper.CreateServiceManagementChannel<T>(
                 ServiceBinding,
-                new Uri(ServiceEndpoint),
-                CurrentSubscription.Certificate,
+                CurrentContext.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement),
+                ProfileClient.DataStore.GetCertificate(certificateThumbprint),
                 new HttpRestMessageInspector(WriteDebug));
         }
 
         protected void RetryCall(Action<string> call)
         {
-            RetryCall(CurrentSubscription.SubscriptionId, call);
+            RetryCall(CurrentContext.Subscription.Id, call);
         }
 
-        protected void RetryCall(string subsId, Action<string> call)
+        protected void RetryCall(Guid subsId, Action<string> call)
         {
             try
             {
-                call(subsId);
+                call(subsId.ToString());
             }
             catch (MessageSecurityException ex)
             {
@@ -246,14 +172,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         protected TResult RetryCall<TResult>(Func<string, TResult> call)
         {
-            return RetryCall(CurrentSubscription.SubscriptionId, call);
+            return RetryCall(CurrentContext.Subscription.Id, call);
         }
 
-        protected TResult RetryCall<TResult>(string subsId, Func<string, TResult> call)
+        protected TResult RetryCall<TResult>(Guid subsId, Func<string, TResult> call)
         {
             try
             {
-                return call(subsId);
+                return call(subsId.ToString());
             }
             catch (MessageSecurityException ex)
             {
@@ -327,31 +253,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 WriteError(errorRecord);
             }
-        }
-
-        /// <summary>
-        /// Wrap the base Cmdlet's WriteError call so that it will not throw
-        /// a NotSupportedException when called without a CommandRuntime (i.e.,
-        /// when not called from within Powershell).
-        /// </summary>
-        /// <param name="errorRecord">The error to write.</param>
-        protected void WriteWindowsAzureError(ErrorRecord errorRecord)
-        {
-            // If the exception is an Azure Service Management error, pull the
-            // Azure message out to the front instead of the generic response.
-            errorRecord = AzureException.WrapExistingError(errorRecord);
-        }
-
-        protected static string RetrieveOperationId()
-        {
-            var operationId = string.Empty;
-
-            if ((WebOperationContext.Current != null) && (WebOperationContext.Current.IncomingResponse != null))
-            {
-                operationId = WebOperationContext.Current.IncomingResponse.Headers[ServiceManagement.Model.Constants.OperationTrackingIdHeader];
-            }
-
-            return operationId;
         }
     }
 }

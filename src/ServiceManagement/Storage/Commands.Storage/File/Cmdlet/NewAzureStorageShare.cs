@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet
 {
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, Constants.ShareCmdletName, DefaultParameterSetName = Constants.ShareNameParameterSetName)]
     public class NewAzureStorageShare : AzureStorageFileCmdletBase
     {

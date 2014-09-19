@@ -12,23 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.Azure.Commands.Resources.Models;
 using Microsoft.Azure.Gallery;
 using Microsoft.Azure.Management.Resources;
 using Microsoft.Azure.Subscriptions;
-using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Monitoring.Events;
 using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Testing;
+using Microsoft.Azure.Management.Authorization;
+using Microsoft.Azure.Graph.RBAC;
+using Microsoft.Azure.Utilities.HttpRecorder;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    public abstract class ResourcesTestsBase : IDisposable
+    public abstract class ResourcesTestsBase
     {
         private EnvironmentSetupHelper helper;
+        protected const string TenantIdKey = "TenantId";
 
         protected ResourcesTestsBase()
         {
@@ -39,15 +40,40 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             var resourceManagementClient = GetResourceManagementClient();
             var subscriptionsClient = GetSubscriptionClient();
-            var storageClient = GetStorageManagementClient();
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
+            var authorizationManagementClient = GetAuthorizationManagementClient();
+            var graphClient = GetGraphClient();
 
             helper.SetupManagementClients(resourceManagementClient,
                 subscriptionsClient,
-                storageClient,
                 galleryClient,
-                eventsClient);
+                eventsClient,
+                authorizationManagementClient,
+                graphClient);
+        }
+
+        private object GetGraphClient()
+        {
+            var factory = new CSMTestEnvironmentFactory();
+            string tenantId = null;
+
+            if (HttpMockServer.Mode == HttpRecorderMode.Record)
+            {
+                tenantId = factory.GetTestEnvironment().AuthorizationContext.TenatId;
+                HttpMockServer.Variables[TenantIdKey] = tenantId;
+            }
+            else if (HttpMockServer.Mode == HttpRecorderMode.Playback)
+            {
+                tenantId = HttpMockServer.Variables[TenantIdKey];
+            }
+
+            return TestBase.GetGraphServiceClient<GraphRbacManagementClient>(factory, tenantId);
+        }
+
+        protected AuthorizationManagementClient GetAuthorizationManagementClient()
+        {
+            return TestBase.GetServiceClient<AuthorizationManagementClient>(new CSMTestEnvironmentFactory());
         }
 
         protected void RunPowerShellTest(params string[] scripts)
@@ -76,11 +102,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             return TestBase.GetServiceClient<SubscriptionClient>(new CSMTestEnvironmentFactory());
         }
 
-        protected StorageManagementClient GetStorageManagementClient()
-        {
-            return TestBase.GetServiceClient<StorageManagementClient>(new RDFETestEnvironmentFactory());
-        }
-
         protected GalleryClient GetGalleryClient()
         {
             return TestBase.GetServiceClient<GalleryClient>(new CSMTestEnvironmentFactory());
@@ -91,9 +112,5 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             return TestBase.GetServiceClient<EventsClient>(new CSMTestEnvironmentFactory());
         }
 
-        public void Dispose()
-        {
-            helper.Dispose();
-        }
     }
 }

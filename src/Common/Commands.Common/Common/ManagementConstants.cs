@@ -12,35 +12,32 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Net.Http.Headers;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Microsoft.WindowsAzure.Commands.Common;
-    using System.Net.Http.Headers;
-
     public static class ApiConstants
     {
-        public const string LatestApiVersion = ServiceManagement.Model.Constants.VersionHeaderContentLatest;
-        public const string VersionHeaderName = ServiceManagement.Model.Constants.VersionHeaderName;
-
         public const string AuthorizationHeaderName = "Authorization";
 
         public const string BasicAuthorization = "Basic";
 
-        public const string TracingEventResponseHeaderPrefix = "TracingEvent_";
-
-        public const string RunningState = "Running";
-        public const string StoppedState = "Stopped";
-
-        public const string CustomDomainsEnabledSettingsName = "CustomDomainsEnabled";
-        public const string SslSupportSettingsName = "SslSupport";
-
         public const string UserAgentHeaderName = "User-Agent";
+
         public const string UserAgentHeaderValue = "AzurePowershell/v" + AzurePowerShell.AssemblyVersion;
+
         public static ProductInfoHeaderValue UserAgentValue = new ProductInfoHeaderValue(
             "AzurePowershell",
             string.Format("v{0}", AzurePowerShell.AssemblyVersion));
 
         public const string VSDebuggerCausalityDataHeaderName = "VSDebuggerCausalityData";
+
+        public const string OperationTrackingIdHeader = "x-ms-request-id";
+
+        public const string VersionHeaderContentLatest = "2013-08-01";
+
+        public const string VersionHeaderName = "x-ms-version";
         
     }
 
@@ -85,7 +82,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public const string AzureChinaCloud = "AzureChinaCloud";
     }
 
-    public static class WindowsAzureEnvironmentConstants
+    public static class AzureEnvironmentConstants
     {
         public const string AzureServiceEndpoint = "https://management.core.windows.net/";
 
@@ -107,18 +104,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public const string ChinaStorageEndpointSuffix = "core.chinacloudapi.cn";
 
-        public const string AzureStorageBlobEndpointFormat = "{0}://{1}.blob.core.windows.net/";
-
-        public const string AzureStorageQueueEndpointFormat = "{0}://{1}.queue.core.windows.net/";
-
-        public const string AzureStorageTableEndpointFormat = "{0}://{1}.table.core.windows.net/";
-
-        public const string ChinaStorageBlobEndpointFormat = "{0}://{1}.blob.core.chinacloudapi.cn/";
-
-        public const string ChinaStorageQueueEndpointFormat = "{0}://{1}.queue.core.chinacloudapi.cn/";
-
-        public const string ChinaStorageTableEndpointFormat = "{0}://{1}.table.core.chinacloudapi.cn/";
-
         public const string AzureSqlDatabaseDnsSuffix = ".database.windows.net";
 
         public const string ChinaSqlDatabaseDnsSuffix = ".database.chinacloudapi.cn";
@@ -126,5 +111,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public const string AzureActiveDirectoryEndpoint = "https://login.windows.net/";
 
         public const string ChinaActiveDirectoryEndpoint = "https://login.chinacloudapi.cn/";
+
+        public const string AzureGraphEndpoint = "https://graph.windows.net/";
+
+        public const string AzureTrafficManagerDnsSuffix = "trafficmanager.net";
+
+        public const string ChinaTrafficManagerDnsSuffix = "trafficmanager.cn";
     }
 }

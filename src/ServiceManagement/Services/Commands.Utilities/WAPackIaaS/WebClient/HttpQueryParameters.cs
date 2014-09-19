@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient
 {
-    using System;
-    using System.Collections.Generic;
-
     internal class HttpQueryParameters
     {
         private Dictionary<string, string> queryParams;

@@ -172,4 +172,13 @@
   &lt;/ScaffoldFile&gt;
 &lt;/Scaffold&gt;</value>
   </data>
+  <data name="ValidProfile3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\validprofile3.publishsettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ValidProfileChina" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\validprofilechina.publishsettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ValidProfileChinaOld" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\validprofilechinaold.publishsettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

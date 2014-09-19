@@ -12,21 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 {
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Properties;
-    using Moq;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using Test.Utilities.CloudService;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
-    public class PublishContextTests : TestBase
+    
+    public class PublishContextTests : TestBase, IDisposable
     {
         private static AzureServiceWrapper service;
 
@@ -41,32 +42,34 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
         /// <summary>
         /// When running this test double check that the certificate used in Azure.PublishSettings has not expired.
         /// </summary>
-        [TestInitialize()]
-        public void TestInitialize()
+        public PublishContextTests()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             service = new AzureServiceWrapper(Directory.GetCurrentDirectory(), Path.GetRandomFileName(), null);
             service.CreateVirtualCloudPackage();
             packagePath = service.Paths.CloudPackage;
             configPath = service.Paths.CloudConfiguration;
             settings = ServiceSettingsTestData.Instance.Data[ServiceSettingsState.Default];
-            WindowsAzureProfile.Instance = new WindowsAzureProfile(new Mock<IProfileStore>().Object);
-            WindowsAzureProfile.Instance.ImportPublishSettings(Data.ValidPublishSettings.First());
+            ProfileClient.DataStore = new MockDataStore();
+            ProfileClient client = new ProfileClient();
+            ProfileClient.DataStore.WriteFile(Test.Utilities.Common.Data.ValidPublishSettings.First(),
+                File.ReadAllText(Test.Utilities.Common.Data.ValidPublishSettings.First()));
+            client.ImportPublishSettings(Test.Utilities.Common.Data.ValidPublishSettings.First(), null);
+            client.Profile.Save();
         }
 
-        [TestCleanup()]
         public void TestCleanup()
         {
-            WindowsAzureProfile.ResetInstance();
-            if (Directory.Exists(Data.AzureSdkAppDir))
+            ProfileClient.DataStore = new MockDataStore();
+            if (Directory.Exists(Test.Utilities.Common.Data.AzureSdkAppDir))
             {
-                new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(Data.AzureSdkAppDir);
+                new RemoveAzurePublishSettingsCommand().RemovePublishSettingsProcess(Test.Utilities.Common.Data.AzureSdkAppDir);
             }
         }
 
         #region settings
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestWithDefaultServiceSettings()
         {
             string label = "MyLabel";
@@ -83,7 +86,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             AzureAssert.AreEqualPublishContext(settings, configPath, deploymentName, label, packagePath, "f62b1e05-af8f-4205-8f98-325079adc155", deploySettings);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestWithFullServiceSettings()
         {
             string label = "MyLabel";
@@ -107,7 +110,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 deploySettings);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestNullSettingsFail()
         {
             string label = "MyLabel";
@@ -122,12 +125,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                     label,
                     deploymentName,
                     rootPath);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsInstanceOfType(ex, typeof(ArgumentException));
-                Assert.AreEqual<string>(Resources.InvalidServiceSettingMessage, ex.Message);
+                Assert.True(ex is ArgumentException);
+                Assert.Equal<string>(Resources.InvalidServiceSettingMessage, ex.Message);
             }
         }
 
@@ -135,7 +138,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         #region packagePath
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestEmptyPackagePathFail()
         {
             string label = "MyLabel";
@@ -151,7 +154,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 rootPath), expectedMessage);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestNullPackagePathFail()
         {
             string label = "MyLabel";
@@ -171,7 +174,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         #region configPath
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestEmptyConfigPathFail()
         {
             string label = "MyLabel";
@@ -187,7 +190,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 rootPath), expectedMessage);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestNullConfigPathFail()
         {
             string label = "MyLabel";
@@ -203,7 +206,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 rootPath), expectedMessage);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestDoesNotConfigPathFail()
         {
             string label = "MyLabel";
@@ -219,12 +222,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                     label,
                     deploymentName,
                     rootPath);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsInstanceOfType(ex, typeof(FileNotFoundException));
-                Assert.AreEqual<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceConfiguration, doesNotExistDir), ex.Message);
+                Assert.True(ex is FileNotFoundException);
+                Assert.Equal<string>(string.Format(Resources.PathDoesNotExistForElement, Resources.ServiceConfiguration, doesNotExistDir), ex.Message);
             }
         }
 
@@ -232,7 +235,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
 
         #region label
 
-        [TestMethod]
+        [Fact]
         public void TestDeploymentSettingsTestNullLabelFail()
         {
             string deploymentName = service.ServiceName;
@@ -246,17 +249,22 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                     null,
                     deploymentName,
                     rootPath);
-                Assert.Fail("No exception was thrown");
+                Assert.True(false, "No exception was thrown");
             }
             catch (Exception ex)
             {
-                Assert.IsInstanceOfType(ex, typeof(ArgumentException));
-                Assert.IsTrue(string.Compare(
+                Assert.True(ex is ArgumentException);
+                Assert.True(string.Compare(
                     string.Format(Resources.InvalidOrEmptyArgumentMessage,
                     "serviceName"), ex.Message, true) == 0);
             }
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            TestCleanup();
+        }
     }
 }

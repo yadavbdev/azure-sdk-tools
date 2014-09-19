@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests
 {
-    using Management.HDInsight.Cmdlet.PSCmdlets;
-    using Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
-    using Utilities.HDInsight.Utilities;
-
     public class HDInsightTestCaseBase : IntegrationTestBase
     {
         public override void Initialize()

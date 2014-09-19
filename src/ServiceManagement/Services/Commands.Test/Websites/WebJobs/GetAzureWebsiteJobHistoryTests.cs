@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
+using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Commands.Utilities.Websites;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
-    using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-    using Moq;
-    using Utilities.Websites;
-
-    [TestClass]
+    
     public class GetAzureWebsiteJobHistoryTests : WebsitesTestBase
     {
         private const string websiteName = "website1";
@@ -39,8 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Mock<ICommandRuntime> commandRuntimeMock;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public GetAzureWebsiteJobHistoryTests()
         {
             websitesClientMock = new Mock<IWebsitesClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -54,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void GetCompleteWebJobHistory()
         {
             // Setup
@@ -74,14 +73,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             cmdlet.ExecuteCmdlet();
 
             // Assert
-            Assert.AreEqual(options.Name, websiteName);
-            Assert.AreEqual(options.Slot, slot);
-            Assert.AreEqual(options.JobName, jobName);
+            Assert.Equal(options.Name, websiteName);
+            Assert.Equal(options.Slot, slot);
+            Assert.Equal(options.JobName, jobName);
             websitesClientMock.Verify(f => f.FilterWebJobHistory(options), Times.Once());
             commandRuntimeMock.Verify(f => f.WriteObject(output, true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetSpecificWebJobRun()
         {
             // Setup
@@ -98,15 +97,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             cmdlet.ExecuteCmdlet();
 
             // Assert
-            Assert.AreEqual(options.Name, websiteName);
-            Assert.AreEqual(options.Slot, slot);
-            Assert.AreEqual(options.JobName, jobName);
-            Assert.AreEqual(options.RunId, runId);
+            Assert.Equal(options.Name, websiteName);
+            Assert.Equal(options.Slot, slot);
+            Assert.Equal(options.JobName, jobName);
+            Assert.Equal(options.RunId, runId);
             websitesClientMock.Verify(f => f.FilterWebJobHistory(options), Times.Once());
             commandRuntimeMock.Verify(f => f.WriteObject(output, true), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetLatestWebJobRun()
         {
             // Setup
@@ -122,10 +121,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             cmdlet.ExecuteCmdlet();
 
             // Assert
-            Assert.AreEqual(options.Name, websiteName);
-            Assert.AreEqual(options.Slot, slot);
-            Assert.AreEqual(options.JobName, jobName);
-            Assert.IsTrue(options.Latest);
+            Assert.Equal(options.Name, websiteName);
+            Assert.Equal(options.Slot, slot);
+            Assert.Equal(options.JobName, jobName);
+            Assert.True(options.Latest);
             websitesClientMock.Verify(f => f.FilterWebJobHistory(options), Times.Once());
             commandRuntimeMock.Verify(f => f.WriteObject(output, true), Times.Once());
         }

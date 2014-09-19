@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using Model;
-    using System.Linq;
-    using System.Management.Automation;
-
     /// <summary>
     /// Get Microsoft Azure Service Remote Desktop Extension.
     /// </summary>

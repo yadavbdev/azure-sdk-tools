@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.IO;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces
 {
-    using System;
-    using System.IO;
-
     internal interface IAzureHDInsightStorageHandler
     {
         Uri GetStoragePath(Uri httpPath);

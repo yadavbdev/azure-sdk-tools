@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using System.Runtime.Serialization;
+using System.Text;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using System.IO;
-    using System.Runtime.Serialization;
-    using System.Text;
-
     internal class SerializationUtil
     {
         public static T GetObjectFromSerializedString<T>(string data)

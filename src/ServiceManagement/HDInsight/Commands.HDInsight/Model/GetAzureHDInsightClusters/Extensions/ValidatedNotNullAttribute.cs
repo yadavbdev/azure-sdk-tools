@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions
 {
-    using System;
-
     /// <summary>
     ///     Instructs Code Analysis to treat a method as a validation
     ///     method for a given parameter and not fire 1062 when it is used.

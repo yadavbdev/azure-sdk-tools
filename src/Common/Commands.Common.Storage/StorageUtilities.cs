@@ -1,8 +1,8 @@
-﻿using Microsoft.WindowsAzure.Commands.Utilities.Common;
+﻿using System;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Storage;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
-using System;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Storage
 {

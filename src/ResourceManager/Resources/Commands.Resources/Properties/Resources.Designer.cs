@@ -241,6 +241,15 @@ namespace Microsoft.Azure.Commands.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removing role assignment for AD object &apos;{0}&apos; on scope &apos;{1}&apos; with role definition &apos;{2}&apos; .
+        /// </summary>
+        internal static string RemovingRoleAssignment {
+            get {
+                return ResourceManager.GetString("RemovingRoleAssignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Provided resource already exists. Are you sure you want to replace it?.
         /// </summary>
         internal static string ResourceAlreadyExists {
@@ -291,6 +300,15 @@ namespace Microsoft.Azure.Commands.Resources.Properties {
         internal static string ResourceTypeFormat {
             get {
                 return ResourceManager.GetString("ResourceTypeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can not find role definition with name &apos;{0}&apos;..
+        /// </summary>
+        internal static string RoleDefinitionNotFound {
+            get {
+                return ResourceManager.GetString("RoleDefinitionNotFound", resourceCulture);
             }
         }
         

@@ -12,38 +12,38 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    [TestClass]
+    
     public class LogicalNetworkOperationsTests
     {
         private const string logicalNetworkName = "LogicalNetwork01";
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneLogicalNetwork()
         {
             var mockChannel = new MockRequestChannel();
             mockChannel.AddReturnObject(new LogicalNetwork { ID = Guid.Empty, CloudId = Guid.Empty, Name = logicalNetworkName });
 
             var logicalNetworkOperations = new LogicalNetworkOperations(new WebClientFactory(new Subscription(), mockChannel));
-            Assert.AreEqual(1, logicalNetworkOperations.Read().Count);
+            Assert.Equal(1, logicalNetworkOperations.Read().Count);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneLogicalNetworkByName()
         {
             var mockChannel = new MockRequestChannel();
@@ -52,13 +52,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var logicalNetworkOperations = new LogicalNetworkOperations(new WebClientFactory(new Subscription(), mockChannel));
             var logicalNetworkList = logicalNetworkOperations.Read(logicalNetworkName);
 
-            Assert.AreEqual(1, logicalNetworkList.Count);
-            Assert.AreEqual(logicalNetworkName, logicalNetworkList.First().Name);
+            Assert.Equal(1, logicalNetworkList.Count);
+            Assert.Equal(logicalNetworkName, logicalNetworkList.First().Name);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnMultipleLogicalNetworks()
         {
             var mockChannel = new MockRequestChannel();
@@ -72,18 +72,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var logicalNetworkOperations = new LogicalNetworkOperations(new WebClientFactory(new Subscription(), mockChannel));
             var logicalNetworkList = logicalNetworkOperations.Read();
 
-            Assert.AreEqual(2, logicalNetworkList.Count);
-            Assert.IsTrue(logicalNetworkList.All(logicalNetwork => logicalNetwork.Name == logicalNetworkName));
+            Assert.Equal(2, logicalNetworkList.Count);
+            Assert.True(logicalNetworkList.All(logicalNetwork => logicalNetwork.Name == logicalNetworkName));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [TestCategory("WAPackIaaS-Negative")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
+        [Trait("Type", "WAPackIaaS-Negative")]
         public void ShouldReturnEmptyOnNoResult()
         {
             var logicalNetworkOperations = new LogicalNetworkOperations(new WebClientFactory(new Subscription(), MockRequestChannel.Create()));
-            Assert.IsFalse(logicalNetworkOperations.Read().Any());
+            Assert.False(logicalNetworkOperations.Read().Any());
         }
     }
 }

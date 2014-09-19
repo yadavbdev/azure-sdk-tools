@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-
     internal class MockLogger : ILogger
     {
         public void Log(LogLevel logLevel, string message)

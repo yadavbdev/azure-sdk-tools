@@ -12,17 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Management.Automation;
+using System.Threading;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using BaseInterfaces;
-    using Extensions;
-    using Hadoop.Client;
-    using ServiceLocation;
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Management.Automation;
-    using System.Threading;
-
     internal abstract class AzureHDInsightJobCommandExecutorBase : AzureHDInsightCommandBase, IAzureHDInsightJobCommandCredentialsBase
     {
         protected CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -45,7 +47,15 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         {
             cluster.ArgumentNotNull("ClusterEndpoint");
             IJobSubmissionClient client = null;
-            var clientCredential = this.GetJobSubmissionClientCredentials(this.CurrentSubscription, cluster);
+            ProfileClient profileClient = new ProfileClient();
+
+            string currentEnvironmentName = this.CurrentSubscription == null ? null : this.CurrentSubscription.Environment;
+
+            var clientCredential = this.GetJobSubmissionClientCredentials(
+                this.CurrentSubscription,
+                profileClient.GetEnvironmentOrDefault(currentEnvironmentName),
+                cluster,
+                profileClient.Profile);
             if (clientCredential != null)
             {
                 client = ServiceLocator.Instance.Locate<IAzureHDInsightJobSubmissionClientFactory>().Create(clientCredential);

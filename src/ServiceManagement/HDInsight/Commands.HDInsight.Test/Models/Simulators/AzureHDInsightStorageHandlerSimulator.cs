@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
-    using Management.HDInsight.Cmdlet.Commands.CommandImplementations;
-    using System;
-    using System.IO;
-
     internal class AzureHDInsightStorageHandlerSimulator : IAzureHDInsightStorageHandler
     {
         internal Uri Path { get; private set; }

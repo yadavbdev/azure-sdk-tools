@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Hadoop.Client;
-    using Management.HDInsight;
-    using Management.HDInsight.Cmdlet.Commands.CommandImplementations;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public class AzureHDInsightJobSubmissionClientSimulatorFactory : IAzureHDInsightJobSubmissionClientFactory
     {
         internal static IDictionary<string, IJobSubmissionClient> jobSubmissionClients = new Dictionary<string, IJobSubmissionClient>();

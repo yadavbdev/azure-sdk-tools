@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.Generic;
-
     public class StorageServicePropertiesOperationContext : StorageServiceOperationContext
     {
         public string StorageAccountDescription { get; set; }
@@ -39,5 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public string StatusOfSecondary { get; set; }
 
         public IEnumerable<string> Endpoints { get; set; }
+
+        public string AccountType { get; set; }
     }
 }
