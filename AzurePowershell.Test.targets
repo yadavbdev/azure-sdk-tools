@@ -183,11 +183,19 @@
     <Message Importance="high" Text="Running AzureRT BVT tests..." />
     <Delete Files="$(TestOutputDirectory)\RTBVTDebug.trx" />
     <Exec
+      Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /testsettings:$(AzureRTTestSettings) /category:BVT /resultsfile:$(TestOutputDirectory)\RTBVTDebug.trx"
+      ContinueOnError="false" />
+  </Target>
+
+  <Target Name="AzureRTBVTsSeq" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
+    <Message Importance="high" Text="Running AzureRT BVT tests..." />
+    <Delete Files="$(TestOutputDirectory)\RTBVTDebug.trx" />
+    <Exec
       Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /testsettings:$(TestSettings) /category:BVT /resultsfile:$(TestOutputDirectory)\RTBVTDebug.trx"
       ContinueOnError="false" />
   </Target>
 
-  <Target Name="AzureRTOneTest" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
+  <Target Name="AzureRTOne" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
     <Message Importance="high" Text="Running a specific tests..." />
     <Delete Files="$(TestOutputDirectory)\RTFunctionalDebug.trx" />
     <Exec
@@ -195,7 +203,7 @@
       ContinueOnError="false" />
   </Target>
 
-  <Target Name="AzureRTMultiTests" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
+  <Target Name="AzureRTMulti" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
     <Message Importance="high" Text="Running tests:" />
     <Delete Files="$(TestOutputDirectory)\RTFunctionalDebug.trx" />
     <Exec
@@ -219,6 +227,26 @@
     <Exec
       Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /testsettings:$(TestSettings) /category:Sequential /resultsfile:$(TestOutputDirectory)\RTSequentialDebug.trx"
       ContinueOnError="true" />
+    <Exec
+      Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /testsettings:$(AzureRTTestSettings) /category:$(AzureRTAllTestFilter) /resultsfile:$(TestOutputDirectory)\RTDebug.trx"
+      ContinueOnError="false" />
+  </Target>
+
+  <Target Name="AzureRTSeq" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
+    <Message Importance="high" Text="Running AzureRT all tests..." />
+
+    <Delete Files="$(TestOutputDirectory)\RTSequentialDebug.trx" />
+    <Delete Files="$(TestOutputDirectory)\RTDebug.trx" />
+    <Exec
+      Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /testsettings:$(TestSettings) /category:Sequential /resultsfile:$(TestOutputDirectory)\RTSequentialDebug.trx"
+      ContinueOnError="true" />
+  </Target>
+
+  <Target Name="AzureRTPar" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
+    <Message Importance="high" Text="Running AzureRT all tests..." />
+
+    <Delete Files="$(TestOutputDirectory)\RTSequentialDebug.trx" />
+    <Delete Files="$(TestOutputDirectory)\RTDebug.trx" />
     <Exec
       Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /testsettings:$(AzureRTTestSettings) /category:$(AzureRTAllTestFilter) /resultsfile:$(TestOutputDirectory)\RTDebug.trx"
       ContinueOnError="false" />
