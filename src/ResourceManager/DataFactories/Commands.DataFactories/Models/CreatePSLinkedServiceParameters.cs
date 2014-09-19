@@ -12,12 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class Constants
+    public class CreatePSLinkedServiceParameters : DataFactoryParametersBase
     {
-        public const string DataFactory = "AzureDataFactory";
+        public string Name { get; set; }
 
-        public const string LinkedService = "AzureDataFactoryLinkedService";
+        public string RawJsonContent { get; set; }
+
+        public bool Force { get; set; }
+
+        public Action<bool, string, string, string, Action> ConfirmAction { get; set; }
     }
 }

@@ -12,67 +12,84 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections.Generic;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Moq;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 {
-    public class NewDataFactoryTests : DataFactoryUnitTestBase
+    public class NewLinkedServiceTests : DataFactoryUnitTestBase
     {
-        private NewAzureDataFactoryCommand cmdlet;
-        
-        private IDictionary<string, string> tags;
+        private const string linkedServiceName = "foo1";
 
-        public NewDataFactoryTests()
+        private const string filePath = "linkedService.json";
+
+        private const string rawJsonContent = @"
+{
+    name: ""foo2"",
+    properties:
+    {
+        type: ""HDInsightBYOCLinkedService"",
+        clusterUri: ""https://MyCluster.azurehdinsight.net/"",
+        userName: ""MyUserName"",
+        password: ""$EncryptedString$MyEncryptedPassword"",
+        linkedServiceName: ""MyStorageAssetName"",
+    }
+}
+";
+
+        private NewAzureDataFactoryLinkedServiceCommand cmdlet;
+        
+        public NewLinkedServiceTests()
         {
             base.SetupTest();
 
-            tags = new Dictionary<string, string>() {{"foo", "bar"}};
-
-            cmdlet = new NewAzureDataFactoryCommand()
+        cmdlet = new NewAzureDataFactoryLinkedServiceCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataFactoryClient = dataFactoriesClientMock.Object,
-                Name = DataFactoryName,
-                Location = Location,
+                Name = linkedServiceName,
+                DataFactoryName = DataFactoryName,
                 ResourceGroupName = ResourceGroupName
             };
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void CanCreateDataFactory()
+        public void CanCreateLinkedService()
         {
             // Arrange
-            DataFactory expected = new DataFactory()
+            LinkedService expected = new LinkedService()
             {
-                Name = DataFactoryName,
-                Location = Location
+                Name = linkedServiceName,
+                Properties = null
             };
+            
+            dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
+                .Returns(rawJsonContent)
+                .Verifiable();
 
             dataFactoriesClientMock.Setup(
-                f =>
-                    f.CreatePSDataFactory(
-                        It.Is<CreatePSDataFactoryParameters>(
+                c =>
+                    c.CreatePSLinkedService(
+                        It.Is<CreatePSLinkedServiceParameters>(
                             parameters =>
+                                parameters.Name == linkedServiceName &&
                                 parameters.ResourceGroupName == ResourceGroupName &&
-                                parameters.DataFactoryName == DataFactoryName &&
-                                parameters.Location == Location)))
+                                parameters.DataFactoryName == DataFactoryName)))
                 .CallBase()
                 .Verifiable();
 
             dataFactoriesClientMock.Setup(
-                f => f.CreateOrUpdateDataFactory(ResourceGroupName, DataFactoryName, Location, tags))
+                c =>
+                    c.CreateOrUpdateLinkedService(ResourceGroupName, DataFactoryName, linkedServiceName, rawJsonContent))
                 .Returns(expected)
                 .Verifiable();
-
+            
             // Action
-            cmdlet.Tags = tags.ToHashtable();
+            cmdlet.File = filePath;
             cmdlet.Force = true;
             cmdlet.ExecuteCmdlet();
 
@@ -82,10 +99,12 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
             commandRuntimeMock.Verify(
                 f =>
                     f.WriteObject(
-                        It.Is<PSDataFactory>(
-                            df =>
-                                df.DataFactoryName == expected.Name && 
-                                df.Location == expected.Location)),
+                        It.Is<PSLinkedService>(
+                            ls =>
+                                ResourceGroupName == ls.ResourceGroupName &&
+                                DataFactoryName == ls.DataFactoryName &&
+                                expected.Name == ls.LinkedServiceName &&
+                                expected.Properties == ls.Properties)),
                 Times.Once());
         }
     }

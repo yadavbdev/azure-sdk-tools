@@ -12,12 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.DataFactories.Models;
+using Newtonsoft.Json;
+
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class Constants
+    internal static class DataFactoryClientExtensions
     {
-        public const string DataFactory = "AzureDataFactory";
-
-        public const string LinkedService = "AzureDataFactoryLinkedService";
+        public static string ToFormattedString(this LinkedServiceProperties properties)
+        {
+            return JsonConvert.SerializeObject(properties);
+        }
     }
 }

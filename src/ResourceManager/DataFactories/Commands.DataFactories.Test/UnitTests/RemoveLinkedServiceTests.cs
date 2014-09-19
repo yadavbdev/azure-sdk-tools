@@ -19,32 +19,36 @@ using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 {
-    public class RemoveDataFactoryTests : DataFactoryUnitTestBase
+    public class RemoveLinkedServiceTests : DataFactoryUnitTestBase
     {
-        private RemoveAzureDataFactoryCommand cmdlet;
+        private const string linkedServiceName = "foo";
 
-        public RemoveDataFactoryTests()
+        private RemoveAzureDataFactoryLinkedServiceCommand cmdlet;
+
+        public RemoveLinkedServiceTests()
         {
             base.SetupTest();
 
-            cmdlet = new RemoveAzureDataFactoryCommand()
+            cmdlet = new RemoveAzureDataFactoryLinkedServiceCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataFactoryClient = dataFactoriesClientMock.Object,
-                Name = DataFactoryName,
+                Name = linkedServiceName,
                 ResourceGroupName = ResourceGroupName,
+                DataFactoryName = DataFactoryName,
                 Force = true
             };
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void CanRemoveDataFactory()
+        public void CanRemoveLinkedService()
         {
             HttpStatusCode expectedStatusCode = HttpStatusCode.OK;
 
             // Arrange
-            dataFactoriesClientMock.Setup(f => f.DeleteDataFactory(ResourceGroupName, DataFactoryName))
+            dataFactoriesClientMock.Setup(
+                f => f.DeleteLinkedService(ResourceGroupName, DataFactoryName, linkedServiceName))
                 .Returns(expectedStatusCode)
                 .Verifiable();
 
