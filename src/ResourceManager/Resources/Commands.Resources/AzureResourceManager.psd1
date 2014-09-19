@@ -60,7 +60,8 @@ TypesToProcess = @()
 FormatsToProcess = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.format.ps1xml',
     '.\Tags\Microsoft.Azure.Commands.Tags.format.ps1xml',
-    '.\Resources\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml'
+    '.\Resources\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml',
+    '.\DataFactories\Microsoft.Azure.Commands.DataFactories.format.ps1xml'
 )
 
 # Modules to import as nested modules of the module specified in ModuleToProcess

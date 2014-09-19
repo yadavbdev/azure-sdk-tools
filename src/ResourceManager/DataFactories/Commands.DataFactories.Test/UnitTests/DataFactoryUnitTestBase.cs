@@ -13,14 +13,11 @@
 // ----------------------------------------------------------------------------------
 
 using System.Management.Automation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Moq;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    [TestClass]
-    public class DataFactoryUnitTestBase : TestBase
+    public class DataFactoryUnitTestBase
     {
         protected const string subscriptionId = "subscriptionid";
 
@@ -36,11 +33,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
 
         protected Mock<ICommandRuntime> commandRuntimeMock;
         
-        [TestInitialize]
         public virtual void SetupTest()
         {
-            new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
-
             dataFactoriesClientMock = new Mock<DataFactoryClient>();
 
             commandRuntimeMock = new Mock<ICommandRuntime>();

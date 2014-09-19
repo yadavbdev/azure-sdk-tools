@@ -14,10 +14,12 @@
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class Constants
+    public class LinkedServiceFilterOptions
     {
-        public const string DataFactory = "AzureDataFactory";
+        public string Name { get; set; }
 
-        public const string LinkedService = "AzureDataFactoryLinkedService";
+        public string ResourceGroupName { get; set; }
+
+        public string DataFactoryName { get; set; }
     }
 }

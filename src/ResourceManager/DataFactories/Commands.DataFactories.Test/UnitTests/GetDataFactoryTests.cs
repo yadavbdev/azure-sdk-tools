@@ -14,18 +14,17 @@
 
 using System.Collections.Generic;
 using Microsoft.Azure.Commands.DataFactories.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Moq;
+using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    [TestClass]
     public class GetDataFactoryTests : DataFactoryUnitTestBase
     {
         private GetAzureDataFactoryCommand cmdlet;
-        
-        [TestInitialize]
-        public void SetupTest()
+
+        public GetDataFactoryTests()
         {
             base.SetupTest();
 
@@ -36,7 +35,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             };
         }
 
-        [TestMethod]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanGetDataFactory()
         {
             PSDataFactory expected = new PSDataFactory() {DataFactoryName = DataFactoryName, ResourceGroupName = ResourceGroupName};
@@ -66,7 +66,8 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
         }
 
-        [TestMethod]
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanListDataFactories()
         {
             List<PSDataFactory> expected = new List<PSDataFactory>()

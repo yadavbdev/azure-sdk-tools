@@ -79,7 +79,9 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A data factory with the name {0} in the resource group {1} exists. Continuing execution may overwrite the exisiting one. Are you sure you want to continue?.
+        ///   Looks up a localized string similar to A data factory with the name {0} in the resource group {1} exists. 
+        ///Continuing execution may overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
         /// </summary>
         internal static string DataFactoryExists {
             get {
@@ -106,6 +108,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} name provided using -Name switch: &apos;{1}&apos; in cmdlet doesn&apos;t match with {0} name: &apos;{2}&apos; in JSON file. {0} will be created with name: &apos;{1}&apos;.
+        /// </summary>
+        internal static string ExtractedNameFromJsonMismatchWarning {
+            get {
+                return ResourceManager.GetString("ExtractedNameFromJsonMismatchWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP Status Code: {0}
         ///Error Code: {1}
         ///Error Message: {2}
@@ -115,6 +126,53 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         internal static string FormattedCloudExceptionMessageTemplate {
             get {
                 return ResourceManager.GetString("FormattedCloudExceptionMessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove linked service &apos;{0}&apos; in data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string LinkedServiceConfirmationMessage {
+            get {
+                return ResourceManager.GetString("LinkedServiceConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating linked service &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string LinkedServiceCreating {
+            get {
+                return ResourceManager.GetString("LinkedServiceCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A linked service with the name {0} in the data factory {1} exists. 
+        ///Continuing execution may overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
+        /// </summary>
+        internal static string LinkedServiceExists {
+            get {
+                return ResourceManager.GetString("LinkedServiceExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linked service &apos;{0}&apos; does not exist in the data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string LinkedServiceNotFound {
+            get {
+                return ResourceManager.GetString("LinkedServiceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing linked service &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string LinkedServiceRemoving {
+            get {
+                return ResourceManager.GetString("LinkedServiceRemoving", resourceCulture);
             }
         }
         
