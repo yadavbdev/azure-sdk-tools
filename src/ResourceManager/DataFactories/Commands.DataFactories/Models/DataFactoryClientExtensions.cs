@@ -23,5 +23,10 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             return JsonConvert.SerializeObject(properties);
         }
+
+        public static string ToFormattedString<T>(T objectToSerialize)
+        {
+            return JsonConvert.SerializeObject(objectToSerialize);
+        }
     }
 }

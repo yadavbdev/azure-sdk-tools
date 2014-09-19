@@ -12,14 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class Constants
+    public abstract class TableContextBaseCmdlet : DataFactoryBaseCmdlet
     {
-        public const string DataFactory = "AzureDataFactory";
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The data factory name.")]
+        [ValidateNotNullOrEmpty]
+        public string DataFactoryName { get; set; }
 
-        public const string LinkedService = "AzureDataFactoryLinkedService";
-
-        public const string Table = "AzureDataFactoryTable";
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The table name.")]
+        [ValidateNotNullOrEmpty]
+        public string Name { get; set; }
     }
 }
