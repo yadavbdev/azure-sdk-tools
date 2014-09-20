@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using System.Net.Http;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Net;
-    using System.Net.Http;
-
-    [TestClass]
+    
     public class VMSubnetOperationsTests
     {
         private const string baseURI = "/VMSubnets";
@@ -33,9 +33,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         private const string vmNetworkName = "VNet01";
         private const string vmSubnetName = "VMSubnet01";
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldCreateOneVMSubnet()
         {
             var mockChannel = new MockRequestChannel();
@@ -64,25 +64,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmSubnetOperations = new VMSubnetOperations(new WebClientFactory(new Subscription(), mockChannel));
             var createdVMSubnet = vmSubnetOperations.Create(vmSubnetToCreate, out jobOut);
 
-            Assert.IsNotNull(createdVMSubnet);
-            Assert.IsInstanceOfType(createdVMSubnet, typeof(VMSubnet));
-            Assert.AreEqual(vmSubnetToReturn.Name, createdVMSubnet.Name);
-            Assert.AreEqual(vmSubnetToReturn.VMNetworkName, createdVMSubnet.VMNetworkName);
-            Assert.AreEqual(vmSubnetToReturn.VMNetworkId, createdVMSubnet.VMNetworkId);
-            Assert.AreEqual(vmSubnetToReturn.Subnet, createdVMSubnet.Subnet);
-            Assert.AreEqual(vmSubnetToReturn.StampId, createdVMSubnet.StampId);
+            Assert.NotNull(createdVMSubnet);
+            Assert.True(createdVMSubnet is VMSubnet);
+            Assert.Equal(vmSubnetToReturn.Name, createdVMSubnet.Name);
+            Assert.Equal(vmSubnetToReturn.VMNetworkName, createdVMSubnet.VMNetworkName);
+            Assert.Equal(vmSubnetToReturn.VMNetworkId, createdVMSubnet.VMNetworkId);
+            Assert.Equal(vmSubnetToReturn.Subnet, createdVMSubnet.Subnet);
+            Assert.Equal(vmSubnetToReturn.StampId, createdVMSubnet.StampId);
 
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(1, requestList.Count);
-            Assert.AreEqual(HttpMethod.Post.ToString(), requestList[0].Item1.Method);
+            Assert.Equal(1, requestList.Count);
+            Assert.Equal(HttpMethod.Post.ToString(), requestList[0].Item1.Method);
 
             // Check the URI
-            Assert.AreEqual(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneVMSubnet()
         {
             const string subnet = "192.168.1.0/24";
@@ -103,17 +103,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 
             var vmSubnetOperations = new VMSubnetOperations(new WebClientFactory(new Subscription(), mockChannel));
             var readStaticIPAddressPool = vmSubnetOperations.Read(new VMNetwork() { StampId = Guid.Empty, ID = Guid.Empty });
-            Assert.AreEqual(1, readStaticIPAddressPool.Count);
+            Assert.Equal(1, readStaticIPAddressPool.Count);
 
             // Check the URI
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(1, requestList.Count);
-            Assert.AreEqual(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(1, requestList.Count);
+            Assert.Equal(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldDeleteVMSubnet()
         {
             const string subnet = "192.168.1.0/24";
@@ -137,13 +137,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmSubnetOperations = new VMSubnetOperations(new WebClientFactory(new Subscription(), mockChannel));
             vmSubnetOperations.Delete(Guid.Empty, out jobOut);
 
-            Assert.AreEqual(2, mockChannel.ClientRequests.Count);
-            Assert.AreEqual(HttpMethod.Delete.ToString(), mockChannel.ClientRequests[1].Item1.Method);
+            Assert.Equal(2, mockChannel.ClientRequests.Count);
+            Assert.Equal(HttpMethod.Delete.ToString(), mockChannel.ClientRequests[1].Item1.Method);
 
             // Check the URI
             var requestURI = mockChannel.ClientRequests[1].Item1.Address.AbsolutePath;
-            Assert.AreEqual("/Clouds", mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
-            Assert.AreEqual(baseURI, mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1).Remove(requestURI.IndexOf('(') - 1));
+            Assert.Equal("/Clouds", mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(baseURI, mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1).Remove(requestURI.IndexOf('(') - 1));
         }
     }
 }

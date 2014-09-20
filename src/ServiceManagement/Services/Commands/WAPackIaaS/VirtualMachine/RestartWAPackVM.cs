@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 {
-    using System.Management.Automation;
-
     [Cmdlet(VerbsLifecycle.Restart, "WAPackVM", DefaultParameterSetName = WAPackCmdletParameterSets.FromVirtualMachineObject)]
     public class RestartWAPackVM : VMOperationsCmdlet
     {

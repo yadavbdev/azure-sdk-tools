@@ -12,13 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Linq;
-
     [TestClass]
     public class SetWAPackVMTests : CmdletTestVirtualMachineStatusBase
     {
@@ -98,7 +97,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
             ps.AddParameter("VMSizeProfile", sizeProfileList[0]);
             ps.AddParameter("PassThru");
 
-            var expectedError = string.Format(Resources.ResourceNotFound, vm.Properties["ID"].Value);
+            var expectedError = string.Format(Utilities.Properties.Resources.ResourceNotFound, vm.Properties["ID"].Value);
             var updatedVMList = ps.InvokeAndAssertForErrors(expectedError);
         }
     }

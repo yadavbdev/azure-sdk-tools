@@ -11,28 +11,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using BaseInterfaces;
-    using Extensions;
-    using System.Linq;
-    using WindowsAzure.Commands.Utilities.Common;
+
 
     internal class AzureHDInsightSubscriptionResolver : IAzureHDInsightSubscriptionResolver
     {
-        private readonly WindowsAzureProfile profile;
+        private readonly AzureProfile profile;
 
-        public AzureHDInsightSubscriptionResolver(WindowsAzureProfile profile)
+        public AzureHDInsightSubscriptionResolver(AzureProfile profile)
         {
             this.profile = profile;
         }
 
-        public WindowsAzureSubscription ResolveSubscription(string subscription)
+        public AzureSubscription ResolveSubscription(string subscription)
         {
-            var resolvedSubscription = this.profile.Subscriptions.FirstOrDefault(s => s.SubscriptionId == subscription);
+            var resolvedSubscription = this.profile.Subscriptions.Values.FirstOrDefault(s => s.Id == new Guid(subscription));
             if (resolvedSubscription.IsNull())
             {
-                resolvedSubscription = this.profile.Subscriptions.FirstOrDefault(s => s.SubscriptionName == subscription);
+                resolvedSubscription = this.profile.Subscriptions.Values.FirstOrDefault(s => s.Name == subscription);
             }
 
             return resolvedSubscription;

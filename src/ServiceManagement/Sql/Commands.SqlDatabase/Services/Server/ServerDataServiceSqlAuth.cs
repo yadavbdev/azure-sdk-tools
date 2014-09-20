@@ -12,19 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Data.Services.Client;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Services.Client;
-    using System.Globalization;
-    using System.Linq;
-    using System.Net;
-    using System.Xml.Linq;
-    using DatabaseCopyModel = Microsoft.WindowsAzure.Commands.SqlDatabase.Model.DatabaseCopy;
+    using DatabaseCopyModel = Model.DatabaseCopy;
 
     /// <summary>
     /// Implementation of the <see cref="IServerDataServiceContext"/> with Sql Authentication.
@@ -1026,52 +1027,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server
             string targetServerName,
             string targetDatabaseName,
             DateTime? pointInTime)
-        {
-            throw new NotSupportedException(Resources.SqlAuthNotSupported);
-        }
-
-        #endregion
-
-        #region RecoverableDatabase Operations
-
-        /// <summary>
-        /// Retrieves the list of all recoverable databases on the given server.
-        /// </summary>
-        /// <param name="sourceServerName">The name of the server that contained the databases.</param>
-        /// <returns>An array of all recoverable databases on the server.</returns>
-        public RecoverableDatabase[] GetRecoverableDatabases(string sourceServerName)
-        {
-            throw new NotSupportedException(Resources.SqlAuthNotSupported);
-        }
-
-        /// <summary>
-        /// Retrieve information on the recoverable database with the name
-        /// <paramref name="sourceDatabaseName"/> on the server <paramref name="sourceServerName"/>.
-        /// </summary>
-        /// <param name="sourceServerName">The name of the server that contained the database.</param>
-        /// <param name="sourceDatabaseName">The name of the database to recover.</param>
-        /// <returns>An object containing the information about the specific recoverable database.</returns>
-        public RecoverableDatabase GetRecoverableDatabase(
-            string sourceServerName, string sourceDatabaseName)
-        {
-            throw new NotSupportedException(Resources.SqlAuthNotSupported);
-        }
-
-        #endregion
-
-        #region Recover Database Operations
-
-        /// <summary>
-        /// Issues a recovery request for the given source database to the given target database.
-        /// </summary>
-        /// <param name="sourceServerName">The name of the server that contained the source database.</param>
-        /// <param name="sourceDatabaseName">The name of the source database.</param>
-        /// <param name="targetDatabaseName">The name of the database to be created with the restored contents.</param>
-        /// <returns>An object containing the information about the recovery request.</returns>
-        public RecoverDatabaseOperation RecoverDatabase(
-            string sourceServerName,
-            string sourceDatabaseName,
-            string targetDatabaseName)
         {
             throw new NotSupportedException(Resources.SqlAuthNotSupported);
         }

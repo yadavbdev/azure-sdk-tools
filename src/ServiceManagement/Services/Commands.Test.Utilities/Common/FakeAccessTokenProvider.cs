@@ -13,12 +13,12 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.Authentication;
-
     public class FakeAccessTokenProvider : ITokenProvider
     {
         private readonly IAccessToken accessToken;
@@ -29,29 +29,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 
         public FakeAccessTokenProvider(string token, string userId)
         {
-            this.accessToken = new FakeAccessToken()
+            this.accessToken = new MockAccessToken()
             {
                 AccessToken = token,
                 UserId = userId
             };
         }
 
-        public IAccessToken GetCachedToken(WindowsAzureSubscription subscription, string userId)
+        public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId,
+            SecureString password)
         {
             return this.accessToken;
         }
 
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureSubscription subscription, string userId)
-        {
-            return this.accessToken;
-        }
-
-        public IAccessToken GetNewToken(WindowsAzureEnvironment environment, string userId, SecureString password)
+        public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password,
+            AzureAccount.AccountType credentialType)
         {
             return this.accessToken;
         }

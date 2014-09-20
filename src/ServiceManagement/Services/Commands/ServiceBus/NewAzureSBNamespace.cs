@@ -12,6 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceBus
 {
     using Commands.Utilities.Common;
@@ -24,7 +29,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
     /// Creates new service bus namespace.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "AzureSBNamespace"), OutputType(typeof(ServiceBusNamespace))]
-    public class NewAzureSBNamespaceCommand : CmdletWithSubscriptionBase
+    public class NewAzureSBNamespaceCommand : AzurePSCmdlet
     {
         internal ServiceBusClientExtensions Client { get; set; }
 
@@ -42,7 +47,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Client = Client ?? new ServiceBusClientExtensions(CurrentSubscription);
+            Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
             if (CreateACSNamespace.HasValue)
             {
                 WriteObject(Client.CreateNamespace(Name, Location, CreateACSNamespace.Value));

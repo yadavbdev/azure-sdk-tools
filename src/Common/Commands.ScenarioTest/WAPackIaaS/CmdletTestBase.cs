@@ -11,18 +11,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using System.Net;
+using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-    using System.Net;
-    using System.Reflection;
-
     /// <summary>
     /// Provides a base for test classes which tests cmdlets.  It supplies a pre-created <see cref="PowerShell"/>
     /// object for every test method and handles the clean-up automatically.  Use the <value>this.PowerShell</value>
@@ -35,11 +36,11 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
         private const string PowerShellObjectTag = "PowerShellObject";
 
         public TestContext TestContext { get; set; }
-        public PowerShell PowerShell
+        public System.Management.Automation.PowerShell PowerShell
         {
             get
             {
-                return this.TestContext.Properties[CmdletTestBase.PowerShellObjectTag] as PowerShell;
+                return this.TestContext.Properties[CmdletTestBase.PowerShellObjectTag] as System.Management.Automation.PowerShell;
             }
         }
 
@@ -59,14 +60,14 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WAPackIaaS.FunctionalTest
             ps.Dispose();
         }
 
-        private static PowerShell CreatePipeline()
+        private static System.Management.Automation.PowerShell CreatePipeline()
         {
             var iss = InitialSessionState.CreateDefault();
             iss.Types.Clear();
             iss.Formats.Clear();
             iss.ImportPSModule(new string[] { CmdletAssemblyPath });
 
-            return PowerShell.Create(iss);
+            return System.Management.Automation.PowerShell.Create(iss);
         }
 
         private void InitializeWAPackConfiguration()

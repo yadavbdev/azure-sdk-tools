@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
+
 namespace Microsoft.WindowsAzure.Management.Storage.Test.Common
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
-
     internal sealed class MockTransferJobRunner : ITransferJobRunner
     {
         private Func<TransferJobBase, Task> runnerValidation;

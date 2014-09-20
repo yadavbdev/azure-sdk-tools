@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    using BaseCommandInterfaces;
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-
     internal interface INewAzureHDInsightSqoopJobDefinitionCommand
         : IAzureHDInsightCommand<AzureHDInsightSqoopJobDefinition>, INewAzureHDInsightSqoopJobDefinitionBase
     {

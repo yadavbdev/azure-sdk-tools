@@ -12,25 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Commands.Common.Test.Common;
 using Microsoft.WindowsAzure.Commands.ScenarioTest.Resources;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class PowerShellTest
     {
         public static string ErrorIsNotEmptyException = "Test failed due to a non-empty error stream, check the error stream in the test log for more details";
 
-        protected PowerShell powershell;
+        protected System.Management.Automation.PowerShell powershell;
         protected List<string> modules;
 
         public TestContext TestContext { get; set; }
@@ -58,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         protected void AddScenarioScript(string script)
         {
-            powershell.AddScript(Testing.GetTestResourceContents(script));
+            powershell.AddScript(Test.Utilities.Common.Testing.GetTestResourceContents(script));
         }
 
         public virtual Collection<PSObject> RunPowerShellTest(params string[] scripts)
@@ -94,11 +92,11 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         [TestInitialize]
         public virtual void TestSetup()
         {
-            powershell = PowerShell.Create();
+            powershell = System.Management.Automation.PowerShell.Create();
 
             foreach (string moduleName in modules)
             {
-                powershell.AddScript(string.Format("Import-Module \"{0}\"", Testing.GetAssemblyTestResourcePath<ResourceLocator>(moduleName)));
+                powershell.AddScript(string.Format("Import-Module \"{0}\"", Test.Utilities.Common.Testing.GetAssemblyTestResourcePath<ResourceLocator>(moduleName)));
             }
 
             powershell.AddScript("$VerbosePreference='Continue'");

@@ -13,13 +13,13 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 {
-    using Common;
-    using Common.XmlSchema.ServiceConfigurationSchema;
-    using Common.XmlSchema.ServiceDefinitionSchema;
-    using System.Collections.Generic;
-
     public static class NodeRules
     {
         public static void AddRoleToConfig(string path, Dictionary<string, object> parameters)

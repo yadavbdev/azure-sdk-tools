@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Management.Compute;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using Management.Compute;
-    using Model;
-    using System.Linq;
-
     public class VirtualMachineExtensionImageFactory
     {
         private IComputeManagementClient computeClient;

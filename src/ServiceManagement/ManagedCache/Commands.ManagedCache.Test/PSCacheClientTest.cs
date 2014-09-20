@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.ManagedCache.Test
 {
-    using System;
-    using Xunit;
-
     public class PSCacheClientTest
     {
         [Fact]

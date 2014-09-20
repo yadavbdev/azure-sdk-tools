@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using Microsoft.Win32;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools
 {
-    using Commands.Common.Properties;
-    using Microsoft.Win32;
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-
     public class AzureTool
     {
         public static void Validate()

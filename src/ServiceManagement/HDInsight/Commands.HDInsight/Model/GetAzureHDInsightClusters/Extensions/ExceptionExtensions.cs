@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions
 {
-    using System;
-    using System.Reflection;
-    using System.Threading.Tasks;
-
     /// <summary>
     ///     Provides a set of extension over the Exception class.
     /// </summary>

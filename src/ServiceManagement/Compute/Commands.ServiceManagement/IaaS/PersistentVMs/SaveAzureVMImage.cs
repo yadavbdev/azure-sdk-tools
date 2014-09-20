@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Helpers;
-    using Management.Compute.Models;
-    using Properties;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     [Cmdlet(
         VerbsData.Save,
         AzureVMImageNoun),

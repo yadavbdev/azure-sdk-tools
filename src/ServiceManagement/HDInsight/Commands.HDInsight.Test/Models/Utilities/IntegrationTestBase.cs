@@ -12,30 +12,32 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Management.Automation;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Concretes;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.PowerShellTestAbstraction.Interfaces;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators;
+using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+using Microsoft.WindowsAzure.Management.HDInsight.Framework.Core;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
 {
-    using Commands.Utilities.Common;
-    using Management.HDInsight;
-    using Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces;
-    using Management.HDInsight.Cmdlet.Commands.CommandImplementations;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
-    using Management.HDInsight.Cmdlet.ServiceLocation;
-    using Management.HDInsight.Framework.Core;
-    using Management.HDInsight.Logging;
-    using PowerShellTestAbstraction.Concretes;
-    using PowerShellTestAbstraction.Interfaces;
-    using Simulators;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security;
-    using System.Security.Cryptography.X509Certificates;
-    using VisualStudio.TestTools.UnitTesting;
-
     public class IntegrationTestBase : DisposableObject
     {
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes",
@@ -61,12 +63,24 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
             return TestManager.GetAllCredentials();
         }
 
-        public static WindowsAzureSubscription GetCurrentSubscription()
+        public static AzureSubscription GetCurrentSubscription()
         {
-            return new WindowsAzureSubscription()
+            string certificateThumbprint1 = "jb245f1d1257fw27dfc402e9ecde37e400g0176r";
+            ProfileClient profileClient = new ProfileClient();
+            profileClient.Profile.Accounts[certificateThumbprint1] = 
+                new AzureAccount()
+                {
+                    Id = certificateThumbprint1,
+                    Type = AzureAccount.AccountType.Certificate
+                };
+
+            profileClient.Profile.Save();
+
+            return new AzureSubscription()
             {
-                Certificate = new X509Certificate2(Convert.FromBase64String(TestCredentials.Certificate), string.Empty),
-                SubscriptionId = IntegrationTestBase.TestCredentials.SubscriptionId.ToString()
+                Id = IntegrationTestBase.TestCredentials.SubscriptionId,
+                // Use fake certificate thumbprint
+                Account = certificateThumbprint1
             };
         }
 
@@ -168,6 +182,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities
             WaitAzureHDInsightJobCommand.ReduceWaitTime = true;
             var cmdletManager = ServiceLocator.Instance.Locate<IServiceLocationSimulationManager>();
             cmdletManager.MockingLevel = ServiceLocationMockingLevel.ApplyFullMocking;
+            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+            ProfileClient.DataStore = new MockDataStore();
         }
 
         public void ApplyIndividualTestMockingOnly()

@@ -12,31 +12,32 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Permissions;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using System.Xml.Linq;
-    using Utilities.CloudService;
-    using Utilities.CloudService.AzureTools;
-    using Utilities.CloudService.Scaffolding;
-    using Utilities.Common;
-    using Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using Utilities.Properties;
-    using ConfigConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
-    using DefinitionConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema.ConfigurationSetting;
+    using ConfigConfigurationSetting = Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
+    using DefinitionConfigurationSetting = Utilities.Common.XmlSchema.ServiceDefinitionSchema.ConfigurationSetting;
 
     /// <summary>
     /// Enables memcache for specific role.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Enable, "AzureMemcacheRole"), OutputType(typeof(bool))]
-    public class EnableAzureMemcacheRoleCommand : CmdletBase
+    public class EnableAzureMemcacheRoleCommand : AzurePSCmdlet
     {
         /// <summary>
         /// The role name to edit.

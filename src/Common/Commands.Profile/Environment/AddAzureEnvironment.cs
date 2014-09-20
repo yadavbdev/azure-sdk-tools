@@ -12,17 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+using System.Collections.Generic;
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Commands.Utilities.Common;
-    using System.Management.Automation;
-    using System.Security.Permissions;
+
 
     /// <summary>
     /// Adds a new Microsoft Azure environment.
     /// </summary>
-    [Cmdlet(VerbsCommon.Add, "AzureEnvironment"), OutputType(typeof(WindowsAzureEnvironment))]
-    public class AddAzureEnvironmentCommand : CmdletBase
+    [Cmdlet(VerbsCommon.Add, "AzureEnvironment"), OutputType(typeof(AzureEnvironment))]
+    public class AddAzureEnvironmentCommand : SubscriptionCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true)]
         public string Name { get; set; }
@@ -52,25 +57,33 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             HelpMessage = "Identifier of the target resource that is the recipient of the requested token.")]
         public string ActiveDirectoryServiceEndpointResourceId { get; set; }
 
+        [Parameter(Position = 9, Mandatory = false, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The AD Graph Endpoint.")]
+        public string GraphEndpoint { get; set; }
+
+        public AddAzureEnvironmentCommand() : base(true) { }
+
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            var newEnvironment = new WindowsAzureEnvironment
-            {
-                Name = Name,
-                PublishSettingsFileUrl = PublishSettingsFileUrl,
-                ServiceEndpoint = ServiceEndpoint,
-                ResourceManagerEndpoint = ResourceManagerEndpoint,
-                ManagementPortalUrl = ManagementPortalUrl,
-                StorageEndpointSuffix = StorageEndpoint,
-                ActiveDirectoryEndpoint = ActiveDirectoryEndpoint,
-                ActiveDirectoryServiceEndpointResourceId = ActiveDirectoryServiceEndpointResourceId,
-                ActiveDirectoryCommonTenantId = "Common",
-                GalleryEndpoint = GalleryEndpoint
-            };
+            var newEnvironment = new AzureEnvironment {Name = Name};
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.PublishSettingsFileUrl] = PublishSettingsFileUrl;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.ServiceManagement] = ServiceEndpoint;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.ResourceManager] = ResourceManagerEndpoint;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.ManagementPortalUrl] = ManagementPortalUrl;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.StorageEndpointSuffix] = StorageEndpoint;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectory] = ActiveDirectoryEndpoint;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId] = ActiveDirectoryServiceEndpointResourceId;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.Gallery] = GalleryEndpoint;
+            newEnvironment.Endpoints[AzureEnvironment.Endpoint.Graph] = GraphEndpoint;
 
-            WindowsAzureProfile.Instance.AddEnvironment(newEnvironment);
-            WriteObject(newEnvironment);
+            ProfileClient.AddOrSetEnvironment(newEnvironment);
+            List<object> args = new List<object> { "Name", newEnvironment.Name };
+            foreach (AzureEnvironment.Endpoint property in Enum.GetValues(typeof(AzureEnvironment.Endpoint)))
+            {
+                args.AddRange(new object[] { property, newEnvironment.GetEndpoint(property) });
+            }
+            WriteObject(base.ConstructPSObject(null, args.ToArray()));
         }
     }
 }

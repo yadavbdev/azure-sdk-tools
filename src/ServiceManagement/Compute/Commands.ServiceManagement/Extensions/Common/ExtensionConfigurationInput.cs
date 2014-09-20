@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Security.Cryptography.X509Certificates;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System.Security.Cryptography.X509Certificates;
-
     public class ExtensionConfigurationInput
     {
         public string ProviderNameSpace { get; set; }

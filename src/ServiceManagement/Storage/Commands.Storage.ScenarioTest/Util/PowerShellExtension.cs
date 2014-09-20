@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+
 namespace Commands.Storage.ScenarioTest.Util
 {
-    using System.Management.Automation;
-
     public static class PowerShellExtension
     {
         /// <summary>

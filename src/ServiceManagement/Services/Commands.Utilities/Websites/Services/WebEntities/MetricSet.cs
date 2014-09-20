@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-
     [DataContract(Namespace = UriElements.ServiceNamespace)]
     public class MetricSet
     {
@@ -78,6 +78,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntitie
 
         [DataMember]
         public long? Count { get; set; }
+
+        [DataMember]
+        public string InstanceName { get; set; }
 
         public MetricSample()
         {

@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Management.Automation;
-
     public static class PowerShellUtilities
     {
         public const string PSModulePathName = "PSModulePath";
@@ -35,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             IEnumerable<string> paths = psModulePath.Split(';');
             paths = job(paths);
 
-            if (paths.Count() == 0)
+            if (!paths.Any())
             {
                 Environment.SetEnvironmentVariable(PSModulePathName, null, target);
             }
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
             else
             {
-                psModulePath = string.Join(";", paths.Distinct());
+                psModulePath = string.Join(";", paths.Distinct(StringComparer.CurrentCultureIgnoreCase));
                 Environment.SetEnvironmentVariable(PSModulePathName, psModulePath, target);
             }
         }
@@ -92,25 +92,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         public static IEnumerable<RuntimeDefinedParameter> GetUsedDynamicParameters(RuntimeDefinedParameterDictionary dynamicParameters, InvocationInfo MyInvocation)
         {
             return dynamicParameters.Values.Where(dp => MyInvocation.BoundParameters.Keys.Any(bp => bp.Equals(dp.Name)));
-        }
-
-        /// <summary>
-        /// Gets the current AzureMode valid values are AzureServiceManagement and AzureResourceManager only.
-        /// </summary>
-        /// <returns>Returns AzureServiceManagement if in RDFE and AzureResourceManager if in CSM</returns>
-        public static AzureModule GetCurrentMode()
-        {
-            string PSModulePathEnv = Environment.GetEnvironmentVariable(PSModulePathName);
-
-            if (string.IsNullOrEmpty(PSModulePathEnv) || PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureServiceManagement)))
-            {
-                return AzureModule.AzureServiceManagement;
-            }
-            else
-            {
-                Debug.Assert(PSModulePathEnv.Contains(FileUtilities.GetModuleFolderName(AzureModule.AzureResourceManager)));
-                return AzureModule.AzureResourceManager;
-            }
         }
     }
 }

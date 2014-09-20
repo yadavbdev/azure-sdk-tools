@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.GeoEntities
 {
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using WebEntities;
-
     [DataContract(Name = "StampState", Namespace = UriElements.ServiceNamespace)]
     public enum StampState
     {

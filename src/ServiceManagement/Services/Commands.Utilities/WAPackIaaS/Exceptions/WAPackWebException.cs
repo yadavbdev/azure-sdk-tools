@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions
 {
-    using System;
-    using System.Net;
-    using System.Runtime.Serialization;
-    using System.Security.Permissions;
-
     [Serializable]
     public class WAPackWebException : Exception
     {

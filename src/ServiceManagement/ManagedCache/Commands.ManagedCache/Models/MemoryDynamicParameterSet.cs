@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.Azure.Management.ManagedCache.Models;
+
 namespace Microsoft.Azure.Commands.ManagedCache.Models
 {
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using System.Management.Automation;
-
     class MemoryDynamicParameterSet
     {
         private readonly RuntimeDefinedParameterDictionary _parameters = new RuntimeDefinedParameterDictionary();

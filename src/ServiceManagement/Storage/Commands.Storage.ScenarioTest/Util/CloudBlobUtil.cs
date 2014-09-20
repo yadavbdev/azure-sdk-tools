@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MS.Test.Common.MsTestLib;
-using StorageTestLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Microsoft.WindowsAzure.Storage;
+using MS.Test.Common.MsTestLib;
+using StorageTestLib;
 using StorageBlob = Microsoft.WindowsAzure.Storage.Blob;
 using StorageType = Microsoft.WindowsAzure.Storage.Blob.BlobType;
 
@@ -29,7 +28,7 @@ namespace Commands.Storage.ScenarioTest.Util
     public class CloudBlobUtil
     {
         private CloudStorageAccount account;
-        private CloudBlobClient client;
+        private StorageBlob.CloudBlobClient client;
         private Random random;
         private const int PageBlobUnitSize = 512;
         private static List<string> HttpsCopyHosts;
@@ -46,13 +45,13 @@ namespace Commands.Storage.ScenarioTest.Util
             private set;
         }
 
-        public ICloudBlob Blob
+        public StorageBlob.ICloudBlob Blob
         {
             get;
             private set;
         }
 
-        public CloudBlobContainer Container
+        public StorageBlob.CloudBlobContainer Container
         {
             get;
             private set;
@@ -79,7 +78,7 @@ namespace Commands.Storage.ScenarioTest.Util
         {
             ContainerName = Utility.GenNameString("container");
             BlobName = Utility.GenNameString("blob");
-            CloudBlobContainer container = CreateContainer(ContainerName);
+            StorageBlob.CloudBlobContainer container = CreateContainer(ContainerName);
             Blob = CreateRandomBlob(container, BlobName);
             Container = container;
         }
@@ -106,14 +105,14 @@ namespace Commands.Storage.ScenarioTest.Util
         /// </summary>
         /// <param name="containerName">container name</param>
         /// <returns>the created container object with properties and metadata</returns>
-        public CloudBlobContainer CreateContainer(string containerName = "")
+        public StorageBlob.CloudBlobContainer CreateContainer(string containerName = "")
         {
             if (String.IsNullOrEmpty(containerName))
             {
                 containerName = Utility.GenNameString("container");
             }
 
-            CloudBlobContainer container = client.GetContainerReference(containerName);
+            StorageBlob.CloudBlobContainer container = client.GetContainerReference(containerName);
             container.CreateIfNotExists();
 
             //there is no properties to set
@@ -138,10 +137,10 @@ namespace Commands.Storage.ScenarioTest.Util
             return container;
         }
 
-        public CloudBlobContainer CreateContainer(string containerName, BlobContainerPublicAccessType permission)
+        public StorageBlob.CloudBlobContainer CreateContainer(string containerName, StorageBlob.BlobContainerPublicAccessType permission)
         {
-            CloudBlobContainer container = CreateContainer(containerName);
-            BlobContainerPermissions containerPermission = new BlobContainerPermissions();
+            StorageBlob.CloudBlobContainer container = CreateContainer(containerName);
+            StorageBlob.BlobContainerPermissions containerPermission = new StorageBlob.BlobContainerPermissions();
             containerPermission.PublicAccess = permission;
             container.SetPermissions(containerPermission);
             return container;
@@ -152,9 +151,9 @@ namespace Commands.Storage.ScenarioTest.Util
         /// </summary>
         /// <param name="containerNames">container names list</param>
         /// <returns>a list of container object</returns>
-        public List<CloudBlobContainer> CreateContainer(List<string> containerNames)
+        public List<StorageBlob.CloudBlobContainer> CreateContainer(List<string> containerNames)
         {
-            List<CloudBlobContainer> containers = new List<CloudBlobContainer>();
+            List<StorageBlob.CloudBlobContainer> containers = new List<StorageBlob.CloudBlobContainer>();
 
             foreach (string name in containerNames)
             {
@@ -170,7 +169,7 @@ namespace Commands.Storage.ScenarioTest.Util
         /// remove specified container
         /// </summary>
         /// <param name="Container">Cloud blob container object</param>
-        public void RemoveContainer(CloudBlobContainer Container)
+        public void RemoveContainer(StorageBlob.CloudBlobContainer Container)
         {
             RemoveContainer(Container.Name);
         }
@@ -181,7 +180,7 @@ namespace Commands.Storage.ScenarioTest.Util
         /// <param name="containerName">container name</param>
         public void RemoveContainer(string containerName)
         {
-            CloudBlobContainer container = client.GetContainerReference(containerName);
+            StorageBlob.CloudBlobContainer container = client.GetContainerReference(containerName);
             container.DeleteIfExists();
             Test.Info(string.Format("remove container '{0}'", containerName));
         }
@@ -211,9 +210,9 @@ namespace Commands.Storage.ScenarioTest.Util
         /// <param name="container">CloudBlobContainer object</param>
         /// <param name="blobName">blob name</param>
         /// <returns>ICloudBlob object</returns>
-        public ICloudBlob CreatePageBlob(CloudBlobContainer container, string blobName)
+        public StorageBlob.ICloudBlob CreatePageBlob(StorageBlob.CloudBlobContainer container, string blobName)
         {
-            CloudPageBlob pageBlob = container.GetPageBlobReference(blobName);
+            StorageBlob.CloudPageBlob pageBlob = container.GetPageBlobReference(blobName);
             int size = random.Next(1, 10) * PageBlobUnitSize;
             pageBlob.Create(size);
             byte[] buffer = new byte[size];
@@ -230,9 +229,9 @@ namespace Commands.Storage.ScenarioTest.Util
         /// <param name="container">CloudBlobContainer object</param>
         /// <param name="blobName">Block blob name</param>
         /// <returns>ICloudBlob object</returns>
-        public ICloudBlob CreateBlockBlob(CloudBlobContainer container, string blobName)
+        public StorageBlob.ICloudBlob CreateBlockBlob(StorageBlob.CloudBlobContainer container, string blobName)
         {
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(blobName);
+            StorageBlob.CloudBlockBlob blockBlob = container.GetBlockBlobReference(blobName);
 
             int maxBlobSize = 1024 * 1024;
             string md5sum = string.Empty;
@@ -256,7 +255,7 @@ namespace Commands.Storage.ScenarioTest.Util
         /// generate random blob properties and metadata
         /// </summary>
         /// <param name="blob">ICloudBlob object</param>
-        private void GenerateBlobPropertiesAndMetaData(ICloudBlob blob)
+        private void GenerateBlobPropertiesAndMetaData(StorageBlob.ICloudBlob blob)
         {
             blob.Properties.ContentEncoding = Utility.GenNameString("encoding");
             blob.Properties.ContentLanguage = Utility.GenNameString("lang");
@@ -287,7 +286,7 @@ namespace Commands.Storage.ScenarioTest.Util
         /// <param name="blobName">Blob name</param>
         /// <param name="type">Blob type</param>
         /// <returns>ICloudBlob object</returns>
-        public ICloudBlob CreateBlob(CloudBlobContainer container, string blobName, StorageBlob.BlobType type)
+        public StorageBlob.ICloudBlob CreateBlob(StorageBlob.CloudBlobContainer container, string blobName, StorageBlob.BlobType type)
         {
             if (type == StorageBlob.BlobType.BlockBlob)
             {
@@ -305,9 +304,9 @@ namespace Commands.Storage.ScenarioTest.Util
         /// <param name="container">CloudBlobContainer object</param>
         /// <param name="blobName">a list of blob names</param>
         /// <returns>a list of cloud page blobs</returns>
-        public List<ICloudBlob> CreateRandomBlob(CloudBlobContainer container, List<string> blobNames)
+        public List<StorageBlob.ICloudBlob> CreateRandomBlob(StorageBlob.CloudBlobContainer container, List<string> blobNames)
         {
-            List<ICloudBlob> blobs = new List<ICloudBlob>();
+            List<StorageBlob.ICloudBlob> blobs = new List<StorageBlob.ICloudBlob>();
 
             foreach (string blobName in blobNames)
             {
@@ -319,7 +318,7 @@ namespace Commands.Storage.ScenarioTest.Util
             return blobs;
         }
 
-        public List<ICloudBlob> CreateRandomBlob(CloudBlobContainer container)
+        public List<StorageBlob.ICloudBlob> CreateRandomBlob(StorageBlob.CloudBlobContainer container)
         {
             int count = random.Next(1, 5);
             List<string> blobNames = new List<string>();
@@ -337,7 +336,7 @@ namespace Commands.Storage.ScenarioTest.Util
         /// <param name="container">CloudBlobContainer object</param>
         /// <param name="blobName">Blob name</param>
         /// <returns>ICloudBlob object</returns>
-        public ICloudBlob CreateRandomBlob(CloudBlobContainer container, string blobName)
+        public StorageBlob.ICloudBlob CreateRandomBlob(StorageBlob.CloudBlobContainer container, string blobName)
         {
             int switchKey = 0;
 
@@ -410,9 +409,9 @@ namespace Commands.Storage.ScenarioTest.Util
         /// list all the existing containers
         /// </summary>
         /// <returns>a list of cloudblobcontainer object</returns>
-        public List<CloudBlobContainer> GetExistingContainers()
+        public List<StorageBlob.CloudBlobContainer> GetExistingContainers()
         {
-            ContainerListingDetails details = ContainerListingDetails.All;
+            StorageBlob.ContainerListingDetails details = StorageBlob.ContainerListingDetails.All;
             return client.ListContainers(string.Empty, details).ToList();
         }
 
@@ -429,17 +428,17 @@ namespace Commands.Storage.ScenarioTest.Util
         /// Create a snapshot for the specified ICloudBlob object
         /// </summary>
         /// <param name="blob">ICloudBlob object</param>
-        public ICloudBlob SnapShot(ICloudBlob blob)
+        public StorageBlob.ICloudBlob SnapShot(StorageBlob.ICloudBlob blob)
         {
-            ICloudBlob snapshot = default(ICloudBlob);
+            StorageBlob.ICloudBlob snapshot = default(StorageBlob.ICloudBlob);
 
             switch (blob.BlobType)
             {
                 case StorageBlob.BlobType.BlockBlob:
-                    snapshot = ((CloudBlockBlob)blob).CreateSnapshot();
+                    snapshot = ((StorageBlob.CloudBlockBlob)blob).CreateSnapshot();
                     break;
                 case StorageBlob.BlobType.PageBlob:
-                    snapshot = ((CloudPageBlob)blob).CreateSnapshot();
+                    snapshot = ((StorageBlob.CloudPageBlob)blob).CreateSnapshot();
                     break;
                 default:
                     throw new ArgumentException(string.Format("Unsupport blob type {0} when create snapshot", blob.BlobType));
@@ -450,15 +449,15 @@ namespace Commands.Storage.ScenarioTest.Util
             return snapshot;
         }
 
-        public static void PackContainerCompareData(CloudBlobContainer container, Dictionary<string, object> dic)
+        public static void PackContainerCompareData(StorageBlob.CloudBlobContainer container, Dictionary<string, object> dic)
         {
-            BlobContainerPermissions permissions = container.GetPermissions();
+            StorageBlob.BlobContainerPermissions permissions = container.GetPermissions();
             dic["PublicAccess"] = permissions.PublicAccess;
             dic["Permission"] = permissions;
             dic["LastModified"] = container.Properties.LastModified;
         }
 
-        public static void PackBlobCompareData(ICloudBlob blob, Dictionary<string, object> dic)
+        public static void PackBlobCompareData(StorageBlob.ICloudBlob blob, Dictionary<string, object> dic)
         {
             dic["Length"] = blob.Properties.Length;
             dic["ContentType"] = blob.Properties.ContentType;
@@ -496,7 +495,7 @@ namespace Commands.Storage.ScenarioTest.Util
             }
         }
 
-        public static bool WaitForCopyOperationComplete(ICloudBlob destBlob, int maxRetry = 100)
+        public static bool WaitForCopyOperationComplete(StorageBlob.ICloudBlob destBlob, int maxRetry = 100)
         {
             int retryCount = 0;
             int sleepInterval = 1000; //ms
@@ -517,15 +516,15 @@ namespace Commands.Storage.ScenarioTest.Util
                 destBlob.FetchAttributes();
                 retryCount++;
             }
-            while (destBlob.CopyState.Status == CopyStatus.Pending && retryCount < maxRetry);
+            while (destBlob.CopyState.Status == StorageBlob.CopyStatus.Pending && retryCount < maxRetry);
 
             Test.Info(String.Format("Final Copy status is {0}", destBlob.CopyState.Status));
-            return destBlob.CopyState.Status != CopyStatus.Pending;
+            return destBlob.CopyState.Status != StorageBlob.CopyStatus.Pending;
         }
 
-        public static ICloudBlob GetBlob(CloudBlobContainer container, string blobName, StorageType blobType)
+        public static StorageBlob.ICloudBlob GetBlob(StorageBlob.CloudBlobContainer container, string blobName, StorageType blobType)
         {
-            ICloudBlob blob = null;
+            StorageBlob.ICloudBlob blob = null;
             if (blobType == StorageType.BlockBlob)
             {
                 blob = container.GetBlockBlobReference(blobName);

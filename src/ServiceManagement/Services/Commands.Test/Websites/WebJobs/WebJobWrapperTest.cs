@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using System;
-    using System.ComponentModel;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-
-    [TestClass]
+    
     public class WebJobWrapperTest
     {
-        [TestMethod]
+        [Fact]
         public void ReadProperties_ValuesAreSameWiththeInternalWebJobInstance()
         {
             //Set up
@@ -43,16 +43,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             PSTriggeredWebJob wrapper = new PSTriggeredWebJob(webJob);
 
             // Assert
-            Assert.AreEqual(webJob.ExtraInfoUrl, wrapper.ExtraInfoUrl);
-            Assert.AreEqual(webJob.HistoryUrl, wrapper.HistoryUrl);
-            Assert.AreEqual(webJob.LatestRun, wrapper.LatestRun);
-            Assert.AreEqual(webJob.Name, wrapper.JobName);
-            Assert.AreEqual(webJob.RunCommand, wrapper.RunCommand);
-            Assert.AreEqual(webJob.Type, wrapper.JobType);
-            Assert.AreEqual(webJob.Url, wrapper.Url);
+            Assert.Equal(webJob.ExtraInfoUrl, wrapper.ExtraInfoUrl);
+            Assert.Equal(webJob.HistoryUrl, wrapper.HistoryUrl);
+            Assert.Equal(webJob.LatestRun, wrapper.LatestRun);
+            Assert.Equal(webJob.Name, wrapper.JobName);
+            Assert.Equal(webJob.RunCommand, wrapper.RunCommand);
+            Assert.Equal(webJob.Type, wrapper.JobType);
+            Assert.Equal(webJob.Url, wrapper.Url);
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteProperties_InternalWebJobInstanceIsUpdated()
         {
             //Set up
@@ -81,23 +81,23 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             wrapper.Url = url;
 
             // Assert
-            Assert.AreEqual(jobName, wrapper.JobName);
-            Assert.AreEqual(jobType, wrapper.JobType);
-            Assert.AreEqual(extraInfoUrl, wrapper.ExtraInfoUrl);
-            Assert.AreEqual(historyUrl, wrapper.HistoryUrl);
-            Assert.AreEqual(latestRun, wrapper.LatestRun);
-            Assert.AreEqual(runCommand, wrapper.RunCommand);
-            Assert.AreEqual(url, wrapper.Url);
-            Assert.AreEqual(jobName, webJob.Name);
-            Assert.AreEqual(jobType, webJob.Type);
-            Assert.AreEqual(extraInfoUrl, webJob.ExtraInfoUrl);
-            Assert.AreEqual(historyUrl, webJob.HistoryUrl);
-            Assert.AreEqual(latestRun, webJob.LatestRun);
-            Assert.AreEqual(runCommand, webJob.RunCommand);
-            Assert.AreEqual(url, webJob.Url);
+            Assert.Equal(jobName, wrapper.JobName);
+            Assert.Equal(jobType, wrapper.JobType);
+            Assert.Equal(extraInfoUrl, wrapper.ExtraInfoUrl);
+            Assert.Equal(historyUrl, wrapper.HistoryUrl);
+            Assert.Equal(latestRun, wrapper.LatestRun);
+            Assert.Equal(runCommand, wrapper.RunCommand);
+            Assert.Equal(url, wrapper.Url);
+            Assert.Equal(jobName, webJob.Name);
+            Assert.Equal(jobType, webJob.Type);
+            Assert.Equal(extraInfoUrl, webJob.ExtraInfoUrl);
+            Assert.Equal(historyUrl, webJob.HistoryUrl);
+            Assert.Equal(latestRun, webJob.LatestRun);
+            Assert.Equal(runCommand, webJob.RunCommand);
+            Assert.Equal(url, webJob.Url);
         }
 
-        [TestMethod]
+        [Fact]
         public void SamePropertyNumberWithTriggeredWebJobModelClass()
         {
             // Setup & Test
@@ -105,11 +105,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             int webJobWrapperPropertyNumber = TypeDescriptor.GetProperties(typeof(PSTriggeredWebJob)).Count;
 
             // Assert
-            Assert.AreEqual(webJobPropertyNumber, webJobWrapperPropertyNumber,
-            "\'TriggeredWebJob\' class has properties add/removed, please update \'WebJobWrapper\' class");
+            Assert.Equal(webJobPropertyNumber, webJobWrapperPropertyNumber);
         }
 
-        [TestMethod]
+        [Fact]
         public void SamePropertyNumberWithContinuousWebJobModelClass()
         {
             // Setup & Test
@@ -117,8 +116,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             int webJobWrapperPropertyNumber = TypeDescriptor.GetProperties(typeof(PSContinuousWebJob)).Count;
 
             // Assert
-            Assert.AreEqual(webJobPropertyNumber, webJobWrapperPropertyNumber,
-            "\'ContinuousWebJob\' class has properties add/removed, please update \'WebJobWrapper\' class");
+            Assert.Equal(webJobPropertyNumber, webJobWrapperPropertyNumber);
         }
     }
 }

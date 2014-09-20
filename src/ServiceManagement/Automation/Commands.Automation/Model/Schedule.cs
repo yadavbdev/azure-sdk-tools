@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using System;
-
     /// <summary>
     /// The Schedule.
     /// </summary>

@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+
 namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CommandTests
 {
-    using Management.HDInsight.Cmdlet.DataObjects;
-
     public class HadoopCustomJobCreationDetails : AzureHDInsightJobDefinition
     {
         public string CustomText { get; set; }

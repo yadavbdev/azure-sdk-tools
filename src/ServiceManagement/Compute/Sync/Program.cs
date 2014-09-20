@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Sync
 {
-    using System;
-    using System.Collections.Generic;
-    using Tools.Vhd.Model;
-
     public class Program
     {
         static public ISyncOutputEvents SyncOutput

@@ -13,17 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Add, "AzureDataDisk", DefaultParameterSetName = "CreateNew"), OutputType(typeof(IPersistentVM))]
     public class AddAzureDataDiskCommand : VirtualMachineConfigurationCmdletBase
     {
@@ -164,8 +165,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
         protected void ValidateParameters()
         {
-            var currentSubscription = WindowsAzureProfile.Instance.CurrentSubscription;
-            if ((currentSubscription == null || currentSubscription.CurrentStorageAccountName == null) && this.MediaLocation == null && string.Compare(this.ParameterSetName, "CreateNew", StringComparison.OrdinalIgnoreCase) == 0)
+            var currentSubscription = AzureSession.CurrentContext.Subscription;
+            if ((currentSubscription == null || currentSubscription.GetProperty(AzureSubscription.Property.StorageAccount) == null) && this.MediaLocation == null && string.Compare(this.ParameterSetName, "CreateNew", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 throw new ArgumentException(Resources.MediaLocationOrDefaultStorageAccountMustBeSpecified);
             }

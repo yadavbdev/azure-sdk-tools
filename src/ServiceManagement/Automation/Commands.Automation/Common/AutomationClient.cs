@@ -12,40 +12,42 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.Azure.Commands.Automation.Model;
+using Microsoft.Azure.Commands.Automation.Properties;
+using Microsoft.Azure.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Newtonsoft.Json;
+
 namespace Microsoft.Azure.Commands.Automation.Common
 {
-    using Microsoft.Azure.Commands.Automation.Model;
-    using Microsoft.Azure.Commands.Automation.Properties;
-    using Microsoft.Azure.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using AutomationManagement = Microsoft.Azure.Management.Automation;
+    using AutomationManagement = Management.Automation;
 
     public class AutomationClient : IAutomationClient
     {
-        private readonly IAutomationManagementClient automationManagementClient;
+        private readonly AutomationManagement.IAutomationManagementClient automationManagementClient;
 
         // Injection point for unit tests
         public AutomationClient()
         {
         }
 
-        public AutomationClient(WindowsAzureSubscription subscription)
-            : this(
-                subscription,
-                subscription.CreateClient<AutomationManagementClient>())
+        public AutomationClient(AzureSubscription subscription)
+            : this(subscription, 
+            AzureSession.ClientFactory.CreateClient<AutomationManagement.AutomationManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement))
         {
         }
 
         public AutomationClient(
-            WindowsAzureSubscription subscription,
-            IAutomationManagementClient automationManagementClient)
+            AzureSubscription subscription,
+            AutomationManagement.IAutomationManagementClient automationManagementClient)
         {
             Requires.Argument("automationManagementClient", automationManagementClient).NotNull();
 
@@ -53,7 +55,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             this.automationManagementClient = automationManagementClient;
         }
 
-        public WindowsAzureSubscription Subscription { get; private set; }
+        public AzureSubscription Subscription { get; private set; }
 
         #region Account Operations
 
@@ -884,12 +886,21 @@ namespace Microsoft.Azure.Commands.Automation.Common
                 if (parameters.Contains(runbookParameter.Name))
                 {
                     object paramValue = parameters[runbookParameter.Name];
-                    filteredParameters.Add(
-                        new AutomationManagement.Models.NameValuePair
-                        {
-                            Name = runbookParameter.Name,
-                            Value = paramValue.ToString()
-                        });
+                    try
+                    {
+                        filteredParameters.Add(
+                            new AutomationManagement.Models.NameValuePair
+                            {
+                                Name = runbookParameter.Name,
+                                Value = JsonConvert.SerializeObject(paramValue, new JsonSerializerSettings() { DateFormatHandling = DateFormatHandling.MicrosoftDateFormat })
+                            });
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        throw new ArgumentException(
+                        string.Format(
+                            CultureInfo.CurrentCulture, Resources.RunbookParameterCannotBeSerializedToJson, runbookParameter.Name));
+                    }
                 }
                 else if (runbookParameter.IsMandatory)
                 {

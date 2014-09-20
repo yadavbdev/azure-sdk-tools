@@ -12,25 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using Mocks;
-    using System;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class JobOperationsTests
     { 
         /// <summary>
         /// Tests WaitOnJob with no timeout and a job that completes immediately.
         /// </summary>
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void WaitOnJobCompletesImmediately()
         {
             Guid jobId = Guid.NewGuid();
@@ -43,15 +43,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
                                                       mockChannel));
             DateTime start = DateTime.Now;
             jobOperations.WaitOnJob(jobId);
-            Assert.IsTrue((DateTime.Now - start).TotalMilliseconds < 500);
+            Assert.True((DateTime.Now - start).TotalMilliseconds < 500);
         }
 
         /// <summary>
         /// Tests WaitOnJob with a timeout where the the Job does not complete before timeout occurs
         /// </summary>
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void WaitOnJobTimeoutJobNotFinished()
         {
             Guid jobId = Guid.NewGuid();
@@ -71,17 +71,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             DateTime start = DateTime.Now;
             var result = jobOperations.WaitOnJob(jobId, 6000);
             var diff = (DateTime.Now - start).TotalMilliseconds;
-            Assert.IsTrue(diff > 6000);
-            Assert.AreEqual(JobStatusEnum.OperationTimedOut, result.jobStatus);
+            Assert.True(diff > 6000);
+            Assert.Equal(JobStatusEnum.OperationTimedOut, result.jobStatus);
         }
 
         /// <summary>
         /// Tests WaitOnJob with empty response (no job) from server
         /// </summary>
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [TestCategory("WAPackIaaS-Negative")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
+        [Trait("Type", "WAPackIaaS-Negative")]
         public void ShouldReturnJobNotFoundOnNonexistantJob()
         {
             Guid jobId = Guid.NewGuid();
@@ -94,15 +94,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 
             var result = jobOperations.WaitOnJob(jobId);
 
-            Assert.AreEqual(JobStatusEnum.JobNotFound, result.jobStatus);
+            Assert.Equal(JobStatusEnum.JobNotFound, result.jobStatus);
         }
 
         /// <summary>
         /// Tests WaitOnJob with a timeout where the job completes before the timeout occurs
         /// </summary>
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void WaitOnJobTimeoutJobFinished()
         {
             Guid jobId = Guid.NewGuid();
@@ -117,8 +117,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             DateTime start = DateTime.Now;
             var result = jobOperations.WaitOnJob(jobId, 50000);
             var diff = (DateTime.Now - start).TotalMilliseconds;
-            Assert.IsTrue(diff < 50000);
-            Assert.AreEqual(JobStatusEnum.CompletedSuccessfully, result.jobStatus);
+            Assert.True(diff < 50000);
+            Assert.Equal(JobStatusEnum.CompletedSuccessfully, result.jobStatus);
         }
     }
 }

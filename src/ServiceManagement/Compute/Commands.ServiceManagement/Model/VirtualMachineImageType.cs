@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System;
-
     [Flags]
     public enum VirtualMachineImageType
     {

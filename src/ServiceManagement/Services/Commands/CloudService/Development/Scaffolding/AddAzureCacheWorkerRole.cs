@@ -12,23 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding
 {
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.CloudService;
-    using Utilities.CloudService.AzureTools;
-    using Utilities.Common;
-    using Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using Utilities.Properties;
-
     /// <summary>
     /// Adds dedicated caching node worker role.
     /// </summary>
     [Cmdlet(VerbsCommon.Add, "AzureCacheWorkerRole"), OutputType(typeof(WorkerRole))]
-    public class AddAzureCacheWorkerRoleCommand : CmdletBase
+    public class AddAzureCacheWorkerRoleCommand : AzurePSCmdlet
     {
         [Parameter(Position = 0, HelpMessage = "Role name")]
         [Alias("n")]

@@ -12,24 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ServiceBus;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    using Commands.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Moq;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class RemoveAzureSBNamespaceTests : TestBase
     {
-        [TestInitialize]
-        public void SetupTest()
+        public RemoveAzureSBNamespaceTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveAzureSBNamespaceSuccessfull()
         {
             // Setup
@@ -50,8 +50,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
             cmdlet.ExecuteCmdlet();
 
             // Assert
-            Assert.IsTrue(deleted);
-            Assert.IsTrue((bool)mockCommandRuntime.OutputPipeline[0]);
+            Assert.True(deleted);
+            Assert.True((bool)mockCommandRuntime.OutputPipeline[0]);
         }
     }
 }

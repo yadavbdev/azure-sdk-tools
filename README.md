@@ -37,6 +37,7 @@ This repository contains a set of PowerShell cmdlets for developers and administ
     * Remote desktop
     * Diagnostics
     * Microsoft Antimalware
+    * Windows Azure Diagnostics
 * Storage
   * Manage storage account and access key.
   * Manage storage container and blob, with paging.
@@ -54,6 +55,7 @@ This repository contains a set of PowerShell cmdlets for developers and administ
   * Get dropped databases that can be restored.
   * Issue requests to restore a live or dropped database to a point in time.
   * Issue requests to recover a database from an unavailable database server.
+  * Manage database and database server auditing policy.
 * Service Bus
   * Manage service bus namespaces.
 * VM
@@ -71,6 +73,7 @@ This repository contains a set of PowerShell cmdlets for developers and administ
     * Access
     * Microsoft Antimalware
     * PowerShell DSC
+    * Windows Azure Diagnostics
   * Public IP, reserved IP and internal load balancer
 * Deployment
   * Manage deployment, such as CRUD, move, upgrade and restore.

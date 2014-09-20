@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Web.Script.Serialization;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-
-    using Commands.Common.Properties;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Web.Script.Serialization;
-
     public static class JsonUtilities
     {
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Handling the failure by returning the original string.")]
@@ -39,28 +37,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 // can't parse JSON, return the original string
                 return str;
             }
-        }
-
-        public static bool IsJson(string content)
-        {
-            content = content.Trim();
-            return content.StartsWith("{") && content.EndsWith("}")
-                   || content.StartsWith("[") && content.EndsWith("]");
-        }
-
-        public static void SerializeJsonFile<T>(T data, string path)
-        {
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            javaScriptSerializer.MaxJsonLength = Int32.MaxValue;
-            File.WriteAllText(path, TryFormatJson(javaScriptSerializer.Serialize(data)));
-        }
-
-        public static T DeserializeJsonFile<T>(string path)
-        {
-            string json = File.ReadAllText(path);
-            JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-            javaScriptSerializer.MaxJsonLength = Int32.MaxValue;
-            return javaScriptSerializer.Deserialize<T>(json);
         }
 
         public static Dictionary<string, object> DeserializeJson(string jsonString)

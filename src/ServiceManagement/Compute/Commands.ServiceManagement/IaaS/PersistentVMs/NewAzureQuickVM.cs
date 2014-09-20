@@ -13,28 +13,29 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Common;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Microsoft.WindowsAzure.Storage;
+using ConfigurationSet = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.ConfigurationSet;
+using InputEndpoint = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.InputEndpoint;
+using OSVirtualHardDisk = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.OSVirtualHardDisk;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
-    using AutoMapper;
-    using Common;
-    using Extensions;
-    using Helpers;
-    using Management.Compute.Models;
-    using Microsoft.WindowsAzure.Storage;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities.Common;
-    using ConfigurationSet = Model.ConfigurationSet;
-    using InputEndpoint = Model.InputEndpoint;
-    using OSVirtualHardDisk = Model.OSVirtualHardDisk;
-
     /// <summary>
     /// Creates a VM without advanced provisioning configuration options
     /// </summary>
@@ -158,13 +159,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
         [Parameter(HelpMessage = "To disable IaaS provision guest agent.")]
         public SwitchParameter DisableGuestAgent { get; set; }
 
+        [Parameter(Mandatory = false, HelpMessage = "Path to filename that contains custom data that will execute inside the VM after boot")]
+        public string CustomDataFile { get; set; }
+
         [Parameter(ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the reserved IP.")]
         [ValidateNotNullOrEmpty]
         public string ReservedIPName { get; set; }
 
         public void NewAzureVMProcess()
         {
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
+            AzureSubscription currentSubscription = CurrentContext.Subscription;
             CloudStorageAccount currentStorage = null;
             try
             {
@@ -383,6 +387,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 var mediaLinkFactory = new MediaLinkFactory(currentStorage, this.ServiceName, vm.RoleName);
                 vm.OSVirtualHardDisk.MediaLink = mediaLinkFactory.Create();
             }
+            
+            string customDataBase64Str = null;
+            if (!string.IsNullOrEmpty(this.CustomDataFile))
+            {
+                string fileName = this.TryResolvePath(this.CustomDataFile);
+                customDataBase64Str = PersistentVMHelper.ConvertCustomDataFileToBase64(fileName);
+            }
 
             var configurationSets = new Collection<ConfigurationSet>();
             var netConfig = CreateNetworkConfigurationSet();
@@ -399,7 +410,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                         EnableAutomaticUpdates = true,
                         ResetPasswordOnFirstLogon = false,
                         StoredCertificateSettings = CertUtilsNewSM.GetCertificateSettings(this.Certificates, this.X509Certificates),
-                        WinRM = GetWinRmConfiguration()
+                        WinRM = GetWinRmConfiguration(),
+                        CustomData = customDataBase64Str
                     };
 
                     if (windowsConfig.StoredCertificateSettings == null)
@@ -427,7 +439,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                         HostName = string.IsNullOrEmpty(this.Name) ? this.ServiceName : this.Name,
                         UserName = this.LinuxUser,
                         UserPassword = SecureStringHelper.GetSecureString(this.Password),
-                        DisableSshPasswordAuthentication = false
+                        DisableSshPasswordAuthentication = false,
+                        CustomData = customDataBase64Str
                     };
 
                     if (this.SSHKeyPairs != null && this.SSHKeyPairs.Count > 0 ||
@@ -544,6 +557,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
             if (this.DnsSettings != null && string.IsNullOrEmpty(this.VNetName))
             {
                 throw new ArgumentException(Resources.VNetNameRequiredWhenSpecifyingDNSSettings);
+            }
+
+            if (!string.IsNullOrEmpty(this.VNetName) && (this.SubnetNames == null || this.SubnetNames.Length == 0))
+            {
+                WriteWarning(Resources.SubnetShouldBeSpecifiedIfVnetPresent);
             }
 
             if (this.ParameterSetName.Contains(LinuxParamSet) && this.Password != null && !ValidationHelpers.IsLinuxPasswordValid(this.Password))

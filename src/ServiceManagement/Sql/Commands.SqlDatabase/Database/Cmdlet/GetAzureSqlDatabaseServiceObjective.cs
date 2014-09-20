@@ -12,20 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Management.Automation;
-
     /// <summary>
     /// Retrieves a list of Microsoft Azure SQL Databases in the given server context.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseServiceObjective", ConfirmImpact = ConfirmImpact.None,
         DefaultParameterSetName = "ByConnectionContext")]
-    public class GetAzureSqlDatabaseServiceObjective : CmdletBase
+    public class GetAzureSqlDatabaseServiceObjective : AzurePSCmdlet
     {
         #region Parameter Sets
 
@@ -96,7 +97,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                     break;
 
                 case ByServerName:
-                    context = ServerDataServiceCertAuth.Create(this.ServerName, WindowsAzureProfile.Instance.CurrentSubscription);
+                    context = ServerDataServiceCertAuth.Create(this.ServerName, AzureSession.CurrentContext.Subscription);
                     break;
 
                 default:

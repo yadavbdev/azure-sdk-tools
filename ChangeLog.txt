@@ -1,3 +1,66 @@
+2014.09.10 Version 0.8.8
+* Role-based access control support
+    * Query role definition
+        * Get-AzureRoleDefinition
+        * Manage role assignment
+        * New-AzureRoleAssignment
+        * Get-AzureRoleAssignment
+        * Remove-AzureRoleAssignment
+    * Query Active Directory object
+        * Get-AzureADUser
+        * Get-AzureADGroup
+        * Get-AzureADGroupMember
+        * Get-AzureADServicePrincipal
+    * Show user's permissions on
+        * Get-AzureResourceGroup
+        * Get-AzureResource
+* Active Directory service principal login support in Azure Resource Manager mode
+    * Add-AzureAccount -Credential -ServicePrincipal -Tenant
+* SQL Database auditing support in Azure Resource Manager mode
+    * Use-AzureSqlServerAuditingSetting
+    * Set-AzureSqlServerAuditingSetting
+    * Set-AzureSqlDatabaseAuditingSetting
+    * Get-AzureSqlServerAuditingSetting
+    * Get-AzureSqlDatabaseAuditingSetting
+    * Disable-AzureSqlServerAuditing
+    * Disable-AzureSqlDatabaseAuditing
+* Other improvements
+    * Virtual Machine DSC extension supports PSCredential as configuration argument
+    * Virtual Machine Antimalware extension supports native JSON configuration
+    * Storage supports creating storage account with different geo-redundant options
+    * Traffic Manager supports nesting of profiles
+    * Website supports configuring x32/x64 worker process
+    * -Detail parameter on Get-AzureResourceGroup to improve performance
+    * Major refactoring around account and subscription management
+
+2014.08.22 Version 0.8.7.1
+* AzureResourceManager
+    * Update Gallery and Monitoring management clients to fix Gallery commands
+*HDInsight
+    * Update Microsoft.Net API for Hadoop
+
+2014.08.18 Version 0.8.7
+* Update Newtonsoft.Json dependency to 6.0.4
+* Compute
+    * Windows Azure Diagnostics (WAD) Version 1.2: extension cmdlets for Iaas And PaaS
+        * Set-AzureVMDiagnosticsExtension
+        * Get-AzureVMDiagnosticsExtension
+        * Set-AzureServiceDiagnosticsExtension
+        * Get-AzureServiceDiagnosticsExtension
+    * Get-AzureDeployment: added CreatedTime and LastModifiedTime to output
+    * Get-AzureVM: added Hostname property
+    * Implemented CustomData support for Azure VMs
+* Websites
+    * Added RoutingRules parameter to Set-AzureWebsite to expose Testing in Production (TiP) and returned from Get-AzureWebsite
+    * Get-AzureWebsiteMetric to return web site metrics
+    * Get-AzureWebHostingPlan
+    * Get-AzureWebHostingPlanMetric to return metrics for the servers in the web hosting plan
+* SQL Database
+    * Get-AzureSqlRecoverableDatabase parameter simplification and return type changes
+    * Set-AzureSqlDatabaseRecovery parameter and return type changes
+* HDInsight
+    * Added support for provisioning of HBase clusters into Virtual Networks.
+
 2014.08.04 Version 0.8.6
 * Non-interactive login support for Microsoft Organizational account with ``Add-AzureAccount -Credential``
 * Upgrade cloud service cmdlets dependencies to Azure SDK 2.4

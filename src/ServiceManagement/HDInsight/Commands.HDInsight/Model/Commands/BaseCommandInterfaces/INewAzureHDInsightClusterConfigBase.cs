@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.ClusterProvisioning.Data;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.BaseCommandInterfaces
 {
-    using ClusterProvisioning.Data;
-
     internal interface INewAzureHDInsightClusterConfigBase
     {
         /// <summary>

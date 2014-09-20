@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using System.Globalization;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Logging
 {
-    using HDInsight.Logging;
-    using System.Collections.Generic;
-    using System.Globalization;
-
     internal class PowershellLogWriter : IBufferingLogWriter
     {
         private readonly List<string> buffer = new List<string>();
