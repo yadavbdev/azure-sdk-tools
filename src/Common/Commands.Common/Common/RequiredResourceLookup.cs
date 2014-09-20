@@ -52,7 +52,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     "microsoft.visualstudio",
                     "microsoft.insights",
                     "successbricks.cleardb",
-                    "microsoft.batch",
                     "microsoft.cache" };
             }
 
