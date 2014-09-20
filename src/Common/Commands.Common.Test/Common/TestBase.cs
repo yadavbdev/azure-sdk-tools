@@ -58,7 +58,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
                         }
                     });
             }
-            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+            AzureSession.AuthenticationFactory = new MockTokenAuthenticationFactory();
         }
 
         /// <summary>

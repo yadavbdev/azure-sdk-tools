@@ -81,6 +81,11 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             TestEnvironment csmEnvironment = new CSMTestEnvironmentFactory().GetTestEnvironment();
             TestEnvironment currentEnvironment = (mode == AzureModule.AzureResourceManager ? csmEnvironment : rdfeEnvironment);
 
+            if (currentEnvironment.UserName == null)
+            {
+                currentEnvironment.UserName = "fakeuser@microsoft.com";
+            }
+
             SetEndpointsToDefaults(rdfeEnvironment, csmEnvironment);
 
             SetAuthenticationFactory(mode, rdfeEnvironment, csmEnvironment);
@@ -99,11 +104,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             if (rdfeEnvironment != null)
             {
                 environment.Endpoints[AzureEnvironment.Endpoint.ServiceManagement] = rdfeEnvironment.BaseUri.AbsoluteUri;                
-            }
-
-            if (currentEnvironment.UserName == null)
-            {
-                currentEnvironment.UserName = "fakeuser@microsoft.com";
             }
 
             if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
@@ -167,24 +167,17 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                     certificate = ((CertificateCloudCredentials)csmEnvironment.Credentials).ManagementCertificate;
                 }
             }
-            
 
-            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
+
+            if (jwtToken != null)
             {
-                AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+                AzureSession.AuthenticationFactory = new MockTokenAuthenticationFactory(currentEnvironment.UserName,
+                    jwtToken);
             }
-            else
+            else if (certificate != null)
             {
-                if (jwtToken != null)
-                {
-                    AzureSession.AuthenticationFactory = new MockAuthenticationFactory(currentEnvironment.UserName,
-                        jwtToken);
-                }
-                else if (certificate != null)
-                {
-                    AzureSession.AuthenticationFactory = new MockAuthenticationFactory(currentEnvironment.UserName,
-                        certificate);
-                }
+                AzureSession.AuthenticationFactory = new MockCertificateAuthenticationFactory(currentEnvironment.UserName,
+                    certificate);
             }
         }
 

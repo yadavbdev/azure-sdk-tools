@@ -19,15 +19,11 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 {
-    public class MockAuthenticationFactory : IAuthenticationFactory
+    public class MockTokenAuthenticationFactory : IAuthenticationFactory
     {
-        private const string CommonAdTenant = "Common";
-
         public IAccessToken Token { get; set; }
 
-        public X509Certificate2 Certificate { get; set; }
-
-        public MockAuthenticationFactory()
+        public MockTokenAuthenticationFactory()
         {
             Token = new MockAccessToken
             {
@@ -37,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             };
         }
 
-        public MockAuthenticationFactory(string userId, string accessToken)
+        public MockTokenAuthenticationFactory(string userId, string accessToken)
         {
             Token = new MockAccessToken
             {
@@ -45,11 +41,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
                 LoginType = LoginType.OrgId,
                 AccessToken = accessToken
             };
-        }
-
-        public MockAuthenticationFactory(string userId, X509Certificate2 certificate)
-        {
-            Certificate = certificate;
         }
 
         public IAccessToken Authenticate(ref AzureAccount account, AzureEnvironment environment, string tenant, SecureString password,
@@ -72,14 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 
         public SubscriptionCloudCredentials GetSubscriptionCloudCredentials(AzureContext context)
         {
-            if (Certificate != null)
-            {
-                return new CertificateCloudCredentials(context.Subscription.Id.ToString(), Certificate);
-            }
-            else
-            {
-                return new AccessTokenCredential(context.Subscription.Id, Token);
-            }
+            return new AccessTokenCredential(context.Subscription.Id, Token);
         }
     }
 }

@@ -1019,7 +1019,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             AzureSession.ClientFactory = new MockClientFactory(new object[] { clientMocks.RdfeSubscriptionClientMock.Object,
                 clientMocks.CsmSubscriptionClientMock.Object });
 
-            AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
+            AzureSession.AuthenticationFactory = new MockTokenAuthenticationFactory();
         }
 
         private void SetMockData()
