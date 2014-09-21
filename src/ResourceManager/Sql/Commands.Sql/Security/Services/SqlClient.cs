@@ -73,8 +73,17 @@ namespace Microsoft.Azure.Commands.Sql.Security.Services
             wrapper.IsEnabled = properties.IsAuditingEnabled;
             wrapper.StorageAccountName = properties.StorageAccountName;
             AddEventTypesToWrapperFromPolicy(wrapper, properties);
+            AddConnectionStringsToWrapperFromPolicy(wrapper, properties);
             this.FetchedProperties = properties;           
             return wrapper;
+        }
+
+        private void AddConnectionStringsToWrapperFromPolicy(AuditingPolicy wrapper, DatabaseSecurityPolicyProperties properties)
+        {
+            wrapper.ConnectionStrings.AdoNetConnectionString = properties.AdoNetConnectionString;
+            wrapper.ConnectionStrings.OdbcConnectionString = properties.OdbcConnectionString;
+            wrapper.ConnectionStrings.JdbcConnectionString = properties.JdbcConnectionString;
+            wrapper.ConnectionStrings.PhpConnectionString = properties.PhpConnectionString;
         }
 
         private void AddEventTypesToWrapperFromPolicy(AuditingPolicy wrapper, DatabaseSecurityPolicyProperties properties)
