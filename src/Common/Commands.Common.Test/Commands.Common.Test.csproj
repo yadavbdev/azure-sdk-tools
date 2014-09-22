@@ -153,7 +153,8 @@
     <Compile Include="Common\ProfileCmdltsTests.cs" />
     <Compile Include="Common\ProfileClientTests.cs" />
     <Compile Include="Common\ServicePrincipalStoreTests.cs" />
-    <Compile Include="Mocks\MockAuthenticationFactory.cs" />
+    <Compile Include="Mocks\MockTokenAuthenticationFactory.cs" />
+    <Compile Include="Mocks\MockCertificateAuthenticationFactory.cs" />
     <Compile Include="Mocks\ClientMocks.cs" />
     <Compile Include="Common\GeneralUtilitiesTests.cs" />
     <Compile Include="Common\Data.cs" />

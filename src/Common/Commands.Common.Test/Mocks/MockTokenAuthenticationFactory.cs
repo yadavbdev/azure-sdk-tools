@@ -13,18 +13,17 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
 {
-    public class MockAuthenticationFactory : IAuthenticationFactory
+    public class MockTokenAuthenticationFactory : IAuthenticationFactory
     {
-        private const string CommonAdTenant = "Common";
-
         public IAccessToken Token { get; set; }
 
-        public MockAuthenticationFactory()
+        public MockTokenAuthenticationFactory()
         {
             Token = new MockAccessToken
             {
@@ -34,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             };
         }
 
-        public MockAuthenticationFactory(string userId, string accessToken)
+        public MockTokenAuthenticationFactory(string userId, string accessToken)
         {
             Token = new MockAccessToken
             {
