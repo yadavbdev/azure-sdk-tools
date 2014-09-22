@@ -5,7 +5,7 @@ namespace Microsoft.Azure.Commands.RedisCache
     /// <summary>
     /// The base class for all Microsoft Azure Redis Cache Management Cmdlets
     /// </summary>
-    public abstract class RedisCacheCmdletBase : CmdletWithSubscriptionBase
+    public abstract class RedisCacheCmdletBase : AzurePSCmdlet
     {
         private RedisCacheClient cacheClient;
 
@@ -15,7 +15,7 @@ namespace Microsoft.Azure.Commands.RedisCache
             {
                 if (cacheClient == null)
                 {
-                    cacheClient = new RedisCacheClient(CurrentSubscription);
+                    cacheClient = new RedisCacheClient(CurrentContext);
                 }
                 return cacheClient;
             }

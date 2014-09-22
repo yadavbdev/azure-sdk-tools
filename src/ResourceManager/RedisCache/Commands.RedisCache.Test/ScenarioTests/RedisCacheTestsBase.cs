@@ -44,7 +44,6 @@ namespace Microsoft.Azure.Commands.RedisCache.Test.ScenarioTests
 
         public void Dispose()
         {
-            helper.Dispose();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Azure.Management.Redis;
 using Microsoft.Azure.Management.Redis.Models;
 using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections.Generic;
@@ -15,9 +17,9 @@ namespace Microsoft.Azure.Commands.RedisCache
     public class RedisCacheClient
     {
         private RedisManagementClient _client;
-        public RedisCacheClient(WindowsAzureSubscription currentSubscription)
+        public RedisCacheClient(AzureContext context)
         {
-            _client = currentSubscription.CreateClient<RedisManagementClient>();
+            _client = AzureSession.ClientFactory.CreateClient<RedisManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager);
         }
         public RedisCacheClient() { }
 
