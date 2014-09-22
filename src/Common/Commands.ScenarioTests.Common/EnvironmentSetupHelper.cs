@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
@@ -80,39 +81,14 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             TestEnvironment csmEnvironment = new CSMTestEnvironmentFactory().GetTestEnvironment();
             TestEnvironment currentEnvironment = (mode == AzureModule.AzureResourceManager ? csmEnvironment : rdfeEnvironment);
 
-            string jwtToken;
-
-            if (mode == AzureModule.AzureResourceManager)
+            if (currentEnvironment.UserName == null)
             {
-                jwtToken = csmEnvironment.Credentials != null ?
-                ((TokenCloudCredentials)csmEnvironment.Credentials).Token : null;
-            }
-            else if (mode == AzureModule.AzureServiceManagement)
-            {
-                jwtToken = rdfeEnvironment.Credentials != null ?
-                ((TokenCloudCredentials)rdfeEnvironment.Credentials).Token : null;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid module mode.");
+                currentEnvironment.UserName = "fakeuser@microsoft.com";
             }
 
             SetEndpointsToDefaults(rdfeEnvironment, csmEnvironment);
 
-            /*
-                WindowsAzureProfile.Instance.TokenProvider = new FakeAccessTokenProvider(
-                jwtToken,
-                csmEnvironment.UserName,
-                csmEnvironment.AuthorizationContext == null ? null : csmEnvironment.AuthorizationContext.TenatId);
-            */
-            if (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback)
-            {
-                AzureSession.AuthenticationFactory = new MockAuthenticationFactory();
-            }
-            else
-            {
-                AzureSession.AuthenticationFactory = new MockAuthenticationFactory(currentEnvironment.UserName, jwtToken);
-            }
+            SetAuthenticationFactory(mode, rdfeEnvironment, csmEnvironment);
 
             AzureEnvironment environment = new AzureEnvironment { Name = testEnvironmentName };
 
@@ -128,11 +104,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             if (rdfeEnvironment != null)
             {
                 environment.Endpoints[AzureEnvironment.Endpoint.ServiceManagement] = rdfeEnvironment.BaseUri.AbsoluteUri;                
-            }
-
-            if (currentEnvironment.UserName == null)
-            {
-                currentEnvironment.UserName = "fakeuser@microsoft.com";
             }
 
             if (!client.Profile.Environments.ContainsKey(testEnvironmentName))
@@ -166,6 +137,48 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
             client.Profile.Accounts[testAccount.Id] = testAccount;
             client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
+        }
+
+        private void SetAuthenticationFactory(AzureModule mode, TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
+        {
+            string jwtToken = null;
+            X509Certificate2 certificate = null;
+            TestEnvironment currentEnvironment = (mode == AzureModule.AzureResourceManager ? csmEnvironment : rdfeEnvironment);
+
+            if (mode == AzureModule.AzureServiceManagement)
+            {
+                if (rdfeEnvironment.Credentials is TokenCloudCredentials)
+                {
+                    jwtToken = ((TokenCloudCredentials)rdfeEnvironment.Credentials).Token;
+                }
+                if (rdfeEnvironment.Credentials is CertificateCloudCredentials)
+                {
+                    certificate = ((CertificateCloudCredentials)rdfeEnvironment.Credentials).ManagementCertificate;
+                }
+            }
+            else
+            {
+                if (csmEnvironment.Credentials is TokenCloudCredentials)
+                {
+                    jwtToken = ((TokenCloudCredentials)csmEnvironment.Credentials).Token;
+                }
+                if (csmEnvironment.Credentials is CertificateCloudCredentials)
+                {
+                    certificate = ((CertificateCloudCredentials)csmEnvironment.Credentials).ManagementCertificate;
+                }
+            }
+
+
+            if (jwtToken != null)
+            {
+                AzureSession.AuthenticationFactory = new MockTokenAuthenticationFactory(currentEnvironment.UserName,
+                    jwtToken);
+            }
+            else if (certificate != null)
+            {
+                AzureSession.AuthenticationFactory = new MockCertificateAuthenticationFactory(currentEnvironment.UserName,
+                    certificate);
+            }
         }
 
         private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
