@@ -16,12 +16,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Linq;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {

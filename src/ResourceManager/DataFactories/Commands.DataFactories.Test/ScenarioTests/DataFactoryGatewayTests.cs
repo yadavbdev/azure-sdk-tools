@@ -12,14 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.DataFactories
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Xunit;
+
+namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    internal static class Constants
+    public class DataFactoryGatewayTests : DataFactoriesScenarioTestsBase
     {
-        public const string DataFactory = "AzureDataFactory";
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetNonExistingDataFactoryGateway()
+        {
+            RunPowerShellTest("Test-GetNonExistingDataFactoryGateway");
+        }
 
-        public const string LinkedService = "AzureDataFactoryLinkedService";
-
-        public const string Gateway = "AzureDataFactoryGateway";
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestCreateDataFactoryGateway()
+        {
+            RunPowerShellTest("Test-DataFactoryGateway");
+        }
     }
 }
