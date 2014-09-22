@@ -184,5 +184,52 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
                 return ResourceManager.GetString("ResourceGroupNameCannotBeEmpty", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove table &apos;{0}&apos; in data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string TableConfirmationMessage {
+            get {
+                return ResourceManager.GetString("TableConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating table &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string TableCreating {
+            get {
+                return ResourceManager.GetString("TableCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A table with the name {0} in the data factory {1} already exists. 
+        ///Continuing execution will overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
+        /// </summary>
+        internal static string TableExists {
+            get {
+                return ResourceManager.GetString("TableExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Table &apos;{0}&apos; does not exist in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string TableNotFound {
+            get {
+                return ResourceManager.GetString("TableNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing table &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string TableRemoving {
+            get {
+                return ResourceManager.GetString("TableRemoving", resourceCulture);
+            }
+        }
     }
 }

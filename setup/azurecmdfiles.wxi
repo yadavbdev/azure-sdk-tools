@@ -14,6 +14,9 @@
                         <Component Id="cmpB64AC9D08A5FE63C06D1E33CEF7E7B9A" Guid="*">
                             <File Id="fil3E17809661C4F4CB97352E5E530DED21" KeyPath="yes" Source="$(var.sourceDir)\ResourceManager\AzureResourceManager\DataFactories\Microsoft.Azure.Commands.DataFactories.dll-Help.xml" />
                         </Component>
+                        <Component Id="cmp1E9EDAA945A9718A74AEEE58D2995CF3" Guid="*">
+                            <File Id="fil84D986E6C556F2A5B6196E2AE952D138" KeyPath="yes" Source="$(var.sourceDir)\ResourceManager\AzureResourceManager\DataFactories\Microsoft.Azure.Commands.DataFactories.format.ps1xml" />
+                        </Component>
                         <Component Id="cmp951B200A49755FC237755AA2C77A0E32" Guid="*">
                             <File Id="filE680233863704425D29C310A831A89B0" KeyPath="yes" Source="$(var.sourceDir)\ResourceManager\AzureResourceManager\DataFactories\Microsoft.Azure.Management.DataFactories.dll" />
                         </Component>
@@ -1663,6 +1666,7 @@
             <ComponentRef Id="cmp96F13C307DA6E4AAC35F3D147F21553F" />
             <ComponentRef Id="cmp69B5D16DE6EF4B99D65D60F42E874739" />
             <ComponentRef Id="cmpB64AC9D08A5FE63C06D1E33CEF7E7B9A" />
+            <ComponentRef Id="cmp1E9EDAA945A9718A74AEEE58D2995CF3" />
             <ComponentRef Id="cmp951B200A49755FC237755AA2C77A0E32" />
             <ComponentRef Id="cmp1D51F57A02A3C8949E02ED001784388C" />
             <ComponentRef Id="cmp0E60A03D189105D6E7A23E5B6943A5C4" />

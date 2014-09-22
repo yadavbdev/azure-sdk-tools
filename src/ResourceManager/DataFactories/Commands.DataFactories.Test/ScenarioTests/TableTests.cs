@@ -12,14 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.DataFactories
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Xunit;
+
+namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    internal static class Constants
+    public class TableTests : DataFactoriesScenarioTestsBase
     {
-        public const string DataFactory = "AzureDataFactory";
-
-        public const string LinkedService = "AzureDataFactoryLinkedService";
-
-        public const string Table = "AzureDataFactoryTable";
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestTable()
+        {
+            RunPowerShellTest("Test-Table");
+        }
     }
 }

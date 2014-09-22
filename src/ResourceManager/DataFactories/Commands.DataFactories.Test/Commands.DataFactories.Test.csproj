@@ -131,15 +131,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ScenarioTests\TableTests.cs" />
     <Compile Include="ScenarioTests\LinkedServiceTests.cs" />
     <Compile Include="UnitTests\DataFactoryUnitTestBase.cs" />
+    <Compile Include="UnitTests\GetTableTests.cs" />
     <Compile Include="UnitTests\GetLinkedServiceTests.cs" />
     <Compile Include="UnitTests\GetDataFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioTests\DataFactoriesScenarioTestsBase.cs" />
     <Compile Include="ScenarioTests\DataFactoryTests.cs" />
+    <Compile Include="UnitTests\NewTableTests.cs" />
     <Compile Include="UnitTests\NewLinkedServiceTests.cs" />
     <Compile Include="UnitTests\NewDataFactoryTests.cs" />
+    <Compile Include="UnitTests\RemoveTableTests.cs" />
     <Compile Include="UnitTests\RemoveLinkedServiceTests.cs" />
     <Compile Include="UnitTests\RemoveDataFactoryTests.cs" />
   </ItemGroup>
@@ -151,7 +155,13 @@
     <None Include="Resources\linkedService.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\table.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="ScenarioTests\Common.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ScenarioTests\TableTests.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="ScenarioTests\LinkedServiceTests.ps1">
@@ -167,6 +177,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.LinkedServiceTests\TestLinkedService.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.TableTests\TestTable.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
