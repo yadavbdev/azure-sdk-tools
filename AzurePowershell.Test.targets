@@ -260,11 +260,6 @@
   </Target>
 
   <!-- DSC extension related targets -->
-  <Target Name="TestDSCExtension">
-    <Message Importance="high" Text="Running DSC extension BVT tests..." />
-    <CallTarget Targets="TestDSCExtension_x64"/>
-  </Target>
-
   <Target Name="TestDSCExtension_x64">
     <Message Importance="high" Text="Running DSC extension BVT x64 tests..." />
     <Delete Files="$(TestOutputDirectory)\DSCExtensionDebug_x64.trx" />
