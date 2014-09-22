@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Concurrent;
+using System.Management.Automation;
+using System.Security.Permissions;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
-    using Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Model.ResourceModel;
-    using System;
-    using System.Collections.Concurrent;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     [Cmdlet(VerbsCommon.Get, StorageNouns.CopyBlobStatus, DefaultParameterSetName = NameParameterSet),
        OutputType(typeof(AzureStorageBlob))]
     public class GetAzureStorageBlobCopyState : StorageCloudBlobCmdletBase

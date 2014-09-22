@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Sync;
+using Microsoft.WindowsAzure.Commands.Sync.Upload;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+using Microsoft.WindowsAzure.Storage;
+using ProgressRecord = Microsoft.WindowsAzure.Commands.Sync.ProgressRecord;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Properties;
-    using Sync;
-    using Sync.Upload;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-    using Tools.Vhd.Model;
-    using ProgressRecord = Sync.ProgressRecord;
-
     public class PSSyncOutputEvents : ISyncOutputEvents, IDisposable
     {
         private readonly PSCmdlet cmdlet;
@@ -81,7 +81,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                                         FormatDuration(remainingTime),
                                         avgThroughputMbps);
             var progressCommand = String.Format(@"Write-Progress -Id {0} -Activity '{1}' -Status '{2}' -SecondsRemaining {3} -PercentComplete {4}", activityId, activity, message, (int) remainingTime.TotalSeconds, (int) precentComplete);
-            using(var ps = PowerShell.Create())
+            using(var ps = System.Management.Automation.PowerShell.Create())
             {
                 ps.Runspace = runspace;
                 ps.AddScript(progressCommand);
@@ -92,7 +92,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         private void LogProgressComplete(int activityId, string activity)
         {
             var progressCommand = String.Format(@"Write-Progress -Id {0} -Activity '{1}' -Status '{2}' -Completed", activityId, activity, Resources.PSSyncOutputEventsLogProgressCompleteCompleted);
-            using(var ps = PowerShell.Create())
+            using(var ps = System.Management.Automation.PowerShell.Create())
             {
                 ps.Runspace = runspace;
                 ps.AddScript(progressCommand);
@@ -109,7 +109,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         {
             var message = String.Format(format, parameters);
             var verboseMessage = String.Format("Write-Host '{0}'", message);
-            using (var ps = PowerShell.Create())
+            using (var ps = System.Management.Automation.PowerShell.Create())
             {
                 ps.Runspace = runspace;
                 ps.AddScript(verboseMessage);
@@ -119,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         private void LogError(Exception e)
         {
-            using (var ps = PowerShell.Create())
+            using (var ps = System.Management.Automation.PowerShell.Create())
             {
                 ps.Runspace = runspace;
                 ps.AddCommand("Write-Error");

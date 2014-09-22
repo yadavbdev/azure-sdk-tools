@@ -12,26 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ServiceBus;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    using Commands.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Management.ServiceBus.Models;
-    using Moq;
-    using System.Collections.Generic;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GetAzureSBLocationTests : TestBase
     {
-        [TestInitialize]
-        public void SetupTest()
+        public GetAzureSBLocationTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureSBLocationSuccessfull()
         {
             // Setup
@@ -52,12 +52,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             List<ServiceBusLocation> actual = mockCommandRuntime.OutputPipeline[0] as List<ServiceBusLocation>;
-            Assert.AreEqual<int>(expected.Count, actual.Count);
+            Assert.Equal<int>(expected.Count, actual.Count);
 
             for (int i = 0; i < expected.Count; i++)
             {
-                Assert.AreEqual<string>(expected[i].Code, actual[i].Code);
-                Assert.AreEqual<string>(expected[i].FullName, actual[i].FullName);
+                Assert.Equal<string>(expected[i].Code, actual[i].Code);
+                Assert.Equal<string>(expected[i].FullName, actual[i].FullName);
             }
         }
     }

@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using Commands.Utilities.Common;
-    using Helpers;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsLifecycle.Stop, "AzureVM", DefaultParameterSetName = "ByName"), OutputType(typeof(ManagementOperationContext))]
     public class StopAzureVMCommand : IaaSDeploymentManagementCmdletBase
     {
@@ -34,7 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The Virtual Machine to restart.", ParameterSetName = "Input")]
         [ValidateNotNullOrEmpty]
         [Alias("InputObject")]
-        public PersistentVM VM { get; set; }
+        public Model.PersistentVM VM { get; set; }
 
         [Parameter(Position = 2, HelpMessage = "Keeps the VM provisioned")]
         public SwitchParameter StayProvisioned { get; set; }

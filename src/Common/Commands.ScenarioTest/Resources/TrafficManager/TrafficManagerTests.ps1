@@ -264,6 +264,51 @@ function Test-AddAzureTrafficManagerEndpointNoWeightLocation
 
 <#
 .SYNOPSIS
+Tests Add-AddAzureTrafficManagerEndpointNoWeightLocation with no MinChildEndpoints
+#>
+function Test-AddAzureTrafficManagerEndpointNoMinChildEndpoints
+{
+	# Setup
+	$profileName = Get-ProfileName
+	$createdProfile = New-Profile $profileName
+	
+	#Test
+	$updatedProfile = $createdProfile | Add-AzureTrafficManagerEndpoint -DomainName "www.microsoft.com" -Type Any -Status Enabled | Set-AzureTrafficManagerProfile
+	
+	# Assert
+	Assert-AreEqual 1 $updatedProfile.Endpoints.Count
+	Assert-AreEqual 0 $updatedProfile.Endpoints[0].MinChildEndpoints
+}
+
+<#
+.SYNOPSIS
+Tests Add-AddAzureTrafficManagerEndpointTypeTrafficManager
+#>
+function Test-AddAzureTrafficManagerEndpointTypeTrafficManager
+{
+	# Setup
+	$nestedProfileName = Get-ProfileName
+	$nestedDomainName = $nestedProfileName + $TrafficManagerDomain
+	$randomValue = Get-Random -Maximum 10000
+	$topLevelProfileName = "toplevelprofile" + $randomValue
+	$nestedProfile = New-Profile $nestedProfileName
+	$topLevelProfile = New-Profile $topLevelProfileName
+	
+	#Test
+	$updatedNestedProfile = $nestedProfile | Add-AzureTrafficManagerEndpoint -DomainName "www.microsoft.com" -Type Any -Status Enabled | Set-AzureTrafficManagerProfile
+	$updatedTopLevelProfile = $topLevelProfile | Add-AzureTrafficManagerEndpoint -DomainName $nestedDomainName -Type TrafficManager -Status Enabled | Set-AzureTrafficManagerProfile
+	
+	# Assert
+	Assert-AreEqual 1 $updatedNestedProfile.Endpoints.Count
+	Assert-AreEqual Any $updatedNestedProfile.Endpoints[0].Type
+	Assert-AreEqual 1 $updatedTopLevelProfile.Endpoints.Count
+	Assert-AreEqual TrafficManager $updatedTopLevelProfile.Endpoints[0].Type
+	
+	Remove-AzureTrafficManagerProfile -Name $topLevelProfileName -Force -PassThru
+}
+
+<#
+.SYNOPSIS
 Tests Set-AzureTrafficManagerEndpoint not updating Weight or Location
 #>
 function Test-SetAzureTrafficManagerEndpoint

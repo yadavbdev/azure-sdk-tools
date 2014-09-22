@@ -12,20 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Sync.Upload;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Download
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.RetryPolicies;
-    using Sync.Upload;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using Tools.Vhd.Model;
-    using Enumerable = System.Linq.Enumerable;
-
     public class BlobHandle
     {
         const int MegaByte = 1024 * 1024;

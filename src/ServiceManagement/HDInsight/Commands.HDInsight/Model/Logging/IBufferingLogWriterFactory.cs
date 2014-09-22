@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Logging
 {
-    using Cmdlet.Logging;
-
     /// <summary>
     ///     Factory interface to create LogWriters.
     /// </summary>

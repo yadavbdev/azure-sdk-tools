@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Store
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference;
-    using System;
-    using System.Collections.Generic;
-
     public class WindowsAzureOffer
     {
         public Guid Id { get; set; }

@@ -13,24 +13,24 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Framework.Core.Library.WebRequest;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    using Hadoop.Client;
-    using Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
-    using Management.HDInsight.Logging;
-    using Microsoft.WindowsAzure.Management.HDInsight.Framework.Core.Library.WebRequest;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Utilities;
-
     internal class AzureHDInsightJobSubmissionClientSimulator : IJobSubmissionClient
     {
         internal const string JobFailed = "jobDetails failed";

@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "WAPackQuickVM")]
     public class NewWAPackQuickVM : IaaSCmdletBase
     {
@@ -51,11 +50,11 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 
         public override void ExecuteCmdlet()
         {
-            VirtualMachine pendingVirtualMachine = null;
+            Utilities.WAPackIaaS.DataContract.VirtualMachine pendingVirtualMachine = null;
             var virtualMachineOperations = new VirtualMachineOperations(this.WebClientFactory);
             Guid? jobId = Guid.Empty;
 
-            var newVirtualMachine = new VirtualMachine()
+            var newVirtualMachine = new Utilities.WAPackIaaS.DataContract.VirtualMachine()
             {
                 Name = Name,
                 VMTemplateId = Template.ID,

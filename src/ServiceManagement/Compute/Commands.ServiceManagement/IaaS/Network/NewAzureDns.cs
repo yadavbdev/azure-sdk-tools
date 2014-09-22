@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Network
 {
-    using Model.PersistentVMModel;
-    using System;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "AzureDns"), OutputType(typeof(DnsServer))]
     public class NewAzureDnsCommand : Cmdlet
     {

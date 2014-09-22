@@ -120,6 +120,15 @@
   <data name="InvalidGuid" xml:space="preserve">
     <value>The value {0} is an invalid GUID.</value>
   </data>
+  <data name="NewAzureDedicatedCircuitMessage" xml:space="preserve">
+    <value>Creating Azure Dedicated Circuit with name {0} with service provider {1}</value>
+  </data>
+  <data name="NewAzureDedicatedCircuitSucceeded" xml:space="preserve">
+    <value>Successfully creatied Azure Dedicated Circuit. This circuit is now being billed</value>
+  </data>
+  <data name="NewAzureDedicatedCircuitWarning" xml:space="preserve">
+    <value>Are you sure you want to create a new dedicated circuit with name {0} and service provider {1}. You will be billed for this circuit once this command succeeds.</value>
+  </data>
   <data name="PeerAsnRequired" xml:space="preserve">
     <value>A value for the  Peer Asn has to be provided.</value>
   </data>

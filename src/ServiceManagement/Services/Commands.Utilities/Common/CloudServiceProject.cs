@@ -12,22 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Permissions;
+using System.Security.Principal;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using AzureTools;
-    using Commands.Common.Properties;
-    using Common;
-    using Common.XmlSchema.ServiceDefinitionSchema;
-    using Scaffolding;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Security.AccessControl;
-    using System.Security.Permissions;
-    using System.Security.Principal;
-    using System.Text;
-
     /// <summary>
     /// Class that encapsulates all of the info about a service, to which we can add roles.  This is all in memory, so no disk operations occur.
     /// </summary>

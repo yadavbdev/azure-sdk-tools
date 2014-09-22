@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
 {
-    using DataContract;
-    using System.Collections.Generic;
-
     internal class LogicalNetworkOperations : OperationsBase<LogicalNetwork>
     {
         public LogicalNetworkOperations(WebClientFactory webClientFactory)

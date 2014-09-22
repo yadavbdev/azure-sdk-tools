@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Management.Storage;
-    using Storage.Blob;
-    using System;
-
     public static class AzureBlob
     {
         private static CloudBlobUtility cloudBlobUtility = new CloudBlobUtility();

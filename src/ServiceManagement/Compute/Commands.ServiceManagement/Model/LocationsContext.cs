@@ -13,12 +13,11 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using PersistentVMModel;
-    using System.Collections.Generic;
-    using Utilities.Common;
-
     public class LocationsContext : ManagementOperationContext
     {
         public string DisplayName { get; set; }

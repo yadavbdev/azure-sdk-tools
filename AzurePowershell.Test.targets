@@ -5,6 +5,7 @@
   <PropertyGroup>
     <TestSettings>.\src\Local.testsettings</TestSettings>
     <ScenarioTestDebug>.\src\Common\Commands.ScenarioTest\bin\Debug\Microsoft.WindowsAzure.Commands.ScenarioTest.dll</ScenarioTestDebug>
+	<CommonTestDebug>.\src\Common\Commands.Common.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Common.Test.dll</CommonTestDebug>
     <AzureRTTestSettings>.\src\AzureRT.testsettings</AzureRTTestSettings>
     <AzureRTTestContainer>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Test.dll</AzureRTTestContainer>
     <StorageScenarioTestDebug>src\ServiceManagement\Storage\Commands.Storage.ScenarioTest\bin\Debug\CLITest.dll</StorageScenarioTestDebug>
@@ -14,7 +15,7 @@
     <SqlDatabaseTestDebug>.\src\ServiceManagement\Sql\Commands.SqlDatabase.Test\bin\Debug\Microsoft.WindowsAzure.Commands.SqlDatabase.Test.dll</SqlDatabaseTestDebug>
     <HDInsightTestDebug>.\src\ServiceManagement\HDInsight\Commands.HDInsight.Test\bin\Debug\Microsoft.WindowsAzure.Commands.HDInsight.Test.dll</HDInsightTestDebug>
     <StorageTestDebug>.\src\ServiceManagement\Storage\Commands.Storage.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Storage.Test.dll</StorageTestDebug>
-    <TestFilter>"!Functional&#x26;!Scenario&#x26;!Sequential&#x26;!PIRTest&#x26;!Preview&#x26;!ADDomain"</TestFilter>
+    <TestFilter>"!Functional&#x26;!Scenario&#x26;!AzureRTScenario&#x26;!Sequential&#x26;!PIRTest&#x26;!Preview&#x26;!ADDomain"</TestFilter>
     <ScenarioTestFilter>All</ScenarioTestFilter>
     <MockTestFilter>CheckIn</MockTestFilter>
     <OneSDKCITFilter>"OneSDK&#x26;CIT"</OneSDKCITFilter>
@@ -25,9 +26,9 @@
     <ManagementBVTFilter>"Management&#x26;BVT"</ManagementBVTFilter>
     <ManagedCacheBVTFilter>"ManagedCache&#x26;BVT"</ManagedCacheBVTFilter>
     <ServiceBusBVTFilter>"ServiceBus&#x26;BVT"</ServiceBusBVTFilter>
-    <AzureRTAllTestFilter>"Functional|Scenario"</AzureRTAllTestFilter>
-    <AzureRTAllTestFilter2>"Functional|Scenario|Preview"</AzureRTAllTestFilter2>
-    <AzureRTAllTestFilter3>"Functional|Scenario|Sequential"</AzureRTAllTestFilter3>
+    <AzureRTAllTestFilter>"Functional|AzureRTScenario"</AzureRTAllTestFilter>
+    <AzureRTAllTestFilter2>"Functional|AzureRTScenario|Preview"</AzureRTAllTestFilter2>
+    <AzureRTAllTestFilter3>"Functional|AzureRTScenario|Sequential"</AzureRTAllTestFilter3>
   </PropertyGroup>
   
   <Target Name="InvokeMSTest">
@@ -44,9 +45,7 @@
   </Target>
   
   <Target Name="TestManagement">
-    <MSBuild Targets="InvokeMSTest"
-             Properties="_testAssembly=$(ManagementTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\ManagementDebug.trx"
-             Projects="build.proj"/>
+	<Xunit.Runner.MSBuild.xunit Assembly="$(ManagementTestDebug)" Html="$(TestOutputDirectory)\ManagementDebug.xunit.dll.html" Verbose="true"/>
   </Target>
 
   <Target Name="TestManagedCache">
@@ -94,13 +93,17 @@
       Properties="_testAssembly=$(StorageScenarioTestDebug);_testSettings=$(TestSettings);_testFilter=$(ScenarioTestFilter);_testResult=$(TestOutputDirectory)\StorageScenarioTestDebug.trx"
       Projects="build.proj"/>
   </Target>
+  
+  <!-- Run the common tests -->
+  <Target Name="CommonTests">
+    <Message Importance="high" Text="Running Common tests" />
+	<Xunit.Runner.MSBuild.xunit Assembly="$(CommonTestDebug)" Html="$(TestOutputDirectory)\CommonTests.xunit.dll.html" Verbose="true"/>
+  </Target>
 
   <!-- Run the scenario tests with Mocks -->
   <Target Name="MockedScenarioTests">
     <Message Importance="high" Text="Running scenario tests with Mocks" />
-    <MSBuild Targets="InvokeMSTest"
-             Properties="_testAssembly=$(ScenarioTestDebug);_testSettings=$(TestSettings);_testFilter=$(MockTestFilter);_testResult=$(TestOutputDirectory)\MockedScenarioTests.trx"
-             Projects="build.proj"/>
+	<Xunit.Runner.MSBuild.xunit Assembly="$(ScenarioTestDebug)" Html="$(TestOutputDirectory)\MockedScenarioTests.xunit.dll.html" Verbose="true"/>
   </Target>
 
   <!-- Run the MediaService Scenario Tests -->

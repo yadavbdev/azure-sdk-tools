@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.Common.Storage.Properties;
+using Microsoft.WindowsAzure.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.Common.Storage
 {
-    using Microsoft.WindowsAzure.Commands.Common.Storage.Properties;
-    using Microsoft.WindowsAzure.Storage;
-    using System;
-
     /// <summary>
     /// Storage context
     /// </summary>

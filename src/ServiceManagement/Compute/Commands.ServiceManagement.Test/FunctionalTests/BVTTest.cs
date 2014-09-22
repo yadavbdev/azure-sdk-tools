@@ -13,20 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.IO;
 using System.Linq;
+using System.Management.Automation;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using Model.PersistentVMModel;
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-
     [TestClass]
     public class BVTTest : ServiceManagementTest
     {
@@ -43,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// BVT test for IaaS cmdlets.
         /// </summary>
-        [TestMethod(), TestCategory("BVT"), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("BVT Test for IaaS")]
+        [TestMethod(), TestCategory(Category.BVT), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("BVT Test for IaaS")]
         public void AzureIaaSBVT()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -268,6 +266,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 // Verify AzureEndpoint
                 //
                 Assert.IsTrue(Verify.AzureEndpoint(vm, new[]{azureEndPointConfigInfo1, azureEndPointConfigInfo2}));
+
+                //
+                // Verify RDP & PowerShell Endpoints
+                //
+                var endpoints = vmPowershellCmdlets.GetAzureEndPoint(vm);
+                Assert.IsTrue(endpoints.Count(e => e.Name == "PowerShell" && e.LocalPort == 5986 && e.Protocol == "tcp") == 1);
+                Assert.IsTrue(endpoints.Count(e => e.Name == "RemoteDesktop" && e.LocalPort == 3389 && e.Protocol == "tcp") == 1);
 
                 //
                 // Verify AzureDns

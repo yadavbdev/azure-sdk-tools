@@ -12,15 +12,89 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Collections;
-
+    /// <summary>
+    /// Represents public settings. Serialized representation of this object stored as a plain text string on the VM.
+    /// Part of the protocol between Set-AzureVMDscExtension cmdlet and DSC Extension handler.
+    /// </summary>
     public class DscPublicSettings
     {
+        /// <summary>
+        /// Version 1.0.0.0 of DscPublicSettings. We keep it for backward compatability.
+        /// </summary>
+        internal class Version1
+        {
+            public string SasToken { get; set; }
+            public string ModulesUrl { get; set; }
+            public string ConfigurationFunction { get; set; }
+            public Hashtable Properties { get; set; }
+
+            /// <summary>
+            /// Converting to the current version of DscPublicSettings.
+            /// </summary>
+            /// <returns></returns>
+            public DscPublicSettings ToCurrentVersion()
+            {
+                List<Property> properties = new List<Property>();
+                foreach (DictionaryEntry p in this.Properties)
+                {
+                    properties.Add(new Property()
+                    {
+                        Name = p.Key.ToString(), 
+                        TypeName = p.Value.GetType().ToString(), 
+                        Value = p.Value
+                    });
+                }
+                return new DscPublicSettings()
+                {
+                    SasToken = this.SasToken,
+                    ModulesUrl = this.ModulesUrl,
+                    ConfigurationFunction = this.ConfigurationFunction,
+                    Properties = properties.ToArray(),
+                    ProtocolVersion = new Version(1, 0, 0, 0)
+                };
+            }
+        }
+
+        /// <summary>
+        /// Defines an entry of DscPublicSettings.Properties array.
+        /// </summary>
+        public class Property
+        {
+            public string TypeName { get; set; }
+            public string Name { get; set; }
+            public object Value { get; set; }
+        }
+
+        /// <summary>
+        /// SharedAccessSignature token that allows access of azure blob storage files.
+        /// </summary>
         public string SasToken { get; set; }
+
+        /// <summary>
+        /// Url for archive with modules and configuration in azure blob storage.
+        /// </summary>
         public string ModulesUrl { get; set; }
+
+        /// <summary>
+        /// String to define configuration in the format: "Module\NameOfConfiguration", where
+        /// Module can be a path to the root of the module or .ps1 file or .psm1 file.
+        /// </summary>
         public string ConfigurationFunction { get; set; }
-        public Hashtable Properties { get; set; }
+        
+        /// <summary>
+        /// Configuration parameters
+        /// </summary>
+        public Property[] Properties { get; set; }
+
+        /// <summary>
+        /// Version of the protocol (DscPublicSettings and DscPrivateSettings mostly).
+        /// </summary>
+        public Version ProtocolVersion { get; set; }
     }
 }

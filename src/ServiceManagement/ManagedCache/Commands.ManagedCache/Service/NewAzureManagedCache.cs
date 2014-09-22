@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache.Models;
+
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    using Microsoft.Azure.Commands.ManagedCache.Models;
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "AzureManagedCache"), OutputType(typeof(PSCacheService))]
     public class NewAzureManagedCache : ManagedCacheCmdletBase, IDynamicParameters
     {
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
             string memory = memoryDynamicParameterSet.GetMemoryValue(Sku);
 
             PSCacheService cacheService = new PSCacheService(CacheClient.CreateCacheService(
-                CurrentSubscription.SubscriptionId,
+                CurrentContext.Subscription.Id.ToString(),
                 cacheServiceName,
                 Location,
                 Sku,

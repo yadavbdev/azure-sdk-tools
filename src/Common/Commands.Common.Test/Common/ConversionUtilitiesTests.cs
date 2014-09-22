@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Xunit;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Test
 {
-    [TestClass]
     public class ConversionUtilitiesTests
     {
-        [TestMethod]
+        [Fact]
         public void DeserializeJsonWorksForSimpleCases()
         {
             const string json1 =
@@ -49,13 +48,13 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test
 
             Dictionary<string, object> result;
             result = JsonUtilities.DeserializeJson(json1);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Count);
-            Assert.AreEqual(2, ((Dictionary<string, object>)result["address"]).Count);
-            Assert.AreEqual(2, ((List<object>)result["list"]).Count);
+            Assert.NotNull(result);
+            Assert.Equal(5, result.Count);
+            Assert.Equal(2, ((Dictionary<string, object>)result["address"]).Count);
+            Assert.Equal(2, ((List<object>)result["list"]).Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void DeserializeJsonWorksForEmptyObjects()
         {
             const string json1 =
@@ -71,24 +70,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test
 
             Dictionary<string, object> result;
             result = JsonUtilities.DeserializeJson(json1);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Count);
-            Assert.AreEqual(0, ((Dictionary<string, object>)result["address"]).Count);
-            Assert.AreEqual(0, ((List<object>)result["list"]).Count);
+            Assert.NotNull(result);
+            Assert.Equal(5, result.Count);
+            Assert.Equal(0, ((Dictionary<string, object>)result["address"]).Count);
+            Assert.Equal(0, ((List<object>)result["list"]).Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void DeserializeJsonAcceptsBadArguments()
         {
             Dictionary<string, object> result;
             result = JsonUtilities.DeserializeJson(null);
-            Assert.IsNull(result);
+            Assert.Null(result);
 
             result = JsonUtilities.DeserializeJson(string.Empty);
-            Assert.IsTrue(result.Count == 0);
+            Assert.True(result.Count == 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void DeserializeJsonAcceptsBadJson()
         {
             const string json1 =
@@ -114,7 +113,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test
 
             Dictionary<string, object> result;
             result = JsonUtilities.DeserializeJson(json1);
-            Assert.IsNull(result);
+            Assert.Null(result);
         }
     }
 }

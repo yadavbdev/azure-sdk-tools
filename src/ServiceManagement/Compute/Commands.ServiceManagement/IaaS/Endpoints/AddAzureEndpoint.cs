@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 {
-    using IaaS;
-    using Model;
-    using Model.PersistentVMModel;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Add, "AzureEndpoint", DefaultParameterSetName = AddAzureEndpoint.NoLBParameterSet), OutputType(typeof(IPersistentVM))]
     public class AddAzureEndpoint : VirtualMachineConfigurationCmdletBase 
     {

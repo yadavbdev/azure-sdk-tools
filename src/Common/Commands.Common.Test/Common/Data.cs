@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using Commands.Utilities.Common;
-    using ServiceManagement;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-
     public static class Data
     {
         // To Do:
@@ -144,7 +144,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             myStore.StorageServiceKeys.Secondary = "=w8uidjew4378891289";
             myStore.StorageServiceProperties = new StorageServiceProperties();
             myStore.StorageServiceProperties.Location = "North Central US";
-            myStore.StorageServiceProperties.Status = StorageServiceStatus.Created;
+            myStore.StorageServiceProperties.Status = "Created";
             ValidStorageService.Add(myStore);
 
             StorageService testStore = new StorageService();
@@ -154,7 +154,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             testStore.StorageServiceKeys.Secondary = "==0--3210-//121313233290sd";
             testStore.StorageServiceProperties = new StorageServiceProperties();
             testStore.StorageServiceProperties.Location = "East Asia";
-            testStore.StorageServiceProperties.Status = StorageServiceStatus.Creating;
+            testStore.StorageServiceProperties.Status = "Creating";
             ValidStorageService.Add(testStore);
 
             StorageService MyCompanyStore = new StorageService();
@@ -164,7 +164,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
             MyCompanyStore.StorageServiceKeys.Secondary = "023432dfelfema1=";
             MyCompanyStore.StorageServiceProperties = new StorageServiceProperties();
             MyCompanyStore.StorageServiceProperties.Location = "North Europe";
-            MyCompanyStore.StorageServiceProperties.Status = StorageServiceStatus.ResolvingDns;
+            MyCompanyStore.StorageServiceProperties.Status = "Suspending";
             ValidStorageService.Add(MyCompanyStore);
         }
 

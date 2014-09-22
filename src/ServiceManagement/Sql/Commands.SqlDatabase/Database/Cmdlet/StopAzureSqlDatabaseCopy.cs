@@ -12,24 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using DatabaseCopyModel = Microsoft.WindowsAzure.Commands.SqlDatabase.Model.DatabaseCopy;
+    using DatabaseCopyModel = Model.DatabaseCopy;
 
     /// <summary>
     /// Stop an ongoing copy operation for a Microsoft Azure SQL Database in the given server context.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Stop, "AzureSqlDatabaseCopy", SupportsShouldProcess = true,
         ConfirmImpact = ConfirmImpact.Medium)]
-    public class StopAzureSqlDatabaseCopy : CmdletBase
+    public class StopAzureSqlDatabaseCopy : AzurePSCmdlet
     {
         #region ParameterSetNames
 
@@ -66,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = ByDatabase,
             ValueFromPipeline = true, HelpMessage = "The database object to stop a copy from or to.")]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the database to retrieve.
@@ -129,7 +131,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             // Use the provided ServerDataServiceContext or create one from the
             // provided ServerName and the active subscription.
             IServerDataServiceContext context = ServerDataServiceCertAuth.Create(this.ServerName,
-                WindowsAzureProfile.Instance.CurrentSubscription);
+                AzureSession.CurrentContext.Subscription);
 
             DatabaseCopyModel databaseCopy;
             if (this.MyInvocation.BoundParameters.ContainsKey("DatabaseCopy"))

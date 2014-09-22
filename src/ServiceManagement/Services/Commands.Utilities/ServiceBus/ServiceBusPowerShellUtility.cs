@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using System.Management.Automation;
-
     public static class ServiceBusPowerShellUtility
     {
         public static PSObject GetNamespacePSObject(ExtendedAuthorizationRule rule)

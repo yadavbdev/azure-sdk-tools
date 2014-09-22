@@ -12,20 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MS.Test.Common.MsTestLib;
-using StorageTestLib;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using Commands.Storage.ScenarioTest.Common;
+using Commands.Storage.ScenarioTest.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MS.Test.Common.MsTestLib;
+using StorageTestLib;
 using StorageBlob = Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Commands.Storage.ScenarioTest.BVT.HTTPS
 {
-    using Common;
-    using Util;
-
     /// <summary>
     /// bvt cases for anonymous storage account
     /// </summary>
@@ -79,7 +77,7 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
         public void ListContainerWithContianerPermission()
         {
             string containerName = Utility.GenNameString(ContainerPrefix);
-            CloudBlobContainer container = blobUtil.CreateContainer(containerName, BlobContainerPublicAccessType.Container);
+            StorageBlob.CloudBlobContainer container = blobUtil.CreateContainer(containerName, StorageBlob.BlobContainerPublicAccessType.Container);
 
             try
             {
@@ -96,7 +94,7 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
                 agent.OutputValidation(comp);
 
                 //check the http or https usage
-                CloudBlobContainer retrievedContainer = (CloudBlobContainer)agent.Output[0]["CloudBlobContainer"]; ;
+                StorageBlob.CloudBlobContainer retrievedContainer = (StorageBlob.CloudBlobContainer)agent.Output[0]["CloudBlobContainer"]; ;
                 string uri = retrievedContainer.Uri.ToString();
                 string uriPrefix = string.Empty;
 
@@ -125,19 +123,19 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
         public void ListBlobsWithBlobPermission()
         {
             string containerName = Utility.GenNameString(ContainerPrefix);
-            CloudBlobContainer container = blobUtil.CreateContainer(containerName, BlobContainerPublicAccessType.Blob);
+            StorageBlob.CloudBlobContainer container = blobUtil.CreateContainer(containerName, StorageBlob.BlobContainerPublicAccessType.Blob);
 
             try
             {
                 string pageBlobName = Utility.GenNameString("pageblob");
                 string blockBlobName = Utility.GenNameString("blockblob");
-                ICloudBlob blockBlob = blobUtil.CreateBlockBlob(container, blockBlobName);
-                ICloudBlob pageBlob = blobUtil.CreatePageBlob(container, pageBlobName);
+                StorageBlob.ICloudBlob blockBlob = blobUtil.CreateBlockBlob(container, blockBlobName);
+                StorageBlob.ICloudBlob pageBlob = blobUtil.CreatePageBlob(container, pageBlobName);
 
                 Test.Assert(agent.GetAzureStorageBlob(blockBlobName, containerName), Utility.GenComparisonData("Get-AzureStorageBlob", true));
-                agent.OutputValidation(new List<ICloudBlob> { blockBlob });
+                agent.OutputValidation(new List<StorageBlob.ICloudBlob> { blockBlob });
                 Test.Assert(agent.GetAzureStorageBlob(pageBlobName, containerName), Utility.GenComparisonData("Get-AzureStorageBlob", true));
-                agent.OutputValidation(new List<ICloudBlob> { pageBlob });
+                agent.OutputValidation(new List<StorageBlob.ICloudBlob> { pageBlob });
             }
             finally
             {
@@ -153,7 +151,7 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
         public void GetBlobContentWithContainerPermission()
         {
             string containerName = Utility.GenNameString(ContainerPrefix);
-            CloudBlobContainer container = blobUtil.CreateContainer(containerName, BlobContainerPublicAccessType.Container);
+            StorageBlob.CloudBlobContainer container = blobUtil.CreateContainer(containerName, StorageBlob.BlobContainerPublicAccessType.Container);
 
             try
             {
@@ -173,7 +171,7 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
         public void GetBlobContentWithBlobPermission()
         {
             string containerName = Utility.GenNameString(ContainerPrefix);
-            CloudBlobContainer container = blobUtil.CreateContainer(containerName, BlobContainerPublicAccessType.Blob);
+            StorageBlob.CloudBlobContainer container = blobUtil.CreateContainer(containerName, StorageBlob.BlobContainerPublicAccessType.Blob);
 
             try
             {
@@ -189,7 +187,7 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
         /// download test in specified container
         /// </summary>
         /// <param name="container">CloudBlobContainer object</param>
-        private void DownloadBlobFromContainerTest(CloudBlobContainer container)
+        private void DownloadBlobFromContainerTest(StorageBlob.CloudBlobContainer container)
         {
             DownloadBlobFromContainer(container, StorageBlob.BlobType.BlockBlob);
             DownloadBlobFromContainer(container, StorageBlob.BlobType.PageBlob);
@@ -200,16 +198,16 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
         /// </summary>
         /// <param name="container"></param>
         /// <param name="blob"></param>
-        private void DownloadBlobFromContainer(CloudBlobContainer container, StorageBlob.BlobType type)
+        private void DownloadBlobFromContainer(StorageBlob.CloudBlobContainer container, StorageBlob.BlobType type)
         {
             string blobName = Utility.GenNameString("blob");
-            ICloudBlob blob = blobUtil.CreateBlob(container, blobName, type);
+            StorageBlob.ICloudBlob blob = blobUtil.CreateBlob(container, blobName, type);
 
             string filePath = Path.Combine(downloadDirRoot, blob.Name);
             Test.Assert(agent.GetAzureStorageBlobContent(blob.Name, filePath, container.Name, true), "download blob should be successful");
             string localMd5 = Helper.GetFileContentMD5(filePath);
             Test.Assert(localMd5 == blob.Properties.ContentMD5, string.Format("local content md5 should be {0}, and actualy it's {1}", blob.Properties.ContentMD5, localMd5));
-            agent.OutputValidation(new List<ICloudBlob> { blob });
+            agent.OutputValidation(new List<StorageBlob.ICloudBlob> { blob });
         }
 
         [TestMethod()]
@@ -230,24 +228,24 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTPS
         public void AnonymousContextWithEndPoint()
         {
             string containerName = Utility.GenNameString(ContainerPrefix);
-            CloudBlobContainer container = blobUtil.CreateContainer(containerName, BlobContainerPublicAccessType.Blob);
+            StorageBlob.CloudBlobContainer container = blobUtil.CreateContainer(containerName, StorageBlob.BlobContainerPublicAccessType.Blob);
 
             try
             {
                 string pageBlobName = Utility.GenNameString("pageblob");
                 string blockBlobName = Utility.GenNameString("blockblob");
-                ICloudBlob blockBlob = blobUtil.CreateBlockBlob(container, blockBlobName);
-                ICloudBlob pageBlob = blobUtil.CreatePageBlob(container, pageBlobName);
+                StorageBlob.ICloudBlob blockBlob = blobUtil.CreateBlockBlob(container, blockBlobName);
+                StorageBlob.ICloudBlob pageBlob = blobUtil.CreatePageBlob(container, pageBlobName);
 
                 agent.UseContextParam = false;
                 string cmd = string.Format("new-azurestoragecontext -StorageAccountName {0} " +
                     "-Anonymous -EndPoint {1}", StorageAccountName, StorageEndPoint);
                 ((PowerShellAgent)agent).AddPipelineScript(cmd);
                 Test.Assert(agent.GetAzureStorageBlob(blockBlobName, containerName), Utility.GenComparisonData("Get-AzureStorageBlob", true));
-                agent.OutputValidation(new List<ICloudBlob> { blockBlob });
+                agent.OutputValidation(new List<StorageBlob.ICloudBlob> { blockBlob });
                 ((PowerShellAgent)agent).AddPipelineScript(cmd);
                 Test.Assert(agent.GetAzureStorageBlob(pageBlobName, containerName), Utility.GenComparisonData("Get-AzureStorageBlob", true));
-                agent.OutputValidation(new List<ICloudBlob> { pageBlob });
+                agent.OutputValidation(new List<StorageBlob.ICloudBlob> { pageBlob });
             }
             finally
             {

@@ -572,15 +572,18 @@ Tags:
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-AzureResourceGroup</maml:name>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="ResourceGroupName">
+        <maml:name>GetMultiple</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="ResourceGroupName">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Specifies the name of the resource group. Wildcards are not permitted. This parameter is optional. The default is all resource groups in the subscription</maml:para>
+            <maml:para>Specifies the name of the resource group. Wildcards are not permitted. This parameter is required.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="">
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>GetSingle</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="">
           <maml:name>Tag</maml:name>
           <maml:description>
             <maml:para>Gets resource groups that have the specified Azure tags. Enter a hash table with a Name key or Name and Value keys. Wildcard characters are not supported.</maml:para>
@@ -588,6 +591,13 @@ Tags:
             <maml:para>For help with hash tables in Windows PowerShell, type: Get-Help about_Hashtables.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" aliases="">
+          <maml:name>Detailed</maml:name>
+          <maml:description>
+            <maml:para>Return the details of each resource group if specified.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -615,6 +625,19 @@ Tags:
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
           <maml:name>Hashtable</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>
+        </dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" aliases="">
+        <maml:name>Detailed</maml:name>
+        <maml:description>
+          <maml:para>Return the details of each resource group if specified.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>
@@ -661,12 +684,12 @@ Tags:
     </maml:alertSet>
     <command:examples>
       <command:example>
-        <maml:title>Example 1: Get all resource groups</maml:title>
+        <maml:title>Example 1: Get all resource groups and their details</maml:title>
         <maml:introduction>
           <maml:para>
           </maml:para>
         </maml:introduction>
-        <dev:code>PS C:\&gt;Get-AzureResourceGroup
+        <dev:code>PS C:\&gt;Get-AzureResourceGroup -Detailed
 Name:      Contoso
 Location:  West US
 Resources: 
@@ -725,7 +748,7 @@ Resources:
           <maml:para>
           </maml:para>
         </maml:introduction>
-        <dev:code>PS C:\&gt;Get-AzureResourceGroup | Where-Object {$_.Resources.Type -like "*serverFarms*"} | Select-Object -Property ResourceGroupName
+        <dev:code>PS C:\&gt;Get-AzureResourceGroup -Detailed | Where-Object {$_.Resources.Type -like "*serverFarms*"} | Select-Object -Property ResourceGroupName
 Contoso
 EngineerBlog
 
@@ -1064,6 +1087,7 @@ ContosoLabsRG                       WordPress.WordPress                     Succ
       <maml:para>A resource group template is a JSON string that defines a resource group for a complex entity, such as a web portal, a blog, a photo gallery, a commerce site, or a wiki. The template defines the resources that are typically needed for the entity, such as web sites, database servers, databases and storage accounts, and includes parameters for user-defined values, such as the names and properties of the resources. To create a resource group with a template, just identify the template and provide values for its parameters.</maml:para>
       <maml:para>You can create your own templates or use the Get-AzureResourceGroupGalleryTemplate get a template from the template gallery that Azure hosts. You can also create templates by editing the gallery templates. If you create or edit a template, be sure to use the Test-AzureResourceGroupTemplate cmdlet to verify that your template and its parameters are valid.</maml:para>
       <maml:para>To create a resource group with a custom or gallery template, use the New-AzureResourceGroup or New-AzureResourceGroupDeployment cmdlets.</maml:para>
+      <maml:para>By default the cmdlet gets only the latest version of the template. To get all versions, use the -AllVersions parameter flag.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1136,7 +1160,20 @@ ContosoLabsRG                       WordPress.WordPress                     Succ
         <dev:defaultValue>
         </dev:defaultValue>
       </command:parameter>
-    </command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="2" aliases="">
+          <maml:name>AllVersions</maml:name>
+          <maml:description>
+              <maml:para>If specified, the cmdlet will return all versions of matching templates. By default only the latest version is returned.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">SwitchParameter</command:parameterValue>
+          <dev:type>
+              <maml:name>String</maml:name>
+              <maml:uri />
+          </dev:type>
+          <dev:defaultValue>
+          </dev:defaultValue>
+      </command:parameter>
+      </command:parameters>
     <command:inputTypes>
       <command:inputType>
         <dev:type>
@@ -5591,6 +5628,1745 @@ PS C:\&gt;Test-AzureResourceGroupTemplate -ResourceGroupName ContosoLabsRG -Gall
       <maml:navigationLink>
         <maml:linkText>Online Version:</maml:linkText>
         <maml:uri>http://go.microsoft.com/fwlink/?LinkID=393054</maml:uri>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>New-AzureRoleAssignment</command:name>
+      <maml:description>
+        <maml:para>Create a role assignment to some principals at a given scope.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>New</command:verb>
+      <command:noun>AzureRoleAssignment</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Create a role assignment to some principals at a given scope.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>New-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ObjectId</maml:name>
+          <maml:description>
+            <maml:para>Object id of the user, group or service principal.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>Mail</maml:name>
+          <maml:description>
+            <maml:para>The live id or group mail.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>UserPrincipalName</maml:name>
+          <maml:description>
+            <maml:para>The UPN.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ServicePrincipalName</maml:name>
+          <maml:description>
+            <maml:para>The SPN.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>ObjectId</maml:name>
+        <maml:description>
+          <maml:para>Object id of the user, group or service principal.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>UserPrincipalName</maml:name>
+        <maml:description>
+          <maml:para>UPN of the user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>Mail</maml:name>
+        <maml:description>
+          <maml:para>Mail of the user or group</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ServicePrincipalName</maml:name>
+        <maml:description>
+          <maml:para>SPN of the service principal.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>RoleDefinitionName</maml:name>
+        <maml:description>
+          <maml:para>Role to assign the principals with.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>Scope</maml:name>
+        <maml:description>
+          <maml:para>
+            Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceGroupName</maml:name>
+        <maml:description>
+          <maml:para>Resource group to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceType</maml:name>
+        <maml:description>
+          <maml:para>Type of the resource to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceName</maml:name>
+        <maml:description>
+          <maml:para>Name of the resource to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ParentResource</maml:name>
+        <maml:description>
+          <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Create new role assignment using UPN --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>New-AzureRoleAssignment -ResourceGroupName rg1 -UPN foo@domain.com -RoleDefinitionName Reader</dev:code>
+        <dev:remarks>
+          <maml:para>add role assignment to a principal for a resource group using the separate parameters</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Create new role assignment using Service Principal Name --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>New-AzureRoleAssignment -ServicePrincipalName 36f81fc3-b00f-48cd-8218-3879f51ff39f -RoleDefinitionName Contributor</dev:code>
+        <dev:remarks>
+          <maml:para>add role assignment to a service principal for a subscription.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Create new role assignment using explict Scope --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>New-AzureRoleAssignment -Mail allen.young@live.cn -RoleDefinitionName Owner -Scope "/resourcegroups/rg1/providers/Microsoft.Web/sites/site1"</dev:code>
+        <dev:remarks>
+          <maml:para>add role assignment to a principal for a resource using the generic parameter. Since the scope doens't start with "/subscriptions/{id}", the current subscription id will be used</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Remove-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureRoleDefinition</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-AzureRoleAssignment</command:name>
+      <maml:description>
+        <maml:para>Filters role assignments.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Get</command:verb>
+      <command:noun>AzureRoleAssignment</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Filters role assignments.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-AzureRoleAssignment</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ObjectId</maml:name>
+          <maml:description>
+            <maml:para>Object id of the user, group or service principal.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>UserPrincipalName</maml:name>
+          <maml:description>
+            <maml:para>UPN of the user.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Mail</maml:name>
+          <maml:description>
+            <maml:para>Mail of the user or group</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ServicePrincipalName</maml:name>
+          <maml:description>
+            <maml:para>SPN of the service principal.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>ObjectId</maml:name>
+        <maml:description>
+          <maml:para>Object id of the user, group or service principal.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>UserPrincipalName</maml:name>
+        <maml:description>
+          <maml:para>UPN of the user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>Mail</maml:name>
+        <maml:description>
+          <maml:para>Mail of the user or group</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ServicePrincipalName</maml:name>
+        <maml:description>
+          <maml:para>SPN of the service principal.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>RoleDefinitionName</maml:name>
+        <maml:description>
+          <maml:para>Role to assign the principals with.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>Scope</maml:name>
+        <maml:description>
+          <maml:para>
+            Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceGroupName</maml:name>
+        <maml:description>
+          <maml:para>Resource group to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceType</maml:name>
+        <maml:description>
+          <maml:para>Type of the resource to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceName</maml:name>
+        <maml:description>
+          <maml:para>Name of the resource to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ParentResource</maml:name>
+        <maml:description>
+          <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Filters role assignment using UPN, Role Definition and Resource Group --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureRoleAssignment -ResourceGroupName rg1 -UPN foo@domain.com -RoleDefinitionName Reader</dev:code>
+        <dev:remarks>
+          <maml:para>gets role assignments for principal in a resource group that have Reader role definition</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Filters role assignments using Service Principal Name --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureRoleAssignment -ServicePrincipalName 36f81fc3-b00f-48cd-8218-3879f51ff39f -RoleDefinitionName Contributor</dev:code>
+        <dev:remarks>
+          <maml:para>Gets role assignments of a service principal that have contribution role definition.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  List all role assignments in the subscription --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureRoleAssignment</dev:code>
+        <dev:remarks>
+          <maml:para>Gets all role assignments under the subscription</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Filters role assignment using explict Scope --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureRoleAssignment -Mail allen.young@live.cn -RoleDefinitionName Owner -Scope "/resourcegroups/rg1/providers/Microsoft.Web/sites/site1"</dev:code>
+        <dev:remarks>
+          <maml:para>gets role assignment to a live email on a resource using the generic parameter. Since the scope doens't start with "/subscriptions/{id}", the current subscription id will be used</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>New-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Remove-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureRoleDefinition</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Remove-AzureRoleAssignment</command:name>
+      <maml:description>
+        <maml:para>Removes a role assignment.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Remove</command:verb>
+      <command:noun>AzureRoleAssignment</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Removes a role assignments.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Remove-AzureRoleAssignment</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ObjectId</maml:name>
+          <maml:description>
+            <maml:para>Object id of the user, group or service principal.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>UserPrincipalName</maml:name>
+          <maml:description>
+            <maml:para>UPN of the user.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Mail</maml:name>
+          <maml:description>
+            <maml:para>Mail of the user or group</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ServicePrincipalName</maml:name>
+          <maml:description>
+            <maml:para>SPN of the service principal.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>RoleDefinitionName</maml:name>
+          <maml:description>
+            <maml:para>Role to assign the principals with.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>Scope</maml:name>
+          <maml:description>
+            <maml:para>
+              Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceGroupName</maml:name>
+          <maml:description>
+            <maml:para>Resource group to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceType</maml:name>
+          <maml:description>
+            <maml:para>Type of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ResourceName</maml:name>
+          <maml:description>
+            <maml:para>Name of the resource to assign the role to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ParentResource</maml:name>
+          <maml:description>
+            <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>ObjectId</maml:name>
+        <maml:description>
+          <maml:para>Object id of the user, group or service principal.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>UserPrincipalName</maml:name>
+        <maml:description>
+          <maml:para>UPN of the user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>Mail</maml:name>
+        <maml:description>
+          <maml:para>Mail of the user or group</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ServicePrincipalName</maml:name>
+        <maml:description>
+          <maml:para>SPN of the service principal.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>RoleDefinitionName</maml:name>
+        <maml:description>
+          <maml:para>Role to assign the principals with.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>Scope</maml:name>
+        <maml:description>
+          <maml:para>
+            Scope of the role assignment. In the format of relative URI. If not specified, will assign the role at subscription level. If specified, it can either start with "/subscriptions/{id}" or the part after that. If it's latter, the current subscription id will be used.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceGroupName</maml:name>
+        <maml:description>
+          <maml:para>Resource group to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceType</maml:name>
+        <maml:description>
+          <maml:para>Type of the resource to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ResourceName</maml:name>
+        <maml:description>
+          <maml:para>Name of the resource to assign the role to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ParentResource</maml:name>
+        <maml:description>
+          <maml:para>Parent resource of the resource to assign the role to, if there is any.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Removes role assignment using UPN, Role Definition and Resource Group --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Remove-AzureRoleAssignment -ResourceGroupName rg1 -UPN foo@domain.com -RoleDefinitionName Reader</dev:code>
+        <dev:remarks>
+          <maml:para>Removes a role assignment for principal in a resource group that have Reader role definition</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>New-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureRoleDefinition</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-AzureRoleDefinition</command:name>
+      <maml:description>
+        <maml:para>Filters role definitions.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Get</command:verb>
+      <command:noun>AzureRoleDefinition</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Gets role definitions.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-AzureRoleDefinition</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>Role definition name.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>Name</maml:name>
+        <maml:description>
+          <maml:para>Role definition name.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Gets a role definition --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureRoleDefinition -Name Reader</dev:code>
+        <dev:remarks>
+          <maml:para>Gets a role definition with Reader name</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Lists all role definitions --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureRoleDefinition</dev:code>
+        <dev:remarks>
+          <maml:para>Lists all role definitions</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>New-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureRoleAssignment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-AzureADUser</command:name>
+      <maml:description>
+        <maml:para>Filters active directory users.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Get</command:verb>
+      <command:noun>AzureADUser</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Filters active directory users.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-AzureADUser</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ObjectId</maml:name>
+          <maml:description>
+            <maml:para>Object id of the user.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>UserPrincipalName</maml:name>
+          <maml:description>
+            <maml:para>UPN of the user.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>SearchString</maml:name>
+          <maml:description>
+            <maml:para>The user display name</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <maml:name>Get-AzureADUser</maml:name>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>ObjectId</maml:name>
+        <maml:description>
+          <maml:para>Object id of the user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>UserPrincipalName</maml:name>
+        <maml:description>
+          <maml:para>UPN of the user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>SearchString</maml:name>
+        <maml:description>
+          <maml:para>The user display name</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Filters users using UPN --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADUser -UPN foo@domain.com</dev:code>
+        <dev:remarks>
+          <maml:para>Gets user with foo@domain.com</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Filters users using Search String --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADUser -SearchString Joe</dev:code>
+        <dev:remarks>
+          <maml:para>Filters all ad users that has Joe in the display name.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  List AD users --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADUser</dev:code>
+        <dev:remarks>
+          <maml:para>Gets all AD users</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADGroup</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADServicePrincipal</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADGroupMember</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-AzureADGroup</command:name>
+      <maml:description>
+        <maml:para>Filters active directory groups.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Get</command:verb>
+      <command:noun>AzureADGroup</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Filters active directory groups.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-AzureADGroup</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ObjectId</maml:name>
+          <maml:description>
+            <maml:para>Object id of the group.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>SearchString</maml:name>
+          <maml:description>
+            <maml:para>The group display name</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <maml:name>Get-AzureADGroup</maml:name>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>ObjectId</maml:name>
+        <maml:description>
+          <maml:para>Object id of the group.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>SearchString</maml:name>
+        <maml:description>
+          <maml:para>The group display name</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Filters groups using object id --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADGroup -ObjectId 85F89C90-780E-4AA6-9F4F-6F268D322EEE</dev:code>
+        <dev:remarks>
+          <maml:para>Gets group with 85F89C90-780E-4AA6-9F4F-6F268D322EEE id</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Filters groups using Search String --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADGroup -SearchString Joe</dev:code>
+        <dev:remarks>
+          <maml:para>Filters all ad groups that has Joe in the display name.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  List AD groups --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADGroup</dev:code>
+        <dev:remarks>
+          <maml:para>Gets all AD groups</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADUser</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADServicePrincipal</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADGroupMember</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-AzureADServicePrincipal</command:name>
+      <maml:description>
+        <maml:para>Filters active directory service principals.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Get</command:verb>
+      <command:noun>AzureADServicePrincipal</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Filters active directory service principals.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-AzureADServicePrincipals</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>ObjectId</maml:name>
+          <maml:description>
+            <maml:para>Object id of the service principal.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>ServicePrincipalName</maml:name>
+          <maml:description>
+            <maml:para>SPN of the service principal.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+          <maml:name>SearchString</maml:name>
+          <maml:description>
+            <maml:para>The service principal display name</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <maml:name>Get-AzureADServicePrincipal</maml:name>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>ObjectId</maml:name>
+        <maml:description>
+          <maml:para>Object id of the service principal.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>ServicePrincipalName</maml:name>
+        <maml:description>
+          <maml:para>SPN of the service.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
+        <maml:name>SearchString</maml:name>
+        <maml:description>
+          <maml:para>The service principal display name</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Filters service principals using SPN --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADServicePrincipal -SPN 36f81fc3-b00f-48cd-8218-3879f51ff39f</dev:code>
+        <dev:remarks>
+          <maml:para>Gets service principals with 36f81fc3-b00f-48cd-8218-3879f51ff39f SPN</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Filters service principals using Search String --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADServicePrincipal -SearchString Web</dev:code>
+        <dev:remarks>
+          <maml:para>Filters all ad service principals that has Web in the display name.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  List AD service principals --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADServicePrincipal</dev:code>
+        <dev:remarks>
+          <maml:para>Gets all AD service principals</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADGroup</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADUser</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADGroupMember</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-AzureADGroupMember</command:name>
+      <maml:description>
+        <maml:para>Get a group members.</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Get</command:verb>
+      <command:noun>AzureADGroupMember</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>Get a group members.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-AzureADGroupMember</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+          <maml:name>GroupObjectId</maml:name>
+          <maml:description>
+            <maml:para>Object id of the group.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <maml:name>Get-AzureADGroupMember</maml:name>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" >
+        <maml:name>ObjectId</maml:name>
+        <maml:description>
+          <maml:para>Object id of the group.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>
+          </maml:name>
+          <maml:uri />
+          <maml:description>
+            <maml:para>
+            </maml:para>
+          </maml:description>
+        </dev:type>
+        <maml:description>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors>
+    </command:terminatingErrors>
+    <command:nonTerminatingErrors>
+    </command:nonTerminatingErrors>
+    <maml:alertSet>
+      <maml:title>
+      </maml:title>
+      <maml:alert>
+        <maml:para>
+        </maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Filters group members using group object id --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Get-AzureADGroupMember -GroupObjectId 85F89C90-780E-4AA6-9F4F-6F268D322EEE</dev:code>
+        <dev:remarks>
+          <maml:para>Gets group members with 85F89C90-780E-4AA6-9F4F-6F268D322EEE id</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADUser</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADServicePrincipal</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureADGroupMemberMember</maml:linkText>
+        <maml:uri />
       </maml:navigationLink>
     </maml:relatedLinks>
   </command:command>

@@ -12,14 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
 {
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Security.Permissions;
     using NSM = Management.Compute.Models;
-    using PVM = Model.PersistentVMModel;
+    using PVM = Model;
 
     public static class SecureStringHelper
     {

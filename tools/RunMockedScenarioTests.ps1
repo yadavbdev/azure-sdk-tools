@@ -15,5 +15,4 @@
 $scriptFolder = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 . ($scriptFolder + '.\SetupTestEnv.ps1')
 
-$env:AZURE_TEST_MODE="Playback"
 msbuild.exe $env:AzurePSRoot\build.proj /t:"BuildDebug;BeforeRunTests;MockedScenarioTests"

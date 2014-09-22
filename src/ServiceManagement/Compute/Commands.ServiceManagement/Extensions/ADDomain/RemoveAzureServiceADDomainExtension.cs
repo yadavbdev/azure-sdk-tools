@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System.Management.Automation;
-    using Utilities.Common;
-    using WindowsAzure.ServiceManagement;
-
     /// <summary>
     /// Remove Microsoft Azure Service AD Domain Extension.
     /// </summary>

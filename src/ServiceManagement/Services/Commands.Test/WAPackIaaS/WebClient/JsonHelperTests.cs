@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-
-    [TestClass]
+    
     public class JsonHelperTests
     {
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void SerializeDeserializeVirtualMachine()
         {
             var helper = new JsonHelpers<VirtualMachine>();
@@ -42,15 +42,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.WebClient
             var serialized = helper.Serialize(toSerialize);
 
             var vmList = helper.Deserialize(serialized);
-            Assert.IsNotNull(vmList);
-            Assert.AreEqual(vmList.Count, 1);
-            Assert.IsInstanceOfType(vmList[0], typeof (VirtualMachine));
+            Assert.NotNull(vmList);
+            Assert.Equal(vmList.Count, 1);
+            Assert.True(vmList[0] is VirtualMachine);
 
-            Assert.AreEqual(toSerialize.ID, vmList[0].ID);
-            Assert.AreEqual(toSerialize.StampId, vmList[0].StampId);
-            Assert.AreEqual(toSerialize.CreationTime, vmList[0].CreationTime);
-            Assert.AreEqual(toSerialize.PerfDiskBytesRead, vmList[0].PerfDiskBytesRead);
-            Assert.AreEqual(toSerialize.Name, vmList[0].Name);
+            Assert.Equal(toSerialize.ID, vmList[0].ID);
+            Assert.Equal(toSerialize.StampId, vmList[0].StampId);
+            Assert.Equal(toSerialize.CreationTime, vmList[0].CreationTime);
+            Assert.Equal(toSerialize.PerfDiskBytesRead, vmList[0].PerfDiskBytesRead);
+            Assert.Equal(toSerialize.Name, vmList[0].Name);
         }
     }
 }

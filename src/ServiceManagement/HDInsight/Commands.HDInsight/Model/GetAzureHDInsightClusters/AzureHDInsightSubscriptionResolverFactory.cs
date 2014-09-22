@@ -11,14 +11,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using BaseInterfaces;
-    using WindowsAzure.Commands.Utilities.Common;
-
     internal class AzureHDInsightSubscriptionResolverFactory : IAzureHDInsightSubscriptionResolverFactory
     {
-        public IAzureHDInsightSubscriptionResolver Create(WindowsAzureProfile profile)
+        public IAzureHDInsightSubscriptionResolver Create(AzureProfile profile)
         {
             return new AzureHDInsightSubscriptionResolver(profile);
         }

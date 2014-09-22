@@ -12,23 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Sql.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Commands.Test.Utilities.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using MockServer;
-    using Services.Server;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-
     [TestClass]
     public class RecoverDatabaseTests : TestBase
     {
-        private static PowerShell powershell;
+        private static System.Management.Automation.PowerShell powershell;
 
         private static string serverName;
 
@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         [TestInitialize]
         public void SetupTest()
         {
-            powershell = PowerShell.Create();
+            powershell = System.Management.Automation.PowerShell.Create();
 
             MockHttpServer.SetupCertificates();
 
@@ -58,10 +58,10 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         }
 
         [TestMethod]
-        public void RecoverAzureSqlDatabaseWithDatabaseNameWithCertAuth()
+        public void RecoverAzureSqlDatabaseWithDatabaseName()
         {
             var testSession = MockServerHelper.DefaultSessionCollection.GetSession(
-                "UnitTests.RecoverAzureSqlDatabaseWithDatabaseNameWithCertAuth");
+                "UnitTests.RecoverAzureSqlDatabaseWithDatabaseName");
             ServerTestHelper.SetDefaultTestSessionSettings(testSession);
 
             testSession.RequestValidator =
@@ -72,9 +72,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())
@@ -85,7 +82,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 {
                     operation = powershell.InvokeBatchScript(
                         @"Start-AzureSqlDatabaseRecovery " +
-                        @"-TargetServerName $serverName " +
+                        @"-SourceServerName $serverName " +
                         @"-SourceDatabaseName testdb1 " +
                         @"-TargetDatabaseName testdb1-restored");
                 }
@@ -97,14 +94,24 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 // Expecting one operation object
                 Assert.AreEqual(1, operation.Count, "Expecting one operation object");
 
-                Assert.IsTrue(
-                    operation[0].BaseObject is RecoverDatabaseOperation,
+                Assert.IsInstanceOfType(
+                    operation[0].BaseObject, typeof(RecoverDatabaseOperation),
                     "Expecting a RecoverDatabaseOperation object");
 
                 var operationObject = (RecoverDatabaseOperation)operation[0].BaseObject;
+                Guid operationId;
                 Assert.IsTrue(
-                    operationObject.RequestID != Guid.Empty,
-                    "Expecting a non-empty operation ID");
+                    Guid.TryParse(operationObject.Id, out operationId),
+                    "Expecting a operation ID that's a GUID");
+                Assert.AreNotEqual(
+                    Guid.Empty, operationId,
+                    "Expecting an operation ID that's not an empty GUID");
+                Assert.AreEqual(
+                    operationObject.SourceDatabaseName, "testdb1",
+                    "Source database name mismatch");
+                Assert.AreEqual(
+                    operationObject.TargetServerName, serverName,
+                    "Target server name mismatch");
                 Assert.AreEqual(
                     operationObject.TargetDatabaseName, "testdb1-restored",
                     "Target database name mismatch");
@@ -112,10 +119,10 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         }
 
         [TestMethod]
-        public void RecoverAzureSqlDatabaseWithDatabaseObjectWithCertAuth()
+        public void RecoverAzureSqlDatabaseWithDatabaseObject()
         {
             var testSession = MockServerHelper.DefaultSessionCollection.GetSession(
-                "UnitTests.RecoverAzureSqlDatabaseWithDatabaseObjectWithCertAuth");
+                "UnitTests.RecoverAzureSqlDatabaseWithDatabaseObject");
             ServerTestHelper.SetDefaultTestSessionSettings(testSession);
             testSession.RequestValidator =
                 new Action<HttpMessage, HttpMessage.Request>(
@@ -125,9 +132,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())
@@ -138,8 +142,8 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 {
                     operation = powershell.InvokeBatchScript(
                         @"Get-AzureSqlRecoverableDatabase " +
-                        @"-TargetServerName $serverName " +
-                        @"-SourceDatabaseName testdb1" + " | " +
+                        @"-ServerName $serverName " +
+                        @"-DatabaseName testdb1" + " | " +
                         @"Start-AzureSqlDatabaseRecovery " +
                         @"-TargetDatabaseName testdb1-restored");
                 }
@@ -151,14 +155,24 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 // Expecting one operation object
                 Assert.AreEqual(1, operation.Count, "Expecting one operation object");
 
-                Assert.IsTrue(
-                    operation[0].BaseObject is RecoverDatabaseOperation,
+                Assert.IsInstanceOfType(
+                    operation[0].BaseObject, typeof(RecoverDatabaseOperation),
                     "Expecting a RecoverDatabaseOperation object");
 
                 var operationObject = (RecoverDatabaseOperation)operation[0].BaseObject;
+                Guid operationId;
+                Assert.IsTrue(
+                    Guid.TryParse(operationObject.Id, out operationId),
+                    "Expecting a operation ID that's a GUID");
                 Assert.AreNotEqual(
-                    operationObject.RequestID, Guid.Empty,
-                    "Expecting a non-empty operation ID");
+                    Guid.Empty, operationId,
+                    "Expecting an operation ID that's not an empty GUID");
+                Assert.AreEqual(
+                    operationObject.SourceDatabaseName, "testdb1",
+                    "Source database name mismatch");
+                Assert.AreEqual(
+                    operationObject.TargetServerName, serverName,
+                    "Target server name mismatch");
                 Assert.AreEqual(
                     operationObject.TargetDatabaseName, "testdb1-restored",
                     "Target database name mismatch");

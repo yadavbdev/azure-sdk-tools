@@ -12,21 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Management.Automation;
+using System.Security.Permissions;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
+using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Blob.Cmdlet
 {
-    using Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
-    using Model.Contract;
-    using Model.ResourceModel;
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Security;
-    using System.Security.Permissions;
-    using System.Threading.Tasks;
-
     [Cmdlet(VerbsCommon.Get, StorageNouns.BlobContent, ConfirmImpact = ConfirmImpact.High, DefaultParameterSetName = ManualParameterSet),
         OutputType(typeof(AzureStorageBlob))]
     public class GetAzureStorageBlobContentCommand : StorageDataMovementCmdletBase

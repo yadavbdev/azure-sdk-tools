@@ -12,17 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Websites;
-    using Moq;
-    using System.Management.Automation;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class DisableAzureWebsiteApplicationDiagnosticTests : WebsitesTestBase
     {
         private const string websiteName = "website1";
@@ -33,14 +34,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Mock<ICommandRuntime> commandRuntimeMock;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public DisableAzureWebsiteApplicationDiagnosticTests()
         {
             websitesClientMock = new Mock<IWebsitesClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
         }
 
-        [TestMethod]
+        [Fact]
         public void DisableAzureWebsiteApplicationDiagnosticApplication()
         {
             // Setup
@@ -52,10 +52,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 File = true,
             };
+
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -68,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void DisableAzureWebsiteApplicationDiagnosticApplicationTableLog()
         {
             // Setup
@@ -80,10 +81,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 Storage = true
             };
+
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
@@ -96,7 +98,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             commandRuntimeMock.Verify(f => f.WriteObject(true), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public void DisablesApplicationDiagnosticOnSlot()
         {
             // Setup
@@ -109,11 +111,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = websiteName,
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 WebsitesClient = websitesClientMock.Object,
                 File = true,
                 Slot = slot
             };
+
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new System.Guid(base.subscriptionId) }, null, null);
 
             // Test
             disableAzureWebsiteApplicationDiagnosticCommand.ExecuteCmdlet();
