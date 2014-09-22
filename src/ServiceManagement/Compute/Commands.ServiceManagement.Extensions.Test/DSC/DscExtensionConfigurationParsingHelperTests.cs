@@ -27,14 +27,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
     /// </summary>
     /// <remarks>
     /// ConfigurationParsingHelper.ParseConfiguration() API requires tests to be run in x64 host.
-    /// These tests also require presents of some DSC resource modules on the test machine.
-    /// That cannot be ommit, because the language Parser need to load each module on parsing, so additional
-    /// dynamic keywords that descrite Configuration can be handled appropriately.
-    /// List of required modules:
-    /// xComputerManagement
-    /// xNetworking
-    /// xPSDesiredStateConfiguration
-    /// xActiveDirectory
     /// </remarks>
     [TestClass]
     public class DscExtensionConfigurationParsingHelperTests
@@ -61,6 +53,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.DSC
 
         private const string PSModulePathEnvVar = "PSModulePath";
 
+        /// <summary>
+        /// Unpack and populate custom DSC resource modules.
+        /// </summary>
+        /// <param name="a"></param>
         [ClassInitialize]
         public static void ClassInit(TestContext a)
         {
