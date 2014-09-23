@@ -25,8 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
         }
 
         [Theory]
-        [InlineData("Test-Bootstrap")]
-        [InlineData("Test-Bootstrap2")]
+        [InlineData("Test-AddOrgIdWithSingleSubscription")]
         public void RunTests(string testScript)
         {
             RunPowerShellTest(testScript);

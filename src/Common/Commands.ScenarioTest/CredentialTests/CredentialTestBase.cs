@@ -36,7 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
             helper.SetupEnvironment(commandMode);
             helper.SetupModules(commandMode,
                 new[] {
-                //    "Common",
+                    "Common",
                     this.GetType().Name
                 }.Select(m => string.Format(modulePathFormat, m)).ToArray());
 

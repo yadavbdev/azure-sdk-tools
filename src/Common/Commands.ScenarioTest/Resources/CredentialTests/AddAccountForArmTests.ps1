@@ -16,15 +16,21 @@
 
 <#
 .SYNOPSIS
-Tests if this thing will run at all
+Tests that single user account can be used to log in and list resource groups
 #>
-
-function Test-Bootstrap
+function Test-AddOrgIdWithSingleSubscription
 {
-	Assert-False { $true } "If you see this we ran!"
-}
+	# Verify that account can be added and used to access the
+	# expected subscription
+	$accountInfo = Get-UserCredentials "OrgIdOneTenantOneSubscription"
+	Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
 
-function Test-Bootstrap2
-{
-	Assert-False { $true } "You should see this failure too"
+	# Is there one subscription added?
+	Assert-True { (Get-AzureSubscription).Length -eq 1 }
+
+	# does it have the right subscription id?
+	Assert-True { (Get-AzureSubscription)[0].SubscriptionId -eq $accountInfo.ExpectedSubscription }
+
+	# Can we use it to do something? If this passes then we're ok
+	Get-AzureResourceGroup
 }
