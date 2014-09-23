@@ -12,21 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.DataFactories.Models;
-using Newtonsoft.Json;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Xunit;
 
-namespace Microsoft.Azure.Commands.DataFactories
+namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    internal static class DataFactoryClientExtensions
+    public class TableTests : DataFactoriesScenarioTestsBase
     {
-        public static string ToFormattedString(this LinkedServiceProperties properties)
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestTable()
         {
-            return JsonConvert.SerializeObject(properties);
-        }
-
-        public static string ToFormattedString<T>(T objectToSerialize)
-        {
-            return JsonConvert.SerializeObject(objectToSerialize);
+            RunPowerShellTest("Test-Table");
         }
     }
 }

@@ -21,5 +21,7 @@ namespace Microsoft.Azure.Commands.DataFactories
         public const string LinkedService = "AzureDataFactoryLinkedService";
 
         public const string Gateway = "AzureDataFactoryGateway";
+
+        public const string Table = "AzureDataFactoryTable";
     }
 }

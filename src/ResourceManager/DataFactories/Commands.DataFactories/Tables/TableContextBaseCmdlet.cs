@@ -12,21 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.DataFactories.Models;
-using Newtonsoft.Json;
+using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class DataFactoryClientExtensions
+    public abstract class TableContextBaseCmdlet : DataFactoryBaseCmdlet
     {
-        public static string ToFormattedString(this LinkedServiceProperties properties)
-        {
-            return JsonConvert.SerializeObject(properties);
-        }
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The data factory name.")]
+        [ValidateNotNullOrEmpty]
+        public string DataFactoryName { get; set; }
 
-        public static string ToFormattedString<T>(T objectToSerialize)
-        {
-            return JsonConvert.SerializeObject(objectToSerialize);
-        }
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The table name.")]
+        [ValidateNotNullOrEmpty]
+        public string Name { get; set; }
     }
 }
