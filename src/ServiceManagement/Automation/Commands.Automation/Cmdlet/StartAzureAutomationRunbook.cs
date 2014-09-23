@@ -12,13 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Job = Microsoft.Azure.Commands.Automation.Model.Job;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
-    using Job = Microsoft.Azure.Commands.Automation.Model.Job;
-
     /// <summary>
     /// Starts an Azure automation runbook.
     /// </summary>

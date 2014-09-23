@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Logging
 {
-    using HDInsight.Logging;
-    using System.Collections.Generic;
-
     internal interface IBufferingLogWriter : ILogWriter
     {
         IEnumerable<string> Buffer { get; }

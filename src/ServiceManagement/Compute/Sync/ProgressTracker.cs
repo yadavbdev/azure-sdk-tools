@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Timers;
+
 namespace Microsoft.WindowsAzure.Commands.Sync
 {
-    using System;
-    using System.Diagnostics;
-    using System.Timers;
-
     public class ProgressTracker : IDisposable
     {
         private readonly ProgressStatus progressStatus;

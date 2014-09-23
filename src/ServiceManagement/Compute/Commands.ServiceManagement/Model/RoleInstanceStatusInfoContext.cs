@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.Generic;
-
     public class RoleInstanceStatusInfoContext : ServiceOperationContext
     {
         public RoleInstanceStatusInfoContext()

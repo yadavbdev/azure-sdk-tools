@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Tools.Common.General;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence
 {
-    using Commands.Tools.Common.General;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-
     public class StreamHelper
     {
         public static IAsyncResult BeginReadBytes(Stream stream, long offset, int length, AsyncCallback callback, object state)

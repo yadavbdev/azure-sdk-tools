@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache.Models;
+
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    using Microsoft.Azure.Commands.ManagedCache.Models;
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "AzureManagedCacheAccessKey"), OutputType(typeof(CacheAccessKeys))]
     public class NewAzureManagedCacheAccessKey : ManagedCacheCmdletBase
     {

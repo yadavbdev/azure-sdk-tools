@@ -214,7 +214,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Powershell\.
+        ///   Looks up a localized string similar to Please provide webspace name as well..
+        /// </summary>
+        public static string Argument_WebSpaceMissing {
+            get {
+                return ResourceManager.GetString("Argument_WebSpaceMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows Azure Powershell\.
         /// </summary>
         public static string AzureDirectory {
             get {
@@ -223,7 +232,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Powershell.
+        ///   Looks up a localized string similar to Windows Azure Powershell.
         /// </summary>
         public static string AzureDirectoryName {
             get {
@@ -882,20 +891,20 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /useemulatorexpress.
-        /// </summary>
-        public static string CsRunEmulatorExpressArg {
-            get {
-                return ResourceManager.GetString("CsRunEmulatorExpressArg", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to csrun.exe.
         /// </summary>
         public static string CsRunExe {
             get {
                 return ResourceManager.GetString("CsRunExe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /usefullemulator.
+        /// </summary>
+        public static string CsRunFullEmulatorArg {
+            get {
+                return ResourceManager.GetString("CsRunFullEmulatorArg", resourceCulture);
             }
         }
         
@@ -985,7 +994,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         /// </summary>
         public static string DefaultAndCurrentSubscription {
             get {
-                return ResourceManager.GetString("DefaultAndCurrentSubscription", resourceCulture);
+                return ResourceManager.GetString("DefaultAndCurrentContext.Subscription", resourceCulture);
             }
         }
         
@@ -1328,6 +1337,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         public static string FailedJobErrorMessage {
             get {
                 return ResourceManager.GetString("FailedJobErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete emulator package &apos;{0}&apos; for the service. Please ensure that no files or folders in the package are open in other programs.
+        /// </summary>
+        public static string FailedToCleanUpLocalPackage {
+            get {
+                return ResourceManager.GetString("FailedToCleanUpLocalPackage", resourceCulture);
             }
         }
         
@@ -2839,7 +2857,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reploy deployment with {0} Id ?.
+        ///   Looks up a localized string similar to Replace current deployment with &apos;{0}&apos; Id ?.
         /// </summary>
         public static string RedeployCommit {
             get {
@@ -3325,7 +3343,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; &quot;{1}&quot; {2} /useiisexpress.
+        ///   Looks up a localized string similar to /run:&quot;{0}&quot;;&quot;{1}&quot; {2} /useiisexpress.
         /// </summary>
         public static string RunInEmulatorArguments {
             get {

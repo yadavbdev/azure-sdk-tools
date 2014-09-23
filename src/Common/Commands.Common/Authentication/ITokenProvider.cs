@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
@@ -23,38 +24,27 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     public interface ITokenProvider
     {
         /// <summary>
-        /// Get a token for the given userID and login type from the token cache.
-        /// Does not request token from underlying provider.
-        /// </summary>
-        /// <param name="subscription">The subscription to request a token for.</param>
-        /// <param name="userId">ID of user to retrieve token for. If null,
-        /// requests a whole new token, prompting user for credentials.</param>
-        /// <returns>An access token or null if authentication is canceled.</returns>
-        IAccessToken GetCachedToken(WindowsAzureSubscription subscription, string userId);
-
-        /// <summary>
-        /// Get a new login token, prompting user for credentials.
-        /// </summary>
-        /// <param name="environment">Environment to request a token for.</param>
-        /// <returns>An access token.</returns>
-        IAccessToken GetNewToken(WindowsAzureEnvironment environment);
-
-        /// <summary>
-        /// Get a new login token for the given subscription and user id.
-        /// </summary>
-        /// <param name="subscription">Subscription containing which tenant to request token from.</param>
-        /// <param name="userId">User ID to get the token for.</param>
-        /// <returns>An access token.</returns>
-        IAccessToken GetNewToken(WindowsAzureSubscription subscription, string userId);
-
-        /// <summary>
         /// Get a new login token for the given environment and user credentials.
+        /// Assumes that credential is for a user, not a service principal.
         /// </summary>
-        /// <param name="environment">Environment to request a token for.</param>
+        /// <param name="config">Configuration.</param>
+        /// <param name="promptBehavior">Prompt behavior.</param>
         /// <param name="userId">User ID to get the token for.</param>
         /// <param name="password">Secure strings with password</param>
         /// <returns>An access token.</returns>
-        IAccessToken GetNewToken(WindowsAzureEnvironment environment, string userId, SecureString password);
+        IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password);
 
+        /// <summary>
+        /// Get a new login token for the given environment, user credential,
+        /// and credential type.
+        /// </summary>
+        /// <param name="config">Configuration.</param>
+        /// <param name="promptBehavior">Prompt behavior.</param>
+        /// <param name="userId">User ID/Service principal to get the token for.</param>
+        /// <param name="password">Secure strings with password/service principal key.</param>
+        /// <param name="credentialType">Credential type.</param>
+        /// <returns>An access token.</returns>
+        IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId,
+            SecureString password, AzureAccount.AccountType credentialType);
     }
 }

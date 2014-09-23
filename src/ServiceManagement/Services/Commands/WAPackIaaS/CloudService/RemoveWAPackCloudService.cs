@@ -12,22 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Remove, "WAPackCloudService", DefaultParameterSetName = WAPackCmdletParameterSets.FromCloudServiceObject, SupportsShouldProcess = true)]
     public class RemoveWAPackCloudService : IaaSCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = WAPackCmdletParameterSets.FromCloudServiceObject, ValueFromPipeline = true, HelpMessage = "Existing CloudService Object.")]
         [ValidateNotNullOrEmpty]
-        public CloudService CloudService
+        public Utilities.WAPackIaaS.DataContract.CloudService CloudService
         {
             get;
             set;

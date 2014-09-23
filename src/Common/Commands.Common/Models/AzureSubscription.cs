@@ -17,7 +17,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public class AzureSubscription
+    public partial class AzureSubscription
     {
         public Guid Id { get; set; }
 
@@ -25,16 +25,33 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
 
         public string Environment { get; set; }
 
+        public string Account { get; set; }
+
         public Dictionary<Property, string> Properties { get; set; }
 
         public enum Property
         {
-            CloudStorageAccount,
-            
             /// <summary>
             /// Comma separated registered resource providers, i.e.: websites,compute,hdinsight
             /// </summary>
-            RegisteredResourceProviders
+            RegisteredResourceProviders,
+
+            /// <summary>
+            /// Comma separated mode names that this subscription supports, i.e.: AzureResourceManager,AzureServiceManagement
+            /// </summary>
+            SupportedModes,
+
+            /// <summary>
+            /// Associated tenants
+            /// </summary>
+            Tenants,
+
+            /// <summary>
+            /// If this property existed on the subscription indicates that it's default one.
+            /// </summary>
+            Default,
+
+            StorageAccount
         }
     }
 }

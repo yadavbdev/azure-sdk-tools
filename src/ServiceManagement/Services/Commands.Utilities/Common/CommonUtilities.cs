@@ -12,27 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.IO;
-
     public class CommonUtilities
     {
         private static string FindServiceRootDirectory(string path)
         {
-            if (Directory.GetFiles(path, Resources.ServiceDefinitionFileName).Length == 1)
+            if (FileUtilities.DataStore.GetFiles(path, Resources.ServiceDefinitionFileName, SearchOption.TopDirectoryOnly).Length == 1)
             {
                 return path;
             }
-            else if (Directory.GetFiles(path, "*.sln").Length == 1)
+            else if (FileUtilities.DataStore.GetFiles(path, "*.sln", SearchOption.TopDirectoryOnly).Length == 1)
             {
-                foreach (string dirName in Directory.GetDirectories(path))
+                foreach (string dirName in FileUtilities.DataStore.GetDirectories(path))
                 {
-                    if (Directory.GetFiles(dirName, Resources.ServiceDefinitionFileName).Length == 1)
+                    if (FileUtilities.DataStore.GetFiles(dirName, Resources.ServiceDefinitionFileName, SearchOption.TopDirectoryOnly).Length == 1)
                     {
                         return dirName;
                     }
@@ -130,7 +130,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 {
                     string roleDirectory = Path.Combine(service.Paths.RolesPath, role.name);
 
-                    if (!Directory.Exists(roleDirectory))
+                    if (!FileUtilities.DataStore.DirectoryExists(roleDirectory))
                     {
                         throw new InvalidOperationException(Resources.CannotFindServiceRoot);
                     }

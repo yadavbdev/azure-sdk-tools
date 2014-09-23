@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.Linq;
-    using System.Xml.Serialization;
-
     public static class XmlUtilities
     {
         public static T DeserializeXmlFile<T>(string fileName, string exceptionMessage = null)
@@ -32,7 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             T item = default(T);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            using (TextReader reader = new StreamReader(fileName, true))
+            using (TextReader reader = new StreamReader(FileUtilities.DataStore.ReadFileAsStream(fileName)))
             {
                 try { item = (T)xmlSerializer.Deserialize(reader); }
                 catch
@@ -57,11 +57,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             Validate.ValidateStringIsNullOrEmpty(fileName, String.Empty);
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            Encoding encoding = FileUtilities.GetFileEncoding(fileName);
-            using (TextWriter writer = new StreamWriter(new FileStream(fileName, FileMode.Create), encoding))
+            StringBuilder sBuilder = new StringBuilder();
+            using (StringWriter writer = new StringWriter(sBuilder))
             {
                 xmlSerializer.Serialize(writer, obj);
             }
+            FileUtilities.DataStore.WriteFile(fileName, sBuilder.ToString());
         }
 
         public static string SerializeXmlString<T>(T obj)
@@ -75,28 +76,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
 
             return sBuilder.ToString();
-        }
-
-        public static T DeserializeXmlStream<T>(Stream stream)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            T obj = (T)xmlSerializer.Deserialize(stream);
-            stream.Close();
-
-            return obj;
-        }
-
-        public static T DeserializeXmlString<T>(string contents)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-            T obj;
-
-            using (StringReader reader = new StringReader(contents))
-            {
-                obj = (T)xmlSerializer.Deserialize(reader);
-            }
-
-            return obj;
         }
 
         /// <summary>
@@ -114,24 +93,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             catch (Exception)
             {
                 return content;
-            }
-        }
-
-        /// <summary>
-        /// Checks if the content is valid XML or not.
-        /// </summary>
-        /// <param name="content">The text to check</param>
-        /// <returns>True if XML, false otherwise</returns>
-        public static bool IsXml(string content)
-        {
-            try
-            {
-                XDocument.Parse(content);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
             }
         }
 

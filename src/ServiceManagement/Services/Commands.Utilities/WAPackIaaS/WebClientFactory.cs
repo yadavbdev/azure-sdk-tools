@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS
 {
-    using WebClient;
-
     /// <summary>
     /// An object that knows how to create SPFWebClients with the appropriate
     /// channel type and subscription.

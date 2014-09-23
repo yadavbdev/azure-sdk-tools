@@ -11,10 +11,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation
 {
-    using System;
-
     /// <summary>
     ///     Provides services to override a service location for a single test.
     /// </summary>

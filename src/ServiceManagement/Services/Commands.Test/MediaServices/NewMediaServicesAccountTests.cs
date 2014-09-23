@@ -10,7 +10,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.MediaServices;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
@@ -18,16 +22,13 @@ using Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities;
 using Microsoft.WindowsAzure.Management.MediaServices.Models;
 using Microsoft.WindowsAzure.Management.Storage.Models;
 using Moq;
-using System;
-using System.Linq;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
 {
-    [TestClass]
+    
     public class NewMediaServicesAccountTests : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void NewMediaServiceAccountShouldPassWithValidParameters()
         {
             // Setup
@@ -94,10 +95,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             };
 
             command.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)command.CommandRuntime).OutputPipeline.Count);
             AccountCreationResult accountCreationResult = (AccountCreationResult)((MockCommandRuntime)command.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(accountCreationResult);
-            Assert.AreEqual(accountName, accountCreationResult.Name);
+            Assert.NotNull(accountCreationResult);
+            Assert.Equal(accountName, accountCreationResult.Name);
         }
     }
 }

@@ -12,19 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using System.Net.Http;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Net;
-    using System.Net.Http;
-
-    [TestClass]
+    
     public class StaticIPAddressPoolOperationsTests
     {
         private const string baseURI = "/StaticIPAddressPools";
@@ -33,9 +33,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         private const string ipAddressRangeEnd = "192.168.1.3";
         private const string staticIPAddressPoolName = "StaticIPAddressPool01";
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldCreateOneStaticIPAddressPool()
         {
             var mockChannel = new MockRequestChannel();
@@ -63,25 +63,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var staticIPAddressPoolOperations = new StaticIPAddressPoolOperations(new WebClientFactory(new Subscription(), mockChannel));
             var createdStaticIPAddressPool = staticIPAddressPoolOperations.Create(staticIPAddressPoolToCreate, out jobOut);
 
-            Assert.IsNotNull(createdStaticIPAddressPool);
-            Assert.IsInstanceOfType(createdStaticIPAddressPool, typeof(StaticIPAddressPool));
-            Assert.AreEqual(staticIPAddressPoolToReturn.Name, createdStaticIPAddressPool.Name);
-            Assert.AreEqual(staticIPAddressPoolToReturn.VMSubnetId, createdStaticIPAddressPool.VMSubnetId);
-            Assert.AreEqual(staticIPAddressPoolToReturn.IPAddressRangeStart, createdStaticIPAddressPool.IPAddressRangeStart);
-            Assert.AreEqual(staticIPAddressPoolToReturn.IPAddressRangeEnd, createdStaticIPAddressPool.IPAddressRangeEnd);
-            Assert.AreEqual(staticIPAddressPoolToReturn.StampId, createdStaticIPAddressPool.StampId);
+            Assert.NotNull(createdStaticIPAddressPool);
+            Assert.True(createdStaticIPAddressPool is StaticIPAddressPool);
+            Assert.Equal(staticIPAddressPoolToReturn.Name, createdStaticIPAddressPool.Name);
+            Assert.Equal(staticIPAddressPoolToReturn.VMSubnetId, createdStaticIPAddressPool.VMSubnetId);
+            Assert.Equal(staticIPAddressPoolToReturn.IPAddressRangeStart, createdStaticIPAddressPool.IPAddressRangeStart);
+            Assert.Equal(staticIPAddressPoolToReturn.IPAddressRangeEnd, createdStaticIPAddressPool.IPAddressRangeEnd);
+            Assert.Equal(staticIPAddressPoolToReturn.StampId, createdStaticIPAddressPool.StampId);
 
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(1, requestList.Count);
-            Assert.AreEqual(HttpMethod.Post.ToString(), requestList[0].Item1.Method);
+            Assert.Equal(1, requestList.Count);
+            Assert.Equal(HttpMethod.Post.ToString(), requestList[0].Item1.Method);
 
             // Check the URI
-            Assert.AreEqual(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneStaticIPAddressPool()
         {
             var mockChannel = new MockRequestChannel();
@@ -98,17 +98,17 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 
             var staticIPAddressPoolOperations = new StaticIPAddressPoolOperations(new WebClientFactory(new Subscription(), mockChannel));
             var readStaticIPAddressPool = staticIPAddressPoolOperations.Read(new VMSubnet(){ StampId = Guid.Empty, ID = Guid.Empty });
-            Assert.AreEqual(1, readStaticIPAddressPool.Count);
+            Assert.Equal(1, readStaticIPAddressPool.Count);
 
             // Check the URI
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(1, requestList.Count);
-            Assert.AreEqual(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(1, requestList.Count);
+            Assert.Equal(baseURI, mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldDeleteStaticIPAddressPool()
         {
             var mockChannel = new MockRequestChannel();
@@ -128,13 +128,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var staticIPAddressPoolOperations = new StaticIPAddressPoolOperations(new WebClientFactory(new Subscription(), mockChannel));
             staticIPAddressPoolOperations.Delete(Guid.Empty, out jobOut);
 
-            Assert.AreEqual(2, mockChannel.ClientRequests.Count);
-            Assert.AreEqual(HttpMethod.Delete.ToString(), mockChannel.ClientRequests[1].Item1.Method);
+            Assert.Equal(2, mockChannel.ClientRequests.Count);
+            Assert.Equal(HttpMethod.Delete.ToString(), mockChannel.ClientRequests[1].Item1.Method);
 
             // Check the URI
             var requestURI = mockChannel.ClientRequests[1].Item1.Address.AbsolutePath;
-            Assert.AreEqual("/Clouds", mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
-            Assert.AreEqual(baseURI, mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1).Remove(requestURI.IndexOf('(') - 1));
+            Assert.Equal("/Clouds", mockChannel.ClientRequests[0].Item1.Address.AbsolutePath.Substring(1));
+            Assert.Equal(baseURI, mockChannel.ClientRequests[1].Item1.Address.AbsolutePath.Substring(1).Remove(requestURI.IndexOf('(') - 1));
         }
     }
 }

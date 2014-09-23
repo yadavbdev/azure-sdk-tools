@@ -1,18 +1,16 @@
-﻿namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.File;
-    using Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet;
-    using Microsoft.WindowsAzure.Management.Storage.Test.Common;
-    using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.File;
+using Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet;
+using Microsoft.WindowsAzure.Management.Storage.Test.Common;
+using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
 
+namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
+{
     [TestClass]
     public class GetAzureStorageFileContentTest : StorageFileTestBase<GetAzureStorageFileContent>
     {
@@ -26,18 +24,18 @@
             this.destinationFilePath = Path.GetTempFileName();
             this.destinationPath = Path.GetTempPath();
 
-            if (File.Exists(this.destinationFilePath))
+            if (System.IO.File.Exists(this.destinationFilePath))
             {
-                File.Delete(this.destinationFilePath);
+                System.IO.File.Delete(this.destinationFilePath);
             }
         }
 
         [TestCleanup]
         public void DownloadCleanup()
         {
-            if (File.Exists(this.destinationFilePath))
+            if (System.IO.File.Exists(this.destinationFilePath))
             {
-                File.Delete(this.destinationFilePath);
+                System.IO.File.Delete(this.destinationFilePath);
             }
         }
 

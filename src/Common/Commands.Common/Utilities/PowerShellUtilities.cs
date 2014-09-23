@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Management.Automation;
-
     public static class PowerShellUtilities
     {
         public const string PSModulePathName = "PSModulePath";
@@ -35,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             IEnumerable<string> paths = psModulePath.Split(';');
             paths = job(paths);
 
-            if (paths.Count() == 0)
+            if (!paths.Any())
             {
                 Environment.SetEnvironmentVariable(PSModulePathName, null, target);
             }
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
             else
             {
-                psModulePath = string.Join(";", paths.Distinct());
+                psModulePath = string.Join(";", paths.Distinct(StringComparer.CurrentCultureIgnoreCase));
                 Environment.SetEnvironmentVariable(PSModulePathName, psModulePath, target);
             }
         }

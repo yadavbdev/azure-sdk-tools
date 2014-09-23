@@ -12,32 +12,32 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Sql.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Server.Cmdlet;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-
     [TestClass]
     public class GetRecoverableDatabaseTests : TestBase
     {
-        private static PowerShell powershell;
+        private static System.Management.Automation.PowerShell powershell;
 
         private static string serverName;
 
         [ClassInitialize]
         public static void InitializeClass(TestContext context)
         {
-            powershell = PowerShell.Create();
+            powershell = System.Management.Automation.PowerShell.Create();
 
             MockHttpServer.SetupCertificates();
 
@@ -60,10 +60,10 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         /// Test Get/Set/Remove a database using certificate authentication.
         /// </summary>
         [TestMethod]
-        public void GetRecoverableDatabaseWithCertAuth()
+        public void GetRecoverableDatabase()
         {
             var testSession = MockServerHelper.DefaultSessionCollection.GetSession(
-                "UnitTest.GetRecoverableDatabaseWithCertAuth");
+                "UnitTest.GetRecoverableDatabase");
             ServerTestHelper.SetDefaultTestSessionSettings(testSession);
 
             testSession.RequestValidator =
@@ -74,9 +74,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())
@@ -86,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 using(new MockHttpServer(exceptionManager, MockHttpServer.DefaultHttpsServerPrefixUri, testSession))
                 {
                     databases = powershell.InvokeBatchScript(
-                        @"Get-AzureSqlRecoverableDatabase -TargetServerName $serverName");
+                        @"Get-AzureSqlRecoverableDatabase -ServerName $serverName");
                 }
 
                 Assert.AreEqual(0, powershell.Streams.Error.Count, "Errors during run!");
@@ -102,8 +99,8 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                     databases[0].BaseObject is RecoverableDatabase,
                     "Expecting a RecoverableDatabase object");
 
-                Assert.IsTrue(
-                    databases[1].BaseObject is RecoverableDatabase,
+                Assert.IsInstanceOfType(
+                    databases[1].BaseObject, typeof(RecoverableDatabase),
                     "Expecting a RecoverableDatabase object");
 
                 var database1Object = (RecoverableDatabase)databases[0].BaseObject;
@@ -115,24 +112,24 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 {
                     database1 = powershell.InvokeBatchScript(
                         @"Get-AzureSqlRecoverableDatabase " +
-                        @"-TargetServerName $serverName " +
-                        @"-SourceDatabaseName " + database1Object.Name);
+                        @"-ServerName $serverName " +
+                        @"-DatabaseName " + database1Object.Name);
                     database2 = powershell.InvokeBatchScript(
                         @"Get-AzureSqlRecoverableDatabase " +
-                        @"-TargetServerName $serverName " +
-                        @"-SourceDatabaseName " + database2Object.Name);
+                        @"-ServerName $serverName " +
+                        @"-DatabaseName " + database2Object.Name);
                 }
 
-                Assert.IsTrue(
-                    database1.Single().BaseObject is RecoverableDatabase,
+                Assert.IsInstanceOfType(
+                    database1.Single().BaseObject, typeof(RecoverableDatabase),
                     "Expecting a RecoverableDatabase object");
                 var refreshedDatabase1Object = (RecoverableDatabase)database1.Single().BaseObject;
                 Assert.AreEqual(
                     database1Object.Name, refreshedDatabase1Object.Name,
                     "Expected db name to be " + database1Object.Name);
 
-                Assert.IsTrue(
-                    database2.Single().BaseObject is RecoverableDatabase,
+                Assert.IsInstanceOfType(
+                    database2.Single().BaseObject, typeof(RecoverableDatabase),
                     "Expecting a RecoverableDatabase object");
                 var refreshedDatabase2Object = (RecoverableDatabase)database2.Single().BaseObject;
                 Assert.AreEqual(
@@ -145,10 +142,10 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         }
 
         [TestMethod]
-        public void GetRecoverableDatabaseWithCertAuthByPipe()
+        public void GetRecoverableDatabaseByPipe()
         {
             var testSession = MockServerHelper.DefaultSessionCollection.GetSession(
-                "UnitTest.GetRecoverableDatabaseWithCertAuthByPipe");
+                "UnitTest.GetRecoverableDatabaseByPipe");
             ServerTestHelper.SetDefaultTestSessionSettings(testSession);
 
             testSession.RequestValidator =
@@ -159,9 +156,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())
@@ -172,7 +166,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 {
                     databases = powershell.InvokeBatchScript(
                         @"Get-AzureSqlRecoverableDatabase " +
-                        @"-TargetServerName $serverName");
+                        @"-ServerName $serverName");
                 }
 
                 Assert.AreEqual(0, powershell.Streams.Error.Count, "Errors during run!");
@@ -184,12 +178,12 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                     databases.Count >= 2,
                     "Expecting at-least two RecoverableDatabase objects");
 
-                Assert.IsTrue(
-                    databases[0].BaseObject is RecoverableDatabase,
+                Assert.IsInstanceOfType(
+                    databases[0].BaseObject, typeof(RecoverableDatabase),
                     "Expecting a RecoverableDatabase object");
 
-                Assert.IsTrue(
-                    databases[1].BaseObject is RecoverableDatabase,
+                Assert.IsInstanceOfType(
+                    databases[1].BaseObject, typeof(RecoverableDatabase),
                     "Expecting a RecoverableDatabase object");
 
                 var database1Object = (RecoverableDatabase)databases[0].BaseObject;
@@ -201,13 +195,13 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 {
                     powershell.InvokeBatchScript(
                         @"$testdb1 = Get-AzureSqlRecoverableDatabase " +
-                        @"-TargetServerName $serverName " +
-                        @"-SourceDatabaseName " + database1Object.Name);
+                        @"-ServerName $serverName " +
+                        @"-DatabaseName " + database1Object.Name);
 
                     powershell.InvokeBatchScript(
                         @"$testdb2 = Get-AzureSqlRecoverableDatabase " +
-                        @"-TargetServerName $serverName " +
-                        @"-SourceDatabaseName " + database2Object.Name);
+                        @"-ServerName $serverName " +
+                        @"-DatabaseName " + database2Object.Name);
 
                     database1 = powershell.InvokeBatchScript(
                         @"$testdb1 | Get-AzureSqlRecoverableDatabase");
@@ -216,16 +210,16 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         @"$testdb2 | Get-AzureSqlRecoverableDatabase");
                 }
 
-                Assert.IsTrue(
-                    database1.Single().BaseObject is RecoverableDatabase,
+                Assert.IsInstanceOfType(
+                    database1.Single().BaseObject, typeof(RecoverableDatabase),
                     "Expecting a RecoverableDatabase object");
                 var refreshedDatabase1Object = (RecoverableDatabase)database1.Single().BaseObject;
                 Assert.AreEqual(
                     database1Object.Name, refreshedDatabase1Object.Name,
                     "Expected db name to be " + database1Object.Name);
 
-                Assert.IsTrue(
-                    database2.Single().BaseObject is RecoverableDatabase,
+                Assert.IsInstanceOfType(
+                    database2.Single().BaseObject, typeof(RecoverableDatabase),
                     "Expecting a RecoverableDatabase object");
                 var refreshedDatabase2Object = (RecoverableDatabase)database2.Single().BaseObject;
                 Assert.AreEqual(
@@ -238,10 +232,10 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         }
 
         [TestMethod]
-        public void GetRecoverableDatabaseWithCertAuthNonExistentDb()
+        public void GetRecoverableDatabaseNonExistentDb()
         {
             var testSession = MockServerHelper.DefaultSessionCollection.GetSession(
-                "UnitTest.GetRecoverableDatabaseWithCertAuthNonExistentDb");
+                "UnitTest.GetRecoverableDatabaseNonExistentDb");
             ServerTestHelper.SetDefaultTestSessionSettings(testSession);
 
             testSession.RequestValidator =
@@ -252,9 +246,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                         Assert.IsTrue(
                             actual.UserAgent.Contains(ApiConstants.UserAgentHeaderValue),
                             "Missing proper UserAgent string.");
-                        Assert.IsTrue(
-                            UnitTestHelper.GetUnitTestClientCertificate().Equals(actual.Certificate),
-                            "Expected correct client certificate");
                     });
 
             using (var exceptionManager = new AsyncExceptionManager())
@@ -264,8 +255,8 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 {
                     powershell.InvokeBatchScript(
                         @"Get-AzureSqlRecoverableDatabase " +
-                        @"-TargetServerName $serverName " +
-                        @"-SourceDatabaseName testdbnonexistent");
+                        @"-ServerName $serverName " +
+                        @"-DatabaseName testdbnonexistent");
                 }
 
                 Assert.AreEqual(

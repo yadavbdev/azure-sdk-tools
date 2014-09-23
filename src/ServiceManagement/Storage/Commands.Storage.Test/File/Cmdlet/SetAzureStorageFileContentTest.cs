@@ -12,21 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.File;
+using Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet;
+using Microsoft.WindowsAzure.Management.Storage.Test.Common;
+using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
+
 namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Storage.Common;
-    using Microsoft.WindowsAzure.Commands.Storage.File;
-    using Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet;
-    using Microsoft.WindowsAzure.Management.Storage.Test.Common;
-    using Microsoft.WindowsAzure.Storage.DataMovement.TransferJobs;
-
     [TestClass]
     public class SetAzureStorageFileContentTest : StorageFileTestBase<SetAzureStorageFileContent>
     {
@@ -35,7 +33,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestInitialize]
         public void UploadInitialize()
         {
-            using (var writer = File.CreateText(this.sourceFilePath))
+            using (var writer = System.IO.File.CreateText(this.sourceFilePath))
             {
                 writer.WriteLine("SampleContent");
             }
@@ -44,9 +42,9 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestCleanup]
         public void UploadCleanup()
         {
-            if (File.Exists(this.sourceFilePath))
+            if (System.IO.File.Exists(this.sourceFilePath))
             {
-                File.Delete(this.sourceFilePath);
+                System.IO.File.Delete(this.sourceFilePath);
             }
         }
 

@@ -12,50 +12,68 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Profile;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Moq;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Environment
 {
-    using Commands.Profile;
-    using Commands.Utilities.Common;
-    using Moq;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
     public class GetAzureEnvironmentTests : TestBase
     {
-        [TestMethod]
+        private MockDataStore dataStore;
+
+        public GetAzureEnvironmentTests()
+        {
+            dataStore = new MockDataStore();
+            ProfileClient.DataStore = dataStore;
+        }
+
+        [Fact]
         public void GetsAzureEnvironments()
         {
+            List<PSObject> environments = null;
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>()))
+                .Callback<object>(e => environments = (List<PSObject>)e);
+
             GetAzureEnvironmentCommand cmdlet = new GetAzureEnvironmentCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
-            commandRuntimeMock.Verify(
-                f => f.WriteObject(It.IsAny<List<PSObject>>(), true),
-                Times.Once());
+            Assert.Equal(2, environments.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetsAzureEnvironment()
         {
+            List<PSObject> environments = null;
             Mock<ICommandRuntime> commandRuntimeMock = new Mock<ICommandRuntime>();
+            commandRuntimeMock.Setup(c => c.WriteObject(It.IsAny<object>()))
+                .Callback<object>(e => environments = (List<PSObject>)e);
+
             GetAzureEnvironmentCommand cmdlet = new GetAzureEnvironmentCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 Name = EnvironmentName.AzureChinaCloud
             };
 
+            cmdlet.InvokeBeginProcessing();
             cmdlet.ExecuteCmdlet();
+            cmdlet.InvokeEndProcessing();
 
-            commandRuntimeMock.Verify(
-                f => f.WriteObject(It.IsAny<WindowsAzureEnvironment>()),
-                Times.Once());
+            Assert.Equal(1, environments.Count);
         }
     }
 }

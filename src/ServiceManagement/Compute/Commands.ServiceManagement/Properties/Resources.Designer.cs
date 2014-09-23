@@ -268,6 +268,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot deserialize settings string from DSC extension. Updating your Azure PowerShell SDK to the latest version may solve this problem. Settings string:
+        ///{0}.
+        /// </summary>
+        public static string AzureVMDscWrongSettingsFormat {
+            get {
+                return ResourceManager.GetString("AzureVMDscWrongSettingsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - Uploading WinRMCertificate: {1}.
         /// </summary>
         public static string AzureVMUploadingWinRMCertificate {
@@ -466,6 +476,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled property will be deprecated in a future release of Azure PowerShell. The value will be merged into the AccountType property..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GeoReplicationEnabled parameter will be deprecated in a future release of Azure PowerShell. The functionality will be merged into the Type parameter..
+        /// </summary>
+        public static string DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet {
+            get {
+                return ResourceManager.GetString("DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deprovisioning the VM: {0} .
         /// </summary>
         public static string DeprovisioningVM {
@@ -606,6 +634,33 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string HttpStatusCodeAndErrorMessage {
             get {
                 return ResourceManager.GetString("HttpStatusCodeAndErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find the WadCfg end element in the config..
+        /// </summary>
+        public static string IaasDiagnosticsBadConfigNoEndWadCfg {
+            get {
+                return ResourceManager.GetString("IaasDiagnosticsBadConfigNoEndWadCfg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WadCfg start element in the config is not matching the end element..
+        /// </summary>
+        public static string IaasDiagnosticsBadConfigNoMatchingWadCfg {
+            get {
+                return ResourceManager.GetString("IaasDiagnosticsBadConfigNoMatchingWadCfg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find the WadCfg element in the config..
+        /// </summary>
+        public static string IaasDiagnosticsBadConfigNoWadCfg {
+            get {
+                return ResourceManager.GetString("IaasDiagnosticsBadConfigNoWadCfg", resourceCulture);
             }
         }
         
@@ -880,11 +935,47 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;NONE&gt;.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An OSDisk has not been defined for this VM. Use New-OSDisk to assign a new OS disk..
         /// </summary>
         public static string OSDiskNotDefinedForVM {
             get {
                 return ResourceManager.GetString("OSDiskNotDefinedForVM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The element StorageAccount cannot be empty. It is recommended to not use this element in the config. It will be set automatically by the cmdlet..
+        /// </summary>
+        public static string PaaSDiagnosticsNullStorageAccount {
+            get {
+                return ResourceManager.GetString("PaaSDiagnosticsNullStorageAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your xml configuration file doesn&apos;t start with the required header &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;.
+        /// </summary>
+        public static string PaaSDiagnosticsWrongHeader {
+            get {
+                return ResourceManager.GetString("PaaSDiagnosticsWrongHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The element StorageAccount doesn&apos;t match the storage account name provided in the cmdlet arguments. It is recommended to not use the element StorageAccount as it is automatically set by the cmdlet..
+        /// </summary>
+        public static string PassDiagnosticsNoMatchStorageAccount {
+            get {
+                return ResourceManager.GetString("PassDiagnosticsNoMatchStorageAccount", resourceCulture);
             }
         }
         
@@ -1177,6 +1268,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration published to {0}.
+        /// </summary>
+        public static string PublishVMDscExtensionArchiveUploadedMessage {
+            get {
+                return ResourceManager.GetString("PublishVMDscExtensionArchiveUploadedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot find configuration file: {0}..
         /// </summary>
         public static string PublishVMDscExtensionConfigFileNotFound {
@@ -1241,6 +1341,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot get module for DscResource &apos;{0}&apos;. Possible solutions:
+        ///1) Specify -ModuleName for Import-DscResource in your configuration.
+        ///2) Unblock module that contains resource.
+        ///3) Move Import-DscResource inside Node block.
+        ///.
+        /// </summary>
+        public static string PublishVMDscExtensionGetDscResourceFailed {
+            get {
+                return ResourceManager.GetString("PublishVMDscExtensionGetDscResourceFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List of required modules: [{0}]..
         /// </summary>
         public static string PublishVMDscExtensionRequiredModulesVerbose {
@@ -1284,6 +1397,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string PublishVMDscExtensionUploadArchiveConfigFileInvalidExtension {
             get {
                 return ResourceManager.GetString("PublishVMDscExtensionUploadArchiveConfigFileInvalidExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration file &apos;{0}&apos; not found..
+        /// </summary>
+        public static string PublishVMDscExtensionUploadArchiveConfigFileNotExist {
+            get {
+                return ResourceManager.GetString("PublishVMDscExtensionUploadArchiveConfigFileNotExist", resourceCulture);
             }
         }
         
@@ -1693,6 +1815,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;An exception occurred when calling the ServiceManagement API. HTTP Status Code: {0}. Service Management Error Code: {1}. Message: {2}. Operation Tracking ID: {3}.&quot;.
+        /// </summary>
+        public static string ServiceManagementClientExceptionStringFormat {
+            get {
+                return ResourceManager.GetString("ServiceManagementClientExceptionStringFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specify -LinuxUser when creating Linux Virtual Machines.
         /// </summary>
         public static string SpecifyLinuxUserWhenCreatingLinuxVMs {
@@ -1716,6 +1847,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string StorageCredentialsFactoryCurrentSubscriptionNotSet {
             get {
                 return ResourceManager.GetString("StorageCredentialsFactoryCurrentSubscriptionNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subnet should be specified when deploying VMs in a VNET: {0}.
+        /// </summary>
+        public static string SubnetShouldBeSpecifiedIfVnetPresent {
+            get {
+                return ResourceManager.GetString("SubnetShouldBeSpecifiedIfVnetPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to decode string from base 64. Please make sure the string is correctly encoded: {0}..
+        /// </summary>
+        public static string UnableToDecodeBase64String {
+            get {
+                return ResourceManager.GetString("UnableToDecodeBase64String", resourceCulture);
             }
         }
         
@@ -1770,15 +1919,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string VMCreationFailedWithVMStatus {
             get {
                 return ResourceManager.GetString("VMCreationFailedWithVMStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In the current release, you have to specify &quot;-DeleteVHD&quot; to delete a VM image and all its underlying VHDs..
-        /// </summary>
-        public static string VMImageDeletionMustSpecifyDeleteVhdParameter {
-            get {
-                return ResourceManager.GetString("VMImageDeletionMustSpecifyDeleteVhdParameter", resourceCulture);
             }
         }
         

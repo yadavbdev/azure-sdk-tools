@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.CloudService
 {
-    using System.Management.Automation;
-    using Utilities.CloudService;
-    using Utilities.Common;
-
     /// <summary>
     /// Stops the deployment of specified slot in the azure service
     /// </summary>
     [Cmdlet(VerbsLifecycle.Stop, "AzureService"), OutputType(typeof(bool))]
-    public class StopAzureServiceCommand : CmdletWithSubscriptionBase
+    public class StopAzureServiceCommand : AzurePSCmdlet
     {
         public ICloudServiceClient CloudServiceClient { get; set; }
 
@@ -38,7 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.CloudService
         public override void ExecuteCmdlet()
         {
             CloudServiceClient = CloudServiceClient ?? new CloudServiceClient(
-                CurrentSubscription,
+                CurrentContext.Subscription,
                 SessionState.Path.CurrentLocation.Path,
                 WriteDebug,
                 WriteVerbose,

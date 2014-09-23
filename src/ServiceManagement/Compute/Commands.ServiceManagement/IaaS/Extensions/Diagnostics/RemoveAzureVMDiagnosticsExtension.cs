@@ -12,11 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Management.Automation;
-    using Model;
-
     [Cmdlet(
         VerbsCommon.Remove,
         VirtualMachineDiagnosticsExtensionNoun,
@@ -29,8 +30,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
         internal void ExecuteCommand()
         {
-            RemovePredicateExtensions();
-            WriteObject(VM);
+            // We do not support this cmdlet for now...
+            throw new NotSupportedException();
+
+        //    RemovePredicateExtensions();   
+        //    WriteObject(VM);
         }
 
         protected override void ProcessRecord()

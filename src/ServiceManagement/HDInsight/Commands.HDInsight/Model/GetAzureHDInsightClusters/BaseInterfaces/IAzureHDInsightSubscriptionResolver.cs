@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces
 {
-    using WindowsAzure.Commands.Utilities.Common;
-
     internal interface IAzureHDInsightSubscriptionResolver
     {
-        WindowsAzureSubscription ResolveSubscription(string subscription);
+        AzureSubscription ResolveSubscription(string subscription);
     }
 }

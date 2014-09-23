@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources.Templates
 {
@@ -40,14 +40,29 @@ namespace Microsoft.Azure.Commands.Resources.Templates
         [ValidateNotNullOrEmpty]
         public string Category { get; set; }
 
+        [Parameter(Position = 3, ParameterSetName = BaseParameterSetName, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Optional. Name of the application.")]
+        [ValidateNotNullOrEmpty]
+        public string ApplicationName { get; set; }
+
+        [Parameter(Position = 4, ParameterSetName = BaseParameterSetName, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Optional. Include all versions.")]
+        public SwitchParameter AllVersions { get; set; }
+
         public override void ExecuteCmdlet()
         {
             FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
             {
                 Category = Category,
                 Identity = Identity,
-                Publisher = Publisher
+                Publisher = Publisher,
+                ApplicationName = ApplicationName,
+                AllVersions = AllVersions
             };
+
+            if (Category == null && Identity == null && Publisher == null && ApplicationName == null)
+            {
+                // if there are no filter parameters, return everything
+                options.AllVersions = true;
+            }
 
             List<PSGalleryItem> galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(options);
 

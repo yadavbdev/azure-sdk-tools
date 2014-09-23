@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using Model;
-    using PowershellCore;
-
     public class SetAzureAclConfigCmdletInfo : CmdletsInfo
     {
         public SetAzureAclConfigCmdletInfo(string aclConfig, NetworkAclObject aclObj, int? order, string aclAction, string remoteSubnet, string desc, int? ruleId)

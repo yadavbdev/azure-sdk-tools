@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class LogStreamWaitHandle : IDisposable
     {
         private const int WaitInterval = 1000;

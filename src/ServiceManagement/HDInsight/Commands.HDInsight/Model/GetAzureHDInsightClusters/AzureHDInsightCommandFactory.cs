@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters
 {
-    using Commands.CommandImplementations;
-    using Commands.CommandInterfaces;
-    using Extensions;
-
     internal class AzureHDInsightCommandFactory : IAzureHDInsightCommandFactory
     {
         public IAddAzureHDInsightConfigValuesCommand CreateAddConfig()

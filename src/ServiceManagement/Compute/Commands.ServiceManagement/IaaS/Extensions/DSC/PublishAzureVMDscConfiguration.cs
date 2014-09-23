@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Utilities.Common;
-
     /// <summary>
     /// Uploads a Desired State Configuration script to Azure blob storage, which 
     /// later can be applied to Azure Virtual Machines using the 
@@ -113,7 +113,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         {
             try
             {
-                base.ProcessRecord();
+                // Create a cloud context, only in case of upload.
+                if (this.ParameterSetName == UploadArchiveParameterSetName)
+                {
+                    base.ProcessRecord();
+                }
                 ExecuteCommand();
             }
             finally
@@ -122,7 +126,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 {
                     try
                     {
-                        File.Delete(file);
+                        DeleteFile(file);
                         WriteVerbose(string.Format(CultureInfo.CurrentUICulture, Resources.PublishVMDscExtensionDeletedFileMessage, file)); 
                     }
                     catch (Exception e)
@@ -134,7 +138,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 {
                     try
                     {
-                        Directory.Delete(directory, true);
+                        DeleteDirectory(directory);
                         WriteVerbose(string.Format(CultureInfo.CurrentUICulture, Resources.PublishVMDscExtensionDeletedFileMessage, directory));
                     }
                     catch (Exception e)
@@ -154,7 +158,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
         protected void ValidatePsVersion()
         {
-            using (PowerShell powershell = PowerShell.Create())
+            using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
             {
                 powershell.AddScript("$PSVersionTable.PSVersion.Major");
                 int major = powershell.Invoke<int>().FirstOrDefault();
@@ -164,9 +168,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                         new ErrorRecord(
                             new InvalidOperationException(
                                 string.Format(CultureInfo.CurrentUICulture, Resources.PublishVMDscExtensionRequiredPsVersion, MinMajorPowerShellVersion, major)), 
-                                string.Empty,
-                                ErrorCategory.InvalidOperation,
-                                null));
+                            "InvalidPowerShellVersion",
+                            ErrorCategory.InvalidOperation,
+                            null));
                 }
             }
         }
@@ -174,6 +178,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         protected void ValidateParameters()
         {
             this.ConfigurationPath = this.GetUnresolvedProviderPathFromPSPath(this.ConfigurationPath);
+            if (!File.Exists(this.ConfigurationPath))
+            {
+                this.ThrowInvalidArgumentError(Resources.PublishVMDscExtensionUploadArchiveConfigFileNotExist, this.ConfigurationPath);
+            }
 
             var configurationFileExtension = Path.GetExtension(this.ConfigurationPath);
 
@@ -230,7 +238,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         private string CreateConfigurationArchive()
         {
             WriteVerbose(String.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscParsingConfiguration, this.ConfigurationPath));
-            ConfigurationParseResult parseResult = ConfigurationParsingHelper.ExtractConfigurationNames(this.ConfigurationPath);
+            ConfigurationParseResult parseResult = null;
+            try
+            {
+                parseResult = ConfigurationParsingHelper.ParseConfiguration(this.ConfigurationPath);
+            }
+            catch (GetDscResourceException e)
+            {
+                ThrowTerminatingError(new ErrorRecord(e, "CannotAccessDscResource", ErrorCategory.PermissionDenied, null));
+            }
             if (parseResult.Errors.Any())
             {
                 ThrowTerminatingError(
@@ -241,7 +257,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                                 Resources.PublishVMDscExtensionStorageParserErrors,
                                 this.ConfigurationPath,
                                 String.Join("\n", parseResult.Errors.Select(error => error.ToString())))),
-                        string.Empty,
+                        "DscConfigurationParseError",
                         ErrorCategory.ParserError,
                         null));
             }
@@ -267,7 +283,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             // CopyRequiredModules
             foreach (var module in requiredModules)
             {
-                using (PowerShell powershell = PowerShell.Create())
+                using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
                 {
                     // Wrapping script in a function to prevent script injection via $module variable.
                     powershell.AddScript(
@@ -306,7 +322,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                     this.ThrowTerminatingError(
                         new ErrorRecord(
                             new UnauthorizedAccessException(string.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscArchiveAlreadyExists, archive)),
-                            string.Empty,
+                            "FileAlreadyExists",
                             ErrorCategory.PermissionDenied,
                             null));
                 }
@@ -314,41 +330,21 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             else
             {
                 archive = Path.Combine(Path.GetTempPath(), configurationName + ZipFileExtension);
-
-                if (File.Exists(archive))
-                {
-                    File.Delete(archive);
-                }
-
                 this._temporaryFilesToDelete.Add(archive);
             }
 
-            // azure-sdk-tools uses .net framework 4.0
-            // System.IO.Compression.ZipFile was added in .net 4.5
-            // Since support for DSC require powershell 4.0+, which require .net 4.5+
-            // we assume that created powershell session will have access to System.IO.Compression.FileSystem assembly
-            // from version 4.5. We load it to create a zip archive from a directory.
-            using (var powershell = System.Management.Automation.PowerShell.Create())
+            if (File.Exists(archive))
             {
-				var script = 
-					@"Add-Type -AssemblyName System.IO.Compression.FileSystem > $null;" +
-                    @"[void] [System.IO.Compression.ZipFile]::CreateFromDirectory('" + tempZipFolder + "', '" + archive + "');";
-
-                powershell.AddScript(script);
-                WriteVerbose(String.Format(
-                        CultureInfo.CurrentUICulture,
-                        Resources.PublishVMDscExtensionCreateZipVerbose,
-                        archive,
-                        tempZipFolder));
-                powershell.Invoke();
+                File.Delete(archive);
             }
 
+            System.IO.Compression.ZipFile.CreateFromDirectory(tempZipFolder, archive);
             return archive;
         }
 
         private void UploadConfigurationArchive(string archivePath)
         {
-            CloudBlobContainer cloudBlobContainer = GetStorageContainier();
+            CloudBlobContainer cloudBlobContainer = GetStorageContainer();
 
             var blobName = Path.GetFileName(archivePath);
 
@@ -360,17 +356,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 {
                     this.ThrowTerminatingError(
                         new ErrorRecord(
-                            new UnauthorizedAccessException(string.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscStorageBlobAlreadyExists, modulesBlob)),
-                            string.Empty,
+                            new UnauthorizedAccessException(string.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscStorageBlobAlreadyExists, modulesBlob.Uri.AbsoluteUri)),
+                            "StorageBlobAlreadyExists",
                             ErrorCategory.PermissionDenied,
                             null));
                 }
 
                 modulesBlob.UploadFromFile(archivePath, FileMode.Open);
+            
+                WriteVerbose(string.Format(CultureInfo.CurrentUICulture, Resources.PublishVMDscExtensionArchiveUploadedMessage, modulesBlob.Uri.AbsoluteUri));
             });
         }
 
-        private CloudBlobContainer GetStorageContainier()
+        private CloudBlobContainer GetStorageContainer()
         {
             var storageAccount = new CloudStorageAccount(this._storageCredentials, true);
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -378,6 +376,71 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             containerReference.CreateIfNotExists();
             return containerReference;
         }
+
+        private static void DeleteFile(string path)
+        {
+            try
+            {
+                File.Delete(path);
+            }
+            catch (System.UnauthorizedAccessException)
+            {
+                // the exception may have occurred due to a read-only file
+                DeleteReadOnlyFile(path);
+            }
+        }
+
+        /// <summary>
+        /// Turns off the ReadOnly attribute from the given file and then attemps to delete it
+        /// </summary>
+        private static void DeleteReadOnlyFile(string path)
+        {
+            var attributes = System.IO.File.GetAttributes(path);
+
+            if ((attributes & FileAttributes.ReadOnly) != 0)
+            {
+                File.SetAttributes(path, attributes & ~FileAttributes.ReadOnly);
+            }
+
+            File.Delete(path);
+        }
+
+        private static void DeleteDirectory(string path)
+        {
+            try
+            {
+                Directory.Delete(path, true);
+            }
+            catch (System.UnauthorizedAccessException)
+            {
+                // the exception may have occurred due to a read-only file or directory
+                DeleteReadOnlyDirectory(path);
+            }
+        }
+
+        /// <summary>
+        /// Recusively turns off the ReadOnly attribute from the given directory and then attemps to delete it
+        /// </summary>
+        private static void DeleteReadOnlyDirectory(string path)
+        {
+            var directory = new DirectoryInfo(path);
+
+            foreach (var child in directory.GetDirectories())
+            {
+                DeleteReadOnlyDirectory(child.FullName);
+            }
+
+            foreach (var child in directory.GetFiles())
+            {
+                DeleteReadOnlyFile(child.FullName);
+            }
+
+            if ((directory.Attributes & FileAttributes.ReadOnly) != 0)
+            {
+                directory.Attributes &= ~FileAttributes.ReadOnly;
+            }
+
+            directory.Delete();
+        }
     }
 }
-

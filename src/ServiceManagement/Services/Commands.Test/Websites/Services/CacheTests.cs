@@ -12,18 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites.Services;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using System.Collections.Generic;
-    using System.IO;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
-    public class CacheTests : TestBase
+    
+    public class CacheTests : TestBase, IDisposable
     {
         public static string SubscriptionName = "fakename";
 
@@ -33,16 +35,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
 
         private FileSystemHelper helper;
 
-        [TestInitialize]
-        public void SetupTest()
+        public CacheTests()
         {
             helper = new FileSystemHelper(this);
             helper.CreateAzureSdkDirectoryAndImportPublishSettings();
 
-            WebSpacesFile =  Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+            WebSpacesFile =  Path.Combine(AzurePowerShell.ProfileDirectory,
                                                           string.Format("spaces.{0}.json", SubscriptionName));
 
-            SitesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+            SitesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                           string.Format("sites.{0}.json", SubscriptionName));
             
             if (File.Exists(WebSpacesFile))
@@ -56,7 +57,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
             }
         }
 
-        [TestCleanup]
+        public void Dispose()
+        {
+            CleanupTest();
+        }
+
         public void CleanupTest()
         {
             if (File.Exists(WebSpacesFile))
@@ -72,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
             helper.Dispose();
         }
 
-        [TestMethod]
+        [Fact]
         public void AddSiteTest()
         {
             Site site = new Site { Name = "newsite" };
@@ -80,10 +85,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
             Cache.AddSite(SubscriptionName, site);
 
             Sites getSites = Cache.GetSites(SubscriptionName);
-            Assert.IsNotNull(getSites.Find(ws => ws.Name.Equals("newsite")));
+            Assert.NotNull(getSites.Find(ws => ws.Name.Equals("newsite")));
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveSiteTest()
         {
             Site site = new Site { Name = "newsite" };
@@ -91,25 +96,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
             Cache.AddSite(SubscriptionName, site);
 
             Sites getSites = Cache.GetSites(SubscriptionName);
-            Assert.IsNotNull(getSites.Find(ws => ws.Name.Equals("newsite")));
+            Assert.NotNull(getSites.Find(ws => ws.Name.Equals("newsite")));
 
             // Now remove it
             Cache.RemoveSite(SubscriptionName, site);
             getSites = Cache.GetSites(SubscriptionName);
-            Assert.IsNull(getSites.Find(ws => ws.Name.Equals("newsite")));
+            Assert.Null(getSites.Find(ws => ws.Name.Equals("newsite")));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetSetSitesTest()
         {
-            Assert.IsNull(Cache.GetSites(SubscriptionName));
+            Assert.Null(Cache.GetSites(SubscriptionName));
 
             Sites sites = new Sites(new List<Site> { new Site { Name = "site1" }, new Site { Name = "site2" }});
             Cache.SaveSites(SubscriptionName, sites);
 
             Sites getSites = Cache.GetSites(SubscriptionName);
-            Assert.IsNotNull(getSites.Find(s => s.Name.Equals("site1")));
-            Assert.IsNotNull(getSites.Find(s => s.Name.Equals("site2")));
+            Assert.NotNull(getSites.Find(s => s.Name.Equals("site1")));
+            Assert.NotNull(getSites.Find(s => s.Name.Equals("site2")));
         }
     }
 }

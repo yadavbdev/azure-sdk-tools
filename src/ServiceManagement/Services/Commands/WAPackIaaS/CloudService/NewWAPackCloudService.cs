@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.New, "WAPackCloudService")]
     public class NewWAPackCloudService : IaaSCmdletBase
     {
@@ -41,7 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
 
         public override void ExecuteCmdlet()
         {
-            var cloudService = new CloudService()
+            var cloudService = new Utilities.WAPackIaaS.DataContract.CloudService()
             {
                 Name = this.Name,
                 Label = this.Label
@@ -53,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.CloudService
             WaitForJobCompletion(cloudServiceJobId);
 
             var createdCloudService = cloudServiceOperations.Read(this.Name);
-            var results = new List<CloudService>() { createdCloudService };
+            var results = new List<Utilities.WAPackIaaS.DataContract.CloudService>() { createdCloudService };
             this.GenerateCmdletOutput(results);
         }
     }

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System;
-    using System.Collections.Generic;
-
     public class HostedServiceDetailedContext : HostedServiceContext
     {
         public string Label { get; set; }

@@ -12,22 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 {
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class AccessTokenCredential : SubscriptionCloudCredentials
     {
-        private readonly string subscriptionId;
+        private readonly Guid subscriptionId;
         private readonly IAccessToken token;
 
-        public AccessTokenCredential(string subscriptionId, IAccessToken token)
+        public AccessTokenCredential(Guid subscriptionId, IAccessToken token)
         {
             this.subscriptionId = subscriptionId;
             this.token = token;
+            this.TenantID = token.TenantId;
         }
         
         public override Task ProcessHttpRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -40,7 +42,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
 
         public override string SubscriptionId
         {
-            get { return subscriptionId; }
+            get { return subscriptionId.ToString(); }
         }
+
+        public string TenantID { get; set; }
     }
 }

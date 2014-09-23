@@ -11,20 +11,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Management.Automation;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
+using Microsoft.WindowsAzure.Management.HDInsight.Logging;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
 {
-    using Commands.CommandInterfaces;
-    using GetAzureHDInsightClusters;
-    using GetAzureHDInsightClusters.Extensions;
-    using HDInsight.Logging;
-    using ServiceLocation;
-    using System;
-    using System.Management.Automation;
-    using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     /// <summary>
     ///     Cmdlet that deletes a cluster from the HDInsight service.
     /// </summary>

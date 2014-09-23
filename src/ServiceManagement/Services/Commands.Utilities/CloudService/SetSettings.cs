@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Common;
-    using System.Management.Automation;
-
-    public class SetSettings : CmdletBase
+    public class SetSettings : AzurePSCmdlet
     {
         // Uncomment this to enable global set for settings
         //[Parameter(Position = 1, Mandatory = false)]

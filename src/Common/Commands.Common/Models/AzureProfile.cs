@@ -12,69 +12,130 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common.Interfaces;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.Common.Interfaces;
+using Microsoft.WindowsAzure.Common.Internals;
+using System.Diagnostics;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
-    public partial class AzureProfile
+    public sealed class AzureProfile
     {
-        private Guid? currentSubscriptionId;
+        private IDataStore store;
+        private string profilePath;
+        private string tokenCacheFile = Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.TokenCacheFile);
 
-        public AzureProfile(IFileStore store)
+        public AzureProfile()
         {
-            Environments = new List<AzureEnvironment>();
-            Subscriptions = new List<AzureSubscription>();
+            Environments = new Dictionary<string, AzureEnvironment>(StringComparer.InvariantCultureIgnoreCase);
+            Subscriptions = new Dictionary<Guid, AzureSubscription>();
+            Accounts = new Dictionary<string, AzureAccount>(StringComparer.InvariantCultureIgnoreCase);
+        }
 
-            Load(store);
+        public AzureProfile(IDataStore store, string profilePath)
+        {
+            this.store = store;
+            this.profilePath = profilePath;
 
-            foreach (AzureEnvironment env in Environments)
+            Load();
+        }
+
+        private void Load()
+        {
+            Environments = new Dictionary<string, AzureEnvironment>(StringComparer.InvariantCultureIgnoreCase);
+            Subscriptions = new Dictionary<Guid, AzureSubscription>();
+            Accounts = new Dictionary<string, AzureAccount>(StringComparer.InvariantCultureIgnoreCase);
+
+            if (!store.DirectoryExists(AzurePowerShell.ProfileDirectory))
             {
-                if (env.DefaultSubscriptionId.HasValue)
+                store.CreateDirectory(AzurePowerShell.ProfileDirectory);
+            }
+
+            if (store.FileExists(profilePath))
+            {
+                string contents = store.ReadFileAsText(profilePath);
+
+                IProfileSerializer serializer;
+                if (ParserHelper.IsXml(contents))
                 {
-                    currentSubscriptionId = env.DefaultSubscriptionId.Value;
-                    break;
+                    serializer = new XmlProfileSerializer();
+                    serializer.Deserialize(contents, this);
                 }
+                else if (ParserHelper.IsJson(contents))
+                {
+                    serializer = new JsonProfileSerializer();
+                    serializer.Deserialize(contents, this);
+                }
+            }
+
+            // Adding predefined environments
+            foreach (AzureEnvironment env in AzureEnvironment.PublicEnvironments.Values)
+            {
+                Environments[env.Name] = env;
             }
         }
 
-        public AzureProfile() : this(new DiskFileStore())
+        public void Save()
         {
-            
-        }
-
-        public Guid? CurrentSubscriptionId
-        {
-            get { return currentSubscriptionId; }
-
-            set
+            // Removing predefined environments
+            foreach (string env in AzureEnvironment.PublicEnvironments.Keys)
             {
-                if (GetSubscription(currentSubscriptionId) != null)
-                {
-                    currentSubscriptionId = value;
-                }
+                Environments.Remove(env);
+            }
+
+            JsonProfileSerializer jsonSerializer = new JsonProfileSerializer();
+
+            string contents = jsonSerializer.Serialize(this);
+            string diskContents = string.Empty;
+            if (store.FileExists(profilePath))
+            {
+                diskContents = store.ReadFileAsText(profilePath);
+            }
+
+            if (diskContents != contents)
+            {
+                store.WriteFile(profilePath, contents);
             }
         }
 
-        public AzureEnvironment CurrentEnvironment
+        public Dictionary<string, AzureEnvironment> Environments { get; set; }
+
+        public Dictionary<Guid, AzureSubscription> Subscriptions { get; set; }
+
+        public Dictionary<string, AzureAccount> Accounts { get; set; }
+
+        public AzureSubscription DefaultSubscription
         {
             get
             {
-                if (CurrentSubscriptionId == null)
+                return Subscriptions.Values.FirstOrDefault(
+                    s => s.Properties.ContainsKey(AzureSubscription.Property.Default));
+            }
+
+            set
+            {
+                if (value == null)
                 {
-                    return GetEnvironment(EnvironmentName.AzureCloud);
+                    foreach (var subscription in Subscriptions.Values)
+                    {
+                        subscription.SetProperty(AzureSubscription.Property.Default, null);
+                    }
                 }
-                else
+                else if (Subscriptions.ContainsKey(value.Id))
                 {
-                    return GetEnvironment(GetSubscription(CurrentSubscriptionId).Environment);
+                    foreach (var subscription in Subscriptions.Values)
+                    {
+                        subscription.SetProperty(AzureSubscription.Property.Default, null);
+                    }
+
+                    Subscriptions[value.Id].Properties[AzureSubscription.Property.Default] = "True";
+                    value.Properties[AzureSubscription.Property.Default] = "True";
                 }
             }
         }
-
-        public List<AzureEnvironment> Environments { get; set; }
-
-        public List<AzureSubscription> Subscriptions { get; set; }
     }
 }

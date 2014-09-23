@@ -169,10 +169,10 @@
     <value>A role name '{0}' already exists</value>
   </data>
   <data name="AzureDirectory" xml:space="preserve">
-    <value>Azure Powershell\</value>
+    <value>Windows Azure Powershell\</value>
   </data>
   <data name="AzureDirectoryName" xml:space="preserve">
-    <value>Azure Powershell</value>
+    <value>Windows Azure Powershell</value>
   </data>
   <data name="AzureEmulatorDirectory" xml:space="preserve">
     <value>Emulator</value>
@@ -401,8 +401,8 @@
     <value>An unexpected failure occurred.  Details:
 {0}</value>
   </data>
-  <data name="CsRunEmulatorExpressArg" xml:space="preserve">
-    <value>/useemulatorexpress</value>
+  <data name="CsRunFullEmulatorArg" xml:space="preserve">
+    <value>/usefullemulator</value>
   </data>
   <data name="CsRunExe" xml:space="preserve">
     <value>csrun.exe</value>
@@ -434,7 +434,7 @@
   <data name="DatacenterBlobQuery" xml:space="preserve">
     <value>//blobcontainer[@datacenter='{0}']</value>
   </data>
-  <data name="DefaultAndCurrentSubscription" xml:space="preserve">
+  <data name="DefaultAndCurrentContext.Subscription" xml:space="preserve">
     <value>Setting: {0} as the default and current subscription. To view other subscriptions use Get-AzureSubscription</value>
   </data>
   <data name="DefaultFileVersion" xml:space="preserve">
@@ -1068,7 +1068,7 @@ Please follow these steps in the portal:
     <value>Resources\Scaffolding\Python</value>
   </data>
   <data name="RedeployCommit" xml:space="preserve">
-    <value>Reploy deployment with {0} Id ?</value>
+    <value>Replace current deployment with '{0}' Id ?</value>
   </data>
   <data name="RegenerateKeyWarning" xml:space="preserve">
     <value>Are you sure you want to regenerate key?</value>
@@ -1091,7 +1091,7 @@ Please follow these steps in the portal:
   <data name="RemoveAzureServiceWaitMessage" xml:space="preserve">
     <value>Removing cloud service {0}...</value>
   </data>
-  <data name="RemoveCurrentSubscription" xml:space="preserve">
+  <data name="RemoveCurrentContext.Subscription" xml:space="preserve">
     <value>The current subscription is being removed. Use Select-Subscription &lt;subscriptionName&gt; to select a new current subscription.</value>
   </data>
   <data name="RemoveDefaultSubscription" xml:space="preserve">
@@ -1203,7 +1203,7 @@ Please follow these steps in the portal:
     <value>Role type {0} doesn't exist</value>
   </data>
   <data name="RunInEmulatorArguments" xml:space="preserve">
-    <value>"{0}" "{1}" {2} /useiisexpress</value>
+    <value>/run:"{0}";"{1}" {2} /useiisexpress</value>
   </data>
   <data name="RuntimeDeploymentLocationError" xml:space="preserve">
     <value>public static Dictionary&lt;string, Location&gt; ReverseLocations { get; private set; }</value>
@@ -1388,6 +1388,9 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   </data>
   <data name="StoppedEmulatorMessage" xml:space="preserve">
     <value>Stopped</value>
+  </data>
+  <data name="FailedToCleanUpLocalPackage" xml:space="preserve">
+    <value>Could not delete emulator package '{0}' for the service. Please ensure that no files or folders in the package are open in other programs</value>
   </data>
   <data name="StopStorageEmulatorCommandArgument" xml:space="preserve">
     <value>stop</value>
@@ -1582,5 +1585,8 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   </data>
   <data name="ErrorCreatingVMNetwork" xml:space="preserve">
     <value>Error creating VMNetwork</value>
+  </data>
+  <data name="Argument_WebSpaceMissing" xml:space="preserve">
+    <value>Please provide webspace name as well.</value>
   </data>
 </root>

@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.MediaServices.Services.Entities
 {
-    using System.Runtime.Serialization;
-
     [DataContract(Namespace = MediaServicesUriElements.AccountDetailsNamespace)]
     public class AccountKeys
     {

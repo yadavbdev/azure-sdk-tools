@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.Common;
+using Microsoft.WindowsAzure.Commands.Storage.Model.Contract;
+using Microsoft.WindowsAzure.Commands.Storage.Table.Cmdlet;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Table
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Model.Contract;
-    using Storage.Common;
-    using Storage.Table.Cmdlet;
-    using System;
-
     [TestClass]
     public class RemoveAzureStorageTableTest: StorageTableStorageTestBase
     {

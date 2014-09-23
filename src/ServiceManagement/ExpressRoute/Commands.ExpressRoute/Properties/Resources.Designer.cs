@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.ExpressRoute.Properties
-{
-
-
+namespace Microsoft.WindowsAzure.Commands.ExpressRoute.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -66,6 +66,33 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute.Properties
         internal static string InvalidGuid {
             get {
                 return ResourceManager.GetString("InvalidGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating Azure Dedicated Circuit with name {0} with service provider {1}.
+        /// </summary>
+        internal static string NewAzureDedicatedCircuitMessage {
+            get {
+                return ResourceManager.GetString("NewAzureDedicatedCircuitMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully creatied Azure Dedicated Circuit. This circuit is now being billed.
+        /// </summary>
+        internal static string NewAzureDedicatedCircuitSucceeded {
+            get {
+                return ResourceManager.GetString("NewAzureDedicatedCircuitSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to create a new dedicated circuit with name {0} and service provider {1}. You will be billed for this circuit once this command succeeds..
+        /// </summary>
+        internal static string NewAzureDedicatedCircuitWarning {
+            get {
+                return ResourceManager.GetString("NewAzureDedicatedCircuitWarning", resourceCulture);
             }
         }
         

@@ -12,29 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using System.ServiceModel;
+using System.ServiceModel.Dispatcher;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Management;
+using Microsoft.WindowsAzure.Management.Compute;
+using Microsoft.WindowsAzure.Management.Network;
+using Microsoft.WindowsAzure.Management.Storage;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using AutoMapper;
-    using Management;
-    using Management.Compute;
-    using Management.Network;
-    using Management.Network.Models;
-    using Management.Storage;
-    using Properties;
-    using ServiceManagement;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-    using System.Reflection;
-    using System.ServiceModel;
-    using System.ServiceModel.Dispatcher;
-    using System.Threading;
-    using WindowsAzure;
-    using Storage.Auth;
-
     public abstract class ServiceManagementBaseCmdlet : CloudBaseCmdlet<IServiceManagement>
     {
         private Lazy<Runspace> runspace;
@@ -54,37 +50,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public ManagementClient CreateClient()
         {
-            return this.CurrentSubscription.CreateClient<ManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public ComputeManagementClient CreateComputeClient()
         {
-            return this.CurrentSubscription.CreateClient<ComputeManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<ComputeManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public StorageManagementClient CreateStorageClient()
         {
-            return this.CurrentSubscription.CreateClient<StorageManagementClient>();
+            return AzureSession.ClientFactory.CreateClient<StorageManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public NetworkManagementClient CreateNetworkClient()
         {
-            return this.CurrentSubscription.CreateClient<NetworkManagementClient>();
-        }
-
-        private void LogDebug(string message)
-        {
-//            lock (runspaceLock)
-//            {
-//                using (var ps = PowerShell.Create())
-//                {
-//                    ps.Runspace = runspace.Value;
-//                    ps.AddCommand("Write-Debug");
-//                    ps.AddParameter("Message", message);
-//                    ps.AddParameter("Debug");
-//                    ps.Invoke();
-//                }
-//            }
+            return AzureSession.ClientFactory.CreateClient<NetworkManagementClient>(CurrentContext.Subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         private Lazy<ManagementClient> client;
@@ -132,14 +113,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 new HttpRestMessageInspector(this.WriteDebug)
             };
 
+            /*
             var clientOptions = new ServiceManagementClientOptions(null, null, null, 0, RetryPolicy.NoRetryPolicy, ServiceManagementClientOptions.DefaultOptions.WaitTimeForOperationToComplete, messageInspectors);
-            var smClient = new ServiceManagementClient(new Uri(this.ServiceEndpoint), CurrentSubscription.SubscriptionId, CurrentSubscription.Certificate, clientOptions);
+            var smClient = new ServiceManagementClient(new Uri(this.ServiceEndpoint), CurrentContext.Subscription.SubscriptionId, CurrentContext.Subscription.Certificate, clientOptions);
 
             Type serviceManagementClientType = typeof(ServiceManagementClient);
             PropertyInfo propertyInfo = serviceManagementClientType.GetProperty("SyncService", BindingFlags.Instance | BindingFlags.NonPublic);
             var syncService = (IServiceManagement)propertyInfo.GetValue(smClient, null);
 
             return syncService;
+            */
+            return null;
         }
 
         /// <summary>
@@ -167,92 +151,12 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             try
             {
-                return Channel.ToContextChannel();
+                //return Channel.ToContextChannel();
+                return null;
             }
             catch (Exception)
             {
                 return null;
-            }
-        }
-
-        protected void ExecuteClientAction(object input, string operationDescription, Action<string> action)
-        {
-            Operation operation = null;
-
-            WriteVerboseWithTimestamp(string.Format(Resources.ServiceManagementExecuteClientActionBeginOperation, operationDescription));
-
-            RetryCall(action);
-            operation = GetOperation();
-
-            WriteVerboseWithTimestamp(string.Format(Resources.ServiceManagementExecuteClientActionCompletedOperation, operationDescription));
-
-            if (operation != null)
-            {
-                var context = new ManagementOperationContext
-                {
-                    OperationDescription = operationDescription,
-                    OperationId = operation.OperationTrackingId,
-                    OperationStatus = operation.Status
-                };
-
-                WriteObject(context, true);
-            }
-        }
-
-        protected void ExecuteClientActionInOCS(object input, string operationDescription, Action<string> action)
-        {
-            IContextChannel contextChannel = null;
-
-            try
-            {
-                contextChannel = Channel.ToContextChannel();
-            }
-            catch (Exception)
-            {
-                // Do nothing, proceed.
-            }
-
-            if (contextChannel != null)
-            {
-                object context = null;
-
-                using (new OperationContextScope(contextChannel))
-                {
-                    Operation operation = null;
-
-                    WriteVerboseWithTimestamp(string.Format(Resources.ServiceManagementExecuteClientActionInOCSBeginOperation, operationDescription));
-
-                    try
-                    {
-                        RetryCall(action);
-                        operation = GetOperation();
-                    }
-                    catch (ServiceManagementClientException ex)
-                    {
-                        WriteExceptionDetails(ex);
-                    }
-
-                    WriteVerboseWithTimestamp(string.Format(Resources.ServiceManagementExecuteClientActionInOCSCompletedOperation, operationDescription));
-
-                    if (operation != null)
-                    {
-                        context = new ManagementOperationContext
-                        {
-                            OperationDescription = operationDescription,
-                            OperationId = operation.OperationTrackingId,
-                            OperationStatus = operation.Status
-                        };
-                    }
-                }
-
-                if (context != null)
-                {
-                    WriteObject(context, true);
-                }
-            }
-            else
-            {
-                RetryCall(action);
             }
         }
 
@@ -360,157 +264,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             this.ExecuteClientActionNewSM(input, operationDescription, action, (s, response) => this.ContextFactory<OperationResponse, ManagementOperationContext>(response, s));
         }
 
-        protected void ExecuteClientActionNewSM<TResult>(object input, string operationDescription, Func<TResult> action, Func<string, string, OperationStatusResponse> waitOperation) where TResult : OperationResponse
-        {
-            this.ExecuteClientActionNewSM(input, operationDescription, action, waitOperation, (s, response) => this.ContextFactory<OperationResponse, ManagementOperationContext>(response, s));
-        }
-
-        protected OperationStatusResponse WaitForNewGatewayOperation(string operationId, string opdesc)
-        {
-            try
-            {
-                var opStatus = this.NetworkClient.Gateways.GetOperationStatus(operationId);
-
-                var activityId = new Random().Next(1, 999999);
-                var progress = new ProgressRecord(activityId, opdesc, Resources.GatewayOperationStatus + opStatus);
-                while (opStatus.Status != GatewayOperationStatus.Successful && opStatus.Status != GatewayOperationStatus.Failed)
-                {
-                    WriteProgress(progress);
-                    Thread.Sleep(1 * 1000);
-                    opStatus = this.NetworkClient.Gateways.GetOperationStatus(operationId);
-                }
-
-                if (opStatus.Status == GatewayOperationStatus.Failed)
-                {
-                    var errorMessage = string.Format(CultureInfo.InvariantCulture, "{0}: {1}", opStatus.Status, opStatus.Error.Message);
-                    var exception = new Exception(errorMessage);
-                    WriteError(new ErrorRecord(exception, string.Empty, ErrorCategory.CloseError, null));
-                }
-            }
-            catch (CommunicationException ex)
-            {
-                WriteErrorDetails(ex);
-            }
-
-            return GetOperationNewSM(operationId);
-        }
-
-        protected void ExecuteClientActionInOCS<TResult>(object input, string operationDescription, Func<string, TResult> action, Func<Operation, TResult, object> contextFactory) where TResult : class
-        {
-            IContextChannel contextChannel = null;
-
-            try
-            {
-                contextChannel = Channel.ToContextChannel();
-            }
-            catch (Exception)
-            {
-                // Do nothing, proceed.
-            }
-
-            if (contextChannel != null)
-            {
-                object context = null;
-
-                using (new OperationContextScope(contextChannel))
-                {
-                    TResult result = null;
-                    Operation operation = null;
-
-                    WriteVerboseWithTimestamp(string.Format(Resources.ServiceManagementExecuteClientActionInOCSBeginOperation, operationDescription));
-
-                    try
-                    {
-                        result = RetryCall(action);
-                        operation = GetOperation();
-                    }
-                    catch (ServiceManagementClientException ex)
-                    {
-                        WriteExceptionDetails(ex);
-                    }
-
-                    WriteVerboseWithTimestamp(string.Format(Resources.ServiceManagementExecuteClientActionInOCSCompletedOperation, operationDescription));
-
-                    if (result != null && operation != null)
-                    {
-                        context = contextFactory(operation, result);
-                    }
-                }
-
-                if (context != null)
-                {
-                    WriteObject(context, true);
-                }
-            }
-            else
-            {
-                TResult result = RetryCall(action);
-                if (result != null)
-                {
-                    WriteObject(result, true);
-                }
-            }
-        }
-
-        protected Operation GetOperation()
-        {
-            Operation operation = null;
-
-            try
-            {
-                string operationId = RetrieveOperationId();
-
-                if (!string.IsNullOrEmpty(operationId))
-                {
-                    operation = RetryCall(s => GetOperationStatus(this.CurrentSubscription.SubscriptionId, operationId));
-
-                    if (string.Compare(operation.Status, OperationState.Failed, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
-                        var errorMessage = string.Format(CultureInfo.InvariantCulture, "{0}: {1}", operation.Status, operation.Error.Message);
-                        var exception = new Exception(errorMessage);
-                        WriteError(new ErrorRecord(exception, string.Empty, ErrorCategory.CloseError, null));
-                    }
-                }
-                else
-                {
-                    operation = new Operation
-                    {
-                        OperationTrackingId = string.Empty,
-                        Status = OperationState.Failed
-                    };
-                }
-            }
-            catch (ServiceManagementClientException ex)
-            {
-                WriteExceptionDetails(ex);
-            }
-
-            return operation;
-        }
-
-        protected override Operation GetOperationStatus(string subscriptionId, string operationId)
-        {
-            var channel = (IServiceManagement)Channel;
-            return channel.GetOperationStatus(subscriptionId, operationId);
-        }
-
-        protected T2 ContextFactory<T1, T2>(T1 source) where T2 : ManagementOperationContext
-        {
-            var context = Mapper.Map<T1, T2>(source);
-            context.OperationDescription = CommandRuntime.ToString();
-            return context;
-        }
-
         protected T2 ContextFactory<T1, T2>(T1 source, OperationStatusResponse response) where T2 : ManagementOperationContext
         {
             var context = Mapper.Map<T1, T2>(source);
             context = Mapper.Map(response, context);
             context.OperationDescription = CommandRuntime.ToString();
-            return context;
-        }
-        protected T2 ContextFactory<T1, T2>(T1 source, T2 destination) where T2 : ManagementOperationContext
-        {
-            var context = Mapper.Map(source, destination);
             return context;
         }
     }

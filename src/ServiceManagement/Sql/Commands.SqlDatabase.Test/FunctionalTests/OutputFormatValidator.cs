@@ -12,12 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.FunctionalTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
-    using System.IO;
-
     public class OutputFormatValidator
     {
         public static void ValidateOutputFormat(string actualFileName, string expectedFileName)
@@ -35,7 +36,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.FunctionalTests
             // These dynamic data will be replaced with xxxxxxxxxx.
             string dynamicContentLine = File.ReadAllLines(fileName)[0];
             string[] dynamicContents = dynamicContentLine.Split('#');
-            string data = File.ReadAllText(fileName);
+            string data = FileUtilities.DataStore.ReadFileAsText(fileName);
 
             foreach (string dynamicContent in dynamicContents)
             {

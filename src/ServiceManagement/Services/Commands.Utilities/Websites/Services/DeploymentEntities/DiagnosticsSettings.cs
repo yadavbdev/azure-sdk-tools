@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities
 {
-    using Newtonsoft.Json;
-
     /// <summary>
     /// Diagnostics settings.
     /// </summary>

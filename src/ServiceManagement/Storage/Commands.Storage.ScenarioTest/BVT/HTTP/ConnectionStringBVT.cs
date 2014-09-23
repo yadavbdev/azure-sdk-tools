@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Commands.Storage.ScenarioTest.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Commands.Storage.ScenarioTest.BVT.HTTP
 {
-    using Common;
-
     /// <summary>
     /// bvt tests using connection string
     /// </summary>
