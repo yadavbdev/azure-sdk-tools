@@ -104,10 +104,14 @@
     <Compile Include="DataFactories\RemoveAzureDataFactoryCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\CreatePSTableParameters.cs" />
+    <Compile Include="Gateway\GetAzureDataFactoryGatewayCommand.cs" />
+    <Compile Include="Gateway\NewAzureDataFactoryGatewayCommand.cs" />
+    <Compile Include="Gateway\RemoveAzureDataFactoryGatewayCommand.cs" />
     <Compile Include="Models\CreatePSLinkedServiceParameters.cs" />
     <Compile Include="LinkedServices\GetAzureDataFactoryLinkedServiceCommand.cs" />
     <Compile Include="LinkedServices\LinkedServiceContextBaseCmdlet.cs" />
+    <Compile Include="Models\DataFactoryClient.Gateway.cs" />
+    <Compile Include="Models\CreatePSTableParameters.cs" />
     <Compile Include="Models\DataFactoryClient.Tables.cs" />
     <Compile Include="Models\DataFactoryClientExtensions.cs" />
     <Compile Include="Models\TableFilterOptions.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="Models\DataFactoryParametersBase.cs" />
     <Compile Include="Models\DataFactoryFilterOptions.cs" />
     <Compile Include="Models\PSDataFactory.cs" />
+    <Compile Include="Models\PSDataFactoryGateway.cs" />
     <Compile Include="Models\PSLinkedService.cs" />
     <Compile Include="Models\PSTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
