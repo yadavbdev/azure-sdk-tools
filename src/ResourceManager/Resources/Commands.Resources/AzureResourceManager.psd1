@@ -60,7 +60,7 @@ TypesToProcess = @()
 FormatsToProcess = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.format.ps1xml',
     '.\Tags\Microsoft.Azure.Commands.Tags.format.ps1xml',
-    '.\Resources\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml'
+    '.\Resources\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml',
     '.\RedisCache\Microsoft.Azure.Commands.RedisCache.format.ps1xml'
 )
 
@@ -69,7 +69,7 @@ NestedModules = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.dll',
     '.\Resources\Microsoft.WindowsAzure.Commands.Profile.dll',
     '.\Tags\Microsoft.Azure.Commands.Tags.dll',
-    '.\Sql\Microsoft.Azure.Commands.Sql.dll'
+    '.\Sql\Microsoft.Azure.Commands.Sql.dll',
     '.\RedisCache\Microsoft.Azure.Commands.RedisCache.dll'
 )
 
