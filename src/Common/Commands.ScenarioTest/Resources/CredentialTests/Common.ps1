@@ -27,19 +27,33 @@ function Get-UserCredentials ([string] $userType)
 		(get-childitem "Env:\$varName").Value
 	}
 
+	function credential-from-username-password ($user, $password) 
+	{
+		$ss = ConvertTo-SecureString -String $password -AsPlainText -Force
+		New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $ss
+	}
+
+	function credential-from-environment-var ([string] $envVarPrefix) 
+	{
+		$user = (get-from-environment "${envVarPrefix}_USERNAME")
+		$password = (get-from-environment "${envVarPrefix}_PASSWORD")
+		credential-from-username-password $user $password
+	}
+
 	$typeHandlers = @{
 		OrgIdOneTenantOneSubscription = {
-			$user = (get-from-environment "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION_USERNAME")
-			$plainTextPassword = (get-from-environment "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION_PASSWORD")
-			$pwd = ConvertTo-SecureString -String $plainTextPassword -AsPlainText -Force
-			$credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $pwd
-
 			@{
-				Credential = $credential;
+				Credential = (credential-from-environment-var "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION");
 				Environment = (get-from-environment "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION_ENVIRONMENT");
 				ExpectedSubscription = (get-from-environment "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION_SUBSCRIPTIONID")
 			}
-		}
+		};
+		OrgIdForeignPrincipal = {
+			@{
+				Credential = (credential-from-environment-var "AZURE_ORGID_FPO");
+				Environment = (get-from-environment "AZURE_ORGID_FPO_ENVIRONMENT")
+			}
+		};
 	}
 
 	$handler = $typeHandlers[$userType]

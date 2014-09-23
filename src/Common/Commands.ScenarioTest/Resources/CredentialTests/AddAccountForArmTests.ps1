@@ -34,3 +34,26 @@ function Test-AddOrgIdWithSingleSubscription
 	# Can we use it to do something? If this passes then we're ok
 	Get-AzureResourceGroup
 }
+
+<#
+.SYNOPSIS
+Login with Foreign Principal fails with non-interactive flow with reasonable error message
+to output stream.
+#>
+function Test-NonInteractiveFPOLoginFails
+{
+	$accountInfo = Get-UserCredentials "OrgIdForeignPrincipal"
+	Assert-ThrowsContains { 
+		Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment 
+	} "No credentials found with the necessary validated claims that map to external user information."
+}
+
+<#
+.SYNOPSIS
+Attempt to login with Microsoft Account without user interaction fails with
+a reasonable message to error stream.
+#>
+function Test-MicrosoftAccountNotSupportedForNonInteractiveLogin
+{
+	
+}
