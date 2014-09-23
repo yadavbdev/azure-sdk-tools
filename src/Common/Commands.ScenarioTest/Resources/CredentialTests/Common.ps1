@@ -33,11 +33,17 @@ function Get-UserCredentials ([string] $userType)
 		New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $ss
 	}
 
+	function credential-from-connection-string ([string] $cs) 
+	{
+		$fields = [Microsoft.WindowsAzure.Testing.TestEnvironmentFactory]::ParseConnectionString($cs)
+		$user = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::UserId]
+		$password = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::Password]
+		credential-from-username-password $user $password
+	}
+
 	function credential-from-environment-var ([string] $envVarPrefix) 
 	{
-		$user = (get-from-environment "${envVarPrefix}_USERNAME")
-		$password = (get-from-environment "${envVarPrefix}_PASSWORD")
-		credential-from-username-password $user $password
+		credential-from-connection-string (get-from-environment $envVarPrefix)
 	}
 
 	$typeHandlers = @{
