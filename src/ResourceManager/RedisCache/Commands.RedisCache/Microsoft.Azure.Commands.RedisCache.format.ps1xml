@@ -39,10 +39,6 @@
                 <PropertyName>ProvisioningState</PropertyName>
               </ListItem>
               <ListItem>
-                <Label>RuntimeVersion</Label>
-                <PropertyName>RuntimeVersion</PropertyName>
-              </ListItem>
-              <ListItem>
                 <Label>SslPort</Label>
                 <PropertyName>SslPort</PropertyName>
               </ListItem>
