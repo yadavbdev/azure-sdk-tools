@@ -4,14 +4,17 @@
   ToolsVersion="4.0">
   <PropertyGroup>
     <TestSettings>.\src\Local.testsettings</TestSettings>
+    <TestSettings_x64>.\src\Local.x64.testsettings</TestSettings_x64>
     <ScenarioTestDebug>.\src\Common\Commands.ScenarioTest\bin\Debug\Microsoft.WindowsAzure.Commands.ScenarioTest.dll</ScenarioTestDebug>
-	<CommonTestDebug>.\src\Common\Commands.Common.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Common.Test.dll</CommonTestDebug>
-    <AzureRTTestSettings>.\src\AzureRT.testsettings</AzureRTTestSettings>
+    <CommonTestDebug>.\src\Common\Commands.Common.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Common.Test.dll</CommonTestDebug>
+    <SqlTestDebug>.\src\ResourceManager\Sql\Commands.Sql.Test\bin\Debug\Microsoft.Azure.Commands.Sql.Test.dll</SqlTestDebug>
+	<AzureRTTestSettings>.\src\AzureRT.testsettings</AzureRTTestSettings>
     <AzureRTTestContainer>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Test.dll</AzureRTTestContainer>
     <StorageScenarioTestDebug>src\ServiceManagement\Storage\Commands.Storage.ScenarioTest\bin\Debug\CLITest.dll</StorageScenarioTestDebug>
     <ManagementTestDebug>.\src\ServiceManagement\Services\Commands.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Test.dll</ManagementTestDebug>
     <ResourceManagerTestDebug>.\src\ResourceManager\Resources\Commands.Resources.Test\bin\Debug\Microsoft.Azure.Commands.Resources.Test.dll</ResourceManagerTestDebug>
     <ServiceManagementTestDebug>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Test.dll</ServiceManagementTestDebug>
+    <ServiceManagementExtensionsTestDebug>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Extensions.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.dll</ServiceManagementExtensionsTestDebug>
     <SqlDatabaseTestDebug>.\src\ServiceManagement\Sql\Commands.SqlDatabase.Test\bin\Debug\Microsoft.WindowsAzure.Commands.SqlDatabase.Test.dll</SqlDatabaseTestDebug>
     <HDInsightTestDebug>.\src\ServiceManagement\HDInsight\Commands.HDInsight.Test\bin\Debug\Microsoft.WindowsAzure.Commands.HDInsight.Test.dll</HDInsightTestDebug>
     <StorageTestDebug>.\src\ServiceManagement\Storage\Commands.Storage.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Storage.Test.dll</StorageTestDebug>
@@ -65,6 +68,12 @@
              Projects="build.proj"/>
   </Target>
 
+  <Target Name="TestServiceManagementExtensions">
+    <MSBuild Targets="InvokeMSTest"
+             Properties="_testAssembly=$(ServiceManagementExtensionsTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\ServiceManagementExtensionsDebug.trx"
+             Projects="build.proj"/>
+  </Target>
+
   <Target Name="TestSqlDatabase">
     <MSBuild Targets="InvokeMSTest"
         Properties="_testAssembly=$(SqlDatabaseTestDebug);_testSettings=$(TestSettings);_testFilter=$(TestFilter);_testResult=$(TestOutputDirectory)\SqlDatabaseDebug.trx"
@@ -100,6 +109,12 @@
 	<Xunit.Runner.MSBuild.xunit Assembly="$(CommonTestDebug)" Html="$(TestOutputDirectory)\CommonTests.xunit.dll.html" Verbose="true"/>
   </Target>
 
+  <!-- Run the sql tests -->
+  <Target Name="SqlTests">
+    <Message Importance="high" Text="Running Sql tests" />
+	<Xunit.Runner.MSBuild.xunit Assembly="$(SqlTestDebug)" Html="$(TestOutputDirectory)\SqlTests.xunit.dll.html" Verbose="true"/>
+  </Target>  
+  
   <!-- Run the scenario tests with Mocks -->
   <Target Name="MockedScenarioTests">
     <Message Importance="high" Text="Running scenario tests with Mocks" />
@@ -271,5 +286,15 @@
       Command="MSTest.exe /testcontainer:$(AzureRTTestContainer) /testsettings:$(AzureRTTestSettings) /category:Preview /resultsfile:$(TestOutputDirectory)\RTPreviewDebug.trx"
       ContinueOnError="false" />
   </Target>
+
+  <!-- DSC extension related targets -->
+  <Target Name="TestDSCExtension_x64">
+    <Message Importance="high" Text="Running DSC extension BVT x64 tests..." />
+    <Delete Files="$(TestOutputDirectory)\DSCExtensionDebug_x64.trx" />
+    <Exec
+      Command="MSTest.exe /testcontainer:$(ServiceManagementExtensionsTestDebug) /testsettings:$(TestSettings_x64) /category:x64_only /resultsfile:$(TestOutputDirectory)\DSCExtensionDebug_x64.trx"
+      ContinueOnError="false" />
+  </Target>
+
 </Project>
 
