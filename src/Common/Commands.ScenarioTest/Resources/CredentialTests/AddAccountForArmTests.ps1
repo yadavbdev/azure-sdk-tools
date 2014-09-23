@@ -55,5 +55,8 @@ a reasonable message to error stream.
 #>
 function Test-MicrosoftAccountNotSupportedForNonInteractiveLogin
 {
-	
+	$accountInfo = Get-UserCredentials MicrosoftId
+	Assert-ThrowsContains {
+		Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
+	} "-Credential parameter can only be used with Organization ID credentials"
 }

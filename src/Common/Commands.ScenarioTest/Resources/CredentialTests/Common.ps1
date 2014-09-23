@@ -54,6 +54,12 @@ function Get-UserCredentials ([string] $userType)
 				Environment = (get-from-environment "AZURE_ORGID_FPO_ENVIRONMENT")
 			}
 		};
+		MicrosoftId = {
+			@{
+				Credential = (credential-from-environment-var "AZURE_LIVEID");
+				Environment = 'AzureCloud'
+			}
+		}
 	}
 
 	$handler = $typeHandlers[$userType]
