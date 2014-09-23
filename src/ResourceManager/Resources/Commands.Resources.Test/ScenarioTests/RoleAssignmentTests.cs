@@ -13,7 +13,11 @@
 // ----------------------------------------------------------------------------------
 
 
+using Microsoft.Azure.Graph.RBAC.Models;
+using Microsoft.Azure.Graph.RBAC;
+using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Microsoft.WindowsAzure.Testing;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
@@ -60,6 +64,48 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         public void RaByUpn()
         {
             RunPowerShellTest("Test-RaByUpn");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void RaUserPermissions()
+        {
+            const string scriptMethod = "Test-RaUserPermissions '{0}' '{1}' '{2}'";
+            User newUser = null;
+
+            RunPowerShellTest(() =>
+                {
+                    var name = TestUtilities.GenerateName("aduser");
+                    var pass = TestUtilities.GenerateName("adpass")+"0#$";
+                    var upn = name + "@" + base.UserDomain;
+                    var permission = "*/reader";
+
+                    var parameter = new UserCreateParameters
+                    {
+                        UserPrincipalName = upn,
+                        DisplayName = name,
+                        AccountEnabled = true,
+                        MailNickname = name + "test",
+                        PasswordProfileSettings = new UserCreateParameters.PasswordProfile
+                                                    {
+                                                        ForceChangePasswordNextLogin = false,
+                                                        Password = pass
+                                                    }
+                    };
+
+                    newUser = base.GraphClient.User.Create(parameter).User;
+
+                    return new[] { string.Format(scriptMethod, name, pass, permission) };
+                },
+                () =>
+                {
+                    if(newUser != null)
+                    {
+                        base.GraphClient.User.Delete(newUser.ObjectId);
+                    }
+                });
+
+            //RunPowerShellTest("Test-RaUserPermissions 'user' 'pass' 'actionToVerify e.g. */reader'");
         }
     }
 }

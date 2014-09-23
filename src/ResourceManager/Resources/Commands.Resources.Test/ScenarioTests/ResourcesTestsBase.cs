@@ -23,6 +23,9 @@ using Microsoft.WindowsAzure.Testing;
 using Microsoft.Azure.Management.Authorization;
 using Microsoft.Azure.Graph.RBAC;
 using Microsoft.Azure.Utilities.HttpRecorder;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
@@ -30,7 +33,12 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
     {
         private EnvironmentSetupHelper helper;
         protected const string TenantIdKey = "TenantId";
+        protected const string DomainKey = "Domain";
 
+        protected GraphRbacManagementClient GraphClient { get; private set; }
+
+        protected string UserDomain { get; private set; }
+        
         protected ResourcesTestsBase()
         {
             helper = new EnvironmentSetupHelper();
@@ -43,29 +51,36 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
             var authorizationManagementClient = GetAuthorizationManagementClient();
-            var graphClient = GetGraphClient();
+            GraphClient = GetGraphClient();
 
             helper.SetupManagementClients(resourceManagementClient,
                 subscriptionsClient,
                 galleryClient,
                 eventsClient,
                 authorizationManagementClient,
-                graphClient);
+                GraphClient);
         }
 
-        private object GetGraphClient()
+        private GraphRbacManagementClient GetGraphClient()
         {
             var factory = new CSMTestEnvironmentFactory();
+            var environment = factory.GetTestEnvironment();
             string tenantId = null;
 
             if (HttpMockServer.Mode == HttpRecorderMode.Record)
             {
-                tenantId = factory.GetTestEnvironment().AuthorizationContext.TenatId;
+                tenantId = environment.AuthorizationContext.TenatId;
+                UserDomain = environment.AuthorizationContext.UserId
+                                .Split(new[] { "@" }, StringSplitOptions.RemoveEmptyEntries)
+                                .Last();
+                
                 HttpMockServer.Variables[TenantIdKey] = tenantId;
+                HttpMockServer.Variables[DomainKey] = UserDomain;
             }
             else if (HttpMockServer.Mode == HttpRecorderMode.Playback)
             {
                 tenantId = HttpMockServer.Variables[TenantIdKey];
+                UserDomain = HttpMockServer.Variables[DomainKey];
             }
 
             return TestBase.GetGraphServiceClient<GraphRbacManagementClient>(factory, tenantId);
@@ -78,6 +93,16 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 
         protected void RunPowerShellTest(params string[] scripts)
         {
+            RunPowerShellTest(() => scripts, null);
+        }
+
+        protected void RunPowerShellTest(Func<string []> scriptBuilder, Action cleanup)
+        {
+            if(scriptBuilder == null)
+            {
+                throw new ArgumentException("scriptBuilder delegate cannot be null.");
+            }
+
             using (UndoContext context = UndoContext.Current)
             {
                 context.Start(TestUtilities.GetCallingClass(2), TestUtilities.GetCurrentMethodName(2));
@@ -88,7 +113,17 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 helper.SetupModules(AzureModule.AzureResourceManager, "ScenarioTests\\Common.ps1",
                     "ScenarioTests\\" + this.GetType().Name + ".ps1");
 
-                helper.RunPowerShellTest(scripts);
+                try
+                {
+                    helper.RunPowerShellTest(scriptBuilder());
+                }
+                finally
+                {
+                    if(cleanup !=null)
+                    {
+                        cleanup();
+                    }
+                }
             }
         }
 
