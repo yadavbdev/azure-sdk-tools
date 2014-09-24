@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
 
         public List<RegionsResponse.Region> GetLocations()
         {
-            return new List< RegionsResponse.Region >(client.CacheServices.GetRegions().Regions);
+            return new List<RegionsResponse.Region>(client.CacheServices.ListRegions().Regions);
         }
 
         public CloudServiceResource CreateCacheService (
