@@ -12,6 +12,13 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------------
 
+### Helper functions for below tests ###
+function Assert-Empty-Profile
+{
+	Assert-True { (Get-AzureSubscription).Length -eq 0 } "Assumed no subscriptions, but there is at least one"
+	Assert-True { (Get-AzureAccount).Length -eq 0 }	"Assumed no accounts, but there is at least one"
+}
+
 ### Add-AzureAccount Scenario Tests for CSM ####
 
 <#
@@ -20,6 +27,9 @@ Tests that single user account can be used to log in and list resource groups
 #>
 function Test-AddOrgIdWithSingleSubscription
 {
+	# Start off by verifying that there are no subscriptions or accounts
+	Assert-Empty-Profile
+
 	# Verify that account can be added and used to access the
 	# expected subscription
 	$accountInfo = Get-UserCredentials "OrgIdOneTenantOneSubscription"
@@ -27,9 +37,14 @@ function Test-AddOrgIdWithSingleSubscription
 
 	# Is there one subscription added?
 	Assert-True { (Get-AzureSubscription).Length -eq 1 }
+	$sub = (Get-AzureSubscription)[0]
 
 	# does it have the right subscription id?
-	Assert-True { (Get-AzureSubscription)[0].SubscriptionId -eq $accountInfo.ExpectedSubscription }
+	Assert-True { $sub.SubscriptionId -eq $accountInfo.ExpectedSubscription }
+
+	# It's set as current account and as default account
+	Assert-True { $sub.IsCurrent }
+	Assert-True { $sub.IsDefault }
 
 	# Can we use it to do something? If this passes then we're ok
 	Get-AzureResourceGroup
@@ -59,4 +74,17 @@ function Test-MicrosoftAccountNotSupportedForNonInteractiveLogin
 	Assert-ThrowsContains {
 		Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
 	} "-Credential parameter can only be used with Organization ID credentials"
+}
+
+<#
+.SYNOPSIS
+Login with service principal with no other accounts
+#>
+function Test-AddServicePrincipalToEmptyProfile
+{
+	Assert-Empty-Profile
+	$accountInfo = Get-UserCredentials ServicePrincipal
+	Add-AzureAccount -ServicePrincipal -Credential $accountInfo.Credential -Environment $accountInfo.Environment -Tenant $accountInfo.TenantId
+
+	Assert-True { (Get-AzureSubscription).Length -eq 1 } "Subscription was not added"
 }

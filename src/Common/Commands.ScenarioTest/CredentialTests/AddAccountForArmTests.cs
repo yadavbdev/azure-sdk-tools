@@ -28,6 +28,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
         [InlineData("Test-AddOrgIdWithSingleSubscription")]
         [InlineData("Test-NonInteractiveFPOLoginFails")]
         [InlineData("Test-MicrosoftAccountNotSupportedForNonInteractiveLogin")]
+        [InlineData("Test-AddServicePrincipalToEmptyProfile")]
         public void RunTests(string testScript)
         {
             RunPowerShellTest(testScript);
