@@ -59,7 +59,6 @@ function Test-ListLocationsSupportCaching
     $found = $FALSE
     foreach ($location in $allLocations)
     {
-        Write-Warning $location.Location
         if ($location.Location -eq "West US")
         {
             $found = $TRUE
