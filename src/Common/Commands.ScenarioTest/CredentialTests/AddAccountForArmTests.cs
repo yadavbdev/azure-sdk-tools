@@ -30,6 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
         [InlineData("Test-MicrosoftAccountNotSupportedForNonInteractiveLogin")]
         [InlineData("Test-AddServicePrincipalToEmptyProfile")]
         [InlineData("Test-LoginWithUserAndServicePrincipal")]
+        [InlineData("Test-LoginWithServicePrincipalAndUser")]
         public void RunTests(string testScript)
         {
             RunPowerShellTest(testScript);

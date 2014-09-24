@@ -105,3 +105,20 @@ function Test-LoginWithUserAndServicePrincipal
 	$sub = (Get-AzureSubscription)[0]
 	Assert-True { $sub.DefaultAccount -eq $servicePrincipalAccount.UserId }
 }
+
+<#
+.SYNOPSIS
+Login with service principal, then user, user should be default account
+#>
+function Test-LoginWithServicePrincipalAndUser
+{
+	Assert-Empty-Profile
+	$userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
+	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+
+	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+	Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
+
+	$sub = (Get-AzureSubscription)[0]
+	Assert-True { $sub.DefaultAccount -eq $userAccount.UserId }
+}
