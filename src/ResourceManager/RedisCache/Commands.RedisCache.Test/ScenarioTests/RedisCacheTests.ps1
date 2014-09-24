@@ -4,11 +4,11 @@ Tests redis cache.
 #>
 function Test-RedisCache
 {
-	# Setup
-	# resource group should exists
-	$resourceGroupName = "redisruntimetestrg"
-	$cacheName = "powershelltest"
-	$location = "North Central US"
+    # Setup
+    # resource group should exists
+    $resourceGroupName = "redisruntimetestrg"
+    $cacheName = "powershelltest"
+    $location = "North Central US"
 	
     # Creating Cache
     $cacheCreated = New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Basic
@@ -35,7 +35,7 @@ function Test-RedisCache
 		$cacheGet = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName
         if ([string]::Compare("succeeded", $cacheGet[0].ProvisioningState, $True) -eq 0)
         {
-			Assert-AreEqual $cacheName $cacheGet[0].Name
+            Assert-AreEqual $cacheName $cacheGet[0].Name
             Assert-AreEqual $location $cacheGet[0].Location
             Assert-AreEqual "Microsoft.Cache/Redis" $cacheGet[0].Type
             Assert-AreEqual $resourceGroupName $cacheGet[0].ResourceGroupName
@@ -51,8 +51,8 @@ function Test-RedisCache
         Assert-False {$i -eq 60} "Cache is not in succeeded state even after 30 min."
     }
 
-	# Updating Cache
-	$cacheUpdated = Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU
+    # Updating Cache
+    $cacheUpdated = Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU
     
     Assert-AreEqual $cacheName $cacheUpdated.Name
     Assert-AreEqual $location $cacheUpdated.Location
@@ -142,14 +142,14 @@ Tests set redis cache that do not exists.
 #>
 function Test-SetNonExistingRedisCacheTest
 {
-	# Setup
-	# resource group should exists
-	$resourceGroupName = "redisruntimetestrg"
-	$cacheName = "NonExistingRedisCache"
-	$location = "North Central US"
+    # Setup
+    # resource group should exists
+    $resourceGroupName = "redisruntimetestrg"
+    $cacheName = "NonExistingRedisCache"
+    $location = "North Central US"
 	
     # Creating Cache
-	Assert-Throws {Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU}
+    Assert-Throws {Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU}
 }
 
 <#
@@ -158,14 +158,14 @@ Tests creating redis cache that already exists.
 #>
 function Test-CreateExistingRedisCacheTest
 {
-	# Setup
-	# resource group should exists
-	$resourceGroupName = "redisruntimetestrg"
-	$cacheName = "powershell004"
-	$location = "North Central US"
+    # Setup
+    # resource group should exists
+    $resourceGroupName = "redisruntimetestrg"
+    $cacheName = "powershell004"
+    $location = "North Central US"
 	
     # Creating Cache
-	Assert-ThrowsContains {New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Standard} "already exists"
+    Assert-ThrowsContains {New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Standard} "already exists"
 }
 
 <#
@@ -174,11 +174,11 @@ Tests redis cache.
 #>
 function Test-RedisCachePipeline
 {
-	# Setup
-	# resource group should exists
-	$resourceGroupName = "redisruntimetestrg"
-	$cacheName = "powershelltestpipe"
-	$location = "North Central US"
+    # Setup
+    # resource group should exists
+    $resourceGroupName = "redisruntimetestrg"
+    $cacheName = "powershelltestpipe"
+    $location = "North Central US"
 	
     # Creating Cache
     $cacheCreated = New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Basic
@@ -205,7 +205,7 @@ function Test-RedisCachePipeline
 		$cacheGet = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName
         if ([string]::Compare("succeeded", $cacheGet[0].ProvisioningState, $True) -eq 0)
         {
-			Assert-AreEqual $cacheName $cacheGet[0].Name
+            Assert-AreEqual $cacheName $cacheGet[0].Name
             Assert-AreEqual $location $cacheGet[0].Location
             Assert-AreEqual "Microsoft.Cache/Redis" $cacheGet[0].Type
             Assert-AreEqual $resourceGroupName $cacheGet[0].ResourceGroupName
@@ -221,9 +221,9 @@ function Test-RedisCachePipeline
         Assert-False {$i -eq 60} "Cache is not in succeeded state even after 30 min."
     }
 	
-	# Updating Cache using pipeline
-	Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Set-AzureRedisCache -MaxMemoryPolicy AllKeysRandom
-	$cacheUpdatedPiped = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName 
+    # Updating Cache using pipeline
+    Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Set-AzureRedisCache -MaxMemoryPolicy AllKeysRandom
+    $cacheUpdatedPiped = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName 
     
     Assert-AreEqual $cacheName $cacheUpdatedPiped.Name
     Assert-AreEqual $location $cacheUpdatedPiped.Location
