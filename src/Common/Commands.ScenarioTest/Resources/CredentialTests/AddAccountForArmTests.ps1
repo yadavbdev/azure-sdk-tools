@@ -122,3 +122,49 @@ function Test-LoginWithServicePrincipalAndUser
 	$sub = (Get-AzureSubscription)[0]
 	Assert-True { $sub.DefaultAccount -eq $userAccount.UserId }
 }
+
+<#
+.SYNOPSIS
+Login then logout should result in exclusive subscription being removed
+#>
+function Test-ServicePrincipalExclusiveLogout
+{
+	Assert-Empty-Profile
+	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+
+	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+
+	Assert-True { (Get-AzureSubscription).Length -eq 1 }
+
+	Remove-AzureAccount $servicePrincipalAccount.UserId -Force
+
+	Assert-True { (Get-AzureSubscription).Length -eq 0 }
+	Assert-True { (Get-AzureAccount).Length -eq 0 }
+}
+
+<#
+.SYNOPSIS
+Login Service Principal and User, then logout Service principal.
+#>
+function Test-ServicePrincipalLogoutWithUserOnSameSubscription
+{
+	Assert-Empty-Profile
+	Assert-Empty-Profile
+
+	$userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
+	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+
+	Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
+	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+
+	$sub = (Get-AzureSubscription)[0]
+	Assert-True { (Get-AzureSubscription).Length -eq 1 }
+	Assert-True { $sub.DefaultAccount -eq $servicePrincipalAccount.UserId }
+
+	Remove-AzureAccount $servicePrincipalAccount.UserId -Force
+
+	$sub = (Get-AzureSubscription)[0]
+	Assert-True { (Get-AzureSubscription).Length -eq 1 }
+	Assert-True { $sub.DefaultAccount -eq $userAccount.UserId }
+	Assert-True { (Get-AzureAccount).Length -eq 1 }
+}

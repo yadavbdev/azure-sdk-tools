@@ -31,6 +31,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
         [InlineData("Test-AddServicePrincipalToEmptyProfile")]
         [InlineData("Test-LoginWithUserAndServicePrincipal")]
         [InlineData("Test-LoginWithServicePrincipalAndUser")]
+        [InlineData("Test-ServicePrincipalExclusiveLogout")]
+        [InlineData("Test-ServicePrincipalLogoutWithUserOnSameSubscription")]
         public void RunTests(string testScript)
         {
             RunPowerShellTest(testScript);
