@@ -64,6 +64,7 @@ function Get-UserCredentials ([string] $userType)
 	{
 		$fields = fields-from-connection-string $cs
 		@{
+			UserId = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::UserId];
 			Credential = (credential-from-fields $fields);
 			Environment = (environment-from-fields $fields);
 			ExpectedSubscription = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::SubscriptionId];

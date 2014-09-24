@@ -88,3 +88,20 @@ function Test-AddServicePrincipalToEmptyProfile
 
 	Assert-True { (Get-AzureSubscription).Length -eq 1 } "Subscription was not added"
 }
+
+<#
+.SYNOPSIS
+Login with user, then then SP, SP should be default account
+#>
+function Test-LoginWithUserAndServicePrincipal
+{
+	Assert-Empty-Profile
+	$userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
+	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+
+	Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
+	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+
+	$sub = (Get-AzureSubscription)[0]
+	Assert-True { $sub.DefaultAccount -eq $servicePrincipalAccount.UserId }
+}
