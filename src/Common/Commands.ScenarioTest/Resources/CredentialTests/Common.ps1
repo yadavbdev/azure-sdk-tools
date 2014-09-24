@@ -20,74 +20,74 @@ Function to get user name and password for a variety of different account types
 
 function Get-UserCredentials ([string] $userType) 
 {
-	function get-from-environment ($varName) {
-	    if (-not (test-path "Env:\$varName")) {
-		    throw "Required environment variable $varName is not set"
-		}
-		(get-childitem "Env:\$varName").Value
-	}
+    function get-from-environment ($varName) {
+        if (-not (test-path "Env:\$varName")) {
+            throw "Required environment variable $varName is not set"
+        }
+        (get-childitem "Env:\$varName").Value
+    }
 
-	function credential-from-username-password ($user, $password) 
-	{
-		$ss = ConvertTo-SecureString -String $password -AsPlainText -Force
-		New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $ss
-	}
+    function credential-from-username-password ($user, $password) 
+    {
+        $ss = ConvertTo-SecureString -String $password -AsPlainText -Force
+        New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $ss
+    }
 
-	function fields-from-connection-string ([string] $cs) 
-	{
-		[Microsoft.WindowsAzure.Testing.TestEnvironmentFactory]::ParseConnectionString($cs)
-	}
+    function fields-from-connection-string ([string] $cs) 
+    {
+        [Microsoft.WindowsAzure.Testing.TestEnvironmentFactory]::ParseConnectionString($cs)
+    }
 
-	function credential-from-fields ($fields) 
-	{
-		$user = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::UserId]
-		$password = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::Password]
-		credential-from-username-password $user $password
-	}
+    function credential-from-fields ($fields) 
+    {
+        $user = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::UserId]
+        $password = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::Password]
+        credential-from-username-password $user $password
+    }
 
-	function environment-from-fields ($fields) 
-	{
-		$baseUri = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::BaseUri]
-		if (($baseUri -eq $null) -or ($baseUri -eq "")) {
-			"AzureCloud"
-		} else {
-			$envs = (Get-AzureEnvironment | ? { $_.ServiceManagement -eq $baseUri })
-			if ($envs.Length -eq 1) {
-				$envs[0].Name
-			} else {
-				throw "Could not find environment matching $baseUri"
-			}
-		}
-	}
+    function environment-from-fields ($fields) 
+    {
+        $baseUri = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::BaseUri]
+        if (($baseUri -eq $null) -or ($baseUri -eq "")) {
+            "AzureCloud"
+        } else {
+            $envs = (Get-AzureEnvironment | ? { $_.ServiceManagement -eq $baseUri })
+            if ($envs.Length -eq 1) {
+                $envs[0].Name
+            } else {
+                throw "Could not find environment matching $baseUri"
+            }
+        }
+    }
 
-	function account-info-from-connection-string ([string] $cs) 
-	{
-		$fields = fields-from-connection-string $cs
-		@{
-			UserId = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::UserId];
-			Credential = (credential-from-fields $fields);
-			Environment = (environment-from-fields $fields);
-			ExpectedSubscription = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::SubscriptionId];
-			TenantId = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::AADTenant]
-		}
-	}
+    function account-info-from-connection-string ([string] $cs) 
+    {
+        $fields = fields-from-connection-string $cs
+        @{
+            UserId = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::UserId];
+            Credential = (credential-from-fields $fields);
+            Environment = (environment-from-fields $fields);
+            ExpectedSubscription = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::SubscriptionId];
+            TenantId = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::AADTenant]
+        }
+    }
 
-	function account-info-from-environment-var ([string] $envvar) {
-		$cs = get-from-environment $envvar
-		account-info-from-connection-string $cs
-	}
+    function account-info-from-environment-var ([string] $envvar) {
+        $cs = get-from-environment $envvar
+        account-info-from-connection-string $cs
+    }
 
-	$typeHandlers = @{
-		OrgIdOneTenantOneSubscription = { account-info-from-environment-var AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION };
-		OrgIdForeignPrincipal = { account-info-from-environment-var AZURE_ORGID_FPO };
-		MicrosoftId = { account-info-from-environment-var AZURE_LIVEID };
-		ServicePrincipal = { account-info-from-environment-var AZURE_SERVICE_PRINCIPAL }
-	}
+    $typeHandlers = @{
+        OrgIdOneTenantOneSubscription = { account-info-from-environment-var AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION };
+        OrgIdForeignPrincipal = { account-info-from-environment-var AZURE_ORGID_FPO };
+        MicrosoftId = { account-info-from-environment-var AZURE_LIVEID };
+        ServicePrincipal = { account-info-from-environment-var AZURE_SERVICE_PRINCIPAL }
+    }
 
-	$handler = $typeHandlers[$userType]
-	if ($handler -ne $Null) {
-		& $handler
-	} else {
-		throw "Unknown credential type $userType"
-	}
+    $handler = $typeHandlers[$userType]
+    if ($handler -ne $Null) {
+        & $handler
+    } else {
+        throw "Unknown credential type $userType"
+    }
 }

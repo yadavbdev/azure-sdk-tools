@@ -15,8 +15,8 @@
 ### Helper functions for below tests ###
 function Assert-Empty-Profile
 {
-	Assert-True { (Get-AzureSubscription).Length -eq 0 } "Assumed no subscriptions, but there is at least one"
-	Assert-True { (Get-AzureAccount).Length -eq 0 }	"Assumed no accounts, but there is at least one"
+    Assert-True { (Get-AzureSubscription).Length -eq 0 } "Assumed no subscriptions, but there is at least one"
+    Assert-True { (Get-AzureAccount).Length -eq 0 }	"Assumed no accounts, but there is at least one"
 }
 
 ### Add-AzureAccount Scenario Tests for CSM ####
@@ -27,27 +27,27 @@ Tests that single user account can be used to log in and list resource groups
 #>
 function Test-AddOrgIdWithSingleSubscription
 {
-	# Start off by verifying that there are no subscriptions or accounts
-	Assert-Empty-Profile
+    # Start off by verifying that there are no subscriptions or accounts
+    Assert-Empty-Profile
 
-	# Verify that account can be added and used to access the
-	# expected subscription
-	$accountInfo = Get-UserCredentials "OrgIdOneTenantOneSubscription"
-	Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
+    # Verify that account can be added and used to access the
+    # expected subscription
+    $accountInfo = Get-UserCredentials "OrgIdOneTenantOneSubscription"
+    Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
 
-	# Is there one subscription added?
-	Assert-True { (Get-AzureSubscription).Length -eq 1 }
-	$sub = (Get-AzureSubscription)[0]
+    # Is there one subscription added?
+    Assert-True { (Get-AzureSubscription).Length -eq 1 }
+    $sub = (Get-AzureSubscription)[0]
 
-	# does it have the right subscription id?
-	Assert-True { $sub.SubscriptionId -eq $accountInfo.ExpectedSubscription }
+    # does it have the right subscription id?
+    Assert-True { $sub.SubscriptionId -eq $accountInfo.ExpectedSubscription }
 
-	# It's set as current account and as default account
-	Assert-True { $sub.IsCurrent }
-	Assert-True { $sub.IsDefault }
+    # It's set as current account and as default account
+    Assert-True { $sub.IsCurrent }
+    Assert-True { $sub.IsDefault }
 
-	# Can we use it to do something? If this passes then we're ok
-	Get-AzureResourceGroup
+    # Can we use it to do something? If this passes then we're ok
+    Get-AzureResourceGroup
 }
 
 <#
@@ -57,10 +57,10 @@ to output stream.
 #>
 function Test-NonInteractiveFPOLoginFails
 {
-	$accountInfo = Get-UserCredentials "OrgIdForeignPrincipal"
-	Assert-ThrowsContains { 
-		Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment 
-	} "No credentials found with the necessary validated claims that map to external user information."
+    $accountInfo = Get-UserCredentials "OrgIdForeignPrincipal"
+    Assert-ThrowsContains { 
+        Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment 
+    } "No credentials found with the necessary validated claims that map to external user information."
 }
 
 <#
@@ -70,10 +70,10 @@ a reasonable message to error stream.
 #>
 function Test-MicrosoftAccountNotSupportedForNonInteractiveLogin
 {
-	$accountInfo = Get-UserCredentials MicrosoftId
-	Assert-ThrowsContains {
-		Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
-	} "-Credential parameter can only be used with Organization ID credentials"
+    $accountInfo = Get-UserCredentials MicrosoftId
+    Assert-ThrowsContains {
+        Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
+    } "-Credential parameter can only be used with Organization ID credentials"
 }
 
 <#
@@ -82,11 +82,11 @@ Login with service principal with no other accounts
 #>
 function Test-AddServicePrincipalToEmptyProfile
 {
-	Assert-Empty-Profile
-	$accountInfo = Get-UserCredentials ServicePrincipal
-	Add-AzureAccount -ServicePrincipal -Credential $accountInfo.Credential -Environment $accountInfo.Environment -Tenant $accountInfo.TenantId
+    Assert-Empty-Profile
+    $accountInfo = Get-UserCredentials ServicePrincipal
+    Add-AzureAccount -ServicePrincipal -Credential $accountInfo.Credential -Environment $accountInfo.Environment -Tenant $accountInfo.TenantId
 
-	Assert-True { (Get-AzureSubscription).Length -eq 1 } "Subscription was not added"
+    Assert-True { (Get-AzureSubscription).Length -eq 1 } "Subscription was not added"
 }
 
 <#
@@ -95,15 +95,15 @@ Login with user, then then SP, SP should be default account
 #>
 function Test-LoginWithUserAndServicePrincipal
 {
-	Assert-Empty-Profile
-	$userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
-	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+    Assert-Empty-Profile
+    $userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
+    $servicePrincipalAccount = Get-UserCredentials ServicePrincipal
 
-	Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
-	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+    Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
+    Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
 
-	$sub = (Get-AzureSubscription)[0]
-	Assert-True { $sub.DefaultAccount -eq $servicePrincipalAccount.UserId }
+    $sub = (Get-AzureSubscription)[0]
+    Assert-True { $sub.DefaultAccount -eq $servicePrincipalAccount.UserId }
 }
 
 <#
@@ -112,15 +112,15 @@ Login with service principal, then user, user should be default account
 #>
 function Test-LoginWithServicePrincipalAndUser
 {
-	Assert-Empty-Profile
-	$userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
-	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+    Assert-Empty-Profile
+    $userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
+    $servicePrincipalAccount = Get-UserCredentials ServicePrincipal
 
-	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
-	Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
+    Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+    Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
 
-	$sub = (Get-AzureSubscription)[0]
-	Assert-True { $sub.DefaultAccount -eq $userAccount.UserId }
+    $sub = (Get-AzureSubscription)[0]
+    Assert-True { $sub.DefaultAccount -eq $userAccount.UserId }
 }
 
 <#
@@ -129,17 +129,17 @@ Login then logout should result in exclusive subscription being removed
 #>
 function Test-ServicePrincipalExclusiveLogout
 {
-	Assert-Empty-Profile
-	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+    Assert-Empty-Profile
+    $servicePrincipalAccount = Get-UserCredentials ServicePrincipal
 
-	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+    Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
 
-	Assert-True { (Get-AzureSubscription).Length -eq 1 }
+    Assert-True { (Get-AzureSubscription).Length -eq 1 }
 
-	Remove-AzureAccount $servicePrincipalAccount.UserId -Force
+    Remove-AzureAccount $servicePrincipalAccount.UserId -Force
 
-	Assert-True { (Get-AzureSubscription).Length -eq 0 }
-	Assert-True { (Get-AzureAccount).Length -eq 0 }
+    Assert-True { (Get-AzureSubscription).Length -eq 0 }
+    Assert-True { (Get-AzureAccount).Length -eq 0 }
 }
 
 <#
@@ -148,23 +148,23 @@ Login Service Principal and User, then logout Service principal.
 #>
 function Test-ServicePrincipalLogoutWithUserOnSameSubscription
 {
-	Assert-Empty-Profile
-	Assert-Empty-Profile
+    Assert-Empty-Profile
+    Assert-Empty-Profile
 
-	$userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
-	$servicePrincipalAccount = Get-UserCredentials ServicePrincipal
+    $userAccount = Get-UserCredentials OrgIdOneTenantOneSubscription
+    $servicePrincipalAccount = Get-UserCredentials ServicePrincipal
 
-	Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
-	Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
+    Add-AzureAccount -Credential $userAccount.Credential -Environment $accountInfo.Environment
+    Add-AzureAccount -ServicePrincipal -Credential $servicePrincipalAccount.Credential -Environment $servicePrincipalAccount.Environment -Tenant $servicePrincipalAccount.TenantId
 
-	$sub = (Get-AzureSubscription)[0]
-	Assert-True { (Get-AzureSubscription).Length -eq 1 }
-	Assert-True { $sub.DefaultAccount -eq $servicePrincipalAccount.UserId }
+    $sub = (Get-AzureSubscription)[0]
+    Assert-True { (Get-AzureSubscription).Length -eq 1 }
+    Assert-True { $sub.DefaultAccount -eq $servicePrincipalAccount.UserId }
 
-	Remove-AzureAccount $servicePrincipalAccount.UserId -Force
+    Remove-AzureAccount $servicePrincipalAccount.UserId -Force
 
-	$sub = (Get-AzureSubscription)[0]
-	Assert-True { (Get-AzureSubscription).Length -eq 1 }
-	Assert-True { $sub.DefaultAccount -eq $userAccount.UserId }
-	Assert-True { (Get-AzureAccount).Length -eq 1 }
+    $sub = (Get-AzureSubscription)[0]
+    Assert-True { (Get-AzureSubscription).Length -eq 1 }
+    Assert-True { $sub.DefaultAccount -eq $userAccount.UserId }
+    Assert-True { (Get-AzureAccount).Length -eq 1 }
 }
