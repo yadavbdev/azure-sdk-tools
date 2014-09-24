@@ -33,39 +33,54 @@ function Get-UserCredentials ([string] $userType)
 		New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $ss
 	}
 
-	function credential-from-connection-string ([string] $cs) 
+	function fields-from-connection-string ([string] $cs) 
 	{
-		$fields = [Microsoft.WindowsAzure.Testing.TestEnvironmentFactory]::ParseConnectionString($cs)
+		[Microsoft.WindowsAzure.Testing.TestEnvironmentFactory]::ParseConnectionString($cs)
+	}
+
+	function credential-from-fields ($fields) 
+	{
 		$user = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::UserId]
 		$password = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::Password]
 		credential-from-username-password $user $password
 	}
 
-	function credential-from-environment-var ([string] $envVarPrefix) 
+	function environment-from-fields ($fields) 
 	{
-		credential-from-connection-string (get-from-environment $envVarPrefix)
+		$baseUri = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::BaseUri]
+		if (($baseUri -eq $null) -or ($baseUri -eq "")) {
+			"AzureCloud"
+		} else {
+			$envs = (Get-AzureEnvironment | ? { $_.ServiceManagement -eq $baseUri })
+			if ($envs.Length -eq 1) {
+				$envs[0].Name
+			} else {
+				throw "Could not find environment matching $baseUri"
+			}
+		}
+	}
+
+	function account-info-from-connection-string ([string] $cs) 
+	{
+		$fields = fields-from-connection-string $cs
+		@{
+			Credential = (credential-from-fields $fields);
+			Environment = (environment-from-fields $fields);
+			ExpectedSubscription = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::SubscriptionId];
+			TenantId = $fields[[Microsoft.WindowsAzure.Testing.ConnectionStringFields]::AADTenant]
+		}
+	}
+
+	function account-info-from-environment-var ([string] $envvar) {
+		$cs = get-from-environment $envvar
+		account-info-from-connection-string $cs
 	}
 
 	$typeHandlers = @{
-		OrgIdOneTenantOneSubscription = {
-			@{
-				Credential = (credential-from-environment-var "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION");
-				Environment = (get-from-environment "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION_ENVIRONMENT");
-				ExpectedSubscription = (get-from-environment "AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION_SUBSCRIPTIONID")
-			}
-		};
-		OrgIdForeignPrincipal = {
-			@{
-				Credential = (credential-from-environment-var "AZURE_ORGID_FPO");
-				Environment = (get-from-environment "AZURE_ORGID_FPO_ENVIRONMENT")
-			}
-		};
-		MicrosoftId = {
-			@{
-				Credential = (credential-from-environment-var "AZURE_LIVEID");
-				Environment = 'AzureCloud'
-			}
-		}
+		OrgIdOneTenantOneSubscription = { account-info-from-environment-var AZURE_ORGID_ONE_TENANT_ONE_SUBSCRIPTION };
+		OrgIdForeignPrincipal = { account-info-from-environment-var AZURE_ORGID_FPO };
+		MicrosoftId = { account-info-from-environment-var AZURE_LIVEID };
+		ServicePrincipal = { account-info-from-environment-var AZURE_SERVICE_PRINCIPAL }
 	}
 
 	$handler = $typeHandlers[$userType]
