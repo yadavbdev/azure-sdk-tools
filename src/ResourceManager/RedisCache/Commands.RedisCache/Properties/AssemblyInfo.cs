@@ -32,6 +32,3 @@ using System.Runtime.InteropServices;
 #else
 [assembly: InternalsVisibleTo("Microsoft.Azure.Commands.RedisCache.Test")]
 #endif
-
-
-
