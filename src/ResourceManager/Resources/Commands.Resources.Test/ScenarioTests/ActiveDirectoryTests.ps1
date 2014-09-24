@@ -33,18 +33,18 @@ function Test-GetAllADGroups
 .SYNOPSIS
 Tests getting Active Directory groups.
 #>
-function Test-GetADGroupWithSearchString
+function Test-GetADGroupWithSearchString 
 {
+    param([string]$displayName)
+    
     # Test
     # Select at most 10 groups. Groups are restricted to contain "test" to fasten the test
-    $groups = Get-AzureADGroup -SearchString "reader"
+    $groups = Get-AzureADGroup -SearchString $displayName
 
     # Assert
-    Assert-NotNull($groups)
-    foreach($group in $groups) {
-        Assert-NotNull($group.DisplayName)
-        Assert-NotNull($group.Id)
-    }
+    Assert-AreEqual $groups.Count 1
+    Assert-NotNull $groups[0].Id
+    Assert-AreEqual $groups[0].DisplayName $displayName
 }
 
 <#
@@ -67,12 +67,14 @@ Tests getting Active Directory groups.
 #>
 function Test-GetADGroupWithObjectId
 {
+    param([string]$objectId)
+    
     # Test
-    $groups = Get-AzureADGroup -ObjectId "d5fbb343-cf1d-47bb-9aa8-5c3dd57b336f"
+    $groups = Get-AzureADGroup -ObjectId $objectId
 
     # Assert
     Assert-AreEqual $groups.Count 1
-    Assert-AreEqual $groups[0].Id "d5fbb343-cf1d-47bb-9aa8-5c3dd57b336f"
+    Assert-AreEqual $groups[0].Id $objectId
     Assert-NotNull($groups[0].DisplayName)
 }
 
@@ -83,7 +85,7 @@ Tests getting Active Directory groups.
 function Test-GetADGroupWithBadObjectId
 {
     # Test
-    $groups = Get-AzureADGroup -ObjectId "deadbeef-dead-beef-dead-beefdeadbeef"
+    $groups = Get-AzureADGroup -ObjectId "baadc0de-baad-c0de-baad-c0debaadc0de"
 
     # Assert
     Assert-Null $groups
@@ -95,11 +97,10 @@ Tests getting Active Directory groups.
 #>
 function Test-GetADGroupWithUserObjectId
 {
-    # Setup
-    $user = Get-AzureADUser | Select-Object -First 1 -Wait
+    param([string]$objectId)
 
     # Test
-    $groups = Get-AzureADGroup -ObjectId $user[0].Id
+    $groups = Get-AzureADGroup -ObjectId $objectId
 
     # Assert
     Assert-Null $groups
@@ -111,15 +112,15 @@ Tests getting members from an Active Directory group.
 #>
 function Test-GetADGroupMemberWithGroupObjectId
 {
+    param([string]$groupObjectId, [string]$userObjectId, [string]$userName)
+
     # Test
-    $members = Get-AzureADGroupMember -GroupObjectId "fb7d9586-9377-43c8-95c0-22f1f067915f"
+    $members = Get-AzureADGroupMember -GroupObjectId $groupObjectId
     
     # Assert 
-    foreach($member in $members) {
-        Assert-NotNull($member.DisplayName)
-        Assert-NotNull($member.Id)
-        Assert-True {$member.Type -eq "User" -or $member.Type -eq "Group" -or $member.Type -eq "ServicePrincipal"}
-    }
+    Assert-AreEqual $members.Count 1
+    Assert-AreEqual $members[0].Id $userObjectId
+    Assert-AreEqual $members[0].DisplayName $userName
 }
 
 <#
@@ -129,7 +130,7 @@ Tests getting members from an Active Directory group.
 function Test-GetADGroupMemberWithBadGroupObjectId
 {
     # Test
-    $members = Get-AzureADGroupMember -GroupObjectId "deadbeef-dead-beef-dead-beefdeadbeef"
+    $members = Get-AzureADGroupMember -GroupObjectId "baadc0de-baad-c0de-baad-c0debaadc0de"
     
     # Assert 
     Assert-Null($members)
@@ -141,8 +142,10 @@ Tests getting members from an Active Directory group.
 #>
 function Test-GetADGroupMemberWithUserObjectId
 {
+    param([string]$objectId)
+
     # Test
-    $members = Get-AzureADGroupMember -GroupObjectId "7b45838f-42c3-4fef-a85a-0a9051dfda41"
+    $members = Get-AzureADGroupMember -GroupObjectId $objectId
     
     # Assert 
     Assert-Null($members)
@@ -154,8 +157,10 @@ Tests getting members from an Active Directory group.
 #>
 function Test-GetADGroupMemberFromEmptyGroup
 {
+    param([string]$objectId)
+
     # Test
-    $members = Get-AzureADGroupMember -GroupObjectId "8fd46a09-454e-41f1-b70f-f28331b12a31"
+    $members = Get-AzureADGroupMember -GroupObjectId $objectId
     
     # Assert 
     Assert-Null($members)
@@ -167,12 +172,14 @@ Tests getting Active Directory service principals.
 #>
 function Test-GetADServicePrincipalWithObjectId
 {
+    param([string]$objectId)
+
     # Test
-    $servicePrincipals = Get-AzureADServicePrincipal -ObjectId "e68deb93-98e3-476f-8667-1bb60a7f867b"
+    $servicePrincipals = Get-AzureADServicePrincipal -ObjectId $objectId
 
     # Assert
     Assert-AreEqual $servicePrincipals.Count 1
-    Assert-AreEqual $servicePrincipals[0].Id "e68deb93-98e3-476f-8667-1bb60a7f867b"
+    Assert-AreEqual $servicePrincipals[0].Id $objectId
 }
 
 <#
@@ -182,7 +189,7 @@ Tests getting Active Directory service principals.
 function Test-GetADServicePrincipalWithBadObjectId
 {
     # Test
-    $servicePrincipals = Get-AzureADServicePrincipal -ObjectId "deadbeef-dead-beef-dead-beefdeadbeef"
+    $servicePrincipals = Get-AzureADServicePrincipal -ObjectId "baadc0de-baad-c0de-baad-c0debaadc0de"
 
     # Assert
     Assert-Null($servicePrincipals)
@@ -194,8 +201,10 @@ Tests getting Active Directory service principals.
 #>
 function Test-GetADServicePrincipalWithUserObjectId
 {
+    param([string]$objectId)
+
     # Test
-    $servicePrincipals = Get-AzureADServicePrincipal -ObjectId "7b45838f-42c3-4fef-a85a-0a9051dfda41"
+    $servicePrincipals = Get-AzureADServicePrincipal -ObjectId $objectId
 
     # Assert
     Assert-Null($servicePrincipals)
@@ -207,12 +216,15 @@ Tests getting Active Directory service principals.
 #>
 function Test-GetADServicePrincipalWithSPN
 {
+    param([string]$SPN)
+
     # Test
-    $servicePrincipals = Get-AzureADServicePrincipal -ServicePrincipalName "https://localhost:8080"
+    $servicePrincipals = Get-AzureADServicePrincipal -ServicePrincipalName $SPN
 
     # Assert
     Assert-AreEqual $servicePrincipals.Count 1
-    Assert-AreEqual $servicePrincipals[0].ServicePrincipalName "https://localhost:8080"
+    Assert-NotNull $servicePrincipals[0].Id
+    Assert-AreEqual $servicePrincipals[0].ServicePrincipalName $SPN
 }
 
 <#
@@ -234,16 +246,16 @@ Tests getting Active Directory service principals.
 #>
 function Test-GetADServicePrincipalWithSearchString
 {
+    param([string]$displayName)
+
     # Test
-    $servicePrincipals = Get-AzureADServicePrincipal -SearchString "Microsoft"
+    $servicePrincipals = Get-AzureADServicePrincipal -SearchString $displayName
 
     # Assert
-    Assert-NotNull($servicePrincipals)
-    foreach($servicePrincipal in $servicePrincipals) {
-        Assert-NotNull($servicePrincipal.DisplayName)
-        Assert-NotNull($servicePrincipal.Id)
-        Assert-NotNull($servicePrincipal.ServicePrincipalName)
-    }
+    Assert-AreEqual $servicePrincipals.Count 1
+    Assert-AreEqual $servicePrincipals[0].DisplayName $displayName
+    Assert-NotNull($servicePrincipals[0].Id)
+    Assert-NotNull($servicePrincipals[0].ServicePrincipalName)
 }
 
 <#
@@ -282,12 +294,14 @@ Tests getting Active Directory users.
 #>
 function Test-GetADUserWithObjectId
 {
+    param([string]$objectId)
+
     # Test
-    $users = Get-AzureADUser -ObjectId "7b45838f-42c3-4fef-a85a-0a9051dfda41"
+    $users = Get-AzureADUser -ObjectId $objectId
 
     # Assert
     Assert-AreEqual $users.Count 1
-    Assert-AreEqual $users[0].Id "7b45838f-42c3-4fef-a85a-0a9051dfda41"
+    Assert-AreEqual $users[0].Id $objectId
     Assert-NotNull($users[0].DisplayName)
     Assert-NotNull($users[0].UserPrincipalName)
 }
@@ -299,7 +313,7 @@ Tests getting Active Directory users.
 function Test-GetADUserWithBadObjectId
 {
     # Test
-    $users = Get-AzureADUser -ObjectId "deadbeef-dead-beef-dead-beefdeadbeef"
+    $users = Get-AzureADUser -ObjectId "baadc0de-baad-c0de-baad-c0debaadc0de"
 
     # Assert
     Assert-Null($users)
@@ -311,8 +325,10 @@ Tests getting Active Directory users.
 #>
 function Test-GetADUserWithGroupObjectId
 {
+    param([string]$objectId)
+
     # Test
-    $users = Get-AzureADUser -ObjectId "d5fbb343-cf1d-47bb-9aa8-5c3dd57b336f"
+    $users = Get-AzureADUser -ObjectId $objectId
 
     # Assert
     Assert-Null($users)
@@ -324,12 +340,14 @@ Tests getting Active Directory users.
 #>
 function Test-GetADUserWithUPN
 {
+    param([string]$UPN)
+
     # Test
-    $users = Get-AzureADUser -UserPrincipalName "admin@rbactest.onmicrosoft.com"
+    $users = Get-AzureADUser -UserPrincipalName $UPN
 
     # Assert
     Assert-AreEqual $users.Count 1
-    Assert-AreEqual $users[0].UserPrincipalName "admin@rbactest.onmicrosoft.com"
+    Assert-AreEqual $users[0].UserPrincipalName $UPN
     Assert-NotNull($users[0].DisplayName)
     Assert-NotNull($users[0].Id)
 }
@@ -369,17 +387,17 @@ Tests getting Active Directory users.
 #>
 function Test-GetADUserWithSearchString
 {
+    param([string]$displayName)
+
     # Test
     # Select at most 10 users. Users are restricted to contain "test" to fasten the test
-    $users = Get-AzureADUser -SearchString "reader"
+    $users = Get-AzureADUser -SearchString $displayName
 
     # Assert
     Assert-NotNull($users)
-    foreach($user in $users) {
-        Assert-NotNull($user.DisplayName)
-        Assert-NotNull($user.Id)
-        Assert-NotNull($user.UserPrincipalName)
-    }
+    Assert-AreEqual $users[0].DisplayName $displayName
+    Assert-NotNull($users[0].Id)
+    Assert-NotNull($users[0].UserPrincipalName)
 }
 
 <#

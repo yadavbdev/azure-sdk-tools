@@ -12,7 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Graph.RBAC;
+using Microsoft.Azure.Graph.RBAC.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Microsoft.WindowsAzure.Testing;
+using System.Linq;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
@@ -23,14 +27,34 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetAllADGroups()
         {
-            RunPowerShellTest("Test-GetAllADGroups");
+            const string scriptMethod = "Test-GetAllADGroups";
+            Group newGroup = null;
+
+            RunPowerShellTest(() =>
+            {
+                newGroup = CreateNewAdGroup();
+                return new[] { scriptMethod };
+            }, () =>
+                {
+                    DeleteAdGroup(newGroup);
+                });
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupWithSearchString()
         {
-            RunPowerShellTest("Test-GetADGroupWithSearchString");
+            const string scriptMethod = "Test-GetADGroupWithSearchString '{0}'";
+            Group newGroup = null;
+
+            RunPowerShellTest(() =>
+            {
+                newGroup = CreateNewAdGroup();
+                return new[] { string.Format(scriptMethod, newGroup.DisplayName) };
+            }, () =>
+                {
+                    DeleteAdGroup(newGroup);
+                });
         }
 
         [Fact]
@@ -38,6 +62,23 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         public void TestGetADGroupWithBadSearchString()
         {
             RunPowerShellTest("Test-GetADGroupWithBadSearchString");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetADGroupWithObjectId()
+        {
+            const string scriptMethod = "Test-GetADGroupWithObjectId '{0}'";
+            Group newGroup = null;
+
+            RunPowerShellTest(() =>
+            {
+                newGroup = CreateNewAdGroup();
+                return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
+            }, () =>
+            {
+                DeleteAdGroup(newGroup);
+            });
         }
 
         [Fact]
@@ -51,14 +92,41 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupWithUserObjectId()
         {
-            RunPowerShellTest("Test-GetADGroupWithUserObjectId");
+            const string scriptMethod = "Test-GetADGroupWithUserObjectId '{0}'";
+            User newUser = null;
+            RunPowerShellTest(() =>
+                {
+                    newUser = CreateNewAdUser();
+                    return new[] { string.Format(scriptMethod, newUser.ObjectId) };
+                }, () =>
+                {
+                    DeleteAdUser(newUser);
+                });
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupMemberWithGroupObjectId()
         {
-            RunPowerShellTest("Test-GetADGroupMemberWithGroupObjectId");
+            const string scriptMethod = "Test-GetADGroupMemberWithGroupObjectId '{0}' '{1}' '{2}'";
+            User newUser = null;
+            Group newGroup = null;
+            RunPowerShellTest(() =>
+                {
+                    newUser = CreateNewAdUser();
+                    newGroup = CreateNewAdGroup();
+
+                    string memberUrl = string.Format("{0}{1}/directoryObjects/{2}",
+                        GraphClient.BaseUri.AbsoluteUri, GraphClient.TenantID, newUser.ObjectId);
+                    
+                    base.GraphClient.Group.AddMember(newGroup.ObjectId, new GroupAddMemberParameters(memberUrl));
+
+                    return new[] { string.Format(scriptMethod, newGroup.ObjectId, newUser.ObjectId, newUser.DisplayName) };
+                }, () =>
+                {
+                    DeleteAdUser(newUser);
+                    DeleteAdGroup(newGroup);
+                });
         }
 
         [Fact]
@@ -72,21 +140,51 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupMemberWithUserObjectId()
         {
-            RunPowerShellTest("Test-GetADGroupMemberWithUserObjectId");
+            const string scriptMethod = "Test-GetADGroupMemberWithUserObjectId '{0}'";
+            User newUser = null;
+            RunPowerShellTest(() =>
+            {
+                newUser = CreateNewAdUser();
+                return new[] { string.Format(scriptMethod, newUser.ObjectId) };
+            }, () =>
+            {
+                DeleteAdUser(newUser);
+            });
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupMemberFromEmptyGroup()
         {
-            RunPowerShellTest("Test-GetADGroupMemberFromEmptyGroup");
+            const string scriptMethod = "Test-GetADGroupMemberFromEmptyGroup '{0}'";
+            Group newGroup = null;
+            RunPowerShellTest(() =>
+            {
+                newGroup = CreateNewAdGroup();
+                return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
+            }, () =>
+            {
+                DeleteAdGroup(newGroup);
+            });
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipalWithObjectId()
         {
-            RunPowerShellTest("Test-GetADServicePrincipalWithObjectId");
+            const string scriptMethod = "Test-GetADServicePrincipalWithObjectId '{0}'";
+            ServicePrincipal newServicePrincipal = null;
+            Application app = null;
+            RunPowerShellTest(() =>
+                {
+                    app = CreateNewAdApp();
+                    newServicePrincipal = CreateNewAdServicePrincipal(app.AppId);
+                    return new[] { string.Format(scriptMethod, newServicePrincipal.ObjectId) };
+                }, () =>
+                {
+                    DeleteAdServicePrincipal(newServicePrincipal);
+                    DeleteAdApp(app);
+                });
         }
 
         [Fact]
@@ -100,14 +198,35 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipalWithUserObjectId()
         {
-            RunPowerShellTest("Test-GetADServicePrincipalWithUserObjectId");
+            const string scriptMethod = "Test-GetADServicePrincipalWithUserObjectId '{0}'";
+            User newUser = null;
+            RunPowerShellTest(() =>
+            {
+                newUser = CreateNewAdUser();
+                return new[] { string.Format(scriptMethod, newUser.ObjectId) };
+            }, () =>
+            {
+                DeleteAdUser(newUser);
+            });
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipalWithSPN()
         {
-            RunPowerShellTest("Test-GetADServicePrincipalWithSPN");
+            const string scriptMethod = "Test-GetADServicePrincipalWithSPN '{0}'";
+            ServicePrincipal newServicePrincipal = null;
+            Application app = null;
+            RunPowerShellTest(() =>
+            {
+                app = CreateNewAdApp();
+                newServicePrincipal = CreateNewAdServicePrincipal(app.AppId);
+                return new[] { string.Format(scriptMethod, newServicePrincipal.ServicePrincipalNames[1]) };
+            }, () =>
+            {
+                DeleteAdServicePrincipal(newServicePrincipal);
+                DeleteAdApp(app);
+            });
         }
 
         [Fact]
@@ -121,7 +240,19 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipalWithSearchString()
         {
-            RunPowerShellTest("Test-GetADServicePrincipalWithSearchString");
+            const string scriptMethod = "Test-GetADServicePrincipalWithSearchString '{0}'";
+            ServicePrincipal newServicePrincipal = null;
+            Application app = null;
+            RunPowerShellTest(() =>
+            {
+                app = CreateNewAdApp();
+                newServicePrincipal = CreateNewAdServicePrincipal(app.AppId);
+                return new[] { string.Format(scriptMethod, newServicePrincipal.DisplayName) };
+            }, () =>
+            {
+                DeleteAdServicePrincipal(newServicePrincipal);
+                DeleteAdApp(app);
+            });
         }
 
         [Fact]
@@ -135,14 +266,32 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetAllADUser()
         {
-            RunPowerShellTest("Test-GetAllADUser");
+            const string scriptMethod = "Test-GetAllADUser";
+            User newUser = null;
+            RunPowerShellTest(() =>
+            {
+                newUser = CreateNewAdUser();
+                return new[] { string.Format(scriptMethod) };
+            }, () =>
+            {
+                DeleteAdUser(newUser);
+            });
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUserWithObjectId()
         {
-            RunPowerShellTest("Test-GetADUserWithObjectId");
+            const string scriptMethod = "Test-GetADUserWithObjectId '{0}'";
+            User newUser = null;
+            RunPowerShellTest(() =>
+            {
+                newUser = CreateNewAdUser();
+                return new[] { string.Format(scriptMethod, newUser.ObjectId) };
+            }, () =>
+            {
+                DeleteAdUser(newUser);
+            });
         }
 
         [Fact]
@@ -156,14 +305,32 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUserWithGroupObjectId()
         {
-            RunPowerShellTest("Test-GetADUserWithGroupObjectId");
+            const string scriptMethod = "Test-GetADUserWithGroupObjectId '{0}'";
+            Group newGroup = null;
+            RunPowerShellTest(() =>
+            {
+                newGroup = CreateNewAdGroup();
+                return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
+            }, () =>
+            {
+                DeleteAdGroup(newGroup);
+            });
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUserWithUPN()
         {
-            RunPowerShellTest("Test-GetADUserWithUPN");
+            const string scriptMethod = "Test-GetADUserWithUPN '{0}'";
+            User newUser = null;
+            RunPowerShellTest(() =>
+            {
+                newUser = CreateNewAdUser();
+                return new[] { string.Format(scriptMethod, newUser.UserPrincipalName) };
+            }, () =>
+            {
+                DeleteAdUser(newUser);
+            });
         }
 
         [Fact(Skip = "Currently not working.")]
@@ -183,7 +350,16 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUserWithSearchString()
         {
-            RunPowerShellTest("Test-GetADUserWithSearchString");
+            const string scriptMethod = "Test-GetADUserWithSearchString '{0}'";
+            User newUser = null;
+            RunPowerShellTest(() =>
+            {
+                newUser = CreateNewAdUser();
+                return new[] { string.Format(scriptMethod, newUser.DisplayName) };
+            }, () =>
+            {
+                DeleteAdUser(newUser);
+            });
         }
 
         [Fact]
@@ -191,6 +367,93 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         public void TestGetADUserWithBadSearchString()
         {
             RunPowerShellTest("Test-GetADUserWithBadSearchString");
+        }
+
+        private User CreateNewAdUser()
+        {
+            var name = TestUtilities.GenerateName("aduser");
+            var parameter = new UserCreateParameters
+            {
+                DisplayName = name,
+                UserPrincipalName = name + "@" + base.UserDomain,
+                AccountEnabled = true,
+                MailNickname = name + "test",
+                PasswordProfileSettings = new UserCreateParameters.PasswordProfile
+                {
+                    ForceChangePasswordNextLogin = false,
+                    Password = TestUtilities.GenerateName("adpass") + "0#$"
+                }
+            };
+
+            return base.GraphClient.User.Create(parameter).User;
+        }
+
+        private Group CreateNewAdGroup()
+        {
+            var parameter = new GroupCreateParameters
+            {
+                DisplayName = TestUtilities.GenerateName("adgroup"),
+                MailNickname = TestUtilities.GenerateName("adgroupmail"),
+                SecurityEnabled = true
+            };
+            return base.GraphClient.Group.Create(parameter).Group;
+        }
+
+        private Application CreateNewAdApp()
+        {
+            var appName = TestUtilities.GenerateName("adApplication");
+            var url = string.Format("http://{0}/home", appName);
+            var appParam = new ApplicationCreateParameters
+            {
+                AvailableToOtherTenants = false,
+                DisplayName = appName,
+                Homepage = url,
+                IdentifierUris = new[] { url },
+                ReplyUrls = new[] { url }
+            };
+
+            return base.GraphClient.Application.Create(appParam).Application;
+        }
+
+        private ServicePrincipal CreateNewAdServicePrincipal(string appId)
+        {
+            var spParam = new ServicePrincipalCreateParameters
+            {
+                AppId = appId,
+                AccountEnabled = true
+            };
+
+            return base.GraphClient.ServicePrincipal.Create(spParam).ServicePrincipal;
+        }
+
+        private void DeleteAdUser(User user)
+        {
+            if (user != null)
+            {
+                base.GraphClient.User.Delete(user.ObjectId);
+            }
+        }
+        private void DeleteAdGroup(Group group)
+        {
+            if (group != null)
+            {
+                base.GraphClient.Group.Delete(group.ObjectId);
+            }
+        }
+        private void DeleteAdApp(Application app)
+        {
+            if (app != null)
+            {
+                base.GraphClient.Application.Delete(app.ObjectId);
+            }
+        }
+
+        private void DeleteAdServicePrincipal(ServicePrincipal newServicePrincipal)
+        {
+            if (newServicePrincipal != null)
+            {
+                base.GraphClient.ServicePrincipal.Delete(newServicePrincipal.ObjectId);
+            }
         }
     }
 }
