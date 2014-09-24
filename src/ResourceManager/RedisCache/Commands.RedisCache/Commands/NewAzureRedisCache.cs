@@ -1,14 +1,27 @@
-﻿using Microsoft.Azure.Commands.RedisCache.Models;
-using Microsoft.Azure.Commands.RedisCache.Properties;
-using Microsoft.Azure.Management.Redis.Models;
-using Microsoft.WindowsAzure;
-using System;
-using System.Management.Automation;
-using SkuStrings = Microsoft.Azure.Management.Redis.Models.SkuName;
-using MaxMemoryPolicyStrings = Microsoft.Azure.Management.Redis.Models.MaxMemoryPolicy;
+﻿// ----------------------------------------------------------------------------------
+//
+// Copyright Microsoft Corporation
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ----------------------------------------------------------------------------------
 
 namespace Microsoft.Azure.Commands.RedisCache
 {
+    using Microsoft.Azure.Commands.RedisCache.Models;
+    using Microsoft.Azure.Commands.RedisCache.Properties;
+    using Microsoft.Azure.Management.Redis.Models;
+    using Microsoft.WindowsAzure;
+    using System.Management.Automation;
+    using SkuStrings = Microsoft.Azure.Management.Redis.Models.SkuName;
+    using MaxMemoryPolicyStrings = Microsoft.Azure.Management.Redis.Models.MaxMemoryPolicy;
+
     [Cmdlet(VerbsCommon.New, "AzureRedisCache"), OutputType(typeof(RedisCacheAttributesWithAccessKeys))]
     public class NewAzureRedisCache : RedisCacheCmdletBase
     {
@@ -41,6 +54,8 @@ namespace Microsoft.Azure.Commands.RedisCache
             MaxMemoryPolicyStrings.VolatileLRU, MaxMemoryPolicyStrings.VolatileRandom, MaxMemoryPolicyStrings.VolatileTTL, IgnoreCase = false)]
         public string MaxMemoryPolicy { get; set;}
 
+        private const string redisDefaultVersion = "2.8";
+
         public override void ExecuteCmdlet()
         {
             string skuFamily;
@@ -49,7 +64,7 @@ namespace Microsoft.Azure.Commands.RedisCache
 
             if (string.IsNullOrEmpty(RedisVersion))
             {
-                RedisVersion = "2.8";
+                RedisVersion = redisDefaultVersion;
             }
 
             if (string.IsNullOrEmpty(Size))
@@ -73,8 +88,11 @@ namespace Microsoft.Azure.Commands.RedisCache
             // If Force flag is not avaliable than check if cache is already available or not
             try
             {
-                CacheClient.GetCache(ResourceGroupName, Name);
-                throw new CloudException(string.Format(Resources.RedisCacheExists, Name));
+                RedisGetResponse availableCache = CacheClient.GetCache(ResourceGroupName, Name);
+                if (availableCache != null)
+                {
+                    throw new CloudException(string.Format(Resources.RedisCacheExists, Name));
+                }
             }
             catch (CloudException ex)
             {

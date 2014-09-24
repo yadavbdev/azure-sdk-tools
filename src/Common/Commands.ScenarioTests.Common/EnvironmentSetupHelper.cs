@@ -77,15 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         private void SetupAzureEnvironmentFromEnvironmentVariables(AzureModule mode)
         {
             TestEnvironment rdfeEnvironment = new RDFETestEnvironmentFactory().GetTestEnvironment();
-            if (rdfeEnvironment == null)
-            {
-                rdfeEnvironment = new TestEnvironment();
-            }
             TestEnvironment csmEnvironment = new CSMTestEnvironmentFactory().GetTestEnvironment();
-            if (csmEnvironment == null)
-            {
-                csmEnvironment = new TestEnvironment();
-            }
             TestEnvironment currentEnvironment = (mode == AzureModule.AzureResourceManager ? csmEnvironment : rdfeEnvironment);
 
             string jwtToken;
