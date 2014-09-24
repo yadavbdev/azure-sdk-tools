@@ -167,3 +167,87 @@ function Test-CreateExistingRedisCacheTest
     # Creating Cache
 	Assert-ThrowsContains {New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Standard} "already exists"
 }
+
+<#
+.SYNOPSIS
+Tests redis cache.
+#>
+function Test-RedisCachePipeline
+{
+	# Setup
+	# resource group should exists
+	$resourceGroupName = "redisruntimetestrg"
+	$cacheName = "powershelltestpipe"
+	$location = "North Central US"
+	
+    # Creating Cache
+    $cacheCreated = New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Basic
+    
+    Assert-AreEqual $cacheName $cacheCreated.Name
+    Assert-AreEqual $location $cacheCreated.Location
+    Assert-AreEqual "Microsoft.Cache/Redis" $cacheCreated.Type
+    Assert-AreEqual $resourceGroupName $cacheCreated.ResourceGroupName
+    
+    Assert-AreEqual 6379 $cacheCreated.Port
+    Assert-AreEqual 6380 $cacheCreated.SslPort
+    Assert-AreEqual "creating" $cacheCreated.ProvisioningState
+    Assert-AreEqual "2.8" $cacheCreated.RedisVersion
+    Assert-AreEqual "250MB" $cacheCreated.Size
+    Assert-AreEqual "Basic" $cacheCreated.Sku
+    
+    Assert-NotNull $cacheCreated.PrimaryKey "PrimaryKey do not exists"
+    Assert-NotNull $cacheCreated.SecondaryKey "SecondaryKey do not exists"
+
+    # In loop to check if cache exists
+    for ($i = 0; $i -le 60; $i++)
+    {
+        [Microsoft.WindowsAzure.Commands.Utilities.Common.TestMockSupport]::Delay(30000)
+		$cacheGet = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName
+        if ([string]::Compare("succeeded", $cacheGet[0].ProvisioningState, $True) -eq 0)
+        {
+			Assert-AreEqual $cacheName $cacheGet[0].Name
+            Assert-AreEqual $location $cacheGet[0].Location
+            Assert-AreEqual "Microsoft.Cache/Redis" $cacheGet[0].Type
+            Assert-AreEqual $resourceGroupName $cacheGet[0].ResourceGroupName
+    
+            Assert-AreEqual 6379 $cacheGet[0].Port
+            Assert-AreEqual 6380 $cacheGet[0].SslPort
+            Assert-AreEqual "succeeded" $cacheGet[0].ProvisioningState
+            Assert-AreEqual "2.8" $cacheGet[0].RedisVersion
+            Assert-AreEqual "250MB" $cacheGet[0].Size
+            Assert-AreEqual "Basic" $cacheGet[0].Sku
+            break
+        }
+        Assert-False {$i -eq 60} "Cache is not in succeeded state even after 30 min."
+    }
+	
+	# Updating Cache using pipeline
+	Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Set-AzureRedisCache -MaxMemoryPolicy AllKeysRandom
+	$cacheUpdatedPiped = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName 
+    
+    Assert-AreEqual $cacheName $cacheUpdatedPiped.Name
+    Assert-AreEqual $location $cacheUpdatedPiped.Location
+    Assert-AreEqual "Microsoft.Cache/Redis" $cacheUpdatedPiped.Type
+    Assert-AreEqual $resourceGroupName $cacheUpdatedPiped.ResourceGroupName
+    
+    Assert-AreEqual 6379 $cacheUpdatedPiped.Port
+    Assert-AreEqual 6380 $cacheUpdatedPiped.SslPort
+    Assert-AreEqual "succeeded" $cacheUpdatedPiped.ProvisioningState
+    Assert-AreEqual "2.8" $cacheUpdatedPiped.RedisVersion
+    Assert-AreEqual "250MB" $cacheUpdatedPiped.Size
+    Assert-AreEqual "Basic" $cacheUpdatedPiped.Sku
+    Assert-AreEqual "AllKeysRandom" $cacheUpdatedPiped.MaxMemoryPolicy.Replace("-", "")
+    
+    # Get cache keys
+    $cacheKeysBeforeUpdate = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Get-AzureRedisCacheKey
+    Assert-NotNull $cacheKeysBeforeUpdate.PrimaryKey "PrimaryKey do not exists"
+    Assert-NotNull $cacheKeysBeforeUpdate.SecondaryKey "SecondaryKey do not exists"
+
+    # Regenerate primary key
+    $cacheKeysAfterUpdate = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | New-AzureRedisCacheKey -KeyType Primary -Force
+    Assert-AreEqual $cacheKeysBeforeUpdate.SecondaryKey $cacheKeysAfterUpdate.SecondaryKey
+    Assert-AreNotEqual $cacheKeysBeforeUpdate.PrimaryKey $cacheKeysAfterUpdate.PrimaryKey
+
+    # Delete cache
+    Assert-True {Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Remove-AzureRedisCache -Force -PassThru} "Remove cache failed."
+}

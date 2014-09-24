@@ -40,5 +40,12 @@ namespace Microsoft.Azure.Commands.RedisCache.Test.ScenarioTests
         {
             RunPowerShellTest("Test-CreateExistingRedisCacheTest");
         }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestRedisCachePipeline()
+        {
+            RunPowerShellTest("Test-RedisCachePipeline");
+        }
     }
 }
