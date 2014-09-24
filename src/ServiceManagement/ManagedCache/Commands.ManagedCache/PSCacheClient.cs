@@ -195,7 +195,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
             while (waitInMinutes > 0)
             {
                 cacheResource = GetCacheService(cloudServiceName, cacheServiceName);
-                if (string.Compare(cacheResource.SubState, CacheServiceReadyState,  StringComparison.OrdinalIgnoreCase) == 0)
+                if (CacheServiceReadyState.Equals(cacheResource.SubState, StringComparison.OrdinalIgnoreCase))
                 {
                     break;
                 }
