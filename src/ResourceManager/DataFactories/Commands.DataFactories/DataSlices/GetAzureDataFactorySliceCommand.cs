@@ -13,29 +13,24 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.Azure.Commands.DataFactories.Models;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class Constants
+    [Cmdlet(VerbsCommon.Get, Constants.DataSlice), OutputType(typeof(List<PSDataSlice>))]
+    public class GetAzureDataFactorySliceCommand : DataSliceContextBaseCmdlet
     {
-        public static readonly TimeSpan DefaultSliceActivePeriodDuration = TimeSpan.FromHours(48);
+        [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
+        public override void ExecuteCmdlet()
+        {
+            var dataSlices = DataFactoryClient.ListDataSlices(
+                ResourceGroupName, DataFactoryName, TableName, StartDateTime.SpecifyDateTimeKind(),
+                EndDateTime.SpecifyDateTimeKind());
 
-        public const string DataFactory = "AzureDataFactory";
-
-        public const string LinkedService = "AzureDataFactoryLinkedService";
-
-        public const string Gateway = "AzureDataFactoryGateway";
-
-        public const string Table = "AzureDataFactoryTable";
-
-        public const string Pipeline = "AzureDataFactoryPipeline";
-
-        public const string PipelineActivePeriod = "AzureDataFactoryPipelineActivePeriod";
-
-        public const string Run = "AzureDataFactoryRun";
-
-        public const string DataSlice = "AzureDataFactorySlice";
-
-        public const string SliceStatus = "AzureDataFactorySliceStatus";
+            WriteObject(dataSlices);
+        }
     }
 }

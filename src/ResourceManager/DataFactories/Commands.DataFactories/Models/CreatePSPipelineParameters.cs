@@ -16,26 +16,14 @@ using System;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class Constants
+    public class CreatePSPipelineParameters : DataFactoryParametersBase
     {
-        public static readonly TimeSpan DefaultSliceActivePeriodDuration = TimeSpan.FromHours(48);
+        public string Name { get; set; }
 
-        public const string DataFactory = "AzureDataFactory";
+        public string RawJsonContent { get; set; }
 
-        public const string LinkedService = "AzureDataFactoryLinkedService";
+        public bool Force { get; set; }
 
-        public const string Gateway = "AzureDataFactoryGateway";
-
-        public const string Table = "AzureDataFactoryTable";
-
-        public const string Pipeline = "AzureDataFactoryPipeline";
-
-        public const string PipelineActivePeriod = "AzureDataFactoryPipelineActivePeriod";
-
-        public const string Run = "AzureDataFactoryRun";
-
-        public const string DataSlice = "AzureDataFactorySlice";
-
-        public const string SliceStatus = "AzureDataFactorySliceStatus";
+        public Action<bool, string, string, string, Action> ConfirmAction { get; set; }
     }
 }

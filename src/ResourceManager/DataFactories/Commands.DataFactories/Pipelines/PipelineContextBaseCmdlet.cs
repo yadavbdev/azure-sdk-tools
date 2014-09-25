@@ -12,30 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
+using System.Management.Automation;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    internal static class Constants
+    public abstract class PipelineContextBaseCmdlet : DataFactoryBaseCmdlet
     {
-        public static readonly TimeSpan DefaultSliceActivePeriodDuration = TimeSpan.FromHours(48);
+        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The pipeline name.")]
+        [ValidateNotNullOrEmpty]
+        public string Name { get; set; }
 
-        public const string DataFactory = "AzureDataFactory";
-
-        public const string LinkedService = "AzureDataFactoryLinkedService";
-
-        public const string Gateway = "AzureDataFactoryGateway";
-
-        public const string Table = "AzureDataFactoryTable";
-
-        public const string Pipeline = "AzureDataFactoryPipeline";
-
-        public const string PipelineActivePeriod = "AzureDataFactoryPipelineActivePeriod";
-
-        public const string Run = "AzureDataFactoryRun";
-
-        public const string DataSlice = "AzureDataFactorySlice";
-
-        public const string SliceStatus = "AzureDataFactorySliceStatus";
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The data factory name.")]
+        [ValidateNotNullOrEmpty]
+        public string DataFactoryName { get; set; }
     }
 }
