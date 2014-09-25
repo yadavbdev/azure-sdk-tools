@@ -12,25 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.ScenarioTest;
-using Xunit;
-
-namespace Microsoft.Azure.Commands.ManagedCache.Test.ScenarioTests
+namespace Microsoft.Azure.Commands.ManagedCache
 {
-    public class ManagedCacheTests : ManagedCacheTestsBase
-    {
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void ManagedCacheEndToEndTest()
-        {
-            this.RunPowerShellTest("Test-ManagedCacheEndToEnd");
-        }
+    using Microsoft.Azure.Commands.ManagedCache.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Management.Automation;
 
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void ListLocationsTest()
+    [Cmdlet(VerbsCommon.Get, "AzureManagedCacheLocation"), OutputType(typeof(List<Microsoft.Azure.Management.ManagedCache.Models.RegionsResponse.Region>))]
+    public class AzureManagedCacheLocation : ManagedCacheCmdletBase
+    {
+        public override void ExecuteCmdlet()
         {
-            this.RunPowerShellTest("Test-ListLocationsSupportCaching");
-        }
+            List<Microsoft.Azure.Management.ManagedCache.Models.RegionsResponse.Region> locations = CacheClient.GetLocations();
+            WriteObject(locations);
+        }      
     }
 }

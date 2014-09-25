@@ -3821,6 +3821,15 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please specify CreateACSNamespace as true or false for better future compatibility..
+        /// </summary>
+        public static string SpecifyCreateACSNamespace {
+            get {
+                return ResourceManager.GetString("SpecifyCreateACSNamespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1000.
         /// </summary>
         public static string StandardRetryDelayInMs {
