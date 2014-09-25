@@ -12,20 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.DataFactories
+using System;
+using System.Collections.Generic;
+using Microsoft.Azure.Management.DataFactories.Models;
+
+namespace Microsoft.Azure.Commands.DataFactories.Models
 {
-    internal static class Constants
+    public class PSDataFactoryGatewayKey
     {
-        public const string DataFactory = "AzureDataFactory";
+        private string _gatewayKey;
 
-        public const string LinkedService = "AzureDataFactoryLinkedService";
+        public PSDataFactoryGatewayKey(string key)
+        {
+            _gatewayKey = key;
+        }
 
-        public const string Gateway = "AzureDataFactoryGateway";
-
-        public const string GatewayKey = "AzureDataFactoryGatewayKey";
-
-        public const string EncryptString = "AzureDataFactoryEncryptValue";
-
-        public const string Table = "AzureDataFactoryTable";
+        public string GatewayKey
+        {
+            get { return _gatewayKey; }
+            set { _gatewayKey = value; }
+        }
     }
 }
