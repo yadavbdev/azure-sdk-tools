@@ -147,6 +147,233 @@ namespace Microsoft.Azure.Commands.ManagedCache
             return cacheResource;
         }
 
+        public CloudServiceResource AddNamedCache(string cacheServiceName, string namedCacheName, string expiryPolicy, int expiryTimeInMinutes,
+            bool eviction, bool notifications, bool highAvailability)
+        {
+            CloudServiceListResponse listResponse = client.CloudServices.List();
+            CloudServiceResource cacheResource = null;
+            string cloudServiceName = null;
+            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
+            {
+                cacheResource = cloudService.Resources.FirstOrDefault(
+                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
+                if (cacheResource != null)
+                {
+                    cloudServiceName = cloudService.Name;
+                    break;
+                }
+            }
+
+            if (cacheResource == null)
+            {
+                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
+            }
+
+            foreach (IntrinsicSettings.CacheServiceInput.NamedCache namedCache in cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches)
+            {
+                if (namedCache.CacheName.Equals(namedCacheName))
+                {
+                    throw new ArgumentException(string.Format(Properties.Resources.NamedCacheExists, cacheServiceName, namedCacheName));
+                }
+            }
+
+            if (cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.SkuType == CacheServiceSkuType.Basic)
+            {
+                throw new ArgumentException(Properties.Resources.NoAddInBasicSku);
+            }
+            else if (cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches.Count == 10)
+            {
+                throw new ArgumentException(Properties.Resources.NoAddInAllSku);
+            }
+
+            IntrinsicSettings.CacheServiceInput.NamedCache newNamedCache = new IntrinsicSettings.CacheServiceInput.NamedCache();
+            newNamedCache.CacheName = namedCacheName;
+            newNamedCache.EvictionPolicy = eviction ? "LeastRecentlyUsed" : "None";
+            newNamedCache.ExpirationSettingsSection = new IntrinsicSettings.CacheServiceInput.NamedCache.ExpirationSettings();
+            newNamedCache.ExpirationSettingsSection.Type = expiryPolicy;
+            newNamedCache.ExpirationSettingsSection.TimeToLiveInMinutes = expiryTimeInMinutes;
+            newNamedCache.NotificationsEnabled = notifications;
+            newNamedCache.HighAvailabilityEnabled = highAvailability;
+
+            CacheServiceCreateParameters param = new CacheServiceCreateParameters();
+            param.IntrinsicSettingsSection = cacheResource.IntrinsicSettingsSection;
+            param.ETag = cacheResource.ETag;
+            param.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches.Add(newNamedCache);
+            cacheResource = ProvisionCacheService(cloudServiceName, cacheResource.Name, param, false);
+
+            return cacheResource;
+        }
+
+        public CloudServiceResource GetNamedCache(string cacheServiceName, string namedCacheName)
+        {
+            CloudServiceListResponse listResponse = client.CloudServices.List();
+            CloudServiceResource cacheResource = null;
+            string cloudServiceName = null;
+            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
+            {
+                cacheResource = cloudService.Resources.FirstOrDefault(
+                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
+                if (cacheResource != null)
+                {
+                    cloudServiceName = cloudService.Name;
+                    break;
+                }
+            }
+
+            if (cacheResource == null)
+            {
+                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
+            }
+
+            if (!string.IsNullOrEmpty(namedCacheName))
+            {
+                IList<IntrinsicSettings.CacheServiceInput.NamedCache> singleCache = new List<IntrinsicSettings.CacheServiceInput.NamedCache>();
+                foreach (IntrinsicSettings.CacheServiceInput.NamedCache namedCache in cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches)
+                {
+                    if (namedCache.CacheName.Equals(namedCacheName))
+                    {
+                        singleCache.Add(namedCache);
+                    }
+                }
+                cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches = singleCache;
+            }
+            return cacheResource;
+        }
+
+        public CloudServiceResource SetNamedCache(string cacheServiceName, string namedCacheName, string expiryPolicy, int expiryTimeInMinutes,
+            bool eviction, bool notifications, bool highAvailability, Action<bool, string, string, string, Action> ConfirmAction, bool force)
+        {
+            CloudServiceListResponse listResponse = client.CloudServices.List();
+            CloudServiceResource cacheResource = null;
+            string cloudServiceName = null;
+            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
+            {
+                cacheResource = cloudService.Resources.FirstOrDefault(
+                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
+                if (cacheResource != null)
+                {
+                    cloudServiceName = cloudService.Name;
+                    break;
+                }
+            }
+
+            if (cacheResource == null)
+            {
+                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
+            }
+
+            bool namedCacheFound = false;
+            IntrinsicSettings.CacheServiceInput.NamedCache updateNamedCache = null;
+            foreach (IntrinsicSettings.CacheServiceInput.NamedCache namedCache in cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches)
+            {
+                if (namedCache.CacheName.Equals(namedCacheName))
+                {
+                    updateNamedCache = namedCache;
+                    namedCacheFound = true;
+                    break;
+                }
+            }
+
+            if (!namedCacheFound)
+            {
+                throw new ArgumentException(string.Format(Properties.Resources.NamedCacheDoNotExists, cacheServiceName, namedCacheName));
+            }
+
+            if (cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.SkuType == CacheServiceSkuType.Basic)
+            {
+                if (notifications)
+                {
+                    throw new ArgumentException(Properties.Resources.NotificationsNotAvailable);
+                }
+
+                if (highAvailability)
+                {
+                    throw new ArgumentException(Properties.Resources.HighAvailabilityNotAvailable);
+                }
+            }
+
+            ConfirmAction(
+               force,
+               Properties.Resources.UpdateNamedCacheWarning,
+               Properties.Resources.UpdatingNamedCache,
+               cacheServiceName,
+               () =>
+               {
+                   if (cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.SkuType != CacheServiceSkuType.Basic)
+                   {
+                       updateNamedCache.NotificationsEnabled = notifications;
+                       updateNamedCache.HighAvailabilityEnabled = highAvailability;
+                   }
+                   updateNamedCache.EvictionPolicy = eviction ? "LeastRecentlyUsed" : "None";
+                   if (updateNamedCache.ExpirationSettingsSection == null)
+                   {
+                       updateNamedCache.ExpirationSettingsSection = new IntrinsicSettings.CacheServiceInput.NamedCache.ExpirationSettings();
+                   }
+                   updateNamedCache.ExpirationSettingsSection.Type = expiryPolicy;
+                   updateNamedCache.ExpirationSettingsSection.TimeToLiveInMinutes = expiryTimeInMinutes;
+
+                   CacheServiceCreateParameters param = new CacheServiceCreateParameters();
+                   param.IntrinsicSettingsSection = cacheResource.IntrinsicSettingsSection;
+                   param.ETag = cacheResource.ETag;
+
+                   cacheResource = ProvisionCacheService(cloudServiceName, cacheResource.Name, param, false);
+               });
+            return cacheResource;
+        }
+
+        public void RemoveNamedCache(string cacheServiceName, string namedCacheName, Action<bool, string, string, string, Action> ConfirmAction, bool force)
+        {
+            CloudServiceListResponse listResponse = client.CloudServices.List();
+            CloudServiceResource cacheResource = null;
+            string cloudServiceName = null;
+            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
+            {
+                cacheResource = cloudService.Resources.FirstOrDefault(
+                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
+                if (cacheResource != null)
+                {
+                    cloudServiceName = cloudService.Name;
+                    break;
+                }
+            }
+
+            if (cacheResource == null)
+            {
+                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
+            }
+
+            bool namedCacheFound = false;
+            IntrinsicSettings.CacheServiceInput.NamedCache removeNamedCache = null;
+            foreach (IntrinsicSettings.CacheServiceInput.NamedCache namedCache in cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches)
+            {
+                if (namedCache.CacheName.Equals(namedCacheName))
+                {
+                    removeNamedCache = namedCache;
+                    namedCacheFound = true;
+                    break;
+                }
+            }
+
+            if (!namedCacheFound)
+            {
+                throw new ArgumentException(string.Format(Properties.Resources.NamedCacheDoNotExists, cacheServiceName, namedCacheName));
+            }
+
+            ConfirmAction(
+               force,
+               Properties.Resources.RemoveNamedCacheWarning,
+               Properties.Resources.RemovingNamedCache,
+               cacheServiceName,
+               () =>
+               {
+                   CacheServiceCreateParameters param = new CacheServiceCreateParameters();
+                   param.IntrinsicSettingsSection = cacheResource.IntrinsicSettingsSection;
+                   param.ETag = cacheResource.ETag;
+                   param.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches.Remove(removeNamedCache);
+                   cacheResource = ProvisionCacheService(cloudServiceName, cacheResource.Name, param, false);
+               });
+        }
+
         private static bool IsCachingResource(string resourceType)
         {
             return string.Compare(resourceType, CacheResourceType, StringComparison.OrdinalIgnoreCase) == 0;

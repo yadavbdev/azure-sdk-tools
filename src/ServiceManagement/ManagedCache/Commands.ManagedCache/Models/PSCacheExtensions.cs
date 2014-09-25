@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Microsoft.Azure.Commands.ManagedCache.Models
+{
+    public class PSCacheExtensions
+    {
+        private static PSNamedCachesAttributes EmptyNamedCaches
+        {
+            get
+            {
+                return new PSNamedCachesAttributes
+                {
+                    CacheName = string.Empty,
+                    ExpiryPolicy = string.Empty,
+                    TimeToLiveInMinutes = 0,
+                    Eviction = string.Empty,
+                    Notifications = string.Empty,
+                    HighAvailability = string.Empty
+                };
+            }
+        }
+
+        public static string ConstructNamedCachesTable(List<PSNamedCachesAttributes> namedCaches)
+        {
+            StringBuilder namedCachesTable = new StringBuilder();
+
+            if (namedCaches != null && namedCaches.Count > 0)
+            {
+                int maxCacheNameLength = Math.Max("CacheName".Length, namedCaches.Where(r => r.CacheName != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.CacheName.Length));
+                int maxExpiryPolicyLength = Math.Max("ExpiryPolicy".Length, namedCaches.Where(r => r.ExpiryPolicy != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.ExpiryPolicy.Length));
+                // TODO: where r != null
+                int maxTimeToLiveInMinutesLength = Math.Max("TimeToLiveInMinutes".Length, namedCaches.Where(r => r != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.TimeToLiveInMinutes.ToString().Length));
+                int maxEvictionLength = Math.Max("Eviction".Length, namedCaches.Where(r => r.Eviction != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.Eviction.Length));
+                int maxNotificationsLength = Math.Max("Notifications".Length, namedCaches.Where(r => r.Notifications != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.Notifications.Length));
+                int maxHighAvailabilityLength = Math.Max("HighAvailability".Length, namedCaches.Where(r => r.HighAvailability != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.HighAvailability.Length));
+
+                string rowFormat = "{0, -" + maxCacheNameLength + "}  {1, -" + maxExpiryPolicyLength + "}  {2, -" + maxTimeToLiveInMinutesLength + "}  {3, -" + maxEvictionLength + "}  {4, -" + maxNotificationsLength + "}  {5, -" + maxHighAvailabilityLength + "}\r\n";
+                namedCachesTable.AppendLine();
+                namedCachesTable.AppendFormat(rowFormat, "CacheName", "ExpiryPolicy", "TimeToLiveInMinutes", "Eviction", "Notifications", "HighAvailability");
+                namedCachesTable.AppendFormat(rowFormat,
+                    GenerateSeparator(maxCacheNameLength, "="),
+                    GenerateSeparator(maxExpiryPolicyLength, "="),
+                    GenerateSeparator(maxTimeToLiveInMinutesLength, "="),
+                    GenerateSeparator(maxEvictionLength, "="),
+                    GenerateSeparator(maxNotificationsLength, "="),
+                    GenerateSeparator(maxHighAvailabilityLength, "="));
+
+                foreach (PSNamedCachesAttributes namedCache in namedCaches)
+                {
+                    namedCachesTable.AppendFormat(rowFormat, namedCache.CacheName, namedCache.ExpiryPolicy, namedCache.TimeToLiveInMinutes, namedCache.Eviction, namedCache.Notifications, namedCache.HighAvailability);
+                }
+            }
+            return namedCachesTable.ToString();
+        }
+
+        private static string GenerateSeparator(int amount, string separator)
+        {
+            StringBuilder result = new StringBuilder();
+            while (amount-- != 0) result.Append(separator);
+            return result.ToString();
+        }
+    }
+}
