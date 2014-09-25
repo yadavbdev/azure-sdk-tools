@@ -247,24 +247,34 @@ function Test-RaByUpn
 <# .SYNOPSIS Tests validate correctness of returned permissions when logged in as the assigned user  #> 
 function Test-RaUserPermissions 
 { 
-	param([string]$username, [string]$password, [string]$rgName, [string]$action) 
+	param([string]$rgName, [string]$action) 
 	
 	# Setup 
-	$securePassword = $password | ConvertTo-SecureString -AsPlainText -Force 
-	$credential = New-Object System.Management.Automation.PSCredential ($username, $securePassword) 
-	$currentSubscription = Get-AzureSubscription -Current 
 	
 	# Test 
-	Add-AzureAccount -Credential $credential 
-	Select-AzureSubscription -Current -SubscriptionName $currentSubscription.SubscriptionName -Account $username 
 	$permissions = Get-AzureResourceGroup -Name $rgName 
-	
-	# cleanup  
-	# Switch account back 
-	Select-AzureSubscription -Current -SubscriptionName $currentSubscription.SubscriptionName -Account $currentSubscription.Account 
-	
+		
 	# Assert 
 	Assert-AreEqual 1 $permissions.Permissions.Count "User should have only one permission." 
 	Assert-AreEqual 1 $permissions.Permissions[0].Actions.Count "User should have only one action in the permission." 
 	Assert-AreEqual	$action $permissions.Permissions[0].Actions[0] "Permission action mismatch." 
+}
+
+<#
+.SYNOPSIS
+Creates role assignment
+#>
+function CreateRoleAssignment
+{
+	param([string]$roleAssignmentId, [string]$userId, [string]$definitionName, [string]$resourceGroupName) 
+
+	Add-Type -Path ".\\Microsoft.Azure.Commands.Resources.dll"
+
+	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue($roleAssignmentId)
+	$newAssignment = New-AzureRoleAssignment `
+                        -ObjectId $userId `
+                        -RoleDefinitionName $definitionName `
+                        -ResourceGroupName $resourceGroupName
+
+	return $newAssignment
 }

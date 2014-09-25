@@ -21,7 +21,7 @@ using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    public class ActiveDirectoryTests : ResourcesTestsBase
+    public class ActiveDirectoryTests
     {
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
@@ -29,15 +29,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetAllADGroups";
             Group newGroup = null;
+            var controllerAdmin = ResourcesController.NewInstance;
 
-            RunPowerShellTest(() =>
-            {
-                newGroup = CreateNewAdGroup();
-                return new[] { scriptMethod };
-            }, () =>
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
                 {
-                    DeleteAdGroup(newGroup);
-                });
+                    newGroup = CreateNewAdGroup(controllerAdmin);
+                    return new[] { scriptMethod };
+                }, 
+                null, 
+                () =>
+                {
+                    DeleteAdGroup(controllerAdmin, newGroup);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
@@ -46,22 +52,28 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADGroupWithSearchString '{0}'";
             Group newGroup = null;
+            var controllerAdmin = ResourcesController.NewInstance;
 
-            RunPowerShellTest(() =>
-            {
-                newGroup = CreateNewAdGroup();
-                return new[] { string.Format(scriptMethod, newGroup.DisplayName) };
-            }, () =>
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
                 {
-                    DeleteAdGroup(newGroup);
-                });
+                    newGroup = CreateNewAdGroup(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newGroup.DisplayName) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdGroup(controllerAdmin, newGroup);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupWithBadSearchString()
         {
-            RunPowerShellTest("Test-GetADGroupWithBadSearchString");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADGroupWithBadSearchString");
         }
 
         [Fact]
@@ -70,22 +82,28 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADGroupWithObjectId '{0}'";
             Group newGroup = null;
+            var controllerAdmin = ResourcesController.NewInstance;
 
-            RunPowerShellTest(() =>
-            {
-                newGroup = CreateNewAdGroup();
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newGroup = CreateNewAdGroup(controllerAdmin);
                 return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
-            }, () =>
-            {
-                DeleteAdGroup(newGroup);
-            });
+                },
+                null,
+                () =>
+                {
+                    DeleteAdGroup(controllerAdmin, newGroup);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupWithBadObjectId()
         {
-            RunPowerShellTest("Test-GetADGroupWithBadObjectId");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADGroupWithBadObjectId");
         }
 
         [Fact]
@@ -94,14 +112,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADGroupWithUserObjectId '{0}'";
             User newUser = null;
-            RunPowerShellTest(() =>
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
                 {
-                    newUser = CreateNewAdUser();
+                    newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newUser.ObjectId) };
-                }, () =>
+                }, 
+                null,
+                () =>
                 {
-                    DeleteAdUser(newUser);
-                });
+                    DeleteAdUser(controllerAdmin, newUser);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
@@ -111,29 +136,36 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             const string scriptMethod = "Test-GetADGroupMemberWithGroupObjectId '{0}' '{1}' '{2}'";
             User newUser = null;
             Group newGroup = null;
-            RunPowerShellTest(() =>
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
                 {
-                    newUser = CreateNewAdUser();
-                    newGroup = CreateNewAdGroup();
+                    newUser = CreateNewAdUser(controllerAdmin);
+                    newGroup = CreateNewAdGroup(controllerAdmin);
 
                     string memberUrl = string.Format("{0}{1}/directoryObjects/{2}",
-                        GraphClient.BaseUri.AbsoluteUri, GraphClient.TenantID, newUser.ObjectId);
-                    
-                    base.GraphClient.Group.AddMember(newGroup.ObjectId, new GroupAddMemberParameters(memberUrl));
+                        controllerAdmin.GraphClient.BaseUri.AbsoluteUri, controllerAdmin.GraphClient.TenantID, newUser.ObjectId);
+
+                    controllerAdmin.GraphClient.Group.AddMember(newGroup.ObjectId, new GroupAddMemberParameters(memberUrl));
 
                     return new[] { string.Format(scriptMethod, newGroup.ObjectId, newUser.ObjectId, newUser.DisplayName) };
-                }, () =>
+                }, 
+                null,
+                () =>
                 {
-                    DeleteAdUser(newUser);
-                    DeleteAdGroup(newGroup);
-                });
+                    DeleteAdUser(controllerAdmin, newUser);
+                    DeleteAdGroup(controllerAdmin, newGroup);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupMemberWithBadGroupObjectId()
         {
-            RunPowerShellTest("Test-GetADGroupMemberWithBadGroupObjectId");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADGroupMemberWithBadGroupObjectId");
         }
 
         [Fact]
@@ -142,14 +174,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADGroupMemberWithUserObjectId '{0}'";
             User newUser = null;
-            RunPowerShellTest(() =>
-            {
-                newUser = CreateNewAdUser();
-                return new[] { string.Format(scriptMethod, newUser.ObjectId) };
-            }, () =>
-            {
-                DeleteAdUser(newUser);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newUser = CreateNewAdUser(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newUser.ObjectId) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdUser(controllerAdmin, newUser);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
@@ -158,14 +197,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADGroupMemberFromEmptyGroup '{0}'";
             Group newGroup = null;
-            RunPowerShellTest(() =>
-            {
-                newGroup = CreateNewAdGroup();
-                return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
-            }, () =>
-            {
-                DeleteAdGroup(newGroup);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newGroup = CreateNewAdGroup(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdGroup(controllerAdmin, newGroup);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
@@ -175,23 +221,30 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             const string scriptMethod = "Test-GetADServicePrincipalWithObjectId '{0}'";
             ServicePrincipal newServicePrincipal = null;
             Application app = null;
-            RunPowerShellTest(() =>
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
                 {
-                    app = CreateNewAdApp();
-                    newServicePrincipal = CreateNewAdServicePrincipal(app.AppId);
+                    app = CreateNewAdApp(controllerAdmin);
+                    newServicePrincipal = CreateNewAdServicePrincipal(controllerAdmin, app.AppId);
                     return new[] { string.Format(scriptMethod, newServicePrincipal.ObjectId) };
-                }, () =>
+                }, 
+                null,
+                () =>
                 {
-                    DeleteAdServicePrincipal(newServicePrincipal);
-                    DeleteAdApp(app);
-                });
+                    DeleteAdServicePrincipal(controllerAdmin, newServicePrincipal);
+                    DeleteAdApp(controllerAdmin, app);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipalWithBadObjectId()
         {
-            RunPowerShellTest("Test-GetADServicePrincipalWithBadObjectId");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADServicePrincipalWithBadObjectId");
         }
 
         [Fact]
@@ -200,14 +253,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADServicePrincipalWithUserObjectId '{0}'";
             User newUser = null;
-            RunPowerShellTest(() =>
-            {
-                newUser = CreateNewAdUser();
-                return new[] { string.Format(scriptMethod, newUser.ObjectId) };
-            }, () =>
-            {
-                DeleteAdUser(newUser);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newUser = CreateNewAdUser(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newUser.ObjectId) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdUser(controllerAdmin, newUser);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
@@ -217,23 +277,30 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             const string scriptMethod = "Test-GetADServicePrincipalWithSPN '{0}'";
             ServicePrincipal newServicePrincipal = null;
             Application app = null;
-            RunPowerShellTest(() =>
-            {
-                app = CreateNewAdApp();
-                newServicePrincipal = CreateNewAdServicePrincipal(app.AppId);
-                return new[] { string.Format(scriptMethod, newServicePrincipal.ServicePrincipalNames[1]) };
-            }, () =>
-            {
-                DeleteAdServicePrincipal(newServicePrincipal);
-                DeleteAdApp(app);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    app = CreateNewAdApp(controllerAdmin);
+                    newServicePrincipal = CreateNewAdServicePrincipal(controllerAdmin, app.AppId);
+                    return new[] { string.Format(scriptMethod, newServicePrincipal.ServicePrincipalNames[1]) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdServicePrincipal(controllerAdmin, newServicePrincipal);
+                    DeleteAdApp(controllerAdmin, app);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipalWithBadSPN()
         {
-            RunPowerShellTest("Test-GetADServicePrincipalWithBadSPN");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADServicePrincipalWithBadSPN");
         }
 
         [Fact]
@@ -243,23 +310,30 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             const string scriptMethod = "Test-GetADServicePrincipalWithSearchString '{0}'";
             ServicePrincipal newServicePrincipal = null;
             Application app = null;
-            RunPowerShellTest(() =>
-            {
-                app = CreateNewAdApp();
-                newServicePrincipal = CreateNewAdServicePrincipal(app.AppId);
-                return new[] { string.Format(scriptMethod, newServicePrincipal.DisplayName) };
-            }, () =>
-            {
-                DeleteAdServicePrincipal(newServicePrincipal);
-                DeleteAdApp(app);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    app = CreateNewAdApp(controllerAdmin);
+                    newServicePrincipal = CreateNewAdServicePrincipal(controllerAdmin, app.AppId);
+                    return new[] { string.Format(scriptMethod, newServicePrincipal.DisplayName) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdServicePrincipal(controllerAdmin, newServicePrincipal);
+                    DeleteAdApp(controllerAdmin, app);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipalWithBadSearchString()
         {
-            RunPowerShellTest("Test-GetADServicePrincipalWithBadSearchString");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADServicePrincipalWithBadSearchString");
         }
 
         [Fact]
@@ -268,14 +342,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetAllADUser";
             User newUser = null;
-            RunPowerShellTest(() =>
-            {
-                newUser = CreateNewAdUser();
-                return new[] { string.Format(scriptMethod) };
-            }, () =>
-            {
-                DeleteAdUser(newUser);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newUser = CreateNewAdUser(controllerAdmin);
+                    return new[] { string.Format(scriptMethod) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdUser(controllerAdmin, newUser);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
@@ -284,21 +365,28 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADUserWithObjectId '{0}'";
             User newUser = null;
-            RunPowerShellTest(() =>
-            {
-                newUser = CreateNewAdUser();
-                return new[] { string.Format(scriptMethod, newUser.ObjectId) };
-            }, () =>
-            {
-                DeleteAdUser(newUser);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newUser = CreateNewAdUser(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newUser.ObjectId) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdUser(controllerAdmin, newUser);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUserWithBadObjectId()
         {
-            RunPowerShellTest("Test-GetADUserWithBadObjectId");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADUserWithBadObjectId");
         }
 
         [Fact]
@@ -307,14 +395,21 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADUserWithGroupObjectId '{0}'";
             Group newGroup = null;
-            RunPowerShellTest(() =>
-            {
-                newGroup = CreateNewAdGroup();
-                return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
-            }, () =>
-            {
-                DeleteAdGroup(newGroup);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newGroup = CreateNewAdGroup(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdGroup(controllerAdmin, newGroup);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
@@ -323,27 +418,34 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADUserWithUPN '{0}'";
             User newUser = null;
-            RunPowerShellTest(() =>
-            {
-                newUser = CreateNewAdUser();
-                return new[] { string.Format(scriptMethod, newUser.UserPrincipalName) };
-            }, () =>
-            {
-                DeleteAdUser(newUser);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newUser = CreateNewAdUser(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newUser.UserPrincipalName) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdUser(controllerAdmin, newUser);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact(Skip = "Currently not working.")]
         public void TestGetADUserWithFPOUPN()
         {
-            RunPowerShellTest("Test-GetADUserWithFPOUPN");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADUserWithFPOUPN");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUserWithBadUPN()
         {
-            RunPowerShellTest("Test-GetADUserWithBadUPN");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADUserWithBadUPN");
         }
 
         [Fact]
@@ -352,30 +454,37 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
         {
             const string scriptMethod = "Test-GetADUserWithSearchString '{0}'";
             User newUser = null;
-            RunPowerShellTest(() =>
-            {
-                newUser = CreateNewAdUser();
-                return new[] { string.Format(scriptMethod, newUser.DisplayName) };
-            }, () =>
-            {
-                DeleteAdUser(newUser);
-            });
+            var controllerAdmin = ResourcesController.NewInstance;
+
+            controllerAdmin.RunPsTestWorkflow(
+                () =>
+                {
+                    newUser = CreateNewAdUser(controllerAdmin);
+                    return new[] { string.Format(scriptMethod, newUser.DisplayName) };
+                },
+                null,
+                () =>
+                {
+                    DeleteAdUser(controllerAdmin, newUser);
+                },
+                TestUtilities.GetCallingClass(),
+                TestUtilities.GetCurrentMethodName());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUserWithBadSearchString()
         {
-            RunPowerShellTest("Test-GetADUserWithBadSearchString");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADUserWithBadSearchString");
         }
 
-        private User CreateNewAdUser()
+        private User CreateNewAdUser(ResourcesController controllerAdmin)
         {
             var name = TestUtilities.GenerateName("aduser");
             var parameter = new UserCreateParameters
             {
                 DisplayName = name,
-                UserPrincipalName = name + "@" + base.UserDomain,
+                UserPrincipalName = name + "@" + controllerAdmin.UserDomain,
                 AccountEnabled = true,
                 MailNickname = name + "test",
                 PasswordProfileSettings = new UserCreateParameters.PasswordProfile
@@ -385,10 +494,10 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 }
             };
 
-            return base.GraphClient.User.Create(parameter).User;
+            return controllerAdmin.GraphClient.User.Create(parameter).User;
         }
 
-        private Group CreateNewAdGroup()
+        private Group CreateNewAdGroup(ResourcesController controllerAdmin)
         {
             var parameter = new GroupCreateParameters
             {
@@ -396,10 +505,10 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 MailNickname = TestUtilities.GenerateName("adgroupmail"),
                 SecurityEnabled = true
             };
-            return base.GraphClient.Group.Create(parameter).Group;
+            return controllerAdmin.GraphClient.Group.Create(parameter).Group;
         }
 
-        private Application CreateNewAdApp()
+        private Application CreateNewAdApp(ResourcesController controllerAdmin)
         {
             var appName = TestUtilities.GenerateName("adApplication");
             var url = string.Format("http://{0}/home", appName);
@@ -412,10 +521,10 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 ReplyUrls = new[] { url }
             };
 
-            return base.GraphClient.Application.Create(appParam).Application;
+            return controllerAdmin.GraphClient.Application.Create(appParam).Application;
         }
 
-        private ServicePrincipal CreateNewAdServicePrincipal(string appId)
+        private ServicePrincipal CreateNewAdServicePrincipal(ResourcesController controllerAdmin, string appId)
         {
             var spParam = new ServicePrincipalCreateParameters
             {
@@ -423,36 +532,36 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 AccountEnabled = true
             };
 
-            return base.GraphClient.ServicePrincipal.Create(spParam).ServicePrincipal;
+            return controllerAdmin.GraphClient.ServicePrincipal.Create(spParam).ServicePrincipal;
         }
 
-        private void DeleteAdUser(User user)
+        private void DeleteAdUser(ResourcesController controllerAdmin, User user)
         {
             if (user != null)
             {
-                base.GraphClient.User.Delete(user.ObjectId);
+                controllerAdmin.GraphClient.User.Delete(user.ObjectId);
             }
         }
-        private void DeleteAdGroup(Group group)
+        private void DeleteAdGroup(ResourcesController controllerAdmin, Group group)
         {
             if (group != null)
             {
-                base.GraphClient.Group.Delete(group.ObjectId);
+                controllerAdmin.GraphClient.Group.Delete(group.ObjectId);
             }
         }
-        private void DeleteAdApp(Application app)
+        private void DeleteAdApp(ResourcesController controllerAdmin, Application app)
         {
             if (app != null)
             {
-                base.GraphClient.Application.Delete(app.ObjectId);
+                controllerAdmin.GraphClient.Application.Delete(app.ObjectId);
             }
         }
 
-        private void DeleteAdServicePrincipal(ServicePrincipal newServicePrincipal)
+        private void DeleteAdServicePrincipal(ResourcesController controllerAdmin, ServicePrincipal newServicePrincipal)
         {
             if (newServicePrincipal != null)
             {
-                base.GraphClient.ServicePrincipal.Delete(newServicePrincipal.ObjectId);
+                controllerAdmin.GraphClient.ServicePrincipal.Delete(newServicePrincipal.ObjectId);
             }
         }
     }
