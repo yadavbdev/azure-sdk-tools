@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
     [Cmdlet(VerbsCommon.Remove, "AzureManagedCacheNamedCache "), OutputType(typeof(bool))]
     public class RemoveAzureManagedCacheNamedCache : ManagedCacheCmdletBase
     {
-        [Parameter(Mandatory = true )]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 

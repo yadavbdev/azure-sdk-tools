@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
     [Cmdlet(VerbsCommon.Get, "AzureManagedCacheNamedCache "), OutputType(typeof(PSCacheServiceWithNamedCaches))]
     public class GetAzureManagedCacheNamedCache : ManagedCacheCmdletBase
     {
-        [Parameter(Mandatory = true )]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
