@@ -99,7 +99,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
             Repository repository;
             ICredentials credentials;
             GetWebsiteDeploymentHttpConfiguration(websiteName, out repository, out credentials);
-            return HttpClientHelper.CreateClient(repository.RepositoryUri, credentials);
+            return AzureSession.ClientFactory.CreateHttpClient(repository.RepositoryUri, credentials);
         }
 
         private string GetWebsiteDeploymentHttpConfiguration(
@@ -1419,22 +1419,22 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
                 case WebJobType.Continuous:
                     if (isZipFile)
                     {
-                        client.ContinuousWebJobs.UploadZipAsync(jobName, fileName, File.OpenRead(jobFile));
+                        client.ContinuousWebJobs.UploadZip(jobName, fileName, File.OpenRead(jobFile));
                     }
                     else
                     {
-                        client.ContinuousWebJobs.UploadFileAsync(jobName, fileName, File.OpenRead(jobFile));
+                        client.ContinuousWebJobs.UploadFile(jobName, fileName, File.OpenRead(jobFile));
                     }
                     break;
 
                 case WebJobType.Triggered:
                     if (isZipFile)
                     {
-                        client.TriggeredWebJobs.UploadZipAsync(jobName, fileName, File.OpenRead(jobFile));
+                        client.TriggeredWebJobs.UploadZip(jobName, fileName, File.OpenRead(jobFile));
                     }
                     else
                     {
-                        client.TriggeredWebJobs.UploadFileAsync(jobName, fileName, File.OpenRead(jobFile));
+                        client.TriggeredWebJobs.UploadFile(jobName, fileName, File.OpenRead(jobFile));
                     }
                     break;
 
