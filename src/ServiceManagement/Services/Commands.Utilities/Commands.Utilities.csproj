@@ -123,7 +123,7 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.ServiceBus, Version=0.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.ServiceBus.0.11.0-preview\lib\net40\Microsoft.WindowsAzure.Management.ServiceBus.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.ServiceBus.0.13.0-preview\lib\net40\Microsoft.WindowsAzure.Management.ServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -225,9 +225,7 @@
     <Compile Include="Common\Scaffolding\ScaffoldParams.cs" />
     <Compile Include="Common\ServiceComponents.cs" />
     <Compile Include="Common\ServiceSettings.cs" />
-    <Compile Include="Common\StandardHeadersHandler.cs" />
     <Compile Include="Common\ServiceManagementBaseCmdlet.cs" />
-    <Compile Include="Common\CloudServiceProjectConfiguration.cs" />
     <Compile Include="Common\AzureBlob.cs" />
     <Compile Include="Common\VisualStudioProjectPathInfo.cs" />
     <Compile Include="Common\WebRoleInfo.cs" />
@@ -281,7 +279,6 @@
     <Compile Include="Store\MarketplaceClient.cs" />
     <Compile Include="Store\Parameter.cs" />
     <Compile Include="Store\PowerShellCustomConfirmation.cs" />
-    <Compile Include="Common\SetHeaderInspector.cs" />
     <Compile Include="Store\StoreClient.cs" />
     <Compile Include="Store\ValidateCountryLengthAttribute.cs" />
     <Compile Include="Store\WindowsAzureAddOn.cs" />
@@ -530,7 +527,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <None Include="Performance\Microsoft.ServiceBus.MessagingPerformanceCounters.man" />
     <None Include="PostBuild.ps1" />
     <None Include="Resources\Scaffolding\General\WorkerRole\startup.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
