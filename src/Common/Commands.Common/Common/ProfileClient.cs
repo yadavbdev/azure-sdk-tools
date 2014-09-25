@@ -60,33 +60,74 @@ namespace Microsoft.WindowsAzure.Commands.Common
         private static void UpgradeProfile()
         {
             string oldProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFile);
+            string oldProfileFilePathBackup = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.OldProfileFileBackup);
             string newProfileFilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory, AzurePowerShell.ProfileFile);
             if (DataStore.FileExists(oldProfileFilePath))
             {
                 string oldProfilePath = System.IO.Path.Combine(AzurePowerShell.ProfileDirectory,
                     AzurePowerShell.OldProfileFile);
-                AzureProfile oldProfile = new AzureProfile(DataStore, oldProfilePath);
 
-                if (DataStore.FileExists(newProfileFilePath))
+                try
                 {
-                    // Merge profile files
-                    AzureProfile newProfile = new AzureProfile(DataStore, newProfileFilePath);
-                    foreach (var environment in newProfile.Environments.Values)
+                    // Try to backup old profile
+                    try
                     {
-                        oldProfile.Environments[environment.Name] = environment;
+                        DataStore.CopyFile(oldProfilePath, oldProfileFilePathBackup);
                     }
-                    foreach (var subscription in newProfile.Subscriptions.Values)
+                    catch
                     {
-                        oldProfile.Subscriptions[subscription.Id] = subscription;
+                        // Ignore any errors here
                     }
-                    DataStore.DeleteFile(newProfileFilePath);
-                }
 
-                // Save the profile to the disk
-                oldProfile.Save();
+                    AzureProfile oldProfile = new AzureProfile(DataStore, oldProfilePath);
                 
-                // Rename WindowsAzureProfile.xml to WindowsAzureProfile.json
-                DataStore.RenameFile(oldProfilePath, newProfileFilePath);
+                    if (DataStore.FileExists(newProfileFilePath))
+                    {
+                        // Merge profile files
+                        AzureProfile newProfile = new AzureProfile(DataStore, newProfileFilePath);
+                        foreach (var environment in newProfile.Environments.Values)
+                        {
+                            oldProfile.Environments[environment.Name] = environment;
+                        }
+                        foreach (var subscription in newProfile.Subscriptions.Values)
+                        {
+                            oldProfile.Subscriptions[subscription.Id] = subscription;
+                        }
+                        DataStore.DeleteFile(newProfileFilePath);
+                    }
+
+                    // If there were no load errors - delete backup file
+                    if (oldProfile.ProfileLoadErrors.Count == 0)
+                    {
+                        try
+                        {
+                            DataStore.DeleteFile(oldProfileFilePathBackup);
+                        }
+                        catch
+                        {
+                            // Give up
+                        }
+                    }
+
+                    // Save the profile to the disk
+                    oldProfile.Save();
+                
+                    // Rename WindowsAzureProfile.xml to WindowsAzureProfile.json
+                    DataStore.RenameFile(oldProfilePath, newProfileFilePath);
+
+                }
+                catch
+                {
+                    // Something really bad happened - try to delete the old profile
+                    try
+                    {
+                        DataStore.DeleteFile(oldProfilePath);
+                    }
+                    catch
+                    {
+                        // Ignore any errors
+                    }
+                }
             }
         }
 
@@ -103,9 +144,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
 
         public ProfileClient(string profilePath)
         {
-            ProfileClient.UpgradeProfile();
+            try
+            {
+                ProfileClient.UpgradeProfile();
 
-            Profile = new AzureProfile(DataStore, profilePath);
+                Profile = new AzureProfile(DataStore, profilePath);
+            }
+            catch
+            {
+                // Should never fail in constructor
+            }
 
             WarningLog = (s) => Debug.WriteLine(s);
         }

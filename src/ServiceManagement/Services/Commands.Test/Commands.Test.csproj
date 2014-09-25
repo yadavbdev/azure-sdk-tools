@@ -102,8 +102,8 @@
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.MediaServices.1.2.0\lib\net40\Microsoft.WindowsAzure.Management.MediaServices.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.ServiceBus">
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.ServiceBus.0.11.0-preview\lib\net40\Microsoft.WindowsAzure.Management.ServiceBus.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.ServiceBus.0.13.0-preview\lib\net40\Microsoft.WindowsAzure.Management.ServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
