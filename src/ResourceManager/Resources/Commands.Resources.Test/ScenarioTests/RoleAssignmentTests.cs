@@ -130,6 +130,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 null,
                 // cleanup 
                 null,
+                TestUtilities.GetCallingClass(),
                 TestUtilities.GetCurrentMethodName() + "_Setup");
 
             // login as different user and run the test
@@ -157,6 +158,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 },
                 // cleanup 
                 null,
+                TestUtilities.GetCallingClass(),
                 TestUtilities.GetCurrentMethodName() + "_Test");
 
             // remove created user
@@ -175,6 +177,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                     }
                     controllerAdmin.AuthorizationManagementClient.RoleAssignments.Delete(resourceGroup.Id, new Guid(roleAssignmentId));
                 },
+                TestUtilities.GetCallingClass(),
                 TestUtilities.GetCurrentMethodName() + "_Cleanup");
         }
     }

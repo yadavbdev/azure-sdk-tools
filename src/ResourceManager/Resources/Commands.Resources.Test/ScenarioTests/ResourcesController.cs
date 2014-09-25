@@ -63,25 +63,29 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 
         public void RunPsTest(params string[] scripts)
         {
-            RunPsTestWorkflow(() => scripts, null, null);
+            var callingClassType = TestUtilities.GetCallingClass(2);
+            var mockName = TestUtilities.GetCurrentMethodName(2);
+
+            RunPsTestWorkflow(
+                () => scripts, 
+                // no cutom initializer
+                null, 
+                // no custom cleanup 
+                null,
+                callingClassType,
+                mockName);
         }
 
         public void RunPsTestWorkflow(
             Func<string[]> scriptBuilder, 
             Action<CSMTestEnvironmentFactory> initialize, 
-            Action cleanup, 
-            string mockName = null)
+            Action cleanup,
+            string callingClassType,
+            string mockName)
         {
             using (UndoContext context = UndoContext.Current)
             {
-                var callingClassType = TestUtilities.GetCallingClass(2);
-                var callingClassName = callingClassType
-                                       .Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries)
-                                       .Last();
-
-                context.Start(
-                    callingClassType, 
-                    mockName ?? TestUtilities.GetCurrentMethodName(2));
+                context.Start(callingClassType, mockName);
 
                 this.csmTestFactory = new CSMTestEnvironmentFactory();
 
@@ -93,6 +97,10 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 SetupManagementClients();
 
                 helper.SetupEnvironment(AzureModule.AzureResourceManager);
+                
+                var callingClassName = callingClassType
+                                        .Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries)
+                                        .Last();
                 helper.SetupModules(
                     AzureModule.AzureResourceManager, 
                     "ScenarioTests\\Common.ps1",
@@ -152,8 +160,14 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             }
             else if (HttpMockServer.Mode == HttpRecorderMode.Playback)
             {
-                tenantId = HttpMockServer.Variables[TenantIdKey];
-                UserDomain = HttpMockServer.Variables[DomainKey];
+                if (HttpMockServer.Variables.ContainsKey(TenantIdKey))
+                {
+                    tenantId = HttpMockServer.Variables[TenantIdKey];
+                }
+                if (HttpMockServer.Variables.ContainsKey(DomainKey))
+                {
+                    UserDomain = HttpMockServer.Variables[DomainKey];
+                }
             }
 
             return TestBase.GetGraphServiceClient<GraphRbacManagementClient>(this.csmTestFactory, tenantId);
