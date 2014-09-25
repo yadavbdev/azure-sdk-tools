@@ -48,12 +48,19 @@ function Test-DataFactoryGateway
         New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
      
         $gwname = "foo"
+		$description = "description"
    
         $actual = New-AzureDataFactoryGateway -ResourceGroupName $rgname -DataFactoryName $dfname -Name $gwname -Location $dflocation
         $expected = Get-AzureDataFactoryGateway -ResourceGroupName $rgname -DataFactoryName $dfname -Name $gwname
+        Assert-AreEqual $actual.Name $expected.Name
+        Assert-AreEqual $actual.Location $expected.Location
 
-        Assert-AreEqual $expected.Name $expected.Name
-        Assert-AreEqual $expected.Location $expected.Location
+		$key = New-AzureDataFactoryGatewayKey -ResourceGroupName $rgname -DataFactoryName $dfname -GatewayName $gwname
+		Assert-NotNull $key
+		Assert-NotNull $key.Gatewaykey
+
+		$result = Set-AzureDataFactoryGateway -ResourceGroupName $rgname -DataFactoryName $dfname -Name $gwname -Description $description
+		Assert-AreEqual $result.Description $description
 
         Remove-AzureDataFactoryGateway -ResourceGroupName $rgname -DataFactoryName $dfname -Name $gwname -Force
     }
