@@ -32,12 +32,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newGroup = CreateNewAdGroup(controllerAdmin);
                     return new[] { scriptMethod };
-                }, 
+                },
+                // initialize
                 null, 
+                // cleanup
                 () =>
                 {
                     DeleteAdGroup(controllerAdmin, newGroup);
@@ -55,12 +58,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newGroup = CreateNewAdGroup(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newGroup.DisplayName) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdGroup(controllerAdmin, newGroup);
@@ -85,12 +91,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newGroup = CreateNewAdGroup(controllerAdmin);
                 return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdGroup(controllerAdmin, newGroup);
@@ -115,12 +124,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newUser.ObjectId) };
-                }, 
+                },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
@@ -139,19 +151,25 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     newGroup = CreateNewAdGroup(controllerAdmin);
 
-                    string memberUrl = string.Format("{0}{1}/directoryObjects/{2}",
-                        controllerAdmin.GraphClient.BaseUri.AbsoluteUri, controllerAdmin.GraphClient.TenantID, newUser.ObjectId);
+                    string memberUrl = string.Format(
+                        "{0}{1}/directoryObjects/{2}",
+                        controllerAdmin.GraphClient.BaseUri.AbsoluteUri, 
+                        controllerAdmin.GraphClient.TenantID, 
+                        newUser.ObjectId);
 
                     controllerAdmin.GraphClient.Group.AddMember(newGroup.ObjectId, new GroupAddMemberParameters(memberUrl));
 
                     return new[] { string.Format(scriptMethod, newGroup.ObjectId, newUser.ObjectId, newUser.DisplayName) };
-                }, 
+                },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
@@ -177,12 +195,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newUser.ObjectId) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
@@ -200,12 +221,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newGroup = CreateNewAdGroup(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdGroup(controllerAdmin, newGroup);
@@ -224,13 +248,16 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     app = CreateNewAdApp(controllerAdmin);
                     newServicePrincipal = CreateNewAdServicePrincipal(controllerAdmin, app.AppId);
                     return new[] { string.Format(scriptMethod, newServicePrincipal.ObjectId) };
-                }, 
+                },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdServicePrincipal(controllerAdmin, newServicePrincipal);
@@ -256,12 +283,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newUser.ObjectId) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
@@ -280,13 +310,16 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     app = CreateNewAdApp(controllerAdmin);
                     newServicePrincipal = CreateNewAdServicePrincipal(controllerAdmin, app.AppId);
                     return new[] { string.Format(scriptMethod, newServicePrincipal.ServicePrincipalNames[1]) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdServicePrincipal(controllerAdmin, newServicePrincipal);
@@ -313,13 +346,16 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     app = CreateNewAdApp(controllerAdmin);
                     newServicePrincipal = CreateNewAdServicePrincipal(controllerAdmin, app.AppId);
                     return new[] { string.Format(scriptMethod, newServicePrincipal.DisplayName) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdServicePrincipal(controllerAdmin, newServicePrincipal);
@@ -345,12 +381,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
@@ -368,12 +407,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newUser.ObjectId) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
@@ -398,12 +440,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newGroup = CreateNewAdGroup(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newGroup.ObjectId) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdGroup(controllerAdmin, newGroup);
@@ -421,12 +466,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newUser.UserPrincipalName) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
@@ -457,12 +505,15 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
             var controllerAdmin = ResourcesController.NewInstance;
 
             controllerAdmin.RunPsTestWorkflow(
+                // scriptBuilder
                 () =>
                 {
                     newUser = CreateNewAdUser(controllerAdmin);
                     return new[] { string.Format(scriptMethod, newUser.DisplayName) };
                 },
+                // initialize
                 null,
+                // cleanup
                 () =>
                 {
                     DeleteAdUser(controllerAdmin, newUser);
