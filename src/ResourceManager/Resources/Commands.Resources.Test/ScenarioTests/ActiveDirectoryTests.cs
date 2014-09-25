@@ -17,34 +17,34 @@ using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
 {
-    public class ActiveDirectoryTests : ResourcesTestsBase
+    public class ActiveDirectoryTests
     {
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupSingle()
         {
-            RunPowerShellTest("Test-GetADGroup");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADGroup");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADGroupMember()
         {
-            RunPowerShellTest("Test-GetADGroupMember");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADGroupMember");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADServicePrincipal()
         {
-            RunPowerShellTest("Test-GetADServicePrincipal");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADServicePrincipal");
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetADUser()
         {
-            RunPowerShellTest("Test-GetADUser");
+            ResourcesController.NewInstance.RunPsTest("Test-GetADUser");
         }
     }
 }
