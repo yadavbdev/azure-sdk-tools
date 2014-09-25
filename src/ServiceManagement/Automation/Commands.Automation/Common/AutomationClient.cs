@@ -466,19 +466,19 @@ namespace Microsoft.Azure.Commands.Automation.Common
             AutomationManagement.Models.Job jobModel = this.GetJobModel(automationAccountName, jobId);
             IList<AutomationManagement.Models.JobStreamItem> jobStreamItemModels = AutomationManagementClient.ContinuationTokenHandler(
                 skipToken =>
-                {
-                    var response = this.automationManagementClient.JobStreams.ListStreamItems(
-                        automationAccountName,
-                        new AutomationManagement.Models.JobStreamListStreamItemsParameters
-                        {
-                            JobId = jobModel.Id,
-                            StartTime = createdSince.ToUniversalTime(),
-                            StreamType = streamTypeName,
-                            SkipToken = skipToken
-                        });
-                    return new ResponseWithSkipToken<AutomationManagement.Models.JobStreamItem>(
-                        response, response.JobStreamItems);
-                });
+                    {
+                        var response = this.automationManagementClient.JobStreams.ListStreamItems(
+                            automationAccountName,
+                            new AutomationManagement.Models.JobStreamListStreamItemsParameters
+                            {
+                                JobId = jobModel.Id,
+                                StartTime = this.FormatDateTime(createdSince),
+                                StreamType = streamTypeName,
+                                SkipToken = skipToken
+                            });
+                        return new ResponseWithSkipToken<AutomationManagement.Models.JobStreamItem>(
+                            response, response.JobStreamItems);
+                    });
 
             return jobStreamItemModels.Select(jobStreamItemModel => new JobStreamItem(jobStreamItemModel));
         }
