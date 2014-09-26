@@ -18,7 +18,7 @@ using Microsoft.Azure.Management.ManagedCache.Models;
 
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    [Cmdlet(VerbsCommon.Set, "AzureManagedCacheNamedCache "), OutputType(typeof(PSCacheServiceWithNamedCaches))]
+    [Cmdlet(VerbsCommon.Set, "AzureManagedCacheNamedCache"), OutputType(typeof(PSCacheServiceWithNamedCaches))]
     public class SetAzureManagedCacheNamedCache : ManagedCacheCmdletBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]

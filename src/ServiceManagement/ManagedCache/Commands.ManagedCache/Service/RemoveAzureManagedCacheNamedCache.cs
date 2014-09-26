@@ -18,7 +18,7 @@ using Microsoft.Azure.Management.ManagedCache.Models;
 
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    [Cmdlet(VerbsCommon.Remove, "AzureManagedCacheNamedCache "), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureManagedCacheNamedCache"), OutputType(typeof(bool))]
     public class RemoveAzureManagedCacheNamedCache : ManagedCacheCmdletBase
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
