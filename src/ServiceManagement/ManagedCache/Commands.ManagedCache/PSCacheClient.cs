@@ -92,12 +92,11 @@ namespace Microsoft.Azure.Commands.ManagedCache
             return cacheResource;
         }
 
-        public CloudServiceResource UpdateCacheService(string cacheServiceName, CacheServiceSkuType sku, string memory,
-            Action<bool, string, string, string, Action> ConfirmAction, bool force)
+        private CloudServiceResource FetchCloudServiceResource(string cacheServiceName, out string cloudServiceName)
         {
             CloudServiceListResponse listResponse = client.CloudServices.List();
             CloudServiceResource cacheResource = null;
-            string cloudServiceName = null;
+            cloudServiceName = null;
             foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
             {
                 cacheResource = cloudService.Resources.FirstOrDefault(
@@ -108,11 +107,20 @@ namespace Microsoft.Azure.Commands.ManagedCache
                     break;
                 }
             }
-            
-            if (cacheResource==null)
+
+            if (cacheResource == null)
             {
                 throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
             }
+
+            return cacheResource;
+        }
+
+        public CloudServiceResource UpdateCacheService(string cacheServiceName, CacheServiceSkuType sku, string memory,
+            Action<bool, string, string, string, Action> ConfirmAction, bool force)
+        {
+            string cloudServiceName = null;
+            CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
 
             CacheSkuCountConvert convert = new CacheSkuCountConvert(sku);
             CacheServiceSkuType existingSkuType = cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.SkuType;
@@ -150,24 +158,8 @@ namespace Microsoft.Azure.Commands.ManagedCache
         public CloudServiceResource AddNamedCache(string cacheServiceName, string namedCacheName, string expiryPolicy, int expiryTimeInMinutes,
             bool eviction, bool notifications, bool highAvailability)
         {
-            CloudServiceListResponse listResponse = client.CloudServices.List();
-            CloudServiceResource cacheResource = null;
             string cloudServiceName = null;
-            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
-            {
-                cacheResource = cloudService.Resources.FirstOrDefault(
-                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
-                if (cacheResource != null)
-                {
-                    cloudServiceName = cloudService.Name;
-                    break;
-                }
-            }
-
-            if (cacheResource == null)
-            {
-                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
-            }
+            CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
 
             foreach (IntrinsicSettings.CacheServiceInput.NamedCache namedCache in cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches)
             {
@@ -206,24 +198,8 @@ namespace Microsoft.Azure.Commands.ManagedCache
 
         public CloudServiceResource GetNamedCache(string cacheServiceName, string namedCacheName)
         {
-            CloudServiceListResponse listResponse = client.CloudServices.List();
-            CloudServiceResource cacheResource = null;
             string cloudServiceName = null;
-            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
-            {
-                cacheResource = cloudService.Resources.FirstOrDefault(
-                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
-                if (cacheResource != null)
-                {
-                    cloudServiceName = cloudService.Name;
-                    break;
-                }
-            }
-
-            if (cacheResource == null)
-            {
-                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
-            }
+            CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
 
             if (!string.IsNullOrEmpty(namedCacheName))
             {
@@ -243,24 +219,8 @@ namespace Microsoft.Azure.Commands.ManagedCache
         public CloudServiceResource SetNamedCache(string cacheServiceName, string namedCacheName, string expiryPolicy, int expiryTimeInMinutes,
             bool eviction, bool notifications, bool highAvailability, Action<bool, string, string, string, Action> ConfirmAction, bool force)
         {
-            CloudServiceListResponse listResponse = client.CloudServices.List();
-            CloudServiceResource cacheResource = null;
             string cloudServiceName = null;
-            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
-            {
-                cacheResource = cloudService.Resources.FirstOrDefault(
-                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
-                if (cacheResource != null)
-                {
-                    cloudServiceName = cloudService.Name;
-                    break;
-                }
-            }
-
-            if (cacheResource == null)
-            {
-                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
-            }
+            CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
 
             bool namedCacheFound = false;
             IntrinsicSettings.CacheServiceInput.NamedCache updateNamedCache = null;
@@ -323,24 +283,8 @@ namespace Microsoft.Azure.Commands.ManagedCache
 
         public void RemoveNamedCache(string cacheServiceName, string namedCacheName, Action<bool, string, string, string, Action> ConfirmAction, bool force)
         {
-            CloudServiceListResponse listResponse = client.CloudServices.List();
-            CloudServiceResource cacheResource = null;
             string cloudServiceName = null;
-            foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
-            {
-                cacheResource = cloudService.Resources.FirstOrDefault(
-                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
-                if (cacheResource != null)
-                {
-                    cloudServiceName = cloudService.Name;
-                    break;
-                }
-            }
-
-            if (cacheResource == null)
-            {
-                throw new ArgumentException(string.Format(Properties.Resources.CacheServiceNotExisting, cacheServiceName));
-            }
+            CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
 
             bool namedCacheFound = false;
             IntrinsicSettings.CacheServiceInput.NamedCache removeNamedCache = null;
