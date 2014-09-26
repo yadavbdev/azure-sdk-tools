@@ -20,6 +20,9 @@ Function to get user name and password for a variety of different account types
 
 function Get-UserCredentials ([string] $userType) 
 {
+    # Force load of testing assembly to get connection string parser
+    [System.Reflection.Assembly]::Load("Microsoft.WindowsAzure.Testing")
+
     function get-from-environment ($varName) {
         if (-not (test-path "Env:\$varName")) {
             throw "Required environment variable $varName is not set"

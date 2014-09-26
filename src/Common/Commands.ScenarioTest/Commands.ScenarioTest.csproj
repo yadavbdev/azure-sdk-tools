@@ -269,6 +269,7 @@
     </None>
     <Compile Include="CredentialTests\AddAccountForArmTests.cs" />
     <Compile Include="CredentialTests\CredentialTestBase.cs" />
+    <Compile Include="CredentialTests\CredentialTestHelper.cs" />
     <Compile Include="MediaServicesTests\MediaServicesTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

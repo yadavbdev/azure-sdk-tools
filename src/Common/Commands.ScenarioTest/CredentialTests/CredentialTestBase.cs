@@ -21,23 +21,22 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
 {
     public abstract class CredentialTestBase
     {
-        private readonly EnvironmentSetupHelper helper;
+        private readonly CredentialTestHelper helper;
         private readonly AzureModule commandMode;
         private const string modulePathFormat = @"Resources\CredentialTests\{0}.ps1";
 
         protected CredentialTestBase(AzureModule commandMode)
         {
-            helper = new EnvironmentSetupHelper();
+            helper = new CredentialTestHelper();
             this.commandMode = commandMode;
         }
 
         protected virtual Collection<PSObject> RunPowerShellTest(params string[] scripts)
         {
-            helper.SetupEnvironment(commandMode);
             helper.SetupModules(commandMode,
                 new[] {
                     "Common",
-                    this.GetType().Name
+                    GetType().Name
                 }.Select(m => string.Format(modulePathFormat, m)).ToArray());
 
             return helper.RunPowerShellTest(scripts);

@@ -27,16 +27,20 @@ Tests that single user account can be used to log in and list resource groups
 #>
 function Test-AddOrgIdWithSingleSubscription
 {
-    # Start off by verifying that there are no subscriptions or accounts
     Assert-Empty-Profile
 
     # Verify that account can be added and used to access the
     # expected subscription
     $accountInfo = Get-UserCredentials "OrgIdOneTenantOneSubscription"
+    
     Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
 
-    # Is there one subscription added?
-    Assert-True { (Get-AzureSubscription).Length -eq 1 }
+    # Is expected account added
+
+    $accounts = (Get-AzureAccount)
+    Assert-False {false} "Accounts = ${accounts}"
+
+    # Is expected subscription added?
     $sub = (Get-AzureSubscription)[0]
 
     # does it have the right subscription id?
@@ -45,6 +49,9 @@ function Test-AddOrgIdWithSingleSubscription
     # It's set as current account and as default account
     Assert-True { $sub.IsCurrent }
     Assert-True { $sub.IsDefault }
+
+    # It's using the expected account
+    Assert-True { $sub.DefaultAccount -eq $accountInfo.UserId }
 
     # Can we use it to do something? If this passes then we're ok
     Get-AzureResourceGroup
