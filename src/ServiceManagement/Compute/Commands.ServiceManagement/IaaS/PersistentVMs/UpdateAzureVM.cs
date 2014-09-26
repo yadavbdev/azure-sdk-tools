@@ -100,7 +100,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                 AvailabilitySetName = VM.AvailabilitySetName,
                 Label = VM.Label,
                 OSVirtualHardDisk = Mapper.Map<OSVirtualHardDisk>(VM.OSVirtualHardDisk),
-                DataVirtualHardDisks = null,
                 RoleName = VM.RoleName,
                 RoleSize = VM.RoleSize,
                 ProvisionGuestAgent = VM.ProvisionGuestAgent,
