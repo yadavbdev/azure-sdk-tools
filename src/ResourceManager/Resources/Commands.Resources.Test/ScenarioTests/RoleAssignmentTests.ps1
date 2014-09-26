@@ -64,21 +64,15 @@ function Test-RaByScope
                         -Scope $scope 
 	
 	# cleanup 
-	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                               -Scope $newAssignment.Scope `
-                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
-                               -Force
+	DeleteRoleAssignment $newAssignment
 
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$scope $newAssignment.Scope 
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
-
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                                                     -Scope $newAssignment.Scope `
-                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
-	Assert-Null $deletedRoleAssignment
+	
+	VerifyRoleAssignmentDeleted $newAssignment
 }
 
 <#
@@ -104,20 +98,14 @@ function Test-RaByResourceGroup
                         -ResourceGroupName $resourceGroups[0].ResourceGroupName
 	
 	# cleanup 
-	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                               -Scope $newAssignment.Scope `
-                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
-                               -Force
+	DeleteRoleAssignment $newAssignment
 	
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
-
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                                                     -Scope $newAssignment.Scope `
-                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
-	Assert-Null $deletedRoleAssignment
+	
+	VerifyRoleAssignmentDeleted $newAssignment
 }
 
 <#
@@ -148,20 +136,14 @@ function Test-RaByResource
                         -ResourceName $resource.Name
 	
 	# cleanup 
-	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                               -Scope $newAssignment.Scope `
-                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
-                               -Force
+	DeleteRoleAssignment $newAssignment
 	
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$groups[0].DisplayName $newAssignment.DisplayName
-
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                                                     -Scope $newAssignment.Scope `
-                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
-	Assert-Null $deletedRoleAssignment
+	
+	VerifyRoleAssignmentDeleted $newAssignment
 }
 
 <#
@@ -188,21 +170,15 @@ function Test-RaByServicePrincipal
 						
 	
 	# cleanup 
-	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                               -Scope $newAssignment.Scope `
-                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
-                               -Force
+	DeleteRoleAssignment $newAssignment
 	
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$scope $newAssignment.Scope 
 	Assert-AreEqual	$servicePrincipals[0].DisplayName $newAssignment.DisplayName
-
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                                                     -Scope $newAssignment.Scope `
-                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
-	Assert-Null $deletedRoleAssignment
+	
+	VerifyRoleAssignmentDeleted $newAssignment
 }
 
 <#
@@ -228,20 +204,14 @@ function Test-RaByUpn
                         -ResourceGroupName $resourceGroups[0].ResourceGroupName
 	
 	# cleanup 
-	Remove-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                               -Scope $newAssignment.Scope `
-                               -RoleDefinitionName $newAssignment.RoleDefinitionName `
-                               -Force
+	DeleteRoleAssignment $newAssignment
 	
 	# Assert
 	Assert-NotNull $newAssignment
 	Assert-AreEqual	$definitionName $newAssignment.RoleDefinitionName 
 	Assert-AreEqual	$users[0].DisplayName $newAssignment.DisplayName
 
-	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $newAssignment.ObjectId.Guid `
-                                                     -Scope $newAssignment.Scope `
-                                                     -RoleDefinitionName $newAssignment.RoleDefinitionName 
-	Assert-Null $deletedRoleAssignment
+	VerifyRoleAssignmentDeleted $newAssignment
 }
 
 <# .SYNOPSIS Tests validate correctness of returned permissions when logged in as the assigned user  #> 
@@ -277,4 +247,32 @@ function CreateRoleAssignment
                         -ResourceGroupName $resourceGroupName
 
 	return $newAssignment
+}
+
+<#
+.SYNOPSIS
+Delete role assignment
+#>
+function DeleteRoleAssignment
+{
+	param([Parameter(Mandatory=$true)] [object] $roleAssignment)
+	
+	Remove-AzureRoleAssignment -ObjectId $roleAssignment.ObjectId.Guid `
+                               -Scope $roleAssignment.Scope `
+                               -RoleDefinitionName $roleAssignment.RoleDefinitionName `
+                               -Force
+}
+
+<#
+.SYNOPSIS
+Verifies that role assignment does not exist
+#>
+function VerifyRoleAssignmentDeleted
+{
+	param([Parameter(Mandatory=$true)] [object] $roleAssignment)
+	
+	$deletedRoleAssignment = Get-AzureRoleAssignment -ObjectId $roleAssignment.ObjectId.Guid `
+                                                     -Scope $roleAssignment.Scope `
+                                                     -RoleDefinitionName $roleAssignment.RoleDefinitionName 
+	Assert-Null $deletedRoleAssignment
 }
