@@ -15,6 +15,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema
 {
+    using System.Xml.Serialization;
 
 
     /// <remarks/>
@@ -2755,8 +2756,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefi
         unspecified,
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("2014-01.2.3")]
-        Item20140123,
+        [System.Xml.Serialization.XmlEnumAttribute("2014-06.2.4")]
+        Item20140624,
     }
 
     /// <remarks/>
