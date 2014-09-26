@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             return response.Pipeline;
         }
 
-        public HttpStatusCode DeletePipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
+        public virtual HttpStatusCode DeletePipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
         {
             OperationResponse response = DataPipelineManagementClient.Pipelines.Delete(
                 resourceGroupName, dataFactoryName, pipelineName);
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             return response.StatusCode;
         }
 
-        public PSPipeline GetPipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
+        public virtual PSPipeline GetPipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
         {
             var response = DataPipelineManagementClient.Pipelines.Get(
                 resourceGroupName, dataFactoryName, pipelineName);
@@ -87,7 +87,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             };
         }
 
-        public List<PSDataSliceRun> GetPipelineRuns(string resourceGroupName, string dataFactoryName, string pipelineName,
+        public virtual List<PSDataSliceRun> GetPipelineRuns(string resourceGroupName, string dataFactoryName, string pipelineName,
             string activityName, DateTime runRangeStartTime, DateTime? runRangeEndTime, string runRecordStatus = null)
         {
             var pipelineRuns = new List<PSDataSliceRun>();
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             return pipelineRuns;
         }
 
-        public List<PSPipeline> ListPipelines(string resourceGroupName, string dataFactoryName)
+        public virtual List<PSPipeline> ListPipelines(string resourceGroupName, string dataFactoryName)
         {
             List<PSPipeline> pipelines = new List<PSPipeline>();
 
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             return pipelines;
         }
 
-        public void SetPipelineActivePeriod(
+        public virtual void SetPipelineActivePeriod(
             string resourceGroupName,
             string dataFactoryName,
             string pipelineName,
@@ -161,12 +161,12 @@ namespace Microsoft.Azure.Commands.DataFactories
                 });
         }
 
-        public void SuspendPipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
+        public virtual void SuspendPipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
         {
             DataPipelineManagementClient.Pipelines.Suspend(resourceGroupName, dataFactoryName, pipelineName);
         }
 
-        public void ResumePipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
+        public virtual void ResumePipeline(string resourceGroupName, string dataFactoryName, string pipelineName)
         {
             DataPipelineManagementClient.Pipelines.Resume(resourceGroupName, dataFactoryName, pipelineName);
         }

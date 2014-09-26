@@ -136,6 +136,7 @@
     <Compile Include="UnitTests\DataFactoryUnitTestBase.cs" />
     <Compile Include="UnitTests\GetDataFactoryGatewayTests.cs" />
     <Compile Include="ScenarioTests\TableTests.cs" />
+    <Compile Include="UnitTests\GetPipelineTests.cs" />
     <Compile Include="UnitTests\GetTableTests.cs" />
     <Compile Include="UnitTests\GetLinkedServiceTests.cs" />
     <Compile Include="UnitTests\GetDataFactoryTests.cs" />
@@ -145,8 +146,10 @@
     <Compile Include="UnitTests\NewDataFactoryGatewayTests.cs" />
     <Compile Include="UnitTests\NewLinkedServiceTests.cs" />
     <Compile Include="UnitTests\NewDataFactoryTests.cs" />
+    <Compile Include="UnitTests\NewPipelineTests.cs" />
     <Compile Include="UnitTests\RemoveAzureDataFactoryGatewayTests.cs" />
     <Compile Include="UnitTests\NewTableTests.cs" />
+    <Compile Include="UnitTests\RemovePipelineTests.cs" />
     <Compile Include="UnitTests\RemoveTableTests.cs" />
     <Compile Include="UnitTests\RemoveLinkedServiceTests.cs" />
     <Compile Include="UnitTests\RemoveDataFactoryTests.cs" />
@@ -157,6 +160,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\linkedService.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\pipeline.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\table.json">

@@ -12,13 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using System.Globalization;
+using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System.Management.Automation;
 using System.Security.Permissions;
-using Microsoft.Azure.Commands.DataFactories.Models;
-using Microsoft.WindowsAzure;
-using System.Net;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
@@ -43,21 +40,21 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-                string rawJsonContent = DataFactoryClient.ReadJsonFileContent(GetUnresolvedProviderPathFromPSPath(File));
+            string rawJsonContent = DataFactoryClient.ReadJsonFileContent(this.TryResolvePath(File));
 
-                Name = ResolveResourceName(rawJsonContent, Name, "Pipeline");
+            Name = ResolveResourceName(rawJsonContent, Name, "Pipeline");
 
-                CreatePSPipelineParameters parameters = new CreatePSPipelineParameters()
-                {
-                    ResourceGroupName = ResourceGroupName,
-                    DataFactoryName = DataFactoryName,
-                    Name = Name,
-                    RawJsonContent = rawJsonContent,
-                    Force = Force.IsPresent,
-                    ConfirmAction = ConfirmAction
-                };
+            CreatePSPipelineParameters parameters = new CreatePSPipelineParameters()
+            {
+                ResourceGroupName = ResourceGroupName,
+                DataFactoryName = DataFactoryName,
+                Name = Name,
+                RawJsonContent = rawJsonContent,
+                Force = Force.IsPresent,
+                ConfirmAction = ConfirmAction
+            };
 
-                WriteObject(DataFactoryClient.CreatePSPipeline(parameters));
+            WriteObject(DataFactoryClient.CreatePSPipeline(parameters));
         }
     }
 }

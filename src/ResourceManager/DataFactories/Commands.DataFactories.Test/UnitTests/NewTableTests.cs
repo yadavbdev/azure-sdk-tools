@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void CanCreateLinkedService()
+        public void CanCreateTable()
         {
             // Arrange
             Table expected = new Table()

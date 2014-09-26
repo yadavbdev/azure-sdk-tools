@@ -26,7 +26,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 {
     public partial class DataFactoryClient
     {
-        public List<PSDataSliceRun> ListDataSliceRuns(
+        public virtual List<PSDataSliceRun> ListDataSliceRuns(
             string resourceGroupName,
             string dataFactoryName,
             string tableName,
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             return runs;
         }
 
-        public List<PSDataSlice> ListDataSlices(string resourceGroupName, string dataFactoryName, string tableName, DateTime dataSliceRangeStartTime, DateTime dataSliceRangeEndTime)
+        public virtual List<PSDataSlice> ListDataSlices(string resourceGroupName, string dataFactoryName, string tableName, DateTime dataSliceRangeStartTime, DateTime dataSliceRangeEndTime)
         {
             List<PSDataSlice> dataSlices = new List<PSDataSlice>();
             var response = DataPipelineManagementClient.DataSlices.List(
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             return dataSlices;
         }
 
-        public void SetSliceStatus(
+        public virtual void SetSliceStatus(
             string resourceGroupName,
             string dataFactoryName,
             string tableName,
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 });
         }
 
-        public PSRunLogInfo GetDataSliceRunLogsSharedAccessSignature(string resourceGroupName, string dataFactoryName, string dataSliceRunId)
+        public virtual PSRunLogInfo GetDataSliceRunLogsSharedAccessSignature(string resourceGroupName, string dataFactoryName, string dataSliceRunId)
         {
             var response = DataPipelineManagementClient.DataSliceRuns.GetLogs(
                 resourceGroupName, dataFactoryName, dataSliceRunId);
