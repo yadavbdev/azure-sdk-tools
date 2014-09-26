@@ -243,3 +243,38 @@ function Test-RaByUpn
                                                      -RoleDefinitionName $newAssignment.RoleDefinitionName 
 	Assert-Null $deletedRoleAssignment
 }
+
+<# .SYNOPSIS Tests validate correctness of returned permissions when logged in as the assigned user  #> 
+function Test-RaUserPermissions 
+{ 
+	param([string]$rgName, [string]$action) 
+	
+	# Setup 
+	
+	# Test 
+	$permissions = Get-AzureResourceGroup -Name $rgName 
+		
+	# Assert 
+	Assert-AreEqual 1 $permissions.Permissions.Count "User should have only one permission." 
+	Assert-AreEqual 1 $permissions.Permissions[0].Actions.Count "User should have only one action in the permission." 
+	Assert-AreEqual	$action $permissions.Permissions[0].Actions[0] "Permission action mismatch." 
+}
+
+<#
+.SYNOPSIS
+Creates role assignment
+#>
+function CreateRoleAssignment
+{
+	param([string]$roleAssignmentId, [string]$userId, [string]$definitionName, [string]$resourceGroupName) 
+
+	Add-Type -Path ".\\Microsoft.Azure.Commands.Resources.dll"
+
+	[Microsoft.Azure.Commands.Resources.Models.Authorization.AuthorizationClient]::RoleAssignmentNames.Enqueue($roleAssignmentId)
+	$newAssignment = New-AzureRoleAssignment `
+                        -ObjectId $userId `
+                        -RoleDefinitionName $definitionName `
+                        -ResourceGroupName $resourceGroupName
+
+	return $newAssignment
+}

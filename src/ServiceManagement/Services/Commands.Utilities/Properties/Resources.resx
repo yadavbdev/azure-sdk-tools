@@ -1586,6 +1586,9 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   <data name="ErrorCreatingVMNetwork" xml:space="preserve">
     <value>Error creating VMNetwork</value>
   </data>
+  <data name="SpecifyCreateACSNamespace" xml:space="preserve">
+    <value>Please specify CreateACSNamespace as true or false for better future compatibility.</value>
+  </data>
   <data name="Argument_WebSpaceMissing" xml:space="preserve">
     <value>Please provide webspace name as well.</value>
   </data>

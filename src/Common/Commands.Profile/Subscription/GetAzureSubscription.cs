@@ -159,7 +159,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             {
                 var response = client.Subscriptions.Get();
                 var environment = ProfileClient.GetEnvironmentOrDefault(subscription.Environment);
-                var account = defaultProfileClient.Profile.Accounts[subscription.Account];
+                var account = DefaultProfileClient.Profile.Accounts[subscription.Account];
                 bool isCert = account.Type == AzureAccount.AccountType.Certificate;
 
                 PSAzureSubscriptionExtended result = new PSAzureSubscriptionExtended(ConstructPsAzureSubscription(subscription))
@@ -168,13 +168,16 @@ namespace Microsoft.WindowsAzure.Commands.Profile
                     ActiveDirectoryUserId = subscription.Account,
                     CurrentCoreCount = response.CurrentCoreCount,
                     CurrentHostedServices = response.CurrentHostedServices,
-                    CurrentDnsServers = 0, // TODO: Add to spec
-                    CurrentLocalNetworkSites = 0, // TODO: Add to spec
+                    CurrentDnsServers = response.CurrentDnsServers,
+                    CurrentLocalNetworkSites = response.CurrentLocalNetworkSites,
+                    CurrentStorageAccounts = response.CurrentStorageAccounts,
+                    CurrentVirtualNetworkSites = response.CurrentVirtualNetworkSites,
                     MaxCoreCount = response.MaximumCoreCount,
                     MaxDnsServers = response.MaximumDnsServers,
                     MaxHostedServices = response.MaximumHostedServices,
-                    MaxVirtualNetworkSites = response.MaximumVirtualNetworkSites,
+                    MaxLocalNetworkSites = response.MaximumLocalNetworkSites,
                     MaxStorageAccounts = response.MaximumStorageAccounts,
+                    MaxVirtualNetworkSites = response.MaximumVirtualNetworkSites,
                     ServiceAdminLiveEmailId = response.ServiceAdminLiveEmailId,
                     SubscriptionRealName = response.SubscriptionName,
                     SubscriptionStatus = response.SubscriptionStatus.ToString(),
