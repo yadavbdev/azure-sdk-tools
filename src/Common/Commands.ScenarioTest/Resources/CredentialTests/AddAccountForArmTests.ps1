@@ -35,11 +35,6 @@ function Test-AddOrgIdWithSingleSubscription
     
     Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
 
-    # Is expected account added
-
-    $accounts = (Get-AzureAccount)
-    Assert-False {false} "Accounts = ${accounts}"
-
     # Is expected subscription added?
     $sub = (Get-AzureSubscription)[0]
 
