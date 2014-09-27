@@ -15,6 +15,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Microsoft.WindowsAzure.Commands.Common.Interfaces;
 using Microsoft.WindowsAzure.Commands.Common.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -26,6 +27,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
         public void WriteFile(string path, string contents)
         {
             File.WriteAllText(path, contents);
+        }
+
+        public void WriteFile(string path, string contents, Encoding encoding)
+        {
+            File.WriteAllText(path, contents, encoding);
         }
 
         public void WriteFile(string path, byte[] contents)
