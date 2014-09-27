@@ -13,9 +13,9 @@
 //  /c /namespace:Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema  
 //  /language:cs
 
-
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema
 {
+    using System.Xml.Serialization;
 
 
     /// <remarks/>
@@ -1223,8 +1223,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConf
     {
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("2014-01.2.3")]
-        Item20140123,
+        [System.Xml.Serialization.XmlEnumAttribute("2014-06.2.4")]
+        Item20140624,
 
         /// <remarks/>
         unspecified,

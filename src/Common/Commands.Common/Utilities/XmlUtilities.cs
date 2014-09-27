@@ -62,7 +62,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 xmlSerializer.Serialize(writer, obj);
             }
-            FileUtilities.DataStore.WriteFile(fileName, sBuilder.ToString());
+            FileUtilities.DataStore.WriteFile(fileName, sBuilder.ToString(), Encoding.Unicode);
         }
 
         public static string SerializeXmlString<T>(T obj)
