@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName, DataFactoryName, TableName, StartDateTime.SpecifyDateTimeKind(),
                 EndDateTime.SpecifyDateTimeKind());
 
-            WriteObject(dataSlices);
+            WriteObject(dataSlices, true);
         }
     }
 }

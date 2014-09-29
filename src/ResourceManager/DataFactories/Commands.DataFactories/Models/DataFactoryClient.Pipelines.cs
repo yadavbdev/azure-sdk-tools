@@ -52,7 +52,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 }               
             }
 
-			if (pipeline.Pipeline != null)
+			if (pipeline != null && pipeline.Pipeline != null)
             {
                 DataPipelineManagementClient.Pipelines.Delete(resourceGroupName, dataFactoryName, pipelineName);
 			}

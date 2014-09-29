@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                         var pipelineRuns = DataFactoryClient.GetPipelineRuns(
                             ResourceGroupName, DataFactoryName, PipelineName, ActivityName,
                             StartDateTime.SpecifyDateTimeKind(), EndDateTime.SpecifyDateTimeKind(), null);
-                        WriteObject(pipelineRuns);
+                        WriteObject(pipelineRuns, true);
                         break;
                 }
             }
