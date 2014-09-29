@@ -5,7 +5,7 @@
   <?define sourceDir="$(var.SolutionDir)..\src\Package\$(var.Configuration)" ?>
   <?define caSourceDir="$(var.SolutionDir)setup\bin\$(var.Configuration)" ?>
 
-  <?define version="0.8.8.1" ?>
+  <?define version="0.8.9" ?>
   <?define versionedStartMenuFolder="Microsoft Azure" ?>
   <?define staleStartMenuFolder="Windows Azure" ?>
 
@@ -56,7 +56,7 @@
         <Directory Id="StaleAzureSdkMenu" Name="$(var.staleStartMenuFolder)"/>
       </Directory>
     </Directory>
-	
+
     <Property Id="POWERSHELLPATH">
     <RegistrySearch Id="POWERSHELLPATH"
                     Type="raw"
