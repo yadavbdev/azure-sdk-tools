@@ -13,16 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Management.Automation;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using Extensions;
-    using Helpers;
-    using Management.Compute.Models;
-    using Properties;
-    using System;
-    using System.Management.Automation;
-    using System.Net;
-    using Utilities.Common;
     using PVM = Model;
 
     /// <summary>
@@ -109,7 +111,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
             AssertNoPersistenVmRoleExistsInDeployment(PVM.DeploymentSlotType.Production);
             AssertNoPersistenVmRoleExistsInDeployment(PVM.DeploymentSlotType.Staging);
 
-            var storageName = CurrentSubscription.CurrentStorageAccountName;
+            var storageName = CurrentContext.Subscription.GetProperty(Commands.Common.Models.AzureSubscription.Property.StorageAccount);
 
             Uri packageUrl;
             if (this.Package.StartsWith(Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) ||
@@ -262,7 +264,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
                 this.Label = this.Name;
             }
 
-            if (string.IsNullOrEmpty(this.CurrentSubscription.CurrentStorageAccountName))
+            if (string.IsNullOrEmpty(this.CurrentContext.Subscription.GetProperty(AzureSubscription.Property.StorageAccount)))
             {
                 throw new ArgumentException(Resources.CurrentStorageAccountIsNotSet);
             }

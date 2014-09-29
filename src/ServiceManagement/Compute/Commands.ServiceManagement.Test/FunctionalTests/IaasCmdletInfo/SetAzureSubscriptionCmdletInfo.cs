@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class SetAzureSubscriptionCmdletInfo : CmdletsInfo
     {
         public SetAzureSubscriptionCmdletInfo(string defaultSubscriptionName)
@@ -24,10 +24,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             cmdletParams.Add(new CmdletParam("DefaultSubscription", defaultSubscriptionName));
         }
 
-        public SetAzureSubscriptionCmdletInfo(string subscriptionName, string currentStorageAccount)
+        public SetAzureSubscriptionCmdletInfo(string subscriptionName, string subscriptionId, string currentStorageAccount)
         {
             cmdletName = Utilities.SetAzureSubscriptionCmdletName;
             cmdletParams.Add(new CmdletParam("SubscriptionName", subscriptionName));
+            cmdletParams.Add(new CmdletParam("SubscriptionId", subscriptionId));
+            cmdletParams.Add(new CmdletParam("CurrentStorageAccount", currentStorageAccount));
+        }
+
+        public SetAzureSubscriptionCmdletInfo(string subscriptionId, string currentStorageAccount)
+        {
+            cmdletName = Utilities.SetAzureSubscriptionCmdletName;
+            cmdletParams.Add(new CmdletParam("SubscriptionId", subscriptionId));
             cmdletParams.Add(new CmdletParam("CurrentStorageAccount", currentStorageAccount));
         }
     }

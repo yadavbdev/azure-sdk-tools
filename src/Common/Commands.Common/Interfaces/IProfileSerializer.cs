@@ -12,15 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Common.Interfaces
 {
     public interface IProfileSerializer
     {
-        string Serialize(AzureProfile obj);
+        string Serialize(AzureProfile profile);
 
-        AzureProfile Deserialize(string contents);
+        bool Deserialize(string contents, AzureProfile profile);
 
-        string ProfileFile { get; }
+        IList<string> DeserializeErrors { get; }
     }
 }

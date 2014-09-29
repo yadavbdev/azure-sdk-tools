@@ -13,11 +13,11 @@
 // limitations under the License.
 //
 
+using System;
+using Microsoft.WindowsAzure.Common.Internals;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.WindowsAzure.Common.Internals;
-    using System;
-
     public class ResourceManagerTestEnvironmentFactory : TestEnvironmentFactory
     {
         /// <summary>

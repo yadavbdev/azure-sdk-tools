@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Management.Sql;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Firewall.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
-    using Microsoft.WindowsAzure.Management.Sql;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-
     /// <summary>
     /// Deletes a firewall rule from a Microsoft Azure SQL Database server in the selected subscription.
     /// </summary>

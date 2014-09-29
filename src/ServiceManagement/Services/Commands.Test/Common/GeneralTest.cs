@@ -12,41 +12,53 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Common
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
-    public class GeneralTests
+    
+    public class GeneralTests : IDisposable
     {
         private const string _publishSettingsUrl = "http://manage.windowsazure.com/";
         private const string _azureHostNameSuffix = "the suffix";
 
-        [ClassInitialize]
-        public static void ClassInit(TestContext context)
+        public GeneralTests()
         {
             // Set test environment variables
-            Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, _publishSettingsUrl);
+            System.Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, _publishSettingsUrl);
         }
 
-        [ClassCleanup]
-        public static void ClassCleanup()
+        public void ClassCleanup()
         {
             // Delete test environment variables
-            Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, null);
+            System.Environment.SetEnvironmentVariable(Resources.PublishSettingsUrlEnv, null);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestBlobEndpointUri()
         {
             string accountName = "azure awesome account";
             string expected = string.Format(Resources.BlobEndpointUri, accountName);
-            string actual = GeneralUtilities.BlobEndpointUri(accountName);
+            string actual = string.Format(CultureInfo.InvariantCulture,
+                TryGetEnvironmentVariable(Resources.BlobEndpointUriEnv, Resources.BlobEndpointUri),
+                accountName);
 
-            Assert.AreEqual<string>(expected, actual);
+            Assert.Equal<string>(expected, actual);
+        }
+
+        private static string TryGetEnvironmentVariable(string environmentVariableName, string defaultValue)
+        {
+            string value = System.Environment.GetEnvironmentVariable(environmentVariableName);
+            return (string.IsNullOrEmpty(value)) ? defaultValue : value;
+        }
+
+        public void Dispose()
+        {
+            ClassCleanup();
         }
     }
 }

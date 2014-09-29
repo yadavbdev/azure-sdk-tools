@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Common
 {
-    using Commands.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class DeltaMapperTests
     {
         class SourceClass
@@ -41,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Common
             public string C { get; set; }
         }
 
-        [TestMethod]
+        [Fact]
         public void MappingWithNoChangesReturnsFalse()
         {
             var src = new SourceClass
@@ -61,10 +61,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Common
             var dest = new DestClass();
 
             bool changes = ObjectDeltaMapper.Map(src, reference, dest, "Excluded");
-            Assert.IsFalse(changes);
+            Assert.False(changes);
         }
 
-        [TestMethod]
+        [Fact]
         public void MappingWithChangeCopiesChangedProperties()
         {
             var src = new SourceClass
@@ -84,12 +84,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.Common
             var dest = new DestClass();
 
             bool changes = ObjectDeltaMapper.Map(src, reference, dest, "Excluded");
-            Assert.IsTrue(changes);
-            Assert.AreEqual(1, dest.A);
-            Assert.IsNull(dest.C);
+            Assert.True(changes);
+            Assert.Equal(1, dest.A);
+            Assert.Null(dest.C);
         }
 
-        [TestMethod]
+        [Fact]
         public void NullSourcePropertyIsNotAChange()
         {
             var src = new SourceClass
@@ -106,7 +106,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Common
 
             var dest = new DestClass();
             bool changes = ObjectDeltaMapper.Map(src, reference, dest);
-            Assert.IsFalse(changes);
+            Assert.False(changes);
         }
     }
 }

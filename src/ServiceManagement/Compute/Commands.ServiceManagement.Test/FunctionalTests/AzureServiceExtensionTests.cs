@@ -13,17 +13,16 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Extensions;
-    using Model;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Reflection;
-    using VisualStudio.TestTools.UnitTesting;
-    using WindowsAzure.Commands.ServiceManagement;
-
     [TestClass]
     public class AzureServiceExtensionTests : ServiceManagementTest
     {

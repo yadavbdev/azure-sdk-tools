@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Sync;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using Sync;
-    using Sync.Download;
-    using System.IO;
-    using Utilities.Common;
-
     public class VhdDownloaderModel
     {
         public static VhdDownloadContext Download(DownloaderParameters downloadParameters, ServiceManagementBaseCmdlet cmdlet)

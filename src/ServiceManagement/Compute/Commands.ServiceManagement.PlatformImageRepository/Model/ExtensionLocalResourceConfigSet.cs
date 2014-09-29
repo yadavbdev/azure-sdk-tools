@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model
 {
-    using System.Collections.Generic;
-
     public class ExtensionLocalResourceConfigSet
     {
         public List<ExtensionLocalResourceConfig> LocalResources { get; set; }

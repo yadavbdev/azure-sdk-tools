@@ -13,19 +13,18 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using ConfigDataInfo;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Model;
-    using PlatformImageRepository.Model;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Reflection;
-    using System.Threading;
-
-
     [TestClass]
     public class PIRTest : ServiceManagementTest
     {
@@ -42,6 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         private const string publisher = "publisher1";
         private const string normaluser = "normaluser2";
+        private const string normaluserSubId = "602258C5-52EC-46B3-A49A-7587A764AC84";
 
         private const string storageNormalUser = "normalstorage";
 
@@ -246,7 +246,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                         throw;
                     }
                 }
-                vmPowershellCmdlets.SetAzureSubscription(normaluser, storageNormalUser);
+                vmPowershellCmdlets.SetAzureSubscription(normaluser, normaluserSubId, storageNormalUser);
 
                 // Replicate the user image to "West US" and wait until the replication process is completed.
                 SwitchToPublisher();

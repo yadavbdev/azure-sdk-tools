@@ -11,12 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using Microsoft.Hadoop.Client;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects
 {
-    using GetAzureHDInsightClusters.Extensions;
-    using Hadoop.Client;
-    using System;
-
     /// <summary>
     ///     Represents an Azure HD Insight jobDetails for the PowerShell Cmdlets.
     /// </summary>

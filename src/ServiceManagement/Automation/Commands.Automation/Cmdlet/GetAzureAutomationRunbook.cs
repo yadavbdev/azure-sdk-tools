@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.Azure.Commands.Automation.Model;
+
 namespace Microsoft.Azure.Commands.Automation.Cmdlet
 {
-    using Microsoft.Azure.Commands.Automation.Model;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     /// <summary>
     /// Gets azure automation runbooks for a given account.
     /// </summary>

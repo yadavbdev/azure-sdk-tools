@@ -13,12 +13,12 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.CloudService
 {
-    using Commands.Utilities.CloudService;
-    using ServiceManagement.Model;
-    using System.Collections.Generic;
-
     class ServiceSettingsTestData
     {
         // To Do: Add bad cases for ServiceSettings

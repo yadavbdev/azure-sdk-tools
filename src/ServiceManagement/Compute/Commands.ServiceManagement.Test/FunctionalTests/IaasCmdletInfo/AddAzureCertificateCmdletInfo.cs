@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-    using System.Management.Automation;
-
     public class AddAzureCertificateCmdletInfo : CmdletsInfo
     {
         public AddAzureCertificateCmdletInfo(string serviceName, PSObject cert, string password)

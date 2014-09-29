@@ -12,16 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Reflection;
-    using System.Text.RegularExpressions;
-    using System.Xml.Linq;
-
     public class Scaffold
     {
         public List<ScaffoldFile> Files { get; private set; }
@@ -33,11 +34,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 
         public static void ReplaceParameterRule(string path, Dictionary<string, object> parameters)
         {
-            string contents = File.ReadAllText(path);
+            string contents = FileUtilities.DataStore.ReadFileAsText(path);
 
             contents = ReplaceParameter(contents, parameters);
 
-            File.WriteAllText(path, contents);
+            FileUtilities.DataStore.WriteFile(path, contents);
         }
 
         public static string ReplaceParameter(string text, Dictionary<string, object> parameters)
@@ -89,9 +90,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
                     }
 
                     tempPath = Path.Combine(destPath, tempPath);
-                    Directory.CreateDirectory(Path.GetDirectoryName(tempPath));
+                    FileUtilities.DataStore.CreateDirectory(Path.GetDirectoryName(tempPath));
 
-                    File.Copy(path, tempPath);
+                    FileUtilities.DataStore.CopyFile(path, tempPath);
 
                     foreach (ScaffoldRule rule in file.Rules)
                     {
@@ -100,7 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 
                     if (!file.Copy)
                     {
-                        File.Delete(tempPath);
+                        FileUtilities.DataStore.DeleteFile(tempPath);
                     }
                 }
             }
@@ -111,7 +112,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
             List<string> paths = new List<string>();
             if (!string.IsNullOrEmpty(file.PathExpression))
             {
-                foreach (string fullPath in Directory.GetFiles(sourcePath, "*", SearchOption.AllDirectories))
+                foreach (string fullPath in FileUtilities.DataStore.GetFiles(sourcePath, "*", SearchOption.AllDirectories))
                 {
                     string relativePath = GetRelativePath(sourcePath, fullPath);
                     if (Regex.IsMatch(relativePath, file.PathExpression))
@@ -136,7 +137,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding
 
         public static Scaffold Parse(string path)
         {
-            XDocument document = XDocument.Load(path);
+            XDocument document = XDocument.Parse(FileUtilities.DataStore.ReadFileAsText(path));
             Scaffold scaffold = new Scaffold();
 
             foreach (XElement fileElement in document.Root.Elements(XName.Get("ScaffoldFile")))

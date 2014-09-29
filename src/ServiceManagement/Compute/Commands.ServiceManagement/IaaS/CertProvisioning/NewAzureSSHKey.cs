@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System;
-    using System.Management.Automation;
-    using Model;
-
     [Cmdlet(VerbsCommon.New, "AzureSSHKey"), OutputType(typeof(LinuxProvisioningConfigurationSet.SSHKeyPair), typeof(LinuxProvisioningConfigurationSet.SSHPublicKey))]
     public class NewAzureSSHKeyCommand : Cmdlet
     {

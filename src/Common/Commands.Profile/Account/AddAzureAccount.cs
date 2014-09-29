@@ -12,55 +12,84 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using Utilities.Profile;
-
     /// <summary>
     /// Cmdlet to log into an environment and download the subscriptions
     /// </summary>
-    [Cmdlet(VerbsCommon.Add, "AzureAccount")]
+    [Cmdlet(VerbsCommon.Add, "AzureAccount", DefaultParameterSetName = "User")]
+    [OutputType(typeof(AzureAccount))]
     public class AddAzureAccount : SubscriptionCmdletBase
     {
         [Parameter(Mandatory = false, HelpMessage = "Environment containing the account to log into")]
         public string Environment { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "Optional credential")]
+        [Parameter(ParameterSetName = "User", Mandatory = false, HelpMessage = "Optional credential")]
+        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true, HelpMessage = "Optional credential")]
         public PSCredential Credential { get; set; }
 
+        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true)]
+        public SwitchParameter ServicePrincipal { get; set; }
+        
+        [Parameter(ParameterSetName = "ServicePrincipal", Mandatory = true, HelpMessage = "Optional tenant name or ID")]
+        public string Tenant { get; set; }
+     
         public AddAzureAccount() : base(true)
         {
+            Environment = EnvironmentName.AzureCloud;
         }
 
         public override void ExecuteCmdlet()
         {
-            WindowsAzureEnvironment env = ChosenEnvironment() ?? Profile.CurrentEnvironment;
-            string accountName = Profile.AddAccounts(env, Credential);
-            WriteVerbose(string.Format(Resources.AddAccountAdded, accountName));
-            WriteVerbose(string.Format(Resources.AddAccountShowDefaultSubscription, Profile.DefaultSubscription.SubscriptionName));
-            WriteVerbose(Resources.AddAccountViewSubscriptions);
-            WriteVerbose(Resources.AddAccountChangeSubscription);
-        }
+            AzureAccount azureAccount = new AzureAccount();
 
-        private WindowsAzureEnvironment ChosenEnvironment()
-        {
-            if (string.IsNullOrEmpty(Environment))
+            azureAccount.Type = ServicePrincipal.IsPresent
+                ? AzureAccount.AccountType.ServicePrincipal
+                : AzureAccount.AccountType.User;
+            
+            SecureString password = null;
+            if (Credential != null)
             {
-                return null;
+                azureAccount.Id = Credential.UserName;
+                password = Credential.Password;
             }
 
-            WindowsAzureEnvironment result;
-
-            if (!Profile.Environments.TryGetValue(Environment, out result))
+            if (!string.IsNullOrEmpty(Tenant))
             {
-                throw new Exception(string.Format(Resources.EnvironmentNotFound, Environment));
+                azureAccount.SetProperty(AzureAccount.Property.Tenants, new[] {Tenant});
             }
-            return result;
-        }
 
+            var account = ProfileClient.AddAccountAndLoadSubscriptions(azureAccount, ProfileClient.GetEnvironmentOrDefault(Environment), password);
+
+            if (account != null)
+            {
+                WriteVerbose(string.Format(Resources.AddAccountAdded, azureAccount.Id));
+                if (ProfileClient.Profile.DefaultSubscription != null)
+                {
+                    WriteVerbose(string.Format(Resources.AddAccountShowDefaultSubscription,
+                        ProfileClient.Profile.DefaultSubscription.Name));
+                }
+                WriteVerbose(Resources.AddAccountViewSubscriptions);
+                WriteVerbose(Resources.AddAccountChangeSubscription);
+
+                string subscriptionsList = account.GetProperty(AzureAccount.Property.Subscriptions);
+                string tenantsList = account.GetProperty(AzureAccount.Property.Tenants);
+
+                if (subscriptionsList == null)
+                {
+                    WriteWarning(string.Format(Resources.NoSubscriptionAddedMessage, azureAccount.Id));
+                }
+
+                WriteObject(account.ToPSAzureAccount());
+            } 
+        }
     }
 }

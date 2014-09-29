@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.DataObjects;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.BaseInterfaces;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    using DataObjects;
-    using GetAzureHDInsightClusters;
-    using GetAzureHDInsightClusters.BaseInterfaces;
-
     internal interface IGetAzureHDInsightPropertiesCommand : IAzureHDInsightCommand<AzureHDInsightCapabilities>, IAzureHDInsightCommonCommandBase
     {
     }

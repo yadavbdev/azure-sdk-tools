@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Collections;
-
     public class VirtualMachineDscExtensionContext : VirtualMachineExtensionContext
     {
         public string ModulesUrl { get; set; }

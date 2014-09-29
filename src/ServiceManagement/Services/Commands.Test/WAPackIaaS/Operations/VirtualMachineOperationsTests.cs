@@ -12,40 +12,40 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
+
 namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Mocks;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.WebClient;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-
-    [TestClass]
+    
     public class VirtualMachineOperationsTests
     {
-        [TestMethod]
-        [TestCategory("WAPackIaaS-Negative")]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-Negative")]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnEmptyOnNoResult()
         {
             var vmOperations = new VirtualMachineOperations(new WebClientFactory(
                 new Subscription(),
                 MockRequestChannel.Create()));
 
-            Assert.IsFalse(vmOperations.Read().Any());
+            Assert.False(vmOperations.Read().Any());
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneVM()
         {
             var vmOperations = new VirtualMachineOperations(new WebClientFactory(
@@ -53,26 +53,25 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
                 MockRequestChannel.Create()
                     .AddReturnObject(new VirtualMachine { Name = "vm1", ID = Guid.NewGuid() })));
 
-            Assert.AreEqual(1, vmOperations.Read().Count);
+            Assert.Equal(1, vmOperations.Read().Count);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-Negative")]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [ExpectedException(typeof(WAPackOperationException))]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-Negative")]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldThrowGetByIdNoResult()
         {
             var vmOperations = new VirtualMachineOperations(new WebClientFactory(
                 new Subscription(),
                 MockRequestChannel.Create()));
 
-            vmOperations.Read(Guid.NewGuid());
+            Assert.Throws<WAPackOperationException>(()=>vmOperations.Read(Guid.NewGuid()));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnOneVMGetById()
         {
             var expectedVmId = Guid.NewGuid();
@@ -82,12 +81,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
                     .AddReturnObject(new VirtualMachine { Name = "vm1", ID = expectedVmId })));
 
             var vm = vmOperations.Read(expectedVmId);
-            Assert.AreEqual(expectedVmId, vm.ID);
+            Assert.Equal(expectedVmId, vm.ID);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShouldReturnMultipleVMsGetByName()
         {
             const string expectedVmName = "myVM";
@@ -100,14 +99,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
                         new VirtualMachine { Name = expectedVmName, ID = expectedVmIds[0] }})));
 
             var vmList = vmOperations.Read(expectedVmName);
-            Assert.AreEqual(expectedVmIds.Length, vmList.Count);
-            Assert.IsTrue(vmList.All(vm => vm.Name == expectedVmName));
-            CollectionAssert.AreEquivalent(expectedVmIds, vmList.Select(v => v.ID).ToArray());
+            Assert.Equal(expectedVmIds.Length, vmList.Count);
+            Assert.True(vmList.All(vm => vm.Name == expectedVmName));
+            Assert.Equal(expectedVmIds.OrderBy(g => g), vmList.Select(v => v.ID).OrderBy(g => g).ToArray());
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void CreateVMFromVHD()
         {
             var mockChannel = new MockRequestChannel();
@@ -132,31 +131,31 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var resultVM = vmOps.Create(vmToCreate, out jobOut);
 
             //Check the results that client returns
-            Assert.IsNotNull(resultVM);
-            Assert.IsInstanceOfType(resultVM, typeof (VirtualMachine));
-            Assert.AreEqual(resultVM.ID, vmToReturn.ID);
-            Assert.AreEqual(resultVM.Name, vmToReturn.Name);
-            Assert.AreEqual(resultVM.CloudId, vmToReturn.CloudId);
-            Assert.AreEqual(resultVM.StampId, vmToReturn.StampId);
+            Assert.NotNull(resultVM);
+            Assert.True(resultVM is VirtualMachine);
+            Assert.Equal(resultVM.ID, vmToReturn.ID);
+            Assert.Equal(resultVM.Name, vmToReturn.Name);
+            Assert.Equal(resultVM.CloudId, vmToReturn.CloudId);
+            Assert.Equal(resultVM.StampId, vmToReturn.StampId);
 
             //Check the requests that the client made
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(requestList.Count, 2);
-            Assert.AreEqual(requestList[1].Item1.Method, HttpMethod.Post.ToString());
-            Assert.IsTrue(requestList[1].Item1.RequestUri.ToString().TrimEnd(new[]{'/'}).EndsWith("/VirtualMachines"));
+            Assert.Equal(requestList.Count, 2);
+            Assert.Equal(requestList[1].Item1.Method, HttpMethod.Post.ToString());
+            Assert.True(requestList[1].Item1.RequestUri.ToString().TrimEnd(new[]{'/'}).EndsWith("/VirtualMachines"));
 
             var sentVM = mockChannel.DeserializeClientPayload<VirtualMachine>(requestList[1].Item2);
-            Assert.IsNotNull(sentVM);
-            Assert.IsTrue(sentVM.Count == 1);
-            Assert.AreEqual(sentVM[0].CloudId, testCloud.ID);
-            Assert.AreEqual(sentVM[0].StampId, testCloud.StampId);
-            Assert.AreEqual(sentVM[0].Name, vmToCreate.Name);
-            Assert.AreEqual(sentVM[0].VirtualHardDiskId, vmToCreate.VirtualHardDiskId);
+            Assert.NotNull(sentVM);
+            Assert.True(sentVM.Count == 1);
+            Assert.Equal(sentVM[0].CloudId, testCloud.ID);
+            Assert.Equal(sentVM[0].StampId, testCloud.StampId);
+            Assert.Equal(sentVM[0].Name, vmToCreate.Name);
+            Assert.Equal(sentVM[0].VirtualHardDiskId, vmToCreate.VirtualHardDiskId);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void CreateVMFromTemplate()
         {
             var mockChannel = new MockRequestChannel();
@@ -180,33 +179,32 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var resultVM = vmOps.Create(vmToCreate, out jobOut);
 
             //Check the results that client returns
-            Assert.IsNotNull(resultVM);
-            Assert.IsInstanceOfType(resultVM, typeof(VirtualMachine));
-            Assert.AreEqual(resultVM.ID, vmToReturn.ID);
-            Assert.AreEqual(resultVM.Name, vmToReturn.Name);
-            Assert.AreEqual(resultVM.CloudId, vmToReturn.CloudId);
-            Assert.AreEqual(resultVM.StampId, vmToReturn.StampId);
+            Assert.NotNull(resultVM);
+            Assert.True(resultVM is VirtualMachine);
+            Assert.Equal(resultVM.ID, vmToReturn.ID);
+            Assert.Equal(resultVM.Name, vmToReturn.Name);
+            Assert.Equal(resultVM.CloudId, vmToReturn.CloudId);
+            Assert.Equal(resultVM.StampId, vmToReturn.StampId);
 
             //Check the requests that the client made
             var requestList = mockChannel.ClientRequests;
-            Assert.AreEqual(requestList.Count, 2);
-            Assert.AreEqual(requestList[1].Item1.Method, HttpMethod.Post.ToString());
-            Assert.IsTrue(requestList[1].Item1.RequestUri.ToString().TrimEnd(new[] { '/' }).EndsWith("/VirtualMachines"));
+            Assert.Equal(requestList.Count, 2);
+            Assert.Equal(requestList[1].Item1.Method, HttpMethod.Post.ToString());
+            Assert.True(requestList[1].Item1.RequestUri.ToString().TrimEnd(new[] { '/' }).EndsWith("/VirtualMachines"));
 
             var sentVM = mockChannel.DeserializeClientPayload<VirtualMachine>(requestList[1].Item2);
-            Assert.IsNotNull(sentVM);
-            Assert.IsTrue(sentVM.Count == 1);
-            Assert.AreEqual(sentVM[0].CloudId, testCloud.ID);
-            Assert.AreEqual(sentVM[0].StampId, testCloud.StampId);
-            Assert.AreEqual(sentVM[0].Name, vmToCreate.Name);
-            Assert.AreEqual(sentVM[0].VMTemplateId, vmToCreate.VMTemplateId);
+            Assert.NotNull(sentVM);
+            Assert.True(sentVM.Count == 1);
+            Assert.Equal(sentVM[0].CloudId, testCloud.ID);
+            Assert.Equal(sentVM[0].StampId, testCloud.StampId);
+            Assert.Equal(sentVM[0].Name, vmToCreate.Name);
+            Assert.Equal(sentVM[0].VMTemplateId, vmToCreate.VMTemplateId);
         }
         
-        [TestMethod]
-        [TestCategory("WAPackIaaS-Negative")]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [ExpectedException(typeof(WAPackOperationException))]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-Negative")]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void VmCreateShouldThrowIfNoVhdAndNoTemplateSupplied()
         {
             var channel = new MockRequestChannel();
@@ -219,14 +217,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmToCreate = new VirtualMachine {Name = "Test"};
 
             Guid? jobOut;
-            vmOps.Create(vmToCreate, out jobOut);
+            Assert.Throws<WAPackOperationException>(() => vmOps.Create(vmToCreate, out jobOut));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-Negative")]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [ExpectedException(typeof(WAPackOperationException))]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-Negative")]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void VmCreateShouldThrowWhenNoObjectReturned()
         {
             var mockChannel = new MockRequestChannel();
@@ -239,14 +236,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmToCreate = new VirtualMachine { VirtualHardDiskId = Guid.NewGuid(), Name = "Test" };
 
             Guid? jobOut;
-            vmOps.Create(vmToCreate, out jobOut);
+            Assert.Throws<WAPackOperationException>(() => vmOps.Create(vmToCreate, out jobOut));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-Negative")]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
-        [ExpectedException(typeof(WAPackOperationException))]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-Negative")]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void VmUpdateShouldThrowWhenNoObjectReturned()
         {
             var mockChannel = new MockRequestChannel();
@@ -256,12 +252,12 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             var vmToUpdate = new VirtualMachine { VirtualHardDiskId = Guid.NewGuid(), Name = "Test" };
 
             Guid? jobOut;
-            vmOps.Update(vmToUpdate, out jobOut);
+            Assert.Throws<WAPackOperationException>(() => vmOps.Update(vmToUpdate, out jobOut));
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void DeleteVM()
         {
             var sub = new Subscription();
@@ -282,13 +278,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             vmOps.Delete(toDelete, out jobOut);
 
             //Check the requests the client generated
-            Assert.AreEqual(channel.ClientRequests.Count, 2);
-            Assert.AreEqual(channel.ClientRequests[1].Item1.Method, HttpMethod.Delete.ToString());
+            Assert.Equal(channel.ClientRequests.Count, 2);
+            Assert.Equal(channel.ClientRequests[1].Item1.Method, HttpMethod.Delete.ToString());
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void StartVM()
         {
             var mockChannel = new MockRequestChannel();
@@ -302,9 +298,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             CheckVirtualMachineOperationResult("Start", mockChannel, testVM);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void StopVM()
         {
             var mockChannel = new MockRequestChannel();
@@ -318,9 +314,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             CheckVirtualMachineOperationResult("Stop", mockChannel, testVM);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void RestartVM()
         {
             var mockChannel = new MockRequestChannel();
@@ -334,9 +330,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             CheckVirtualMachineOperationResult("Reset", mockChannel, testVM);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ShutdownVM()
         {
             var mockChannel = new MockRequestChannel();
@@ -350,9 +346,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             CheckVirtualMachineOperationResult("Shutdown", mockChannel, testVM);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void SuspendVM()
         {
             var mockChannel = new MockRequestChannel();
@@ -366,9 +362,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
             CheckVirtualMachineOperationResult("Suspend", mockChannel, testVM);
         }
 
-        [TestMethod]
-        [TestCategory("WAPackIaaS-All")]
-        [TestCategory("WAPackIaaS-Unit")]
+        [Fact]
+        [Trait("Type", "WAPackIaaS-All")]
+        [Trait("Type", "WAPackIaaS-Unit")]
         public void ResumeVM()
         {
             var mockChannel = new MockRequestChannel();
@@ -401,15 +397,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.WAPackIaaS.Operations
         private static void CheckVirtualMachineOperationResult(string operation, MockRequestChannel mockChannel, VirtualMachine testVM)
         {
             var requests = mockChannel.ClientRequests;
-            Assert.AreEqual(requests.Count, 2);
-            Assert.AreEqual(requests[1].Item1.Method, HttpMethod.Put.ToString());
+            Assert.Equal(requests.Count, 2);
+            Assert.Equal(requests[1].Item1.Method, HttpMethod.Put.ToString());
 
             var clientSentVM = mockChannel.DeserializeClientPayload<VirtualMachine>(requests[1].Item2);
-            Assert.IsNotNull(clientSentVM);
-            Assert.IsTrue(clientSentVM.Count == 1);
-            Assert.AreEqual(testVM.ID, clientSentVM[0].ID);
-            Assert.AreEqual(testVM.StampId, clientSentVM[0].StampId);
-            Assert.AreEqual(clientSentVM[0].Operation, operation);
+            Assert.NotNull(clientSentVM);
+            Assert.True(clientSentVM.Count == 1);
+            Assert.Equal(testVM.ID, clientSentVM[0].ID);
+            Assert.Equal(testVM.StampId, clientSentVM[0].StampId);
+            Assert.Equal(clientSentVM[0].Operation, operation);
         }
     }
 }

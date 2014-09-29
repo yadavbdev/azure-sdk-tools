@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Common.XmlSchema.ServiceDefinitionSchema;
-    using System.Linq;
-
     /// <summary>
     /// Role Info for a worker role
     /// </summary>

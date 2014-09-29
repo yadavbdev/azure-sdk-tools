@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Tools.Vhd.Model;
-
     internal static class IndexRangeHelper
     {
         public static IEnumerable<IndexRange> ChunkRangesBySize(IEnumerable<IndexRange> extents, int pageSizeInBytes)

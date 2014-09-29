@@ -9,18 +9,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Properties;
-    using System;
-    using System.Xml;
-    using System.Xml.Linq;
-    using System.IO;
-    using System.Text;
-    using Microsoft.WindowsAzure.Commands.Common.Storage;
-
     public abstract class BaseAzureServiceDiagnosticsExtensionCmdlet : BaseAzureServiceExtensionCmdlet
     {
         protected const string StorageAccountElemStr = "StorageAccount";

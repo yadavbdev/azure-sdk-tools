@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.Azure.Commands.Automation.Common;
+
 namespace Microsoft.Azure.Commands.Automation.Model
 {
-    using Microsoft.Azure.Commands.Automation.Common;
-    using System;
-
     /// <summary>
     /// The one time schedule.
     /// </summary>

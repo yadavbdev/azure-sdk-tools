@@ -12,19 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Storage.File;
+using Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet;
+using Microsoft.WindowsAzure.Management.Storage.Test.Common;
+using Microsoft.WindowsAzure.Storage.File;
+
 namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Text;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Storage.File;
-    using Microsoft.WindowsAzure.Commands.Storage.File.Cmdlet;
-    using Microsoft.WindowsAzure.Management.Storage.Test.Common;
-    using Microsoft.WindowsAzure.Storage.File;
-
     [TestClass]
     public class NewAzureStorageShareTest : StorageFileTestBase<NewAzureStorageShare>
     {
@@ -73,7 +70,7 @@ namespace Microsoft.WindowsAzure.Management.Storage.Test.File.Cmdlet
         [TestMethod]
         public void NewShareWithInvalidCharacter()
         {
-            this.NewShareAndValidate(FileNamingGenerator.GenerateASCIINameWithInvalidCharacters(20), "ArgumentException");
+            this.NewShareAndValidate("&LOv=\\ji1eJgg% -SY;m", "ArgumentException");
         }
 
         private void NewShareAndValidate(string name, string expectedErrorId = null)

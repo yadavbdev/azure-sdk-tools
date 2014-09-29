@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Websites;
-    using Commands.Websites;
-    using Moq;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GetAzureWebsiteLocationTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void ProcessGetAzureWebsiteLocationTest()
         {
             // Setup

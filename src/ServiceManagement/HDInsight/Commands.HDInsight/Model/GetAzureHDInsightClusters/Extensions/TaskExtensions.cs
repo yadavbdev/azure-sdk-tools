@@ -11,11 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+
+using System;
+using System.Threading.Tasks;
+
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions
 {
-    using System;
-    using System.Threading.Tasks;
-
     /// <summary>
     ///     Provides useful extensions to task when working in a NetFx 4.0 environment.
     /// </summary>

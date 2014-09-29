@@ -12,22 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using Commands.Common.Storage;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.DSC;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Utilities.Common;
-
     /// <summary>
     /// Uploads a Desired State Configuration script to Azure blob storage, which 
     /// later can be applied to Azure Virtual Machines using the 
@@ -158,7 +158,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
         protected void ValidatePsVersion()
         {
-            using (PowerShell powershell = PowerShell.Create())
+            using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
             {
                 powershell.AddScript("$PSVersionTable.PSVersion.Major");
                 int major = powershell.Invoke<int>().FirstOrDefault();
@@ -168,9 +168,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                         new ErrorRecord(
                             new InvalidOperationException(
                                 string.Format(CultureInfo.CurrentUICulture, Resources.PublishVMDscExtensionRequiredPsVersion, MinMajorPowerShellVersion, major)), 
-                                string.Empty,
-                                ErrorCategory.InvalidOperation,
-                                null));
+                            "InvalidPowerShellVersion",
+                            ErrorCategory.InvalidOperation,
+                            null));
                 }
             }
         }
@@ -245,7 +245,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             }
             catch (GetDscResourceException e)
             {
-                ThrowTerminatingError(new ErrorRecord(e, string.Empty, ErrorCategory.PermissionDenied, null));
+                ThrowTerminatingError(new ErrorRecord(e, "CannotAccessDscResource", ErrorCategory.PermissionDenied, null));
             }
             if (parseResult.Errors.Any())
             {
@@ -257,7 +257,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                                 Resources.PublishVMDscExtensionStorageParserErrors,
                                 this.ConfigurationPath,
                                 String.Join("\n", parseResult.Errors.Select(error => error.ToString())))),
-                        string.Empty,
+                        "DscConfigurationParseError",
                         ErrorCategory.ParserError,
                         null));
             }
@@ -283,7 +283,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             // CopyRequiredModules
             foreach (var module in requiredModules)
             {
-                using (PowerShell powershell = PowerShell.Create())
+                using (System.Management.Automation.PowerShell powershell = System.Management.Automation.PowerShell.Create())
                 {
                     // Wrapping script in a function to prevent script injection via $module variable.
                     powershell.AddScript(
@@ -322,7 +322,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                     this.ThrowTerminatingError(
                         new ErrorRecord(
                             new UnauthorizedAccessException(string.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscArchiveAlreadyExists, archive)),
-                            string.Empty,
+                            "FileAlreadyExists",
                             ErrorCategory.PermissionDenied,
                             null));
                 }
@@ -357,7 +357,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                     this.ThrowTerminatingError(
                         new ErrorRecord(
                             new UnauthorizedAccessException(string.Format(CultureInfo.CurrentUICulture, Resources.AzureVMDscStorageBlobAlreadyExists, modulesBlob.Uri.AbsoluteUri)),
-                            string.Empty,
+                            "StorageBlobAlreadyExists",
                             ErrorCategory.PermissionDenied,
                             null));
                 }

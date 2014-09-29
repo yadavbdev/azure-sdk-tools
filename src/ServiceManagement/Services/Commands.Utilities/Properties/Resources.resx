@@ -434,7 +434,7 @@
   <data name="DatacenterBlobQuery" xml:space="preserve">
     <value>//blobcontainer[@datacenter='{0}']</value>
   </data>
-  <data name="DefaultAndCurrentSubscription" xml:space="preserve">
+  <data name="DefaultAndCurrentContext.Subscription" xml:space="preserve">
     <value>Setting: {0} as the default and current subscription. To view other subscriptions use Get-AzureSubscription</value>
   </data>
   <data name="DefaultFileVersion" xml:space="preserve">
@@ -1068,7 +1068,7 @@ Please follow these steps in the portal:
     <value>Resources\Scaffolding\Python</value>
   </data>
   <data name="RedeployCommit" xml:space="preserve">
-    <value>Reploy deployment with {0} Id ?</value>
+    <value>Replace current deployment with '{0}' Id ?</value>
   </data>
   <data name="RegenerateKeyWarning" xml:space="preserve">
     <value>Are you sure you want to regenerate key?</value>
@@ -1091,7 +1091,7 @@ Please follow these steps in the portal:
   <data name="RemoveAzureServiceWaitMessage" xml:space="preserve">
     <value>Removing cloud service {0}...</value>
   </data>
-  <data name="RemoveCurrentSubscription" xml:space="preserve">
+  <data name="RemoveCurrentContext.Subscription" xml:space="preserve">
     <value>The current subscription is being removed. Use Select-Subscription &lt;subscriptionName&gt; to select a new current subscription.</value>
   </data>
   <data name="RemoveDefaultSubscription" xml:space="preserve">
@@ -1585,6 +1585,9 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   </data>
   <data name="ErrorCreatingVMNetwork" xml:space="preserve">
     <value>Error creating VMNetwork</value>
+  </data>
+  <data name="SpecifyCreateACSNamespace" xml:space="preserve">
+    <value>Please specify CreateACSNamespace as true or false for better future compatibility.</value>
   </data>
   <data name="Argument_WebSpaceMissing" xml:space="preserve">
     <value>Please provide webspace name as well.</value>

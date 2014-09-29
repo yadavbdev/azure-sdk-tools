@@ -12,38 +12,45 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Security.Permissions;
+
 
     /// <summary>
     /// Removes a Microsoft Azure environment.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureEnvironment"), OutputType(typeof(bool))]
-    public class RemoveAzureEnvironmentCommand : CmdletBase
+    [Cmdlet(VerbsCommon.Remove, "AzureEnvironment"), OutputType(typeof(AzureEnvironment))]
+    public class RemoveAzureEnvironmentCommand : SubscriptionCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, 
             HelpMessage = "The environment name")]
         public string Name { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, HelpMessage = "Returns a Boolean in success")]
-        public string PassThru { get; set; }
+        [Parameter(Position = 1, HelpMessage = "Do not confirm deletion of subscription")]
+        public SwitchParameter Force { get; set; }
+
+        public RemoveAzureEnvironmentCommand() : base(true) { }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            try
-            {
-                WindowsAzureProfile.Instance.RemoveEnvironment(Name);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                throw new KeyNotFoundException(string.Format(Resources.EnvironmentNotFound, Name), ex);
-            }
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(Resources.RemoveEnvironmentConfirmation, Name),
+                Resources.RemoveEnvironmentMessage,
+                Name,
+                RemoveEnvironmentProcess);
+        }
+
+        public void RemoveEnvironmentProcess()
+        {
+            WriteObject(ProfileClient.RemoveEnvironment(Name));
         }
     }
 }

@@ -12,28 +12,28 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites.Services
 {
-    using Commands.Utilities.Websites.Services;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GitTests
     {
-        [TestMethod]
+        [Fact]
         public void TestSetGetConfigurationValue()
         {
             // Set configuration
             Git.SetConfigurationValue("azure.test", "value");
 
             string value = Git.GetConfigurationValue("azure.test");
-            Assert.AreEqual("value", value);
+            Assert.Equal("value", value);
 
             // Clear configuration
             Git.ClearConfigurationValue("azure.test");
 
             value = Git.GetConfigurationValue("azure.test");
-            Assert.IsTrue(string.IsNullOrEmpty(value));
+            Assert.True(string.IsNullOrEmpty(value));
         }
     }
 }

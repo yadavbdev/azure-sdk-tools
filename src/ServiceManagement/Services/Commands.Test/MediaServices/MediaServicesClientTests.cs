@@ -1,21 +1,21 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
-using Microsoft.WindowsAzure.Management.MediaServices;
-using Microsoft.WindowsAzure.Management.MediaServices.Models;
-using Microsoft.WindowsAzure.Management.Storage;
-using Moq;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
+using Microsoft.WindowsAzure.Management.MediaServices;
+using Microsoft.WindowsAzure.Management.MediaServices.Models;
+using Microsoft.WindowsAzure.Management.Storage;
+using Moq;
 
 namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
 {
-    [TestClass]
+    
     public class MediaServicesClientTests
     {
         private const string AccountName = "testacc";
@@ -23,7 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
         private static readonly StorageManagementClient StorageClient = new StorageManagementClient(new CertificateCloudCredentials(SubscriptionId, new X509Certificate2(new byte[] { })), new Uri("http://someValue"));
 
 
-        [TestMethod]
+        [Fact]
         public void TestDeleteAzureMediaServiceAccountAsync()
         {
             Mock<MediaServicesManagementClient> clientMock = InitMediaManagementClientMock();
@@ -42,10 +42,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
 
             OperationResponse result = target.DeleteAzureMediaServiceAccountAsync(AccountName).Result;
 
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestDeleteAzureMediaServiceAccountAsync404()
         {
             FakeHttpMessageHandler fakeHttpHandler;
@@ -71,14 +71,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             catch (AggregateException ax)
             {
                 CloudException x = (CloudException)ax.InnerExceptions.Single();
-                Assert.AreEqual(HttpStatusCode.NotFound, x.Response.StatusCode);
+                Assert.Equal(HttpStatusCode.NotFound, x.Response.StatusCode);
                 return;
             }
 
-            Assert.Fail("ServiceManagementClientException expected");
+            Assert.True(false, "ServiceManagementClientException expected");
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRegenerateMediaServicesAccountAsync()
         {
             Mock<MediaServicesManagementClient> clientMock = InitMediaManagementClientMock();
@@ -100,10 +100,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
 
             OperationResponse result = target.RegenerateMediaServicesAccountAsync(AccountName, MediaServicesKeyType.Primary).Result;
 
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
         }
         
-        [TestMethod]
+        [Fact]
         public void TestGetMediaServiceAsync()
         {
 
@@ -132,13 +132,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
                 StorageClient.WithHandler(new FakeHttpMessageHandler()));
 
             MediaServicesAccountGetResponse result = target.GetMediaServiceAsync(AccountName).Result;
-            Assert.AreEqual("primarykey", result.Account.StorageAccountKeys.Primary);
-            Assert.AreEqual("secondarykey", result.Account.StorageAccountKeys.Secondary);
-            Assert.AreEqual("testps", result.Account.AccountName);
-            Assert.AreEqual("psstorage", result.Account.StorageAccountName);
+            Assert.Equal("primarykey", result.Account.StorageAccountKeys.Primary);
+            Assert.Equal("secondarykey", result.Account.StorageAccountKeys.Secondary);
+            Assert.Equal("testps", result.Account.AccountName);
+            Assert.Equal("psstorage", result.Account.StorageAccountName);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGetMediaServiceAccountsAsync()
         {
 
@@ -172,11 +172,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
                 StorageClient.WithHandler(new FakeHttpMessageHandler()));
 
             MediaServicesAccountListResponse.MediaServiceAccount[] result = target.GetMediaServiceAccountsAsync().Result.Accounts.ToArray();
-            Assert.AreEqual("E0658294-5C96-4B0F-AD55-F7446CE4F788", result[0].AccountId);
-            Assert.AreEqual("C92B17C8-5422-4CD1-8D3C-61E576E861DD", result[1].AccountId);
+            Assert.Equal("E0658294-5C96-4B0F-AD55-F7446CE4F788", result[0].AccountId);
+            Assert.Equal("C92B17C8-5422-4CD1-8D3C-61E576E861DD", result[1].AccountId);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreateNewAzureMediaServiceAsync()
         {
             FakeHttpMessageHandler fakeHttpHandler;
@@ -209,10 +209,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             };
 
             MediaServicesAccountCreateResponse result = target.CreateNewAzureMediaServiceAsync(creationRequest).Result;
-            Assert.AreEqual("tmp", result.Account.AccountName);
+            Assert.Equal("tmp", result.Account.AccountName);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreateNewAzureMediaServiceAsyncInvalidAccount()
         {
             FakeHttpMessageHandler fakeHttpHandler;
@@ -250,21 +250,19 @@ namespace Microsoft.WindowsAzure.Commands.Test.MediaServices
             catch (AggregateException ex)
             {
                 CloudException cloudException = ex.Flatten().InnerException as CloudException;
-                Assert.IsNotNull(cloudException);
-                Assert.AreEqual(HttpStatusCode.BadRequest, cloudException.Response.StatusCode);
+                Assert.NotNull(cloudException);
+                Assert.Equal(HttpStatusCode.BadRequest, cloudException.Response.StatusCode);
             }
 
         }
 
         #region Helper  Methods
 
-        private static WindowsAzureSubscription GetWindowsAzureSubscription()
+        private static AzureSubscription GetWindowsAzureSubscription()
         {
-            WindowsAzureSubscription windowsAzureSubscription = new WindowsAzureSubscription
+            AzureSubscription windowsAzureSubscription = new AzureSubscription
             {
-                SubscriptionId = SubscriptionId,
-                Certificate = new X509Certificate2(new byte[] {}),
-                ServiceEndpoint = new Uri("http://someValue")
+                Id = new Guid(SubscriptionId),
             };
             return windowsAzureSubscription;
         }

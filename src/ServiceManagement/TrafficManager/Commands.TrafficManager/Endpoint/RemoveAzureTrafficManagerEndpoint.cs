@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
+
 namespace Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Utilities;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Remove, "AzureTrafficManagerEndpoint"), OutputType(typeof(IProfileWithDefinition))]
     public class RemoveAzureTrafficManagerEndpoint : TrafficManagerConfigurationBaseCmdlet
     {
@@ -33,12 +33,12 @@ namespace Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint
         public override void ExecuteCmdlet()
         {
             ProfileWithDefinition profile = TrafficManagerProfile.GetInstance();
-            if (!profile.Endpoints.Any(e => e.DomainName == DomainName))
+            if (!profile.Endpoints.Any(e => e.DomainName.Equals(DomainName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 throw new Exception(Resources.RemoveTrafficManagerEndpointMissing);
             }
 
-            TrafficManagerEndpoint endpoint = profile.Endpoints.First(e => e.DomainName == DomainName);
+            TrafficManagerEndpoint endpoint = profile.Endpoints.First(e => e.DomainName.Equals(DomainName, StringComparison.InvariantCultureIgnoreCase));
             profile.Endpoints.Remove(endpoint);
 
             WriteObject(profile);

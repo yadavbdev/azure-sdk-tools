@@ -12,31 +12,32 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.Script.Serialization;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Web.Script.Serialization;
-
     internal static class JavaScriptPackageHelpers
     {
-
         /// <summary>
         /// Ensure that a package.json file is available in the given directory, if not create it.
         /// </summary>
         /// <param name="directoryPath">fully qualified path to the directory to search</param>
+        /// <param name="applicationName"></param>
         /// <returns>True if package.json exists and is readable, false otherwise</returns>
         internal static bool EnsurePackageJsonExists(string directoryPath, string applicationName = "")
         {
             string fileName = Path.Combine(directoryPath, Resources.PackageJsonFileName);
             if (!File.Exists(fileName))
             {
-                File.WriteAllText(fileName, string.Format(Resources.PackageJsonDefaultFile, applicationName));
+                FileUtilities.DataStore.WriteFile(fileName, string.Format(Resources.PackageJsonDefaultFile, applicationName));
             }
 
-            return File.Exists(fileName);
+            return FileUtilities.DataStore.FileExists(fileName);
         }
 
         /// <summary>
@@ -108,8 +109,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         /// <summary>
         /// Write the given JavaScript object in dictionaroy representation out to package.json
         /// </summary>
+        /// <param name="directoryPath"></param>
         /// <param name="contents">The JavaScript object in dictionary representation</param>
-
         static void SetContents(string directoryPath, Dictionary<string, object> contents)
         {
             string fileName = Path.Combine(directoryPath, Resources.PackageJsonFileName);
@@ -183,8 +184,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         /// as a dictionary)
         /// </summary>
         /// <param name="store">The JavaScript object in dictionary representation</param>
-        /// <param name="searchKey">The property name of the engine version to find</param>
-        /// <param name="value">The out variable to return the value stored in the object</param>
+        /// <param name="engineKey">The property name of the engine version to find</param>
+        /// <param name="engineVersion">The out variable to return the value stored in the object</param>
         /// <returns>True if the property is successfully found, false otherwise</returns>
         static bool TryGetEngineVersionFromJson(Dictionary<string, object> store, string engineKey, out string engineVersion)
         {
@@ -218,8 +219,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         /// as a dictionary)
         /// </summary>
         /// <param name="store">The JavaScript object in dictionary representation</param>
-        /// <param name="searchKey">The property name of the engine version to find</param>
-        /// <param name="value">The version value to store in the object for the engine given</param>
+        /// <param name="engineKey">The property name of the engine version to find</param>
+        /// <param name="engineVersion">The version value to store in the object for the engine given</param>
         /// <returns>True if the property is successfully set, false otherwise</returns>
         static void SetEngineVersionInJson(Dictionary<string, object> store, string engineKey, string engineVersion)
         {

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.ServiceBus.Messaging;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.ServiceBus
 {
-    using Microsoft.ServiceBus.Messaging;
-    using System.Collections.Generic;
-
     public class ExtendedAuthorizationRule
     {
         public AuthorizationRule Rule { get; set; }

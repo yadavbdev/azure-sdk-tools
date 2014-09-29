@@ -1811,7 +1811,7 @@ GalleryEndpoint               :
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureSubscription</maml:name>
+          <maml:name>Microsoft.WindowsAzure.Commands.Utilities.Common.AzureSubscription</maml:name>
           <maml:uri>
           </maml:uri>
           <maml:description>
@@ -1819,7 +1819,7 @@ GalleryEndpoint               :
           </maml:description>
         </dev:type>
         <maml:description>
-          <maml:para>By default, Get-AzureSubscription returns a WindowsAzureSubscription object.</maml:para>
+          <maml:para>By default, Get-AzureSubscription returns a AzureSubscription object.</maml:para>
         </maml:description>
       </command:returnValue>
       <command:returnValue>
@@ -11972,6 +11972,13 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities.RampUpRule</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Use32BitWorkerProcess</maml:name>
+          <maml:description>
+            <maml:para>Indicates if 32-bit mode is enabled.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -12184,6 +12191,20 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
           <maml:para>The slot name</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>RoutingRules</maml:name>
+        <maml:description>
+          <maml:para>Routing rules used for testing in production</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities.RampUpRule</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Use32BitWorkerProcess</maml:name>
+        <maml:description>
+          <maml:para>Indicates if 32-bit mode is enabled.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>

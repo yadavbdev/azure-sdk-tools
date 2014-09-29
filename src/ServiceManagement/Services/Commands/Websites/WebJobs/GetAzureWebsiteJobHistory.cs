@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Websites.WebJobs
 {
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-    using Utilities.Websites.Common;
-
     [Cmdlet(VerbsCommon.Get, "AzureWebsiteJobHistory"), OutputType(typeof(List<TriggeredWebJobRun>))]
     public class GetAzureWebsiteJobHistoryCommand : WebsiteContextBaseCmdlet
     {

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Data.Services.Client;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common
 {
-    using System;
-    using System.Data.Services.Client;
-
     /// <summary>
     /// Extension methods for <see cref="DataServiceContext" /> objects.
     /// </summary>

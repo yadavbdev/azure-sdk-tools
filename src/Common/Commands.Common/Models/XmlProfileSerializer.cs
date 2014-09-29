@@ -12,14 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common.Interfaces;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using Microsoft.WindowsAzure.Commands.Common.Interfaces;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Models
 {
@@ -27,46 +29,70 @@ namespace Microsoft.WindowsAzure.Commands.Common.Models
     {
         public string Serialize(AzureProfile obj)
         {
+            // We do not use the serialize for xml serializer anymore and rely solely on the JSON serializer.
             throw new NotImplementedException();
         }
 
-        public AzureProfile Deserialize(string contents)
+        public bool Deserialize(string contents, AzureProfile profile)
         {
             ProfileData data = null;
-            AzureProfile profile = new AzureProfile(new VirtualDiskDataStore());
+            Debug.Assert(profile != null);
 
-            try
+            DeserializeErrors = new List<string>();
+
+            DataContractSerializer serializer = new DataContractSerializer(typeof(ProfileData));
+            using (MemoryStream s = new MemoryStream(Encoding.UTF8.GetBytes(contents ?? "")))
             {
-                DataContractSerializer serializer = new DataContractSerializer(typeof(ProfileData));
-                using (MemoryStream s = new MemoryStream(Encoding.UTF8.GetBytes(contents ?? "")))
-                {
-                    data = (ProfileData)serializer.ReadObject(s);
-                }
+                data = (ProfileData)serializer.ReadObject(s);
             }
-            catch (XmlException) { }
 
             if (data != null)
             {
                 foreach (AzureEnvironmentData oldEnv in data.Environments)
                 {
-                    profile.AddEnvironment(oldEnv.ToAzureEnvironment());
+                    profile.Environments[oldEnv.Name] = oldEnv.ToAzureEnvironment();
                 }
 
-                List<AzureEnvironment> envs = profile.Environments;
+                List<AzureEnvironment> envs = profile.Environments.Values.ToList();
                 foreach (AzureSubscriptionData oldSubscription in data.Subscriptions)
                 {
-                    profile.AddSubscription(oldSubscription.ToAzureSubscription(envs));
-
-                    if (!string.IsNullOrEmpty(oldSubscription.ManagementCertificate))
+                    try
                     {
-                        profile.AddCertificate(GeneralUtilities.GetCertificateFromStore(oldSubscription.ManagementCertificate));
+                        var newSubscription = oldSubscription.ToAzureSubscription(envs);
+                        if (newSubscription.Account == null)
+                        {
+                            continue;
+                        }
+
+                        var newAccounts = oldSubscription.ToAzureAccounts();
+                        foreach (var account in newAccounts)
+                        {
+                            if (profile.Accounts.ContainsKey(account.Id))
+                            {
+                                profile.Accounts[account.Id].SetOrAppendProperty(AzureAccount.Property.Tenants,
+                                    account.GetPropertyAsArray(AzureAccount.Property.Tenants));
+                                profile.Accounts[account.Id].SetOrAppendProperty(AzureAccount.Property.Subscriptions,
+                                    account.GetPropertyAsArray(AzureAccount.Property.Subscriptions));
+                            }
+                            else
+                            {
+                                profile.Accounts[account.Id] = account;
+                            }
+                        }
+
+                        profile.Subscriptions[newSubscription.Id] = newSubscription;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Skip subscription if failed to load
+                        DeserializeErrors.Add(ex.Message);
                     }
                 }
             }
 
-            return profile;
+            return DeserializeErrors.Count == 0;
         }
 
-        public string ProfileFile { get { return "WindowsAzureProfile.xml"; } }
+        public IList<string> DeserializeErrors { get; private set; }
     }
 }

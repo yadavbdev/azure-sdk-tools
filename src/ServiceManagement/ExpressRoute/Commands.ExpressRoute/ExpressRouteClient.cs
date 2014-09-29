@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Management.ExpressRoute;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 {
-    using Microsoft.WindowsAzure.Management.ExpressRoute;
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using Utilities.Common;
-    
-   
     public class ExpressRouteClient
     {
         public ExpressRouteManagementClient Client { get; internal set; }
@@ -30,10 +30,9 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         /// Creates new ExpressRouteClient
         /// </summary>
         /// <param name="subscription">Subscription containing websites to manipulate</param>
-        /// <param name="logger">The logger action</param>
-        public ExpressRouteClient(WindowsAzureSubscription subscription)
+        public ExpressRouteClient(AzureSubscription subscription)
         {
-            Client = subscription.CreateClient<ExpressRouteManagementClient>();
+            Client = AzureSession.ClientFactory.CreateClient<ExpressRouteManagementClient>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
         public ExpressRouteClient(ExpressRouteManagementClient client)

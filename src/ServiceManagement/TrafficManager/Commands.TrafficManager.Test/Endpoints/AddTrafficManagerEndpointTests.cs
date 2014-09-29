@@ -12,29 +12,33 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint;
+using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
+using Microsoft.WindowsAzure.Management.TrafficManager.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Endpoint;
-    using Microsoft.WindowsAzure.Commands.TrafficManager.Models;
-    using Microsoft.WindowsAzure.Management.TrafficManager.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [TestClass]
     public class AddTrafficManagerEndpointTests : TestBase
     {
         private const string ProfileName = "my-profile";
         private const string ProfileDomainName = "my.profile.trafficmanager.net";
+        private const string TopLevelProfileDomainName = "my.toplevelprofile.trafficmanager.net";
         private const LoadBalancingMethod DefaultLoadBalancingMethod = LoadBalancingMethod.Failover;
         private const string DomainName = "www.example.com";
         private const string CloudServiceType = "CloudService";
         private const string AzureWebsiteType = "AzureWebsite";
         private const string AnyType = "Any";
+        private const string TrafficManagerType = "TrafficManager";
         private const EndpointStatus Status = EndpointStatus.Enabled;
         private const int Weight = 3;
+        private const int MinChildEndpoints = 3;
 
         private MockCommandRuntime mockCommandRuntime;
 
@@ -133,6 +137,50 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
         }
 
         [TestMethod]
+        public void AddTrafficManagerEndpointTrafficManager()
+        {
+            ProfileWithDefinition nestedProfile = GetProfileWithDefinition();
+            ProfileWithDefinition topLevelProfile = GetProfileWithDefinition(TopLevelProfileDomainName);
+
+            cmdlet = new AddAzureTrafficManagerEndpoint
+            {
+                DomainName = DomainName,
+                Type = AnyType,
+                Weight = Weight,
+                TrafficManagerProfile = nestedProfile,
+                CommandRuntime = mockCommandRuntime,
+                Status = "Enabled"
+            };
+
+            var cmdletTopLevelEndpoint = new AddAzureTrafficManagerEndpoint
+            {
+                DomainName = ProfileDomainName,
+                Type = TrafficManagerType,
+                Weight = Weight,
+                MinChildEndpoints = MinChildEndpoints,
+                TrafficManagerProfile = topLevelProfile,
+                CommandRuntime = mockCommandRuntime,
+                Status = "Enabled"
+            };
+
+            // Action
+            cmdlet.ExecuteCmdlet();
+            cmdletTopLevelEndpoint.ExecuteCmdlet();
+
+            var actualNestedProfile = mockCommandRuntime.OutputPipeline[0] as ProfileWithDefinition;
+            var actualTopLevelProfile = mockCommandRuntime.OutputPipeline[1] as ProfileWithDefinition;
+
+            // Assert
+            // All the properties stay the same except the endpoints
+            AssertAllProfilePropertiesDontChangeExceptEndpoints(nestedProfile, actualNestedProfile);
+            AssertAllProfilePropertiesDontChangeExceptEndpoints(topLevelProfile, actualTopLevelProfile);
+
+            // There is a new endpoint with the new domain name in "actual" but not in "nestedProfile"
+            Assert.IsTrue(actualNestedProfile.Endpoints.Any(e => e.DomainName == DomainName));
+            Assert.IsTrue(actualTopLevelProfile.Endpoints.Any(e => e.DomainName == ProfileDomainName));
+        }
+
+        [TestMethod]
         public void AddTrafficManagerEndpointAlreadyExistsFails()
         {
             // Setup
@@ -160,7 +208,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
         }
 
         [TestMethod]
-        public void AddTrafficManagerEndpointNoWeightNoLocation()
+        public void AddTrafficManagerEndpointNoWeightNoLocationNoMinChildEndpoints()
         {
             // Setup
             ProfileWithDefinition original = GetProfileWithDefinition();
@@ -189,13 +237,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
 
             Assert.AreEqual(1, endpoint.Weight);
             Assert.IsNull(endpoint.Location);
+            Assert.AreEqual(1, endpoint.MinChildEndpoints);
         }
 
-        private ProfileWithDefinition GetProfileWithDefinition()
+        private ProfileWithDefinition GetProfileWithDefinition(string profileDomainName = ProfileDomainName)
         {
             return new ProfileWithDefinition
             {
-                DomainName = ProfileDomainName,
+                DomainName = profileDomainName,
                 Name = ProfileName,
                 Endpoints = new List<TrafficManagerEndpoint>(),
                 LoadBalancingMethod = DefaultLoadBalancingMethod,

@@ -12,39 +12,58 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common.Models;
-using Microsoft.WindowsAzure.Commands.Common.Properties;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Common;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Factories
 {
     public class ClientFactory : IClientFactory
     {
-        /// <summary>
-        /// Event that's trigged when a new client has been created.
-        /// </summary>
-        public static event EventHandler<ClientCreatedArgs> OnClientCreated;
-
         private static readonly char[] uriPathSeparator = { '/' };
 
-        public ClientFactory ()
+        public virtual TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
         {
+            if (context == null)
+            {
+                throw new ApplicationException(Resources.InvalidCurrentSubscription);
+            }
 
+            SubscriptionCloudCredentials creds = AzureSession.AuthenticationFactory.GetSubscriptionCloudCredentials(context);
+            return CreateCustomClient<TClient>(creds, context.Environment.GetEndpointAsUri(endpoint));
         }
 
-        public TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
+        /// <summary>
+        /// TODO: Migrate all code that references this method to use AzureContext
+        /// </summary>
+        /// <typeparam name="TClient"></typeparam>
+        /// <param name="subscription"></param>
+        /// <param name="endpoint"></param>
+        /// <returns></returns>
+        public virtual TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>
         {
-            SubscriptionCloudCredentials creds = AzurePowerShell.AuthenticationFactory.Authenticate(subscription);
-            Uri endpointUri = AzurePowerShell.Profile.GetEndpoint(subscription.Environment, endpoint);
-            return CreateClient<TClient>(creds, endpointUri);
+            if (subscription == null)
+            {
+                throw new ApplicationException(Resources.InvalidCurrentSubscription);
+            }
+
+            ProfileClient profileClient = new ProfileClient();
+            AzureContext context = new AzureContext
+            {
+                Subscription = subscription,
+                Environment = profileClient.GetEnvironmentOrDefault(subscription.Environment),
+                Account = profileClient.GetAccount(subscription.Account)
+            };
+
+            return CreateClient<TClient>(context, endpoint);
         }
 
-        public TClient CreateClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        public virtual TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
         {
             List<Type> types = new List<Type>();
             foreach (object obj in parameters)
@@ -61,28 +80,16 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
             TClient client = (TClient)constructor.Invoke(parameters);
             client.UserAgent.Add(ApiConstants.UserAgentValue);
-            
-            if (OnClientCreated != null)
-            {
-                ClientCreatedArgs args = new ClientCreatedArgs { CreatedClient = client, ClientType = typeof(TClient) };
-                OnClientCreated(this, args);
-                client = (TClient)args.CreatedClient;
-            }
-
-            // Add the logging handler
-            var withHandlerMethod = typeof(TClient).GetMethod("WithHandler", new[] { typeof(DelegatingHandler) });
-            TClient finalClient = (TClient)withHandlerMethod.Invoke(client, new object[] { new HttpRestCallLogger() });
-            client.Dispose();
-
-            return finalClient;
+           
+            return client;
         }
 
-        public HttpClient CreateHttpClient(string endpoint, ICredentials credentials)
+        public virtual HttpClient CreateHttpClient(string endpoint, ICredentials credentials)
         {
             return CreateHttpClient(endpoint, CreateHttpClientHandler(endpoint, credentials));
         }
 
-        public HttpClient CreateHttpClient(string endpoint, HttpMessageHandler effectiveHandler)
+        public virtual HttpClient CreateHttpClient(string endpoint, HttpMessageHandler effectiveHandler)
         {
             if (endpoint == null)
             {

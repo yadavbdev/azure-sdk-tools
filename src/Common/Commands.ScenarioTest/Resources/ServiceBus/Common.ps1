@@ -20,9 +20,9 @@ Gets default location from the available list of service bus locations.
 #>
 function Get-DefaultServiceBusLocation
 {
-	$locations = Get-AzureSBLocation
+    $locations = Get-AzureSBLocation
 
-	return $locations[0].Code
+    return $locations[0].Code
 }
 
 <#
@@ -31,7 +31,7 @@ Gets valid and available service bus namespace name.
 #>
 function Get-NamespaceName
 {
-	return getAssetName
+    return getAssetName
 }
 
 <#
@@ -43,10 +43,10 @@ The namespace name.
 #>
 function Remove-Namespace
 {
-	param([string]$name)
-	Wait-NamespaceStatus $name "Active"
-	Remove-AzureSBNamespace $name -Force
-	Wait-NamespaceRemoved $name
+    param([string]$name)
+    Wait-NamespaceStatus $name "Active"
+    Remove-AzureSBNamespace $name -Force
+    Wait-NamespaceRemoved $name
 }
 
 <#
@@ -58,24 +58,24 @@ The namespace name.
 #>
 function Wait-NamespaceRemoved
 {
-	param([string]$name)
-	
-	$waitScriptBlock = {
-		$removed = $false
-		try
-		{
-			$namespace = Get-AzureSBNamespace $name
-			Wait-Seconds 5
-		}
-		catch
-		{
-			$removed = $true
-		}
+    param([string]$name)
+    
+    $waitScriptBlock = {
+        $removed = $false
+        try
+        {
+            $namespace = Get-AzureSBNamespace $name
+            Wait-Seconds 5
+        }
+        catch
+        {
+            $removed = $true
+        }
 
-		return $removed;
-	}
+        return $removed;
+    }
 
-	Wait-Function $waitScriptBlock $true
+    Wait-Function $waitScriptBlock $true
 }
 
 <#
@@ -90,10 +90,10 @@ The status to wait on.
 #>
 function Wait-NamespaceStatus
 {
-	param([string] $name, [string] $status)
+    param([string] $name, [string] $status)
 
-	$waitScriptBlock = { (Get-AzureSBNamespace $name).Status }
-	Wait-Function $waitScriptBlock $status
+    $waitScriptBlock = { (Get-AzureSBNamespace $name).Status }
+    Wait-Function $waitScriptBlock $status
 }
 
 <#
@@ -102,9 +102,9 @@ Clears the all created resources while doing the test.
 #>
 function Test-CleanupServiceBus
 {
-	try { foreach ($name in $global:createdNamespaces) { Remove-Namespace $name -Force } }
-	catch { <# Succeed #> }
-	$global:createdNamespaces = @()
+    try { foreach ($name in $global:createdNamespaces) { Remove-Namespace $name -Force } }
+    catch { <# Succeed #> }
+    $global:createdNamespaces = @()
 }
 
 <#
@@ -116,14 +116,14 @@ The number of namespaces to create.
 #>
 function New-Namespace
 {
-	param([int]$count)
-	1..$count | % { 
-		$name = Get-NamespaceName;
-		New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation);
-		$global:createdNamespaces += $name;
-	}
+    param([int]$count)
+    1..$count | % { 
+        $name = Get-NamespaceName;
+        New-AzureSBNamespace $name $(Get-DefaultServiceBusLocation);
+        $global:createdNamespaces += $name;
+    }
 
-	$global:createdNamespaces | % { Wait-NamespaceStatus $_ "Active" };
+    $global:createdNamespaces | % { Wait-NamespaceStatus $_ "Active" };
 }
 
 <#
@@ -132,8 +132,8 @@ Removes all the active namespaces in the current subscription.
 #>
 function Initialize-NamespaceTest
 {
-	try { Get-AzureSBNamespace | Where {$_.Status -eq "Active"} | Remove-AzureSBNamespace -Force }
-	catch { <# Succeed #> }
+    try { Get-AzureSBNamespace | Where {$_.Status -eq "Active"} | Remove-AzureSBNamespace -Force }
+    catch { <# Succeed #> }
 }
 
 <#
@@ -142,8 +142,8 @@ Creates a ServiceBusExtensionClient instance.
 #>
 function New-ServiceBusClientExtensions
 {
-	$client = New-Object Microsoft.WindowsAzure.Commands.Utilities.ServiceBus.ServiceBusClientExtensions `
-		-ArgumentList $(Get-AzureSubscription -Default)
+    $client = New-Object Microsoft.WindowsAzure.Commands.Utilities.ServiceBus.ServiceBusClientExtensions `
+        -ArgumentList $(Get-AzureSubscription -Default)
 
-	return $client
+    return $client
 }
