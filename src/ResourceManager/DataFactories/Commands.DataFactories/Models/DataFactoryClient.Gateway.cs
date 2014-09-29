@@ -60,5 +60,12 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             DataPipelineManagementClient.Gateways.Delete(resourceGroupName, dataFactoryName, gatewayName);
         }
+
+        public virtual PSDataFactoryGatewayKey RegenerateGatewayKey(string resourceGroupName, string dataFactoryName, string gatewayName)
+        {
+            var response = DataPipelineManagementClient.Gateways.RegenerateKey(resourceGroupName, dataFactoryName, gatewayName);
+
+            return new PSDataFactoryGatewayKey(response.Key);
+        }
     }
 }

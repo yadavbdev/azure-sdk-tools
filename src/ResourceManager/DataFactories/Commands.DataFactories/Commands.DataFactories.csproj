@@ -110,7 +110,9 @@
     <Compile Include="DataSlices\SetAzureDataFactorySliceStatusCommand.cs" />
     <Compile Include="Gateway\GetAzureDataFactoryGatewayCommand.cs" />
     <Compile Include="Gateway\NewAzureDataFactoryGatewayCommand.cs" />
+    <Compile Include="Gateway\NewAzureDataFactoryGatewayKeyCommand.cs" />
     <Compile Include="Gateway\RemoveAzureDataFactoryGatewayCommand.cs" />
+    <Compile Include="Gateway\SetAzureDataFactoryGatewayCommand.cs" />
     <Compile Include="Models\CreatePSLinkedServiceParameters.cs" />
     <Compile Include="LinkedServices\GetAzureDataFactoryLinkedServiceCommand.cs" />
     <Compile Include="LinkedServices\LinkedServiceContextBaseCmdlet.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Models\PSDataSliceRun.cs" />
     <Compile Include="Models\PSPipeline.cs" />
     <Compile Include="Models\PSRunLogInfo.cs" />
+    <Compile Include="Models\PSDataFactoryGatewayKey.cs" />
     <Compile Include="Models\TableFilterOptions.cs" />
     <Compile Include="Models\LinkedServiceFilterOptions.cs" />
     <Compile Include="LinkedServices\NewAzureDataFactoryLinkedServiceCommand.cs" />
