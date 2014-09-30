@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Management.Automation;
-using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
+namespace Microsoft.Azure.Commands.Network.Gateway
 {
+    using System.Management.Automation;
+    using Model;
+
     [Cmdlet(VerbsCommon.Get, "AzureVNetGatewayKey"), OutputType(typeof(SharedKeyContext))]
-    public class GetAzureVNetGatewayKeyCommand : ServiceManagementBaseCmdlet
+    public class GetAzureVNetGatewayKeyCommand : NetworkCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "The virtual network name.")]
         [ValidateNotNullOrEmpty]
@@ -37,19 +36,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             set;
         }
 
-        protected override void OnProcessRecord()
+        public override void ExecuteCmdlet()
         {
-            this.ExecuteClientActionNewSM(
-                null,
-                this.CommandRuntime.ToString(),
-                () => this.NetworkClient.Gateways.GetSharedKey(this.VNetName, this.LocalNetworkSiteName),
-                (operation, sharedKey) => new SharedKeyContext
-                {
-                    OperationId          = operation.Id,
-                    OperationDescription = this.CommandRuntime.ToString(),
-                    OperationStatus      = operation.Status.ToString(),
-                    Value                = sharedKey.SharedKey
-                });
+            WriteObject(Client.GetSharedKey(VNetName, LocalNetworkSiteName));
         }
     }
 }

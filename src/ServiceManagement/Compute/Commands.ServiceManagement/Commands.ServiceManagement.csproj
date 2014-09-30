@@ -253,7 +253,6 @@
     <Compile Include="IaaS\Network\RemoveAzureReservedIP.cs" />
     <Compile Include="IaaS\Network\RemoveAzureStaticVNetIP.cs" />
     <Compile Include="IaaS\Network\SetAzureStaticVNetIP.cs" />
-    <Compile Include="IaaS\Network\SetAzureVnetGatewayKey.cs" />
     <Compile Include="IaaS\Network\TestAzureStaticVNetIP.cs" />
     <Compile Include="Model\PersistentVMRoleListContext.cs" />
     <Compile Include="Model\ReservedIPConstants.cs" />
@@ -371,17 +370,11 @@
     <Compile Include="IaaS\Network\GetAzureDns.cs" />
     <Compile Include="IaaS\Network\GetAzureSubnet.cs" />
     <Compile Include="IaaS\Network\GetAzureVNetConfig.cs" />
-    <Compile Include="IaaS\Network\GetAzureVNetConnection.cs" />
-    <Compile Include="IaaS\Network\GetAzureVNetGateway.cs" />
-    <Compile Include="IaaS\Network\GetAzureVNetGatewayKey.cs" />
     <Compile Include="IaaS\Network\GetAzureVNetSite.cs" />
     <Compile Include="IaaS\Network\NewAzureDns.cs" />
-    <Compile Include="IaaS\Network\NewAzureVNetGateway.cs" />
     <Compile Include="IaaS\Network\RemoveAzureVNetConfig.cs" />
-    <Compile Include="IaaS\Network\RemoveAzureVNetGateway.cs" />
     <Compile Include="IaaS\Network\SetAzureSubnet.cs" />
     <Compile Include="IaaS\Network\SetAzureVNetConfig.cs" />
-    <Compile Include="IaaS\Network\SetAzureVNetGateway.cs" />
     <Compile Include="IaaS\IaaSDeploymentManagementCmdletBase.cs" />
     <Compile Include="IaaS\PersistentVMs\AddAzureProvisioningConfig.cs" />
     <Compile Include="Helpers\ConfigurationSetsBuilder.cs" />
