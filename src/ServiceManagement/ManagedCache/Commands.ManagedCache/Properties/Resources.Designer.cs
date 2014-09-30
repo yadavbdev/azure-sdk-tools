@@ -133,6 +133,15 @@ namespace Microsoft.Azure.Commands.ManagedCache.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It is not possible to remove &apos;default&apos; named cache..
+        /// </summary>
+        internal static string DoNotRemoveDefaultNamedCache {
+            get {
+                return ResourceManager.GetString("DoNotRemoveDefaultNamedCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter &apos;WithHighAvailability&apos; is not available for cache with Basic sku..
         /// </summary>
         internal static string HighAvailabilityNotAvailable {

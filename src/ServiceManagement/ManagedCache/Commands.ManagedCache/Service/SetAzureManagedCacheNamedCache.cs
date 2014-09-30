@@ -33,9 +33,8 @@ namespace Microsoft.Azure.Commands.ManagedCache
         [ValidateSet("Absolute", "Sliding", "Never", IgnoreCase = false)]
         public string ExpiryPolicy { get; set; }
 
-        [Parameter(Mandatory = true)]
-        [ValidateNotNullOrEmpty]
-        public int ExpiryTime { get; set; }
+        [Parameter(Mandatory = false)]
+        public int? ExpiryTime { get; set; }
 
         [Parameter(Mandatory = false)]
         public SwitchParameter WithNotifications { get; set; }
@@ -44,17 +43,30 @@ namespace Microsoft.Azure.Commands.ManagedCache
         public SwitchParameter WithHighAvailability { get; set; }
         
         [Parameter(Mandatory = false)]
-        public SwitchParameter WithEviction { get; set; }
+        public SwitchParameter WithoutEviction { get; set; }
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Force { get; set; }
         
+        private string _DefaultExpiryPolicy = "Absolute";
+        private int _DefaultExpiryTime = 10;
+
         public override void ExecuteCmdlet()
         {
+            if (string.IsNullOrEmpty(ExpiryPolicy))
+            {
+                ExpiryPolicy = _DefaultExpiryPolicy;
+            }
+
+            if (ExpiryTime == null)
+            {
+                ExpiryTime = _DefaultExpiryTime;
+            }
+
             string cacheServiceName = CacheClient.NormalizeCacheServiceName(Name);
             CacheClient.ProgressRecorder = (p) => { WriteVerbose(p); };
-            WriteObject(new PSCacheServiceWithNamedCaches(CacheClient.SetNamedCache(cacheServiceName, NamedCache, ExpiryPolicy, ExpiryTime,
-                WithEviction.IsPresent, WithNotifications.IsPresent, WithHighAvailability.IsPresent, ConfirmAction, Force.IsPresent)));
+            WriteObject(new PSCacheServiceWithNamedCaches(CacheClient.SetNamedCache(cacheServiceName, NamedCache, ExpiryPolicy, (int) ExpiryTime,
+                WithoutEviction.IsPresent, WithNotifications.IsPresent, WithHighAvailability.IsPresent, ConfirmAction, Force.IsPresent)));
         }
     }
 }

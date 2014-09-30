@@ -207,4 +207,7 @@
   <data name="UpdatingNamedCache" xml:space="preserve">
     <value>Updating named cache…</value>
   </data>
+  <data name="DoNotRemoveDefaultNamedCache" xml:space="preserve">
+    <value>It is not possible to remove 'default' named cache.</value>
+  </data>
 </root>

@@ -156,7 +156,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
         }
 
         public CloudServiceResource AddNamedCache(string cacheServiceName, string namedCacheName, string expiryPolicy, int expiryTimeInMinutes,
-            bool eviction, bool notifications, bool highAvailability)
+            bool noeviction, bool notifications, bool highAvailability)
         {
             string cloudServiceName = null;
             CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
@@ -180,7 +180,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
 
             IntrinsicSettings.CacheServiceInput.NamedCache newNamedCache = new IntrinsicSettings.CacheServiceInput.NamedCache();
             newNamedCache.CacheName = namedCacheName;
-            newNamedCache.EvictionPolicy = eviction ? "LeastRecentlyUsed" : "None";
+            newNamedCache.EvictionPolicy = noeviction ? "None" : "LeastRecentlyUsed";
             newNamedCache.ExpirationSettingsSection = new IntrinsicSettings.CacheServiceInput.NamedCache.ExpirationSettings();
             newNamedCache.ExpirationSettingsSection.Type = expiryPolicy;
             newNamedCache.ExpirationSettingsSection.TimeToLiveInMinutes = expiryTimeInMinutes;
@@ -217,7 +217,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
         }
 
         public CloudServiceResource SetNamedCache(string cacheServiceName, string namedCacheName, string expiryPolicy, int expiryTimeInMinutes,
-            bool eviction, bool notifications, bool highAvailability, Action<bool, string, string, string, Action> ConfirmAction, bool force)
+            bool noeviction, bool notifications, bool highAvailability, Action<bool, string, string, string, Action> ConfirmAction, bool force)
         {
             string cloudServiceName = null;
             CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
@@ -264,7 +264,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
                        updateNamedCache.NotificationsEnabled = notifications;
                        updateNamedCache.HighAvailabilityEnabled = highAvailability;
                    }
-                   updateNamedCache.EvictionPolicy = eviction ? "LeastRecentlyUsed" : "None";
+                   updateNamedCache.EvictionPolicy = noeviction ? "None" : "LeastRecentlyUsed";
                    if (updateNamedCache.ExpirationSettingsSection == null)
                    {
                        updateNamedCache.ExpirationSettingsSection = new IntrinsicSettings.CacheServiceInput.NamedCache.ExpirationSettings();
@@ -283,6 +283,11 @@ namespace Microsoft.Azure.Commands.ManagedCache
 
         public void RemoveNamedCache(string cacheServiceName, string namedCacheName, Action<bool, string, string, string, Action> ConfirmAction, bool force)
         {
+            if ("default".Equals(namedCacheName))
+            {
+                throw new ArgumentException(string.Format(Properties.Resources.DoNotRemoveDefaultNamedCache));
+            }
+
             string cloudServiceName = null;
             CloudServiceResource cacheResource = FetchCloudServiceResource(cacheServiceName, out cloudServiceName);
 
