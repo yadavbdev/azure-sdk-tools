@@ -111,7 +111,6 @@
     <Compile Include="DataSlices\DataSliceContextBaseCmdlet.cs" />
     <Compile Include="DataSlices\GetAzureDataFactoryRunCommand.cs" />
     <Compile Include="DataSlices\GetAzureDataFactorySliceCommand.cs" />
-    <Compile Include="DataSlices\SaveAzureDataFactoryLogCommand.cs" />
     <Compile Include="DataSlices\SetAzureDataFactorySliceStatusCommand.cs" />
     <Compile Include="Gateway\GetAzureDataFactoryGatewayCommand.cs" />
     <Compile Include="Gateway\NewAzureDataFactoryGatewayCommand.cs" />
