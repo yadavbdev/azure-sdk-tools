@@ -49,51 +49,40 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
             var account = context.Account;
 
-            if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, context.Account.Id)))
+            if (account == null)
             {
-                // Try to re-authenticate
-                var tenants = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.Tenants)
-                    .Intersect(context.Account.GetPropertyAsArray(AzureAccount.Property.Tenants));
+                throw new ArgumentException(Resources.InvalidSubscriptionState);
+            }
 
-                foreach (var tenant in tenants)
+            if (account.Type == AzureAccount.AccountType.Certificate)
+            {
+                var certificate = ProfileClient.DataStore.GetCertificate(account.Id);
+                return new CertificateCloudCredentials(context.Subscription.Id.ToString(), certificate);
+            }
+
+            var tenants = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.Tenants)
+                  .Intersect(context.Account.GetPropertyAsArray(AzureAccount.Property.Tenants));
+
+            IAccessToken token = null;
+            foreach (var tenant in tenants)
+            {
+                try
                 {
-                    try
-                    {
-                        AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)] = Authenticate(ref account, context.Environment, tenant, null, ShowDialog.Never);
-                        break;
-                    }
-                    catch
-                    {
-                        // Skip
-                    }
+                    token = Authenticate(ref account, context.Environment, tenant, null, ShowDialog.Never);
+                    break;
+                }
+                catch
+                {
+                    // Skip
                 }
             }
 
-            if (AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, context.Account.Id)))
+            //try again
+            if (token != null)
             {
-                return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, context.Account.Id)]);
+                return new AccessTokenCredential(context.Subscription.Id, token);
             }
-            else if (account != null)
-            {
-                switch (account.Type)
-                {
-                    case AzureAccount.AccountType.User:
-                    case AzureAccount.AccountType.ServicePrincipal:
-                        if (!AzureSession.SubscriptionTokenCache.ContainsKey(Tuple.Create(context.Subscription.Id, account.Id)))
-                        {
-                            throw new ArgumentException(Resources.InvalidSubscriptionState);
-                        }
-                        return new AccessTokenCredential(context.Subscription.Id, AzureSession.SubscriptionTokenCache[Tuple.Create(context.Subscription.Id, account.Id)]);
-
-                    case AzureAccount.AccountType.Certificate:
-                        var certificate = ProfileClient.DataStore.GetCertificate(account.Id);
-                        return new CertificateCloudCredentials(context.Subscription.Id.ToString(), certificate);
-
-                    default:
-                        throw new NotImplementedException("Error: couldn't do whatever it is we're trying to do here");
-                }
-            }
-            else
+            else 
             {
                 throw new ArgumentException(Resources.InvalidSubscriptionState);
             }

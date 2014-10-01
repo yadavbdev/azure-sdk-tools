@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
                 throw new ArgumentNullException("account");
             }
 
-            var subscriptionsFromServer = ListSubscriptionsFromServer(ref account, environment, password, ShowDialog.Always).ToList();
+            var subscriptionsFromServer = ListSubscriptionsFromServer(ref account, environment, password, password == null ? ShowDialog.Always : ShowDialog.Never).ToList();
 
             Debug.Assert(account != null);
 
@@ -900,8 +900,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             psSubscription.SetProperty(AzureSubscription.Property.SupportedModes, AzureModule.AzureResourceManager.ToString());
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, tenant);
 
-                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, account.Id)] = tenantToken;
-
                             result.Add(psSubscription);
                         }
                     }
@@ -949,8 +947,6 @@ namespace Microsoft.WindowsAzure.Commands.Common
                             };
                             psSubscription.Properties[AzureSubscription.Property.SupportedModes] = AzureModule.AzureServiceManagement.ToString();
                             psSubscription.SetProperty(AzureSubscription.Property.Tenants, subscription.ActiveDirectoryTenantId);
-
-                            AzureSession.SubscriptionTokenCache[Tuple.Create(psSubscription.Id, account.Id)] = tenantToken;
 
                             result.Add(psSubscription);
                         }

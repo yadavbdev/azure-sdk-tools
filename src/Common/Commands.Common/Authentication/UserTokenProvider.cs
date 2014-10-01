@@ -98,7 +98,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
         {
             AuthenticationResult result = null;
             Exception ex = null;
-
+            //TODO: checkout promptBehavior value == ShowDialog.Never
             var thread = new Thread(() =>
             {
                 try
