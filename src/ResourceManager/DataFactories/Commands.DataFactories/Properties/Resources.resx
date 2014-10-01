@@ -165,7 +165,7 @@ Are you sure you want to continue?</value>
     <value>Removing linked service '{0}' in data factory '{1}'.</value>
   </data>
   <data name="NoWriteAccessToDirectory" xml:space="preserve">
-    <value>No write access to the {0} directory.</value>
+    <value>No access to write for the specified directory {0}.</value>
   </data>
   <data name="PipelineConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to remove pipeline '{0}' in data factory '{1}'?</value>

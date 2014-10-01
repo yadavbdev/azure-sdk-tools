@@ -12,25 +12,30 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
-using System.Collections.Generic;
-using System.Management.Automation;
-using System.Security.Permissions;
-using Microsoft.Azure.Commands.DataFactories.Models;
 
-namespace Microsoft.Azure.Commands.DataFactories
+namespace Microsoft.WindowsAzure.Commands.Common.Storage
 {
-    [Cmdlet(VerbsCommon.Get, Constants.DataSlice), OutputType(typeof(List<PSDataSlice>))]
-    public class GetAzureDataFactorySliceCommand : DataSliceContextBaseCmdlet
+    public class BlobDownloadParameters
     {
-        [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
-        public override void ExecuteCmdlet()
-        {
-            var dataSlices = DataFactoryClient.ListDataSlices(
-                ResourceGroupName, DataFactoryName, TableName, StartDateTime,
-                EndDateTime);
+        public string FileLocalPath { get; set; }
+        public string FileRemoteName { get; set; }
+        public string ContainerName { get; set; }
+        public bool ContainerPublic { get; set; }
+        public bool OverrideIfExists { get; set; }
+        public int SasTokenDurationInHours { get; set; }
 
-            WriteObject(dataSlices, true);
+        public Uri SasUrl { get; set; }
+
+        public BlobRequestOptions BlobRequestOptions { get; set; }
+
+        public BlobDownloadParameters()
+        {
+            ContainerPublic = false;
+            ContainerName = "mydeployments";
+            SasTokenDurationInHours = 24;
+            OverrideIfExists = false;
         }
     }
 }

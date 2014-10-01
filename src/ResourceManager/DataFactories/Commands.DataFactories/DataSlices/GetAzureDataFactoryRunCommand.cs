@@ -62,14 +62,14 @@ namespace Microsoft.Azure.Commands.DataFactories
                 {
                     case ByTableName:
                         var dataSliceRuns = DataFactoryClient.ListDataSliceRuns(
-                            ResourceGroupName, DataFactoryName, TableName, StartDateTime.SpecifyDateTimeKind());
+                            ResourceGroupName, DataFactoryName, TableName, StartDateTime);
                         WriteObject(dataSliceRuns);
                         break;
 
                     case ByPipelineName:
                         var pipelineRuns = DataFactoryClient.GetPipelineRuns(
                             ResourceGroupName, DataFactoryName, PipelineName, ActivityName,
-                            StartDateTime.SpecifyDateTimeKind(), EndDateTime.SpecifyDateTimeKind(), null);
+                            StartDateTime, EndDateTime, null);
                         WriteObject(pipelineRuns, true);
                         break;
                 }

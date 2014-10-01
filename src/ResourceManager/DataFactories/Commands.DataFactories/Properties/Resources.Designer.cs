@@ -186,7 +186,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No write access to the {0} directory..
+        ///   Looks up a localized string similar to No access to write for the specified directory {0}..
         /// </summary>
         internal static string NoWriteAccessToDirectory {
             get {
