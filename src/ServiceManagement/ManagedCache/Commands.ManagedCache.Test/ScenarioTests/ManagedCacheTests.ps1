@@ -123,7 +123,7 @@ function Test-ManagedCacheNamedCacheBasic
 	Assert-ThrowsContains {Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "default" -WithNotifications} "Parameter 'WithNotifications' is not available for cache with Basic sku"
 	Assert-ThrowsContains {Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "default" -WithHighAvailability} "Parameter 'WithHighAvailability' is not available for cache with Basic sku"
 
-	$cacheDetailsAfterUpdate = Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "default" -ExpiryTime 11 -ExpiryPolicy "Sliding"
+	$cacheDetailsAfterUpdate = Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "default" -ExpiryTime 11 -ExpiryPolicy "Sliding" -Force
 	Assert-AreEqual $cacheName $cacheDetailsAfterUpdate.Name
     Assert-AreEqual 'Basic' $cacheDetailsAfterUpdate.Sku
     Assert-AreEqual '128MB' $cacheDetailsAfterUpdate.Memory
@@ -171,7 +171,7 @@ function Test-ManagedCacheNamedCacheStandard
 	$cacheDetails = Get-AzureManagedCacheNamedCache -Name $cacheName
 	Assert-AreEqual $cacheName $cacheDetails.Name
     Assert-AreEqual 'Standard' $cacheDetails.Sku
-    Assert-AreEqual '128MB' $cacheDetails.Memory
+    Assert-AreEqual '1GB' $cacheDetails.Memory
 	Assert-AreEqual 'West US' $cacheDetails.Location
 	Assert-AreEqual 3 $cacheDetails.NamedCaches.Count
 	
@@ -197,26 +197,13 @@ function Test-ManagedCacheNamedCacheStandard
         Assert-AreEqual "Enabled" $singleNamedCache.HighAvailability
     }
 
-	New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random3"
-	New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random4"
-	New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random5"
-	New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random6"
-	New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random7"
-	New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random8"
-	New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random9"
-	
-	Assert-ThrowsContains {New-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random10"} "It is not possible to create more than 10 named caches"
-	
-	$cacheDetails = Get-AzureManagedCacheNamedCache -Name $cacheName
-	Assert-AreEqual 10 $cacheDetails.NamedCaches.Count
-
 	Assert-ThrowsContains {Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "nonexisting"} "do not have named cache with name"
 	
-	Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random3" -ExpiryTime 11 -ExpiryPolicy "Sliding" -WithNotifications -WithHighAvailability
-	$cacheDetailsAfterUpdate = Get-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random3"
+	Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random1" -ExpiryTime 11 -ExpiryPolicy "Sliding" -WithNotifications -WithHighAvailability -Force
+	$cacheDetailsAfterUpdate = Get-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random1"
 	Assert-AreEqual 1 $cacheDetailsAfterUpdate.NamedCaches.Count
 	foreach($singleNamedCache in $cacheDetailsAfterUpdate.NamedCaches) {
-	    Assert-AreEqual "random3" $singleNamedCache.CacheName
+	    Assert-AreEqual "random1" $singleNamedCache.CacheName
         Assert-AreEqual "Sliding" $singleNamedCache.ExpiryPolicy
         Assert-AreEqual 11 $singleNamedCache.TimeToLiveInMinutes
         Assert-AreEqual "Enabled" $singleNamedCache.Eviction
@@ -224,7 +211,7 @@ function Test-ManagedCacheNamedCacheStandard
         Assert-AreEqual "Enabled" $singleNamedCache.HighAvailability
     }
     
-	Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random2"
+	Set-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random2" -Force
 	$cacheDetailsAfterUpdate2 = Get-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random2"
 	Assert-AreEqual 1 $cacheDetailsAfterUpdate2.NamedCaches.Count
 	foreach($singleNamedCache in $cacheDetailsAfterUpdate2.NamedCaches) {
@@ -237,11 +224,10 @@ function Test-ManagedCacheNamedCacheStandard
     }
 
 	Assert-ThrowsContains {Remove-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "nonexisting" -Force -PassThru} "do not have named cache with name"
-	Assert-True { Remove-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random8" -Force -PassThru }
-	Assert-True { Remove-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random9" -Force -PassThru }
+	Assert-True { Remove-AzureManagedCacheNamedCache -Name $cacheName -NamedCache "random2" -Force -PassThru }
 	
 	$cacheDetailsAfterRemove = Get-AzureManagedCacheNamedCache -Name $cacheName
-	Assert-AreEqual 8 $cacheDetailsAfterRemove.NamedCaches.Count
+	Assert-AreEqual 2 $cacheDetailsAfterRemove.NamedCaches.Count
 
 	# Remove it
     Remove-AzureManagedCache $cacheName -Force
