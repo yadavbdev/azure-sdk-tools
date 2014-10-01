@@ -13,12 +13,8 @@
 // ----------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Xunit;
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Commands.Common.Factories;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
@@ -28,24 +24,42 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 {
     public class AuthenticationFactoryTests
     {
-        //[Fact]
-        //public void FooBar()
-        //{
-        //    AuthenticationFactory authFactory = new AuthenticationFactory();
-        //    authFactory.TokenProvider = new MockAccessTokenProvider("testtoken", "testuser");
-        //    var subscriptionId = Guid.NewGuid();
-        //    var accessToken = authFactory.TokenProvider.GetAccessToken(null, ShowDialog.Auto, "testuser", null);
-        //    AzureSession.SubscriptionTokenCache[Tuple.Create(subscriptionId, "testuser")] = accessToken;
-        //    var credential = authFactory.GetSubscriptionCloudCredentials(new Models.AzureContext
-        //    {
-        //        Account = new AzureAccount{Id = "testuser", Type = AzureAccount.AccountType.User},
-        //        Environment = AzureEnvironment.PublicEnvironments["AzureCloud"],
-        //        Subscription = new AzureSubscription { Id = subscriptionId }
-        //    });
+        [Fact]
+        public void VerifySubscriptionTokenCacheRemove()
+        {
+            var authFactory = new AuthenticationFactory
+            {
+                TokenProvider = new MockAccessTokenProvider("testtoken", "testuser")
+            };
 
-        //    Assert.True(credential is AccessTokenCredential);
-        //    Assert.Equal(subscriptionId, new Guid(((AccessTokenCredential)credential).SubscriptionId));
+            var subscriptionId = Guid.NewGuid();
 
-        //}
+            var credential = authFactory.GetSubscriptionCloudCredentials(new Models.AzureContext
+            {
+                Environment = AzureEnvironment.PublicEnvironments["AzureCloud"],
+                Account = new AzureAccount
+                {
+                    Id = "testuser",
+                    Type = AzureAccount.AccountType.User,
+                    Properties = new Dictionary<AzureAccount.Property, string>
+                    {
+                        { AzureAccount.Property.Tenants, "123" }
+                    }
+                },
+                Subscription = new AzureSubscription
+                {
+                    Id = subscriptionId,
+                    Properties = new Dictionary<AzureSubscription.Property, string>
+                    {
+                        { AzureSubscription.Property.Tenants, "123"}
+                    }
+                }
+                
+            });
+
+            Assert.True(credential is AccessTokenCredential);
+            Assert.Equal(subscriptionId, new Guid(((AccessTokenCredential)credential).SubscriptionId));
+
+        }
     }
 }

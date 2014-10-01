@@ -32,8 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
 
         public ITokenProvider TokenProvider { get; set; }
 
-        public IAccessToken Authenticate(ref AzureAccount account, AzureEnvironment environment, string tenant, SecureString password,
-            ShowDialog promptBehavior)
+        public IAccessToken Authenticate(AzureAccount account, AzureEnvironment environment, string tenant, SecureString password, ShowDialog promptBehavior)
         {
             var token = TokenProvider.GetAccessToken(GetAdalConfiguration(environment, tenant), promptBehavior, account.Id, password, account.Type);
             account.Id = token.UserId;
@@ -46,45 +45,35 @@ namespace Microsoft.WindowsAzure.Commands.Common.Factories
             {
                 throw new ApplicationException(Resources.InvalidCurrentSubscription);
             }
-
-            var account = context.Account;
-
-            if (account == null)
+            
+            if (context.Account == null)
             {
                 throw new ArgumentException(Resources.InvalidSubscriptionState);
             }
 
-            if (account.Type == AzureAccount.AccountType.Certificate)
+            if (context.Account.Type == AzureAccount.AccountType.Certificate)
             {
-                var certificate = ProfileClient.DataStore.GetCertificate(account.Id);
+                var certificate = ProfileClient.DataStore.GetCertificate(context.Account.Id);
                 return new CertificateCloudCredentials(context.Subscription.Id.ToString(), certificate);
             }
 
-            var tenants = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.Tenants)
-                  .Intersect(context.Account.GetPropertyAsArray(AzureAccount.Property.Tenants));
+            var tenant = context.Subscription.GetPropertyAsArray(AzureSubscription.Property.Tenants)
+                  .Intersect(context.Account.GetPropertyAsArray(AzureAccount.Property.Tenants))
+                  .FirstOrDefault();
 
-            IAccessToken token = null;
-            foreach (var tenant in tenants)
-            {
-                try
-                {
-                    token = Authenticate(ref account, context.Environment, tenant, null, ShowDialog.Never);
-                    break;
-                }
-                catch
-                {
-                    // Skip
-                }
-            }
-
-            //try again
-            if (token != null)
-            {
-                return new AccessTokenCredential(context.Subscription.Id, token);
-            }
-            else 
+            if (tenant == null)
             {
                 throw new ArgumentException(Resources.InvalidSubscriptionState);
+            }
+
+            try
+            {
+                var token = Authenticate(context.Account, context.Environment, tenant, null, ShowDialog.Never);
+                return new AccessTokenCredential(context.Subscription.Id, token);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(Resources.InvalidSubscriptionState, ex);
             }
         }
 
