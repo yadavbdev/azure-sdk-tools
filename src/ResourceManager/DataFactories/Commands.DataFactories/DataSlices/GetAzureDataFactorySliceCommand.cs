@@ -27,8 +27,8 @@ namespace Microsoft.Azure.Commands.DataFactories
         public override void ExecuteCmdlet()
         {
             var dataSlices = DataFactoryClient.ListDataSlices(
-                ResourceGroupName, DataFactoryName, TableName, StartDateTime,
-                EndDateTime);
+                ResourceGroupName, DataFactoryName, TableName, StartDateTime.SpecifyDateTimeKind(),
+                EndDateTime.SpecifyDateTimeKind());
 
             WriteObject(dataSlices, true);
         }

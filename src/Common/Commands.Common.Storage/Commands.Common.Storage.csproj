@@ -118,7 +118,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureStorageContext.cs" />
-    <Compile Include="BlobDownloadParameters.cs" />
     <Compile Include="BlobUploadParameters.cs" />
     <Compile Include="IStorageClientWrapper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

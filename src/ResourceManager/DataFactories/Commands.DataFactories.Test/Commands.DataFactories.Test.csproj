@@ -153,7 +153,6 @@
     <Compile Include="UnitTests\RemoveTableTests.cs" />
     <Compile Include="UnitTests\RemoveLinkedServiceTests.cs" />
     <Compile Include="UnitTests\RemoveDataFactoryTests.cs" />
-    <Compile Include="UnitTests\SaveLogTests.cs" />
     <Compile Include="UnitTests\SetDataFactoryGatewayTests.cs" />
   </ItemGroup>
   <ItemGroup>

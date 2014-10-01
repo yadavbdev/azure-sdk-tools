@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.Start;
+                return this._dataSlice.Start.ToLocalTime();
             }
             internal set
             {
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.End;
+                return this._dataSlice.End.ToLocalTime();
             }
             internal set
             {

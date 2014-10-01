@@ -43,5 +43,25 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             return hashTable.Cast<DictionaryEntry>().ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value.ToString());
         }
+
+        public static DateTime SpecifyDateTimeKind(this DateTime time)
+        {
+            if (time.Kind == DateTimeKind.Unspecified)
+            {
+                return DateTime.SpecifyKind(time, DateTimeKind.Local);
+            }
+
+            return time;
+        }
+
+        public static DateTime? SpecifyDateTimeKind(this DateTime? time)
+        {
+            if (time != null && time.Value.Kind == DateTimeKind.Unspecified)
+            {
+                return DateTime.SpecifyKind(time.Value, DateTimeKind.Local);
+            }
+
+            return time;
+        }
     }
 }

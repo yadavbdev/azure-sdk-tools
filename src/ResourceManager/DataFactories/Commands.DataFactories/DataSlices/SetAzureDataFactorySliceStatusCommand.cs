@@ -62,8 +62,8 @@ namespace Microsoft.Azure.Commands.DataFactories
                 TableName,
                 Status,
                 UpdateType,
-                StartDateTime,
-                EndDateTime);
+                StartDateTime.SpecifyDateTimeKind(),
+                EndDateTime.SpecifyDateTimeKind());
 
             WriteObject(true);
         }

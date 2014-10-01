@@ -14,21 +14,18 @@
 
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Commands.DataFactories.Properties;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Management.Automation;
 using System.Net;
-using System.Security;
 using System.Security.AccessControl;
 using System.Security.Permissions;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System;
-using Microsoft.WindowsAzure.Storage.Auth;
+
 namespace Microsoft.Azure.Commands.DataFactories
 {
     [Cmdlet(VerbsData.Save, Constants.RunLog), OutputType(typeof(PSRunLogInfo))]
-    public class SaveAzureDataFactoryLogCommand : DataFactoryBaseCmdlet
+    public class SaveAzureDataFactoryLog : DataFactoryBaseCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
@@ -50,13 +47,10 @@ namespace Microsoft.Azure.Commands.DataFactories
         public override void ExecuteCmdlet()
         {
             WebClient webClient = new WebClient();
-            CloudBlockBlob blob;
 
             PSRunLogInfo runLog =
                 DataFactoryClient.GetDataSliceRunLogsSharedAccessSignature(
                     ResourceGroupName, DataFactoryName, Id);
-
-            blob = new CloudBlockBlob(new Uri(runLog.SasUri));
 
             if (DownloadLogs.IsPresent)
             {
@@ -69,7 +63,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     throw new IOException(string.Format(CultureInfo.InvariantCulture, Resources.NoWriteAccessToDirectory, directory));
                 }
 
-                blob.DownloadToFile(directory, FileMode.CreateNew, AccessCondition.GenerateEmptyCondition());
+                webClient.DownloadFile(runLog.SasUri, directory);
 
                 WriteVerbose(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
             }
@@ -89,7 +83,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 return false;
             }
 
-            var rules = accessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.NTAccount));
+            var rules = accessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
 
             if (rules == null)
             {

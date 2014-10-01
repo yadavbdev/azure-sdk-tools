@@ -132,7 +132,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                         parameters.RawJsonContent))
                     {
                         ResourceGroupName = parameters.ResourceGroupName,
-                        DataFactoryName = parameters.DataFactoryName,
+                        DataFactoryName = parameters.DataFactoryName
                     };
             };
             
