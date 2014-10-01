@@ -67,8 +67,8 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             try
             {
-                DateTime startTime = StartDateTime.SpecifyDateTimeKind();
-                DateTime endTime = EndDateTime.SpecifyDateTimeKind();
+                DateTime startTime = StartDateTime;
+                DateTime endTime = EndDateTime;
 
                 ConfirmAction(
                     Force.IsPresent,
