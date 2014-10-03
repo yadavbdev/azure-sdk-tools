@@ -108,6 +108,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
             if (VM.DataVirtualHardDisks != null)
             {
+                parameters.DataVirtualHardDisks = new List<DataVirtualHardDisk>();
                 VM.DataVirtualHardDisks.ForEach(c =>
                 {
                     var dataDisk = Mapper.Map<DataVirtualHardDisk>(c);

@@ -55,7 +55,7 @@
     </Reference>
     <Reference Include="Microsoft.Azure.Utilities.HttpRecorder">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Hydra.HttpRecorder.1.0.5359.24167-prerelease\lib\net45\Microsoft.Azure.Utilities.HttpRecorder.dll</HintPath>
+      <HintPath>..\..\packages\Hydra.HttpRecorder.1.0.5379.31313-prerelease\lib\net45\Microsoft.Azure.Utilities.HttpRecorder.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
@@ -153,7 +153,8 @@
     <Compile Include="Common\ProfileCmdltsTests.cs" />
     <Compile Include="Common\ProfileClientTests.cs" />
     <Compile Include="Common\ServicePrincipalStoreTests.cs" />
-    <Compile Include="Mocks\MockAuthenticationFactory.cs" />
+    <Compile Include="Mocks\MockTokenAuthenticationFactory.cs" />
+    <Compile Include="Mocks\MockCertificateAuthenticationFactory.cs" />
     <Compile Include="Mocks\ClientMocks.cs" />
     <Compile Include="Common\GeneralUtilitiesTests.cs" />
     <Compile Include="Common\Data.cs" />
@@ -166,7 +167,6 @@
     <Compile Include="Mocks\MockDataStore.cs" />
     <Compile Include="Mocks\MockClientFactory.cs" />
     <Compile Include="Mocks\MockAccessToken.cs" />
-    <Compile Include="Mocks\MockStorageService.cs" />
     <Compile Include="Common\PSObjectExtensions.cs" />
     <Compile Include="Common\RemoveAzurePublishSettings.cs" />
     <Compile Include="Common\SimpleServiceManagementAsyncResult.cs" />
@@ -174,7 +174,6 @@
     <Compile Include="Common\ConversionUtilitiesTests.cs" />
     <Compile Include="Common\Testing.cs" />
     <Compile Include="Common\TestingTracingInterceptor.cs" />
-    <Compile Include="Factories\TestAuthenticationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
