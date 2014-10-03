@@ -435,7 +435,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
         {
             if (!Profile.Subscriptions.ContainsKey(id))
             {
-                throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage, "name");
+                throw new ArgumentException(string.Format(Resources.SubscriptionIdNotFoundMessage, id), "id");
             }
 
             var subscription = Profile.Subscriptions[id];
@@ -500,7 +500,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             else
             {
-                throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage, "id");
+                throw new ArgumentException(string.Format(Resources.SubscriptionIdNotFoundMessage, id), "id");
             }
         }
 
@@ -515,7 +515,7 @@ namespace Microsoft.WindowsAzure.Commands.Common
             }
             else
             {
-                throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage, "name");
+                throw new ArgumentException(string.Format(Resources.SubscriptionNameNotFoundMessage, name), "name");
             }
         }
 
