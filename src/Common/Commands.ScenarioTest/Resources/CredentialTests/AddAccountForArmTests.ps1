@@ -60,9 +60,9 @@ to output stream.
 function Test-NonInteractiveFPOLoginFails
 {
     $accountInfo = Get-UserCredentials "OrgIdForeignPrincipal"
-    Assert-ThrowsContains { 
-        Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment 
-    } "No credentials found with the necessary validated claims that map to external user information."
+	Add-AzureAccount -Credential $accountInfo.Credential -Environment $accountInfo.Environment
+	
+    Assert-True { (Get-AzureSubscription).Length -eq 0 } "There should be no subscription"
 }
 
 <#
@@ -93,7 +93,7 @@ function Test-AddServicePrincipalToEmptyProfile
 
 <#
 .SYNOPSIS
-Login with user, then then SP, SP should be default account
+Login with user, then SP, SP should be default account
 #>
 function Test-LoginWithUserAndServicePrincipal
 {
