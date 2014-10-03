@@ -150,9 +150,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\AuthenticationFactoryTests.cs" />
     <Compile Include="Common\ProfileCmdltsTests.cs" />
     <Compile Include="Common\ProfileClientTests.cs" />
     <Compile Include="Common\ServicePrincipalStoreTests.cs" />
+    <Compile Include="Mocks\MockAccessTokenProvider.cs" />
     <Compile Include="Mocks\MockTokenAuthenticationFactory.cs" />
     <Compile Include="Mocks\MockCertificateAuthenticationFactory.cs" />
     <Compile Include="Mocks\ClientMocks.cs" />

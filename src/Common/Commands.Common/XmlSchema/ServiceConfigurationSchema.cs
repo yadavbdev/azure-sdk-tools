@@ -15,9 +15,6 @@
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema
 {
-    using System.Xml.Serialization;
-
-
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
@@ -27,7 +24,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConf
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration", IsNullable = false)]
     public partial class ServiceConfiguration
     {
-
         private RoleSettings[] roleField;
 
         private NetworkConfigurationElement networkConfigurationField;
@@ -1221,7 +1217,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConf
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration")]
     public enum SchemaVersion
     {
-
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("2014-06.2.4")]
         Item20140624,
