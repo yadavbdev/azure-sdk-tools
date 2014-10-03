@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             DataSliceStatus.Skip,
             DataSliceStatus.Retry,
             DataSliceStatus.TimedOut,
-            DataSliceStatus.PendingExecution,
+            DataSliceStatus.PendingValidation,
             DataSliceStatus.RetryValidation,
             DataSliceStatus.FailedValidation,
             DataSliceStatus.LongRetry,
@@ -62,8 +62,8 @@ namespace Microsoft.Azure.Commands.DataFactories
                 TableName,
                 Status,
                 UpdateType,
-                StartDateTime.SpecifyDateTimeKind(),
-                EndDateTime.SpecifyDateTimeKind());
+                StartDateTime,
+                EndDateTime);
 
             WriteObject(true);
         }

@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.ProcessingStartTime.ToLocalTime();
+                return this._dataSliceRun.ProcessingStartTime;
             }
             internal set
             {
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.ProcessingEndTime.ToLocalTime();
+                return this._dataSliceRun.ProcessingEndTime;
             }
             internal set
             {
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.DataSliceStart.ToLocalTime();
+                return this._dataSliceRun.DataSliceStart;
             }
             internal set
             {
@@ -134,7 +134,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.DataSliceEnd.ToLocalTime();
+                return this._dataSliceRun.DataSliceEnd;
             }
             internal set
             {
@@ -158,7 +158,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.Timestamp.ToLocalTime();
+                return this._dataSliceRun.Timestamp;
             }
             internal set
             {
