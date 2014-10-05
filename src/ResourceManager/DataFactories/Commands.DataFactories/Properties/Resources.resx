@@ -161,6 +161,23 @@ Are you sure you want to continue?</value>
   <data name="LinkedServiceRemoving" xml:space="preserve">
     <value>Removing linked service '{0}' in data factory '{1}'.</value>
   </data>
+  <data name="PipelineConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to remove pipeline '{0}' in data factory '{1}'?</value>
+  </data>
+  <data name="PipelineCreating" xml:space="preserve">
+    <value>Creating pipeline '{0}' in data factory '{1}'.</value>
+  </data>
+  <data name="PipelineExists" xml:space="preserve">
+    <value>A pipeline with the name {0} in the data factory {1} exists. 
+Continuing execution may overwrite the exisiting one. 
+Are you sure you want to continue?</value>
+  </data>
+  <data name="PipelineNotFound" xml:space="preserve">
+    <value>Pipeline '{0}' does not exist in the data factory '{1}'.</value>
+  </data>
+  <data name="PipelineRemoving" xml:space="preserve">
+    <value>Removing pipeline '{0}' in data factory '{1}'.</value>
+  </data>
   <data name="ResourceGroupNameCannotBeEmpty" xml:space="preserve">
     <value>Resource group name cannot be null.</value>
   </data>

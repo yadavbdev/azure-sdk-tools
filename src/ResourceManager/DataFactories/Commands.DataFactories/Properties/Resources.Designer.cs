@@ -177,6 +177,53 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove pipeline &apos;{0}&apos; in data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string PipelineConfirmationMessage {
+            get {
+                return ResourceManager.GetString("PipelineConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating pipeline &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string PipelineCreating {
+            get {
+                return ResourceManager.GetString("PipelineCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A pipeline with the name {0} in the data factory {1} exists. 
+        ///Continuing execution may overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
+        /// </summary>
+        internal static string PipelineExists {
+            get {
+                return ResourceManager.GetString("PipelineExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pipeline &apos;{0}&apos; does not exist in the data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string PipelineNotFound {
+            get {
+                return ResourceManager.GetString("PipelineNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing pipeline &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string PipelineRemoving {
+            get {
+                return ResourceManager.GetString("PipelineRemoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource group name cannot be null..
         /// </summary>
         internal static string ResourceGroupNameCannotBeEmpty {

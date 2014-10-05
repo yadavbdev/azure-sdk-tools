@@ -12,10 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.Azure.Commands.DataFactories
 {
     internal static class Constants
     {
+        public static readonly TimeSpan DefaultSliceActivePeriodDuration = TimeSpan.FromHours(48);
+
         public const string DataFactory = "AzureDataFactory";
 
         public const string LinkedService = "AzureDataFactoryLinkedService";
@@ -27,5 +31,15 @@ namespace Microsoft.Azure.Commands.DataFactories
         public const string EncryptString = "AzureDataFactoryEncryptValue";
 
         public const string Table = "AzureDataFactoryTable";
+
+        public const string Pipeline = "AzureDataFactoryPipeline";
+
+        public const string PipelineActivePeriod = "AzureDataFactoryPipelineActivePeriod";
+
+        public const string Run = "AzureDataFactoryRun";
+
+        public const string DataSlice = "AzureDataFactorySlice";
+
+        public const string SliceStatus = "AzureDataFactorySliceStatus";
     }
 }
