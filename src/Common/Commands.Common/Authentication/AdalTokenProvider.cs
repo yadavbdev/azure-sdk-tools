@@ -40,11 +40,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
             servicePrincipalTokenProvider = new ServicePrincipalTokenProvider();
         }
 
-        public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password)
-        {
-            return userTokenProvider.GetAccessToken(config, promptBehavior, userId, password, AzureAccount.AccountType.User);
-        }
-
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password,
             AzureAccount.AccountType credentialType)
         {

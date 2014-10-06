@@ -19,15 +19,15 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    public class FakeAccessTokenProvider : ITokenProvider
+    public class MockAccessTokenProvider : ITokenProvider
     {
         private readonly IAccessToken accessToken;
 
-        public FakeAccessTokenProvider(string token)
+        public MockAccessTokenProvider(string token)
             : this(token, "user@live.com")
         { }
 
-        public FakeAccessTokenProvider(string token, string userId)
+        public MockAccessTokenProvider(string token, string userId)
         {
             this.accessToken = new MockAccessToken()
             {
