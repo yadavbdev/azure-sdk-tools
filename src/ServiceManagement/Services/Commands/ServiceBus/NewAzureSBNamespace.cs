@@ -37,6 +37,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
         [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Create assosciated ACS namespace as well.")]
         public bool? CreateACSNamespace { get; set; }
 
+        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Create assosciated ACS namespace as well.")]
+        public NamespaceType NamespaceType { get; set; }
+
         /// <summary>
         /// Creates a new service bus namespace.
         /// </summary>
@@ -45,12 +48,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
             Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
             if (CreateACSNamespace.HasValue)
             {
-                WriteObject(Client.CreateNamespace(Name, Location, CreateACSNamespace.Value));
+                WriteObject(Client.CreateNamespace(Name, Location, NamespaceType, CreateACSNamespace.Value));
             }
             else
             {
                 WriteWarning(Resources.SpecifyCreateACSNamespace);
-                WriteObject(Client.CreateNamespace(Name, Location, true));
+                WriteObject(Client.CreateNamespace(Name, Location, NamespaceType, true));
             }
         }
     }
