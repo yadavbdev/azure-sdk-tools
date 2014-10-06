@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
         [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Create assosciated ACS namespace as well.")]
         public bool? CreateACSNamespace { get; set; }
 
-        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Create assosciated ACS namespace as well.")]
+        [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Namespace Type")]
         public NamespaceType NamespaceType { get; set; }
 
         /// <summary>
