@@ -54,10 +54,6 @@ namespace Microsoft.Azure.Commands.Batch
 
         internal BatchAccountContext() { }
 
-        internal BatchAccountContext(string id, string subscription, string accountEndpoint, string resourceGroupName, string location, string state, string[] tags)
-        {
-        }
-
         internal BatchAccountContext(string accountEndpoint)
         {
             this.AccountEndpoint = accountEndpoint;

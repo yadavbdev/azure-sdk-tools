@@ -35,6 +35,8 @@ namespace Microsoft.Azure.Commands.Batch
         private static string accountObject = "batchAccounts";
         private static string accountSearch = batchProvider + "/" + accountObject;
 
+        public BatchClient()
+        { }
 
         /// <summary>
         /// Creates new BatchClient instance
@@ -64,7 +66,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// <param name="accountName">The account name</param>
         /// <param name="parameters">Additional parameters that are associated with the creation of the account</param>
         /// <returns>The status of create operation</returns>
-        public BatchAccountCreateResponse CreateAccount(string resourceGroupName, string accountName, BatchAccountCreateParameters parameters)
+        public virtual BatchAccountCreateResponse CreateAccount(string resourceGroupName, string accountName, BatchAccountCreateParameters parameters)
         {
             return BatchManagementClient.Accounts.Create(resourceGroupName, accountName, parameters);
         }
@@ -76,7 +78,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// <param name="accountName">The account name</param>
         /// <param name="parameters">Additional parameters that are associated with the update of the account</param>
         /// <returns>The status of update operation</returns>
-        public BatchAccountUpdateResponse UpdateAccount(string resourceGroupName, string accountName, BatchAccountUpdateParameters parameters)
+        public virtual BatchAccountUpdateResponse UpdateAccount(string resourceGroupName, string accountName, BatchAccountUpdateParameters parameters)
         {
             return BatchManagementClient.Accounts.Update(resourceGroupName, accountName, parameters);
         }
@@ -87,7 +89,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// <param name="resourceGroupName">The name of the resource group in which to create the account</param>
         /// <param name="accountName">The account name</param>
         /// <returns>The status of get operation</returns>
-        public BatchAccountGetResponse GetAccount(string resourceGroupName, string accountName)
+        public virtual BatchAccountGetResponse GetAccount(string resourceGroupName, string accountName)
         {
             return BatchManagementClient.Accounts.Get(resourceGroupName, accountName);
         }
@@ -98,7 +100,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// <param name="resourceGroupName">The name of the resource group in which to create the account</param>
         /// <param name="accountName">The account name</param>
         /// <returns>The status of get keys operation</returns>
-        public BatchAccountListKeyResponse ListKeys(string resourceGroupName, string accountName)
+        public virtual BatchAccountListKeyResponse ListKeys(string resourceGroupName, string accountName)
         {
             return BatchManagementClient.Accounts.ListKeys(resourceGroupName, accountName);
         }
@@ -108,7 +110,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// </summary>
         /// <param name="listParameters">Additional parameters that are associated with the listing of accounts</param>
         /// <returns>The status of list operation</returns>
-        public BatchAccountListResponse ListAccounts(AccountListParameters listParameters)
+        public virtual BatchAccountListResponse ListAccounts(AccountListParameters listParameters)
         {
             return BatchManagementClient.Accounts.List(listParameters);
         }
@@ -118,7 +120,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// </summary>
         /// <param name="listParameters">Additional parameters that are associated with the listing of accounts</param>
         /// <returns>The status of list operation</returns>
-        public BatchAccountListResponse ListNextAccounts(string NextLink)
+        public virtual BatchAccountListResponse ListNextAccounts(string NextLink)
         {
             return BatchManagementClient.Accounts.ListNext(NextLink);
         }
@@ -130,7 +132,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// <param name="accountName">The account name</param>
         /// <param name="parameters">Additional parameters that are associated with regenerating a key of the account</param>
         /// <returns>The status of regenerate key operation</returns>
-        public BatchAccountRegenerateKeyResponse RegenerateKeys(string resourceGroupName, string accountName, BatchAccountRegenerateKeyParameters parameters)
+        public virtual BatchAccountRegenerateKeyResponse RegenerateKeys(string resourceGroupName, string accountName, BatchAccountRegenerateKeyParameters parameters)
         {
             return BatchManagementClient.Accounts.RegenerateKey(resourceGroupName, accountName, parameters);
         }
@@ -141,13 +143,13 @@ namespace Microsoft.Azure.Commands.Batch
         /// <param name="resourceGroupName">The name of the resource group in which to create the account</param>
         /// <param name="accountName">The account name</param>
         /// <returns>The status of delete account operation</returns>
-        public OperationResponse DeleteAccount(string resourceGroupName, string accountName)
+        public virtual OperationResponse DeleteAccount(string resourceGroupName, string accountName)
         {
             return BatchManagementClient.Accounts.Delete(resourceGroupName, accountName);
         }
         #endregion
 
-        internal string GetGroupForAccountNoThrow(string accountName)
+        internal virtual string GetGroupForAccountNoThrow(string accountName)
         {
             var response = ResourceManagementClient.Resources.List(new Management.Resources.Models.ResourceListParameters()
             {
@@ -172,7 +174,7 @@ namespace Microsoft.Azure.Commands.Batch
             var groupName = GetGroupForAccountNoThrow(accountName);
             if (groupName == null)
             {
-                throw new Exception(Resources.ResourceNotFound);
+                throw new CloudException(Resources.ResourceNotFound);
             }
 
             return groupName;
