@@ -134,6 +134,9 @@ Are you sure you want to continue?</value>
   <data name="DataFactoryRemoving" xml:space="preserve">
     <value>Removing data factory '{0}' in resource group '{1}'.</value>
   </data>
+  <data name="DownloadLogCompleted" xml:space="preserve">
+    <value>Download of the log is completed. Please find it in the directory {0}.</value>
+  </data>
   <data name="ExtractedNameFromJsonMismatchWarning" xml:space="preserve">
     <value>{0} name provided using -Name switch: '{1}' in cmdlet doesn't match with {0} name: '{2}' in JSON file. {0} will be created with name: '{1}'</value>
   </data>
@@ -160,6 +163,9 @@ Are you sure you want to continue?</value>
   </data>
   <data name="LinkedServiceRemoving" xml:space="preserve">
     <value>Removing linked service '{0}' in data factory '{1}'.</value>
+  </data>
+  <data name="NoWriteAccessToDirectory" xml:space="preserve">
+    <value>No access to write for the specified directory {0}.</value>
   </data>
   <data name="PipelineConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to remove pipeline '{0}' in data factory '{1}'?</value>

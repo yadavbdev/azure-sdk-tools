@@ -120,6 +120,9 @@
   <data name="AnonymousAccountName" xml:space="preserve">
     <value>[Anonymous]</value>
   </data>
+  <data name="DownloadCredentialsNull" xml:space="preserve">
+    <value>The argument set for download method is incomplete. </value>
+  </data>
   <data name="SasTokenAccountName" xml:space="preserve">
     <value>[SasToken]</value>
   </data>

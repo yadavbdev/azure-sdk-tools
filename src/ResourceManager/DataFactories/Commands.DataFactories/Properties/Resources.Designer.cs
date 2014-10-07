@@ -108,6 +108,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download of the log is completed. Please find it in the directory {0}..
+        /// </summary>
+        internal static string DownloadLogCompleted {
+            get {
+                return ResourceManager.GetString("DownloadLogCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} name provided using -Name switch: &apos;{1}&apos; in cmdlet doesn&apos;t match with {0} name: &apos;{2}&apos; in JSON file. {0} will be created with name: &apos;{1}&apos;.
         /// </summary>
         internal static string ExtractedNameFromJsonMismatchWarning {
@@ -173,6 +182,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         internal static string LinkedServiceRemoving {
             get {
                 return ResourceManager.GetString("LinkedServiceRemoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No access to write for the specified directory {0}..
+        /// </summary>
+        internal static string NoWriteAccessToDirectory {
+            get {
+                return ResourceManager.GetString("NoWriteAccessToDirectory", resourceCulture);
             }
         }
         

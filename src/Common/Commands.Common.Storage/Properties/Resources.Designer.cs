@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Common.Storage.Properties
-{
-
-
+namespace Microsoft.WindowsAzure.Commands.Common.Storage.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -66,6 +66,15 @@ namespace Microsoft.WindowsAzure.Commands.Common.Storage.Properties
         internal static string AnonymousAccountName {
             get {
                 return ResourceManager.GetString("AnonymousAccountName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The argument set for download method is incomplete. .
+        /// </summary>
+        internal static string DownloadCredentialsNull {
+            get {
+                return ResourceManager.GetString("DownloadCredentialsNull", resourceCulture);
             }
         }
         

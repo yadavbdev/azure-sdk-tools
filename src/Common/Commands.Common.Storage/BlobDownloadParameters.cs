@@ -12,21 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Storage
 {
-    public interface IStorageClientWrapper
+    public class BlobDownloadParameters
     {
-        void DeletePackageFromBlob(
-            string storageName,
-            Uri packageUri);
+        public string Directory { get; set; }
 
-        Uri UploadFileToBlob(
-            BlobUploadParameters parameters);
+        public Uri SasUri { get; set; }
 
-        void DownloadFileToBlob(
-            BlobDownloadParameters parameters);
+        public StorageCredentials Credentials { get; set; }
+
+        public BlobDownloadParameters()
+        {
+        }
     }
 }
