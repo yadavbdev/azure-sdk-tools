@@ -24,7 +24,7 @@
               </ListItem>
               <ListItem>
                 <Label>Properties</Label>
-                <PropertyName>PropertiesText</PropertyName>
+                <PropertyName>Properties</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -54,28 +54,62 @@
               </ListItem>
               <ListItem>
                 <Label>Availability</Label>
-                <PropertyName>AvailabilityText</PropertyName>
+                <PropertyName>Availability</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>Location</Label>
-                <PropertyName>LocationText</PropertyName>
+                <PropertyName>Location</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>Policy</Label>
-                <PropertyName>PolicyText</PropertyName>
+                <PropertyName>Policy</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>Structure</Label>
-                <PropertyName>StructureText</PropertyName>
+                <PropertyName>Structure</PropertyName>
               </ListItem>
               <ListItem>
                 <Label>Published</Label>
                 <PropertyName>Published</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Properties</Label>
+                <PropertyName>Properties</PropertyName>
               </ListItem>
             </ListItems>
           </ListEntry>
         </ListEntries>
       </ListControl>
     </View>
+    <View>
+      <Name>Microsoft.Azure.Commands.DataFactories.Models.PSPipeline</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Azure.Commands.DataFactories.Models.PSPipeline</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>PipelineName</Label>
+                <PropertyName>PipelineName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>ResourceGroupName</Label>
+                <PropertyName>ResourceGroupName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>DataFactoryName</Label>
+                <PropertyName>DataFactoryName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>Properties</Label>
+                <PropertyName>Properties</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>  
   </ViewDefinitions>
 </Configuration>
