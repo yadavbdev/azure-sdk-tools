@@ -12,23 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-    using DatabaseCopyModel = Microsoft.WindowsAzure.Commands.SqlDatabase.Model.DatabaseCopy;
+    using DatabaseCopyModel = Model.DatabaseCopy;
 
     /// <summary>
-    /// Start a copy operation for a Windows Azure SQL Database in the given server context.
+    /// Start a copy operation for a Microsoft Azure SQL Database in the given server context.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Start, "AzureSqlDatabaseCopy", SupportsShouldProcess = true,
         ConfirmImpact = ConfirmImpact.Low)]
-    public class StartAzureSqlDatabaseCopy : CmdletBase
+    public class StartAzureSqlDatabaseCopy : AzurePSCmdlet
     {
         #region ParameterSets
 
@@ -61,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         [Parameter(Mandatory = true, Position = 1, ParameterSetName = ByInputObjectContinuous,
             ValueFromPipeline = true, HelpMessage = "The database object to copy.")]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the database to copy.
@@ -105,10 +107,19 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// Gets or sets a value indicating whether to make this a continuous copy.
         /// </summary>
         [Parameter(Mandatory = true, ParameterSetName = ByInputObjectContinuous,
-            HelpMessage = "The name of the partner database.")]
+            HelpMessage = "Whether to make this a continuous copy.")]
         [Parameter(Mandatory = true, ParameterSetName = ByDatabaseNameContinuous,
-            HelpMessage = "The name of the partner database.")]
+            HelpMessage = "Whether to make this a continuous copy.")]
         public SwitchParameter ContinuousCopy { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this is an offline secondary copy.
+        /// </summary>
+        [Parameter(Mandatory = false, ParameterSetName = ByInputObjectContinuous,
+            HelpMessage = "Whether this is an offline secondary copy.")]
+        [Parameter(Mandatory = false, ParameterSetName = ByDatabaseNameContinuous,
+            HelpMessage = "Whether this is an offline secondary copy.")]
+        public SwitchParameter OfflineSecondary { get; set; }
 
         /// <summary>
         /// Gets or sets the switch to not confirm on the start of the database copy.
@@ -176,7 +187,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             // Use the provided ServerDataServiceContext or create one from the
             // provided ServerName and the active subscription.
             IServerDataServiceContext context = ServerDataServiceCertAuth.Create(this.ServerName,
-                WindowsAzureProfile.Instance.CurrentSubscription);
+                AzureSession.CurrentContext.Subscription);
 
             try
             {
@@ -185,7 +196,8 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                     databaseName,
                     partnerServerName,
                     partnerDatabaseName,
-                    this.ContinuousCopy.IsPresent);
+                    this.ContinuousCopy.IsPresent,
+                    this.OfflineSecondary.IsPresent);
 
                 this.WriteObject(databaseCopy, true);
             }

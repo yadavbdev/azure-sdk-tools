@@ -13,17 +13,17 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Commands.Common.Properties;
-    using Common;
-    using Common.XmlSchema.ServiceConfigurationSchema;
-    using Common.XmlSchema.ServiceDefinitionSchema;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-
     public class ServiceComponents
     {
         public ServiceDefinition Definition { get; private set; }
@@ -56,7 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             catch (FileNotFoundException)
             {
                 // Try recreating the settings file
-                File.WriteAllText(paths.Settings, Resources.SettingsFileEmptyContent);
+                FileUtilities.DataStore.WriteFile(paths.Settings, Resources.SettingsFileEmptyContent);
             }
 
             Definition = XmlUtilities.DeserializeXmlFile<ServiceDefinition>(paths.Definition);
@@ -102,29 +102,21 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         {
             Validate.ValidateStringIsNullOrEmpty(roleName, Resources.RoleName);
 
-            bool isDefined = Enum.GetNames(typeof(RoleSize)).Any(x => x.ToLower() == vmSize.ToLower());
-
-            if (!isDefined)
-            {
-                throw new ArgumentException(string.Format(Resources.InvalidVMSize, roleName));
-            }
-
             if (!RoleExists(roleName))
             {
                 throw new ArgumentException(string.Format(Resources.RoleNotFoundMessage, roleName));
             }
 
             WebRole webRole = GetWebRole(roleName);
-            RoleSize size = (RoleSize)Enum.Parse(typeof(RoleSize), vmSize, true);
 
             if (webRole != null)
             {
-                webRole.vmsize = size;
+                webRole.vmsize = vmSize;
             }
             else
             {
                 WorkerRole workerRole = GetWorkerRole(roleName);
-                workerRole.vmsize = size;
+                workerRole.vmsize = vmSize;
             }
         }
 

@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Threading;
-    using System.Xml;
-
     [TestClass]
     public class GenericIaaSExtensionTests:ServiceManagementTest
     {
@@ -76,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             
         }
 
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\package.csv", "package#csv", DataAccessMethod.Sequential)]
         public void AzureVMExtensionTest()
         {
@@ -122,8 +123,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 throw;
             }
         }
-        
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
+
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
         public void UpdateVMWithExtensionTest()
         {
             try
@@ -138,9 +139,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     var vm = CreateIaaSVMObject(vmName);
                     vmPowershellCmdlets.NewAzureVM(serviceName, new[] { vm }, locationName);
 
-                   vm = GetAzureVM(vmName, serviceName);
-                    //Set extension without version
-                    vm = vmPowershellCmdlets.SetAzureVMExtension(vm, vmAccessExtension.ExtensionName, vmAccessExtension.Publisher, null,referenceName, publicConfiguration, privateConfiguration);
+                    vm = GetAzureVM(vmName, serviceName);
+
+                    vm = vmPowershellCmdlets.SetAzureVMExtension(vm,
+                        vmAccessExtension.ExtensionName,
+                        vmAccessExtension.Publisher,
+                        vmAccessExtension.Version,
+                        referenceName,
+                        publicConfiguration,
+                        privateConfiguration);
                     vmPowershellCmdlets.UpdateAzureVM(vmName, serviceName, vm);
 
                     ValidateVMAccessExtension(vmName, serviceName, true);
@@ -163,7 +170,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         }
 
 
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
         public void AddRoleWithExtensionTest()
         {
             try
@@ -194,7 +201,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         }
 
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet ((Get,Set)-AzureVMExtension)")]
         public void UpdateRoleWithExtensionTest()
         {
             try
@@ -223,7 +230,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             
         }
 
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet (Get-AzureVMAvailableExtension)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IAAS"), Priority(0), Owner("hylee"), Description("Test the cmdlet (Get-AzureVMAvailableExtension)")]
         public void GetAzureVMAvailableExtensionTest()
         {
             try
@@ -313,8 +320,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             privateConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PrivateConfig.xml");
             publicConfigPath = Path.Combine(Directory.GetCurrentDirectory(), "PublicConfig.xml");
-            privateConfiguration = File.ReadAllText(privateConfigPath);
-            publicConfiguration = File.ReadAllText(publicConfigPath);
+            privateConfiguration = FileUtilities.DataStore.ReadFileAsText(privateConfigPath);
+            publicConfiguration = FileUtilities.DataStore.ReadFileAsText(publicConfigPath);
             
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(publicConfiguration);

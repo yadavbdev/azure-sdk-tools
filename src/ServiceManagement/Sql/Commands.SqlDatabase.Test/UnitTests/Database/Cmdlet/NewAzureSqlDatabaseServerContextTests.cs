@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.Utilities;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Commands.Test.Utilities.Common;
-    using Commands.Utilities.Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using MockServer;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using SqlDatabase.Database.Cmdlet;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-
     [TestClass]
     public class NewAzureSqlDatabaseServerContextTests : TestBase
     {
@@ -117,6 +118,8 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
             // Create context with just ManageUrl and a derived servername
             HttpSession testSession = MockServerHelper.DefaultSessionCollection.GetSession(
                 "UnitTests.NewAzureSqlDatabaseServerContextWithSqlAuthDerivedName");
+            testSession.ServiceBaseUri = MockServerHelper.CommonServiceBaseUri;
+
             using (System.Management.Automation.PowerShell powershell =
                 System.Management.Automation.PowerShell.Create())
             {
@@ -158,8 +161,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         [TestMethod]
         public void NewAzureSqlDatabaseServerContextWithCertAuth()
         {
-            WindowsAzureSubscription subscription = UnitTestHelper.CreateUnitTestSubscription();
-            subscription.ServiceEndpoint = new Uri(MockHttpServer.DefaultHttpsServerPrefixUri.AbsoluteUri);
+            AzureSubscription subscription = UnitTestHelper.CreateUnitTestSubscription();
 
             NewAzureSqlDatabaseServerContext serverContext = new NewAzureSqlDatabaseServerContext();
             ServerDataServiceCertAuth service = serverContext.GetServerDataServiceByCertAuth(
@@ -182,6 +184,10 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                 UnitTestHelper.ImportAzureModule(powershell);
                 UnitTestHelper.CreateTestCredential(powershell);
 
+                powershell.Runspace.SessionStateProxy.SetVariable(
+                    "serverName",
+                    SqlDatabaseTestSettings.Instance.ServerName);
+
                 using (AsyncExceptionManager exceptionManager = new AsyncExceptionManager())
                 {
                     // Test warning when different $metadata is received.
@@ -195,24 +201,16 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                             string.Format(
                                 CultureInfo.InvariantCulture,
                                 @"$context = New-AzureSqlDatabaseServerContext " +
-                                @"-ServerName testserver " +
+                                @"-ServerName $servername " +
                                 @"-ManageUrl {0} " +
                                 @"-Credential $credential",
                                 MockHttpServer.DefaultServerPrefixUri.AbsoluteUri),
                             @"$context");
                     }
 
-                    Assert.AreEqual(0, powershell.Streams.Error.Count, "Errors during run!");
-                    Assert.AreEqual(1, powershell.Streams.Warning.Count, "Should have warning!");
-                    Assert.AreEqual(
-                        Resources.WarningModelOutOfDate,
-                        powershell.Streams.Warning.First().Message);
+                    Assert.AreEqual(1, powershell.Streams.Error.Count, "Errors during run!");
+                    Assert.AreEqual(2, powershell.Streams.Warning.Count, "Should have warning!");
                     powershell.Streams.ClearStreams();
-
-                    PSObject contextPsObject = serverContext.Single();
-                    Assert.IsTrue(
-                        contextPsObject.BaseObject is ServerDataServiceSqlAuth,
-                        "Expecting a ServerDataServiceSqlAuth object");
 
                     // Test error case
                     using (new MockHttpServer(
@@ -224,7 +222,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
                             string.Format(
                                 CultureInfo.InvariantCulture,
                                 @"$context = New-AzureSqlDatabaseServerContext " +
-                                @"-ServerName testserver " +
+                                @"-ServerName $servername " +
                                 @"-ManageUrl {0} " +
                                 @"-Credential $credential",
                                 MockHttpServer.DefaultServerPrefixUri.AbsoluteUri),

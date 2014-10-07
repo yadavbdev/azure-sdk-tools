@@ -12,28 +12,28 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ServiceBus;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 {
-    using Commands.ServiceBus;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Management.ServiceBus.Models;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class NewAzureSBNamespaceTests : TestBase
     {
-        [TestInitialize]
-        public void SetupTest()
+        public NewAzureSBNamespaceTests()
         {
             new FileSystemHelper(this).CreateAzureSdkDirectoryAndImportPublishSettings();
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureSBNamespaceSuccessfull()
         {
             // Setup
@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 Client = client.Object
             };
             ExtendedServiceBusNamespace expected = new ExtendedServiceBusNamespace { Name = name, Region = location };
-            client.Setup(f => f.CreateNamespace(name, location)).Returns(expected);
+            client.Setup(f => f.CreateNamespace(name, location, true)).Returns(expected);
             client.Setup(f => f.GetServiceBusRegions()).Returns(new List<ServiceBusLocation>()
             {
                 new ServiceBusLocation () { Code = location }
@@ -60,10 +60,41 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<ExtendedServiceBusNamespace>(expected, actual);
+            Assert.Equal<ExtendedServiceBusNamespace>(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
+        public void NewAzureSBNamespaceNoACSSuccessfull()
+        {
+            // Setup
+            MockCommandRuntime mockCommandRuntime = new MockCommandRuntime();
+            Mock<ServiceBusClientExtensions> client = new Mock<ServiceBusClientExtensions>();
+            string name = "test1";
+            string location = "West US";
+            NewAzureSBNamespaceCommand cmdlet = new NewAzureSBNamespaceCommand()
+            {
+                Name = name,
+                Location = location,
+                CreateACSNamespace = false,
+                CommandRuntime = mockCommandRuntime,
+                Client = client.Object
+            };
+            ExtendedServiceBusNamespace expected = new ExtendedServiceBusNamespace { Name = name, Region = location };
+            client.Setup(f => f.CreateNamespace(name, location, false)).Returns(expected);
+            client.Setup(f => f.GetServiceBusRegions()).Returns(new List<ServiceBusLocation>()
+            {
+                new ServiceBusLocation () { Code = location }
+            });
+
+            // Test
+            cmdlet.ExecuteCmdlet();
+
+            // Assert
+            ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
+            Assert.Equal<ExtendedServiceBusNamespace>(expected, actual);
+        }
+
+        [Fact]
         public void NewAzureSBNamespaceGetsDefaultLocation()
         {
             // Setup
@@ -79,33 +110,42 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 Location = location
             };
             ExtendedServiceBusNamespace expected = new ExtendedServiceBusNamespace { Name = name, Region = location };
-            client.Setup(f => f.CreateNamespace(name, location)).Returns(expected);
+            client.Setup(f => f.CreateNamespace(name, location, true)).Returns(expected);
 
             // Test
             cmdlet.ExecuteCmdlet();
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<ExtendedServiceBusNamespace>(expected, actual);
+            Assert.Equal<ExtendedServiceBusNamespace>(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureSBNamespaceWithInvalidNamesFail()
         {
             // Setup
             string[] invalidNames = { "1test", "test#", "test invaid", "-test", "_test" };
+            Mock<ServiceBusClientExtensions> client = new Mock<ServiceBusClientExtensions>();
 
             foreach (string invalidName in invalidNames)
             {
                 MockCommandRuntime mockCommandRuntime = new MockCommandRuntime();
-                NewAzureSBNamespaceCommand cmdlet = new NewAzureSBNamespaceCommand() { Name = invalidName, Location = "West US", CommandRuntime = mockCommandRuntime };
-                string expected = string.Format("{0}\r\nParameter name: Name", string.Format(Resources.InvalidNamespaceName, invalidName));
+                NewAzureSBNamespaceCommand cmdlet = new NewAzureSBNamespaceCommand()
+                {
+                    Name = invalidName,
+                    Location = "West US",
+                    CommandRuntime = mockCommandRuntime,
+                    Client = client.Object
+                };
 
-                Testing.AssertThrows<ArgumentException>(() => cmdlet.ExecuteCmdlet(), expected);
+                string expected = string.Format("{0}\r\nParameter name: Name", string.Format(Resources.InvalidNamespaceName, invalidName));
+                client.Setup(f => f.CreateNamespace(invalidName, "West US", true)).Throws(new InvalidOperationException(expected));
+
+                Testing.AssertThrows<InvalidOperationException>(() => cmdlet.ExecuteCmdlet(), expected);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void CreatesNewSBCaseInsensitiveRegion()
         {
             // Setup
@@ -121,7 +161,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
                 Client = client.Object
             };
             ExtendedServiceBusNamespace expected = new ExtendedServiceBusNamespace { Name = name, Region = location };
-            client.Setup(f => f.CreateNamespace(name, location.ToLower())).Returns(expected);
+            client.Setup(f => f.CreateNamespace(name, location.ToLower(), true)).Returns(expected);
             client.Setup(f => f.GetServiceBusRegions()).Returns(new List<ServiceBusLocation>()
             {
                 new ServiceBusLocation () { Code = location }
@@ -132,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ServiceBus
 
             // Assert
             ExtendedServiceBusNamespace actual = mockCommandRuntime.OutputPipeline[0] as ExtendedServiceBusNamespace;
-            Assert.AreEqual<ExtendedServiceBusNamespace>(expected, actual);
+            Assert.Equal<ExtendedServiceBusNamespace>(expected, actual);
         }
     }
 }

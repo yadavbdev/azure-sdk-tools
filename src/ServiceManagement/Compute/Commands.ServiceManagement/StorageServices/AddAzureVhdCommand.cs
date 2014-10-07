@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using System;
-    using System.IO;
-    using System.Management.Automation;
-    using Model;
-    using Properties;
-    using Sync.Download;
-    using Utilities.Common;
-
     /// <summary>
-    /// Uploads a vhd as fixed disk format vhd to a blob in Windows Azure Storage
+    /// Uploads a vhd as fixed disk format vhd to a blob in Microsoft Azure Storage
     /// </summary>
     [Cmdlet(VerbsCommon.Add, "AzureVhd"), OutputType(typeof(VhdUploadContext))]
     public class AddAzureVhdCommand : ServiceManagementBaseCmdlet
@@ -103,7 +103,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
             var storageCredentialsFactory = CreateStorageCredentialsFactory();
 
-            var parameters = new UploadParameters(destinationUri, baseImageUri, LocalFilePath, OverWrite.IsPresent, NumberOfUploaderThreads)
+            PathIntrinsics currentPath = SessionState.Path;
+            var filePath = new FileInfo(currentPath.GetUnresolvedProviderPathFromPSPath(LocalFilePath.ToString()));
+
+            var parameters = new UploadParameters(destinationUri, baseImageUri, filePath, OverWrite.IsPresent, NumberOfUploaderThreads)
             {
                 Cmdlet = this,
                 BlobObjectFactory = new CloudPageBlobObjectFactory(storageCredentialsFactory, TimeSpan.FromMinutes(1))
@@ -117,7 +120,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
             StorageCredentialsFactory storageCredentialsFactory;
             if (StorageCredentialsFactory.IsChannelRequired(Destination))
             {
-                storageCredentialsFactory = new StorageCredentialsFactory(this.StorageClient, this.CurrentSubscription);
+                storageCredentialsFactory = new StorageCredentialsFactory(this.StorageClient, this.CurrentContext.Subscription);
             }
             else
             {

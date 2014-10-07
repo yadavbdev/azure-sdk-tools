@@ -13,18 +13,16 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-    using Utilities.Common;
-    using IaaS;
-    using Management.Compute;
-    using Properties;
-
     [Cmdlet(VerbsCommon.Get, "AzureRemoteDesktopFile", DefaultParameterSetName = "Download"), OutputType(typeof(ManagementOperationContext))]
     public class GetAzureRemoteDesktopFileCommand : IaaSDeploymentManagementCmdletBase
     {

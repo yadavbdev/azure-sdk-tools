@@ -12,26 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.ImagePublishing
 {
-    using System.Linq;
-    using System.Management.Automation;
-    using Helpers;
-    using Model;
-    using ServiceManagement.Model;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Get, "AzurePlatformVMImage"), OutputType(typeof(OSImageDetailsContext))]
     public class GetAzurePlatformVMImage : ServiceManagementBaseCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the image in the image library.")]
         [ValidateNotNullOrEmpty]
         public string ImageName { get; set; }
-
-        protected override void InitChannelCurrentSubscription(bool force)
-        {
-            DoInitChannelCurrentSubscription(force);
-        }
 
         protected override void OnProcessRecord()
         {

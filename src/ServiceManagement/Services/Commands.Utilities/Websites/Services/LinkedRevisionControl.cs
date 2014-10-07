@@ -12,13 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using WebEntities;
-
     public abstract class LinkedRevisionControl : IDisposable
     {
         protected string InvocationPath;
@@ -37,8 +38,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
             if (!File.Exists(".gitignore"))
             {
                 // Scaffold gitignore
-                string cmdletPath = Directory.GetParent(InvocationPath).FullName;
-                File.Copy(Path.Combine(cmdletPath, "Scaffolding/Node/Website/.gitignore"), ".gitignore");
+                string cmdletPath = FileUtilities.GetAssemblyDirectory();
+                File.Copy(Path.Combine(cmdletPath, "Resources/Scaffolding/Node/Website/.gitignore"), ".gitignore");
             }
         }
 

@@ -12,36 +12,74 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using Utilities.Properties;
-    using Utilities.Websites.Common;
-    using Utilities.Websites.Services;
-    using Utilities.Websites.Services.WebEntities;
-
     /// <summary>
     /// Switches the existing slot with the production one.
     /// </summary>
     [Cmdlet(VerbsCommon.Switch, "AzureWebsiteSlot", SupportsShouldProcess = true)]
     public class SwitchAzureWebsiteSlotCommand : WebsiteBaseCmdlet
     {
+        private string name;
+        private string slot1;
+        private string slot2;
+
         [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The web site name.")]
         [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                // Convert to Unicode if necessary.
+                name = IdnHelper.GetUnicode(value);
+            }
+        }
 
         [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The first slot to swap.")]
         [ValidateNotNullOrEmpty]
-        public string Slot1 { get; set; }
+        public string Slot1
+        {
+            get
+            {
+                return slot1;
+            }
+            set
+            {
+                // Convert to Unicode if necessary.
+                slot1 = IdnHelper.GetUnicode(value);
+            }
+        }
 
         [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The second slot to swap (production by default).")]
         [ValidateNotNullOrEmpty]
-        public string Slot2 { get; set; }
+        public string Slot2
+        {
+            get
+            {
+                return slot2;
+            }
+            set
+            {
+                // Convert to Unicode if necessary.
+                slot2 = IdnHelper.GetUnicode(value);
+            }
+        }
 
         [Parameter(Mandatory = false, HelpMessage = "Do not confirm web site swap")]
         public SwitchParameter Force { get; set; }

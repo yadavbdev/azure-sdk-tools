@@ -12,26 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Management.Automation;
+using System.Management.Automation.Host;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.Github.Entities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using Commands.Utilities.Common;
-    using Common;
-    using Github;
-    using Github.Entities;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Management.Automation.Host;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Security.Permissions;
-    using System.ServiceModel;
-    using System.ServiceModel.Web;
-    using WebEntities;
-
     public static class SecureStringExtensionMethods
     {
         [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]

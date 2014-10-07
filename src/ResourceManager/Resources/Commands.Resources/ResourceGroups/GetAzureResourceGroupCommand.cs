@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.Resources.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Management.Automation;
 
@@ -22,16 +23,23 @@ namespace Microsoft.Azure.Commands.Resources
     /// Filters resource groups.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureResourceGroup"), OutputType(typeof(List<PSResourceGroup>))]
-    public class GetAzureResourceGroupCommand : ResourceManagerBaseCmdlet
+    public class GetAzureResourceGroupCommand : ResourcesBaseCmdlet
     {
         [Alias("ResourceGroupName")]
-        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the resource group.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, ParameterSetName = "GetSingle")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
+
+        [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "GetMultiple")]
+        public Hashtable Tag { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "GetMultiple")]
+        public SwitchParameter Detailed { get; set; }
         
         public override void ExecuteCmdlet()
         {
-            WriteObject(ResourcesClient.FilterResourceGroups(Name), true);
+            var detailed = Detailed.IsPresent || !string.IsNullOrEmpty(Name);
+            WriteObject(ResourcesClient.FilterResourceGroups(Name, Tag, detailed), true);
         }
     }
 }

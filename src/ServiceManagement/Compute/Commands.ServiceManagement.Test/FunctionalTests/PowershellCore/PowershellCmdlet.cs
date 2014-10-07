@@ -12,17 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Management.Automation;
 using System.Threading;
-using System.Text;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-
     public class PowershellCmdlet : PowershellEnvironment
     {
         private readonly CmdletsInfo cmdlet;
@@ -55,10 +53,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         public override Collection<PSObject> Run(bool debug)
         {
-            
             Collection<PSObject> result;
             runspace.Open();
-            using (var powershell = PowerShell.Create())
+            using (var powershell = System.Management.Automation.PowerShell.Create())
             {
                 powershell.Runspace = runspace;
                 powershell.AddCommand(cmdlet.name);
@@ -66,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 {
                     foreach (var cmdletparam in cmdlet.parameters)
                     {
-                        if(cmdletparam.value == null)
+                        if(cmdletparam.isSwitch)
                         {
                             powershell.AddParameter(cmdletparam.name);
                         }
@@ -108,7 +105,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             PSInvocationState result = 0;
             runspace.Open();
-            using (var powershell = PowerShell.Create())
+            using (var powershell = System.Management.Automation.PowerShell.Create())
             {
                 powershell.Runspace = runspace;
                 powershell.AddCommand(cmdlet.name);

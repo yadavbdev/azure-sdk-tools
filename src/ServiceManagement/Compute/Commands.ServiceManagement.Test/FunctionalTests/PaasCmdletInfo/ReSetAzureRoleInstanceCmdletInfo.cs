@@ -12,14 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
-    using PowershellCore;
     public class ResetAzureRoleInstanceCmdletInfo : CmdletsInfo
     {
         public ResetAzureRoleInstanceCmdletInfo(string serviceName, string instanceName, string slot, bool reboot = false, bool reimage = false)

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
-    using Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class StopAzureServiceScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class StopAzureServiceScenarioTests : AzurePowerShellCertificateTest
     {
         public StopAzureServiceScenarioTests()
             : base("CloudService\\Common.ps1",
@@ -37,14 +37,16 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStopAzureServiceWithInvalidCredentials()
         {
-            RunPowerShellTest("Test-WithInvalidCredentials { Stop-AzureService $(Get-HostedService) }");
+            RunPowerShellTest("Test-WithInvalidCredentials { Stop-AzureService $(Get-CloudServiceName) }");
         }
 
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStopAzureServiceWithNonExistingService()
         {
             RunPowerShellTest("Test-StopAzureServiceWithNonExistingService");
@@ -55,6 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestCategory(Category.CloudService)]
         [TestCategory(Category.OneSDK)]
         [TestCategory(Category.CIT)]
+        [TestCategory(Category.BVT)]
         public void TestStopAzureServiceWithProductionDeployment()
         {
             RunPowerShellTest("Test-StopAzureServiceWithProductionDeployment");
@@ -63,6 +66,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
+        [Timeout(1200000)]
         public void TestStopAzureServiceWithStagingDeployment()
         {
             RunPowerShellTest("Test-StopAzureServiceWithStagingDeployment");
@@ -71,6 +76,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStopAzureServiceWithEmptyDeployment()
         {
             RunPowerShellTest("Test-StopAzureServiceWithEmptyDeployment");
@@ -79,6 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStopAzureServiceWithoutName()
         {
             RunPowerShellTest("Test-StopAzureServiceWithoutName");

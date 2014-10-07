@@ -12,8 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.Resources.Models;
 using System;
+using System.Collections;
+using Microsoft.Azure.Management.Resources.Models;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources.Models
@@ -30,27 +31,17 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public string ApiVersion { get; set; }
 
+        public Hashtable[] Tag { get; set; }
+
         public ResourceIdentity ToResourceIdentity()
         {
-            if (string.IsNullOrEmpty(ResourceType))
+            return new ResourceIdentifier()
             {
-                throw new ArgumentNullException("ResourceType");
-            }
-            if (ResourceType.IndexOf('/') < 0)
-            {
-                throw new ArgumentException(ProjectResources.ResourceTypeFormat, "ResourceType");
-            }
-
-            ResourceIdentity identity = new ResourceIdentity
-                {
-                    ResourceName = Name,
-                    ParentResourcePath = ParentResource,
-                    ResourceProviderNamespace = ResourceIdentifier.GetProviderFromResourceType(ResourceType),
-                    ResourceType = ResourceIdentifier.GetTypeFromResourceType(ResourceType),
-                    ResourceProviderApiVersion = ApiVersion
-                };
-
-            return identity;
+                ParentResource = ParentResource,
+                ResourceGroupName = ResourceGroupName,
+                ResourceName = Name,
+                ResourceType = ResourceType
+            }.ToResourceIdentity(ApiVersion);
         }
     }
 }

@@ -12,29 +12,28 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Microsoft.WindowsAzure.Storage;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using AutoMapper;
-    using DiskRepository;
-    using Helpers;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using Storage;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.New, "AzureVM", DefaultParameterSetName = "ExistingService"), OutputType(typeof(ManagementOperationContext))]
     public class NewAzureVMCommand : IaaSDeploymentManagementCmdletBase
     {
         private bool createdDeployment;
 
-        [Parameter(Mandatory = true, ParameterSetName = "CreateService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Service Name")]
-        [Parameter(Mandatory = true, ParameterSetName = "ExistingService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Service Name")]
+        [Parameter(Mandatory = true, ParameterSetName = "CreateService", ValueFromPipelineByPropertyName = true, HelpMessage = "Service Name")]
+        [Parameter(Mandatory = true, ParameterSetName = "ExistingService", ValueFromPipelineByPropertyName = true, HelpMessage = "Service Name")]
         [ValidateNotNullOrEmpty]
         public override string ServiceName
         {
@@ -61,6 +60,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "CreateService", HelpMessage = "The label may be up to 100 characters in length. Defaults to Service Name.")]
         [ValidateNotNullOrEmpty]
         public string ServiceLabel
+        {
+            get;
+            set;
+        }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, ParameterSetName = "CreateService", HelpMessage = "Dns address to which the cloud service’s IP address resolves when queried using a reverse Dns query.")]
+        [ValidateNotNullOrEmpty]
+        public string ReverseDnsFqdn
         {
             get;
             set;
@@ -103,7 +110,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
         [Parameter(Mandatory = false, ParameterSetName = "CreateService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "DNS Settings for Deployment.")]
         [Parameter(Mandatory = false, ParameterSetName = "ExistingService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "DNS Settings for Deployment.")]
         [ValidateNotNullOrEmpty]
-        public Microsoft.WindowsAzure.Commands.ServiceManagement.Model.PersistentVMModel.DnsServer[] DnsSettings
+        public Microsoft.WindowsAzure.Commands.ServiceManagement.Model.DnsServer[] DnsSettings
         {
             get;
             set;
@@ -112,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
         [Parameter(Mandatory = false, ParameterSetName = "CreateService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "ILB Settings for Deployment.")]
         [Parameter(Mandatory = false, ParameterSetName = "ExistingService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "ILB Settings for Deployment.")]
         [ValidateNotNullOrEmpty]
-        public InternalLoadBalancerConfig InternalLoadBalancerConfig
+        public Model.InternalLoadBalancerConfig InternalLoadBalancerConfig
         {
             get;
             set;
@@ -121,7 +128,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
         [Parameter(Mandatory = true, ParameterSetName = "CreateService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "List of VMs to Deploy.")]
         [Parameter(Mandatory = true, ParameterSetName = "ExistingService", ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, HelpMessage = "List of VMs to Deploy.")]
         [ValidateNotNullOrEmpty]
-        public PersistentVM[] VMs
+        public Model.PersistentVM[] VMs
         {
             get;
             set;
@@ -143,11 +150,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
             set;
         }
 
-        protected Tuple<PersistentVM, bool, bool>[] VMTuples;
+        protected Tuple<Model.PersistentVM, bool, bool>[] VMTuples;
 
         public void NewAzureVMProcess()
         {
-            WindowsAzureSubscription currentSubscription = CurrentSubscription;
+            AzureSubscription currentSubscription = CurrentContext.Subscription;
             CloudStorageAccount currentStorage = null;
             try
             {
@@ -163,33 +170,63 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 throw new ArgumentException(Resources.CurrentStorageAccountIsNotSet);
             }
 
-            try
+            if (this.ParameterSetName.Equals("CreateService", StringComparison.OrdinalIgnoreCase))
             {
-                if (this.ParameterSetName.Equals("CreateService", StringComparison.OrdinalIgnoreCase))
+                var parameter = new HostedServiceCreateParameters
                 {
-                    var parameter = new HostedServiceCreateParameters
-                    {
-                        AffinityGroup = this.AffinityGroup,
-                        Location = this.Location,
-                        ServiceName = this.ServiceName,
-                        Description = this.ServiceDescription ??
-                                        String.Format("Implicitly created hosted service{0}",DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm")),
-                        Label = this.ServiceLabel ?? this.ServiceName
-                    };
+                    AffinityGroup = this.AffinityGroup,
+                    Location = this.Location,
+                    ServiceName = this.ServiceName,
+                    Description = this.ServiceDescription ?? String.Format(
+                                      "Implicitly created hosted service{0}",
+                                      DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm")),
+                    Label = this.ServiceLabel ?? this.ServiceName,
+                    ReverseDnsFqdn = this.ReverseDnsFqdn
+                };
 
-                    ExecuteClientActionNewSM(
-                        parameter,
-                        CommandRuntime + " - Create Cloud Service",
-                        () => this.ComputeClient.HostedServices.Create(parameter));
+                try
+                {
+                    this.ComputeClient.HostedServices.Create(parameter);
+                }
+                catch (CloudException ex)
+                {
+                    if (string.Equals(ex.ErrorCode, "ConflictError"))
+                    {
+                        HostedServiceGetResponse existingService = this.ComputeClient.HostedServices.Get(this.ServiceName);
+
+                        if (existingService == null || existingService.Properties == null)
+                        {
+                            // The same service name is already used by another subscription.
+                            this.WriteExceptionDetails(ex);
+                            return;
+                        }
+                        else if ((string.IsNullOrEmpty(existingService.Properties.Location) &&
+                            string.Compare(existingService.Properties.AffinityGroup, this.AffinityGroup, StringComparison.InvariantCultureIgnoreCase) == 0)
+                            || (string.IsNullOrEmpty(existingService.Properties.AffinityGroup) &&
+                            string.Compare(existingService.Properties.Location, this.Location, StringComparison.InvariantCultureIgnoreCase) == 0))
+                        {
+                            // The same service name is already created under the same subscription,
+                            // and its affinity group or location is matched with the given parameter.
+                            this.WriteWarning(ex.ErrorMessage);
+                        }
+                        else
+                        {
+                            // The same service name is already created under the same subscription,
+                            // but its affinity group or location is not matched with the given parameter.
+                            this.WriteWarning("Location or AffinityGroup name is not matched with the existing service");
+                            this.WriteExceptionDetails(ex);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        this.WriteExceptionDetails(ex);
+                        return;
+                    }
                 }
             }
-            catch (CloudException ex)
-            {
-                this.WriteExceptionDetails(ex);
-                return;
-            }
 
-            foreach (var vm in from v in VMs let configuration = v.ConfigurationSets.OfType<Model.PersistentVMModel.WindowsProvisioningConfigurationSet>().FirstOrDefault() where configuration != null select v)
+            foreach (var vm in from v in VMs let configuration = v.ConfigurationSets.OfType<Model.WindowsProvisioningConfigurationSet>().FirstOrDefault() where configuration != null select v)
             {
                 if (vm.WinRMCertificate != null)
                 {
@@ -355,9 +392,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
             }
         }
 
-        private Management.Compute.Models.Role CreatePersistentVMRole(Tuple<PersistentVM, bool, bool> tuple, CloudStorageAccount currentStorage)
+        private Management.Compute.Models.Role CreatePersistentVMRole(Tuple<Model.PersistentVM, bool, bool> tuple, CloudStorageAccount currentStorage)
         {
-            PersistentVM persistentVM = tuple.Item1;
+            Model.PersistentVM persistentVM = tuple.Item1;
             bool isVMImage = tuple.Item3;
 
             var mediaLinkFactory = new MediaLinkFactory(currentStorage, this.ServiceName, persistentVM.RoleName);
@@ -440,6 +477,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 {
                     throw new ArgumentException(Resources.LocationOrAffinityGroupCanOnlyBeSpecifiedWhenNewCloudService);
                 }
+                if (!string.IsNullOrEmpty(ReverseDnsFqdn))
+                {
+                    throw new ArgumentException(Resources.ReverseDnsFqdnCanOnlyBeSpecifiedWhenNewCloudService);
+                }
             }
 
             if (this.ParameterSetName.Equals("CreateService", StringComparison.OrdinalIgnoreCase) == true
@@ -451,7 +492,26 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 }
             }
 
-            this.VMTuples = new Tuple<PersistentVM, bool, bool>[this.VMs.Count()];
+            if (!string.IsNullOrEmpty(this.VNetName))
+            {
+                List<string> vmNames = new List<string>();
+                foreach (Model.PersistentVM VM in this.VMs)
+                {
+                    Model.NetworkConfigurationSet networkConfig = VM.ConfigurationSets.OfType<Model.NetworkConfigurationSet>().SingleOrDefault();
+                    if (networkConfig == null || networkConfig.SubnetNames == null ||
+                        networkConfig.SubnetNames.Count == 0)
+                    {
+                        vmNames.Add(VM.RoleName);
+                    }
+                }
+
+                if (vmNames.Count != 0)
+                {
+                    WriteWarning(string.Format(Resources.SubnetShouldBeSpecifiedIfVnetPresent, string.Join(", ", vmNames)));
+                }
+            }
+
+            this.VMTuples = new Tuple<Model.PersistentVM, bool, bool>[this.VMs.Count()];
             int index = 0;
             foreach (var pVM in this.VMs)
             {
@@ -462,8 +522,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                 {
                     var imageType = new VirtualMachineImageHelper(this.ComputeClient).GetImageType(
                         pVM.OSVirtualHardDisk.SourceImageName);
-                    isOSImage = imageType.HasFlag(VirtualMachineImageType.OSImage);
-                    isVMImage = imageType.HasFlag(VirtualMachineImageType.VMImage);
+                    isOSImage = imageType.HasFlag(Model.VirtualMachineImageType.OSImage);
+                    isVMImage = imageType.HasFlag(Model.VirtualMachineImageType.VMImage);
                 }
 
                 if (isOSImage && isVMImage)
@@ -472,10 +532,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs
                         string.Format(Resources.DuplicateNamesFoundInBothVMAndOSImages, pVM.OSVirtualHardDisk.SourceImageName));
                 }
 
-                this.VMTuples[index++] = new Tuple<PersistentVM, bool, bool>(pVM, isOSImage, isVMImage);
+                this.VMTuples[index++] = new Tuple<Model.PersistentVM, bool, bool>(pVM, isOSImage, isVMImage);
 
                 var provisioningConfiguration = pVM.ConfigurationSets
-                    .OfType<Model.PersistentVMModel.ProvisioningConfigurationSet>()
+                    .OfType<Model.ProvisioningConfigurationSet>()
                     .SingleOrDefault();
                 
                 if (isOSImage && provisioningConfiguration == null && pVM.OSVirtualHardDisk.SourceImageName != null)

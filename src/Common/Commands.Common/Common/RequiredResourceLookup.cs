@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.Collections.Generic;
-    using WindowsAzure.Common;
-
     /// <summary>
     /// This class handles mapping management client types
     /// to the corresponding required resource provider names.
@@ -30,15 +30,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 return new[] { "website" };
             }
 
-            if (typeof(T).FullName.EndsWith("ResourceManagementClient"))
-            {
-                return new[] { "website",
-                               "visualstudio.accounts" };
-            }
-
             if (typeof(T).FullName.EndsWith("ManagedCacheClient"))
             {
                 return new[] { "cacheservice.Caching" };
+            }
+
+            if (typeof(T).FullName.EndsWith("SchedulerManagementClient"))
+            {
+                return new[] { "scheduler.jobcollections" };
             }
 
             return new string[0];
@@ -48,7 +47,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             if (typeof(T).FullName.EndsWith("ResourceManagementClient"))
             {
-                return new[] { 
+                return new[] {
+                    "Microsoft.Web",
+                    "microsoft.visualstudio",
                     "microsoft.insights",
                     "successbricks.cleardb",
                     "microsoft.cache" };

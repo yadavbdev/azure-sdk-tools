@@ -12,22 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.Extesnions.CustomScript;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ExtensionTests
 {
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.Extesnions.CustomScript;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using VisualStudio.TestTools.UnitTesting;
-    using Helpers;
-
     [TestClass]
     public class CustomScriptExtesnionTests: ServiceManagementTest
     {
@@ -42,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         private string runFileName = "test2.ps2";
         private string[] fileNames = {"test1.ps1","test2.ps1"};
         private string endpointSuffix = "";
-        private VirtualMachineCustomScriptExtensionContext inputParameters;
+        //private VirtualMachineCustomScriptExtensionContext inputParameters;
 
         [TestInitialize]
         public void TestIntialization()
@@ -62,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// Deploys a new Azure VM with Custom Script extension and verifies that the script is applied and run as expected
         /// </summary>
         #region TestCases
-        [TestMethod(), Priority(0), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Owner("hylee"),
+        [TestMethod(), Priority(0), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Owner("hylee"),
         Description("Test the cmdlets (New-AzureVM,New-AzureVMConfig,Set/Get/Remove-AzureVMCustomScriptExtension)")]
         public void NewAzureVMwithCustomScriptExtesnionTest()
         {
@@ -84,10 +83,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Console.WriteLine(ex.ToString());
                 throw;
             }
-
         }
 
-        [TestMethod(), Priority(0), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Owner("hylee"),
+        [TestMethod(), Priority(0), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Owner("hylee"),
         Description("Test the cmdlets (New-AzureVM,New-AzureVMConfig,Set/Get/Remove-AzureVMCustomScriptExtension)")]
         public void NewAzureVMwithCustomScriptExtesnionUsingFileURiTest()
         {
@@ -106,11 +104,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Console.WriteLine(ex.ToString());
                 throw;
             }
-
         }
 
 
-        [TestMethod(), Priority(0), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Owner("hylee"),
+        [TestMethod(), Priority(0), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Owner("hylee"),
         Description("Test the cmdlets (New-AzureVM,New-AzureVMConfig,Set/Get/Remove-AzureVMCustomScriptExtension)")]
         public void SetCustomScriptExtesnionToExistingVMTest()
         {
@@ -135,10 +132,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Console.WriteLine(ex.ToString());
                 throw;
             }
-
         }
 
-        [TestMethod(), Priority(0), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Owner("hylee"),
+        [TestMethod(), Priority(0), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Owner("hylee"),
         Description("Test the cmdlets (New-AzureVM,New-AzureVMConfig,Set/Get/Remove-AzureVMCustomScriptExtension)")]
         public void SetCustomScriptExtesnionUsingFileURIToExistingVMTest()
         {
@@ -161,7 +157,34 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Console.WriteLine(ex.ToString());
                 throw;
             }
+        }
 
+
+        [TestMethod(), Priority(0), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Owner("hylee"),
+        Description("Test the cmdlets (New-AzureVM,New-AzureVMConfig,Set/Get/Remove-AzureVMCustomScriptExtension)")]
+        public void NewAzureVMWithEmptyCustomScriptConfigurationTest()
+        {
+            StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
+            try
+            {
+                vmName = Utilities.GetUniqueShortName(vmNamePrefix);
+                var vm = Utilities.CreateIaaSVMObject(vmName, InstanceSize.Small, imageName, true, username, password);
+                vm = vmPowershellCmdlets.SetAzureVMExtension(vm, customScriptExtension.ExtensionName, customScriptExtension.Publisher, customScriptExtension.Version);
+                vmPowershellCmdlets.NewAzureVM(serviceName, new[] { vm }, locationName);
+
+                var vmExtension = vmPowershellCmdlets.GetAzureVMCustomScriptExtension(Utilities.GetAzureVM(vmName, serviceName));
+                Assert.IsTrue(string.IsNullOrEmpty(vmExtension.PublicConfiguration));
+                Assert.IsNull(vmExtension.PrivateConfiguration);
+                Assert.AreEqual(customScriptExtension.ExtensionName, vmExtension.ExtensionName);
+                Assert.IsTrue(customScriptExtension.Publisher.Equals(vmExtension.Publisher));
+                Assert.IsTrue(vmExtension.State.Equals("Enable"));
+                pass = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
         }
 
         #endregion TestCases
@@ -173,6 +196,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             Utilities.PrintHeader("Listing the available VM extensions");
             var extensionsInfo = vmPowershellCmdlets.GetAzureVMAvailableExtension(ConstCustomScriptExtensionName, ConstCustomScriptExtensionPublisher, true);
             customScriptExtension = extensionsInfo.OrderBy(c => c.Version).LastOrDefault();
+
+            Match m = Regex.Match(customScriptExtension.Version, @"((\.).*?){2}");
+            if (m.Success)
+            {
+                customScriptExtension.Version = customScriptExtension.Version.Substring(0, m.Groups[2].Captures[1].Index);
+            }
+
             Console.WriteLine("Using CustomScript Extension Version: {0}", customScriptExtension.Version);
             Utilities.PrintFooter("Listing the available VM extensions");
         }
@@ -285,9 +315,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         [TestCleanup]
         public void TestCleanUp()
         {
-            Utilities.LogAction(() => CleanupService(serviceName), "Check if service exists and  cleanup");
+            Utilities.ExecuteAndLog(() => CleanupService(serviceName), "Check if service exists and  cleanup");
         }
-
     }
 }
 

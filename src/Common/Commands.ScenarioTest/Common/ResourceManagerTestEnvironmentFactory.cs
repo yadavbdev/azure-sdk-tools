@@ -13,18 +13,18 @@
 // limitations under the License.
 //
 
+using System;
+using Microsoft.WindowsAzure.Common.Internals;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.WindowsAzure.Common.Internals;
-    using System;
-
     public class ResourceManagerTestEnvironmentFactory : TestEnvironmentFactory
     {
         /// <summary>
         /// The environment variable name for CSM OrgId authentication
         /// 
         /// Sample Value 1 - Get token from user and password:
-        /// TEST_CSM_ORGID_AUTHENTICATION=SubscriptionId={subscription-id};BaseUri=https://api-next.resources.windows-int.net/;UserId={user-id};Password={password}       
+        /// TEST_CSM_ORGID_AUTHENTICATION=SubscriptionId={subscription-id};BaseUri=https://api-next.resources.windows-int.net/;UserId={user-id};Password={password}
         /// 
         /// Sample Value 2 - Prompt for login credentials:
         /// TEST_CSM_ORGID_AUTHENTICATION=SubscriptionId={subscription-id};AADAuthEndpoint=https://login.windows-ppe.net/;BaseUri=https://api-next.resources.windows-int.net/

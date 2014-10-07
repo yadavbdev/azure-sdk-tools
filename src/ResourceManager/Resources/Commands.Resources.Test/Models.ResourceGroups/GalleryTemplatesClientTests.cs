@@ -12,12 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.Azure.Gallery;
-using Microsoft.Azure.Gallery.Models;
-using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-using Microsoft.WindowsAzure.Common.OData;
-using Moq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +20,13 @@ using System.Management.Automation;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Gallery;
+using Microsoft.Azure.Gallery.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Common.OData;
+using Moq;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test.Models
@@ -51,6 +52,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ConstructsDynamicParameter()
         {
             string[] parameters = { "Name", "Location", "Mode" };
@@ -94,6 +96,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ResolvesDuplicatedDynamicParameterName()
         {
             string[] parameters = { "Name", "Location", "Mode" };
@@ -136,6 +139,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ResolvesDuplicatedDynamicParameterNameSubstring()
         {
             string[] parameters = { "Username", "Location", "Mode" };
@@ -178,6 +182,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ResolvesDuplicatedDynamicParameterNameCaseInsensitive()
         {
             string[] parameters = { "Name", "Location", "Mode" };
@@ -220,6 +225,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ConstructsDynamicParameterNoValidation()
         {
             string[] parameters = { "Name", "Location", "Mode" };
@@ -247,6 +253,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ConstructsDynamicParameterWithNullAllowedValues()
         {
             string[] parameters = { "Name", "Location", "Mode" };
@@ -298,6 +305,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void GetTemplateParametersFromFileMergesObjects()
         {
             Hashtable hashtable = new Hashtable();
@@ -326,6 +334,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void GetTemplateParametersFromFileWithSchema2MergesObjects()
         {
             Hashtable hashtable = new Hashtable();
@@ -354,6 +363,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void HandlesInvalidTemplateFiles()
         {
             Hashtable hashtable = new Hashtable();
@@ -369,6 +379,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void FiltersGalleryTemplates()
         {
             string filterString = FilterString.Generate<ItemListFilter>(f => f.Publisher == "Microsoft");
@@ -394,7 +405,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
 
             FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
             {
-                Publisher = "Microsoft"
+                Publisher = "Microsoft",
+                AllVersions = true
             };
 
             List<PSGalleryItem> result = galleryTemplatesClient.FilterGalleryTemplates(options);
@@ -405,6 +417,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void FiltersGalleryTemplatesUsingComplexQuery()
         {
             string filterString = "Publisher eq 'Microsoft' and CategoryIds/any(c: c eq 'awesome')";
@@ -431,7 +444,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
             FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
             {
                 Publisher = "Microsoft",
-                Category = "awesome"
+                Category = "awesome",
+                AllVersions = true
             };
 
             List<PSGalleryItem> result = galleryTemplatesClient.FilterGalleryTemplates(options);
@@ -441,6 +455,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void DownloadsGalleryTemplateFile()
         {
             string galleryTemplateFileName = "myFile";
@@ -480,6 +495,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void DownloadsGalleryTemplateFileFromDirectoryName()
         {
             string galleryTemplateFileName = "myFile";
@@ -519,6 +535,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void DownloadsGalleryTemplateFileFromFileName()
         {
             string galleryTemplateFileName = "myFile.adeek";
@@ -558,12 +575,111 @@ namespace Microsoft.Azure.Commands.Resources.Test.Models
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ParseTemplateParameterFileContents_DeserializeWithCorrectType()
         {
             Dictionary<string, TemplateFileParameterV1> result =
                 galleryTemplatesClient.ParseTemplateParameterFileContents(@"Resources\WebSite.param.dev.json");
             Assert.Equal(true, result["isWorker"].Value);
             Assert.Equal((System.Int64)1, result["numberOfWorker"].Value);
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void FiltersGalleryTemplatesLatestVersion()
+        {
+            string filterString = FilterString.Generate<ItemListFilter>(f => f.Publisher == "Microsoft");
+            ItemListParameters actual = new ItemListParameters();
+            galleryClientMock.Setup(f => f.Items.ListAsync(It.IsAny<ItemListParameters>(), new CancellationToken()))
+                .Returns(Task.Factory.StartNew(() => new ItemListResult
+                {
+                    Items = new List<GalleryItem>()
+                    {
+                        new GalleryItem()
+                        {
+                            Name = "Template0",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.0"
+                        },
+                        new GalleryItem()
+                        {
+                            Name = "Template0",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.1"
+                        },
+                        new GalleryItem()
+                        {
+                            Name = "Template0",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.2"
+                        }
+                    }
+                }))
+                .Callback((ItemListParameters p, CancellationToken c) => actual = p);
+
+            FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
+            {
+                ApplicationName = "Template0"
+            };
+
+            List<PSGalleryItem> result = galleryTemplatesClient.FilterGalleryTemplates(options);
+
+            Assert.Equal(1, result.Count);
+            Assert.Equal("Template0", result[0].Name);
+            Assert.Equal("0.0.0.2", result[0].Version);
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void FiltersGalleryTemplatesByPublisherLatestVersion()
+        {
+            string filterString = FilterString.Generate<ItemListFilter>(f => f.Publisher == "Microsoft");
+            ItemListParameters actual = new ItemListParameters();
+            galleryClientMock.Setup(f => f.Items.ListAsync(It.IsAny<ItemListParameters>(), new CancellationToken()))
+                .Returns(Task.Factory.StartNew(() => new ItemListResult
+                {
+                    Items = new List<GalleryItem>()
+                    {
+                        new GalleryItem()
+                        {
+                            Name = "Template0",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.0"
+                        },
+                        new GalleryItem()
+                        {
+                            Name = "Template0",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.2"
+                        },
+                        new GalleryItem()
+                        {
+                            Name = "Template1",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.0"
+                        },
+                        new GalleryItem()
+                        {
+                            Name = "Template1",
+                            Publisher = "Microsoft",
+                            Version = "0.0.0.1"
+                        }
+                    }
+                }))
+                .Callback((ItemListParameters p, CancellationToken c) => actual = p);
+
+            FilterGalleryTemplatesOptions options = new FilterGalleryTemplatesOptions()
+            {
+                Publisher = "Microsoft"
+            };
+
+            List<PSGalleryItem> result = galleryTemplatesClient.FilterGalleryTemplates(options);
+
+            Assert.Equal(2, result.Count);
+            Assert.True(result.Count(x => x.Name.Equals("Template0")) == 1);
+            Assert.True(result.Count(x => x.Name.Equals("Template1")) == 1);
+            Assert.Equal(result.First(x => x.Name.Equals("Template0")).Version, "0.0.0.2");
+            Assert.Equal(result.First(x => x.Name.Equals("Template1")).Version, "0.0.0.1");
         }
     }
 }

@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
 using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources
 {
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.Resources
     /// Get the list of events for a deployment.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureResourceGroupLog", DefaultParameterSetName = LastDeploymentSetName), OutputType(typeof(List<PSDeploymentEventData>))]
-    public class GetAzureResourceGroupLogCommand : ResourceManagerBaseCmdlet
+    public class GetAzureResourceGroupLogCommand : ResourcesBaseCmdlet
     {
         internal const string AllSetName = "All";
         internal const string LastDeploymentSetName = "Last deployment";

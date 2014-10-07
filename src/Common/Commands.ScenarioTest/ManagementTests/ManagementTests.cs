@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ManagementTests
 {
-    using Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class ManagementTests : WindowsAzurePowerShellCertificateTest
+    public class ManagementTests : AzurePowerShellCertificateTest
     {
         public ManagementTests()
             : base("Management\\ManagementTests.ps1")
@@ -31,6 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ManagementTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.Management)]
+        [TestCategory(Category.BVT)]
         public void TestRemoveAzureSubscriptionWithDefaultSubscription()
         {
             RunPowerShellTest("Test-RemoveAzureSubscriptionWithDefaultSubscription");
@@ -39,6 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ManagementTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.Management)]
+        [TestCategory(Category.BVT)]
         public void TestRemoveAzureSubscriptionWithNonExistingSubscription()
         {
             RunPowerShellTest("Test-RemoveAzureSubscriptionWithNonExistingSubscription");
@@ -47,6 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ManagementTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.Management)]
+        [TestCategory(Category.BVT)]
         public void TestRemoveAzureSubscriptionWithEmptySubscription()
         {
             RunPowerShellTest("Test-RemoveAzureSubscriptionWithEmptySubscription");
@@ -55,6 +58,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.ManagementTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.Management)]
+        [TestCategory(Category.BVT)]
         public void TestRemoveAzureSubscriptionWithWhatIf()
         {
             RunPowerShellTest("Test-RemoveAzureSubscriptionWithWhatIf");

@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
 using System.Net;
+using Microsoft.WindowsAzure.Commands.Utilities.MediaServices;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.MediaServices
 {
-    using System.Management.Automation;
-    using Utilities.MediaServices;
-    using Utilities.Properties;
-
     /// <summary>
     ///     Removes an Azure Media Services account.
     /// </summary>
@@ -43,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.MediaServices
                           string.Empty,
                           () =>
                           {
-                              MediaServicesClient = MediaServicesClient ?? new MediaServicesClient(CurrentSubscription, WriteDebug);
+                              MediaServicesClient = MediaServicesClient ?? new MediaServicesClient(CurrentContext.Subscription, WriteDebug);
 
                               OperationResponse result = null;
 

@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common
 {
-    using Properties;
-    using System;
-    using System.Globalization;
-    using System.Net;
-
     /// <summary>
     /// Represents the result returned by the Management Service when executing <c>GetAccessToken</c>
     /// operation.

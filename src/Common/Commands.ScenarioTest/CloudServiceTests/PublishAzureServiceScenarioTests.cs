@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
-    using Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class PublishAzureServiceScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class PublishAzureServiceScenarioTests : AzurePowerShellCertificateTest
     {
         public PublishAzureServiceScenarioTests()
             : base("CloudService\\Common.ps1",
@@ -39,6 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestCategory(Category.CloudService)]
         [TestCategory(Category.OneSDK)]
         [TestCategory(Category.CIT)]
+        [TestCategory(Category.BVT)]
         public void TestPublishAzureCacheService()
         {
             RunPowerShellTest("Test-PublishCacheService");
@@ -49,15 +50,16 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestCategory(Category.CloudService)]
         [TestCategory(Category.OneSDK)]
         [TestCategory(Category.CIT)]
+        [TestCategory(Category.BVT)]
         public void TestUpdateAzureCacheService()
         {
             RunPowerShellTest("Test-UpdateCacheService");
         }
-
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
         [TestCategory(Category.OneSDK)]
+        [TestCategory(Category.BVT)]
         public void TestPublishUsesSettingsLocation()
         {
             RunPowerShellTest("Test-PublishUsesSettingsLocation");

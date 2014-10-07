@@ -12,13 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using AutoMapper;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Preview
 {
-    using System;
-    using AutoMapper;
-    using Management.Network.Models;
-    using Model;
-
     public class ServiceManagementPreviewProfile : Profile
     {
         private static readonly Lazy<bool> initialize;
@@ -44,17 +42,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Preview
 
         protected override void Configure()
         {
-            // Reserved IP
-            Mapper.CreateMap<OperationStatusResponse, ReservedIPContext>()
-                  .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
-                  .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()))
-                  .ForMember(c => c.Id, o => o.Ignore());
-
-            Mapper.CreateMap<NetworkReservedIPGetResponse, ReservedIPContext>()
-                  .ForMember(c => c.ReservedIPName, o => o.MapFrom(r => r.Name));
-
-            Mapper.CreateMap<NetworkReservedIPListResponse.ReservedIP, ReservedIPContext>()
-                  .ForMember(c => c.ReservedIPName, o => o.MapFrom(r => r.Name));
         }
     }
 }

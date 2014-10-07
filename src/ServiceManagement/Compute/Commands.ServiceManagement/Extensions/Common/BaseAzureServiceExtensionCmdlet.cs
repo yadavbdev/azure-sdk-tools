@@ -9,26 +9,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Security;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Xml;
-    using System.Xml.Linq;
-    using System.Xml.Serialization;
-    using Helpers;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Management.Models;
-    using Properties;
-    using Utilities.CloudService;
-    using Utilities.Common;
-
     public abstract class BaseAzureServiceExtensionCmdlet : ServiceManagementBaseCmdlet
     {
         protected const string PublicConfigStr = "PublicConfig";
@@ -36,6 +34,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
         protected const string ChangeConfigurationModeStr = "Auto";
         protected const string XmlNameSpaceAttributeStr = "xmlns";
 
+        protected const string NewExtensionParameterSetName = "NewExtension";
+        protected const string NewExtensionUsingThumbprintParameterSetName = "NewExtensionUsingThumbprint";
+        protected const string SetExtensionParameterSetName = "SetExtension";
+        protected const string SetExtensionUsingThumbprintParameterSetName = "SetExtensionUsingThumbprint";
         protected const string RemoveByRolesParameterSet = "RemoveByRoles";
         protected const string RemoveAllRolesParameterSet = "RemoveAllRoles";
 
@@ -73,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
         {
             string serviceName;
             ServiceSettings settings = CommonUtilities.GetDefaultSettings(CommonUtilities.TryGetServiceRootPath(CurrentPath()),
-                ServiceName, null, null, null, null, CurrentSubscription.SubscriptionId, out serviceName);
+                ServiceName, null, null, null, null, CurrentContext.Subscription.Id.ToString(), out serviceName);
 
             if (string.IsNullOrEmpty(serviceName))
             {

@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Remove, "AzureInternalLoadBalancer"), OutputType(typeof(ManagementOperationContext))]
     public class RemoveAzureInternalLoadBalancer : ServiceManagementBaseCmdlet
     {

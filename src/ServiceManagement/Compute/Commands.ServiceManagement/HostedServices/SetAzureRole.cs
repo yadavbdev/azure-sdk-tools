@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Xml.Linq;
-    using Utilities.Common;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Management.Models;
-    using Model.PersistentVMModel;
-    using Properties;
-
     /// <summary>
     /// Sets the instance count for the selected role.
     /// </summary>

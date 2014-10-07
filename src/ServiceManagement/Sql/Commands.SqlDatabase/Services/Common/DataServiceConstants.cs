@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common
 {
-    using System;
-
     /// <summary>
     /// Define constants that are common for all DataService models.
     /// </summary>
@@ -45,11 +45,6 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common
         /// The relative <see cref="Uri"/> to the GetAccessToken operation.
         /// </summary>
         public static readonly string AccessTokenOperation = "GetAccessToken";
-
-        /// <summary>
-        /// The DNS suffix for Windows Azure Sql Databases.
-        /// </summary>
-        public static readonly string AzureSqlDatabaseDnsSuffix = ".database.windows.net";
         
         /// <summary>
         /// The name of a supplemental property added to the Exception.Data property bag when an exception should be 

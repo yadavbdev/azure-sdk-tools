@@ -11,17 +11,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.ImportExport;
+using Microsoft.WindowsAzure.Management.Sql;
+using Microsoft.WindowsAzure.Management.Sql.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.ImportExport;
-    using Microsoft.WindowsAzure.Management.Sql;
-    using Microsoft.WindowsAzure.Management.Sql.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-
     /// <summary>
     /// Exports a database from SQL Azure into blob storage.
     /// </summary>
@@ -113,13 +113,13 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             // Get the SQL management client for the current subscription
             SqlManagementClient sqlManagementClient = GetCurrentSqlClient();
 
-            // Start the database export operation
-            DacGetStatusResponse response = sqlManagementClient.Dac.GetStatus(
-                serverName,
-                fullyQualifiedServerName,
-                userName,
-                password,
-                requestId);
+            DacGetStatusResponse response = sqlManagementClient.Dac.GetStatusPost(serverName, new DacGetStatusParameters()
+                {
+                    Password = password,
+                    RequestId = requestId,
+                    ServerName = fullyQualifiedServerName,
+                    UserName = userName,
+                });
 
             // Construct the result
             IEnumerable<Services.ImportExport.StatusInfo> result = response.StatusInfoList.Select(status => new Services.ImportExport.StatusInfo
@@ -172,7 +172,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 
                 var status = this.GetAzureSqlDatabaseImportExportStatusProcess(
                     serverName,
-                    serverName + DataServiceConstants.AzureSqlDatabaseDnsSuffix,
+                    serverName + AzureSession.CurrentContext.Environment.GetEndpoint(Common.Models.AzureEnvironment.Endpoint.SqlDatabaseDnsSuffix),
                     userName,
                     password,
                     requestId);

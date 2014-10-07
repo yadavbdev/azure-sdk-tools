@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MS.Test.Common.MsTestLib;
 using StorageTestLib;
-using System;
-using System.Diagnostics;
-using System.IO;
 
 namespace Commands.Storage.ScenarioTest.BVT.HTTP
 {
@@ -83,7 +83,7 @@ namespace Commands.Storage.ScenarioTest.BVT.HTTP
         private static void CsRun(string cmd)
         {
             //azure storage emulator settings
-            string AzureEmulatorRegistryKey = @"SOFTWARE\Microsoft\Windows Azure Emulator";
+            string AzureEmulatorRegistryKey = @"SOFTWARE\Microsoft\Microsoft Azure Emulator";
             string AzureSdkInstallPathRegistryKeyValue = "InstallPath";
             string AzureEmulatorDirectoryName = "Emulator";
             string CsRunExe = "csrun.exe";

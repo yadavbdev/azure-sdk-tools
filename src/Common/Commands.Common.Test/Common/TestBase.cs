@@ -12,23 +12,55 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Common.Test.Common;
+using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using System;
-    using System.Diagnostics;
-    using VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
-    /// Base class for Windows Azure PowerShell unit tests.
+    /// Base class for Microsoft Azure PowerShell unit tests.
     /// </summary>
     public abstract class TestBase
     {
         public TestBase()
         {
-            CloudContext.Configuration.Tracing.AddTracingInterceptor(new TestingTracingInterceptor());
+            BaseSetup();
         }
+
+        /// <summary>
+        /// Initialize the necessary environment for the tests.
+        /// </summary>
+        [TestInitialize]
+        public void BaseSetup()
+        {
+            if (ProfileClient.DataStore != null && !(ProfileClient.DataStore is MockDataStore))
+            {
+                ProfileClient.DataStore = new MockDataStore();
+            }
+            if (AzureSession.CurrentContext.Subscription == null)
+            {
+                var newGuid = Guid.NewGuid();
+                AzureSession.SetCurrentContext(
+                    new AzureSubscription { Id = newGuid, Name = "test", Environment = EnvironmentName.AzureCloud, Account = "test" },
+                    null,
+                    new AzureAccount
+                    {
+                        Id = "test",
+                        Type = AzureAccount.AccountType.User,
+                        Properties = new Dictionary<AzureAccount.Property, string>
+                        {
+                            {AzureAccount.Property.Subscriptions, newGuid.ToString()}
+                        }
+                    });
+            }
+            AzureSession.AuthenticationFactory = new MockTokenAuthenticationFactory();
+        }
+
         /// <summary>
         /// Gets or sets a reference to the TestContext used for interacting
         /// with the test framework.
@@ -42,23 +74,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
         /// <param name="args">Arguments.</param>
         public void Log(string format, params object[] args)
         {
-            Debug.Assert(TestContext != null);
-            TestContext.WriteLine(format, args);
-        }
-
-        protected static int AnyIpPort()
-        {
-            return new Random().Next(ushort.MaxValue);
-        }
-
-        public static Uri AnyUrl()
-        {
-            return new Uri("http://www.microsoft.com");
-        }
-
-        public static string AnyString()
-        {
-            return "RandomStringForTestPurposes";
+            if (TestContext != null)
+            {
+                TestContext.WriteLine(format, args);
+            }
+            else
+            {
+                Console.WriteLine(format, args);
+            }
         }
     }
 }

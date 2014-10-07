@@ -12,21 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.Threading;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Threading;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Management.Models;
-    using Properties;
-    using Utilities.Common;
-
     public class IaaSDeploymentManagementCmdletBase : ServiceManagementBaseCmdlet
     {
         private static IList<string> TerminalStates = new List<string>
@@ -118,7 +116,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
                 if (d == null)
                 {
-                    throw new ApplicationException(String.Format(Resources.CouldNotFindDeployment, ServiceName, Model.PersistentVMModel.DeploymentSlotType.Production));
+                    throw new ApplicationException(String.Format(Resources.CouldNotFindDeployment, ServiceName, Model.DeploymentSlotType.Production));
                 }
 
                 durableRoleInstance = d.RoleInstances == null || !d.RoleInstances.Any() ? null : d.RoleInstances.First(ri => ri.RoleName == roleName);

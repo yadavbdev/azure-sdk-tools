@@ -12,24 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ExpressRoute;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Management.ExpressRoute;
+using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 {
-    using Commands.ExpressRoute;
-    using Commands.Utilities.ExpressRoute;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.ExpressRoute;
-    using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
-    using Moq;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class AzureDedicatedCircuitTests : TestBase
     {
         private const string SubscriptionId = "foo";
@@ -42,7 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
                     new Uri("http://someValue")));
         }
 
-        [TestMethod]
+        [Fact]
         public void NewAzureDedicatedCircuitSuccessful()
         {
             // Setup
@@ -77,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             t.Start();
 
             dcMock.Setup(f => f.NewAsync(It.Is<DedicatedCircuitNewParameters>(x => x.Bandwidth == bandwidth && x.CircuitName == circuitName && x.Location == location && x.ServiceProviderName == serviceProviderName), It.IsAny<CancellationToken>())).Returns((DedicatedCircuitNewParameters param, CancellationToken cancellation) => t);
-            client.SetupGet(f => f.DedicatedCircuit).Returns(dcMock.Object);
+            client.SetupGet(f => f.DedicatedCircuits).Returns(dcMock.Object);
 
             NewAzureDedicatedCircuitCommand cmdlet = new NewAzureDedicatedCircuitCommand()
             {
@@ -93,16 +93,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             // Assert
             AzureDedicatedCircuit actual = mockCommandRuntime.OutputPipeline[0] as AzureDedicatedCircuit;
-            Assert.AreEqual<string>(expected.DedicatedCircuit.CircuitName, actual.CircuitName);
-            Assert.AreEqual<uint>(expected.DedicatedCircuit.Bandwidth, actual.Bandwidth);
-            Assert.AreEqual<string>(expected.DedicatedCircuit.Location, actual.Location);
-            Assert.AreEqual<string>(expected.DedicatedCircuit.ServiceProviderName, actual.ServiceProviderName);
-            Assert.AreEqual(expected.DedicatedCircuit.ServiceProviderProvisioningState, actual.ServiceProviderProvisioningState);
-            Assert.AreEqual(expected.DedicatedCircuit.Status, actual.Status);
-            Assert.AreEqual<string>(expected.DedicatedCircuit.ServiceKey, actual.ServiceKey);
+            Assert.Equal<string>(expected.DedicatedCircuit.CircuitName, actual.CircuitName);
+            Assert.Equal<uint>(expected.DedicatedCircuit.Bandwidth, actual.Bandwidth);
+            Assert.Equal<string>(expected.DedicatedCircuit.Location, actual.Location);
+            Assert.Equal<string>(expected.DedicatedCircuit.ServiceProviderName, actual.ServiceProviderName);
+            Assert.Equal(expected.DedicatedCircuit.ServiceProviderProvisioningState, actual.ServiceProviderProvisioningState);
+            Assert.Equal(expected.DedicatedCircuit.Status, actual.Status);
+            Assert.Equal<string>(expected.DedicatedCircuit.ServiceKey, actual.ServiceKey);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureDedicatedCircuitSuccessful()
         {
             // Setup
@@ -137,7 +137,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             t.Start();
 
             dcMock.Setup(f => f.GetAsync(It.Is<string>(sKey => sKey == serviceKey), It.IsAny<CancellationToken>())).Returns((string sKey, CancellationToken cancellation) => t);
-            client.SetupGet(f => f.DedicatedCircuit).Returns(dcMock.Object);
+            client.SetupGet(f => f.DedicatedCircuits).Returns(dcMock.Object);
 
             GetAzureDedicatedCircuitCommand cmdlet = new GetAzureDedicatedCircuitCommand()
             {
@@ -150,16 +150,16 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             // Assert
             AzureDedicatedCircuit actual = mockCommandRuntime.OutputPipeline[0] as AzureDedicatedCircuit;
-            Assert.AreEqual<string>(expected.DedicatedCircuit.CircuitName, actual.CircuitName);
-            Assert.AreEqual<uint>(expected.DedicatedCircuit.Bandwidth, actual.Bandwidth);
-            Assert.AreEqual<string>(expected.DedicatedCircuit.Location, actual.Location);
-            Assert.AreEqual<string>(expected.DedicatedCircuit.ServiceProviderName, actual.ServiceProviderName);
-            Assert.AreEqual(expected.DedicatedCircuit.ServiceProviderProvisioningState, actual.ServiceProviderProvisioningState);
-            Assert.AreEqual(expected.DedicatedCircuit.Status, actual.Status);
-            Assert.AreEqual<string>(expected.DedicatedCircuit.ServiceKey, actual.ServiceKey);
+            Assert.Equal<string>(expected.DedicatedCircuit.CircuitName, actual.CircuitName);
+            Assert.Equal<uint>(expected.DedicatedCircuit.Bandwidth, actual.Bandwidth);
+            Assert.Equal<string>(expected.DedicatedCircuit.Location, actual.Location);
+            Assert.Equal<string>(expected.DedicatedCircuit.ServiceProviderName, actual.ServiceProviderName);
+            Assert.Equal(expected.DedicatedCircuit.ServiceProviderProvisioningState, actual.ServiceProviderProvisioningState);
+            Assert.Equal(expected.DedicatedCircuit.Status, actual.Status);
+            Assert.Equal<string>(expected.DedicatedCircuit.ServiceKey, actual.ServiceKey);
         }
 
-        [TestMethod]
+        [Fact]
         public void RemoveAzureDedicatedCircuitSuccessful()
         {
             string serviceKey = "aa28cd19-b10a-41ff-981b-53c6bbf15ead";
@@ -178,7 +178,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             t.Start();
 
             dcMock.Setup(f => f.RemoveAsync(It.Is<string>(sKey => sKey == serviceKey), It.IsAny<CancellationToken>())).Returns((string sKey, CancellationToken cancellation) => t);
-            client.SetupGet(f => f.DedicatedCircuit).Returns(dcMock.Object);
+            client.SetupGet(f => f.DedicatedCircuits).Returns(dcMock.Object);
 
             RemoveAzureDedicatedCircuitCommand cmdlet = new RemoveAzureDedicatedCircuitCommand()
             {
@@ -189,10 +189,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
 
             cmdlet.ExecuteCmdlet();
 
-            Assert.IsTrue(mockCommandRuntime.VerboseStream[0].Contains(serviceKey));
+            Assert.True(mockCommandRuntime.VerboseStream[0].Contains(serviceKey));
         }
 
-        [TestMethod]
+        [Fact]
         public void ListAzureDedicatedCircuitSuccessful()
         {
             // Setup
@@ -229,7 +229,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             t.Start();
 
             dcMock.Setup(f => f.ListAsync(It.IsAny<CancellationToken>())).Returns((CancellationToken cancellation) => t);
-            client.SetupGet(f => f.DedicatedCircuit).Returns(dcMock.Object);
+            client.SetupGet(f => f.DedicatedCircuits).Returns(dcMock.Object);
 
              GetAzureDedicatedCircuitCommand cmdlet = new GetAzureDedicatedCircuitCommand()
             {
@@ -242,7 +242,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.ExpressRoute
             // Assert
             IEnumerable<AzureDedicatedCircuit> actual =
                 mockCommandRuntime.OutputPipeline[0] as IEnumerable<AzureDedicatedCircuit>;
-            Assert.AreEqual(actual.ToArray().Count(), 2);
+            Assert.Equal(actual.ToArray().Count(), 2);
         }
     }
 }

@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
-    using Utilities.Common;
-    using WindowsAzure.ServiceManagement;
-
     /// <summary>
-    /// Set Windows Azure Service AD Domain Extension.
+    /// Set Microsoft Azure Service AD Domain Extension.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, ADDomainExtensionNoun, DefaultParameterSetName = DomainParameterSet), OutputType(typeof(ManagementOperationContext))]
     public class SetAzureServiceADDomainExtensionCommand : BaseAzureServiceADDomainExtensionCmdlet
@@ -198,6 +198,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
             {
                 base.OUPath = value;
             }
+        }
+
+        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, ParameterSetName = DomainParameterSet)]
+        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, ParameterSetName = DomainThumbprintParameterSet)]
+        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, ParameterSetName = DomainJoinOptionParameterSet)]
+        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, ParameterSetName = DomainJoinOptionThumbprintParameterSet)]
+        [ValidateNotNullOrEmpty]
+        public override string Version
+        {
+            get;
+            set;
         }
 
         protected override void ValidateParameters()

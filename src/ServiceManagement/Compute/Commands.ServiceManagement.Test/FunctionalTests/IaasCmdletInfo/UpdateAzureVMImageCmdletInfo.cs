@@ -1,4 +1,4 @@
-// ----------------------------------------------------------------------------------
+﻿// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,31 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using System;
-    using PowershellCore;
-
     public class UpdateAzureVMImageCmdletInfo : CmdletsInfo
     {
-        public UpdateAzureVMImageCmdletInfo(string imageName, string label, string recommendedSize)
+        public UpdateAzureVMImageCmdletInfo(string imageName, string label, string recommendedSize,VirtualMachineImageDiskConfigSet diskConfig )
         {
             cmdletName = Utilities.UpdateAzureVMImageCmdletName;
 
             cmdletParams.Add(new CmdletParam("ImageName", imageName));
-            cmdletParams.Add(new CmdletParam("Label", label));
 
+            if (label != null)
+            {
+                cmdletParams.Add(new CmdletParam("Label", label));
+            }
             if (! string.IsNullOrEmpty(recommendedSize))
             {
                 cmdletParams.Add(new CmdletParam("RecommendedVMSize", recommendedSize));
+            }
+            if (diskConfig != null)
+            {
+                cmdletParams.Add(new CmdletParam("DiskConfig", diskConfig));
             }
         }
 
@@ -40,8 +48,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             string eula,
             string imageFamily,
             Uri privacyUri,
-            DateTime publishedDate)
-            : this(imageName, label, recommendedSize)
+            DateTime publishedDate, 
+            string language,
+            Uri iconUri,
+            Uri smallIconUri,
+            bool showInGui)
+            : this(imageName, label, recommendedSize,null)
         {
             if (!string.IsNullOrEmpty(description))
             {
@@ -62,6 +74,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             if (publishedDate != null)
             {
                 cmdletParams.Add(new CmdletParam("PublishedDate", publishedDate.ToString()));
+            }
+            if (!string.IsNullOrEmpty(language))
+            {
+                cmdletParams.Add(new CmdletParam("Language", language));
+            }
+            if (iconUri != null)
+            {
+                cmdletParams.Add(new CmdletParam("IconUri", iconUri));
+            }
+            if (smallIconUri != null)
+            {
+                cmdletParams.Add(new CmdletParam("SmallIconUri", smallIconUri));
+            }
+            if (!showInGui)
+            {
+                cmdletParams.Add(new CmdletParam("DontShowInGui"));
             }
         }
     }

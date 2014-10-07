@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache.Models;
+
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    using Microsoft.Azure.Commands.ManagedCache.Models;
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using System.Management.Automation;
-
     /// <summary>
-    /// Retrieves a list of Windows Azure SQL Database servers in the selected subscription.
+    /// Retrieves a list of Microsoft Azure SQL Database servers in the selected subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "AzureManagedCache"), OutputType(typeof(PSCacheService))]
     public class SetAzureManagedCache : ManagedCacheCmdletBase, IDynamicParameters

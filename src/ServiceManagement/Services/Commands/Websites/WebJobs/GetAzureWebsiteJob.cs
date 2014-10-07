@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
+
 namespace Microsoft.WindowsAzure.Commands.Websites.WebJobs
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebJobs;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Websites;
-    using Utilities.Websites.Common;
-
-    [Cmdlet(VerbsCommon.Get, "AzureWebsiteJob"), OutputType(typeof(List<PSWebJob>))]
+    [Cmdlet(VerbsCommon.Get, "AzureWebsiteJob"), OutputType(typeof(List<IPSWebJob>))]
     public class GetAzureWebsiteJobCommand : WebsiteContextBaseCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The web job name.")]
@@ -32,16 +31,8 @@ namespace Microsoft.WindowsAzure.Commands.Websites.WebJobs
 
         public override void ExecuteCmdlet()
         {
-            WebJobFilterOptions options = new WebJobFilterOptions() { Name = Name, Slot = Slot, JobName = JobName, JobType = JobType };
-            List<PSWebJob> jobs = new List<PSWebJob>();
-            try
-            {
-                jobs = WebsitesClient.FilterWebJobs(options);
-            }
-            catch
-            {
-                // Ignore exceptions, just show empty list.
-            }
+            var options = new WebJobFilterOptions() { Name = Name, Slot = Slot, JobName = JobName, JobType = JobType };
+            List<IPSWebJob> jobs = WebsitesClient.FilterWebJobs(options);
 
             WriteObject(jobs, true);
         }

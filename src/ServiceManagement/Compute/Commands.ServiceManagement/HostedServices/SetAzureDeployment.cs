@@ -12,18 +12,18 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using System;
-    using System.Management.Automation;
-    using System.Net;
-    using Extensions;
-    using Helpers;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Properties;
-    using Utilities.Common;
-
     /// <summary>
     /// Update deployment configuration, upgrade or status
     /// </summary>
@@ -81,7 +81,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         [Parameter(Position = 4, Mandatory = true, ParameterSetName = "Upgrade", ValueFromPipelineByPropertyName = true, HelpMessage = "Deployment slot. Staging | Production")]
         [Parameter(Position = 3, Mandatory = true, ParameterSetName = "Config", ValueFromPipelineByPropertyName = true, HelpMessage = "Deployment slot. Staging | Production")]
         [Parameter(Position = 2, Mandatory = true, ParameterSetName = "Status", ValueFromPipelineByPropertyName = true, HelpMessage = "Deployment slot. Staging | Production")]
-        [ValidateSet(Model.PersistentVMModel.DeploymentSlotType.Staging, Model.PersistentVMModel.DeploymentSlotType.Production, IgnoreCase = true)]
+        [ValidateSet(Model.DeploymentSlotType.Staging, Model.DeploymentSlotType.Production, IgnoreCase = true)]
         public string Slot
         {
             get;
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         }
 
         [Parameter(Position = 5, ParameterSetName = "Upgrade", HelpMessage = "Upgrade mode. Auto | Manual | Simultaneous")]
-        [ValidateSet(Model.PersistentVMModel.UpgradeType.Auto, Model.PersistentVMModel.UpgradeType.Manual, Model.PersistentVMModel.UpgradeType.Simultaneous, IgnoreCase = true)]
+        [ValidateSet(Model.UpgradeType.Auto, Model.UpgradeType.Manual, Model.UpgradeType.Simultaneous, IgnoreCase = true)]
         public string Mode
         {
             get;
@@ -119,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         }
 
         [Parameter(Position = 3, Mandatory = true, ParameterSetName = "Status", HelpMessage = "New deployment status. Running | Suspended")]
-        [ValidateSet(Model.PersistentVMModel.DeploymentStatus.Running, Model.PersistentVMModel.DeploymentStatus.Suspended, IgnoreCase = true)]
+        [ValidateSet(Model.DeploymentStatus.Running, Model.DeploymentStatus.Suspended, IgnoreCase = true)]
         public string NewStatus
         {
             get;
@@ -187,7 +187,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
             if (string.Compare(ParameterSetName, "Upgrade", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 bool removePackage = false;
-                var storageName = CurrentSubscription.CurrentStorageAccountName;
+                var storageName = CurrentContext.Subscription.GetProperty(AzureSubscription.Property.StorageAccount);
 
                 Uri packageUrl = null;
                 if (Package.StartsWith(Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase) ||

@@ -12,12 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using System;
-    using System.Linq;
-    using WebEntities;
-
     public class Repository
     {
         public string PublishingUsername { get; set; }
@@ -31,11 +32,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 
         public Repository(Site site)
         {
-            RepositoryUri = site.SiteProperties.Properties.Where(p => p.Name.Equals("RepositoryUri", StringComparison.OrdinalIgnoreCase)).Select(p => p.Value).FirstOrDefault();
-            if (RepositoryUri != null && !RepositoryUri.EndsWith("/"))
+            string uriString = site.SiteProperties.Properties.Where(p => p.Name.Equals("RepositoryUri", StringComparison.OrdinalIgnoreCase)).Select(p => p.Value).FirstOrDefault();
+            if (uriString != null && !uriString.EndsWith("/"))
             {
-                RepositoryUri += "/";
+                uriString += "/";
             }
+
+            // The host name portion of the Uri can contain IDN characters derived from the site name so we need to convert it to Punycode.
+            UriBuilder uri = new UriBuilder(uriString);
+            uri.Host = IdnHelper.GetAscii(uri.Host);
+            RepositoryUri = uri.ToString();
 
             PublishingUsername = site.SiteProperties.Properties.Where(p => p.Name.Equals("PublishingUsername", StringComparison.OrdinalIgnoreCase)).Select(p => p.Value).FirstOrDefault();
             PublishingPassword = site.SiteProperties.Properties.Where(p => p.Name.Equals("PublishingPassword", StringComparison.OrdinalIgnoreCase)).Select(p => p.Value).FirstOrDefault();

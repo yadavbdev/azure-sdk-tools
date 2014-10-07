@@ -12,15 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Storage.Test.Service;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Test.Blob
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Service;
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Test base class for storage blob
     /// </summary>
@@ -58,6 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Test.Blob
         {
             BlobMock = new MockStorageBlobManagement();
             MockCmdRunTime = new MockCommandRuntime();
+            ProfileClient.DataStore = new MockDataStore();
         }
 
         [TestCleanup]

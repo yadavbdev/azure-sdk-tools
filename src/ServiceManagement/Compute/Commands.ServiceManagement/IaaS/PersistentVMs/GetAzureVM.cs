@@ -12,23 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Net;
-    using AutoMapper;
-    using Helpers;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using PVM = Model.PersistentVMModel;
+    using PVM = Model;
+    using NSM = Management.Compute.Models;
 
-    [Cmdlet(VerbsCommon.Get, AzureVMNoun, DefaultParameterSetName = ListVMParamSet), OutputType(typeof(PersistentVMRoleContext))]
+    [Cmdlet(VerbsCommon.Get, AzureVMNoun, DefaultParameterSetName = ListVMParamSet), OutputType(typeof(PVM.PersistentVMRoleContext))]
     public class GetAzureVMCommand : IaaSDeploymentManagementCmdletBase
     {
         protected const string AzureVMNoun = "AzureVM";
@@ -50,17 +50,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
             if (string.IsNullOrEmpty(ServiceName))
             {
-                var roleContexts = new List<PersistentVMRoleListContext>();
+                var roleContexts = new List<PVM.PersistentVMRoleListContext>();
 
                 foreach (var service in this.ComputeClient.HostedServices.List())
                 {
-                    DeploymentGetResponse deployment = null;
+                    NSM.DeploymentGetResponse deployment = null;
 
                     try
                     {
                         deployment = this.ComputeClient.Deployments.GetBySlot(
                             service.ServiceName,
-                            DeploymentSlot.Production);
+                            NSM.DeploymentSlot.Production);
                     }
                     catch (CloudException e)
                     {
@@ -73,7 +73,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                     if (deployment != null)
                     {
                         roleContexts.AddRange(
-                            GetVMContextList<PersistentVMRoleListContext>(
+                            GetVMContextList<PVM.PersistentVMRoleListContext>(
                                 service.ServiceName,
                                 deployment).AsEnumerable());
                     }
@@ -83,7 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             }
             else if (CurrentDeploymentNewSM != null)
             {
-                var roleContexts = GetVMContextList<PersistentVMRoleContext>(
+                var roleContexts = GetVMContextList<PVM.PersistentVMRoleContext>(
                         ServiceName,
                         CurrentDeploymentNewSM);
 
@@ -96,18 +96,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             }
         }
 
-        private List<T> GetVMContextList<T>(string serviceName, DeploymentGetResponse deployment)
-            where T : PersistentVMRoleContext, new()
+        private List<T> GetVMContextList<T>(string serviceName, NSM.DeploymentGetResponse deployment)
+            where T : PVM.PersistentVMRoleContext, new()
         {
-            var vmRoles = new List<Role>(deployment.Roles.Where(
+            var vmRoles = new List<NSM.Role>(deployment.Roles.Where(
                 r => string.IsNullOrEmpty(Name)
                   || r.RoleName.Equals(Name, StringComparison.InvariantCultureIgnoreCase)));
 
             return GetVMContextList<T>(serviceName, deployment, vmRoles);
         }
 
-        private List<T> GetVMContextList<T>(string serviceName, DeploymentGetResponse deployment, List<Role> vmRoles)
-            where T : PersistentVMRoleContext, new()
+        private List<T> GetVMContextList<T>(string serviceName, NSM.DeploymentGetResponse deployment, List<NSM.Role> vmRoles)
+            where T : PVM.PersistentVMRoleContext, new()
         {
             var roleContexts = new List<T>();
 
@@ -133,8 +133,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             return roleContexts;
         }
 
-        private T CreateVMContext<T>(string serviceName, Role vmRole, RoleInstance roleInstance, DeploymentGetResponse deployment)
-            where T : PersistentVMRoleContext, new()
+        private T CreateVMContext<T>(string serviceName, NSM.Role vmRole, NSM.RoleInstance roleInstance, NSM.DeploymentGetResponse deployment)
+            where T : PVM.PersistentVMRoleContext, new()
         {
             var vmContext = new T
             {
@@ -156,6 +156,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                                             : PersistentVMHelper.GetPublicIPName(vmRole),
                 InstanceStateDetails        = roleInstance == null ? string.Empty : roleInstance.InstanceStateDetails,
                 PowerState                  = roleInstance == null ? string.Empty : roleInstance.PowerState.ToString(),
+                HostName                    = roleInstance == null ? string.Empty : roleInstance.HostName,
                 InstanceErrorCode           = roleInstance == null ? string.Empty : roleInstance.InstanceErrorCode,
                 InstanceName                = roleInstance == null ? string.Empty : roleInstance.InstanceName,
                 InstanceFaultDomain         = roleInstance == null ? string.Empty : roleInstance.InstanceFaultDomain.HasValue
@@ -168,7 +169,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                 OperationId                 = deployment.RequestId,
                 OperationStatus             = deployment.StatusCode.ToString(),
                 OperationDescription        = CommandRuntime.ToString(),
-                VM = new PersistentVM
+                VM = new PVM.PersistentVM
                 {
                     AvailabilitySetName               = vmRole.AvailabilitySetName,
                     Label                             = vmRole.Label,

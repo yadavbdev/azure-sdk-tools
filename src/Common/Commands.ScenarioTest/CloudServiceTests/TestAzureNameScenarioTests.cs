@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
-    using Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class TestAzureNameScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class TestAzureNameScenarioTests : AzurePowerShellCertificateTest
     {
         public TestAzureNameScenarioTests()
             : base("CloudService\\Common.ps1",
@@ -38,14 +38,16 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithInvalidCredentials()
         {
-            RunPowerShellTest("Test-WithInvalidCredentials { Test-AzureName -Service $(Get-HostedService) }");
+            RunPowerShellTest("Test-WithInvalidCredentials { Test-AzureName -Service $(Get-CloudServiceName) }");
         }
 
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithNotExistingHostedService()
         {
             RunPowerShellTest("Test-AzureNameWithNotExistingHostedService");
@@ -54,6 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithExistingHostedService()
         {
             RunPowerShellTest("Test-AzureNameWithExistingHostedService");
@@ -62,6 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithInvalidHostedService()
         {
             RunPowerShellTest("Test-AzureNameWithInvalidHostedService");
@@ -70,6 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithNotExistingStorageService()
         {
             RunPowerShellTest("Test-AzureNameWithNotExistingStorageService");
@@ -78,6 +83,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithExistingStorageService()
         {
             RunPowerShellTest("Test-AzureNameWithExistingStorageService");
@@ -86,6 +92,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithInvalidStorageService()
         {
             RunPowerShellTest("Test-AzureNameWithInvalidStorageService");
@@ -94,6 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithNotExistingServiceBusNamespace()
         {
             RunPowerShellTest("Test-AzureNameWithNotExistingServiceBusNamespace");
@@ -102,6 +110,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestAzureNameWithExistingServiceBusNamespace()
         {
             RunPowerShellTest("Test-AzureNameWithExistingServiceBusNamespace");
@@ -110,6 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         [Ignore] // https://github.com/WindowsAzure/azure-sdk-tools/issues/1185
         public void TestAzureNameWithInvalidServiceBusNamespace()
         {

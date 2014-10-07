@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Commands.Common.Properties;
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Sockets;
-    using System.Runtime.InteropServices;
-
     public static class Validate
     {
         [Flags]
@@ -91,7 +91,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         public static void ValidateFileExists(string filePath, string exceptionMessage)
         {
-            if (!File.Exists(filePath))
+            if (!FileUtilities.DataStore.FileExists(filePath))
             {
                 throw new FileNotFoundException(exceptionMessage);
             }
@@ -101,7 +101,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         {
             string msg = string.Format(Resources.PathDoesNotExist, directory);
 
-            if (!Directory.Exists(directory))
+            if (!FileUtilities.DataStore.DirectoryExists(directory))
             {
                 if (!string.IsNullOrEmpty(exceptionMessage))
                 {
@@ -160,15 +160,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             if (!InternetGetConnectedState(ref flags, 0))
             {
                 throw new Exception(Resources.NoInternetConnection);
-            }
-        }
-
-        public static void IsGuid(string candidate)
-        {
-            if (candidate != null)
-            {
-                try { new Guid(candidate); }
-                catch { throw new ArgumentException(Resources.SubscriptionIdNotFoundMessage); }
             }
         }
 

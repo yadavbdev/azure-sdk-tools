@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Management;
-    using Management.Models;
-    using Model;
-    using Utilities.Common;
-
     /// <summary>
-    /// Retrieve a Windows Azure Role Size.
+    /// Retrieve a Microsoft Azure Role Size.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureRoleSize"), OutputType(typeof(RoleSizeContext))]
     public class AzureRoleSizeCommand : ServiceManagementBaseCmdlet

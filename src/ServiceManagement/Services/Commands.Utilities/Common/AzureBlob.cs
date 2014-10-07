@@ -12,31 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.WindowsAzure.Management.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using Management.Storage;
-    using ServiceManagement;
-    using Storage.Blob;
-    using System;
-
     public static class AzureBlob
     {
         private static CloudBlobUtility cloudBlobUtility = new CloudBlobUtility();
-
-        public static Uri UploadPackageToBlob(
-            IServiceManagement channel,
-            string storageName,
-            string subscriptionId,
-            string packagePath,
-            BlobRequestOptions blobRequestOptions)
-        {
-            return cloudBlobUtility.UploadPackageToBlob(
-                channel,
-                storageName,
-                subscriptionId,
-                packagePath,
-                blobRequestOptions);
-        }
 
         public static Uri UploadPackageToBlob(
             StorageManagementClient storageClient,
@@ -49,15 +33,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 storageName,
                 packagePath,
                 blobRequestOptions);
-        }
-
-        public static void DeletePackageFromBlob(
-            IServiceManagement channel,
-            string storageName,
-            string subscriptionId,
-            Uri packageUri)
-        {
-            cloudBlobUtility.DeletePackageFromBlob(channel, storageName, subscriptionId, packageUri);
         }
 
         public static void DeletePackageFromBlob(

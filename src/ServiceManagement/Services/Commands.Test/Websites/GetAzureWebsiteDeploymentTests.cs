@@ -12,24 +12,26 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Websites;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Websites;
-    using Commands.Utilities.Websites.Services.DeploymentEntities;
-    using Commands.Utilities.Websites.Services.WebEntities;
-    using Commands.Websites;
-    using Moq;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Utilities.Common;
-    using Utilities.Websites;
-    using VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    
     public class GetAzureWebsiteDeploymentTests : WebsitesTestBase
     {
-        [TestMethod]
+        [Fact]
         public void GetAzureWebsiteDeploymentTest()
         {
             // Setup
@@ -70,17 +72,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId }
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(subscriptionId) }, null, null);
+
 
             getAzureWebsiteDeploymentCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
             var deployments = (IEnumerable<DeployResult>)((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(deployments);
-            Assert.AreEqual(2, deployments.Count());
+            Assert.NotNull(deployments);
+            Assert.Equal(2, deployments.Count());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetAzureWebsiteDeploymentLogsTest()
         {
             // Setup
@@ -124,18 +127,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 WebsitesClient = clientMock.Object,
                 Details = true,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId }
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(subscriptionId) }, null, null);
 
             getAzureWebsiteDeploymentCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
             var deployments = (IEnumerable<DeployResult>)((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(deployments);
-            Assert.AreEqual(2, deployments.Count());
-            Assert.IsNotNull(deployments.First(d => d.Id.Equals("commit1")).Logs);
+            Assert.NotNull(deployments);
+            Assert.Equal(2, deployments.Count());
+            Assert.NotNull(deployments.First(d => d.Id.Equals("commit1")).Logs);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetsDeploymentForSlot()
         {
             string slot = "staging";
@@ -177,15 +180,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
                 ShareChannel = true,
                 WebsitesClient = clientMock.Object,
                 CommandRuntime = new MockCommandRuntime(),
-                CurrentSubscription = new WindowsAzureSubscription { SubscriptionId = base.subscriptionId },
                 Slot = slot
             };
+            AzureSession.SetCurrentContext(new AzureSubscription { Id = new Guid(subscriptionId) }, null, null);
 
             getAzureWebsiteDeploymentCommand.ExecuteCmdlet();
-            Assert.AreEqual(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
+            Assert.Equal(1, ((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.Count);
             var deployments = (IEnumerable<DeployResult>)((MockCommandRuntime)getAzureWebsiteDeploymentCommand.CommandRuntime).OutputPipeline.FirstOrDefault();
-            Assert.IsNotNull(deployments);
-            Assert.AreEqual(2, deployments.Count());
+            Assert.NotNull(deployments);
+            Assert.Equal(2, deployments.Count());
         }
     }
 }

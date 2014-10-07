@@ -13,15 +13,15 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Management.Automation;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System;
-    using System.Management.Automation;
-    using System.Security.Cryptography.X509Certificates;
-    using Helpers;
-    using Model.PersistentVMModel;
-    using Utilities.Common;
-
     public class ProvisioningConfigurationCmdletBase : ServiceManagementBaseCmdlet
     {
         public const string LinuxParameterSetName = OS.Linux;
@@ -73,6 +73,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 
         [Parameter(Mandatory = false, ParameterSetName = LinuxParameterSetName, HelpMessage = "SSH Key Pairs")]
         public LinuxProvisioningConfigurationSet.SSHKeyPairList SSHKeyPairs
+        {
+            get;
+            set;
+        }
+
+        [Parameter(Mandatory = false, HelpMessage = "Custom Data file")]
+        public string CustomDataFile
         {
             get;
             set;
@@ -272,6 +279,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             {
                 provisioningConfiguration.SSH = new LinuxProvisioningConfigurationSet.SSHSettings { PublicKeys = SSHPublicKeys, KeyPairs = SSHKeyPairs };
             }
+
+            if (!string.IsNullOrEmpty(CustomDataFile))
+            {
+                string fileName = this.TryResolvePath(this.CustomDataFile);
+                provisioningConfiguration.CustomData = PersistentVMHelper.ConvertCustomDataFileToBase64(fileName);
+            }
         }
 
         protected void SetProvisioningConfiguration(WindowsProvisioningConfigurationSet provisioningConfiguration)
@@ -305,6 +318,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                     MachineObjectOU = MachineObjectOU,
                     JoinDomain = JoinDomain
                 };
+            }
+
+            if (!string.IsNullOrEmpty(CustomDataFile))
+            {
+                string fileName = this.TryResolvePath(this.CustomDataFile);
+                provisioningConfiguration.CustomData = PersistentVMHelper.ConvertCustomDataFileToBase64(fileName);
             }
         }
     }

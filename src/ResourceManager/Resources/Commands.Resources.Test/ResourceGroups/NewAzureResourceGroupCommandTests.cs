@@ -12,10 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
-using Moq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Moq;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test
@@ -38,6 +40,8 @@ namespace Microsoft.Azure.Commands.Resources.Test
 
         private string storageAccountName = "myStorageAccount";
 
+        private Hashtable[] tags;
+
         public NewAzureResourceGroupCommandTests()
         {
             resourcesClientMock = new Mock<ResourcesClient>();
@@ -47,9 +51,19 @@ namespace Microsoft.Azure.Commands.Resources.Test
                 CommandRuntime = commandRuntimeMock.Object,
                 ResourcesClient = resourcesClientMock.Object
             };
+
+            tags = new[]
+            {
+                new Hashtable
+                {
+                    {"Name", "value1"},
+                    {"Value", ""}
+                }
+            };
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CreatesNewPSResourceGroupWithUserTemplate()
         {
             CreatePSResourceGroupParameters expectedParameters = new CreatePSResourceGroupParameters()
@@ -59,14 +73,16 @@ namespace Microsoft.Azure.Commands.Resources.Test
                 TemplateFile = templateFile,
                 DeploymentName = deploymentName,
                 StorageAccountName = storageAccountName,
-                TemplateVersion = "1.0"
+                TemplateVersion = "1.0",
+                Tag = tags
             };
             CreatePSResourceGroupParameters actualParameters = new CreatePSResourceGroupParameters();
             PSResourceGroup expected = new PSResourceGroup()
             {
                 Location = expectedParameters.Location,
                 ResourceGroupName = expectedParameters.ResourceGroupName,
-                Resources = new List<PSResource>() { new PSResource() { Name = "resource1" } }
+                Resources = new List<PSResource>() { new PSResource() { Name = "resource1" } },
+                Tags = expectedParameters.Tag
             };
             resourcesClientMock.Setup(f => f.CreatePSResourceGroup(It.IsAny<CreatePSResourceGroupParameters>()))
                 .Returns(expected)
@@ -77,6 +93,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
             cmdlet.TemplateFile = expectedParameters.TemplateFile;
             cmdlet.DeploymentName = expectedParameters.DeploymentName;
             cmdlet.TemplateVersion = expectedParameters.TemplateVersion;
+            cmdlet.Tag = expectedParameters.Tag;
 
             cmdlet.ExecuteCmdlet();
 
@@ -88,11 +105,13 @@ namespace Microsoft.Azure.Commands.Resources.Test
             Assert.NotNull(actualParameters.TemplateParameterObject);
             Assert.Equal(expectedParameters.TemplateVersion, actualParameters.TemplateVersion);
             Assert.Equal(null, actualParameters.StorageAccountName);
+            Assert.Equal(expectedParameters.Tag, actualParameters.Tag);
 
             commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CreatesNewPSResourceGroupWithGalleryTemplate()
         {
             CreatePSResourceGroupParameters expectedParameters = new CreatePSResourceGroupParameters()

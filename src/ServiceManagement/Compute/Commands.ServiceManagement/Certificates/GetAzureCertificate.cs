@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Certificates
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Model;
-    using Properties;
-    using Utilities.Common;
-
     /// <summary>
     /// Retrieve a specified service certificate.
     /// </summary>

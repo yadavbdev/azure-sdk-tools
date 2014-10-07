@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cmdlet
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.MockServer;
-    using System;
-
     public static class DatabaseTestHelper
     {
         /// <summary>
@@ -69,8 +69,8 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Test.UnitTests.Database.Cm
         public static void SetDefaultTestSessionSettings(HttpSession testSession)
         {
             testSession.ServiceBaseUri = MockServerHelper.CommonServiceBaseUri;
-            testSession.SessionProperties["Servername"] = "testserver";
-            testSession.SessionProperties["Username"] = "mylogin";
+            testSession.SessionProperties["Servername"] = "myserver01";
+            testSession.SessionProperties["Username"] = "testuser";
             testSession.SessionProperties["Password"] = "testp@ss1";
             testSession.ResponseModifier =
                 new Action<HttpMessage>(

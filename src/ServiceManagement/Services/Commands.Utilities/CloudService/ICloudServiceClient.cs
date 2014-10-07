@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Model;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Model;
-
     public interface ICloudServiceClient
     {
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
         bool CheckHostedServiceNameAvailability(string name);
 
         /// <summary>
-        /// Publishes a service project on Windows Azure.
+        /// Publishes a service project on Microsoft Azure.
         /// </summary>
         /// <param name="name">The cloud service name</param>
         /// <param name="slot">The deployment slot</param>

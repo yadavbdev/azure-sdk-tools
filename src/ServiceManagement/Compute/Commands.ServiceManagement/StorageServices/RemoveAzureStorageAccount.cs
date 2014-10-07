@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using ServiceManagement.Model;
-    using System.Management.Automation;
-    using Management.Storage;
-    using Utilities.Common;
-
     /// <summary>
-    /// Deletes the specified storage account from Windows Azure.
+    /// Deletes the specified storage account from Microsoft Azure.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureStorageAccount"), OutputType(typeof(StorageServiceOperationContext))]
     public class RemoveAzureStorageAccountCommand : ServiceManagementBaseCmdlet

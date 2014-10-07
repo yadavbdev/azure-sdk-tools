@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
 using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources
 {
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.Resources
     /// Filters resource group deployments.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureResourceGroupDeployment"), OutputType(typeof(List<PSResourceGroupDeployment>))]
-    public class GetAzureResourceGroupDeploymentCommand : ResourceManagerBaseCmdlet
+    public class GetAzureResourceGroupDeploymentCommand : ResourcesBaseCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the resource group.")]
         [ValidateNotNullOrEmpty]

@@ -12,14 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Scheduler;
+
 namespace Microsoft.WindowsAzure.Commands.Scheduler
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Websites.Common;
-
     /// <summary>
     /// Cmdlet to remove a job
     /// </summary>
@@ -45,11 +43,8 @@ namespace Microsoft.WindowsAzure.Commands.Scheduler
                Resources.RemoveJobCollectionMessage,
                JobCollectionName,
                () =>
-               {
-                   if (!string.IsNullOrEmpty(Location) && !SMClient.GetAvailableRegions().Contains(Location, StringComparer.OrdinalIgnoreCase))
-                       throw new Exception(Resources.SchedulerInvalidLocation);
-                   else
-                       WriteObject(SMClient.DeleteJobCollection(region: Location, jobCollection: JobCollectionName), true);
+               {                  
+                    WriteObject(SMClient.DeleteJobCollection(region: Location, jobCollection: JobCollectionName), true);
                });
         }
     }

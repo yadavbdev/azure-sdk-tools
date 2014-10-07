@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.PlatformImageRepository.Model
 {
-    using System.Collections.Generic;
-    using Commands.ServiceManagement.Model;
-
     public class OSImageDetailsContext : OSImageContext
     {
         public bool? IsCorrupted { get; set; }

@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.AffinityGroups
 {
-    using System.Management.Automation;
-    using Management;
-    using Utilities.Common;
-
     /// <summary>
     /// Deletes an affinity group.
     /// </summary>

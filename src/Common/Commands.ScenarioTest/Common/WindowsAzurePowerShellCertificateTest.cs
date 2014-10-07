@@ -12,44 +12,48 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Management.Automation;
+using Microsoft.Azure.Utilities.HttpRecorder;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Testing;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Azure.Utilities.HttpRecorder;
-    using Commands.Common;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Management.Automation;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class WindowsAzurePowerShellCertificateTest : PowerShellTest
+    public class AzurePowerShellCertificateTest : PowerShellTest
     {
         protected TestCredentialHelper credentials;
         protected string credentialFile;
         protected string profileFile;
+
         // Location where test output will be written to e.g. C:\Temp
         private static string outputDirKey = "TEST_HTTPMOCK_OUTPUT";
 
         private bool runningMocked = false;
+
         private void OnClientCreated(object sender, ClientCreatedArgs e)
         {
             e.AddHandlerToClient(HttpMockServer.CreateInstance());
         }
 
-        public WindowsAzurePowerShellCertificateTest(params string[] modules)
+        public AzurePowerShellCertificateTest(params string[] modules)
             : base(AzureModule.AzureServiceManagement, modules)
         {
             this.runningMocked = (HttpMockServer.GetCurrentMode() == HttpRecorderMode.Playback);
             TestMockSupport.RunningMocked = this.runningMocked;
             if (this.runningMocked)
             {
+                AzureSession.AuthenticationFactory = new MockTokenAuthenticationFactory();
                 string dummyCredentialFile = Path.Combine(Environment.CurrentDirectory, TestCredentialHelper.DefaultCredentialFile);
                 if (!File.Exists(dummyCredentialFile))
                 {
-                    File.WriteAllText(dummyCredentialFile, Properties.Resources.RdfeTestDummy);
+                    ProfileClient.DataStore.WriteFile(dummyCredentialFile, Properties.Resources.RdfeTestDummy);
                 }
                 this.credentialFile = dummyCredentialFile;
             }
@@ -59,6 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 this.credentialFile = TestCredentialHelper.DefaultCredentialFile;
                 this.profileFile = TestCredentialHelper.WindowsAzureProfileFile;
             }
+            ProfileClient.DataStore = new MockDataStore();
 
             if (Environment.GetEnvironmentVariable(outputDirKey) != null)
             {
@@ -68,7 +73,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         public override Collection<PSObject> RunPowerShellTest(params string[] scripts)
         {
-            HttpMockServer.Initialize(this.GetType(), Utilities.GetCurrentMethodName(2));
+            HttpMockServer.Initialize(this.GetType(), TestUtilities.GetCurrentMethodName(2));
             return base.RunPowerShellTest(scripts);
         }
 
@@ -76,7 +81,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         public override void TestSetup()
         {
             base.TestSetup();
-            WindowsAzureSubscription.OnClientCreated += OnClientCreated;
             if (this.runningMocked)
             {
                 TestCredentialHelper.ImportCredentails(powershell, this.credentialFile);
@@ -87,7 +91,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 System.Net.ServicePointManager.ServerCertificateValidationCallback += (se, cert, chain, sslerror) =>
                 {
                     return true;
-                };            
+                };
             }
         }
 
@@ -95,8 +99,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
         public override void TestCleanup()
         {
             base.TestCleanup();
-            WindowsAzureSubscription.OnClientCreated -= OnClientCreated;
-            HttpMockServer.Flush();
+            if (!this.runningMocked && HttpMockServer.CallerIdentity != null)
+            {
+                HttpMockServer.Flush();
+            }
         }
     }
 }

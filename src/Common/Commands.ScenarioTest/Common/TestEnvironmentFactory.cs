@@ -13,13 +13,16 @@
 // limitations under the License.
 //
 
+using System;
+using System.Collections.Generic;
+using Microsoft.Azure.Utilities.HttpRecorder;
+using Microsoft.WindowsAzure.Common.Internals;
+using Newtonsoft.Json.Linq;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.WindowsAzure.Common.Internals;
-    using Newtonsoft.Json.Linq;
     using System;
-    using System.Collections.Generic;
-
+    using Microsoft.IdentityModel.Clients.ActiveDirectory;
     public abstract class TestEnvironmentFactory
     {
         /// <summary>
@@ -96,32 +99,52 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
                 string authEndpoint = authSettings.ContainsKey(AADAuthEndpoint) ? authSettings[AADAuthEndpoint] : AADAuthEndpointDefault;
                 string tenant = authSettings.ContainsKey(AADTenant) ? authSettings[AADTenant] : AADTenantDefault;
                 string user = null;
-                if (authSettings.ContainsKey(AADUserIdKey) && authSettings.ContainsKey(AADPasswordKey))
+                AuthenticationResult result = null;
+
+                if (authSettings.ContainsKey(AADUserIdKey))
                 {
                     user = authSettings[AADUserIdKey];
-                    string password = authSettings[AADPasswordKey];
-                    Tracing.Information("Using AAD auth with username and password combination");
-                    token = TokenCloudCredentialsHelper.GetTokenFromBasicCredentials(user, password, authEndpoint, tenant);
-                    Tracing.Information("Using token {0}", token);
                 }
-                else
+
+                // Preserve/restore subscription ID
+                if (HttpMockServer.Mode == HttpRecorderMode.Record)
                 {
-                    Tracing.Information("Using AAD auth with pop-up dialog");
-                    string clientId = authSettings.ContainsKey(ClientID) ? authSettings[ClientID] : ClientIdDefault;
-                    if (authSettings.ContainsKey(RawToken))
+                    HttpMockServer.Variables[SubscriptionIdKey] = subscription;
+                    if (authSettings.ContainsKey(AADUserIdKey) && authSettings.ContainsKey(AADPasswordKey))
                     {
-                        token = authSettings[RawToken];
+                        
+                        string password = authSettings[AADPasswordKey];
+                        Tracing.Information("Using AAD auth with username and password combination");
+                        token = TokenCloudCredentialsHelper.GetTokenFromBasicCredentials(user, password, authEndpoint, tenant);
                     }
                     else
                     {
-                        token = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                        Tracing.Information("Using AAD auth with pop-up dialog");
+                        string clientId = authSettings.ContainsKey(ClientID) ? authSettings[ClientID] : ClientIdDefault;
+                        if (authSettings.ContainsKey(RawToken))
+                        {
+                            token = authSettings[RawToken];
+                        }
+                        else
+                        {
+                            result = TokenCloudCredentialsHelper.GetToken(authEndpoint, tenant, clientId);
+                            token = result.CreateAuthorizationHeader().Substring("Bearer ".Length);
+                        }
                     }
+                }
+
+                if (HttpMockServer.Mode == HttpRecorderMode.Playback)
+                {
+                    // playback mode but no stored credentials in mocks
+                    Tracing.Information("Using dummy token for playback");
+                    token = Guid.NewGuid().ToString();
                 }
 
                 orgIdEnvironment = new TestEnvironment
                 {
                     Credentials = token == null ? null : new TokenCloudCredentials(subscription, token),
-                    UserName = user
+                    UserName = user,
+                    AuthenticationResult = result
                 };
 
                 if (authSettings.ContainsKey(BaseUriKey))
@@ -142,9 +165,14 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         private static string GetOrgId(string orgIdVariable)
         {
-            JObject subscription = JObject.Parse(Properties.Resources.CsmTestDummy);
-            string value = subscription.SelectToken(orgIdVariable).Value<string>();
-            return value;
+            string connectionString = Environment.GetEnvironmentVariable(orgIdVariable);
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                JObject dummyTestConnectionString = JObject.Parse(Properties.Resources.CsmTestDummy);
+                connectionString = dummyTestConnectionString.SelectToken(orgIdVariable).Value<string>();
+            }
+            
+            return connectionString;
         }
         /// <summary>
         /// Break up the connection string into key-value pairs

@@ -12,11 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System.Collections.Generic;
-    using PersistentVMModel;
-
     public class PersistentVMRoleContext : ServiceOperationContext, IPersistentVM
     {
         public string DeploymentName { get; set; }
@@ -32,6 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public string InstanceName { get; set; }
         public string InstanceUpgradeDomain { get; set; }
         public string InstanceSize { get; set; }
+        public string HostName { get; set; }
         public string AvailabilitySetName { get; set; }
         public string DNSName { get; set; }
         public string Status { get; set; }

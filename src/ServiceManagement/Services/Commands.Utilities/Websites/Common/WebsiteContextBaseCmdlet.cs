@@ -12,16 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Common
 {
-    using Services;
-    using System;
-    using System.Management.Automation;
-    using System.Security.Permissions;
-
     public abstract class WebsiteContextBaseCmdlet : WebsiteBaseCmdlet
     {
         protected bool websiteNameDiscovery;
+
+        private string name;
+        private string slot;
 
         public WebsiteContextBaseCmdlet()
         {
@@ -30,11 +34,33 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Common
 
         [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The web site name.")]
         [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                // Convert to Unicode if necessary.
+                name = IdnHelper.GetUnicode(value);
+            }
+        }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The web site slot name.")]
         [ValidateNotNullOrEmpty]
-        public string Slot { get; set; }
+        public string Slot
+        {
+            get
+            {
+                return slot;
+            }
+            set
+            {
+                // Convert to Unicode if necessary.
+                slot = IdnHelper.GetUnicode(value);
+            }
+        }
 
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()

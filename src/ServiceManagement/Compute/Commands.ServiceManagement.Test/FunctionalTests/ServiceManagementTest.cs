@@ -12,18 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Profile.Models;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.Properties;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Commands.Utilities.Common;
-    using Model;
-    using Properties;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using VisualStudio.TestTools.UnitTesting;
-    using System.Xml.Linq;
-
     [TestClass]
     public class ServiceManagementTest
     {
@@ -40,6 +42,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         protected const string testDataContainer = "testdata";
         protected const string osVhdName = "oneGBFixedWS2008R2.vhd";
 
+        protected const string WinRmEndpointName = "PowerShell";
+        protected const string RdpEndpointName = "RemoteDesktop";
+
         // Test cleanup settings
         protected const bool deleteDefaultStorageAccount = false; // Temporarily set to false
         protected bool cleanupIfPassed = true;
@@ -47,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         protected const string vhdContainerName = "vhdstore";
 
         protected static ServiceManagementCmdletTestHelper vmPowershellCmdlets;
-        protected static WindowsAzureSubscription defaultAzureSubscription;
+        protected static PSAzureSubscriptionExtended defaultAzureSubscription;
         protected static StorageServiceKeyOperationContext storageAccountKey;
         protected static string blobUrlRoot;
 
@@ -59,6 +64,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         protected DateTime testStartTime;
 
         private TestContext testContextInstance;
+
+        private const string VhdFilesContainerName = "vhdfiles";
+        private static readonly string[] VhdFiles = new[]
+            {
+                "dynamic_50.vhd", "dynamic_50_child01.vhd", "dynamic_50_child02.vhd",
+                "fixed_50.vhd", "fixed_50_child01.vhd", "fixed_50_child02.vhd"
+            };
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -85,8 +98,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             if (!string.IsNullOrEmpty(GetDefaultStorage(CredentialHelper.DefaultStorageName, CredentialHelper.Location)))
             {
-                defaultAzureSubscription = vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.SubscriptionName, CredentialHelper.DefaultStorageName);
-
+                defaultAzureSubscription = vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.SubscriptionName, defaultAzureSubscription.SubscriptionId, CredentialHelper.DefaultStorageName);
+                vmPowershellCmdlets.SelectAzureSubscription(defaultAzureSubscription.SubscriptionName, true);
                 storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName);
                 Assert.AreEqual(defaultAzureSubscription.CurrentStorageAccountName, storageAccountKey.StorageAccountName);
                 blobUrlRoot = (vmPowershellCmdlets.GetAzureStorageAccount(defaultAzureSubscription.CurrentStorageAccountName)[0].Endpoints.ToArray())[0];
@@ -144,6 +157,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             vmPowershellCmdlets.RemoveAzureSubscriptions();
             vmPowershellCmdlets.ImportAzurePublishSettingsFile(CredentialHelper.PublishSettingsFile);
+            var firstSub = vmPowershellCmdlets.GetAzureSubscription().First();
+            vmPowershellCmdlets.SelectAzureSubscription(firstSub.SubscriptionName);
 
             if (string.IsNullOrEmpty(CredentialHelper.DefaultSubscriptionName))
             {
@@ -178,6 +193,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             catch
             {
                 Console.WriteLine("Error occurred during Get-AzureVMImageName... imageName is not set.");
+            }
+
+            try
+            {
+                DownloadVhds();
+            }
+            catch
+            {
+                Console.WriteLine("Error occurred during downloading vhds...");
             }
 
             if (String.IsNullOrEmpty(imageName))
@@ -274,12 +298,64 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             // Re-import the subscription.
             vmPowershellCmdlets.ImportAzurePublishSettingsFile();
             vmPowershellCmdlets.SetDefaultAzureSubscription(CredentialHelper.DefaultSubscriptionName);
-            vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.SubscriptionName, defaultAzureSubscription.CurrentStorageAccountName);
+            vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.SubscriptionName, defaultAzureSubscription.SubscriptionId, defaultAzureSubscription.CurrentStorageAccountName);
         }
 
         protected static void CleanupService(string svcName)
         {
             Utilities.TryAndIgnore(() => vmPowershellCmdlets.RemoveAzureService(svcName, true), "does not exist");
+        }
+
+        protected static void DownloadVhds()
+        {
+            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName);
+
+            foreach (var vhdFile in VhdFiles)
+            {
+                string vhdBlobLocation = string.Format("{0}{1}/{2}", blobUrlRoot, VhdFilesContainerName, vhdFile);
+
+                var vhdLocalPath = new FileInfo(Directory.GetCurrentDirectory() + "\\" + vhdFile);
+
+                if (!File.Exists(vhdLocalPath.FullName))
+                {
+                    // Set the source blob
+                    BlobHandle blobHandle = Utilities.GetBlobHandle(vhdBlobLocation, storageAccountKey.Primary);
+
+                    SaveVhd(blobHandle, vhdLocalPath, storageAccountKey.Primary);
+                }
+            }
+        }
+
+        protected static void SaveVhd(BlobHandle destination, FileInfo locFile, string storageKey, int? numThread = null, bool overwrite = false)
+        {
+            try
+            {
+                Console.WriteLine("Downloading a VHD from {0} to {1}...", destination.Blob.Uri.ToString(), locFile.FullName);
+                DateTime startTime = DateTime.Now;
+                vmPowershellCmdlets.SaveAzureVhd(destination.Blob.Uri, locFile, numThread, storageKey, overwrite);
+                Console.WriteLine("Downloading completed in {0} seconds.", (DateTime.Now - startTime).TotalSeconds);
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.InnerException.ToString());
+            }
+        }
+
+        protected void VerifyRDP(string serviceName, string rdpPath)
+        {
+            Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
+
+            vmPowershellCmdlets.GetAzureRemoteDesktopFile("WebRole1_IN_0", serviceName, rdpPath, false);
+
+            string dns;
+
+            using (var stream = new StreamReader(rdpPath))
+            {
+                string firstLine = stream.ReadLine();
+                dns = Utilities.FindSubstring(firstLine, ':', 2);
+            }
+
+            Assert.IsTrue((Utilities.RDPtestPaaS(dns, "WebRole1", 0, username, password, true)), "Cannot RDP to the instance!!");
         }
     }
 }

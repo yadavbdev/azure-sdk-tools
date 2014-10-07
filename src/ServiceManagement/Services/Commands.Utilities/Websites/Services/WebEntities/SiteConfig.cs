@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.DeploymentEntities;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using DeploymentEntities;
-    using Microsoft.WindowsAzure.Management.WebSites.Models;
-
     public interface ISiteConfig
     {
         int? NumberOfWorkers { get; set; }
@@ -60,6 +60,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntitie
         bool? RemoteDebuggingEnabled { get; set; }
 
         RemoteDebuggingVersion RemoteDebuggingVersion { get; set; }
+
+        List<RoutingRule> RoutingRules { get; set; }
+
+        bool ? Use32BitWorkerProcess { get; set; }
     }
 
     public class SiteWithConfig : ISite, ISiteConfig
@@ -71,6 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntitie
         private DiagnosticsSettings DiagnosticsSettings { get; set; }
 
         public WebsiteInstance[] Instances { get; set; }
+
 
         public SiteWithConfig()
         {
@@ -88,7 +93,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntitie
             AppSettings = new Hashtable();
             DiagnosticsSettings = new DiagnosticsSettings();
             Instances = new WebsiteInstance[0];
-
+        
             if (SiteConfig.AppSettings != null)
             {
                 foreach (var setting in SiteConfig.AppSettings)
@@ -345,6 +350,18 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntitie
             get { return SiteConfig.RemoteDebuggingVersion; }
             set { SiteConfig.RemoteDebuggingVersion = value; }
         }
+
+        public List<RoutingRule> RoutingRules
+        {
+            get { return SiteConfig.RoutingRules; }
+            set { SiteConfig.RoutingRules = value; }
+        }
+
+        public bool? Use32BitWorkerProcess
+        {
+            get { return SiteConfig.Use32BitWorkerProcess; }
+            set { SiteConfig.Use32BitWorkerProcess = value; }
+        }
     }
 
     [DataContract(Namespace = UriElements.ServiceNamespace)]
@@ -401,5 +418,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntitie
 
         [DataMember(IsRequired = false)]
         public RemoteDebuggingVersion RemoteDebuggingVersion { get; set; }
+
+        [DataMember(IsRequired = false)]
+        public List<RoutingRule> RoutingRules { get; set; }
+
+        [DataMember(IsRequired = false)]
+        public bool? Use32BitWorkerProcess { get; set; }
     }
 }

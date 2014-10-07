@@ -12,15 +12,47 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Exceptions;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations
 {
-    using DataContract;
-
     internal class VMNetworkOperations : OperationsBase<VMNetwork>
     {
         public VMNetworkOperations(WebClientFactory webClientFactory)
             : base(webClientFactory, "/VMNetworks")
         {
+        }
+
+        public override VMNetwork Create(VMNetwork vmNetwork, out Guid? jobId)
+        {
+            var client = this.webClientFactory.CreateClient(this.uriSuffix);
+
+            WebHeaderCollection outHeaders;
+            var resultList = client.Create<VMNetwork>(vmNetwork, out outHeaders);
+
+            if (resultList.Count <= 0)
+                throw new WAPackOperationException(Resources.ErrorCreatingVMNetwork);
+
+            jobId = TryGetJobIdFromHeaders(outHeaders);
+
+            return resultList[0];
+        }
+
+        public override void Delete(Guid id, out Guid? jobId)
+        {
+            var cloud = CloudOperations.ReadFirstCloud(this.webClientFactory);
+            Guid stampId = cloud.StampId;
+
+            var client = this.webClientFactory.CreateClient(this.uriSuffix + String.Format("(ID=guid'{0}',StampId=guid'{1}')", id, stampId));
+
+            WebHeaderCollection outHeaders;
+            client.Delete<VMNetwork>(out outHeaders);
+
+            jobId = TryGetJobIdFromHeaders(outHeaders);
         }
     }
 }

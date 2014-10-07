@@ -12,11 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Moq;
 using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Moq;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test
@@ -64,6 +65,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void UpdatrePSResourceGroup()
         {
             UpdatePSResourceParameters expectedParameters = new UpdatePSResourceParameters()

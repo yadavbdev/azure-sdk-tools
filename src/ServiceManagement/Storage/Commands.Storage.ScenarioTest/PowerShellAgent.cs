@@ -12,10 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Commands.Storage.ScenarioTest.Util;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MS.Test.Common.MsTestLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +21,10 @@ using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Reflection;
 using System.Text;
+using Commands.Storage.ScenarioTest.Util;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using MS.Test.Common.MsTestLib;
 
 namespace Commands.Storage.ScenarioTest
 {

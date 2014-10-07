@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
 using System.Collections;
 using System.Management.Automation;
+using Microsoft.Azure.Commands.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources
 {
@@ -35,6 +35,10 @@ namespace Microsoft.Azure.Commands.Resources
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "A hash table which represents resource properties.")]
         public Hashtable PropertyObject { get; set; }
 
+        [Alias("Tags")]
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "A hash table which represents resource tags.")]
+        public Hashtable[] Tag { get; set; }
+
         [Parameter(Mandatory = false, HelpMessage = "Do not ask for confirmation.")]
         public SwitchParameter Force { get; set; }
 
@@ -48,6 +52,7 @@ namespace Microsoft.Azure.Commands.Resources
                 Location = Location,
                 ParentResource = ParentResource,
                 PropertyObject = PropertyObject,
+                Tag = Tag,
                 Force = Force.IsPresent,
                 ConfirmAction = ConfirmAction,
                 ApiVersion = ApiVersion,

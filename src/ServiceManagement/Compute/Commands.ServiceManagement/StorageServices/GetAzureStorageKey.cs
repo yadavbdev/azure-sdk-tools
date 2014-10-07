@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using ServiceManagement.Model;
-    using System.Management.Automation;
-    using Management.Storage;
-    using Management.Storage.Models;
-    using Utilities.Common;
-
     /// <summary>
     /// Displays the primary and secondary keys for the account. Should have 
     /// the storage account resource specified.

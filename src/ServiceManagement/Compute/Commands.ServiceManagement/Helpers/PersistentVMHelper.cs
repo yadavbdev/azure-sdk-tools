@@ -13,28 +13,24 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Xml.Serialization;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using ConfigurationSet = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.ConfigurationSet;
+using DataVirtualHardDisk = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.DataVirtualHardDisk;
+using OSVirtualHardDisk = Microsoft.WindowsAzure.Commands.ServiceManagement.Model.OSVirtualHardDisk;
+using RoleInstance = Microsoft.WindowsAzure.Management.Compute.Models.RoleInstance;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Xml.Serialization;
-    using AutoMapper;
-    using Management.Compute.Models;
-    using Model;
-    using Model.PersistentVMModel;
-    using Properties;
-    using ConfigurationSet                    = Model.PersistentVMModel.ConfigurationSet;
-    using DataVirtualHardDisk                 = Model.PersistentVMModel.DataVirtualHardDisk;
-    using LinuxProvisioningConfigurationSet   = Model.PersistentVMModel.LinuxProvisioningConfigurationSet;
-    using NetworkConfigurationSet             = Model.PersistentVMModel.NetworkConfigurationSet;
-    using OSVirtualHardDisk                   = Model.PersistentVMModel.OSVirtualHardDisk;
-    using RoleInstance                        = Management.Compute.Models.RoleInstance;
-    using WindowsProvisioningConfigurationSet = Model.PersistentVMModel.WindowsProvisioningConfigurationSet;
-
     public static class PersistentVMHelper
     {
         public static void SaveStateToFile(PersistentVM role, string filePath)
@@ -122,7 +118,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
         public static Collection<ConfigurationSet> MapConfigurationSets(IList<Management.Compute.Models.ConfigurationSet> configurationSets)
         {
             var result = new Collection<ConfigurationSet>();
-            var n = configurationSets.Where(c => c.ConfigurationSetType == "NetworkConfiguration").Select(Mapper.Map<Model.PersistentVMModel.NetworkConfigurationSet>).ToList();
+            var n = configurationSets.Where(c => c.ConfigurationSetType == "NetworkConfiguration").Select(Mapper.Map<Model.NetworkConfigurationSet>).ToList();
             var w = configurationSets.Where(c => c.ConfigurationSetType == ConfigurationSetTypes.WindowsProvisioningConfiguration).Select(Mapper.Map<WindowsProvisioningConfigurationSet>).ToList();
             var l = configurationSets.Where(c => c.ConfigurationSetType == ConfigurationSetTypes.LinuxProvisioningConfiguration).Select(Mapper.Map<LinuxProvisioningConfigurationSet>).ToList();
             n.ForEach(result.Add);
@@ -189,6 +185,33 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers
             }
 
             return name;
+        }
+
+        public static string ConvertCustomDataFileToBase64(string fileName)
+        {
+            byte[] bytes = new byte[3 * 4096]; // Make buffer be a factor of 3 for encoding correctly
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            System.IO.FileStream fileStream = null;
+ 
+            try
+            {
+                fileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Open);
+ 
+                while (fileStream.Position < fileStream.Length)
+                {
+                    int cb = fileStream.Read(bytes, 0, bytes.Length);
+                    sb.Append(System.Convert.ToBase64String(bytes, 0, cb));
+                }
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.Close();
+                }
+            }
+            
+            return (sb.ToString());
         }
     }
 }

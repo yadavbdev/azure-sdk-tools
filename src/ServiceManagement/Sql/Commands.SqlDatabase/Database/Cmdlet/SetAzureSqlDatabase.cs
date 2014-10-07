@@ -12,22 +12,24 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Common;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Services.Server;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
 {
-    using Commands.Utilities.Common;
-    using Properties;
-    using Services.Common;
-    using Services.Server;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-
     /// <summary>
-    /// Update settings for an existing Windows Azure SQL Database in the given server context.
+    /// Update settings for an existing Microsoft Azure SQL Database in the given server context.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "AzureSqlDatabase", SupportsShouldProcess = true,
         ConfirmImpact = ConfirmImpact.Medium)]
-    public class SetAzureSqlDatabase : CmdletBase
+    public class SetAzureSqlDatabase : AzurePSCmdlet
     {
         #region Parameter sets
 
@@ -98,7 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             ParameterSetName = ByObjectWithServerName,
             ValueFromPipeline = true)]
         [ValidateNotNull]
-        public Database Database { get; set; }
+        public Services.Server.Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the database name.
@@ -156,6 +158,12 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// </summary>
         [Parameter(HelpMessage = "Do not confirm on the altering of the database")]
         public SwitchParameter Force { get; set; }
+
+        /// <summary>
+        /// Gets or sets the switch to wait for the operation to complete on the server before returning
+        /// </summary>
+        [Parameter(HelpMessage = "Wait for the update operation to complete (synchronously)")]
+        public SwitchParameter Sync { get; set; }
 
         #endregion
 
@@ -263,6 +271,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// </summary>
         /// <param name="databaseName">The name of the database to update</param>
         /// <param name="maxSizeGb">the new size for the database or null</param>
+        /// <param name="maxSizeBytes"></param>
         /// <param name="edition">the new edition for the database or null</param>
         private void ProcessWithServerName(string databaseName, int? maxSizeGb, long? maxSizeBytes, DatabaseEdition? edition)
         {
@@ -270,7 +279,7 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
             try
             {
                 // Get the current subscription data.
-                WindowsAzureSubscription subscription = WindowsAzureProfile.Instance.CurrentSubscription;
+                AzureSubscription subscription = AzureSession.CurrentContext.Subscription;
 
                 // Create a temporary context
                 ServerDataServiceCertAuth context =
@@ -279,13 +288,19 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
                 GetClientRequestId = () => context.ClientRequestId;
 
                 // Remove the database with the specified name
-                Database database = context.UpdateDatabase(
+                Services.Server.Database database = context.UpdateDatabase(
                     databaseName,
                     this.NewDatabaseName,
                     maxSizeGb,
                     maxSizeBytes,
                     edition,
                     this.ServiceObjective);
+
+                if (this.Sync.IsPresent)
+                {
+                    // Wait for the operation to complete on the server.
+                    database = CmdletCommon.WaitForDatabaseOperation(this, context, database, this.DatabaseName, false);
+                }
 
                 // Update the passed in database object
                 if (this.MyInvocation.BoundParameters.ContainsKey("Database"))
@@ -314,19 +329,26 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Database.Cmdlet
         /// </summary>
         /// <param name="databaseName">the name of the database to alter</param>
         /// <param name="maxSizeGb">the new maximum size for the database</param>
+        /// <param name="maxSizeBytes"></param>
         /// <param name="edition">the new edition for the database</param>
         private void ProcessWithConnectionContext(string databaseName, int? maxSizeGb, long? maxSizeBytes, DatabaseEdition? edition)
         {
             try
             {
                 // Update the database with the specified name
-                Database database = this.ConnectionContext.UpdateDatabase(
+                Services.Server.Database database = this.ConnectionContext.UpdateDatabase(
                     databaseName,
                     this.NewDatabaseName,
                     maxSizeGb,
                     maxSizeBytes,
                     edition,
                     this.ServiceObjective);
+
+                if (this.Sync.IsPresent)
+                {
+                    // Wait for the operation to complete on the server.
+                    database = CmdletCommon.WaitForDatabaseOperation(this, this.ConnectionContext, database, this.DatabaseName, false);
+                }
 
                 // If PassThru was specified, write back the updated object to the pipeline
                 if (this.PassThru.IsPresent)

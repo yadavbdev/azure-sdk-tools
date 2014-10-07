@@ -12,21 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdlets.IaaS.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Commands.Test.Utilities.Common;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Moq;
-    using ServiceManagement.IaaS.Extensions;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class VirtualMachineExtensionImageFactoryTests : TestBase
     {
@@ -78,6 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         }
 
         [TestMethod]
+        [TestCategory(Category.Functional)]
         public void TestNonExistingExtensionImageList()
         {
             var factory = new VirtualMachineExtensionImageFactory(client.Object);
@@ -91,6 +91,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         }
 
         [TestMethod]
+        [TestCategory(Category.Functional)]
         public void TestMakeListWithoutClient()
         {
             var factory = new VirtualMachineExtensionImageFactory(null);
@@ -104,6 +105,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.UnitTests.Cmdle
         }
 
         [TestMethod]
+        [TestCategory(Category.Functional)]
         public void TestMakeListWithClient()
         {
             var factory = new VirtualMachineExtensionImageFactory(client.Object);

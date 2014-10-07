@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using PowershellCore;
-
     internal class WindowsAzurePowershellCmdletSequence : PowershellCmdletSequence
     {
         private static readonly string[] modules = new[]

@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using ConfigDataInfo;
-    using PowershellCore;
-
     public class AddAzureEndpointCmdletInfo : CmdletsInfo
     {
         public AddAzureEndpointCmdletInfo(AzureEndPointConfigInfo endPointConfig)
@@ -70,6 +70,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             if (endPointConfig.DirectServerReturn)
             {
                 this.cmdletParams.Add(new CmdletParam("DirectServerReturn", endPointConfig.DirectServerReturn));
+            }
+
+            if (!string.IsNullOrEmpty(endPointConfig.InternalLoadBalancerName))
+            {
+                this.cmdletParams.Add(new CmdletParam("InternalLoadBalancerName", endPointConfig.InternalLoadBalancerName));
             }
         }
 

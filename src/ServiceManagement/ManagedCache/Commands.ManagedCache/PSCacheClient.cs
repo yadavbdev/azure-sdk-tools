@@ -12,36 +12,41 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using Microsoft.Azure.Commands.ManagedCache.Models;
+using Microsoft.Azure.Management.ManagedCache;
+using Microsoft.Azure.Management.ManagedCache.Models;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.ManagedCache
 {
-    using Microsoft.Azure.Commands.ManagedCache.Models;
-    using Microsoft.Azure.Management.ManagedCache;
-    using Microsoft.Azure.Management.ManagedCache.Models;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Threading;
-
     class PSCacheClient
     {
         private const string CacheResourceType = "Caching";
-        private const string CacheResourceProviderNamespace = "cacheservice";
         private const string CacheServiceReadyState = "Active";
 
         private ManagedCacheClient client;
-        public PSCacheClient(WindowsAzureSubscription currentSubscription)
+        public PSCacheClient(AzureSubscription currentSubscription)
         {
-            client = currentSubscription.CreateClient<ManagedCacheClient>();
+            client = AzureSession.ClientFactory.CreateClient<ManagedCacheClient>(currentSubscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
         public PSCacheClient() { }
 
         public Action<string> ProgressRecorder { get; set; }
+
+        public List<RegionsResponse.Region> GetLocations()
+        {
+            return new List<RegionsResponse.Region>(client.CacheServices.ListRegions().Regions);
+        }
 
         public CloudServiceResource CreateCacheService (
             string subscriptionID,
@@ -96,7 +101,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
             foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
             {
                 cacheResource = cloudService.Resources.FirstOrDefault(
-                    p => { return p.Name.Equals(cacheServiceName) && p.Type == CacheResourceType; });
+                    p => { return p.Name.Equals(cacheServiceName) && IsCachingResource(p.Type); });
                 if (cacheResource != null)
                 {
                     cloudServiceName = cloudService.Name;
@@ -142,6 +147,11 @@ namespace Microsoft.Azure.Commands.ManagedCache
             return cacheResource;
         }
 
+        private static bool IsCachingResource(string resourceType)
+        {
+            return string.Compare(resourceType, CacheResourceType, StringComparison.OrdinalIgnoreCase) == 0;
+        }
+
         private string GetPromptMessgaeIfThereIsDataLoss(CacheServiceSkuType existingSkuType, 
             CacheServiceSkuType newSkuType, 
             int existingSkuCount, 
@@ -185,7 +195,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
             while (waitInMinutes > 0)
             {
                 cacheResource = GetCacheService(cloudServiceName, cacheServiceName);
-                if (cacheResource.SubState == CacheServiceReadyState)
+                if (CacheServiceReadyState.Equals(cacheResource.SubState, StringComparison.OrdinalIgnoreCase))
                 {
                     break;
                 }
@@ -253,12 +263,14 @@ namespace Microsoft.Azure.Commands.ManagedCache
             {
                 foreach(CloudServiceResource resource in cloudService.Resources)
                 {
-                    if (resource.Type == CacheResourceType)
+                    if (IsCachingResource(resource.Type))
                     {
                         bool nameMatched = string.IsNullOrEmpty(cacheServiceName)
                             || cacheServiceName.Equals(resource.Name, StringComparison.OrdinalIgnoreCase);
 
-                        if (nameMatched)
+                        //'unknown' is a bad caching entry due to service internal error, 
+                        // that we should not display; otherwise, it will screw up the displaying for missing some important fields.   
+                        if (nameMatched && string.Compare(resource.State, "Unknown",  StringComparison.OrdinalIgnoreCase)!=0)
                         {
                             services.Add(new PSCacheService(resource));
                         }
@@ -289,8 +301,8 @@ namespace Microsoft.Azure.Commands.ManagedCache
             foreach (CloudServiceListResponse.CloudService cloudService in listResponse)
             {
                 CloudServiceResource matched = cloudService.Resources.FirstOrDefault(
-                   resource => { 
-                       return resource.Type == CacheResourceType 
+                   resource => {
+                       return IsCachingResource(resource.Type) 
                         && cacheServiceName.Equals(resource.Name, StringComparison.OrdinalIgnoreCase);
                    });
 
@@ -306,8 +318,8 @@ namespace Microsoft.Azure.Commands.ManagedCache
         {
             CloudServiceGetResponse response = client.CloudServices.Get(cloudServiceName);
             CloudServiceResource cacheResource = response.Resources.FirstOrDefault((r) => 
-            { 
-                return r.Type == CacheResourceType && r.Name.Equals(cacheServiceName, StringComparison.OrdinalIgnoreCase);
+            {
+                return IsCachingResource(r.Type) && r.Name.Equals(cacheServiceName, StringComparison.OrdinalIgnoreCase);
             });
             return cacheResource;
         }

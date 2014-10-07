@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using System.Security.Permissions;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Security.Permissions;
+
     /// <summary>
     /// Get publish profile
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzurePublishSettingsFile"), OutputType(typeof(bool))]
-    public class GetAzurePublishSettingsFileCommand : CmdletBase
+    public class GetAzurePublishSettingsFileCommand : SubscriptionCmdletBase
     {
         [Parameter(Position = 0, Mandatory = false, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The targeted Windows Azure environment.")]
+            HelpMessage = "The targeted Microsoft Azure environment.")]
         [ValidateNotNullOrEmpty]
         public string Environment { get; set; }
 
@@ -40,27 +41,13 @@ namespace Microsoft.WindowsAzure.Commands.Profile
             HelpMessage = "Returns true in success.")]
         public SwitchParameter PassThru { get; set; }
 
+        public GetAzurePublishSettingsFileCommand() : base(false) { }
+
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public override void ExecuteCmdlet()
         {
-            WindowsAzureEnvironment environment;
-            if (string.IsNullOrEmpty(Environment))
-            {
-                environment = WindowsAzureProfile.Instance.CurrentEnvironment;
-            }
-            else
-            {
-                try
-                {
-                    environment = WindowsAzureProfile.Instance.Environments[Environment];
-                }
-                catch (KeyNotFoundException)
-                {
-                    throw new Exception(string.Format(Resources.EnvironmentNotFound, Environment));
-                }
-            }
-
-            string url = environment.PublishSettingsFileUrlWithRealm(Realm);
+            AzureEnvironment environment = ProfileClient.GetEnvironmentOrDefault(Environment);
+            string url = environment.GetPublishSettingsFileUrlWithRealm(Realm);
             GeneralUtilities.LaunchWebPage(url);
 
             if (PassThru)

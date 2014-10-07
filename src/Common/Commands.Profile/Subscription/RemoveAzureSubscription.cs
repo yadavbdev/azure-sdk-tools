@@ -12,28 +12,34 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Profile;
+
 namespace Microsoft.WindowsAzure.Commands.Profile
 {
-    using Microsoft.WindowsAzure.Commands.Common.Properties;
-    using System;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Profile;
-
     /// <summary>
     /// Removes a previously imported subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "AzureSubscription", SupportsShouldProcess = true), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureSubscription", SupportsShouldProcess = true, DefaultParameterSetName = "Name")]
+    [OutputType(typeof(AzureSubscription))]
     public class RemoveAzureSubscriptionCommand : SubscriptionCmdletBase
     {
-        public RemoveAzureSubscriptionCommand() : base(false)
+        public RemoveAzureSubscriptionCommand() : base(true)
         {
         }
 
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.")]
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "Name")]
         [ValidateNotNullOrEmpty]
+        [Alias("Name")]
         public string SubscriptionName { get; set; }
+
+        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the subscription.", ParameterSetName = "Id")]
+        [ValidateNotNullOrEmpty]
+        [Alias("Id")]
+        public string SubscriptionId { get; set; }
 
         [Parameter(Position = 2, HelpMessage = "Do not confirm deletion of subscription")]
         public SwitchParameter Force { get; set; }
@@ -43,30 +49,13 @@ namespace Microsoft.WindowsAzure.Commands.Profile
 
         public void RemoveSubscriptionProcess()
         {
-            var subscription = Profile.Subscriptions.FirstOrDefault(s => s.SubscriptionName == SubscriptionName);
-            if (subscription != null)
+            if (SubscriptionName != null)
             {
-                // Warn the user if the removed subscription is the default one.
-                if (subscription.IsDefault)
-                {
-                    WriteWarning(Resources.RemoveDefaultSubscription);
-                }
-
-                // Warn the user if the removed subscription is the current one.
-                if (subscription == Profile.CurrentSubscription)
-                {
-                    WriteWarning(Resources.RemoveCurrentSubscription);
-                }
-
-                Profile.RemoveSubscription(subscription);
-                if (PassThru.IsPresent)
-                {
-                    WriteObject(true);
-                }
+                ProfileClient.RemoveSubscription(SubscriptionName);
             }
             else
             {
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Resources.InvalidSubscription, SubscriptionName));
+                ProfileClient.RemoveSubscription(new Guid(SubscriptionId));
             }
         }
 
@@ -74,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.Profile
         {
             ConfirmAction(
                 Force.IsPresent,
-                string.Format(Resources.RemoveSubscriptionConfirmation, SubscriptionName),
+                string.Format(Resources.RemoveSubscriptionConfirmation, SubscriptionName ?? SubscriptionId),
                 Resources.RemoveSubscriptionMessage,
                 SubscriptionName,
                 RemoveSubscriptionProcess);

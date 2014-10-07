@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PreviewCmdletInfo
 {
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
-
-
     public class RemoveAzureReservedIPCmdletInfo : CmdletsInfo
     {
-        public RemoveAzureReservedIPCmdletInfo(string name)
+        public RemoveAzureReservedIPCmdletInfo(string name, bool force)
         {
             this.cmdletName = Utilities.RemoveAzureReservedIPCmdletName;
 
             this.cmdletParams.Add(new CmdletParam("ReservedIPName", name));
+            if(force)
+            this.cmdletParams.Add(new CmdletParam("Force"));
         }
     }
 }

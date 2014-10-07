@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Scheduler;
+
 namespace Microsoft.WindowsAzure.Commands.Scheduler
 {
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Utilities.Websites.Common;
-
     /// <summary>
     /// Cmdlet to list available regions
     /// </summary>

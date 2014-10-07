@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System.Linq;
-    using System.Management.Automation;
-    using Management.Network;
-    using Model;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Get, "AzureVNetConnection"), OutputType(typeof(GatewayConnectionContext))]
     public class GetAzureVNetConnectionCommand : ServiceManagementBaseCmdlet
     {

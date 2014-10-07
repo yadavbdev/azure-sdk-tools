@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Xml.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
-    using Common;
-    using Common.XmlSchema.ServiceConfigurationSchema;
-    using Common.XmlSchema.ServiceDefinitionSchema;
-    using Properties;
-    using Scaffolding;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Xml.Linq;
     using ConfigConfigurationSetting = Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
     using DefinitionConfigurationSetting = Common.XmlSchema.ServiceDefinitionSchema.ConfigurationSetting;
 
@@ -37,7 +38,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
                 { SDKVersion.Version180,  CacheRole180 },
                 { SDKVersion.Version200,  CacheRole180 },
                 { SDKVersion.Version220,  CacheRole180 },
-                { SDKVersion.Version230,  CacheRole180}
+                { SDKVersion.Version230,  CacheRole180 },
+                { SDKVersion.Version240,  CacheRole180 }
             };
 
         private static Dictionary<string, Action<CloudServiceProject, string, string>> clientRoleConfigurationActions =
@@ -46,7 +48,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
                 { SDKVersion.Version180,  CacheClientRole180 },
                 { SDKVersion.Version200,  CacheClientRole180 },
                 { SDKVersion.Version220,  CacheClientRole180 },
-                { SDKVersion.Version230,  CacheClientRole180 }
+                { SDKVersion.Version230,  CacheClientRole180 },
+                { SDKVersion.Version240,  CacheClientRole180 }
             };
 
         #region Cache Role Configuration

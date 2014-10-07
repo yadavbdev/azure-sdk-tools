@@ -12,6 +12,8 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Microsoft.Azure.Commands.Resources.Models
@@ -24,8 +26,27 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public List<PSResource> Resources { get; set; }
 
-        public string ResourcesTable { get; set; }
+        public string ResourcesTable
+        {
+            get { return ResourcesExtensions.ConstructResourcesTable(Resources); }
+        }
 
         public string ProvisioningState { get; set; }
+
+        public List<PSPermission> Permissions { get; set; }
+
+        public string PermissionsTable
+        {
+            get { return ResourcesExtensions.ConstructPermissionsTable(Permissions); }
+        }
+
+        public Hashtable[] Tags { get; set; }
+
+        public string TagsTable
+        {
+            get { return ResourcesExtensions.ConstructTagsTable(Tags); }
+        }
+
+        public string ResourceId { get; set; }
     }
 }

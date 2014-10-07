@@ -12,12 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Gallery;
-using Microsoft.Azure.Gallery.Models;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Common.OData;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,6 +21,16 @@ using System.Linq;
 using System.Management.Automation;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
+
+using Microsoft.Azure.Gallery;
+using Microsoft.Azure.Gallery.Models;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Common.OData;
+using Newtonsoft.Json;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
 
 namespace Microsoft.Azure.Commands.Resources.Models
@@ -35,8 +39,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
     {
         public IGalleryClient GalleryClient { get; set; }
 
-        public GalleryTemplatesClient(WindowsAzureSubscription subscription)
-            : this(subscription.CreateGalleryClientFromGalleryEndpoint<GalleryClient>())
+        public GalleryTemplatesClient(AzureContext context)
+            : this(AzureSession.ClientFactory.CreateClient<GalleryClient>(context, AzureEnvironment.Endpoint.Gallery))
         {
 
         }
@@ -92,7 +96,64 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 result.AddRange(QueryGalleryTemplates(options, filterStrings, parameters));
             }
 
+            if (!options.AllVersions && result.Count > 1)
+            {
+                if (!string.IsNullOrEmpty(options.Publisher) && string.IsNullOrEmpty(options.ApplicationName) && string.IsNullOrEmpty(options.Identity))
+                {
+                    // we return a list of the most recent templates, for each name.
+                    List<GalleryItem> latest = new List<GalleryItem>();
+                    IEnumerable<string> distinctNames = result.Select(g => g.Name).Distinct();
+                    foreach (var name in distinctNames)
+                    {
+                        List<GalleryItem> galleryItems = result.Where(x => x.Name.Equals(name)).ToList();
+                        GalleryItem recentTemplate = this.MostRecentTemplate(galleryItems);
+                        if (recentTemplate != null)
+                        {
+                            latest.Add(recentTemplate);
+                        }
+                    }
+
+                    return latest.Select(i => i.ToPSGalleryItem()).ToList();
+                }
+
+                // Take only the most recent version
+                GalleryItem mostRecentTemplate = MostRecentTemplate(result);
+                if (mostRecentTemplate != null)
+                {
+                    return new List<PSGalleryItem>() { mostRecentTemplate.ToPSGalleryItem() };
+                }
+            }
+
             return result.Select(i => i.ToPSGalleryItem()).ToList();
+        }
+
+        private GalleryItem MostRecentTemplate(List<GalleryItem> galleryItems)
+        {
+            if (galleryItems == null || galleryItems.Count == 0)
+            {
+                return null;
+            }
+
+            if (galleryItems.Count == 1)
+            {
+                return galleryItems[0];
+            }
+
+            GalleryItem mostRecent = galleryItems[0];
+            foreach (var galleryItem in galleryItems)
+            {
+                // if CompareTo is greater then the present galleryItem is a higher version
+                string galleryItemVersion = galleryItem.Version == null ? "0.0.0.0" : galleryItem.Version.Replace("-preview", string.Empty);
+                string mostRecentVersion = mostRecent.Version == null ? "0.0.0.0" : mostRecent.Version.Replace("-preview", string.Empty);
+                galleryItemVersion = galleryItemVersion.Replace("-placeholder", string.Empty);
+                mostRecentVersion = mostRecentVersion.Replace("-placeholder", string.Empty);
+                if ((new Version(galleryItemVersion)).CompareTo(new Version(mostRecentVersion)) > 0)
+                {
+                    mostRecent = galleryItem;
+                }
+            }
+
+            return mostRecent;
         }
 
         /// <summary>
@@ -112,7 +173,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             if (!FileUtilities.IsValidDirectoryPath(outputPath))
             {
                 // Try create the directory if it does not exist.
-                new FileInfo(outputPath).Directory.Create();
+                FileUtilities.DataStore.CreateDirectory(Path.GetDirectoryName(outputPath));
             }
 
             if (FileUtilities.IsValidDirectoryPath(outputPath))
@@ -128,9 +189,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 }
             }
 
-            Action saveFile = () => File.WriteAllText(finalOutputPath.ToString(), contents);
+            Action saveFile = () => FileUtilities.DataStore.WriteFile(finalOutputPath.ToString(), contents);
 
-            if (File.Exists(finalOutputPath.ToString()) && confirmAction != null)
+            if (FileUtilities.DataStore.FileExists(finalOutputPath.ToString()) && confirmAction != null)
             {
                 confirmAction(
                     overwrite,
@@ -185,9 +246,9 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 {
                     templateContent = GeneralUtilities.DownloadFile(templateFilePath);
                 }
-                else if (File.Exists(templateFilePath))
+                else if (FileUtilities.DataStore.FileExists(templateFilePath))
                 {
-                    templateContent = File.ReadAllText(templateFilePath);
+                    templateContent = FileUtilities.DataStore.ReadFileAsText(templateFilePath);
                 }
             }
 
@@ -200,16 +261,16 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             Dictionary<string, TemplateFileParameterV1> parameters = new Dictionary<string, TemplateFileParameterV1>();
 
-            if (!string.IsNullOrEmpty(templateParameterFilePath) && File.Exists(templateParameterFilePath))
+            if (!string.IsNullOrEmpty(templateParameterFilePath) && FileUtilities.DataStore.FileExists(templateParameterFilePath))
             {
                 try
                 {
-                    parameters = JsonConvert.DeserializeObject<Dictionary<string, TemplateFileParameterV1>>(File.ReadAllText(templateParameterFilePath));
+                    parameters = JsonConvert.DeserializeObject<Dictionary<string, TemplateFileParameterV1>>(FileUtilities.DataStore.ReadFileAsText(templateParameterFilePath));
                 }
                 catch (JsonSerializationException)
                 {
                     parameters = new Dictionary<string, TemplateFileParameterV1>(
-                        JsonConvert.DeserializeObject<TemplateFileParameterV2>(File.ReadAllText(templateParameterFilePath)).Parameters);
+                        JsonConvert.DeserializeObject<TemplateFileParameterV2>(FileUtilities.DataStore.ReadFileAsText(templateParameterFilePath)).Parameters);
                 }
             }
 
@@ -244,7 +305,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             {
                 UpdateParametersWithObject(dynamicParameters, templateParameterObject);
             }
-            if (templateParameterFilePath != null && File.Exists(templateParameterFilePath))
+            if (templateParameterFilePath != null && FileUtilities.DataStore.FileExists(templateParameterFilePath))
             {
                 var parametersFromFile = ParseTemplateParameterFileContents(templateParameterFilePath);
                 UpdateParametersWithObject(dynamicParameters, new Hashtable(parametersFromFile));
@@ -324,8 +385,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             RuntimeDefinedParameter runtimeParameter = new RuntimeDefinedParameter()
             {
-                // For duplicated template parameter names, add a sufix FromTemplate to distingush them from the cmdlet parameter.
-                Name = staticParameters.Any(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase)) 
+                // For duplicated template parameter names, add a suffix FromTemplate to distinguish them from the cmdlet parameter.
+                Name = staticParameters.Any(n => n.StartsWith(name, StringComparison.OrdinalIgnoreCase))
                     ? name + duplicatedParameterSuffix : name,
                 ParameterType = GetParameterType(parameter.Value.Type),
                 Value = defaultValue
@@ -372,7 +433,24 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 parameters = new ItemListParameters() { Filter = string.Join(" and ", filterStrings) };
             }
 
-            return GalleryClient.Items.List(parameters).Items.ToList();
+            List<GalleryItem> galleryItems = GalleryClient.Items.List(parameters).Items.ToList();
+            if (!string.IsNullOrEmpty(options.ApplicationName))
+            {
+                List<GalleryItem> result = new List<GalleryItem>();
+                string wildcardApplicationName = Regex.Escape(options.ApplicationName).Replace(@"\*", ".*").Replace(@"\?", ".");
+                Regex regex = new Regex(wildcardApplicationName, RegexOptions.IgnoreCase);
+                foreach (var galleryItem in galleryItems)
+                {
+                    if (regex.IsMatch(galleryItem.Name))
+                    {
+                        result.Add(galleryItem);
+                    }
+                }
+
+                return result;
+            }
+
+            return galleryItems;
         }
     }
 }

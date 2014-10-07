@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Commands.Storage.ScenarioTest.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Storage.Blob;
+using MS.Test.Common.MsTestLib;
+using StorageTestLib;
+
 namespace Commands.Storage.ScenarioTest.Functional.Blob
 {
-    using Common;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using MS.Test.Common.MsTestLib;
-    using StorageTestLib;
-    using System.Collections.Generic;
-
     /// <summary>
     /// functional test for RemoveContainer
     /// </summary>

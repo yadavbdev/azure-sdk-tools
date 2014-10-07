@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Data.Services.Client;
+using System.Linq;
+using Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Store
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.MarketplaceServiceReference;
-    using Microsoft.WindowsAzure.Commands.Utilities.Properties;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Services.Client;
-    using System.Linq;
-
     public class MarketplaceClient
     {
         public List<string> SubscriptionLocations { get; private set; }
@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Store
         }
 
         /// <summary>
-        /// Gets available Windows Azure offers from the Marketplace.
+        /// Gets available Microsoft Azure offers from the Marketplace.
         /// </summary>
         /// <param name="countryCode">The country two character code. Uses 'US' by default </param>
         /// <returns>The list of offers</returns>

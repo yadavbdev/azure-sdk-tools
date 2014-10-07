@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using System.Management.Automation;
-    using Utilities.Websites.Common;
-
     /// <summary>
     /// Stops an azure website.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Stop, "AzureWebsite"), OutputType(typeof(bool))]
     public class StopAzureWebsiteCommand : WebsiteContextBaseCmdlet
     {
-
         [Parameter(Mandatory = false)]
         public SwitchParameter PassThru { get; set; }
 

@@ -13,13 +13,13 @@
 // limitations under the License.
 //
 
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using Microsoft.Azure.Management.ManagedCache;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Common;
 using Microsoft.WindowsAzure.Common.Internals;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 
 namespace Microsoft.Azure
 {
@@ -60,18 +60,6 @@ namespace Microsoft.Azure.Management.ManagedCache
             return baseUri != null ?
                 new ManagedCacheClient(credentials, baseUri) :
                 new ManagedCacheClient(credentials);
-        }
-
-        protected override void Clone(ServiceClient<ManagedCacheClient> client)
-        {
-            base.Clone(client);
-            ManagedCacheClient management = client as ManagedCacheClient;
-            if (management != null)
-            {
-                management._credentials = Credentials;
-                management._baseUri = BaseUri;
-                management.Credentials.InitializeServiceClient(management);
-            }
         }
 
         public override ManagedCacheClient WithHandler(DelegatingHandler handler)

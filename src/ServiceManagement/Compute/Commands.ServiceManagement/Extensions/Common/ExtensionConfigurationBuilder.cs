@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Management.Compute.Models;
-
     public class ExtensionConfigurationBuilder
     {
         private ExtensionManager extensionManager;

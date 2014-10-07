@@ -122,7 +122,7 @@
     <value>..\Resources\Azure.publishsettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="CacheRuntimeUrl" xml:space="preserve">
-    <value>http://az413943.vo.msecnd.net/cache/2.3.0.exe</value>
+    <value>http://az413943.vo.msecnd.net/cache/2.4.1.exe</value>
   </data>
   <data name="InvalidProfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InvalidProfile.PublishSettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -171,5 +171,14 @@
     &lt;Scaffold.ReplaceParameterRule /&gt;
   &lt;/ScaffoldFile&gt;
 &lt;/Scaffold&gt;</value>
+  </data>
+  <data name="ValidProfile3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\validprofile3.publishsettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ValidProfileChina" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\validprofilechina.publishsettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ValidProfileChinaOld" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\validprofilechinaold.publishsettings;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

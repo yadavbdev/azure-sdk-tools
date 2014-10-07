@@ -12,15 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools
 {
-    using Commands.Common.Properties;
-    using Common;
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
     public class CsRun 
     {
         private string _csrunPath;
@@ -104,9 +104,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools
 
         private void StartCsRunProcess(ComputeEmulatorMode mode, string arguments)
         {
-            if (mode == ComputeEmulatorMode.Express)
+            if (mode == ComputeEmulatorMode.Full)
             {
-                arguments += " " + Resources.CsRunEmulatorExpressArg;
+                arguments += " " + Resources.CsRunFullEmulatorArg;
             }
             StartCsRunProcess(arguments);
         }

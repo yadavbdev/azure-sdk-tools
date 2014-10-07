@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.ObjectModel;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using System.Text;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore
 {
-    using System.Collections.ObjectModel;
-    using System.Management.Automation;
-    using System.Management.Automation.Runspaces;
-    using System.Text;
-    using System;
-
     public abstract class PowershellEnvironment
     {
         protected InitialSessionState initialSessionState;
@@ -47,10 +47,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         public abstract Collection<PSObject> Run(bool debug);
 
-        protected void PrintPSCommand(PowerShell powershell)
+        protected void PrintPSCommand(System.Management.Automation.PowerShell powershell)
         {
 
             StringBuilder command = new StringBuilder();
+            DateTime currentTime = DateTime.UtcNow;
+            command.Append("[" + currentTime.ToShortDateString() + " " + currentTime.ToLongTimeString() + "] ");
+
             for (int i = 0; i < powershell.Commands.Commands.Count; i++)
             {
 

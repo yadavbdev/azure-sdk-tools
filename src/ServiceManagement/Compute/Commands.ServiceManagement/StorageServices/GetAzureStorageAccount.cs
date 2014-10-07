@@ -12,16 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using System.Linq;
-    using System.Management.Automation;
-    using AutoMapper;
-    using Management.Storage;
-    using Management.Storage.Models;
-    using Model;
-    using Utilities.Common;
-
     /// <summary>
     /// Lists all storage services underneath the subscription.
     /// </summary>
@@ -67,6 +67,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
                             return context;
                         }));
             }
+
+            WriteWarning(Resources.DeprecationOfTheGeoReplicationEnabledParamInTheGetCmdlet);
         }
     }
 }

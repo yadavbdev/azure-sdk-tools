@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Xunit;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites;
+using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
+using Microsoft.WindowsAzure.WebSitesExtensions.Models;
+using Moq;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Websites
 {
-    using Commands.Utilities.Websites;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Websites.WebJobs;
-    using Microsoft.WindowsAzure.WebSitesExtensions.Models;
-    using Moq;
-    using System.Management.Automation;
-    using Utilities.Websites;
-
-    [TestClass]
+    
     public class NewAzureWebsiteJobTests : WebsitesTestBase
     {
         private const string websiteName = "website1";
@@ -31,12 +31,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
 
         private Mock<IWebsitesClient> websitesClientMock;
 
-        private NewAzureWebsiteJobCommand cmdlet; 
+        private NewAzureWebsiteJobCommand cmdlet;
 
         private Mock<ICommandRuntime> commandRuntimeMock;
 
-        [TestInitialize]
-        public override void SetupTest()
+        public NewAzureWebsiteJobTests()
         {
             websitesClientMock = new Mock<IWebsitesClient>();
             commandRuntimeMock = new Mock<ICommandRuntime>();
@@ -49,14 +48,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.Websites
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void CreatesTriggeredWebJob()
         {
             // Setup
             string jobName = "myWebJob";
             string jobFile = "job.bat";
             WebJobType jobType = WebJobType.Triggered;
-            PSWebJob output = new PSWebJob() { JobName = jobName, JobType = jobType };
+            PSTriggeredWebJob output = new PSTriggeredWebJob() { JobName = jobName, JobType = jobType };
             websitesClientMock.Setup(f => f.CreateWebJob(websiteName, slot, jobName, jobType, jobFile)).Returns(output);
             cmdlet.JobName = jobName;
             cmdlet.JobType = jobType;

@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Management.Sql;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Server.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
-    using Microsoft.WindowsAzure.Management.Sql;
-    using System;
-    using System.Globalization;
-    using System.Management.Automation;
-
     /// <summary>
-    /// Removes an existing Windows Azure SQL Database server in the selected subscription.
+    /// Removes an existing Microsoft Azure SQL Database server in the selected subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "AzureSqlDatabaseServer", SupportsShouldProcess = true,
         ConfirmImpact = ConfirmImpact.High)]

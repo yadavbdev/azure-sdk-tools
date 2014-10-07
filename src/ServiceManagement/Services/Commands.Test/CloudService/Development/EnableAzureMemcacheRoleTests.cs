@@ -12,26 +12,29 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.CloudService.Development;
+using Microsoft.WindowsAzure.Commands.CloudService.Development.Scaffolding;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService;
+using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Xunit;
+
 namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
 {
-    using Commands.CloudService.Development;
-    using Commands.CloudService.Development.Scaffolding;
-    using Commands.Utilities.CloudService;
-    using Commands.Utilities.Common;
-    using Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema;
-    using Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
-    using Commands.Utilities.Properties;
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using Test.Utilities.Common;
-    using VisualStudio.TestTools.UnitTesting;
     using ConfigConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceConfigurationSchema.ConfigurationSetting;
     using DefinitionConfigurationSetting = Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema.ConfigurationSetting;
     using TestResources = Commands.Common.Test.Properties.Resources;
 
-    [TestClass]
     public class EnableAzureMemcacheRoleTests : TestBase
     {
         private MockCommandRuntime mockCommandRuntime;
@@ -43,11 +46,11 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         private AddAzureCacheWorkerRoleCommand addCacheRoleCmdlet;
 
         private EnableAzureMemcacheRoleCommand enableCacheCmdlet;
-
-        [TestInitialize]
-        public void SetupTest()
+        
+        public EnableAzureMemcacheRoleTests()
         {
-            GlobalPathInfo.GlobalSettingsDirectory = Data.AzureSdkAppDir;
+            AzureTool.IgnoreMissingSDKError = true;
+            AzurePowerShell.ProfileDirectory = Test.Utilities.Common.Data.AzureSdkAppDir;
             mockCommandRuntime = new MockCommandRuntime();
 
             enableCacheCmdlet = new EnableAzureMemcacheRoleCommand();
@@ -56,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
             enableCacheCmdlet.CommandRuntime = mockCommandRuntime;
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcess()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -72,7 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
                 addCacheRoleCmdlet.AddAzureCacheWorkerRoleProcess(cacheRoleName, 1, rootPath);
                 mockCommandRuntime.ResetPipelines();
                 enableCacheCmdlet.PassThru = true;
-                enableCacheCmdlet.CacheRuntimeVersion = "2.3.0";
+                enableCacheCmdlet.CacheRuntimeVersion = "2.4.0";
                 enableCacheCmdlet.EnableAzureMemcacheRoleProcess(webRoleName, cacheRoleName, rootPath);
 
                 AssertCachingEnabled(files, serviceName, rootPath, webRoleName, expectedMessage);
@@ -82,7 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         /// <summary>
         /// Verify that enabling cache on worker role will pass.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessOnWorkerRoleSuccess()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -127,18 +130,18 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
 
                 string workerConfigPath = string.Format(@"{0}\{1}\{2}", rootPath, workerRoleName, "web.config");
                 string workerCloudConfig = File.ReadAllText(workerConfigPath);
-                Assert.IsTrue(workerCloudConfig.Contains("configSections"));
-                Assert.IsTrue(workerCloudConfig.Contains("dataCacheClients"));
+                Assert.True(workerCloudConfig.Contains("configSections"));
+                Assert.True(workerCloudConfig.Contains("dataCacheClients"));
 
-                Assert.AreEqual<string>(expectedMessage, mockCommandRuntime.VerboseStream[0]);
-                Assert.AreEqual<string>(workerRoleName, (mockCommandRuntime.OutputPipeline[0] as PSObject).GetVariableValue<string>(Parameters.RoleName));
+                Assert.Equal<string>(expectedMessage, mockCommandRuntime.VerboseStream[0]);
+                Assert.Equal<string>(workerRoleName, (mockCommandRuntime.OutputPipeline[0] as PSObject).GetVariableValue<string>(Parameters.RoleName));
             }
         }
 
         /// <summary>
         /// Verify that enabling cache with non-existing cache worker role will fail.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessCacheRoleDoesNotExistFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -159,7 +162,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         /// <summary>
         /// Verify that enabling cache with non-existing role to enable on will fail.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessRoleDoesNotExistFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -179,7 +182,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         /// <summary>
         /// Verify that enabling cache using same cache worker role on role with cache will fail.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessAlreadyEnabledFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -202,7 +205,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         /// <summary>
         /// Verify that enabling cache using different cache worker role on role with cache will fail.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessAlreadyEnabledNewCacheRoleFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -227,7 +230,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
         /// <summary>
         /// Verify that enabling cache using non-cache worker role will fail.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessUsingNonCacheWorkerRole()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -247,7 +250,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessWithDefaultRoleName()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -265,7 +268,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
                 addCacheRoleCmdlet.AddAzureCacheWorkerRoleProcess(cacheRoleName, 1, rootPath);
                 mockCommandRuntime.ResetPipelines();
                 enableCacheCmdlet.PassThru = true;
-                enableCacheCmdlet.CacheRuntimeVersion = "2.3.0";
+                enableCacheCmdlet.CacheRuntimeVersion = "2.4.0";
                 enableCacheCmdlet.RoleName = string.Empty;
                 enableCacheCmdlet.CacheWorkerRoleName = cacheRoleName;
                 enableCacheCmdlet.ExecuteCmdlet();
@@ -287,15 +290,15 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
 
             AzureAssert.RuntimeUrlAndIdExists(webRole.Startup.Task, Resources.CacheRuntimeValue);
 
-            Assert.AreEqual<string>(Resources.CacheRuntimeVersionKey, webRole.Startup.Task[0].Environment[0].name);
-            Assert.AreEqual<string>(enableCacheCmdlet.CacheRuntimeVersion, webRole.Startup.Task[0].Environment[0].value);
+            Assert.Equal<string>(Resources.CacheRuntimeVersionKey, webRole.Startup.Task[0].Environment[0].name);
+            Assert.Equal<string>(enableCacheCmdlet.CacheRuntimeVersion, webRole.Startup.Task[0].Environment[0].value);
             
-            Assert.AreEqual<string>(Resources.EmulatedKey, webRole.Startup.Task[2].Environment[0].name);
-            Assert.AreEqual<string>("/RoleEnvironment/Deployment/@emulated", webRole.Startup.Task[2].Environment[0].RoleInstanceValue.xpath);
+            Assert.Equal<string>(Resources.EmulatedKey, webRole.Startup.Task[2].Environment[0].name);
+            Assert.Equal<string>("/RoleEnvironment/Deployment/@emulated", webRole.Startup.Task[2].Environment[0].RoleInstanceValue.xpath);
             
-            Assert.AreEqual<string>(Resources.CacheRuntimeUrl, webRole.Startup.Task[2].Environment[1].name);
-            Assert.AreEqual<string>(TestResources.CacheRuntimeUrl, webRole.Startup.Task[2].Environment[1].value);
-            Assert.AreEqual(1, webRole.Startup.Task.Count(t => t.commandLine.Equals(Resources.CacheStartupCommand)));
+            Assert.Equal<string>(Resources.CacheRuntimeUrl, webRole.Startup.Task[2].Environment[1].name);
+            Assert.Equal<string>(TestResources.CacheRuntimeUrl, webRole.Startup.Task[2].Environment[1].value);
+            Assert.Equal(1, webRole.Startup.Task.Count(t => t.commandLine.Equals(Resources.CacheStartupCommand)));
             
 
             AzureAssert.ScaffoldingExists(Path.Combine(files.RootPath, serviceName, webRoleName), Path.Combine(Resources.CacheScaffolding, Resources.WebRole));
@@ -321,21 +324,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
             AssertWebConfig(string.Format(@"{0}\{1}\{2}", rootPath, webRoleName, Resources.WebCloudConfig));
             AssertWebConfig(string.Format(@"{0}\{1}\{2}", rootPath, webRoleName, Resources.WebConfigTemplateFileName));
 
-            Assert.AreEqual<string>(expectedMessage, mockCommandRuntime.VerboseStream[0]);
-            Assert.AreEqual<string>(webRoleName, (mockCommandRuntime.OutputPipeline[0] as PSObject).GetVariableValue<string>(Parameters.RoleName));
+            Assert.Equal<string>(expectedMessage, mockCommandRuntime.VerboseStream[0]);
+            Assert.Equal<string>(webRoleName, (mockCommandRuntime.OutputPipeline[0] as PSObject).GetVariableValue<string>(Parameters.RoleName));
         }
 
         private static void AssertWebConfig(string webCloudConfigPath)
         {
-            string webCloudCloudConfigContents = File.ReadAllText(webCloudConfigPath);
-            Assert.IsTrue(webCloudCloudConfigContents.Contains("configSections"));
-            Assert.IsTrue(webCloudCloudConfigContents.Contains("dataCacheClients"));
+            string webCloudCloudConfigContents = FileUtilities.DataStore.ReadFileAsText(webCloudConfigPath);
+            Assert.True(webCloudCloudConfigContents.Contains("configSections"));
+            Assert.True(webCloudCloudConfigContents.Contains("dataCacheClients"));
         }
 
         /// <summary>
         /// Verify that enabling cache with non-existing cache worker role will fail.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheRoleProcessOnCacheWorkerRoleFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -351,7 +354,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheWithoutCacheWorkerRoleName()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -367,14 +370,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
                 addCacheRoleCmdlet.AddAzureCacheWorkerRoleProcess(cacheRoleName, 1, rootPath);
                 mockCommandRuntime.ResetPipelines();
                 enableCacheCmdlet.PassThru = true;
-                enableCacheCmdlet.CacheRuntimeVersion = "2.3.0";
+                enableCacheCmdlet.CacheRuntimeVersion = "2.4.0";
                 enableCacheCmdlet.EnableAzureMemcacheRoleProcess(webRoleName, null, rootPath);
 
                 AssertCachingEnabled(files, serviceName, rootPath, webRoleName, expectedMessage);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheWithoutCacheWorkerRoleNameAndServiceHasMultipleWorkerRoles()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -392,14 +395,14 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
                 addCacheRoleCmdlet.AddAzureCacheWorkerRoleProcess(cacheRoleName, 1, rootPath);
                 mockCommandRuntime.ResetPipelines();
                 enableCacheCmdlet.PassThru = true;
-                enableCacheCmdlet.CacheRuntimeVersion = "2.3.0";
+                enableCacheCmdlet.CacheRuntimeVersion = "2.4.0";
                 enableCacheCmdlet.EnableAzureMemcacheRoleProcess(webRoleName, null, rootPath);
 
                 AssertCachingEnabled(files, serviceName, rootPath, webRoleName, expectedMessage);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void EnableAzureMemcacheWithNoCacheWorkerRolesFail()
         {
             using (FileSystemHelper files = new FileSystemHelper(this))
@@ -415,7 +418,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Development.Tests
                 addNodeWorkerCmdlet.ExecuteCmdlet();
                 mockCommandRuntime.ResetPipelines();
                 enableCacheCmdlet.PassThru = true;
-                enableCacheCmdlet.CacheRuntimeVersion = "2.3.0";
+                enableCacheCmdlet.CacheRuntimeVersion = "2.4.0";
 
                 Testing.AssertThrows<Exception>(() => enableCacheCmdlet.EnableAzureMemcacheRoleProcess(webRoleName, null, rootPath), expectedMessage);
             }

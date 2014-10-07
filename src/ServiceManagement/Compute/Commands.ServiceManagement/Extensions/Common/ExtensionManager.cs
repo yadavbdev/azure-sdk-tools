@@ -12,25 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Properties;
-    using Utilities.Common;
-
     public class ExtensionManager
     {
         public const int ExtensionIdLiveCycleCount = 2;
         private const string ExtensionIdTemplate = "{0}-{1}-{2}-Ext-{3}";
         private const string DefaultAllRolesNameStr = "Default";
-        private const string ExtensionCertificateSubject = "DC=Windows Azure Service Management for Extensions";
+        private const string ExtensionCertificateSubject = "DC=Microsoft Azure Service Management for Extensions";
         private const string ThumbprintAlgorithmStr = "sha1";
+        private const string ExtensionDefaultVersion = "1.*";
 
         protected ServiceManagementBaseCmdlet Cmdlet { get; private set; }
         protected string SubscriptionId { get; private set; }
@@ -39,7 +39,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 
         public ExtensionManager(ServiceManagementBaseCmdlet cmdlet, string serviceName)
         {
-            if (cmdlet == null || cmdlet.CurrentSubscription == null)
+            if (cmdlet == null || cmdlet.CurrentContext.Subscription == null)
             {
                 throw new ArgumentNullException("cmdlet");
             }
@@ -50,7 +50,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
             }
 
             Cmdlet = cmdlet;
-            SubscriptionId = cmdlet.CurrentSubscription.SubscriptionId;
+            SubscriptionId = cmdlet.CurrentContext.Subscription.Id.ToString();
             ServiceName = serviceName;
         }
 
@@ -206,7 +206,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
                     ProviderNamespace = context.ProviderNameSpace,
                     Type = context.Type,
                     PublicConfiguration = context.PublicConfiguration,
-                    PrivateConfiguration = context.PrivateConfiguration
+                    PrivateConfiguration = context.PrivateConfiguration,
+                    Version = string.IsNullOrEmpty(context.Version) ? ExtensionDefaultVersion : context.Version
                 });
 
                 if (r.Default)

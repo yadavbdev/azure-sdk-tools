@@ -13,15 +13,14 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Network.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using Management.Network.Models;
-    using Model;
-    using Utilities.Common;
-
     [Cmdlet(VerbsCommon.Get, ReservedIPConstants.CmdletNoun), OutputType(typeof(ReservedIPContext))]
     public class GetAzureReservedIPCmdlet : ServiceManagementBaseCmdlet
     {

@@ -12,24 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Management.WebSites.Models;
+
 namespace Microsoft.WindowsAzure.Commands.Websites
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.Websites;
-    using Microsoft.WindowsAzure.Management.WebSites.Models;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Management.Automation;
-    using Utilities.Common;
-    using Utilities.Websites.Common;
-    using Utilities.Websites.Services.WebEntities;
-
     /// <summary>
     /// Sets an azure website properties.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "AzureWebsite"), OutputType(typeof(bool))]
     public class SetAzureWebsiteCommand : WebsiteContextBaseCmdlet
     {
+        private string[] hostNames;
+
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Number of workers.")]
         [ValidateNotNullOrEmpty]
         public int? NumberOfWorkers { get; set; }
@@ -59,7 +60,26 @@ namespace Microsoft.WindowsAzure.Commands.Websites
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Hostnames.")]
         [ValidateNotNullOrEmpty]
-        public string[] HostNames { get; set; }
+        public string[] HostNames
+        {
+            get
+            {
+                return hostNames;
+            }
+            set
+            {
+                hostNames = value;
+
+                // Convert each host name to Unicode if necessary.
+                if (hostNames != null)
+                {
+                    for (int i = 0; i < hostNames.Length; i++ )
+                    {
+                        hostNames[i] = IdnHelper.GetUnicode(hostNames[i]);
+                    }
+                }
+            }
+        }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "A string for the App Settings.")]
         public Hashtable AppSettings { get; set; }
@@ -84,6 +104,12 @@ namespace Microsoft.WindowsAzure.Commands.Websites
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The web sockets flag.")]
         public bool? WebSocketsEnabled { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The list of routing rules for testing in production.")]
+        public List<Utilities.Websites.Services.WebEntities.RoutingRule> RoutingRules { get; set; }
+
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Indicates if 32-bit mode is enabled.")]
+        public bool? Use32BitWorkerProcess { get; set; }
 
         private Site website;
         private SiteConfig currentSiteConfig;

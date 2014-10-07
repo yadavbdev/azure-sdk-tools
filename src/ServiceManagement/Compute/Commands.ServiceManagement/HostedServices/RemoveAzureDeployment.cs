@@ -12,19 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
 {
-    using System;
-    using System.Management.Automation;
-    using System.Net;
-    using AutoMapper;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Management.Network;
-    using Model.PersistentVMModel;
-    using Properties;
-    using Utilities.Common;
-
     /// <summary>
     /// Deletes the specified deployment.
     /// </summary>

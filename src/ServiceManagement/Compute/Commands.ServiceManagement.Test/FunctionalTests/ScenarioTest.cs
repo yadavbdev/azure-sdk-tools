@@ -13,42 +13,35 @@
 // ----------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Net;
+using System.Net.Cache;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.Xml.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Service.Gateway;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using ConfigDataInfo;
-    using Extensions;
-    using Model;
-    using Properties;
-    using Service.Gateway;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Net.Cache;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.Xml.Linq;
-    using VisualStudio.TestTools.UnitTesting;
-    using WindowsAzure.ServiceManagement;
-    
-    using System.Security.Cryptography.X509Certificates;
-    using System.Linq;
-    using Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.PersistentVMs;
-
-
-
-
     [TestClass]
     public class ScenarioTest : ServiceManagementTest
     {
         private const string ReadyState = "ReadyRole";
         private string serviceName;
 
-        string perfFile;
+        //string perfFile;
 
         [TestInitialize]
         public void Initialize()
@@ -61,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         /// <summary>
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestCategory("BVT"), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (New-AzureQuickVM,Get-AzureVMImage,Get-AzureVM,Get-AzureLocation,Import-AzurePublishSettingsFile,Get-AzureSubscription,Set-AzureSubscription)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestCategory(Category.BVT), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (New-AzureQuickVM,Get-AzureVMImage,Get-AzureVM,Get-AzureLocation,Import-AzurePublishSettingsFile,Get-AzureSubscription,Set-AzureSubscription)")]
         public void NewWindowsAzureQuickVM()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -160,7 +153,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Get-AzureWinRMUri
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestCategory("BVT"), TestProperty("Feature", "IaaS"), Priority(1), Owner("v-rakonj"), Description("Test the cmdlets (Get-AzureWinRMUri)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestCategory(Category.BVT), TestProperty("Feature", "IaaS"), Priority(1), Owner("v-rakonj"), Description("Test the cmdlets (Get-AzureWinRMUri)")]
         public void GetAzureWinRMUri()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -184,7 +177,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 foreach (InputEndpointContext inputEndpointCtxt in vmPowershellCmdlets.GetAzureEndPoint(vmRoleCtxt))
                 {
-                    if (inputEndpointCtxt.Name.Equals("WinRmHTTPs"))
+                    if (inputEndpointCtxt.Name.Equals(WinRmEndpointName))
                     {
                         winRMEndpoint = inputEndpointCtxt;
                     }
@@ -216,7 +209,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Basic Provisioning a Virtual Machine
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestCategory("BVT"), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (Get-AzureLocation,Test-AzureName ,Get-AzureVMImage,New-AzureQuickVM,Get-AzureVM ,Restart-AzureVM,Stop-AzureVM , Start-AzureVM)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestCategory(Category.BVT), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (Get-AzureLocation,Test-AzureName ,Get-AzureVMImage,New-AzureQuickVM,Get-AzureVM ,Restart-AzureVM,Stop-AzureVM , Start-AzureVM)")]
         public void ProvisionLinuxVM()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -265,7 +258,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// Add 4 additonal endpoints
         /// Makes a storage account
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("msampson"), Description("Test the cmdlets (Get-AzureDeployment, New-AzureVMConfig, Add-AzureProvisioningConfig, Add-AzureEndpoint, New-AzureVM, New-AzureStorageAccount)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("msampson"), Description("Test the cmdlets (Get-AzureDeployment, New-AzureVMConfig, Add-AzureProvisioningConfig, Add-AzureEndpoint, New-AzureVM, New-AzureStorageAccount)")]
         public void DevTestProvisioning()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -316,7 +309,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Verify Advanced Provisioning
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (New-AzureService,New-AzureVMConfig,Add-AzureProvisioningConfig ,Add-AzureDataDisk ,Add-AzureEndpoint,New-AzureVM)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (New-AzureService,New-AzureVMConfig,Add-AzureProvisioningConfig ,Add-AzureDataDisk ,Add-AzureEndpoint,New-AzureVM)")]
         public void AdvancedProvisioning()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -357,7 +350,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Modifying Existing Virtual Machines
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig ,Add-AzureDataDisk ,Add-AzureEndpoint,New-AzureVM)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig ,Add-AzureDataDisk ,Add-AzureEndpoint,New-AzureVM)")]
         public void ModifyingVM()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -391,7 +384,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Changes that Require a Reboot
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (Get-AzureVM,Set-AzureDataDisk ,Update-AzureVM,Set-AzureVMSize)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("priya"), Description("Test the cmdlets (Get-AzureVM,Set-AzureDataDisk ,Update-AzureVM,Set-AzureVMSize)")]
         public void UpdateAndReboot()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -423,7 +416,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         /// <summary>
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (Get-AzureDisk,Remove-AzureVM,Remove-AzureDisk,Get-AzureVMImage)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (Get-AzureDisk,Remove-AzureVM,Remove-AzureDisk,Get-AzureVMImage)")]
         public void ManagingDiskImages()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -496,7 +489,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         /// <summary>
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM,Save-AzureVMImage)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM,Save-AzureVMImage)")]
         public void CaptureImagingExportingImportingVMConfig()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -557,7 +550,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         /// <summary>
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (Export-AzureVM,Remove-AzureVM,Import-AzureVM,New-AzureVM)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (Export-AzureVM,Remove-AzureVM,Import-AzureVM,New-AzureVM)")]
         public void ExportingImportingVMConfigAsTemplateforRepeatableUsage()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -626,7 +619,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         /// <summary>
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (Get-AzureVM,Get-AzureEndpoint,Get-AzureRemoteDesktopFile)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (Get-AzureVM,Get-AzureEndpoint,Get-AzureRemoteDesktopFile)")]
         public void ManagingRDPSSHConnectivity()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -644,7 +637,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             Console.WriteLine("InputEndpointContext Name: {0}", inputEndpointCtxt.Name);
             Console.WriteLine("InputEndpointContext port: {0}", inputEndpointCtxt.Port);
             Console.WriteLine("InputEndpointContext protocol: {0}", inputEndpointCtxt.Protocol);
-            Assert.AreEqual(inputEndpointCtxt.Name, "RemoteDesktop", true);
+            Assert.AreEqual(WinRmEndpointName, inputEndpointCtxt.Name, true);
 
             string path = ".\\myvmconnection.rdp";
             vmPowershellCmdlets.GetAzureRemoteDesktopFile(newAzureQuickVMName, serviceName, path, false); // Get-AzureRemoteDesktopFile
@@ -665,27 +658,20 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Basic Provisioning a Virtual Machine
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((New,Get,Set,Remove,Move)-AzureDeployment)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((New,Get,Set,Remove,Move)-AzureDeployment)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\packageScenario.csv", "packageScenario#csv", DataAccessMethod.Sequential)]
         public void DeploymentUpgrade()
         {
 
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
-            perfFile = @"..\deploymentUpgradeResult.csv";
 
             // Choose the package and config files from local machine
             string path = Convert.ToString(TestContext.DataRow["path"]);
             string packageName = Convert.ToString(TestContext.DataRow["packageName"]);
             string configName = Convert.ToString(TestContext.DataRow["configName"]);
-            string upgradePackageName = Convert.ToString(TestContext.DataRow["upgradePackage"]);
-            string upgradeConfigName = Convert.ToString(TestContext.DataRow["upgradeConfig"]);
-            string upgradeConfigName2 = Convert.ToString(TestContext.DataRow["upgradeConfig2"]);
 
             var packagePath1 = new FileInfo(@path + packageName); // package with two roles
-            var packagePath2 = new FileInfo(@path + upgradePackageName); // package with one role
             var configPath1 = new FileInfo(@path + configName); // config with 2 roles, 4 instances each
-            var configPath2 = new FileInfo(@path + upgradeConfigName); // config with 1 role, 2 instances
-            var configPath3 = new FileInfo(@path + upgradeConfigName2); // config with 1 role, 4 instances
 
             Assert.IsTrue(File.Exists(packagePath1.FullName), "VHD file not exist={0}", packagePath1);
             Assert.IsTrue(File.Exists(configPath1.FullName), "VHD file not exist={0}", configPath1);
@@ -704,12 +690,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.NewAzureDeployment(serviceName, packagePath1.FullName, configPath1.FullName, DeploymentSlotType.Production, deploymentLabel, deploymentName, false, false);
 
                 TimeSpan duration = DateTime.Now - start;
-
-                Uri site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 1000);
-
-                System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Deployment, {0}, {1}", duration, DateTime.Now - start) });
-
-                Console.WriteLine("site: {0}", site.ToString());
                 Console.WriteLine("Time for all instances to become in ready state: {0}", DateTime.Now - start);
 
                 // Auto-Upgrade the deployment
@@ -719,11 +699,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Console.WriteLine("Auto upgrade took {0}.", duration);
 
                 result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Production);
-                Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 8);
+                Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
-
-                site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
-                System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Auto Upgrade, {0}, {1}", duration, DateTime.Now - start) });
 
                 // Manual-Upgrade the deployment
                 start = DateTime.Now;
@@ -731,17 +708,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.SetAzureWalkUpgradeDomain(serviceName, DeploymentSlotType.Production, 0);
                 vmPowershellCmdlets.SetAzureWalkUpgradeDomain(serviceName, DeploymentSlotType.Production, 1);
                 vmPowershellCmdlets.SetAzureWalkUpgradeDomain(serviceName, DeploymentSlotType.Production, 2);
-                vmPowershellCmdlets.SetAzureWalkUpgradeDomain(serviceName, DeploymentSlotType.Production, 3);
-                vmPowershellCmdlets.SetAzureWalkUpgradeDomain(serviceName, DeploymentSlotType.Production, 4);
                 duration = DateTime.Now - start;
                 Console.WriteLine("Manual upgrade took {0}.", duration);
 
                 result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Production);
-                Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 8);
+                Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
-
-                site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
-                System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Manual Upgrade, {0}, {1}", duration, DateTime.Now - start) });
 
                 // Simulatenous-Upgrade the deployment
                 start = DateTime.Now;
@@ -750,11 +722,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Console.WriteLine("Simulatenous upgrade took {0}.", duration);
 
                 result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Production);
-                Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 8);
+                Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
-
-                site = Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
-                System.IO.File.AppendAllLines(perfFile, new string[] { String.Format("Simulatenous Upgrade, {0}, {1}", duration, DateTime.Now - start) });
 
                 vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
                 pass = Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName);
@@ -771,7 +740,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// AzureVNetGatewayTest()
         /// </summary>
         /// Note: Create a VNet, a LocalNet from the portal without creating a gateway.
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IAAS"), Priority(1), Owner("hylee"),
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IAAS"), Priority(1), Owner("hylee"),
         Description("Test the cmdlet ((Set,Remove)-AzureVNetConfig, Get-AzureVNetSite, (New,Get,Set,Remove)-AzureVNetGateway, Get-AzureVNetConnection)")]
         public void VNetTest()
         {
@@ -850,6 +819,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 {
                     VirtualNetworkSiteContext vnetsite = vmPowershellCmdlets.GetAzureVNetSite(vnet)[0];
                     Assert.AreEqual(vnet, vnetsite.Name);
+
                     //Verify DNS and IPAddress
                     Assert.AreEqual(1, vnetsite.DnsServers.Count());
                     Assert.IsTrue(dns.ContainsKey(vnetsite.DnsServers.First().Name));
@@ -913,7 +883,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 }
 
-                //Utilities.RetryFunctionUntilSuccess<ManagementOperationContext>(vmPowershellCmdlets.RemoveAzureVNetConfig, "in use", 10, 30);
                 Utilities.RetryActionUntilSuccess(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "in use", 10, 30);
 
                 pass = true;
@@ -930,7 +899,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     }
                     catch { }
                     Utilities.RetryActionUntilSuccess(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "in use", 10, 30);
-                    //Utilities.RetryFunctionUntilSuccess<ManagementOperationContext>(vmPowershellCmdlets.RemoveAzureVNetConfig, "in use", 10, 30);
                 }
                 Assert.Fail("Exception occurred: {0}", e.ToString());
             }
@@ -950,8 +918,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
+        #region AzureServiceDiagnosticsExtension Tests
+
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\nodiagpackage.csv", "nodiagpackage#csv", DataAccessMethod.Sequential)]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionConfigScenarioTest()
         {
 
@@ -970,8 +941,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             string deploymentLabel = "label1";
             DeploymentInfoContext result;
             string storage = defaultAzureSubscription.CurrentStorageAccountName;
-            XmlDocument daConfig = new XmlDocument();
-            daConfig.Load(@".\da.xml");
+            string daConfig = @".\da.xml";
 
             try
             {
@@ -1006,9 +976,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((Get,Set,Remove)-AzureServiceRemoteDesktopExtension)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((Get,Set,Remove)-AzureServiceRemoteDesktopExtension)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\nodiagpackage.csv", "nodiagpackage#csv", DataAccessMethod.Sequential)]
+        [Ignore]
         public void AzureServiceDiagnosticsExtensionTest()
         {
 
@@ -1028,8 +998,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             DeploymentInfoContext result;
 
             string storage = defaultAzureSubscription.CurrentStorageAccountName;
-            XmlDocument daConfig = new XmlDocument();
-            daConfig.Load(@".\da.xml");
+            string daConfig = @".\da.xml";
+
+            string defaultExtensionId = string.Format("Default-{0}-Production-Ext-0", Utilities.PaaSDiagnosticsExtensionName);
 
             try
             {
@@ -1043,11 +1014,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass = Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, deploymentLabel, DeploymentSlotType.Production, null, 2);
                 Console.WriteLine("successfully deployed the package");
 
-                vmPowershellCmdlets.SetAzureServiceDiagnosticsExtension(serviceName, storage, daConfig);
+                vmPowershellCmdlets.SetAzureServiceDiagnosticsExtension(serviceName, storage, daConfig, null, null);
 
                 DiagnosticExtensionContext resultContext = vmPowershellCmdlets.GetAzureServiceDiagnosticsExtension(serviceName)[0];
 
-                Assert.IsTrue(VerifyDiagExtContext(resultContext, "AllRoles", "Default-Diagnostics-Production-Ext-0", storage, daConfig));
+                Assert.IsTrue(VerifyDiagExtContext(resultContext, "AllRoles", defaultExtensionId, storage, daConfig));
 
                 vmPowershellCmdlets.RemoveAzureServiceDiagnosticsExtension(serviceName, true);
 
@@ -1064,9 +1035,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
+        #endregion
 
-        // Disabled. Tracking Issue # 1479
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
+
+        #region AzureServiceRemoteDesktopExtension Tests
+
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\package.csv", "package#csv", DataAccessMethod.Sequential)]
         public void AzureServiceRemoteDesktopExtensionConfigScenarioTest()
         {
@@ -1088,7 +1062,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             PSCredential cred = new PSCredential(username, Utilities.convertToSecureString(password));
             string rdpPath = @".\WebRole1.rdp";
-            string dns;
 
             try
             {
@@ -1107,19 +1080,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 RemoteDesktopExtensionContext resultContext = vmPowershellCmdlets.GetAzureServiceRemoteDesktopExtension(serviceName)[0];
 
-                VerifyRDPExtContext(resultContext, "AllRoles", "Default-RDP-Production-Ext-0", username, DateTime.Now.AddMonths(6));
+                VerifyRDPExtContext(resultContext, "AllRoles", "Default-RDP-Production-Ext-0", username, DateTime.Now.AddYears(1));
 
-                Utilities.GetDeploymentAndWaitForReady(serviceName, DeploymentSlotType.Production, 10, 600);
-
-                vmPowershellCmdlets.GetAzureRemoteDesktopFile("WebRole1_IN_0", serviceName, rdpPath, false);
-
-                using (StreamReader stream = new StreamReader(rdpPath))
-                {
-                    string firstLine = stream.ReadLine();
-                    dns = Utilities.FindSubstring(firstLine, ':', 2);
-                }
-
-                Assert.IsTrue((Utilities.RDPtestPaaS(dns, "WebRole1", 0, username, password, true)), "Cannot RDP to the instance!!");
+                VerifyRDP(serviceName, rdpPath);
 
                 vmPowershellCmdlets.RemoveAzureServiceRemoteDesktopExtension(serviceName);
 
@@ -1151,8 +1114,82 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        // Disabled. Tracking Issue # 1479
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((Get,Set,Remove)-AzureServiceRemoteDesktopExtension)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (New-AzureServiceRemoteDesktopConfig)")]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\package.csv", "package#csv", DataAccessMethod.Sequential)]
+        public void AzureServiceRemoteDesktopExtensionConfigWithVersionScenarioTest()
+        {
+
+            StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
+
+            // Choose the package and config files from local machine
+            string packageName = Convert.ToString(TestContext.DataRow["upgradePackage"]);
+            string configName = Convert.ToString(TestContext.DataRow["upgradeConfig"]);
+            var packagePath1 = new FileInfo(Directory.GetCurrentDirectory() + "\\" + packageName);
+            var configPath1 = new FileInfo(Directory.GetCurrentDirectory() + "\\" + configName);
+
+            Assert.IsTrue(File.Exists(packagePath1.FullName), "VHD file not exist={0}", packagePath1);
+            Assert.IsTrue(File.Exists(configPath1.FullName), "VHD file not exist={0}", configPath1);
+
+            string deploymentName = "deployment1";
+            string deploymentLabel = "label1";
+            DeploymentInfoContext result;
+
+            PSCredential cred = new PSCredential(username, Utilities.convertToSecureString(password));
+            string rdpPath = @".\WebRole1.rdp";
+            string version10 = "1.0";
+
+            try
+            {
+
+                serviceName = Utilities.GetUniqueShortName(serviceNamePrefix);
+                vmPowershellCmdlets.NewAzureService(serviceName, serviceName, locationName);
+                Console.WriteLine("service, {0}, is created.", serviceName);
+
+                ExtensionConfigurationInput config = vmPowershellCmdlets.NewAzureServiceRemoteDesktopExtensionConfig(cred, null, null, version10);
+
+                vmPowershellCmdlets.NewAzureDeployment(serviceName, packagePath1.FullName, configPath1.FullName, DeploymentSlotType.Production, deploymentLabel, deploymentName, false, false, config);
+
+                result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Production);
+                pass = Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, deploymentLabel, DeploymentSlotType.Production, null, 2);
+                Console.WriteLine("successfully deployed the package");
+
+                RemoteDesktopExtensionContext resultContext = vmPowershellCmdlets.GetAzureServiceRemoteDesktopExtension(serviceName)[0];
+
+                VerifyRDPExtContext(resultContext, "AllRoles", "Default-RDP-Production-Ext-0", username, DateTime.Now.AddYears(1), version10);
+
+                VerifyRDP(serviceName, rdpPath);
+
+                vmPowershellCmdlets.RemoveAzureServiceRemoteDesktopExtension(serviceName);
+
+                try
+                {
+                    vmPowershellCmdlets.GetAzureRemoteDesktopFile("WebRole1_IN_0", serviceName, rdpPath, false);
+                    Assert.Fail("Succeeded, but extected to fail!");
+                }
+                catch (Exception e)
+                {
+                    if (e is AssertFailedException)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to get RDP file as expected");
+                    }
+                }
+
+                vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
+
+                pass &= Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName, DeploymentSlotType.Production);
+            }
+            catch (Exception e)
+            {
+                pass = false;
+                Assert.Fail("Exception occurred: {0}", e.ToString());
+            }
+        }
+
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((Get,Set,Remove)-AzureServiceRemoteDesktopExtension)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\package.csv", "package#csv", DataAccessMethod.Sequential)]
         public void AzureServiceRemoteDesktopExtensionTest()
         {
@@ -1174,7 +1211,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             PSCredential cred = new PSCredential(username, Utilities.convertToSecureString(password));
             string rdpPath = @".\WebRole1.rdp";
-            string dns;
 
             try
             {
@@ -1192,17 +1228,82 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 RemoteDesktopExtensionContext resultContext = vmPowershellCmdlets.GetAzureServiceRemoteDesktopExtension(serviceName)[0];
 
-                VerifyRDPExtContext(resultContext, "AllRoles", "Default-RDP-Production-Ext-0", username, DateTime.Now.AddMonths(6));
+                VerifyRDPExtContext(resultContext, "AllRoles", "Default-RDP-Production-Ext-0", username, DateTime.Now.AddYears(1));
 
-                vmPowershellCmdlets.GetAzureRemoteDesktopFile("WebRole1_IN_0", serviceName, rdpPath, false);
+                VerifyRDP(serviceName, rdpPath);
 
-                using (StreamReader stream = new StreamReader(rdpPath))
+                vmPowershellCmdlets.RemoveAzureServiceRemoteDesktopExtension(serviceName, true);
+                try
                 {
-                    string firstLine = stream.ReadLine();
-                    dns = Utilities.FindSubstring(firstLine, ':', 2);
+                    vmPowershellCmdlets.GetAzureRemoteDesktopFile("WebRole1_IN_0", serviceName, rdpPath, false);
+                    Assert.Fail("Succeeded, but extected to fail!");
+                }
+                catch (Exception e)
+                {
+                    if (e is AssertFailedException)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to get RDP file as expected");
+                    }
                 }
 
-                Assert.IsTrue((Utilities.RDPtestPaaS(dns, "WebRole1", 0, username, password, true)), "Cannot RDP to the instance!!");
+                vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
+
+                pass &= Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName, DeploymentSlotType.Production);
+            }
+            catch (Exception e)
+            {
+                pass = false;
+                Assert.Fail("Exception occurred: {0}", e.ToString());
+            }
+        }
+
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((Get,Set,Remove)-AzureServiceRemoteDesktopExtension)")]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\package.csv", "package#csv", DataAccessMethod.Sequential)]
+        public void AzureServiceRemoteDesktopExtensionWithVersionTest()
+        {
+
+            StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
+
+            // Choose the package and config files from local machine
+            string packageName = Convert.ToString(TestContext.DataRow["upgradePackage"]);
+            string configName = Convert.ToString(TestContext.DataRow["upgradeConfig"]);
+            var packagePath1 = new FileInfo(Directory.GetCurrentDirectory() + "\\" + packageName);
+            var configPath1 = new FileInfo(Directory.GetCurrentDirectory() + "\\" + configName);
+
+            Assert.IsTrue(File.Exists(packagePath1.FullName), "VHD file not exist={0}", packagePath1);
+            Assert.IsTrue(File.Exists(configPath1.FullName), "VHD file not exist={0}", configPath1);
+
+            string deploymentName = "deployment1";
+            string deploymentLabel = "label1";
+            DeploymentInfoContext result;
+
+            PSCredential cred = new PSCredential(username, Utilities.convertToSecureString(password));
+            string rdpPath = @".\WebRole1.rdp";
+            string version10 = "1.0";
+
+            try
+            {
+                serviceName = Utilities.GetUniqueShortName(serviceNamePrefix);
+                vmPowershellCmdlets.NewAzureService(serviceName, serviceName, locationName);
+                Console.WriteLine("service, {0}, is created.", serviceName);
+
+                vmPowershellCmdlets.NewAzureDeployment(serviceName, packagePath1.FullName, configPath1.FullName, DeploymentSlotType.Production, deploymentLabel, deploymentName, false, false);
+
+                result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Production);
+                pass = Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, deploymentLabel, DeploymentSlotType.Production, null, 2);
+                Console.WriteLine("successfully deployed the package");
+
+                vmPowershellCmdlets.SetAzureServiceRemoteDesktopExtension(serviceName, cred, null, null, null, version10);
+
+                RemoteDesktopExtensionContext resultContext = vmPowershellCmdlets.GetAzureServiceRemoteDesktopExtension(serviceName)[0];
+
+                VerifyRDPExtContext(resultContext, "AllRoles", "Default-RDP-Production-Ext-0", username, DateTime.Now.AddYears(1), version10);
+
+                VerifyRDP(serviceName, rdpPath);
 
                 vmPowershellCmdlets.RemoveAzureServiceRemoteDesktopExtension(serviceName, true);
 
@@ -1234,7 +1335,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (Reset-AzureRoleInstanceTest with Reboot and Reimage paramaeters)")]
+        #endregion
+
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "PAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (Reset-AzureRoleInstanceTest with Reboot and Reimage paramaeters)")]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\package.csv", "package#csv", DataAccessMethod.Sequential)]
         public void ReSetAzureRoleInstanceTest()
         {
@@ -1310,7 +1413,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Deploy an IaaS VM with Domain Join
         /// </summary>
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM)")]
         public void NewAzureVMDomainJoinTest()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
@@ -1352,7 +1455,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
-        [TestMethod(), TestCategory("Scenario"), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM)")]
+        [TestMethod(), TestCategory(Category.Scenario), TestProperty("Feature", "IaaS"), Priority(1), Owner("hylee"), Description("Test the cmdlets (New-AzureVMConfig,Add-AzureProvisioningConfig,New-AzureVM)")]
         public void SetProvisionGuestAgentTest()
         {
             try
@@ -1468,40 +1571,51 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return vnetState.Equals(expectedState);
         }
 
-        private bool VerifyDiagExtContext(DiagnosticExtensionContext resultContext, string role, string extID, string storage, XmlDocument config)
+        private bool VerifyDiagExtContext(DiagnosticExtensionContext resultContext, string role, string extID, string storage, string config)
         {
+            Utilities.PrintContext(resultContext);
+
             try
             {
-                Assert.AreEqual(role, resultContext.Role.RoleType.ToString());
-                Assert.AreEqual("Diagnostics", resultContext.Extension);
-                Assert.AreEqual(extID, resultContext.Id);
-                Assert.AreEqual(storage, resultContext.StorageAccountName);
+                Assert.AreEqual(role, resultContext.Role.RoleType.ToString(), "role is not same");
+                Assert.AreEqual(Utilities.PaaSDiagnosticsExtensionName, resultContext.Extension, "extension is not Diagnostics");
+                Assert.AreEqual(extID, resultContext.Id, "extension id is not same");
+                //Assert.AreEqual(storage, resultContext.StorageAccountName, "storage account name is not same");
 
+                XmlDocument doc = new XmlDocument();
+                doc.Load("@./da.xml");
                 string inner = Utilities.GetInnerXml(resultContext.WadCfg, "WadCfg");
-                Assert.IsTrue(Utilities.CompareWadCfg(inner, config));
+                Assert.IsTrue(Utilities.CompareWadCfg(inner, doc), "xml is not same");
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine("Error happens: {0}", e.ToString());
                 return false;
             }
         }
 
-        private bool VerifyRDPExtContext(RemoteDesktopExtensionContext resultContext, string role, string extID, string userName, DateTime exp)
+        private void VerifyRDPExtContext(RemoteDesktopExtensionContext resultContext, string role, string extID, string userName, DateTime exp, string version  = null)
         {
+            Utilities.PrintContextAndItsBase(resultContext);
+
             try
             {
-                Assert.AreEqual(role, resultContext.Role.RoleType.ToString());
-                Assert.AreEqual("RDP", resultContext.Extension);
-                Assert.AreEqual(extID, resultContext.Id);
-                Assert.AreEqual(userName, resultContext.UserName);
-                Assert.IsTrue(Utilities.CompareDateTime(exp, resultContext.Expiration));
-                return true;
+                Assert.AreEqual(role, resultContext.Role.RoleType.ToString(), "role is not same");
+                Assert.AreEqual("RDP", resultContext.Extension, "extension is not RDP");
+                Assert.AreEqual(extID, resultContext.Id, "extension id is not same");
+                Assert.AreEqual(userName, resultContext.UserName, "storage account name is not same");
+                Assert.IsTrue(Utilities.CompareDateTime(exp, resultContext.Expiration), "expiration is not same");
+                if (! string.IsNullOrEmpty(version))
+                {
+                    Assert.AreEqual(version, resultContext.Version, "version numbers are not same");
+                }
             }
-            catch
+            catch (Exception e)
             {
-                return false;
+                Console.WriteLine("Error happens: {0}", e.ToString());
+                throw;
             }
         }
     }

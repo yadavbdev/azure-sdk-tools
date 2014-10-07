@@ -12,17 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.Common
 {
-    using System.Management.Automation;
-
     public static class PSObjectExtensions
     {
         /// <summary>
         /// Gets the value of specific property for the given PSObject.
         /// </summary>
         /// <typeparam name="T">The return value type</typeparam>
-        /// <param name="obj">The powershell obbject</param>
+        /// <param name="psobject">The powershell obbject</param>
         /// <param name="name">The property name</param>
         /// <returns>The property value</returns>
         public static T GetVariableValue<T>(this PSObject psobject, string name)

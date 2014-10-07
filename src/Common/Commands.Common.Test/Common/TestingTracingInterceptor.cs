@@ -13,23 +13,27 @@
 // limitations under the License.
 //
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Http;
+using Microsoft.WindowsAzure.Common;
+using Microsoft.WindowsAzure.Common.Internals;
+
 namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
 {
-    using Microsoft.WindowsAzure.Common;
-    using Microsoft.WindowsAzure.Common.Internals;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Net.Http;
-
     public class TestingTracingInterceptor : ICloudTracingInterceptor
     {
-        public TestingTracingInterceptor()
+        private TestingTracingInterceptor()
         {
 #if DEBUG
-            Debug.Listeners.Add(new DefaultTraceListener());
+            if (Debug.Listeners.Count < 1)
+            {
+                Debug.Listeners.Add(new DefaultTraceListener());
+            }
 #endif
         }
+
 
         private void Write(string message, params object[] arguments)
         {
@@ -82,6 +86,29 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         public void Exit(string invocationId, object result)
         {
             Write("{0} - Exited method with result: {1}", invocationId, result);
+        }
+
+        static TestingTracingInterceptor()
+        {
+            TestingTracingInterceptor.Singleton = new TestingTracingInterceptor();
+        }
+
+        public static void AddToContext()
+        {
+            try
+            {
+                CloudContext.Configuration.Tracing.RemoveTracingInterceptor(TestingTracingInterceptor.Singleton);
+            }
+            catch
+            {
+            }
+            CloudContext.Configuration.Tracing.AddTracingInterceptor(TestingTracingInterceptor.Singleton);
+        }
+
+        static TestingTracingInterceptor Singleton
+        {
+            get;
+            set;
         }
     }
 }

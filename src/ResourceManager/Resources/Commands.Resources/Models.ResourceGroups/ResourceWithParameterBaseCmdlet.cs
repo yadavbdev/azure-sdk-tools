@@ -12,7 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,9 +19,13 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 
-namespace Microsoft.Azure.Commands.Resources.Models
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.Azure.Commands.Resources.Models;
+
+namespace Microsoft.Azure.Commands.Resources
 {
-    public abstract class ResourceWithParameterBaseCmdlet : ResourceManagerBaseCmdlet
+    public abstract class ResourceWithParameterBaseCmdlet : ResourcesBaseCmdlet
     {
         protected const string BaseParameterSetName = "Default";
         protected const string GalleryTemplateParameterObjectParameterSetName = "Deployment via Gallery and template parameters object";
@@ -108,6 +111,30 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public object GetDynamicParameters()
         {
+            if (!string.IsNullOrEmpty(GalleryTemplateIdentity))
+            {
+                List<PSGalleryItem> galleryItems = new List<PSGalleryItem>();
+                try
+                {
+                    galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { Identity = GalleryTemplateIdentity });
+                }
+                catch (CloudException)
+                {
+                    // we could not find a template with that identity
+                }
+
+                if (galleryItems.Count == 0)
+                {
+                    galleryItems = GalleryTemplatesClient.FilterGalleryTemplates(new FilterGalleryTemplatesOptions() { ApplicationName = GalleryTemplateIdentity, AllVersions = false });
+                    if (galleryItems == null || galleryItems.Count == 0)
+                    {
+                        throw new ArgumentException(string.Format(Properties.Resources.InvalidTemplateIdentity, GalleryTemplateIdentity));
+                    }
+
+                    GalleryTemplateIdentity = galleryItems[0].Identity;
+                }
+            }
+
             if (!string.IsNullOrEmpty(GalleryTemplateIdentity) &&
                 !GalleryTemplateIdentity.Equals(galleryTemplateName, StringComparison.OrdinalIgnoreCase))
             {
@@ -148,7 +175,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
             // Load parameters from the file
             string templateParameterFilePath = this.TryResolvePath(TemplateParameterFile);
-            if (templateParameterFilePath != null && File.Exists(templateParameterFilePath))
+            if (templateParameterFilePath != null && FileUtilities.DataStore.FileExists(templateParameterFilePath))
             {
                 var parametersFromFile = GalleryTemplatesClient.ParseTemplateParameterFileContents(templateParameterFilePath);
                 parametersFromFile.ForEach(dp => templateParameterObject[dp.Key] = dp.Value.Value);

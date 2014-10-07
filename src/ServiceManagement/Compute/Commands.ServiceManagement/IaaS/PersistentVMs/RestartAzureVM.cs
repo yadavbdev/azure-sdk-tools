@@ -13,14 +13,12 @@
 // ----------------------------------------------------------------------------------
 
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    using System.Management.Automation;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Model;
-    using Utilities.Common;
-
     [Cmdlet(VerbsLifecycle.Restart, "AzureVM", DefaultParameterSetName = "ByName"), OutputType(typeof(ManagementOperationContext))]
     public class RestartAzureVMCommand : IaaSDeploymentManagementCmdletBase
     {

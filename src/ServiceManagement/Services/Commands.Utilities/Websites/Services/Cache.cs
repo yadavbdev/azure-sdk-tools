@@ -12,15 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web.Script.Serialization;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntities;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
 {
-    using Commands.Utilities.Common;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Web.Script.Serialization;
-    using WebEntities;
-
     public static class Cache
     {
         public static void AddSite(string subscriptionId, Site site)
@@ -67,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
         {
             try
             {
-                string sitesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+                string sitesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                 string.Format("sites.{0}.json", subscriptionId));
                 if (!File.Exists(sitesFile))
                 {
@@ -75,7 +76,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
                 }
 
                 JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
-                List<Site> sites = javaScriptSerializer.Deserialize<List<Site>>(File.ReadAllText(sitesFile));
+                List<Site> sites = javaScriptSerializer.Deserialize<List<Site>>(FileUtilities.DataStore.ReadFileAsText(sitesFile));
                 return new Sites(sites);
             }
             catch
@@ -88,13 +89,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services
         {
             try
             {
-                string sitesFile = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory,
+                string sitesFile = Path.Combine(AzurePowerShell.ProfileDirectory,
                                                 string.Format("sites.{0}.json", subscriptionId));
                 JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
 
                 // Make sure path exists
-                Directory.CreateDirectory(GlobalPathInfo.GlobalSettingsDirectory);
-                File.WriteAllText(sitesFile, javaScriptSerializer.Serialize(sites));
+                Directory.CreateDirectory(AzurePowerShell.ProfileDirectory);
+                FileUtilities.DataStore.WriteFile(sitesFile, javaScriptSerializer.Serialize(sites));
             }
             catch
             {

@@ -9,14 +9,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.ADDomain;
+using Microsoft.WindowsAzure.Commands.Utilities.Websites.Services;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System.Management.Automation;
-    using ADDomain;
-    using Management.Compute.Models;
-    using Management.Models;
-    using Utilities.Websites.Services;
-
     public abstract class BaseAzureServiceADDomainExtensionCmdlet : BaseAzureServiceExtensionCmdlet
     {
         protected const string DomainExtensionNamespace = "Microsoft.Windows.Azure.Extensions";
@@ -181,7 +180,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
                 JoinOption = config.Options,
                 User = config.User,
                 UnjoinDomainUser = config.UnjoinDomainUser,
-                Restart = config.Restart
+                Restart = config.Restart,
+                Version = ext.Version
             };
         }
     }

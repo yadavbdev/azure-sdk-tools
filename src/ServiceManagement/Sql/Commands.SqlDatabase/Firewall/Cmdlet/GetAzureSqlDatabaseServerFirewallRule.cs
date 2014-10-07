@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
+using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
+using Microsoft.WindowsAzure.Management.Sql;
+using Microsoft.WindowsAzure.Management.Sql.Models;
+
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Firewall.Cmdlet
 {
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Model;
-    using Microsoft.WindowsAzure.Commands.SqlDatabase.Properties;
-    using Microsoft.WindowsAzure.Management.Sql;
-    using Microsoft.WindowsAzure.Management.Sql.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Management.Automation;
-
     /// <summary>
-    /// Retrieves a list of firewall rule from a Windows Azure SQL Database server in the selected subscription.
+    /// Retrieves a list of firewall rule from a Microsoft Azure SQL Database server in the selected subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureSqlDatabaseServerFirewallRule", ConfirmImpact = ConfirmImpact.None)]
     public class GetAzureSqlDatabaseServerFirewallRule : SqlDatabaseCmdletBase

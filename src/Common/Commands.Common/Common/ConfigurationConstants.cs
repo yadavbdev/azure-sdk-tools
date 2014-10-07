@@ -12,15 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 {
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-
     public static class ConfigurationConstants
     {
-        public const string ServiceManagementEndpoint = "https://management.core.windows.net";
-
         public const int MaxReceivedMessageSize = 100000000;
 
         public const int MaxStringContentLength = 67108864;
@@ -33,17 +31,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                 maxStringContentLength > 0 ?
                 maxStringContentLength :
                 MaxStringContentLength;
-
-            // Increasing MaxReceivedMessageSize to allow big deployments
-            binding.MaxReceivedMessageSize = MaxReceivedMessageSize;
-
-            return binding;
-        }
-
-        public static Binding AnonymousWebHttpBinding(int maxStringContentLength = MaxStringContentLength)
-        {
-            var binding = new WebHttpBinding(WebHttpSecurityMode.None);
-            binding.ReaderQuotas.MaxStringContentLength = maxStringContentLength;
 
             // Increasing MaxReceivedMessageSize to allow big deployments
             binding.MaxReceivedMessageSize = MaxReceivedMessageSize;

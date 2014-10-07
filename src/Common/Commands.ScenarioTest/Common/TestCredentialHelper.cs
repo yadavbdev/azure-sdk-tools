@@ -12,20 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.IO;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Commands.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Storage.Auth;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Management.Automation;
-    using System.Text.RegularExpressions;
-
     public class TestCredentialHelper
     {
         public static string EnvironmentPathFormat = "testcredentials-{0}";
@@ -44,45 +44,49 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
 
         public TestCredentialHelper(string downloadPath)
         {
-            PowerShellVariables = new Dictionary<string, string>();
-            this.downloadDirectoryPath = downloadPath;
-            Process currentProcess = Process.GetCurrentProcess();
-            StringDictionary environment = currentProcess.StartInfo.EnvironmentVariables;
-            Assert.IsTrue(environment.ContainsKey(TestEnvironmentVariable),
-                string.Format("You must define a test environment using environment variable {0}", TestEnvironmentVariable));
-            string testEnvironment = environment[TestEnvironmentVariable];
-            Assert.IsTrue(environment.ContainsKey(StorageAccountVariable),
-                string.Format("You must define a storage account for credential download using environment variable {0}", StorageAccountVariable));
-            string storageAccount = environment[StorageAccountVariable];
-            Assert.IsTrue(environment.ContainsKey(StorageAccountKeyVariable),
-                string.Format("You must define a storage account key for credential download using environment variable {0}", StorageAccountKeyVariable));
-            string storageAccountKey = environment[StorageAccountKeyVariable];
-            DownloadTestCredentials(environment[TestEnvironmentVariable],
-                downloadPath, string.Format(CredentialBlobUriFormat, storageAccount),
-                storageAccount, environment[StorageAccountKeyVariable]);
             string environmentFile = Path.Combine(downloadPath, EnvironmentVariableFile);
             string variableFile = Path.Combine(downloadPath, PowerShellVariableFile);
-            Assert.IsTrue(File.Exists(environmentFile), string.Format("Did not download file {0}", environmentFile));
-            Assert.IsTrue(File.Exists(variableFile), string.Format("Did not download file {0}", variableFile));
+            this.downloadDirectoryPath = downloadPath;
+            PowerShellVariables = new Dictionary<string, string>();
+            if (!File.Exists(environmentFile))
+            {
+                Process currentProcess = Process.GetCurrentProcess();
+                StringDictionary environment = currentProcess.StartInfo.EnvironmentVariables;
+                Assert.IsTrue(environment.ContainsKey(TestEnvironmentVariable),
+                    string.Format("You must define a test environment using environment variable {0}", TestEnvironmentVariable));
+                string testEnvironment = environment[TestEnvironmentVariable];
+                Assert.IsTrue(environment.ContainsKey(StorageAccountVariable),
+                    string.Format("You must define a storage account for credential download using environment variable {0}", StorageAccountVariable));
+                string storageAccount = environment[StorageAccountVariable];
+                Assert.IsTrue(environment.ContainsKey(StorageAccountKeyVariable),
+                    string.Format("You must define a storage account key for credential download using environment variable {0}", StorageAccountKeyVariable));
+                string storageAccountKey = environment[StorageAccountKeyVariable];
+                DownloadTestCredentials(environment[TestEnvironmentVariable],
+                    downloadPath, string.Format(CredentialBlobUriFormat, storageAccount),
+                    storageAccount, environment[StorageAccountKeyVariable]);
+                Assert.IsTrue(File.Exists(environmentFile), string.Format("Did not download file {0}", environmentFile));
+                Assert.IsTrue(File.Exists(variableFile), string.Format("Did not download file {0}", variableFile));
+            }
+            
             AddPowerShellVariables(variableFile);
             AddEnvironmentVariables(environmentFile);
         }
 
-        public void SetupPowerShellEnvironment(PowerShell powerShell)
+        public void SetupPowerShellEnvironment(System.Management.Automation.PowerShell powerShell)
         {
             this.SetupPowerShellEnvironment(powerShell, DefaultCredentialFile, WindowsAzureProfileFile);
         }
 
-        public void SetupPowerShellEnvironment(PowerShell powerShell, string credentials, string profile)
+        public void SetupPowerShellEnvironment(System.Management.Automation.PowerShell powerShell, string credentials, string profile)
         {
             powerShell.RemoveCredentials();
             string profileFile = Path.Combine(this.downloadDirectoryPath, profile);
 
             if (File.Exists(profileFile))
             {
-                string dest = Path.Combine(GlobalPathInfo.GlobalSettingsDirectory, profile);
+                string dest = Path.Combine(AzurePowerShell.ProfileDirectory, profile);
                 powerShell.AddScript(string.Format("Copy-Item -Path '{0}' -Destination '{1}' -Force", profileFile, dest));
-                powerShell.AddScript("[Microsoft.WindowsAzure.Commands.Utilities.Common.WindowsAzureProfile]::Instance.Load()");
+                powerShell.AddScript("[Microsoft.WindowsAzure.Commands.Utilities.Common.AzureProfile]::Instance.Load()");
             }
             else
             {
@@ -96,7 +100,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.Common
             foreach (string key in this.PowerShellVariables.Keys) powerShell.SetVariable(key, PowerShellVariables[key]);
         }
 
-        public static void ImportCredentails(PowerShell powerShell, string credentialFile)
+        public static void ImportCredentails(System.Management.Automation.PowerShell powerShell, string credentialFile)
         {
             powerShell.RemoveCredentials();
             powerShell.ImportCredentials(credentialFile);

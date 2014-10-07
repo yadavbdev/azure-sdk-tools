@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
+
 namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 {
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.DataContract;
-    using Microsoft.WindowsAzure.Commands.Utilities.WAPackIaaS.Operations;
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-
     [Cmdlet(VerbsCommon.Get, "WAPackVM", DefaultParameterSetName = WAPackCmdletParameterSets.Empty)]
     public class GetWAPackVM : IaaSCmdletBase
     {
@@ -41,7 +40,7 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
 
         public override void ExecuteCmdlet()
         {
-            IEnumerable<VirtualMachine> results = null;
+            IEnumerable<Utilities.WAPackIaaS.DataContract.VirtualMachine> results = null;
             var virtualMachineOperations = new VirtualMachineOperations(this.WebClientFactory);
 
             if (this.ParameterSetName == WAPackCmdletParameterSets.Empty)
@@ -50,9 +49,9 @@ namespace Microsoft.WindowsAzure.Commands.WAPackIaaS.VirtualMachine
             }
             else if (this.ParameterSetName == WAPackCmdletParameterSets.FromId)
             {
-                VirtualMachine vm = null;
+                Utilities.WAPackIaaS.DataContract.VirtualMachine vm = null;
                 vm = virtualMachineOperations.Read(ID);
-                results = new List<VirtualMachine>() { vm };
+                results = new List<Utilities.WAPackIaaS.DataContract.VirtualMachine>() { vm };
             }
             else if (this.ParameterSetName == WAPackCmdletParameterSets.FromName)
             {

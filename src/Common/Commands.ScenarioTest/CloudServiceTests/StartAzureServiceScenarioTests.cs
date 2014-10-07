@@ -12,13 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ScenarioTest.Common;
+
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
 {
-    using Common;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
-    public class StartAzureServiceScenarioTests : WindowsAzurePowerShellCertificateTest
+    public class StartAzureServiceScenarioTests : AzurePowerShellCertificateTest
     {
         public StartAzureServiceScenarioTests()
             : base("CloudService\\Common.ps1",
@@ -37,14 +37,16 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStartAzureServiceWithInvalidCredentials()
         {
-            RunPowerShellTest("Test-WithInvalidCredentials { Start-AzureService $(Get-HostedService) }");
+            RunPowerShellTest("Test-WithInvalidCredentials { Start-AzureService $(Get-CloudServiceName) }");
         }
 
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStartAzureServiceWithNonExistingService()
         {
             RunPowerShellTest("Test-StartAzureServiceWithNonExistingService");
@@ -55,6 +57,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestCategory(Category.CloudService)]
         [TestCategory(Category.OneSDK)]
         [TestCategory(Category.CIT)]
+        [TestCategory(Category.BVT)]
         public void TestStartAzureServiceWithProductionDeployment()
         {
             RunPowerShellTest("Test-StartAzureServiceWithProductionDeployment");
@@ -63,6 +66,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStartAzureServiceWithStagingDeployment()
         {
             RunPowerShellTest("Test-StartAzureServiceWithStagingDeployment");
@@ -71,6 +75,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStartAzureServiceWithEmptyDeployment()
         {
             RunPowerShellTest("Test-StartAzureServiceWithEmptyDeployment");
@@ -79,6 +84,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CloudServiceTests
         [TestMethod]
         [TestCategory(Category.All)]
         [TestCategory(Category.CloudService)]
+        [TestCategory(Category.BVT)]
         public void TestStartAzureServiceWithoutName()
         {
             RunPowerShellTest("Test-StartAzureServiceWithoutName");

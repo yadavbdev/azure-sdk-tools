@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.Utilities.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.ServiceBus;
+using Microsoft.WindowsAzure.Management.ServiceBus.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceBus
 {
-    using Commands.Utilities.Common;
-    using Commands.Utilities.ServiceBus;
-    using Microsoft.WindowsAzure.Management.ServiceBus.Models;
-    using System.Management.Automation;
-
     /// <summary>
     /// Creates new service bus namespace.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "AzureSBNamespace"), OutputType(typeof(ServiceBusNamespace))]
-    public class NewAzureSBNamespaceCommand : CmdletWithSubscriptionBase
+    public class NewAzureSBNamespaceCommand : AzurePSCmdlet
     {
         internal ServiceBusClientExtensions Client { get; set; }
 
@@ -33,13 +34,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceBus
         [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Namespace location")]
         public string Location { get; set; }
 
+        [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "Create assosciated ACS namespace as well.")]
+        public bool? CreateACSNamespace { get; set; }
+
         /// <summary>
         /// Creates a new service bus namespace.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Client = Client ?? new ServiceBusClientExtensions(CurrentSubscription);
-            WriteObject(Client.CreateNamespace(Name, Location));
+            Client = Client ?? new ServiceBusClientExtensions(CurrentContext.Subscription);
+            if (CreateACSNamespace.HasValue)
+            {
+                WriteObject(Client.CreateNamespace(Name, Location, CreateACSNamespace.Value));
+            }
+            else
+            {
+                WriteWarning(Resources.SpecifyCreateACSNamespace);
+                WriteObject(Client.CreateNamespace(Name, Location, true));
+            }
         }
     }
 }

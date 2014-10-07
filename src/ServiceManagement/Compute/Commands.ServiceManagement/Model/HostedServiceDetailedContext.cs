@@ -12,11 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    using System;
-    using System.Collections.Generic;
-
     public class HostedServiceDetailedContext : HostedServiceContext
     {
         public string Label { get; set; }
@@ -38,5 +38,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public DateTime DateModified { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public string ReverseDnsFqdn { get; set; }
     }
 }

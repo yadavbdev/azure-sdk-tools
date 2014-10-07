@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using System.Linq;
-
     [Cmdlet(
         VerbsCommon.Get,
         VirtualMachinePuppetExtensionNoun,

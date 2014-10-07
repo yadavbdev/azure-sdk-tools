@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Net;
+using System.Reflection;
+
 namespace Microsoft.WindowsAzure.Commands.Sync
 {
-    using System;
-    using System.Net;
-    using System.Reflection;
-
     internal class ServicePointHandler : IDisposable
     {
         private bool disposed;

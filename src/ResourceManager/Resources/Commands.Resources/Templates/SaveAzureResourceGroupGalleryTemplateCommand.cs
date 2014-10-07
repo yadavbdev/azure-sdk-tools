@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.Azure.Commands.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources.Templates
 {
@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Commands.Resources.Templates
     /// Downloads a template file to the disk.
     /// </summary>
     [Cmdlet(VerbsData.Save, "AzureResourceGroupGalleryTemplate"), OutputType(typeof(PSObject))]
-    public class SaveAzureResourceGroupGalleryTemplateCommand : ResourceManagerBaseCmdlet
+    public class SaveAzureResourceGroupGalleryTemplateCommand : ResourcesBaseCmdlet
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The gallery template identity.")]
         [ValidateNotNullOrEmpty]

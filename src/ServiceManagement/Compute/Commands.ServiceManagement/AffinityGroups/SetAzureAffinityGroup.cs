@@ -12,13 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.AffinityGroups
 {
-    using System.Management.Automation;
-    using Management;
-    using Management.Models;
-    using Utilities.Common;
-
     /// <summary>
     /// Updates the label and/or the description for an affinity group for the specified subscription.
     /// </summary>

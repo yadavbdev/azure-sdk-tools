@@ -12,23 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using AutoMapper;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.DiskRepository
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using AutoMapper;
-    using Helpers;
-    using Management.Compute.Models;
-    using Model;
-    using Model.PersistentVMModel;
-    using Properties;
-    using Utilities.Common;
-
-    [Cmdlet(VerbsData.Update, "AzureVMImage"), OutputType(typeof(OSImageContext))]
+    [Cmdlet(VerbsData.Update, VirtualMachineImageNoun), OutputType(typeof(OSImageContext))]
     public class UpdateAzureVMImage : ServiceManagementBaseCmdlet
     {
+        protected const string VirtualMachineImageNoun = "AzureVMImage";
+
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Name of the image in the image library.")]
         [ValidateNotNullOrEmpty]
         public string ImageName { get; set; }
@@ -77,8 +77,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.DiskRepository
         [ValidateNotNullOrEmpty]
         public Uri SmallIconUri { get; set; }
 
-        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, HelpMessage = "ShowInGui.")]
-        public SwitchParameter ShowInGui { get; set; }
+        [Parameter(Position = 12, ValueFromPipelineByPropertyName = true, HelpMessage = "DontShowInGui.")]
+        public SwitchParameter DontShowInGui { get; set; }
 
         protected override void OnProcessRecord()
         {
@@ -139,7 +139,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.DiskRepository
                     Language               = this.Language,
                     IconUri                = this.IconUri,
                     SmallIconUri           = this.SmallIconUri,
-                    ShowInGui              = this.ShowInGui.IsPresent ? (bool?)this.ShowInGui : null
+                    ShowInGui              = this.DontShowInGui.IsPresent ? (bool?)false : null
                 };
 
                 this.ExecuteClientActionNewSM(

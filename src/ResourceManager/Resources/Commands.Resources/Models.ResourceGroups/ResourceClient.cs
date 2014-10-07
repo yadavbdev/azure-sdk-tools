@@ -12,14 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.Resources;
-using Microsoft.Azure.Management.Resources.Models;
-using Microsoft.WindowsAzure.Commands.Common.Storage;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Management.Monitoring.Events;
-using Microsoft.WindowsAzure.Management.Storage;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +20,19 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Threading;
+using Microsoft.Azure.Management.Resources;
+using Microsoft.Azure.Management.Resources.Models;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Monitoring.Events;
+using Newtonsoft.Json;
 using ProjectResources = Microsoft.Azure.Commands.Resources.Properties.Resources;
+using Microsoft.Azure.Management.Authorization;
+using Microsoft.Azure.Management.Authorization.Models;
+using Microsoft.Azure.Commands.Resources.Models.Authorization;
+using System.Diagnostics;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
@@ -39,8 +44,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
         private List<DeploymentOperation> operations;
 
         public IResourceManagementClient ResourceManagementClient { get; set; }
-        
-        public IStorageClientWrapper StorageClientWrapper { get; set; }
+
+        public IAuthorizationManagementClient AuthorizationManagementClient { get; set; }
 
         public GalleryTemplatesClient GalleryTemplatesClient { get; set; }
 
@@ -50,16 +55,18 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public Action<string> ErrorLogger { get; set; }
 
+        public Action<string> WarningLogger { get; set; }
+
         /// <summary>
         /// Creates new ResourceManagementClient
         /// </summary>
         /// <param name="subscription">Subscription containing resources to manipulate</param>
-        public ResourcesClient(WindowsAzureSubscription subscription)
+        public ResourcesClient(AzureContext context)
             : this(
-                subscription.CreateClientFromResourceManagerEndpoint<ResourceManagementClient>(),
-                new StorageClientWrapper(subscription.CreateClient<StorageManagementClient>()),
-                new GalleryTemplatesClient(subscription),
-                subscription.CreateClientFromResourceManagerEndpoint<EventsClient>())
+                AzureSession.ClientFactory.CreateClient<ResourceManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager),
+                new GalleryTemplatesClient(context),
+                AzureSession.ClientFactory.CreateClient<EventsClient>(context, AzureEnvironment.Endpoint.ResourceManager),
+                AzureSession.ClientFactory.CreateClient<AuthorizationManagementClient>(context, AzureEnvironment.Endpoint.ResourceManager))
         {
 
         }
@@ -68,19 +75,18 @@ namespace Microsoft.Azure.Commands.Resources.Models
         /// Creates new ResourcesClient instance
         /// </summary>
         /// <param name="resourceManagementClient">The IResourceManagementClient instance</param>
-        /// <param name="storageClientWrapper">The IStorageClientWrapper instance</param>
         /// <param name="galleryTemplatesClient">The IGalleryClient instance</param>
         /// <param name="eventsClient">The IEventsClient instance</param>
         public ResourcesClient(
             IResourceManagementClient resourceManagementClient,
-            IStorageClientWrapper storageClientWrapper,
             GalleryTemplatesClient galleryTemplatesClient,
-            IEventsClient eventsClient)
+            IEventsClient eventsClient,
+            IAuthorizationManagementClient authorizationManagementClient)
         {
             ResourceManagementClient = resourceManagementClient;
-            StorageClientWrapper = storageClientWrapper;
             GalleryTemplatesClient = galleryTemplatesClient;
             EventsClient = eventsClient;
+            AuthorizationManagementClient = authorizationManagementClient;
         }
 
         /// <summary>
@@ -90,8 +96,6 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
 
         }
-
-        private static string DeploymentTemplateStorageContainerName = "deployment-templates";
 
         private string GetDeploymentParameters(Hashtable templateParameterObject)
         {
@@ -133,76 +137,63 @@ namespace Microsoft.Azure.Commands.Resources.Models
                 });
         }
 
-        private Uri GetTemplateUri(string templateFile, string galleryTemplateName, string storageAccountName)
+        public virtual void UnregisterProvider(string RPName)
         {
-            Uri templateFileUri;
+            ResourceManagementClient.Providers.Unregister(RPName);
+        }
+
+        private string GetTemplate(string templateFile, string galleryTemplateName)
+        {
+            string template;
 
             if (!string.IsNullOrEmpty(templateFile))
             {
                 if (Uri.IsWellFormedUriString(templateFile, UriKind.Absolute))
                 {
-                    templateFileUri = new Uri(templateFile);
+                    template = GeneralUtilities.DownloadFile(templateFile);
                 }
                 else
                 {
-                    storageAccountName = GetStorageAccountName(storageAccountName);
-                    templateFileUri = StorageClientWrapper.UploadFileToBlob(new BlobUploadParameters
-                    {
-                        StorageName = storageAccountName,
-                        FileLocalPath = templateFile,
-                        OverrideIfExists = true,
-                        ContainerPublic = false,
-                        ContainerName = DeploymentTemplateStorageContainerName
-                    });
-                    WriteVerbose(string.Format(
-                        "Uploading template '{0}' to {1}.",
-                        Path.GetFileName(templateFile), templateFileUri));
+                    template = FileUtilities.DataStore.ReadFileAsText(templateFile);
                 }
             }
             else
             {
-                templateFileUri = new Uri(GalleryTemplatesClient.GetGalleryTemplateFile(galleryTemplateName));
+                Debug.Assert(!string.IsNullOrEmpty(galleryTemplateName));
+                string templateUri = GalleryTemplatesClient.GetGalleryTemplateFile(galleryTemplateName);
+                template = GeneralUtilities.DownloadFile(templateUri);
             }
 
-            return templateFileUri;
+            return template;
         }
 
-        private string GetStorageAccountName(string storageAccountName)
+        private ResourceGroup CreateOrUpdateResourceGroup(string name, string location, Hashtable[] tags)
         {
-            string currentStorageName = null;
-            if (WindowsAzureProfile.Instance != null && WindowsAzureProfile.Instance.CurrentSubscription != null)
-            {
-                currentStorageName = WindowsAzureProfile.Instance.CurrentSubscription.CurrentStorageAccountName;
-            }
+            Dictionary<string, string> tagDictionary = TagsConversionHelper.CreateTagDictionary(tags, validate: true);
 
-            string storageName = string.IsNullOrEmpty(storageAccountName) ? currentStorageName : storageAccountName;
-
-            if (string.IsNullOrEmpty(storageName))
-            {
-                throw new ArgumentException(ProjectResources.StorageAccountNameNeedsToBeSpecified);
-            }
-
-            return storageName;
-        }
-
-        private ResourceGroup CreateResourceGroup(string name, string location)
-        {
             var result = ResourceManagementClient.ResourceGroups.CreateOrUpdate(name,
                 new BasicResourceGroup
                 {
-                    Location = location
+                    Location = location,
+                    Tags = tagDictionary
                 });
-
-            WriteVerbose(string.Format("Create resource group '{0}' in location '{1}'", name, location));
 
             return result.ResourceGroup;
         }
-        
+
         private void WriteVerbose(string progress)
         {
             if (VerboseLogger != null)
             {
                 VerboseLogger(progress);
+            }
+        }
+
+        private void WriteWarning(string warning)
+        {
+            if (WarningLogger != null)
+            {
+                WarningLogger(warning);
             }
         }
 
@@ -232,20 +223,23 @@ namespace Microsoft.Azure.Commands.Resources.Models
         {
             const string normalStatusFormat = "Resource {0} '{1}' provisioning status is {2}";
             const string failureStatusFormat = "Resource {0} '{1}' failed with message '{2}'";
-            List<DeploymentOperation> newOperations = new List<DeploymentOperation>();
-            DeploymentOperationsListResult result = null;
-            
-            do
+            List<DeploymentOperation> newOperations;
+            DeploymentOperationsListResult result;
+
+            result = ResourceManagementClient.DeploymentOperations.List(resourceGroup, deploymentName, null);
+            newOperations = GetNewOperations(operations, result.Operations);
+            operations.AddRange(newOperations);
+
+            while (!string.IsNullOrEmpty(result.NextLink))
             {
-                result = ResourceManagementClient.DeploymentOperations.List(resourceGroup, deploymentName, null);
+                result = ResourceManagementClient.DeploymentOperations.ListNext(result.NextLink);
                 newOperations = GetNewOperations(operations, result.Operations);
                 operations.AddRange(newOperations);
-
-            } while (!string.IsNullOrEmpty(result.NextLink));
+            }
 
             foreach (DeploymentOperation operation in newOperations)
             {
-                string statusMessage = string.Empty;
+                string statusMessage;
 
                 if (operation.Properties.ProvisioningState != ProvisioningState.Failed)
                 {
@@ -272,31 +266,14 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public static string ParseErrorMessage(string statusMessage)
         {
-            try
+            CloudError error = CloudException.ParseXmlOrJsonError(statusMessage);
+            if (error.Message == null)
             {
-                if (JsonUtilities.IsJson(statusMessage))
-                {
-                    JObject statusMessageJson = JObject.Parse(statusMessage);
-                    if (statusMessageJson.GetValue("message", StringComparison.CurrentCultureIgnoreCase) != null)
-                    {
-                        return statusMessageJson.GetValue("message", StringComparison.CurrentCultureIgnoreCase).ToString();
-                    }
-                    else if (statusMessageJson.GetValue("error", StringComparison.CurrentCultureIgnoreCase) != null)
-                    {
-                        JObject errorToken = statusMessageJson.GetValue("error", StringComparison.CurrentCultureIgnoreCase) as JObject;
-                        return errorToken.GetValue("message", StringComparison.CurrentCultureIgnoreCase).ToString();
-                    }
-                }
-                else if (XmlUtilities.IsXml(statusMessage))
-                {
-                    return XmlUtilities.DeserializeXmlString<ResourceManagementError>(statusMessage).Message;
-                }
-
-                return statusMessage;
+                return error.OriginalMessage;
             }
-            catch
+            else
             {
-                return statusMessage;
+                return error.Message;
             }
         }
 
@@ -307,7 +284,7 @@ namespace Microsoft.Azure.Commands.Resources.Models
             Action<string, string, BasicDeployment> job,
             params string[] status)
         {
-            Deployment deployment = new Deployment();
+            Deployment deployment;
 
             do
             {
@@ -329,15 +306,8 @@ namespace Microsoft.Azure.Commands.Resources.Models
             List<DeploymentOperation> newOperations = new List<DeploymentOperation>();
             foreach (DeploymentOperation operation in current)
             {
-                DeploymentOperation temp = old.Find(o => o.OperationId.Equals(operation.OperationId));
-                if (temp != null)
-                {
-                    if (!temp.Properties.ProvisioningState.Equals(operation.Properties.ProvisioningState))
-                    {
-                        newOperations.Add(operation);
-                    }
-                }
-                else
+                DeploymentOperation operationWithSameIdAndProvisioningState = old.Find(o => o.OperationId.Equals(operation.OperationId) && o.Properties.ProvisioningState.Equals(operation.Properties.ProvisioningState));
+                if (operationWithSameIdAndProvisioningState == null)
                 {
                     newOperations.Add(operation);
                 }
@@ -348,40 +318,50 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         private BasicDeployment CreateBasicDeployment(ValidatePSResourceGroupDeploymentParameters parameters)
         {
-            BasicDeployment deployment = new BasicDeployment()
+            BasicDeployment deployment = new BasicDeployment
             {
                 Mode = DeploymentMode.Incremental,
-                TemplateLink = new TemplateLink()
-                {
-                    Uri = GetTemplateUri(parameters.TemplateFile, parameters.GalleryTemplateIdentity, parameters.StorageAccountName),
-                    ContentVersion = parameters.TemplateVersion
-                },
+                Template = GetTemplate(parameters.TemplateFile, parameters.GalleryTemplateIdentity),
                 Parameters = GetDeploymentParameters(parameters.TemplateParameterObject)
             };
 
             return deployment;
         }
 
-        private List<ResourceManagementError> CheckBasicDeploymentErrors(string resourceGroup, string deploymentName, BasicDeployment deployment)
+        private TemplateValidationInfo CheckBasicDeploymentErrors(string resourceGroup, string deploymentName, BasicDeployment deployment)
         {
-            List<ResourceManagementError> errors = new List<ResourceManagementError>();
             DeploymentValidateResponse validationResult = ResourceManagementClient.Deployments.Validate(
                 resourceGroup,
                 deploymentName,
                 deployment);
-            if (!validationResult.IsValid)
+
+            return new TemplateValidationInfo(validationResult);
+        }
+
+        internal List<PSPermission> GetResourceGroupPermissions(string resourceGroup)
+        {
+            PermissionGetResult permissionsResult = AuthorizationManagementClient.Permissions.ListForResourceGroup(resourceGroup);
+
+            if (permissionsResult != null)
             {
-                if (validationResult.Error != null)
-                {
-                    errors.Add(validationResult.Error);
-                    if (validationResult.Error.Details != null && validationResult.Error.Details.Count > 0)
-                    {
-                        errors.AddRange(validationResult.Error.Details);
-                    }
-                }
+                return permissionsResult.Permissions.Select(p => p.ToPSPermission()).ToList();
             }
 
-            return errors;
+            return null;
+        }
+
+        internal List<PSPermission> GetResourcePermissions(ResourceIdentifier identity)
+        {
+            PermissionGetResult permissionsResult = AuthorizationManagementClient.Permissions.ListForResource(
+                    identity.ResourceGroupName,
+                    identity.ToResourceIdentity());
+
+            if (permissionsResult != null)
+            {
+                return permissionsResult.Permissions.Select(p => p.ToPSPermission()).ToList();
+            }
+
+            return null;
         }
     }
 }

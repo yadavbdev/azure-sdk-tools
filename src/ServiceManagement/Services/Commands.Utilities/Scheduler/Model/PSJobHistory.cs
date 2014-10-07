@@ -12,10 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model
 {
-    using System;
-
     public class PSJobHistory
     {
         public string JobName { get; internal set; }

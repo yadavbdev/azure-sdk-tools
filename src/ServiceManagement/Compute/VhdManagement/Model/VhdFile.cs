@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model.Persistence;
+
 namespace Microsoft.WindowsAzure.Commands.Tools.Vhd.Model
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using Vhd.Model.Persistence;
-
     public class VhdFile : IDisposable
     {
         private BinaryReader reader;

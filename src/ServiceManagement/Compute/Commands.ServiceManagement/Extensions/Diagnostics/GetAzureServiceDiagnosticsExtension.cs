@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions
 {
-    using System.Linq;
-    using System.Management.Automation;
-    using Management.Compute;
-    using Model.PersistentVMModel;
-
     /// <summary>
-    /// Get Windows Azure Service Diagnostics Extension.
+    /// Get Microsoft Azure Service Diagnostics Extension.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureServiceDiagnosticsExtension"), OutputType(typeof(DiagnosticExtensionContext))]
     public class GetAzureServiceDiagnosticsExtensionCommand : BaseAzureServiceDiagnosticsExtensionCmdlet

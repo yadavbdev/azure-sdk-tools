@@ -12,22 +12,23 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.ConfigDataInfo;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    using PowershellCore;
-
     public class NewAzureSSHKeyCmdletInfo : CmdletsInfo
     {
-        public NewAzureSSHKeyCmdletInfo(string option, string fingerPrint, string path)
+        public NewAzureSSHKeyCmdletInfo(NewAzureSshKeyType option, string fingerPrint, string path)
         {
             cmdletName = Utilities.NewAzureSSHKeyCmdletName;
 
             switch (option)
             {
-                case "keypair":
+                case NewAzureSshKeyType.KeyPair:
                     cmdletParams.Add(new CmdletParam("KeyPair"));
                     break;
-                case "publickey":
+                case NewAzureSshKeyType.PublicKey:
                     cmdletParams.Add(new CmdletParam("PublicKey"));
                     break;
             }

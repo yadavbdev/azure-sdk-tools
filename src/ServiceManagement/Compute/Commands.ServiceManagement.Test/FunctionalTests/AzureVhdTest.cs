@@ -12,42 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Security.Cryptography;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 {
-    using Model;
-    using Sync.Download;
-    using System;
-    using System.IO;
-    using System.Security.Cryptography;
-    using VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     public class AzureVhdTest : ServiceManagementTest
     {
         protected bool deleteLocalFileIfFailed = true;
         protected bool deleteLocalFileIfPassed = true;
         protected string perfFile = "perf.csv";
-        private const string VhdFilesContainerName = "vhdfiles";
-        private static readonly string[] VhdFiles = new[]
-            {
-                "dynamic_50.vhd", "dynamic_50_child01.vhd", "dynamic_50_child02.vhd",
-                "fixed_50.vhd", "fixed_50_child01.vhd", "fixed_50_child02.vhd"
-            };
-
-        protected static void SaveVhd(BlobHandle destination, FileInfo locFile, string storageKey, int? numThread = null, bool overwrite = false)
-        {
-            try
-            {
-                Console.WriteLine("Downloading a VHD from {0} to {1}...", destination.Blob.Uri.ToString(), locFile.FullName);
-                DateTime startTime = DateTime.Now;
-                vmPowershellCmdlets.SaveAzureVhd(destination.Blob.Uri, locFile, numThread, storageKey, overwrite);
-                Console.WriteLine("Downloading completed in {0} seconds.", (DateTime.Now - startTime).TotalSeconds);
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(e.InnerException.ToString());
-            }
-        }
 
         protected void SaveVhdAndAssertContent(BlobHandle destination, FileInfo localFile, int? numThread, string storageKey, bool overwrite, bool deleteBlob, bool deleteLocal)
         {
@@ -57,7 +36,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 DateTime startTime = DateTime.Now;
                 VhdDownloadContext result = vmPowershellCmdlets.SaveAzureVhd(destination.Blob.Uri, localFile, numThread, storageKey, overwrite);
                 Console.WriteLine("Downloading completed in {0} seconds.", (DateTime.Now - startTime).TotalSeconds);
-
 
                 string calculateMd5Hash = CalculateContentMd5(File.OpenRead(result.LocalFilePath.FullName));
 
@@ -156,27 +134,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             Assert.IsNotNull(vhdUploadContext);
             Assert.AreEqual(new Uri(destination), vhdUploadContext.DestinationUri);
-            Assert.AreEqual(vhdUploadContext.LocalFilePath.FullName, localFile.FullName);
-        }
-
-        protected static void DownloadVhds()
-        {
-            storageAccountKey = vmPowershellCmdlets.GetAzureStorageAccountKey(defaultAzureSubscription.CurrentStorageAccountName);
-
-            foreach (var vhdFile in VhdFiles)
-            {
-                string vhdBlobLocation = string.Format("{0}{1}/{2}", blobUrlRoot, VhdFilesContainerName, vhdFile);
-
-                var vhdLocalPath = new FileInfo(Directory.GetCurrentDirectory() + "\\" + vhdFile);
-
-                if (!File.Exists(vhdLocalPath.FullName))
-                {
-                    // Set the source blob
-                    BlobHandle blobHandle = Utilities.GetBlobHandle(vhdBlobLocation, storageAccountKey.Primary);
-
-                    SaveVhd(blobHandle, vhdLocalPath, storageAccountKey.Primary);
-                }
-            }
+            Assert.IsTrue(string.Compare(vhdUploadContext.LocalFilePath.FullName, localFile.FullName, StringComparison.InvariantCultureIgnoreCase) == 0);
         }
     }
 }

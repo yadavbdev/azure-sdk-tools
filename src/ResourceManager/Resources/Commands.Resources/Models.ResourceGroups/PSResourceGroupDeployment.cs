@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Management.Resources.Models;
 using System;
 using System.Collections.Generic;
+using Microsoft.Azure.Management.Resources.Models;
 
 namespace Microsoft.Azure.Commands.Resources.Models
 {
@@ -38,10 +38,16 @@ namespace Microsoft.Azure.Commands.Resources.Models
 
         public Dictionary<string, DeploymentVariable> Parameters { get; set; }
 
-        public string ParametersString { get; set; }
+        public string ParametersString
+        {
+            get { return ResourcesExtensions.ConstructDeploymentVariableTable(Parameters); }
+        }
 
         public Dictionary<string, DeploymentVariable> Outputs { get; set; }
 
-        public string OutputsString { get; set; }
+        public string OutputsString
+        {
+            get { return ResourcesExtensions.ConstructDeploymentVariableTable(Outputs); }
+        }
     }
 }

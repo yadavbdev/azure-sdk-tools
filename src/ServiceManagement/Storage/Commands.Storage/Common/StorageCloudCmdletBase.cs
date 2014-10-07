@@ -12,23 +12,27 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Management.Automation;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.Storage.File;
+using Microsoft.WindowsAzure.Commands.Storage.Model.ResourceModel;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.File;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.WindowsAzure.Storage.Table;
+
 namespace Microsoft.WindowsAzure.Commands.Storage.Common
 {
-    using Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.Queue;
-    using Microsoft.WindowsAzure.Storage.Table;
-    using Model.ResourceModel;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Management.Automation;
-    using System.Net;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using ServiceModel = System.ServiceModel;
-
     /// <summary>
     /// Base cmdlet for all storage cmdlet that works with cloud
     /// </summary>
@@ -37,7 +41,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
     {
         [Parameter(HelpMessage = "Azure Storage Context Object",
             ValueFromPipelineByPropertyName = true)]
-        public virtual AzureStorageContext Context {get; set;}
+        public virtual AzureStorageContext Context { get; set; }
 
         [Parameter(HelpMessage = "The server time out for each request in seconds.")]
         public virtual int? ServerTimeoutPerRequest { get; set; }
@@ -54,6 +58,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// Amount of concurrent async tasks to run per available core.
         /// </summary>
         [Parameter(HelpMessage = "The total amount of concurrent async tasks. The default value is 10.")]
+        [ValidateNotNull]
+        [ValidateRange(1, 1000)]
         public virtual int? ConcurrentTaskCount
         {
             get { return concurrentTaskCount; }
@@ -106,12 +112,12 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <summary>
         /// Cmdlet operation context.
         /// </summary>
-        protected OperationContext OperationContext 
+        protected OperationContext OperationContext
         {
             get
             {
                 return CmdletOperationContext.GetStorageOperationContext(WriteDebugLog);
-            }    
+            }
         }
 
         /// <summary>
@@ -130,12 +136,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <returns>Request options</returns>
         public IRequestOptions GetRequestOptions(StorageServiceType type)
         {
-            if (ServerTimeoutPerRequest == null)
-            {
-                return null;
-            }
-
-            IRequestOptions options = default(IRequestOptions);
+            IRequestOptions options;
 
             switch (type)
             {
@@ -148,18 +149,21 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
                 case StorageServiceType.Table:
                     options = new TableRequestOptions();
                     break;
+                case StorageServiceType.File:
+                    options = new FileRequestOptions();
+                    break;
                 default:
                     throw new ArgumentException(Resources.InvalidStorageServiceType, "type");
             }
 
-            if (ServerTimeoutPerRequest != null)
+            if (this.ServerTimeoutPerRequest.HasValue)
             {
-                options.ServerTimeout = TimeSpan.FromSeconds((double)ServerTimeoutPerRequest);
+                options.ServerTimeout = ConvertToTimeSpan(this.ServerTimeoutPerRequest.Value);
             }
 
-            if (ClientTimeoutPerRequest != null)
+            if (this.ClientTimeoutPerRequest.HasValue)
             {
-                options.MaximumExecutionTime = TimeSpan.FromSeconds((double)ClientTimeoutPerRequest);
+                options.MaximumExecutionTime = ConvertToTimeSpan(this.ClientTimeoutPerRequest.Value);
             }
 
             return options;
@@ -232,8 +236,8 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         internal virtual bool ShouldInitServiceChannel()
         {
             //Storage Context is empty and have already set the current storage account in subscription
-            if (Context == null && HasCurrentSubscription && CurrentSubscription != null &&
-                !String.IsNullOrEmpty(CurrentSubscription.CurrentStorageAccountName))
+            if (Context == null && HasCurrentSubscription && CurrentContext.Subscription != null &&
+                !String.IsNullOrEmpty(CurrentContext.Subscription.GetProperty(AzureSubscription.Property.StorageAccount)))
             {
                 return true;
             }
@@ -246,7 +250,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         /// <summary>
         /// Output azure storage object with storage context
         /// </summary>
-        /// <param name="item">An enumerable collection fo azurestorage object</param>
+        /// <param name="itemList">An enumerable collection fo azurestorage object</param>
         internal void WriteObjectWithStorageContext(IEnumerable<AzureStorageBase> itemList)
         {
             if (null == itemList)
@@ -261,12 +265,44 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         }
 
         /// <summary>
+        /// Convert the timeout in seconds into objects of TimeSpan. Notice
+        /// that xSCL does not accept a TimeSpan whose TotalMilliseconds
+        /// property exceeded int.MaxValue (2147483647) so if user specified a
+        /// value beyond that, we will use Infinite instead.
+        /// </summary>
+        /// <param name="timeoutInSeconds"></param>
+        /// <returns></returns>
+        private static TimeSpan? ConvertToTimeSpan(int timeoutInSeconds)
+        {
+            if (timeoutInSeconds > 0)
+            {
+                var timeSpan = TimeSpan.FromSeconds(timeoutInSeconds);
+                if ((long)timeSpan.TotalMilliseconds > int.MaxValue)
+                {
+                    return null;
+                }
+                else
+                {
+                    return timeSpan;
+                }
+            }
+            else if (timeoutInSeconds == Timeout.Infinite)
+            {
+                return null;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(string.Format(CultureInfo.CurrentCulture, Resources.InvalidTimeoutValue, timeoutInSeconds));
+            }
+        }
+
+        /// <summary>
         /// Get current storage account from azure subscription
         /// </summary>
         /// <returns>A storage account</returns>
         private CloudStorageAccount GetStorageAccountFromSubscription()
         {
-            string CurrentStorageAccountName = CurrentSubscription.CurrentStorageAccountName;
+            string CurrentStorageAccountName = CurrentContext.Subscription.GetProperty(AzureSubscription.Property.StorageAccount);
 
             if (string.IsNullOrEmpty(CurrentStorageAccountName))
             {
@@ -274,22 +310,22 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             }
             else
             {
-                WriteDebugLog(String.Format(Resources.UseCurrentStorageAccountFromSubscription, CurrentStorageAccountName, CurrentSubscription.SubscriptionName));
+                WriteDebugLog(String.Format(Resources.UseCurrentStorageAccountFromSubscription, CurrentStorageAccountName, CurrentContext.Subscription.Name));
 
                 try
                 {
                     //The service channel initialized by subscription
-                    return CurrentSubscription.GetCloudStorageAccount();
+                    return CurrentContext.Subscription.GetCloudStorageAccount();
                 }
-                catch (ServiceModel.CommunicationException e)
+                catch (System.ServiceModel.CommunicationException e)
                 {
                     WriteVerboseWithTimestamp(Resources.CannotGetSotrageAccountFromSubscription);
 
                     if (e.IsNotFoundException())
                     {
                         //Repack the 404 error
-                        string errorMessage = String.Format(Resources.CurrentStorageAccountNotFoundOnAzure, CurrentStorageAccountName, CurrentSubscription.SubscriptionName);
-                        ServiceModel.CommunicationException exception = new ServiceModel.CommunicationException(errorMessage, e);
+                        string errorMessage = String.Format(Resources.CurrentStorageAccountNotFoundOnAzure, CurrentStorageAccountName, CurrentContext.Subscription.Name);
+                        System.ServiceModel.CommunicationException exception = new System.ServiceModel.CommunicationException(errorMessage, e);
                         throw exception;
                     }
                     else
@@ -335,12 +371,17 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
         protected override void WriteExceptionError(Exception e)
         {
             Debug.Assert(e != null, Resources.ExceptionCannotEmpty);
-            
+
             if (e is StorageException)
             {
-                e = ((StorageException) e).RepackStorageException();
+                e = ((StorageException)e).RepackStorageException();
             }
-            
+            else if (e is AzureStorageFileException)
+            {
+                WriteError(((AzureStorageFileException)e).GetErrorRecord());
+                return;
+            }
+
             WriteError(new ErrorRecord(e, e.GetType().Name, GetExceptionErrorCategory(e), null));
         }
 
@@ -502,7 +543,7 @@ namespace Microsoft.WindowsAzure.Commands.Storage.Common
             CmdletOperationContext.Init();
             CmdletCancellationToken = cancellationTokenSource.Token;
             WriteDebugLog(String.Format(Resources.InitOperationContextLog, this.GetType().Name, CmdletOperationContext.ClientRequestId));
-            
+
             if (enableMultiThread)
             {
                 SetUpMultiThreadEnvironment();

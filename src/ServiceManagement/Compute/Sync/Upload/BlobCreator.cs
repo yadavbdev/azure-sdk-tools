@@ -12,12 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.IO;
+using Microsoft.WindowsAzure.Commands.Sync.Download;
+
 namespace Microsoft.WindowsAzure.Commands.Sync.Upload
 {
-    using Sync.Download;
-    using System.IO;
-
-
     public class BlobCreator : BlobCreatorBase
     {
         public BlobCreator(FileInfo localVhd, BlobUri destination, ICloudPageBlobObjectFactory blobObjectFactory, bool overWrite) :

@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Compute.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System;
-    using System.Linq;
-    using System.Management.Automation;
-    using Management.Compute;
-    using Management.Compute.Models;
-    using Utilities.Common;
-
     /// <summary>
-    /// Get Windows Azure VM Extension Image.
+    /// Get Microsoft Azure VM Extension Image.
     /// </summary>
     [Cmdlet(
         VerbsCommon.Get,

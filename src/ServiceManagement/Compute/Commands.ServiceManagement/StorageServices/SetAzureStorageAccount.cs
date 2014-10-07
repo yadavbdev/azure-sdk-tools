@@ -12,19 +12,22 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System.Management.Automation;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.Storage.Models;
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 {
-    using System.Management.Automation;
-    using Management.Storage;
-    using Management.Storage.Models;
-    using Utilities.Common;
-
     /// <summary>
-    /// Updates the label and/or the description for a storage account in Windows Azure.
+    /// Updates the label and/or the description for a storage account in Microsoft Azure.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureStorageAccount"), OutputType(typeof(ManagementOperationContext))]
+    [Cmdlet(VerbsCommon.Set, "AzureStorageAccount", DefaultParameterSetName = GeoReplicationEnabledParamSet), OutputType(typeof(ManagementOperationContext))]
     public class SetAzureStorageAccountCommand : ServiceManagementBaseCmdlet
     {
+        protected const string AccountTypeParamSet = "AccountType";
+        protected const string GeoReplicationEnabledParamSet = "GeoReplicationEnabled";
+
         /// <summary>
         /// The name for the storage account. (Required)
         /// </summary>
@@ -59,8 +62,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
             set;
         }
 
-        [Parameter(HelpMessage = "Enable or Disable Geo Replication")]
+        [Parameter(ParameterSetName = GeoReplicationEnabledParamSet, HelpMessage = "Enable or Disable Geo Replication")]
         public bool? GeoReplicationEnabled
+        {
+            get;
+            set;
+        }
+
+        [Parameter(ParameterSetName = AccountTypeParamSet, HelpMessage = "Type of the storage account.")]
+        [ValidateNotNullOrEmpty]
+        public string Type
         {
             get;
             set;
@@ -68,9 +79,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.StorageServices
 
         public void SetStorageAccountProcess()
         {
+            if (string.Equals(this.ParameterSetName, GeoReplicationEnabledParamSet))
+            {
+                WriteWarning(Resources.DeprecationOfTheGeoReplicationEnabledParamInTheSetCmdlet);
+            }
+
             var upstorageinput = new StorageAccountUpdateParameters
             {
-                GeoReplicationEnabled = GeoReplicationEnabled,
+                AccountType = GeoReplicationEnabled.HasValue && GeoReplicationEnabled.Value ? StorageAccountTypes.StandardGRS : this.Type,
                 Description = this.Description,
                 Label = this.Label
             };

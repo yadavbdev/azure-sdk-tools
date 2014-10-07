@@ -12,13 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.Commands.Resources.Models;
-using Microsoft.Azure.Management.Resources.Models;
-using Moq;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Management.Automation;
 using System.Runtime.Serialization.Formatters;
+using Microsoft.Azure.Commands.Resources.Models;
+using Microsoft.Azure.Management.Resources.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.Resources.Test
@@ -71,6 +72,7 @@ namespace Microsoft.Azure.Commands.Resources.Test
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void GetsResourcesGroups()
         {
             List<Resource> result = new List<Resource>();
