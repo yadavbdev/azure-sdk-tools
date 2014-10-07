@@ -157,5 +157,17 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 table.Properties.Published = value;
             }
         }
+
+        public TableProperties Properties
+        {
+            get
+            {
+                return table.Properties;
+            }
+            set
+            {
+                table.Properties = value;
+            }
+        }
     }
 }
