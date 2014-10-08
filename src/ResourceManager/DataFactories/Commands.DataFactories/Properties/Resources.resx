@@ -134,6 +134,9 @@ Are you sure you want to continue?</value>
   <data name="DataFactoryRemoving" xml:space="preserve">
     <value>Removing data factory '{0}' in resource group '{1}'.</value>
   </data>
+  <data name="DownloadFailed" xml:space="preserve">
+    <value>Download failed. Please check if you have write permission to the path {0} or the url {1} is valid. </value>
+  </data>
   <data name="DownloadLogCompleted" xml:space="preserve">
     <value>Download of the log is completed. Please find it in the directory {0}.</value>
   </data>

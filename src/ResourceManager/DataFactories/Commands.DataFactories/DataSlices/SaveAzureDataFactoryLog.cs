@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            IStorageClientWrapper client = new StorageClientWrapper();
+            IStorageClientWrapper client = new StorageClientWrapper(null);
            
             PSRunLogInfo runLog =
                 DataFactoryClient.GetDataSliceRunLogsSharedAccessSignature(
@@ -67,12 +67,19 @@ namespace Microsoft.Azure.Commands.DataFactories
                     throw new IOException(string.Format(CultureInfo.InvariantCulture, Resources.NoWriteAccessToDirectory));
                 }
 
-                client.DownloadFileToBlob(new BlobDownloadParameters()
+                try
                 {
-                    Directory = directory,
-                    SasUri = new Uri(runLog.SasUri),
-                    Credentials = new StorageCredentials(runLog.SasToken)
-                });
+                    client.DownloadFileToBlob(new BlobDownloadParameters()
+                    {
+                        Directory = directory,
+                        SasUri = new Uri(runLog.SasUri),
+                        Credentials = new StorageCredentials(runLog.SasToken)
+                    });
+                }
+                catch 
+                {
+                    throw new JobFailedException(string.Format(CultureInfo.InvariantCulture, Resources.DownloadFailed));
+                }
 
                 WriteVerbose(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
             }

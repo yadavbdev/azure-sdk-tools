@@ -34,8 +34,9 @@ namespace Microsoft.WindowsAzure.Commands.Common.Storage
 
         public Func<Uri, StorageCredentials, CloudBlobClient> CloudBlobClientFactory { get; set; }
 
-        public StorageClientWrapper()
-        { 
+        public StorageClientWrapper(SubscriptionCloudCredentials credentials)
+        {
+            StorageManagementClient = new StorageManagementClient(credentials);
         }
 
         public StorageClientWrapper(IStorageManagementClient storageManagementClient)
