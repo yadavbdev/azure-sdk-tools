@@ -16,8 +16,8 @@ using System.Linq;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using Model;
-using Helpers;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
