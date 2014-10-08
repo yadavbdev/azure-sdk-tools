@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch
 
                     if (message != null)
                     {
-                        updatedEx = new CloudException(message, ex.InnerException);
+                        updatedEx = new CloudException(message, ex);
                     }
                 }
 
