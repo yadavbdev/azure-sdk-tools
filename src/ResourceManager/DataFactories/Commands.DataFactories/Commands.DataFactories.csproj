@@ -118,6 +118,7 @@
     <Compile Include="Gateway\NewAzureDataFactoryGatewayKeyCommand.cs" />
     <Compile Include="Gateway\RemoveAzureDataFactoryGatewayCommand.cs" />
     <Compile Include="Gateway\SetAzureDataFactoryGatewayCommand.cs" />
+    <Compile Include="Models\BlobDownloadParameters.cs" />
     <Compile Include="Models\CreatePSLinkedServiceParameters.cs" />
     <Compile Include="LinkedServices\GetAzureDataFactoryLinkedServiceCommand.cs" />
     <Compile Include="LinkedServices\LinkedServiceContextBaseCmdlet.cs" />

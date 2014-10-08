@@ -14,17 +14,13 @@
 
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Commands.DataFactories.Properties;
-using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Management.Automation;
-using System.Net;
 using System.Security.AccessControl;
 using System.Security.Permissions;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
@@ -49,9 +45,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
-        {
-            IStorageClientWrapper client = new StorageClientWrapper(null);
-           
+        {  
             PSRunLogInfo runLog =
                 DataFactoryClient.GetDataSliceRunLogsSharedAccessSignature(
                     ResourceGroupName, DataFactoryName, Id);
@@ -69,7 +63,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 
                 try
                 {
-                    client.DownloadFileToBlob(new BlobDownloadParameters()
+                    DataFactoryClient.DownloadFileToBlob(new BlobDownloadParameters()
                     {
                         Directory = directory,
                         SasUri = new Uri(runLog.SasUri),

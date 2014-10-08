@@ -25,8 +25,5 @@ namespace Microsoft.WindowsAzure.Commands.Common.Storage
 
         Uri UploadFileToBlob(
             BlobUploadParameters parameters);
-
-        void DownloadFileToBlob(
-            BlobDownloadParameters parameters);
     }
 }

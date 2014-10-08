@@ -15,7 +15,6 @@
 using Microsoft.Azure.Commands.DataFactories;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Commands.DataFactories.Test;
-using Microsoft.WindowsAzure.Commands.Common.Storage;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Moq;
@@ -28,8 +27,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.DataFactory
     {
         private SaveAzureDataFactoryLog _cmdlet;
 
-        private Mock<StorageClientWrapper> storageClientMock;
-
         private string _dataSliceRunId;
 
         public SaveDataFactoryRunLogTests()
@@ -38,7 +35,6 @@ namespace Microsoft.WindowsAzure.Commands.Test.DataFactory
 
             this._dataSliceRunId = Guid.NewGuid().ToString();
 
-            this.storageClientMock = new Mock<StorageClientWrapper>();
             this._cmdlet = new SaveAzureDataFactoryLog()
             {
                 CommandRuntime = this.commandRuntimeMock.Object,
@@ -78,7 +74,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.DataFactory
                 f.GetDataSliceRunLogsSharedAccessSignature(ResourceGroupName, DataFactoryName, this._dataSliceRunId))
                 .Returns(runLogInfo);
 
-            this.storageClientMock.Setup(
+            this.dataFactoriesClientMock.Setup(
                 f =>
                 f.DownloadFileToBlob(
                     It.Is<BlobDownloadParameters>(

@@ -34,11 +34,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Storage
 
         public Func<Uri, StorageCredentials, CloudBlobClient> CloudBlobClientFactory { get; set; }
 
-        public StorageClientWrapper(SubscriptionCloudCredentials credentials)
-        {
-            StorageManagementClient = new StorageManagementClient(credentials);
-        }
-
         public StorageClientWrapper(IStorageManagementClient storageManagementClient)
         {
             StorageManagementClient = storageManagementClient;
@@ -66,18 +61,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Storage
             return UploadFile(parameters.StorageName,
                 GeneralUtilities.CreateHttpsEndpoint(blobEndpointUri.ToString()),
                 storageKey, parameters);
-        }
-
-        public virtual void DownloadFileToBlob(BlobDownloadParameters parameters)
-        {
-            if(parameters == null || parameters.Credentials == null || string.IsNullOrWhiteSpace(parameters.SasUri.ToString()))
-            {
-                throw new ArgumentNullException(Resources.DownloadCredentialsNull);
-            }
-
-            CloudBlockBlob blob = new CloudBlockBlob(parameters.SasUri, parameters.Credentials);
-
-            blob.DownloadToFile(parameters.Directory, FileMode.CreateNew, AccessCondition.GenerateEmptyCondition(), null);
         }
 
         private Uri UploadFile(string storageName, Uri blobEndpointUri, string storageKey, BlobUploadParameters parameters)

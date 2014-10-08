@@ -70,15 +70,6 @@ namespace Microsoft.WindowsAzure.Commands.Common.Storage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The argument set for download method is incomplete. .
-        /// </summary>
-        internal static string DownloadCredentialsNull {
-            get {
-                return ResourceManager.GetString("DownloadCredentialsNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to [SasToken].
         /// </summary>
         internal static string SasTokenAccountName {

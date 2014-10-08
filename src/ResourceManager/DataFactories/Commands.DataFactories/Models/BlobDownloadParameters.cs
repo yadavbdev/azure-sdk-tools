@@ -16,7 +16,7 @@ using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 
-namespace Microsoft.WindowsAzure.Commands.Common.Storage
+namespace Microsoft.Azure.Commands.DataFactories
 {
     public class BlobDownloadParameters
     {

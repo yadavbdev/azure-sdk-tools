@@ -16,6 +16,10 @@ using System.IO;
 using Microsoft.Azure.Management.DataFactories;
 using Microsoft.WindowsAzure.Commands.Common;
 using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
+using System;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
@@ -47,6 +51,18 @@ namespace Microsoft.Azure.Commands.DataFactories
             {
                 return reader.ReadToEnd();
             }
+        }
+
+        public virtual void DownloadFileToBlob(BlobDownloadParameters parameters)
+        {
+            if(parameters == null || parameters.Credentials == null || string.IsNullOrWhiteSpace(parameters.SasUri.ToString()))
+            {
+                throw new ArgumentNullException(Resources.DownloadCredentialsNull);
+            }
+
+            CloudBlockBlob blob = new CloudBlockBlob(parameters.SasUri, parameters.Credentials);
+
+            blob.DownloadToFile(parameters.Directory, FileMode.CreateNew, AccessCondition.GenerateEmptyCondition(), null);
         }
     }
 }

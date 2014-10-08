@@ -108,6 +108,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The argument set for download method is incomplete..
+        /// </summary>
+        internal static string DownloadCredentialsNull {
+            get {
+                return ResourceManager.GetString("DownloadCredentialsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download failed. Please check if you have write permission to the path {0} or the url {1} is valid. .
         /// </summary>
         internal static string DownloadFailed {
