@@ -11,13 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+using System.Management.Automation;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Management.Automation;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [Cmdlet(
         VerbsCommon.Get,
         VirtualMachineChefExtensionNoun),
@@ -25,7 +24,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         typeof(VirtualMachineExtensionContext))]
     public class GetAzureVMChefExtensionCommand : VirtualMachineChefExtensionCmdletBase
     {
-        
+
         internal void ExecuteCommand()
         {
             base.extensionName = GetPlatformSpecificExtensionName();

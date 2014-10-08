@@ -11,17 +11,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+using System.Management.Automation;
+using System.Linq;
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using Model;
+using Helpers;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
-    using System.Management.Automation;
-    using System.Linq;
-    using System;
-    using System.IO;
-    using System.Text.RegularExpressions;
-    using Model;
-    using Helpers;
-
     [Cmdlet(
         VerbsCommon.Set,
         VirtualMachineChefExtensionNoun,
