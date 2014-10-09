@@ -135,6 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTests\NewDataFactoryEncryptValueTests.cs" />
     <Compile Include="ScenarioTests\DataFactoryGatewayTests.cs" />
     <Compile Include="ScenarioTests\LinkedServiceTests.cs" />
     <Compile Include="UnitTests\DataFactoryUnitTestBase.cs" />
