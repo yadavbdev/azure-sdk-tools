@@ -9,7 +9,7 @@
 @{
 
 # Version number of this module.
-ModuleVersion = '0.8.8'
+ModuleVersion = '0.8.9'
 
 # ID used to uniquely identify this module
 GUID = 'D48CF693-4125-4D2D-8790-1514F44CE325'
@@ -81,7 +81,8 @@ NestedModules = '.\Services\Microsoft.WindowsAzure.Commands.dll',
                 '.\Sql\Microsoft.WindowsAzure.Commands.SqlDatabase.dll',
                 '.\Storage\Microsoft.WindowsAzure.Commands.Storage.dll',
                 '.\ManagedCache\Microsoft.Azure.Commands.ManagedCache.dll',
-                '.\HDInsight\Microsoft.WindowsAzure.Commands.HDInsight.dll'
+                '.\HDInsight\Microsoft.WindowsAzure.Commands.HDInsight.dll',
+                '.\Network\Microsoft.Azure.Commands.Network.dll'
 
 # Functions to export from this module
 FunctionsToExport = '*'

@@ -27,14 +27,11 @@ namespace Microsoft.WindowsAzure.Commands.Common
     {
         static AzureSession()
         {
-            SubscriptionTokenCache = new Dictionary<Tuple<Guid, string>, IAccessToken>();
             ClientFactory = new AzurePowerShellClientFactory();
             AuthenticationFactory = new AuthenticationFactory();
             CurrentContext = new AzureContext();
             CurrentContext.Environment = AzureEnvironment.PublicEnvironments[EnvironmentName.AzureCloud];
         }
-
-        public static IDictionary<Tuple<Guid, string>, IAccessToken> SubscriptionTokenCache { get; set; }
 
         public static AzureContext CurrentContext {get; private set; }
         

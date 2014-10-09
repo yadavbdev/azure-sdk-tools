@@ -16,7 +16,8 @@
 	<maml:description>
 	<!--This is the Description section-->
 		<maml:para>The Disable-AzureSqlDatabaseAuditing cmdlet disables the auditing of an Azure Sql database. To use the cmdlet, use the ResourceGroupName, ServerName and DatabaseName parameters to identify the database.After the successful execution of the cmdlet, auditing of the database is disabled. If the command succeeds and the PassThru switch is on, it returns an object describing the current auditing setting used as well as the database identifiers (i.e., ResourceGroupName, ServerName and DatabaseName)</maml:para>
-	</maml:description>
+    <maml:para>It is important to note that this cmdlet can be executed only in Azure Resource Manager mode. To switch to that mode run: Switch-AzureMode AzureResourceManager </maml:para>
+  </maml:description>
 	<command:syntax>
 		<command:syntaxItem>
 			<maml:name>Disable-AzureSqlDatabaseAuditing</maml:name>
@@ -154,7 +155,8 @@
 	<maml:description>
 	<!--This is the Description section-->
 		<maml:para>The Disable-AzureSqlServerAuditing cmdlet disables auditing of all the databases that rely on the auditing setting of the given database server. To use the cmdlet, use the ResourceGroupName and ServerName parameters to identify the database server.After the successful execution of the cmdlet, auditing of the database is disabled. If the command succeeds and the PassThru switch is on, it returns an object describing the current auditing setting used as well as the database server identifiers (i.e., ResourceGroupName and ServerName)</maml:para>
-	</maml:description>
+    <maml:para>It is important to note that this cmdlet can be executed only in Azure Resource Manager mode. To switch to that mode run: Switch-AzureMode AzureResourceManager </maml:para>
+  </maml:description>
 	<command:syntax>
 		<command:syntaxItem>
 			<maml:name>Disable-AzureSqlServerAuditing</maml:name>
@@ -273,7 +275,8 @@
 	<maml:description>
 	<!--This is the Description section-->
 		<maml:para>The Get-AzureSqlDatabaseAuditingSetting cmdlet gets the auditing setting of an Azure Sql database. To use the cmdlet, use the ResourceGroupName, ServerName and DatabaseName parameters to identify the database.</maml:para>
-	</maml:description>
+    <maml:para>It is important to note that this cmdlet can be executed only in Azure Resource Manager mode. To switch to that mode run: Switch-AzureMode AzureResourceManager </maml:para>
+  </maml:description>
 	<command:syntax>
 		<command:syntaxItem>
 			<maml:name>Get-AzureSqlDatabaseAuditingSetting</maml:name>
@@ -392,7 +395,8 @@
 	<maml:description>
 	<!--This is the Description section-->
 		<maml:para>The Get-AzureSqlServerAuditingSetting cmdlet gets the auditing setting of an Azure Sql server. To use the cmdlet, use the ResourceGroupName and the ServerName parameters to identify the database server.</maml:para>
-	</maml:description>
+    <maml:para>It is important to note that this cmdlet can be executed only in Azure Resource Manager mode. To switch to that mode run: Switch-AzureMode AzureResourceManager </maml:para>
+  </maml:description>
 	<command:syntax>
 		<command:syntaxItem>
 			<maml:name>Get-AzureSqlServerAuditingSetting</maml:name>
@@ -492,7 +496,8 @@
 	<maml:description>
 	<!--This is the Description section-->
 		<maml:para>The Set-AzureSqlDatabaseAuditingSetting cmdlet changes the auditing setting of an Azure Sql database. To use the cmdlet, use the ResourceGroupName, ServerName and DatabaseName parameters to identify the database, the StorageAccountName parameter to specify the storage account to be used for the audit logs and the EventType parameter to define which event types to audit.After the successful execution of the cmdlet, auditing of the database is enabled. These settings override the server default auditing settings. If the command succeeds and the PassThru switch is on, it returns an object describing the current auditing setting used as well as the database identifiers (ResourceGroupName, ServerName and DatabaseName)</maml:para>
-	</maml:description>
+    <maml:para>It is important to note that this cmdlet can be executed only in Azure Resource Manager mode. To switch to that mode run: Switch-AzureMode AzureResourceManager </maml:para>
+  </maml:description>
 	<command:syntax>
 		<command:syntaxItem>
 			<maml:name>Set-AzureSqlDatabaseAuditingSetting</maml:name>
@@ -686,7 +691,8 @@
 	<maml:description>
 	<!--This is the Description section-->
 		<maml:para>The Set-AzureSqlServerAuditingSetting cmdlet changes the auditing setting of an Azure Sql database server. To use the cmdlet, use the ResourceGroupName and ServerName parameters to identify the database server, the StorageAccountName parameter to specify the storage account to be used for the audit logs and the EventType parameter to define which event types to audit.The auditing settings of a database server apply to all the databases in this server that are marked as using the server&#39;s auditing settings, as well as all newly created databases.If the command succeeds and the PassThru switch is on, it returns an object describing the current auditing setting used as well as the server&#39;s identifiers (i.e., ResourceGroupName and ServerName)</maml:para>
-	</maml:description>
+    <maml:para>It is important to note that this cmdlet can be executed only in Azure Resource Manager mode. To switch to that mode run: Switch-AzureMode AzureResourceManager </maml:para>
+  </maml:description>
 	<command:syntax>
 		<command:syntaxItem>
 			<maml:name>Set-AzureSqlServerAuditingSetting</maml:name>
@@ -861,6 +867,7 @@
 	<maml:description>
 	<!--This is the Description section-->
 		<maml:para>The Use-AzureSqlServerAuditingSetting cmdlet marks an Azure Sql database as using its server&#39;s auditing setting. To use the cmdlet, use the ResourceGroupName, ServerName and DatabaseName parameters to identify the database.If no auditing setting was defined already for the database server, this cmdlet would fail.</maml:para>
+    <maml:para>It is important to note that this cmdlet can be executed only in Azure Resource Manager mode. To switch to that mode run: Switch-AzureMode AzureResourceManager </maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
