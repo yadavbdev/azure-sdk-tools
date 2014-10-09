@@ -190,4 +190,13 @@
     Name="FullWithScenarioTests"
     DependsOnTargets="ForceRestorePackages;Clean;BuildDebug;BuildRelease;Test;BuildSetupDebug;BuildSetupRelease;RunOneSDKCIT" />
   
+  <!-- Run live tests and record mocks -->
+    <Target
+    Name="LiveTest"
+    DependsOnTargets="ForceRestorePackages;Clean;BuildDebug;BuildRelease;LiveTestsFilter;BuildSetupDebug;BuildSetupRelease" />
+
+    <Target Name="LiveTestsFilter" DependsOnTargets="BuildDebug;BeforeRunTests">
+    <Message Importance="high" Text="Running check in tests..." />
+    <CallTarget Targets="SqlTests"/>
+  </Target>
 </Project>
