@@ -374,7 +374,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             Console.WriteLine("Azure VM RDP file downloaded.");
 
             Console.WriteLine("Waiting for a minute vefore trying to connect to VM");
-            Thread.Sleep(240000);
+            Thread.Sleep(TimeSpan.FromMinutes(4));
             Utilities.RetryActionUntilSuccess(() => ValidateLogin(dns, port, vmAccessUserName, vmAccessPassword), "Cannot RDP to the instance!!", 5, 10000);
 
         }
