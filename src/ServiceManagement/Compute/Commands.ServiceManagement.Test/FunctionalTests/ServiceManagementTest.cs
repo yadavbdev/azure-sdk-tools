@@ -244,6 +244,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             CredentialHelper.GetTestSettings(Resource.TestSettings);
 
             vmPowershellCmdlets.RemoveAzureSubscriptions();
+            if (vmPowershellCmdlets.GetAzureEnvironment("ussouth").Count > 0)
+            {
+                Console.WriteLine("Removing ussouth environment...");
+                vmPowershellCmdlets.RunPSScript("Remove-AzureEnvironment -Environment ussouth -Force");
+            }
+
             List<AzureEnvironment> environments =  vmPowershellCmdlets.GetAzureEnvironment();
             var serviceManagementUrl = GetServiceManagementUrl(CredentialHelper.PublishSettingsFile);
 
@@ -262,6 +268,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             if (string.IsNullOrEmpty(currentEnv))
             {
+                Console.WriteLine("Creating new environment... : {0}", TempEnvName);
                 var prodEnv = vmPowershellCmdlets.GetAzureEnvironment("AzureCloud")[0];
                 vmPowershellCmdlets.RunPSScript(string.Format(
                     @"Add-AzureEnvironment -Name {0} `
@@ -287,6 +294,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
             else
             {
+                Console.WriteLine("Using existing environment... : {0}", currentEnv);
                 vmPowershellCmdlets.ImportAzurePublishSettingsFile(CredentialHelper.PublishSettingsFile, currentEnv);
             }
 
