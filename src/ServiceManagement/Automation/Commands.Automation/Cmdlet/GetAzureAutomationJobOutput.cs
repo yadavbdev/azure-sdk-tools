@@ -58,11 +58,11 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void AutomationExecuteCmdlet()
         {
-            // Assume local time if DateTimeKind.Unspecified 
-            if (this.StartTime.Kind == DateTimeKind.Unspecified) 
-            { 
-                this.StartTime = DateTime.SpecifyKind(this.StartTime, DateTimeKind.Local); 
-            } 
+            // Assume local time if DateTimeKind.Unspecified
+            if (this.StartTime.Kind == DateTimeKind.Unspecified)
+            {
+                this.StartTime = DateTime.SpecifyKind(this.StartTime, DateTimeKind.Local);
+            }
 
             var streamTypeNames = new string[]
                                       {
