@@ -247,7 +247,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             if (vmPowershellCmdlets.GetAzureEnvironment("ussouth").Count > 0)
             {
                 Console.WriteLine("Removing ussouth environment...");
-                vmPowershellCmdlets.RunPSScript("Remove-AzureEnvironment -Environment ussouth -Force");
+                vmPowershellCmdlets.RunPSScript("Remove-AzureEnvironment -Name ussouth -Force");
             }
 
             List<AzureEnvironment> environments =  vmPowershellCmdlets.GetAzureEnvironment();

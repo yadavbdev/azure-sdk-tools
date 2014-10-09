@@ -129,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return resultCollection;
         }
 
-        public Collection <PSObject> RunPSScript(string script, bool debug = true)
+        public Collection <PSObject> RunPSScript(string script, bool debug = false)
         {
             List<string> st = new List<string>();
             st.Add(script);
