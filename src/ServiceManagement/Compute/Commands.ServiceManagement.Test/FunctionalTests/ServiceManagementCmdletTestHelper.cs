@@ -40,6 +40,7 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.Iaa
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PIRCmdletInfo;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PreviewCmdletInfo;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.SubscriptionCmdletInfo;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -128,7 +129,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return resultCollection;
         }
 
-        public Collection <PSObject> RunPSScript(string script, bool debug = true)
+        public Collection <PSObject> RunPSScript(string script, bool debug = false)
         {
             List<string> st = new List<string>();
             st.Add(script);
@@ -823,8 +824,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         internal void ImportAzurePublishSettingsFile(string publishSettingsFile, bool debug = false)
         {
-            (new WindowsAzurePowershellCmdlet(new ImportAzurePublishSettingsFileCmdletInfo(publishSettingsFile))).Run(
-                (debug));
+            (new WindowsAzurePowershellCmdlet(new ImportAzurePublishSettingsFileCmdletInfo(publishSettingsFile))).Run(debug);
+        }
+
+        internal void ImportAzurePublishSettingsFile(string publishSettingsFile, string env, bool debug = false)
+        {
+            (new WindowsAzurePowershellCmdlet(new ImportAzurePublishSettingsFileCmdletInfo(publishSettingsFile, env))).Run(debug);
         }
 
         #endregion
@@ -1618,6 +1623,31 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             var removeAzureSubscriptionCmdletInfo = new RemoveAzureSubscriptionCmdletInfo(Name, null, force);
             var removeAzureSubscriptionCmdlet = new WindowsAzurePowershellCmdlet(removeAzureSubscriptionCmdletInfo);
             removeAzureSubscriptionCmdlet.Run(debug);
+        }
+
+        public List<AzureEnvironment> GetAzureEnvironment(string name = null, string subscriptionDataFile = null, bool debug = false)
+        {
+            Collection<PSObject> result = (new WindowsAzurePowershellCmdlet(new GetAzureEnvironmentCmdletInfo(name, subscriptionDataFile))).Run(debug);
+
+            var listObject = (List<PSObject>) result[0].BaseObject;
+            List<AzureEnvironment> envList = new List<AzureEnvironment>();
+
+            foreach(var element in listObject)
+            {
+                var newEnv = new AzureEnvironment();
+                newEnv.Name = element.Properties.Match("Name")[0].Value.ToString();
+                var endpoints = new Dictionary<AzureEnvironment.Endpoint,string>();
+                var endpointKeys = Enum.GetValues(typeof(AzureEnvironment.Endpoint));
+                foreach(var key in endpointKeys)
+                {
+                    endpoints.Add((AzureEnvironment.Endpoint) key, (string) element.Properties.Match(key.ToString())[0].Value);
+                }
+
+                newEnv.Endpoints = endpoints;
+                envList.Add(newEnv);
+            }
+
+            return envList;
         }
 
         internal SM.NetworkAclObject NewAzureAclConfig()

@@ -204,7 +204,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public const string GetAzureSubscriptionCmdletName = "Get-AzureSubscription";
         public const string SetAzureSubscriptionCmdletName = "Set-AzureSubscription";
         public const string SelectAzureSubscriptionCmdletName = "Select-AzureSubscription";
-        public const string RemoveAzureSubscriptionCmdletName = "Remove-AzureSubscription";        
+        public const string RemoveAzureSubscriptionCmdletName = "Remove-AzureSubscription";
+
+        // AzureEnvironment
+        public const string GetAzureEnvironmentCmdletName = "Get-AzureEnvironment";
+        public const string SetAzureEnvironmentCmdletName = "Set-AzureEnvironment";
 
         // AzureVhd
         public static string AddAzureVhdCmdletName = "Add-AzureVhd";
@@ -276,7 +280,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public const string ResetAzureRoleInstanceCmdletName = "ReSet-AzureRoleInstance";
 
         //Static CA cmdlets
-
         public const string TestAzureStaticVNetIPCmdletName = "Test-AzureStaticVNetIP";
         public const string SetAzureStaticVNetIPCmdletName = "Set-AzureStaticVNetIP";
         public const string GetAzureStaticVNetIPCmdletName = "Get-AzureStaticVNetIP";

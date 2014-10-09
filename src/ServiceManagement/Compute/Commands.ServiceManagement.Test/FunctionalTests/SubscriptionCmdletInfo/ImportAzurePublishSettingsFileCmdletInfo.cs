@@ -14,14 +14,18 @@
 
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.SubscriptionCmdletInfo
 {
     public class ImportAzurePublishSettingsFileCmdletInfo : CmdletsInfo
     {
-        public ImportAzurePublishSettingsFileCmdletInfo(string publishSettingsFile)
+        public ImportAzurePublishSettingsFileCmdletInfo(string publishSettingsFile, string env = null)
         {
             cmdletName = Utilities.ImportAzurePublishSettingsFileCmdletName;
             cmdletParams.Add(new CmdletParam("PublishSettingsFile", publishSettingsFile));
+            if (! string.IsNullOrEmpty(env))
+            {
+                cmdletParams.Add(new CmdletParam("Environment", env));
+            }
         }
     }
 }
