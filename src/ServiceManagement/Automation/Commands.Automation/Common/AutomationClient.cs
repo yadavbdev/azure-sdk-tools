@@ -466,19 +466,19 @@ namespace Microsoft.Azure.Commands.Automation.Common
             AutomationManagement.Models.Job jobModel = this.GetJobModel(automationAccountName, jobId);
             IList<AutomationManagement.Models.JobStreamItem> jobStreamItemModels = AutomationManagementClient.ContinuationTokenHandler(
                 skipToken =>
-                    {
-                        var response = this.automationManagementClient.JobStreams.ListStreamItems(
-                            automationAccountName,
-                            new AutomationManagement.Models.JobStreamListStreamItemsParameters
-                            {
-                                JobId = jobModel.Id,
-                                StartTime = this.FormatDateTime(createdSince),
-                                StreamType = streamTypeName,
-                                SkipToken = skipToken
-                            });
-                        return new ResponseWithSkipToken<AutomationManagement.Models.JobStreamItem>(
-                            response, response.JobStreamItems);
-                    });
+                {
+                    var response = this.automationManagementClient.JobStreams.ListStreamItems(
+                        automationAccountName,
+                        new AutomationManagement.Models.JobStreamListStreamItemsParameters
+                        {
+                            JobId = jobModel.Id,
+                            StartTime = this.FormatDateTime(createdSince),
+                            StreamType = streamTypeName,
+                            SkipToken = skipToken
+                        });
+                    return new ResponseWithSkipToken<AutomationManagement.Models.JobStreamItem>(
+                        response, response.JobStreamItems);
+                });
 
             return jobStreamItemModels.Select(jobStreamItemModel => new JobStreamItem(jobStreamItemModel));
         }
@@ -912,7 +912,7 @@ namespace Microsoft.Azure.Commands.Automation.Common
             parameters = parameters ?? new Dictionary<string, string>();
             IEnumerable<RunbookParameter> runbookParameters = this.ListRunbookParameters(automationAccountName, runbookId);
             var filteredParameters = new List<AutomationManagement.Models.NameValuePair>();
-           
+
             foreach (var runbookParameter in runbookParameters)
             {
                 if (parameters.Contains(runbookParameter.Name))

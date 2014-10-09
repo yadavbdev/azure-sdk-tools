@@ -108,7 +108,6 @@ namespace Microsoft.Azure.Commands.Automation.Cmdlet
                     continue;
                 }
 
-
                 var hourlySchedule = schedule as HourlySchedule;
                 if (hourlySchedule != null)
                 {
