@@ -555,12 +555,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         }
 
         /// <summary>
-        /// 
+        ///  Retry the given action until success or timed out.
         /// </summary>
-        /// <param name="act"></param>
-        /// <param name="errorMessage"></param>
-        /// <param name="maxTry"></param>
-        /// <param name="intervalSeconds"></param>
+        /// <param name="act">the action</param>
+        /// <param name="errorMessage">retry for this error message</param>
+        /// <param name="maxTry">the max number of retries</param>
+        /// <param name="intervalSeconds">the interval between retries</param>
         public static void RetryActionUntilSuccess(Action act, string errorMessage, int maxTry, int intervalSeconds)
         {
             int i = 0;
@@ -568,7 +568,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             {
                 try
                 {
-
                     act();
                     return;
                 }
@@ -577,17 +576,20 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     if (e.ToString().Contains(errorMessage))
                     {
                         Console.WriteLine("{0} error occurs! retrying ...", errorMessage);
-                        Console.WriteLine(e.InnerException.ToString());
+                        if (e.InnerException != null)
+                        {
+                            Console.WriteLine(e.InnerException);
+                        }
                         Thread.Sleep(TimeSpan.FromSeconds(intervalSeconds));
                         i++;
                         continue;
                     }
                     else
                     {
-                        Console.WriteLine(e.ToString());
+                        Console.WriteLine(e);
                         if (e.InnerException != null)
                         {
-                            Console.WriteLine(e.InnerException.ToString());
+                            Console.WriteLine(e.InnerException);
                         }
                         throw;
                     }
