@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         protected static string locationName;
         protected static string imageName;
-        protected static string currentEnv = null;
+        protected static string currentEnvName = null;
 
         protected bool pass;
         protected string testName;
@@ -160,7 +160,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 }
             }
 
-            if (string.IsNullOrEmpty(currentEnv))
+            if (string.IsNullOrEmpty(currentEnvName))
             {
                 vmPowershellCmdlets.RunPSScript(string.Format("Remove-AzureEnvironment -Name {0} -Force", TempEnvName));
             }
@@ -260,13 +260,23 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 {
                     if (envServiceManagementUrl.Equals(serviceManagementUrl))
                     {
-                        currentEnv = env.Name;
+                        currentEnvName = env.Name;
+                        var curEnv = vmPowershellCmdlets.GetAzureEnvironment(currentEnvName)[0];
+                        Console.WriteLine("Using the existing environment: {0}", currentEnvName);
+                        Console.WriteLine("PublichSettingsFileUrl: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.PublishSettingsFileUrl));
+                        Console.WriteLine("ServiceManagement: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.ServiceManagement));
+                        Console.WriteLine("ManagementPortalUrl: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.ManagementPortalUrl));
+                        Console.WriteLine("ActiveDirectory: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.ActiveDirectory));
+                        Console.WriteLine("ActiveDirectoryServiceEndpointResourceId: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.ActiveDirectoryServiceEndpointResourceId));
+                        Console.WriteLine("ResourceManager: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.ResourceManager));
+                        Console.WriteLine("Gallery: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.Gallery));
+                        Console.WriteLine("Graph: {0}", curEnv.GetEndpoint(AzureEnvironment.Endpoint.Graph));
                         break;
                     }
                 }
             }
 
-            if (string.IsNullOrEmpty(currentEnv))
+            if (string.IsNullOrEmpty(currentEnvName))
             {
                 Console.WriteLine("Creating new environment... : {0}", TempEnvName);
                 var prodEnv = vmPowershellCmdlets.GetAzureEnvironment("AzureCloud")[0];
@@ -294,8 +304,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
             else
             {
-                Console.WriteLine("Using existing environment... : {0}", currentEnv);
-                vmPowershellCmdlets.ImportAzurePublishSettingsFile(CredentialHelper.PublishSettingsFile, currentEnv);
+                Console.WriteLine("Using existing environment... : {0}", currentEnvName);
+                vmPowershellCmdlets.ImportAzurePublishSettingsFile(CredentialHelper.PublishSettingsFile, currentEnvName);
             }
 
             var firstSub = vmPowershellCmdlets.GetAzureSubscription().First();
