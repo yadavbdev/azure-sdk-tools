@@ -204,7 +204,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
                     // Update-AzureVMImage test for VM size
-                    result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, null, instanceSizes[Math.Max((i + 1) % arrayLength, 1)].InstanceSize);
+                    result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, resultReturned.ImageName, instanceSizes[Math.Max((i + 1) % arrayLength, 1)].InstanceSize);
                     resultReturned = vmPowershellCmdlets.GetAzureVMImage(newImageName)[0];
                     Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
@@ -216,6 +216,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass = false;
                 Console.WriteLine("Exception occurred: {0}", e.ToString());
                 throw;
+            }
+            finally
+            {
+                if (vmPowershellCmdlets.GetAzureVMImage(newImageName).Count != 0)
+                {
+                    vmPowershellCmdlets.RemoveAzureVMImage(newImageName);
+                }
             }
         }
 
