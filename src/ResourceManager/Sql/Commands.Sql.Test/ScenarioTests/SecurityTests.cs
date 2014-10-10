@@ -28,11 +28,10 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyWithStorage");
         }
 
@@ -44,56 +43,50 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypes()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyWithEventTypes");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableDatabaseAuditing()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DisableDatabaseAuditing");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableServerAuditing()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DisableServerAuditing");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseDisableEnableKeepProperties()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DatabaseDisableEnableKeepProperties");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerDisableEnableKeepProperties()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerDisableEnableKeepProperties");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestUseServerDefault()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-UseServerDefault");
         }
 
@@ -101,80 +94,70 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedDatabaseUpdatePolicyWithNoStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailedDatabaseUpdatePolicyWithNoStorage");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedServerUpdatePolicyWithNoStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailedServerUpdatePolicyWithNoStorage");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedUseServerDefault()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailedUseServerDefault");
         }
         
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithEventTypeShortcuts()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DatabaseUpdatePolicyWithEventTypeShortcuts");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypeShortcuts()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyWithEventTypeShortcuts");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyKeepPreviousStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DatabaseUpdatePolicyKeepPreviousStorage");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyKeepPreviousStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyKeepPreviousStorage");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadDatabaseIndentity()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailWithBadDatabaseIndentity");
         }
 
         [Fact]
+        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadServerIndentity()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailWithBadServerIndentity");
         }
     }

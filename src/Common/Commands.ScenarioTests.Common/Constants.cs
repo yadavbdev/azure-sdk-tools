@@ -20,6 +20,10 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         // Service
         public const string Service = "Service";
 
+        public const string MustRunLive = "MustRunLive";
+
+        public const string TraitTrueValue = "True";
+
         public const string All = "All";
 
         public const string Automation = "Automation";

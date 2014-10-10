@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <UsingTask 
-    AssemblyFile="$(MSBuildProjectDirectory)\src\packages\xunit.1.9.2\lib\net20\xunit.runner.msbuild.dll"
+    AssemblyFile="$(MSBuildProjectDirectory)\src\packages\xunit.runners.2.0.0-beta4-build2738\tools\xunit.runner.msbuild.dll"
     TaskName="Xunit.Runner.MSBuild.xunit" />
   
   <!-- Clean the build in all configurations -->
@@ -78,9 +78,9 @@
   -->
   <Target Name="ForceRestorePackages">
     <PropertyGroup>
-        <NuGetCommand>$(MSBuildProjectDirectory)\src\.nuget\NuGet.exe</NuGetCommand>
-        <NuGetRestoreConfigFile>$(MSBuildProjectDirectory)\restore.config</NuGetRestoreConfigFile>
-        <NuGetRestoreConfigSwitch>-ConfigFile &quot;$(NuGetRestoreConfigFile)&quot;</NuGetRestoreConfigSwitch>
+      <NuGetCommand>$(MSBuildProjectDirectory)\src\.nuget\NuGet.exe</NuGetCommand>
+      <NuGetRestoreConfigFile>$(MSBuildProjectDirectory)\restore.config</NuGetRestoreConfigFile>
+      <NuGetRestoreConfigSwitch>-ConfigFile &quot;$(NuGetRestoreConfigFile)&quot;</NuGetRestoreConfigSwitch>
     </PropertyGroup>
     
     <ItemGroup>
@@ -176,6 +176,10 @@
       ContinueOnError="false" />
   </Target>
 
+  <PropertyGroup>
+    <RunTestLive Condition="'$(RunTestLive)' == ''">false</RunTestLive>
+    <XUnitExcludedTrait Condition="!$(RunTestLive)">MustRunLive=True</XUnitExcludedTrait>
+  </PropertyGroup>
   <!-- Note: all testing related target should go to 'AzurePowershell.test.targets' file except the one used by CI run -->
   <Import Project="$(MSBuildThisFileDirectory)AzurePowershell.test.targets"/>
   
