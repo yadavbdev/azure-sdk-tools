@@ -48,7 +48,7 @@
   </Target>
   
   <Target Name="TestManagement">
-	  <Xunit.Runner.MSBuild.xunit Assembly="$(ManagementTestDebug)" Html="$(TestOutputDirectory)\ManagementDebug.xunit.dll.html" Verbose="false"
+	  <Xunit.Runner.MSBuild.xunit Assemblies="$(ManagementTestDebug)" Html="$(TestOutputDirectory)\ManagementDebug.xunit.dll.html" Verbose="false"
       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
   </Target>
 
@@ -56,12 +56,12 @@
     <PropertyGroup>
       <_ManagedCacheTestAssembly>.\src\ServiceManagement\ManagedCache\Commands.ManagedCache.Test\bin\Debug\Microsoft.Azure.Commands.ManagedCache.Test.dll</_ManagedCacheTestAssembly>
     </PropertyGroup>
-    <Xunit.Runner.MSBuild.xunit Assembly="$(_ManagedCacheTestAssembly)" Html="$(TestOutputDirectory)\ManagedCache.xunit.dll.html" Verbose="false"
+    <Xunit.Runner.MSBuild.xunit Assemblies="$(_ManagedCacheTestAssembly)" Html="$(TestOutputDirectory)\ManagedCache.xunit.dll.html" Verbose="false"
       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
   </Target>
 
   <Target Name="TestResourceManager">
-    <Xunit.Runner.MSBuild.xunit Assembly="$(ResourceManagerTestDebug)" Html="$(TestOutputDirectory)\ResourceManagerTestDebug.xunit.dll.html" Verbose="false"
+    <Xunit.Runner.MSBuild.xunit Assemblies="$(ResourceManagerTestDebug)" Html="$(TestOutputDirectory)\ResourceManagerTestDebug.xunit.dll.html" Verbose="false"
       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
   </Target>
 
@@ -109,21 +109,21 @@
   <!-- Run the common tests -->
   <Target Name="CommonTests">
     <Message Importance="high" Text="Running Common tests" />
-	  <Xunit.Runner.MSBuild.xunit Assembly="$(CommonTestDebug)" Html="$(TestOutputDirectory)\CommonTests.xunit.dll.html" Verbose="false"
+	  <Xunit.Runner.MSBuild.xunit Assemblies="$(CommonTestDebug)" Html="$(TestOutputDirectory)\CommonTests.xunit.dll.html" Verbose="false"
       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false"/>
   </Target>
 
   <!-- Run the sql tests -->
   <Target Name="SqlTests">
     <Message Importance="high" Text="Running Sql tests" />
-    <Xunit.Runner.MSBuild.xunit Assembly="$(SqlTestDebug)" Html="$(TestOutputDirectory)\SqlTests.xunit.dll.html" Verbose="false"
+    <Xunit.Runner.MSBuild.xunit Assemblies="$(SqlTestDebug)" Html="$(TestOutputDirectory)\SqlTests.xunit.dll.html" Verbose="false"
       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
   </Target>  
   
   <!-- Run the scenario tests with Mocks -->
   <Target Name="MockedScenarioTests">
     <Message Importance="high" Text="Running scenario tests with Mocks" />
-	  <Xunit.Runner.MSBuild.xunit Assembly="$(ScenarioTestDebug)" Html="$(TestOutputDirectory)\MockedScenarioTests.xunit.dll.html" Verbose="true"
+	  <Xunit.Runner.MSBuild.xunit Assemblies="$(ScenarioTestDebug)" Html="$(TestOutputDirectory)\MockedScenarioTests.xunit.dll.html" Verbose="true"
       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
   </Target>
 
