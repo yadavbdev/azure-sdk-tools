@@ -52,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
         [Fact]
         [Trait(Category.Service, Category.Automation)]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         public void TestAutomationSuspendAndResumeJob()
         {
             RunPowerShellTest("Test-AutomationSuspendAndResumeJob -runbookPath Resources\\Automation\\Use-WorkflowCheckpointSample.ps1");
@@ -60,7 +60,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
         [Fact]
         [Trait(Category.Service, Category.Automation)]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         public void TestAutomationStartRunbookOnASchedule()
         {
             RunPowerShellTest("Test-AutomationStartRunbookOnASchedule -runbookPath Resources\\Automation\\Test-Workflow.ps1");

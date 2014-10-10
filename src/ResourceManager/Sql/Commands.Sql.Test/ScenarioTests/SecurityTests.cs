@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithStorage()
         {
@@ -43,7 +43,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypes()
         {
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableDatabaseAuditing()
         {
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableServerAuditing()
         {
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseDisableEnableKeepProperties()
         {
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerDisableEnableKeepProperties()
         {
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestUseServerDefault()
         {
@@ -98,7 +98,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedServerUpdatePolicyWithNoStorage()
         {
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedUseServerDefault()
         {
@@ -114,7 +114,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
         
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithEventTypeShortcuts()
         {
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypeShortcuts()
         {
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyKeepPreviousStorage()
         {
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyKeepPreviousStorage()
         {
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadDatabaseIndentity()
         {
@@ -154,7 +154,7 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadServerIndentity()
         {

@@ -22,7 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Remove-AzureWebsite Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -32,7 +32,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -43,7 +43,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -69,7 +69,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Get-AzureWebsiteLog Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -79,7 +79,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact(Skip = "TODO: Fix the failing tests.")]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTail()
@@ -88,7 +88,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact(Skip = "TODO: Fix the failing tests.")]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTailPath()
@@ -97,7 +97,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact(Skip = "TODO: Fix the failing tests.")]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogTailUriEncoding()
@@ -106,7 +106,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact(Skip = "TODO: Fix the failing tests.")]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
         public void TestGetAzureWebsiteLogListPath()
@@ -119,7 +119,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Get-AzureWebsite Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -130,7 +130,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -145,7 +145,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Start-AzureWebsite Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -160,7 +160,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Stop-AzureWebsite Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -175,7 +175,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Restart-AzureWebsite Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -190,7 +190,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Enable-AzureWebsiteApplicationDiagnostic Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestEnableApplicationDiagnosticOnTableStorage()
@@ -199,7 +199,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -209,7 +209,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -219,7 +219,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestReconfigureStorageAppDiagnostics()
@@ -228,7 +228,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -242,7 +242,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Disable-AzureWebsiteApplicationDiagnostic Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestDisableApplicationDiagnosticOnTableStorage()
@@ -251,7 +251,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -261,7 +261,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestDisableApplicationDiagnosticOnTableStorageAndFile()
@@ -270,7 +270,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestDisablesFileOnly()
@@ -279,7 +279,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestDisablesStorageOnly()
@@ -288,7 +288,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestDisablesBothByDefault()
@@ -301,7 +301,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Get-AzureWebsiteLocation Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -312,7 +312,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -322,7 +322,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -333,7 +333,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -344,7 +344,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -359,7 +359,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region AzureWebSiteGitHubAllParms Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -369,7 +369,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact (Skip = "TODO: Fix failing test.")]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
         public void TestNewAzureWebSiteGitHubAllParms()
@@ -378,7 +378,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         [Trait(Category.Environment, Category.WAPack)]
@@ -391,7 +391,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region Set-AzureWebSite Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
@@ -406,7 +406,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         #region WebJob Scenario Tests
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestRemoveAzureWebsiteTriggeredJob()
@@ -415,7 +415,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact (Skip = "TODO: Fix failing test.")]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestRemoveAzureWebsiteContinuousJob()
@@ -424,7 +424,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestRemoveNonExistingAzureWebsiteJob()
@@ -433,7 +433,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestStartAzureWebsiteTriggeredJob()
@@ -442,7 +442,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestStartAndStopAzureWebsiteContinuousJob()
@@ -451,7 +451,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void GettingWebsiteJobs()
@@ -460,7 +460,7 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.WebsitesTests
         }
 
         [Fact]
-        [Trait(Category.MustRunLive, Category.TraitTrueValue)]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.BVT)]
         [Trait(Category.Service, Category.Websites)]
         public void TestGetsJobHistory()

@@ -180,13 +180,13 @@
 
   <PropertyGroup>
     <RunTestLive Condition="'$(RunTestLive)' == ''">false</RunTestLive>
-    <XUnitExcludedTrait Condition="!$(RunTestLive)">MustRunLive=True</XUnitExcludedTrait>
+    <XUnitExcludedTrait Condition="!$(RunTestLive)">RunType=LiveOnly</XUnitExcludedTrait>
   </PropertyGroup>
   <!-- Note: all testing related target should go to 'AzurePowershell.test.targets' file except the one used by CI run -->
   <Import Project="$(MSBuildThisFileDirectory)AzurePowershell.test.targets"/>
   
   <!-- Run checkin tests for each pull request -->
-  <Target Name="Test" DependsOnTargets="BuildDebug;BeforeRunTests">
+  <Target Name="Test" DependsOnTargets="BeforeRunTests">
     <Message Importance="high" Text="Running check in tests..." />
     <CallTarget Targets="SqlTests; CommonTests; TestManagement; TestHDInsight; TestManagedCache; TestServiceManagement; TestServiceManagementExtensions; TestSqlDatabase; TestStorage; TestResourceManager; MockedScenarioTests; TestDSCExtension_x64"/>
   </Target>

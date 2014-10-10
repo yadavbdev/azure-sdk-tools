@@ -20,10 +20,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
         // Service
         public const string Service = "Service";
 
-        public const string MustRunLive = "MustRunLive";
-
-        public const string TraitTrueValue = "True";
-
         public const string All = "All";
 
         public const string Automation = "Automation";
@@ -66,6 +62,12 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
 
         public const string CheckIn = "CheckIn";
 
+        // Run Type
+        public const string RunType = "RunType";
+        public const string LiveOnly = "LiveOnly";
+        //Uncomment when we need to tag on only run under mock
+        //public const string MockedOnly = "MockedOnly";
+       
         // Environment
         public const string Environment = "Environment";
 
