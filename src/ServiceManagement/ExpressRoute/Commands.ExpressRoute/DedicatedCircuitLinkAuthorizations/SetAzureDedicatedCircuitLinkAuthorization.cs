@@ -26,10 +26,10 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         public string ServiceKey { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Authorization ID")]
+            HelpMessage = "Authorization Id")]
         [ValidateGuid]
         [ValidateNotNullOrEmpty]
-        public string AuthId { get; set; }
+        public string AuthorizationId { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Description")]
@@ -40,20 +40,20 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         public int Limit { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Live Ids")]
-        public string LiveIds { get; set; }
+            HelpMessage = "Microsoft Ids")]
+        public string MicrosoftIds { get; set; }
 
         public override void ExecuteCmdlet()
         {
             try
             {
-                var route = ExpressRouteClient.GetAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthId);
-                var updatedAuthorization = ExpressRouteClient.SetAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthId, Description, Limit);
+                ExpressRouteClient.GetAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthorizationId);
+                var updatedAuthorization = ExpressRouteClient.SetAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthorizationId, Description, Limit);
                 WriteObject(updatedAuthorization, false);
             }
             catch
             {
-                var newAuthorization = ExpressRouteClient.NewAzureDedicatedCircuitLinkAuthorization(ServiceKey, Description, Limit, LiveIds);
+                var newAuthorization = ExpressRouteClient.NewAzureDedicatedCircuitLinkAuthorization(ServiceKey, Description, Limit, MicrosoftIds);
                 WriteObject(newAuthorization);
             }
         }

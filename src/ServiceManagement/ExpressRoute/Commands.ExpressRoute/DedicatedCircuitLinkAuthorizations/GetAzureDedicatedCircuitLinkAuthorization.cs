@@ -27,30 +27,30 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         public string ServiceKey { get; set; }
 
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Authorization Identifier")]
+            HelpMessage = "Authorization Id")]
         [ValidateGuid]
         [ValidateNotNullOrEmpty]
-        public string AuthId { get; set; }
+        public string AuthorizationId { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            if (!string.IsNullOrEmpty(AuthId))
+            if (!string.IsNullOrEmpty(AuthorizationId))
             {
-                GetByAuthId();
+                GetByAuthorizationId();
             }
             else
             {
-                GetNoAuthId();
+                GetNoAuthorizationId();
             }          
         }
 
-        private void GetByAuthId()
+        private void GetByAuthorizationId()
         {
-            var linkAuth = ExpressRouteClient.GetAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthId);
+            var linkAuth = ExpressRouteClient.GetAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthorizationId);
             WriteObject(linkAuth);
         }
 
-        private void GetNoAuthId()
+        private void GetNoAuthorizationId()
         {
             var linkAuths = ExpressRouteClient.ListAzureDedicatedCircuitLinkAuthorizations(ServiceKey);
             WriteObject(linkAuths, true);

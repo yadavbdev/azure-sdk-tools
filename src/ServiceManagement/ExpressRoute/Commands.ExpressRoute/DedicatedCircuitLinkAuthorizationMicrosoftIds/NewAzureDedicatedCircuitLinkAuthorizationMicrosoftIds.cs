@@ -17,8 +17,8 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
     using Microsoft.WindowsAzure.Management.ExpressRoute.Models;
     using System.Management.Automation;
     
-    [Cmdlet(VerbsCommon.Remove, "AzureDedicatedCircuitLinkAuthorizationLiveIds")]
-    public class RemoveAzureDedicatedCircuitLinkAuthorizationLiveIdsCommand : ExpressRouteBaseCmdlet
+    [Cmdlet(VerbsCommon.New, "AzureDedicatedCircuitLinkAuthorizationMicrosoftIds")]
+    public class NewAzureDedicatedCircuitLinkAuthorizationMicrosoftIdsCommand : ExpressRouteBaseCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "Service Key representing Azure Circuit")]
@@ -29,14 +29,14 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Authorization Id")]
         [ValidateGuid]
         [ValidateNotNullOrEmpty]
-        public string AuthId { get; set; }
+        public string AuthorizationId { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Live Ids to be added")]
-        public string LiveIds { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Microsoft Ids to be removed")]
+        public string MicrosoftIds { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            var mapping = ExpressRouteClient.NewAzureDedicatedCircuitLinkAuthorizationLiveIds(ServiceKey, AuthId, LiveIds);
+            var mapping = ExpressRouteClient.NewAzureDedicatedCircuitLinkAuthorizationMicrosoftIds(ServiceKey, AuthorizationId, MicrosoftIds);
             WriteObject(mapping);
         }
     }

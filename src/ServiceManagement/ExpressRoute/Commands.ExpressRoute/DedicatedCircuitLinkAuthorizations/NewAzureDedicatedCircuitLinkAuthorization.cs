@@ -27,22 +27,22 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         public string ServiceKey { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Service Key representing Azure Circuit")]
+            HelpMessage = "Description")]
         [ValidateNotNullOrEmpty]
         public string Description { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Service Key representing Azure Circuit")]
+            HelpMessage = "Maximum number of links that can be created")]
         [ValidateNotNullOrEmpty]
         public int Limit { get; set; }
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Live Ids to be removed")]
-        public string LiveIds { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "Microsoft Ids to be added")]
+        public string MicrosoftIds { get; set; }
 
         public override void ExecuteCmdlet()
         {
             var mapping = ExpressRouteClient.NewAzureDedicatedCircuitLinkAuthorization(ServiceKey, Description, Limit,
-                LiveIds);
+                MicrosoftIds);
             WriteObject(mapping);
         }
     }

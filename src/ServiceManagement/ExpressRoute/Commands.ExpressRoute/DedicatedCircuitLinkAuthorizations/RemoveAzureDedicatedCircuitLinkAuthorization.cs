@@ -28,10 +28,10 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         public string ServiceKey { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Identifier for the authorization")]
+            HelpMessage = "Authorization Id")]
         [ValidateGuid]
         [ValidateNotNullOrEmpty]
-        public string AuthId { get; set; }
+        public string AuthorizationId { get; set; }
 
         [Parameter(HelpMessage = "Do not confirm")]
         public SwitchParameter Force { get; set; }
@@ -41,24 +41,24 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
 
         public override void ExecuteCmdlet()
         {
-            //ConfirmAction(
-            //    Force.IsPresent,
-            //    string.Format(Resources.RemoveAzureDedicatedCircuitLinkAuthorizationWarning, ServiceKey, AuthId),
-            //    Resources.RemoveAzureDedicatedCircuitLinkAuthorizationMessage,
-            //    ServiceKey+" "+AuthId,
-            //    () =>
-            //    {
-            //        if (!ExpressRouteClient.RemoveAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthId))
-            //        {
-            //            throw new Exception(Resources.RemoveAzureDedicatedCircuitLinkAuthorizationFailed);
-            //        }
-                    
-            //        WriteVerboseWithTimestamp(Resources.RemoveAzureDedicatedCircuitLinkAuthorizationSucceeded, ServiceKey, AuthId);
-            //        if (PassThru.IsPresent)
-            //        {
-            //            WriteObject(true);
-            //        }
-            //    });
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(Resources.RemoveAzureDedicatedCircuitLinkAuthorizationWarning, ServiceKey, AuthorizationId),
+                Resources.RemoveAzureDedicatedCircuitLinkAuthorizationMessage,
+                ServiceKey + " " + AuthorizationId,
+                () =>
+                {
+                    if (!ExpressRouteClient.RemoveAzureDedicatedCircuitLinkAuthorization(ServiceKey, AuthorizationId))
+                    {
+                        throw new Exception(Resources.RemoveAzureDedicatedCircuitLinkAuthorizationFailed);
+                    }
+
+                    WriteVerboseWithTimestamp(Resources.RemoveAzureDedicatedCircuitLinkAuthorizationSucceeded, ServiceKey, AuthorizationId);
+                    if (PassThru.IsPresent)
+                    {
+                        WriteObject(true);
+                    }
+                });
         }
     }
 }

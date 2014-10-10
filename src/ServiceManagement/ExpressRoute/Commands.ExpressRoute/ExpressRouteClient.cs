@@ -165,23 +165,24 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
             return (Client.CrossConnections.List()).CrossConnections;
         }
 
-        public AzureDedicatedCircuitLinkAuthorization GetAzureDedicatedCircuitLinkAuthorization(string serviceKey, string authId)
+        public AzureDedicatedCircuitLinkAuthorization GetAzureDedicatedCircuitLinkAuthorization(string serviceKey, string authorizationId)
         {
-            return (Client.DedicatedCircuitLinkAuthorizations.Get(serviceKey, authId)).DedicatedCircuitLinkAuthorization;
+            return (Client.DedicatedCircuitLinkAuthorizations.Get(serviceKey, authorizationId)).DedicatedCircuitLinkAuthorization;
         }
 
-        public AzureDedicatedCircuitLinkAuthorization NewAzureDedicatedCircuitLinkAuthorization(string serviceKey, string description, int limit, string liveIds)
+        public AzureDedicatedCircuitLinkAuthorization NewAzureDedicatedCircuitLinkAuthorization(string serviceKey, string description, int limit, string microsoftIds)
         {
             return (Client.DedicatedCircuitLinkAuthorizations.New(serviceKey, new DedicatedCircuitLinkAuthorizationNewParameters()
             {
                 Description = description,
                 Limit = limit,
+                MicrosoftIds = microsoftIds
             })).DedicatedCircuitLinkAuthorization;
         }
 
-        public AzureDedicatedCircuitLinkAuthorization SetAzureDedicatedCircuitLinkAuthorization(string serviceKey, string authId, string description, int limit)
+        public AzureDedicatedCircuitLinkAuthorization SetAzureDedicatedCircuitLinkAuthorization(string serviceKey, string authorizationId, string description, int limit)
         {
-            return (Client.DedicatedCircuitLinkAuthorizations.Update(serviceKey, description, new DedicatedCircuitLinkAuthorizationUpdateParameters()
+            return (Client.DedicatedCircuitLinkAuthorizations.Update(serviceKey, authorizationId, new DedicatedCircuitLinkAuthorizationUpdateParameters()
             {
                 Description = description,
                 Limit = limit
@@ -193,9 +194,9 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
             return (Client.DedicatedCircuitLinkAuthorizations.List(serviceKey).DedicatedCircuitLinkAuthorizations);
         }
 
-        public bool RemoveAzureDedicatedCircuitLinkAuthorization(string serviceKey, string authId)
+        public bool RemoveAzureDedicatedCircuitLinkAuthorization(string serviceKey, string authorizationId)
         {
-            var result = Client.DedicatedCircuitLinkAuthorizations.Remove(serviceKey, authId);
+            var result = Client.DedicatedCircuitLinkAuthorizations.Remove(serviceKey, authorizationId);
             return result.HttpStatusCode.Equals(HttpStatusCode.OK);
         }
 
@@ -209,20 +210,20 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
             return (Client.AuthorizedDedicatedCircuits.List().AuthorizedDedicatedCircuits);
         }
 
-        public bool NewAzureDedicatedCircuitLinkAuthorizationLiveIds(string serviceKey, string authId, string liveIds)
+        public bool NewAzureDedicatedCircuitLinkAuthorizationMicrosoftIds(string serviceKey, string authorizationId, string microsoftIds)
         {
-            var result = Client.DedicatedCircuitLinkAuthorizationLiveIds.New(serviceKey, authId, new DedicatedCircuitLinkAuthorizationLiveIdNewParameters()
+            var result = Client.DedicatedCircuitLinkAuthorizationMicrosoftIds.New(serviceKey, authorizationId, new DedicatedCircuitLinkAuthorizationMicrosoftIdNewParameters()
                 {
-                    LiveIds = liveIds
+                    MicrosoftIds = microsoftIds
                 });
             return result.StatusCode.Equals(HttpStatusCode.OK);
         }
 
-        public bool RemoveAzureDedicatedCircuitLinkAuthorizationLiveIds(string serviceKey, string authId, string liveIds)
+        public bool RemoveAzureDedicatedCircuitLinkAuthorizationMicrosoftIds(string serviceKey, string authorizationId, string microsoftIds)
         {
-            var result = Client.DedicatedCircuitLinkAuthorizationLiveIds.Remove(serviceKey, authId, new DedicatedCircuitLinkAuthorizationLiveIdRemoveParameters()
+            var result = Client.DedicatedCircuitLinkAuthorizationMicrosoftIds.Remove(serviceKey, authorizationId, new DedicatedCircuitLinkAuthorizationMicrosoftIdRemoveParameters()
             {
-                LiveIds = liveIds
+                MicrosoftIds = microsoftIds
             });
             return result.StatusCode.Equals(HttpStatusCode.OK);
         }
