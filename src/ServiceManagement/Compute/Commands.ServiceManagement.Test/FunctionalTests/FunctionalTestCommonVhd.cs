@@ -209,6 +209,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
                     vmPowershellCmdlets.RemoveAzureVMImage(newImageName);
+                    pass = true;
                 }
             }
             catch (Exception e)
@@ -219,9 +220,21 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
             finally
             {
-                if (vmPowershellCmdlets.GetAzureVMImage(newImageName).Count != 0)
+                try
                 {
+                    vmPowershellCmdlets.GetAzureVMImage(newImageName);
                     vmPowershellCmdlets.RemoveAzureVMImage(newImageName);
+                }
+                catch (Exception e)
+                {
+                    if (e.ToString().Contains("ResourceNotFound"))
+                    {
+                        Console.WriteLine("The vm image, {0}, is already deleted.", newImageName);
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
         }
