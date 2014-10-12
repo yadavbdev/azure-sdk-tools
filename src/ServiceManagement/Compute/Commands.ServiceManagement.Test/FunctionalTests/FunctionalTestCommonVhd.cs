@@ -204,11 +204,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                     Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
                     // Update-AzureVMImage test for VM size
-                    result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, null, instanceSizes[Math.Max((i + 1) % arrayLength, 1)].InstanceSize);
+                    result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, resultReturned.ImageName, instanceSizes[Math.Max((i + 1) % arrayLength, 1)].InstanceSize);
                     resultReturned = vmPowershellCmdlets.GetAzureVMImage(newImageName)[0];
                     Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
                     vmPowershellCmdlets.RemoveAzureVMImage(newImageName);
+                    pass = true;
                 }
             }
             catch (Exception e)
@@ -216,6 +217,25 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass = false;
                 Console.WriteLine("Exception occurred: {0}", e.ToString());
                 throw;
+            }
+            finally
+            {
+                try
+                {
+                    vmPowershellCmdlets.GetAzureVMImage(newImageName);
+                    vmPowershellCmdlets.RemoveAzureVMImage(newImageName);
+                }
+                catch (Exception e)
+                {
+                    if (e.ToString().Contains("ResourceNotFound"))
+                    {
+                        Console.WriteLine("The vm image, {0}, is already deleted.", newImageName);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
         }
 
@@ -306,7 +326,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                     var size = instanceSize.InstanceSize;
                     if (!size.Equals(InstanceSize.A5.ToString()) && !size.Equals(InstanceSize.A6.ToString()) && !size.Equals(InstanceSize.A7.ToString())
-                        && !size.Equals(InstanceSize.A8.ToString()) && !size.Equals(InstanceSize.A9.ToString()))
+                        && !size.Equals(InstanceSize.A8.ToString()) && !size.Equals(InstanceSize.A9.ToString()) && !size.Contains("Standard_D"))
                     {
                         // Set-AzureVMSize test for regular VM size
                         vmPowershellCmdlets.SetVMSize(vmName, serviceName, new SetAzureVMSizeConfig(size));
