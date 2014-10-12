@@ -23,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
     {
         protected const string StaticVNetIPNoun = "AzureStaticVNetIP";
         protected const string PublicIPNoun = "AzurePublicIP";
+        protected const string NetworkSecurityGroupNoun = "AzureNetworkSecurityGroup";
 
         [Parameter(
             Mandatory = true,

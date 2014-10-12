@@ -602,6 +602,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot remove Network Security Group &quot;{0}&quot; from Virtual Machine &quot;{1}&quot; because it is not directly..
+        /// </summary>
+        public static string ErrorVmIsNotDirectlyAssociatedWithNetworkSecurityGroup {
+            get {
+                return ResourceManager.GetString("ErrorVmIsNotDirectlyAssociatedWithNetworkSecurityGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation Status: .
         /// </summary>
         public static string GatewayOperationStatus {
