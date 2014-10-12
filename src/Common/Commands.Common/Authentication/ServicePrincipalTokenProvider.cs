@@ -26,11 +26,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication
     {
         private static readonly TimeSpan expirationThreshold = new TimeSpan(0, 5, 0);
 
-        public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password)
-        {
-            throw new InvalidOperationException(string.Format(Resources.InvalidCredentialType, "ServicePrincipal"));
-        }
-
         public IAccessToken GetAccessToken(AdalConfiguration config, ShowDialog promptBehavior, string userId, SecureString password,
             AzureAccount.AccountType credentialType)
         {

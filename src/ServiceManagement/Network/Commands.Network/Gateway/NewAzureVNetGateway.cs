@@ -12,14 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Management.Automation;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Management.Network.Models;
-
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
+namespace Microsoft.Azure.Commands.Network.Gateway
 {
+    using System.Management.Automation;
+    using WindowsAzure.Commands.Utilities.Common;
+    using WindowsAzure.Management.Network.Models;
+
     [Cmdlet(VerbsCommon.New, "AzureVNetGateway"), OutputType(typeof(ManagementOperationContext))]
-    public class NewAzureVNetGatewayCommand : ServiceManagementBaseCmdlet
+    public class NewAzureVNetGatewayCommand : NetworkCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "Virtual network name.")]
         public string VNetName { get; set; }
@@ -27,18 +27,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
         [Parameter(Position = 1, Mandatory = false, HelpMessage = "The type of routing that the gateway will use. This will default to StaticRouting if no value is provided.")]
         public GatewayType GatewayType { get; set; }
 
-        protected override void OnProcessRecord()
+        public override void ExecuteCmdlet()
         {
-            GatewayCreateParameters parameters = new GatewayCreateParameters()
-            {
-                GatewayType = this.GatewayType,
-            };
-
-            ServiceManagementProfile.Initialize();
-            ExecuteClientActionNewSM(
-                null,
-                this.CommandRuntime.ToString(),
-                () => this.NetworkClient.Gateways.Create(this.VNetName, parameters));
+            WriteObject(Client.CreateGateway(VNetName, GatewayType));
         }
     }
 }

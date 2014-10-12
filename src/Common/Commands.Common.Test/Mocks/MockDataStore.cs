@@ -40,6 +40,11 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             VirtualStore[path] = contents;
         }
 
+        public void WriteFile(string path, string contents, Encoding encoding)
+        {
+            WriteFile(path, contents);
+        }
+
         public void WriteFile(string path, byte[] contents)
         {
             VirtualStore[path] = Encoding.Default.GetString(contents);

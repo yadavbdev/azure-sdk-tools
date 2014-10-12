@@ -12,15 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-
-using System.Management.Automation;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Management.Network.Models;
-
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
+namespace Microsoft.Azure.Commands.Network.Gateway
 {
+    using System.Management.Automation;
+    using WindowsAzure.Commands.Utilities.Common;
+
     [Cmdlet(VerbsCommon.Set, "AzureVNetGateway", DefaultParameterSetName = "Connect"), OutputType(typeof(ManagementOperationContext))]
-    public class SetAzureVNetGatewayCommand : ServiceManagementBaseCmdlet
+    public class SetAzureVNetGatewayCommand : NetworkCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ParameterSetName = "Connect", HelpMessage = "Connect to Gateway")]
         public SwitchParameter Connect
@@ -50,19 +48,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             set;
         }
 
-        protected override void OnProcessRecord()
+        public override void ExecuteCmdlet()
         {
-            ServiceManagementProfile.Initialize();
-
-            var connParams = new GatewayConnectDisconnectOrTestParameters
-            {
-                Operation = this.Connect.IsPresent ? GatewayConnectionUpdateOperation.Connect : GatewayConnectionUpdateOperation.Disconnect
-            };
-
-            this.ExecuteClientActionNewSM(
-                null,
-                this.CommandRuntime.ToString(),
-                () => this.NetworkClient.Gateways.ConnectDisconnectOrTest(this.VNetName, this.LocalNetworkSiteName, connParams));
+            WriteObject(Client.ConnectDisconnectOrTest(VNetName, LocalNetworkSiteName, Connect.IsPresent));
         }
     }
 }

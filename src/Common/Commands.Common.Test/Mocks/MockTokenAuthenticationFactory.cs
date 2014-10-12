@@ -43,8 +43,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Mocks
             };
         }
 
-        public IAccessToken Authenticate(ref AzureAccount account, AzureEnvironment environment, string tenant, SecureString password,
-            ShowDialog promptBehavior)
+        public IAccessToken Authenticate(AzureAccount account, AzureEnvironment environment, string tenant, SecureString password, ShowDialog promptBehavior)
         {
             if (account.Id == null)
             {
