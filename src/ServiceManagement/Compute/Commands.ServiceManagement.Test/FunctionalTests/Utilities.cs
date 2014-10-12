@@ -120,6 +120,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         // AzurePublishSettingsFile
         public const string ImportAzurePublishSettingsFileCmdletName = "Import-AzurePublishSettingsFile";
         public const string GetAzurePublishSettingsFileCmdletName = "Get-AzurePublishSettingsFile";
+        public const string AddAzureEnvironmentCmdletName = "Add-AzureEnvironment";
 
         // AzureQuickVM
         public const string NewAzureQuickVMCmdletName = "New-AzureQuickVM";

@@ -251,6 +251,7 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\ILB\GetAzurePublicIPCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\ILB\NewAzureInternalLoadBalancerConfigCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\ILB\SetAzurePublicIPCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\AddAzureEnvironmentCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\ImportAzureVMCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\MoveAzureDeploymentCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\NewAzureAclConfigCmdletInfo.cs" />
