@@ -187,6 +187,42 @@ namespace Microsoft.Azure.Commands.Network.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Successfully removed Network Security Group with name &quot;{0}&quot; from Subnet &quot;{1}&quot; in Virtual Network &quot;{2}&quot;..
+        /// </summary>
+        internal static string RemoveNetworkSecurityGroupFromSubnetSucceeded {
+            get {
+                return ResourceManager.GetString("RemoveNetworkSecurityGroupFromSubnetSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove the Network Security Group &quot;{0}&quot; from Subnet &quot;{1}&quot; in Virtual Network &quot;{2}&quot;?.
+        /// </summary>
+        internal static string RemoveNetworkSecurityGroupFromSubnetWarning {
+            get {
+                return ResourceManager.GetString("RemoveNetworkSecurityGroupFromSubnetWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully removed Network Security Group with name &quot;{0}&quot;..
+        /// </summary>
+        internal static string RemoveNetworkSecurityGroupSucceeded {
+            get {
+                return ResourceManager.GetString("RemoveNetworkSecurityGroupSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove the Network Security Group &quot;{0}&quot;?.
+        /// </summary>
+        internal static string RemoveNetworkSecurityGroupWarning {
+            get {
+                return ResourceManager.GetString("RemoveNetworkSecurityGroupWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removing cache service.
         /// </summary>
         internal static string RemoveServiceMessage {
@@ -201,6 +237,24 @@ namespace Microsoft.Azure.Commands.Network.Properties {
         internal static string RemoveServiceWarning {
             get {
                 return ResourceManager.GetString("RemoveServiceWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already a Network Security Group associated with Subnet &quot;{0}&quot; in Virtual Network &quot;{1}&quot;. Are you sure you want to replace it with Network Security Group &quot;{2}&quot;?.
+        /// </summary>
+        internal static string ReplaceNetworkSecurityGroupInSubnetWarning {
+            get {
+                return ResourceManager.GetString("ReplaceNetworkSecurityGroupInSubnetWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully set NetworkSecurityGroup &quot;{0}&quot; in Subnet &quot;{1}&quot; in Virtual Network &quot;{1}&quot;.
+        /// </summary>
+        internal static string ReplaceNetworkSecurityGroupInSubnetWarningSucceeded {
+            get {
+                return ResourceManager.GetString("ReplaceNetworkSecurityGroupInSubnetWarningSucceeded", resourceCulture);
             }
         }
         

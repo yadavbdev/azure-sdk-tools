@@ -12,8 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+
 namespace Microsoft.Azure.Commands.Network
 {
+    using Gateway.Model;
+    using Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -27,7 +30,6 @@ namespace Microsoft.Azure.Commands.Network
     using WindowsAzure.Management.Network;
     using WindowsAzure.Management.Network.Models;
     using WindowsAzure.Storage.Auth;
-    using Gateway.Model;
 
     public class NetworkClient
     {
@@ -226,6 +228,71 @@ namespace Microsoft.Azure.Commands.Network
         private static ClientType CreateClient<ClientType>(AzureSubscription subscription) where ClientType : ServiceClient<ClientType>
         {
             return AzureSession.ClientFactory.CreateClient<ClientType>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
+        }
+
+        public INetworkSecurityGroup CreateNetworkSecurityGroup(string name, string location, string label)
+        {
+            NetworkSecurityGroupCreateParameters parameters = new NetworkSecurityGroupCreateParameters()
+            {
+                Location = location,
+                Name = name,
+                Label = label
+            };
+            client.NetworkSecurityGroups.Create(parameters);
+
+            return GetNetworkSecurityGroup(name, null);
+        }
+
+        public INetworkSecurityGroup GetNetworkSecurityGroup(string name, bool detailLevel)
+        {
+            client.NetworkSecurityGroups.Get(name, detailLevel ? "Full" : null);
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<INetworkSecurityGroup> ListNetworkSecurityGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetNetworkSecurityRule(
+            string networkSecurityGroupName,
+            string ruleName,
+            string type,
+            int priority,
+            string action,
+            string sourceAddressPrefix,
+            string sourcePortRange,
+            string destinationAddressPrefix,
+            string destinationPortRange,
+            string protocol)
+        {
+            throw new NotImplementedException();
+            return GetNetworkSecurityGroup(networkSecurityGroupName, null);
+        }
+
+        public void RemoveNetworkSecurityGroup(string Name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveNetworkSecurityRule(string securityGroupName, string securityRuleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetNetworkSecurityGroupForSubnet(string VirtualNetworkName, string SubnetName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveNetworkSecurityGroupFromSubnet(string Name, string VirtualNetworkName, string SubnetName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetNetworkSecurityGroupForSubnet(string Name, string SubnetName, string VirtualNetworkName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

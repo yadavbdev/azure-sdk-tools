@@ -83,6 +83,18 @@
     <Compile Include="NetworkClient.cs" />
     <Compile Include="NetworkCmdletBase.cs" />
     <None Include="MSSharedLibKey.snk" />
+    <Compile Include="NetworkSecurityGroup\GetAzureNetworkSecurityGroup.cs" />
+    <Compile Include="NetworkSecurityGroup\Model\INetworkSecurityGroup.cs" />
+    <Compile Include="NetworkSecurityGroup\Model\NetworkSecurityGroupWithRules.cs" />
+    <Compile Include="NetworkSecurityGroup\Model\SimpleNetworkSecurityGroup.cs" />
+    <Compile Include="NetworkSecurityGroup\NewAzureNetworkSecurityGroup.cs" />
+    <Compile Include="NetworkSecurityGroup\RemoveAzureNetworkSecurityGroup.cs" />
+    <Compile Include="NetworkSecurityGroup\NetworkSecurityRule\RemoveAzureNetworkSecurityRule.cs" />
+    <Compile Include="NetworkSecurityGroup\NetworkSecurityRule\SetAzureNetworkSecurityRule.cs" />
+    <Compile Include="NetworkSecurityGroup\Subnet\AddAzureNetworkSecurityGroupToSubnet.cs" />
+    <Compile Include="NetworkSecurityGroup\Subnet\GetAzureNetworkSecurityGroupForSubnet.cs" />
+    <Compile Include="NetworkSecurityGroup\Subnet\RemoveAzureNetworkSecurityGroupFromSubnet.cs" />
+    <Compile Include="NetworkSecurityGroup\Utilities\NetworkSecurityGroupConfigurationBaseCmdlet.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
