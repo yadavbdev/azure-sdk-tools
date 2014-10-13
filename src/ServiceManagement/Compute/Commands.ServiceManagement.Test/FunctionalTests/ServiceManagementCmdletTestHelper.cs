@@ -1860,10 +1860,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         #region Generic VM Extension cmdlets
         public SM.PersistentVM SetAzureVMExtension(SM.IPersistentVM vm, string extensionName, string publisher, string version, string referenceName = null,
-            string publicConfiguration = null, string privateConfiguration = null, string publicConfigPath = null, string privateConfigPath = null, bool disable = false)
+            string publicConfiguration = null, string privateConfiguration = null, string publicConfigKey = null, string privateConfigKey = null, string publicConfigPath = null, string privateConfigPath = null, bool disable = false)
         {
             return RunPSCmdletAndReturnFirst<SM.PersistentVM>(new SetAzureVMExtensionCmdletInfo(vm, extensionName, publisher, version, referenceName,
-             publicConfiguration, privateConfiguration,publicConfigPath,privateConfigPath, disable));
+             publicConfiguration, privateConfiguration, publicConfigKey, privateConfigKey, publicConfigPath, privateConfigPath, disable));
         }
 
         public SM.PersistentVM RemoveAzureVMExtension(SM.PersistentVM vm, string extensionName, string publisher, string referenceName=null, bool removeAll=false)
