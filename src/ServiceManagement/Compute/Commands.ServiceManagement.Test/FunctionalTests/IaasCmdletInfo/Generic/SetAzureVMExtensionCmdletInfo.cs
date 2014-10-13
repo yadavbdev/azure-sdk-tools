@@ -53,11 +53,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             {
                 cmdletParams.Add(new CmdletParam("PrivateConfigPath", privateConfigPath));
             }
-            if (!string.IsNullOrEmpty(publicConfigPath))
+            if (!string.IsNullOrEmpty(publicConfigKey))
             {
                 cmdletParams.Add(new CmdletParam("PublicConfigKey", publicConfigKey));
             }
-            if (!string.IsNullOrEmpty(privateConfigPath))
+            if (!string.IsNullOrEmpty(publicConfigKey))
             {
                 cmdletParams.Add(new CmdletParam("PrivateConfigKey", privateConfigKey));
             }
