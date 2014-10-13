@@ -129,6 +129,10 @@
     <value>The daily schedule model is not valid. Schedule name: {0}.</value>
     <comment>Automation</comment>
   </data>
+  <data name="InvalidHourlyScheduleModel" xml:space="preserve">
+    <value>The hourly schedule model is not valid. Schedule name: {0}.</value>
+    <comment>Automation</comment>
+  </data>
   <data name="InvalidJobModel" xml:space="preserve">
     <value>The job model is not valid.</value>
     <comment>Automation</comment>
