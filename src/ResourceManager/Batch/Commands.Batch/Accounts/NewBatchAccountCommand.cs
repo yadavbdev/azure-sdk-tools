@@ -12,16 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Batch.Properties;
+using Microsoft.Azure.Management.Batch.Models;
+using Microsoft.WindowsAzure;
+using System.Collections;
+using System.Collections.Generic;
+using System.Management.Automation;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.WindowsAzure;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.Azure.Commands.Batch.Properties;
-
     [Cmdlet(VerbsCommon.New, "AzureBatchAccount"), OutputType(typeof(BatchAccountContext))]
     public class NewBatchAccountCommand : BatchCmdletBase
     {
@@ -66,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch
 
             WriteVerboseWithTimestamp(Resources.EndMAMLCall, mamlRestName);
 
-            var context = BatchAccountContext.CrackAccountResourceToNewAccountContext(response.Resource);
+            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(response.Resource);
             WriteObject(context);
         }
     }

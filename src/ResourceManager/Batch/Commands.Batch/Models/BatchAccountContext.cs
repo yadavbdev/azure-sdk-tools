@@ -12,14 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Batch.Properties;
+using Microsoft.Azure.Management.Batch.Models;
+using System;
+using System.Collections;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Properties;
-
     /// <summary>
     /// very simple account context class for getting things started
     /// </summary>
@@ -64,7 +63,7 @@ namespace Microsoft.Azure.Commands.Batch
         /// </summary>
         /// <param name="resource">Resource info returned by RP</param>
         /// <returns>Void</returns>
-        internal void CrackAccountResourceToAccountContext(AccountResource resource)
+        internal void ConvertAccountResourceToAccountContext(AccountResource resource)
         {
             var accountEndpoint = resource.Properties.AccountEndpoint;
             if (Uri.CheckHostName(accountEndpoint) != UriHostNameType.Dns)
@@ -86,6 +85,11 @@ namespace Microsoft.Azure.Commands.Batch
             // get remaining fields from Id which looks like:
             // /subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw
             var idParts = resource.Id.Split('/');
+            if (idParts.Length < 5)
+            {
+                throw new ArgumentException(String.Format(Resources.InvalidResourceId, resource.Id), "Id");
+            }
+
             this.Subscription = idParts[2];
             this.ResourceGroupName = idParts[4];
         }
@@ -95,10 +99,10 @@ namespace Microsoft.Azure.Commands.Batch
         /// </summary>
         /// <param name="resource">Resource info returned by RP</param>
         /// <returns>new instance of BatchAccountContext</returns>
-        internal static BatchAccountContext CrackAccountResourceToNewAccountContext(AccountResource resource)
+        internal static BatchAccountContext ConvertAccountResourceToNewAccountContext(AccountResource resource)
         {
             var baContext = new BatchAccountContext();
-            baContext.CrackAccountResourceToAccountContext(resource);
+            baContext.ConvertAccountResourceToAccountContext(resource);
             return baContext;
         }
     }

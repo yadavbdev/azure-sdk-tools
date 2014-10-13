@@ -12,14 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Batch.Properties;
+using System.Management.Automation;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Properties;
-
     [Cmdlet(VerbsCommon.Get, "AzureBatchAccountKeys"), OutputType(typeof(BatchAccountContext))]
     public class GetBatchAccountKeysCommand : BatchCmdletBase
     {
@@ -68,7 +65,7 @@ namespace Microsoft.Azure.Commands.Batch
             }
 
             var getResponse = BatchClient.GetAccount(resGroupName, accountName);
-            var context = BatchAccountContext.CrackAccountResourceToNewAccountContext(getResponse.Resource);
+            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(getResponse.Resource);
             
             WriteVerboseWithTimestamp(Resources.BeginMAMLCall, mamlRestName);
 

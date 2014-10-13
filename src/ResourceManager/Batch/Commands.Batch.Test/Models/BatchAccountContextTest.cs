@@ -12,15 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Batch;
+using Microsoft.Azure.Management.Batch.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using System;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.BatchManager.Test
 {
-    using System;
-    using System.Collections.Generic;
-    using Xunit;
-    using Microsoft.Azure.Commands.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
-
     public class BatchAccountContextTest
     {
         [Fact]
@@ -50,7 +49,7 @@ namespace Microsoft.Azure.Commands.BatchManager.Test
                 Properties = new AccountProperties() { AccountEndpoint = endpoint, ProvisioningState = AccountProvisioningState.Succeeded },
                 Type = "type"
             };
-            BatchAccountContext context = BatchAccountContext.CrackAccountResourceToNewAccountContext(resource);
+            BatchAccountContext context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(resource);
 
             Assert.Equal<string>(context.Id, resource.Id);
             Assert.Equal<string>(context.AccountEndpoint, resource.Properties.AccountEndpoint);

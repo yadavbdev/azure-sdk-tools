@@ -12,16 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Batch.Properties;
+using Microsoft.Azure.Management.Batch.Models;
+using System.Collections;
+using System.Collections.Generic;
+using System.Management.Automation;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.WindowsAzure;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Properties;
-
     [Cmdlet(VerbsCommon.Get, "AzureBatchAccount"), OutputType(typeof(BatchAccountContext))]
     public class GetBatchAccountCommand : BatchCmdletBase
     {
@@ -74,7 +72,7 @@ namespace Microsoft.Azure.Commands.Batch
 
                 foreach (AccountResource resource in accounts)
                 {
-                    var context = BatchAccountContext.CrackAccountResourceToNewAccountContext(resource);
+                    var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(resource);
                     WriteObject(context);
                 }
 
@@ -88,7 +86,7 @@ namespace Microsoft.Azure.Commands.Batch
 
                     foreach (AccountResource resource in response.Accounts)
                     {
-                        var context = BatchAccountContext.CrackAccountResourceToNewAccountContext(resource);
+                        var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(resource);
                         WriteObject(context);
                     }
 
@@ -109,7 +107,7 @@ namespace Microsoft.Azure.Commands.Batch
                 var response = BatchClient.GetAccount(resourceGroupName, accountName);
                 WriteVerboseWithTimestamp(Resources.EndMAMLCall, mamlRestName);
 
-                var context = BatchAccountContext.CrackAccountResourceToNewAccountContext(response.Resource);
+                var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(response.Resource);
                 WriteObject(context);
             }
         }

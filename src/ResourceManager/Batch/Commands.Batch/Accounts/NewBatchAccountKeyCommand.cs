@@ -12,13 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.Batch.Models;
+using System.Management.Automation;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Management.Batch.Models;
-
     [Cmdlet(VerbsCommon.New, "AzureBatchAccountKey"), OutputType(typeof(BatchAccountContext))]
     public class RegenBatchAccountKeyCommand : BatchCmdletBase
     {
@@ -83,7 +81,7 @@ namespace Microsoft.Azure.Commands.Batch
             // build a new context to put the keys into
             var getResponse = BatchClient.GetAccount(resGroupName, accountName);
 
-            var context = BatchAccountContext.CrackAccountResourceToNewAccountContext(getResponse.Resource);
+            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(getResponse.Resource);
 
             var regenResponse = BatchClient.RegenerateKeys(resGroupName, accountName, new BatchAccountRegenerateKeyParameters
                 {

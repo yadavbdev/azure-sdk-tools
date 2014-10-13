@@ -12,17 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.Batch.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Moq;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
-    using Moq;
-    using Xunit;
-
     public class GetBatchAccountCommandTests
     {
         private GetBatchAccountCommand cmdlet;
@@ -58,8 +56,8 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             BatchAccountListResponse nextListResponse = new BatchAccountListResponse() { Accounts = new List<AccountResource>() { accountResource02 }, NextLink = null };
             batchClientMock.Setup(b => b.ListNextAccounts(nextLink)).Returns(nextListResponse);
 
-            BatchAccountContext expected01 = BatchAccountContext.CrackAccountResourceToNewAccountContext(accountResource01);
-            BatchAccountContext expected02 = BatchAccountContext.CrackAccountResourceToNewAccountContext(accountResource02);
+            BatchAccountContext expected01 = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource01);
+            BatchAccountContext expected02 = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource02);
 
             cmdlet.AccountName = null;
             cmdlet.ResourceGroupName = resourceGroup;
@@ -97,7 +95,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             BatchAccountGetResponse getResponse = new BatchAccountGetResponse() { Resource = accountResource };
             batchClientMock.Setup(b => b.GetAccount(resourceGroup, accountName)).Returns(getResponse);
 
-            BatchAccountContext expected = BatchAccountContext.CrackAccountResourceToNewAccountContext(accountResource);
+            BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource);
 
             cmdlet.AccountName = accountName;
             if (lookupAccountResource)

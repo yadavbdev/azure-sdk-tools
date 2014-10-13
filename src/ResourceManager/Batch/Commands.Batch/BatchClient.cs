@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Batch.Properties;
+using Microsoft.Azure.Management.Batch;
+using Microsoft.Azure.Management.Batch.Models;
+using Microsoft.Azure.Management.Resources;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using System;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Common;
-    using Microsoft.WindowsAzure.Commands.Common.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.Azure.Management.Resources;
-    using Microsoft.Azure.Management.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Properties;
-
     public class BatchClient
     {
         public IBatchManagementClient BatchManagementClient{ get; private set; }

@@ -12,18 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Moq;
+using System.Management.Automation;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
-    using Moq;
-    using Xunit;
-
     public class RemoveBatchAccountCommandTests
     {
         private RemoveBatchAccountCommand cmdlet;

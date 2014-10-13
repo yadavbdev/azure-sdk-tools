@@ -12,18 +12,15 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.Batch.Models;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Moq;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
-    using Moq;
-    using Xunit;
-
     public class RegenBatchAccountKeyCommandTests
     {
         private RegenBatchAccountKeyCommand cmdlet;
@@ -71,7 +68,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             BatchAccountRegenerateKeyResponse keyResponse = new BatchAccountRegenerateKeyResponse() { PrimaryKey = newPrimaryKey, SecondaryKey = newSecondaryKey };
             batchClientMock.Setup(b => b.RegenerateKeys(resourceGroup, accountName, It.IsAny<BatchAccountRegenerateKeyParameters>())).Returns(keyResponse);
 
-            BatchAccountContext expected = BatchAccountContext.CrackAccountResourceToNewAccountContext(accountResource);
+            BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource);
             expected.PrimaryAccountKey = newPrimaryKey;
             expected.SecondaryAccountKey = newSecondaryKey;
 

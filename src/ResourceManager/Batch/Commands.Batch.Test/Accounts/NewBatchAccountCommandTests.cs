@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.Batch.Models;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Moq;
+using System.Collections.Generic;
+using System.Management.Automation;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
-    using Moq;
-    using Xunit;
-
     public class NewBatchAccountCommandTests
     {
         private NewBatchAccountCommand cmdlet;
@@ -71,7 +69,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             BatchAccountCreateResponse createResponse = new BatchAccountCreateResponse() { Resource = accountResource };
             batchClientMock.Setup(b => b.CreateAccount(resourceGroup, accountName, It.IsAny<BatchAccountCreateParameters>())).Returns(createResponse);
 
-            BatchAccountContext expected = BatchAccountContext.CrackAccountResourceToNewAccountContext(accountResource);
+            BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource);
 
             cmdlet.AccountName = accountName;
             cmdlet.ResourceGroupName = resourceGroup;

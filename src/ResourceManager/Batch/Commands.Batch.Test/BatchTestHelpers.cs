@@ -12,18 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Management.Batch.Models;
+using System.Collections;
+using System.Collections.Generic;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.Batch.Test
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
-    using Moq;
-    using Xunit;
-
     public static class BatchTestHelpers
     {
         public static void WriteValueToPipeline<T>(T val, List<T> pipelineOutput) where T : class

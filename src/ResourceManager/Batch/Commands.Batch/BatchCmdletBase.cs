@@ -12,16 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Common.Internals;
+using Newtonsoft.Json.Linq;
+using System;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Common.Internals;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Newtonsoft.Json.Linq;
-
     public class BatchCmdletBase : AzurePSCmdlet
     {
         private BatchClient batchClient;
