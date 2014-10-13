@@ -9,7 +9,7 @@
 @{
 
 # Version number of this module.
-ModuleVersion = '0.8.8.1'
+ModuleVersion = '0.8.9'
 
 # ID used to uniquely identify this module
 GUID = '81d522a4-6e5d-4105-8f58-376204c47458'
@@ -60,7 +60,8 @@ TypesToProcess = @()
 FormatsToProcess = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.format.ps1xml',
     '.\Tags\Microsoft.Azure.Commands.Tags.format.ps1xml',
-    '.\Resources\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml'
+    '.\Resources\Microsoft.WindowsAzure.Commands.Profile.format.ps1xml',
+    '.\RedisCache\Microsoft.Azure.Commands.RedisCache.format.ps1xml'
 )
 
 # Modules to import as nested modules of the module specified in ModuleToProcess
@@ -68,7 +69,8 @@ NestedModules = @(
     '.\Resources\Microsoft.Azure.Commands.Resources.dll',
     '.\Resources\Microsoft.WindowsAzure.Commands.Profile.dll',
     '.\Tags\Microsoft.Azure.Commands.Tags.dll',
-    '.\Sql\Microsoft.Azure.Commands.Sql.dll'
+    '.\Sql\Microsoft.Azure.Commands.Sql.dll',
+    '.\RedisCache\Microsoft.Azure.Commands.RedisCache.dll'
 )
 
 # Functions to export from this module
