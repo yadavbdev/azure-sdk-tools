@@ -20,7 +20,7 @@ namespace Microsoft.Azure.Commands.DataFactories
     public abstract class LinkedServiceContextBaseCmdlet : DataFactoryBaseCmdlet
     {
         [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
-HelpMessage = "The data factory object.")]
+            HelpMessage = "The data factory object.")]
         public PSDataFactory DataFactory { get; set; }
 
         [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,

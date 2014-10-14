@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.DataFactories
         public string Name { get; set; }
 
         [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
-    HelpMessage = "The data factory object.")]
+            HelpMessage = "The data factory object.")]
         public PSDataFactory DataFactory { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = "Don't ask for confirmation.")]

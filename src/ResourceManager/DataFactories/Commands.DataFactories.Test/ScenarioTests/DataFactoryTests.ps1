@@ -58,6 +58,23 @@ function Test-CreateDataFactory
 
 <#
 .SYNOPSIS
+Create a data factory and then delete it with -DataFactory parameter.
+#>
+function Test-DeleteDataFactoryWithDataFactoryParameter
+{
+    $dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+
+    $df = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force        
+    Remove-AzureDataFactory -DataFactory $df -Force
+}
+
+<#
+.SYNOPSIS
 Nagative test. Get resources with an empty data factory name.
 #>
 function Test-GetDataFactoryWithEmptyName

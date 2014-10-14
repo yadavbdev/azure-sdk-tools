@@ -17,7 +17,6 @@ using System.Management.Automation;
 using System.Net;
 using System.Security.Permissions;
 using Microsoft.Azure.Commands.DataFactories.Properties;
-using System.Collections;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {

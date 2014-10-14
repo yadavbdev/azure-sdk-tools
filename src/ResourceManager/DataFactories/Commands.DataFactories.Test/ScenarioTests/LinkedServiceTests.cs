@@ -28,6 +28,13 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestLinkedServiceWithDataFactoryParameter()
+        {
+            RunPowerShellTest("Test-LinkedServiceWithDataFactoryParameter");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetLinkedServiceWithEmptyName()
         {
             RunPowerShellTest("Test-GetLinkedServiceWithEmptyName");

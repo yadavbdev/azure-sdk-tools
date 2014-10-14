@@ -46,3 +46,39 @@ function Test-Hub
         Clean-DataFactory $rgname $dfname
     }
 }
+
+<#
+.SYNOPSIS
+Create a hub and then do a Get to compare the results are identical.
+Delete the created hub after the test finishes.
+Use -DataFactory parameter in all cmdlets.
+#>
+function Test-HubWithDataFactoryParameter
+{
+    $dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+        
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+
+    try
+    {
+        $df = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+     
+        $hubname = "SampleHub"
+   
+        $actual = New-AzureDataFactoryHub -DataFactory $df -Name $hubname -File .\Resources\hub.json -Force
+        $expected = Get-AzureDataFactoryHub -DataFactory $df -Name $hubname
+
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName
+        Assert-AreEqual $expected.DataFactoryName $actual.DataFactoryName
+        Assert-AreEqual $expected.HubName $actual.HubName
+
+        Remove-AzureDataFactoryHub -DataFactory $df -Name $hubname -Force
+    }
+    finally
+    {
+        Clean-DataFactory $rgname $dfname
+    }
+}

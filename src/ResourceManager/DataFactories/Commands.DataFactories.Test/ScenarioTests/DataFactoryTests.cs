@@ -35,6 +35,13 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestDeleteDataFactoryWithDataFactoryParameter()
+        {
+            RunPowerShellTest("Test-DeleteDataFactoryWithDataFactoryParameter");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestGetDataFactoryWithEmptyName()
         {
             RunPowerShellTest("Test-GetDataFactoryWithEmptyName");

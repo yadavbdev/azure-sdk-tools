@@ -17,34 +17,13 @@ using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    public class TableTests : DataFactoriesScenarioTestsBase
+    public class PipelineTests : DataFactoriesScenarioTestsBase
     {
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestTable()
+        public void TestWikipediaSamplePipeline()
         {
-            RunPowerShellTest("Test-Table");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestTableWithDataFactoryParameter()
-        {
-            RunPowerShellTest("Test-TableWithDataFactoryParameter");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetTableWithEmptyName()
-        {
-            RunPowerShellTest("Test-GetTableWithEmptyName");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetTableWithWhiteSpaceName()
-        {
-            RunPowerShellTest("Test-GetTableWithWhiteSpaceName");
+            RunPowerShellTest("Test-WikipediaSamplePipeline");
         }
     }
 }
