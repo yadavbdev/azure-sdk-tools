@@ -158,7 +158,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                              e.Publisher == vmAccessExtension.Publisher &&
                              e.Version == vmAccessExtension.Version);
                     Assert.IsTrue(updatedExt.ResourceExtensionParameterValues.Any(r => r.Type == "Public" && r.Key == "pubkey1"));
-                    Assert.IsTrue(updatedExt.ResourceExtensionParameterValues.Any(r => r.Type == "Private" && r.Key == "prikey1"));
 
                     ValidateVMAccessExtension(vmName, serviceName, true);
 
