@@ -14,39 +14,60 @@
 
 <#
 .SYNOPSIS
-Gets a Batch account name for testing. Add the test name to the end to make the account name unique and support parallelization.
+Gets a Batch account name for testing.
 #>
-function Get-BatchAccountName($test)
+function Get-BatchAccountName
 {
-    return "accnttest" + $test
+    return getAssetName
 }
 
 <#
 .SYNOPSIS
-Gets default resource group name for testing
+Gets a resource group name for testing.
 #>
-function Get-DefaultResourceGroup
+function Get-ResourceGroupName
 {
-    return "default-azurebatch-westus"
+    return getAssetName
 }
 
 <#
 .SYNOPSIS
-Gets default location for testing
+Gets the default location for a provider.
 #>
-function Get-DefaultLocation
+function Get-ProviderLocation($provider)
 {
-    return "westus"
+    $location = Get-AzureLocation | where {$_.Name -eq $provider}
+    if ($location -eq $null) 
+	{
+        "West US"
+    } 
+	else 
+	{
+        $location.Locations[0]
+    }
 }
 
 <#
 .SYNOPSIS
-Cleans the created Batch account
+Cleans the created Batch account and resource group
 #>
-function Clean-BatchAccount($accountName,$resourceGroup)
+function Clean-BatchAccountAndResourceGroup($accountName,$resourceGroup)
 {
     if ([Microsoft.Azure.Utilities.HttpRecorder.HttpMockServer]::Mode -ne [Microsoft.Azure.Utilities.HttpRecorder.HttpRecorderMode]::Playback) 
 	{
         Remove-AzureBatchAccount -Name $accountName -ResourceGroupName $resourceGroup -Force
+    }
+	Clean-ResourceGroup $resourceGroup
+}
+
+<#
+.SYNOPSIS
+Cleans the created resource group
+#>
+function Clean-ResourceGroup($resourceGroup)
+{
+	if ([Microsoft.Azure.Utilities.HttpRecorder.HttpMockServer]::Mode -ne [Microsoft.Azure.Utilities.HttpRecorder.HttpRecorderMode]::Playback) 
+	{
+        Remove-AzureResourceGroup -Name $resourceGroup -Force
     }
 }

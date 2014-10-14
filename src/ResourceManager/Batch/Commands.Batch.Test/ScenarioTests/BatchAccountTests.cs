@@ -49,6 +49,13 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestCreateAndRemoveBatchAccountViaPiping()
+        {
+            BatchController.NewInstance.RunPsTest("Test-CreateAndRemoveBatchAccountViaPiping");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestBatchAccountKeys()
         {
             BatchController.NewInstance.RunPsTest("Test-BatchAccountKeys");
