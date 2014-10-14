@@ -33,6 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.ServiceManagement"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.ServiceManagement.Test", "ServiceManagement\Compute\Commands.ServiceManagement.Test\Commands.ServiceManagement.Test.csproj", "{58A78F29-8C0C-4A5E-893E-3953C0F29C8A}"
 	ProjectSection(ProjectDependencies) = postProject
+		{98B10548-DF97-4FB1-8D82-2A12945D4F21} = {98B10548-DF97-4FB1-8D82-2A12945D4F21}
 		{08CF7DA7-0392-4A19-B79B-E1FF67CDB81A} = {08CF7DA7-0392-4A19-B79B-E1FF67CDB81A}
 		{E895BBDA-0B06-46AB-B909-9B97B3ECE47E} = {E895BBDA-0B06-46AB-B909-9B97B3ECE47E}
 	EndProjectSection
@@ -107,9 +108,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.ScenarioTests.Comm
 		{08CF7DA7-0392-4A19-B79B-E1FF67CDB81A} = {08CF7DA7-0392-4A19-B79B-E1FF67CDB81A}
 		{C60342B1-47D3-4A0E-8081-9B97CE60B7AF} = {C60342B1-47D3-4A0E-8081-9B97CE60B7AF}
 		{E1CA72BA-8374-45F6-904D-FD34ECDF5B6F} = {E1CA72BA-8374-45F6-904D-FD34ECDF5B6F}
+		{40FEE0BB-FD45-4EFC-85BC-0D602A6892C4} = {40FEE0BB-FD45-4EFC-85BC-0D602A6892C4}
 		{46C06ED8-43D9-41FD-B73B-41547D9C04E1} = {46C06ED8-43D9-41FD-B73B-41547D9C04E1}
 		{2493A8F7-1949-4F29-8D53-9D459046C3B8} = {2493A8F7-1949-4F29-8D53-9D459046C3B8}
-		{40FEE0BB-FD45-4EFC-85BC-0D602A6892C4} = {40FEE0BB-FD45-4EFC-85BC-0D602A6892C4}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Sql", "ResourceManager\Sql\Commands.Sql\Commands.Sql.csproj", "{69ED499E-6F3C-488F-86B8-B74CFDA4D47E}"
@@ -125,6 +126,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Network", "ServiceManagement\Network\Commands.Network\Commands.Network.csproj", "{40FEE0BB-FD45-4EFC-85BC-0D602A6892C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Network.Test", "ServiceManagement\Network\Commands.Network.Test\Commands.Network.Test.csproj", "{FDB897BD-FCB4-44A1-8D66-AC99F22EC737}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.RecoveryServices", "ServiceManagement\RecoveryServices\Commands.RecoveryServices\Commands.RecoveryServices.csproj", "{98B10548-DF97-4FB1-8D82-2A12945D4F21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.RecoveryServices.Test", "ServiceManagement\RecoveryServices\Commands.RecoveryServices.Test\Commands.RecoveryServices.Test.csproj", "{A415F75B-EB6A-49A6-934E-5BA71B83D6EB}"

@@ -141,10 +141,6 @@
       <Project>{5ee72c53-1720-4309-b54b-5fb79703195f}</Project>
       <Name>Commands.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Services\Commands\Commands.csproj">
-      <Project>{cd5aa507-f5ef-473d-855b-84b91a1abe54}</Project>
-      <Name>Commands</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Microsoft.Azure.Commands.RecoveryServices.dll-help.xml">
