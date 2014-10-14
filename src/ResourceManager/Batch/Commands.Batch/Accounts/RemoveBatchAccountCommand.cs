@@ -36,21 +36,12 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            var resourceGroupName = this.ResourceGroupName;
-
-            if (string.IsNullOrEmpty(resourceGroupName))
-            {
-                // use resource mgr to see if account exists and then use resource group name to do the actual lookup
-                WriteVerboseWithTimestamp(Resources.ResGroupLookup, this.AccountName);
-                resourceGroupName = BatchClient.GetGroupForAccount(this.AccountName);
-            }
-
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Resources.RBA_RemoveConfirm, this.AccountName),
                 Resources.RBA_RemoveResource,
                 this.AccountName,
-                () => DeleteAction(resourceGroupName, this.AccountName));
+                () => DeleteAction(this.ResourceGroupName, this.AccountName));
         }
 
         private void DeleteAction(string resGroupName, string accountName)

@@ -21,11 +21,6 @@ namespace Microsoft.Azure.Commands.Batch.Test
 {
     public static class BatchTestHelpers
     {
-        public static void WriteValueToPipeline<T>(T val, List<T> pipelineOutput) where T : class
-        {
-            pipelineOutput.Add(val);
-        }
-
         public static AccountResource CreateAccountResource(string accountName, string resourceGroupName, Hashtable[] tags = null)
         {
             string tenantUrlEnding = "batch-test.windows-int.net";

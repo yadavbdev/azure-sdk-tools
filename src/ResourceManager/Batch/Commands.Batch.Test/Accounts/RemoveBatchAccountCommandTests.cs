@@ -39,19 +39,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void RemoveBatchAccountWithResourceLookup()
-        {
-            RemoveBatchAccountTest(true);
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void RemoveBatchAccountWithoutResourceLookup()
-        {
-            RemoveBatchAccountTest(false);
-        }
-
-        private void RemoveBatchAccountTest(bool lookupAccountResource)
+        public void RemoveBatchAccountTest()
         {
             string accountName = "account01";
             string resourceGroup = "resourceGroup";
@@ -60,16 +48,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             batchClientMock.Setup(b => b.DeleteAccount(resourceGroup, accountName)).Returns(deleteResponse);
 
             cmdlet.AccountName = accountName;
-
-            if (lookupAccountResource)
-            {
-                cmdlet.ResourceGroupName = null;
-                batchClientMock.Setup(b => b.GetGroupForAccountNoThrow(accountName)).Returns(resourceGroup);
-            }
-            else
-            {
-                cmdlet.ResourceGroupName = resourceGroup;
-            }
+            cmdlet.ResourceGroupName = resourceGroup;
 
             cmdlet.Force = true;
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);

@@ -41,44 +41,23 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void AccountAlreadyExistsThrowsError()
-        {
-            string accountName = "account01";
-            string resourceGroup = "resourceGroup";
-
-            batchClientMock.Setup(b => b.GetGroupForAccountNoThrow(accountName)).Returns(resourceGroup);
-
-            cmdlet.AccountName = accountName;
-            cmdlet.ResourceGroupName = resourceGroup;
-
-            Assert.Throws<CloudException>(() => cmdlet.ExecuteCmdlet());
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void NewBatchAccountTest()
         {
-            List<BatchAccountContext> pipelineOutput = new List<BatchAccountContext>();
-
             string accountName = "account01";
             string resourceGroup = "resourceGroup";
+            string location = "location";
             AccountResource accountResource = BatchTestHelpers.CreateAccountResource(accountName, resourceGroup);
-
-            BatchAccountGetResponse getResponse = new BatchAccountGetResponse() { Resource = accountResource };
-            batchClientMock.Setup(b => b.GetGroupForAccountNoThrow(accountName)).Returns<string>(null);
-            BatchAccountCreateResponse createResponse = new BatchAccountCreateResponse() { Resource = accountResource };
-            batchClientMock.Setup(b => b.CreateAccount(resourceGroup, accountName, It.IsAny<BatchAccountCreateParameters>())).Returns(createResponse);
-
             BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource);
+
+            batchClientMock.Setup(b => b.CreateAccount(resourceGroup, accountName, location, null)).Returns(expected);
 
             cmdlet.AccountName = accountName;
             cmdlet.ResourceGroupName = resourceGroup;
-            commandRuntimeMock.Setup(r => r.WriteObject(It.IsAny<BatchAccountContext>())).Callback<object>(o => BatchTestHelpers.WriteValueToPipeline<BatchAccountContext>((BatchAccountContext)o, pipelineOutput));
+            cmdlet.Location = location;
 
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal<int>(1, pipelineOutput.Count);
-            BatchTestHelpers.AssertBatchAccountContextsAreEqual(expected, pipelineOutput[0]);
+            commandRuntimeMock.Verify(r => r.WriteObject(expected), Times.Once());
         }
     }
 }

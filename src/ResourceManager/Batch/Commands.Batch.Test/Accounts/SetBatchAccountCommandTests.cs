@@ -41,13 +41,10 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void ReplaceTagsTest()
+        public void UpdateAccountTest()
         {
-            List<BatchAccountContext> pipelineOutput = new List<BatchAccountContext>();
-
             string accountName = "account01";
             string resourceGroup = "resourceGroup";
-            AccountResource resourceWithoutTags = BatchTestHelpers.CreateAccountResource(accountName, resourceGroup);
             Hashtable[] tags = new[]
             {
                 new Hashtable
@@ -56,73 +53,18 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
                     {"Value", "tagValue"}
                 }
             };
-            AccountResource resourceWithTags = BatchTestHelpers.CreateAccountResource(accountName, resourceGroup, tags);
+            AccountResource accountResource = BatchTestHelpers.CreateAccountResource(accountName, resourceGroup, tags);
+            BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource);
 
-            BatchAccountGetResponse getResponse = new BatchAccountGetResponse() { Resource = resourceWithoutTags };
-            batchClientMock.Setup(b => b.GetAccount(resourceGroup, accountName)).Returns(getResponse);
-            BatchAccountCreateResponse createResponse = new BatchAccountCreateResponse() { Resource = resourceWithTags };
-            batchClientMock.Setup(b => b.CreateAccount(resourceGroup, accountName, It.IsAny<BatchAccountCreateParameters>())).Returns(createResponse);
-
-            BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(resourceWithTags);
+            batchClientMock.Setup(b => b.UpdateAccount(resourceGroup, accountName, tags)).Returns(expected);
 
             cmdlet.AccountName = accountName;
             cmdlet.ResourceGroupName = resourceGroup;
-            cmdlet.ReplaceTags = true;
             cmdlet.Tag = tags;
 
-            commandRuntimeMock.Setup(r => r.WriteObject(It.IsAny<BatchAccountContext>())).Callback<object>(o => BatchTestHelpers.WriteValueToPipeline<BatchAccountContext>((BatchAccountContext)o, pipelineOutput));
-
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal<int>(1, pipelineOutput.Count);
-            BatchTestHelpers.AssertBatchAccountContextsAreEqual(expected, pipelineOutput[0]);
-        }
-
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void UpdateBatchAccountWithResourceLookup()
-        {
-            UpdateAccountTest(true);
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void UpdateBatchAccountWithoutResourceLookup()
-        {
-            UpdateAccountTest(false);
-        }
-
-        private void UpdateAccountTest(bool lookupAccountResource)
-        {
-            List<BatchAccountContext> pipelineOutput = new List<BatchAccountContext>();
-
-            string accountName = "account01";
-            string resourceGroup = "resourceGroup";
-            AccountResource accountResource = BatchTestHelpers.CreateAccountResource(accountName, resourceGroup);
-
-            BatchAccountUpdateResponse updateResponse = new BatchAccountUpdateResponse() { Resource = accountResource };
-            batchClientMock.Setup(b => b.UpdateAccount(resourceGroup, accountName, It.IsAny<BatchAccountUpdateParameters>())).Returns(updateResponse);
-
-            BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource);
-
-            cmdlet.AccountName = accountName;
-            cmdlet.ReplaceTags = false;
-            if (lookupAccountResource)
-            {
-                cmdlet.ResourceGroupName = null;
-                batchClientMock.Setup(b => b.GetGroupForAccountNoThrow(accountName)).Returns(resourceGroup);
-            }
-            else
-            {
-                cmdlet.ResourceGroupName = resourceGroup;
-            }
-            commandRuntimeMock.Setup(r => r.WriteObject(It.IsAny<BatchAccountContext>())).Callback<object>(o => BatchTestHelpers.WriteValueToPipeline<BatchAccountContext>((BatchAccountContext)o, pipelineOutput));
-
-            cmdlet.ExecuteCmdlet();
-
-            Assert.Equal<int>(1, pipelineOutput.Count);
-            BatchTestHelpers.AssertBatchAccountContextsAreEqual(expected, pipelineOutput[0]);
+            commandRuntimeMock.Verify(r => r.WriteObject(expected), Times.Once());
         }
 
     }

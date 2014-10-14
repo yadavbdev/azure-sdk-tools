@@ -24,8 +24,6 @@ namespace Microsoft.Azure.Commands.Batch
     [Cmdlet(VerbsCommon.New, "AzureBatchAccount"), OutputType(typeof(BatchAccountContext))]
     public class NewBatchAccountCommand : BatchCmdletBase
     {
-        private const string mamlRestName = "NewAccount";
-
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Batch service account to create.")]
         [Alias("Name")]
         [ValidateNotNullOrEmpty]
@@ -45,27 +43,7 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            // use the group lookup to validate whether account already exists. We don't care about the returned
-            // group name nor the exception
-            WriteVerboseWithTimestamp(Resources.NBA_LookupAccount);
-            if (BatchClient.GetGroupForAccountNoThrow(this.AccountName) != null)
-            {
-                throw new CloudException(Resources.NBA_AccountAlreadyExists);
-            }
-
-            WriteVerboseWithTimestamp(Resources.BeginMAMLCall, mamlRestName);
-
-            Dictionary<string, string> tagDictionary = Helpers.CreateTagDictionary(Tag, validate: true);
-
-            var response = BatchClient.CreateAccount(this.ResourceGroupName, this.AccountName, new BatchAccountCreateParameters()
-                {
-                    Location = this.Location,
-                    Tags = tagDictionary
-                });
-
-            WriteVerboseWithTimestamp(Resources.EndMAMLCall, mamlRestName);
-
-            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(response.Resource);
+            BatchAccountContext context = BatchClient.CreateAccount(this.ResourceGroupName, this.AccountName, this.Location, this.Tag);
             WriteObject(context);
         }
     }

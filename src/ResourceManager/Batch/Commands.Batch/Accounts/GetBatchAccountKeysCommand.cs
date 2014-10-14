@@ -23,8 +23,6 @@ namespace Microsoft.Azure.Commands.Batch
         internal const string ParameterSetContext = "Use Context";
         internal const string ParameterSetNames = "Use Names";
 
-        private const string mamlRestName = "GetKeys";
-
         [Parameter(ParameterSetName = ParameterSetNames, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Batch service account to query keys for.")]
         [Alias("Name")]
         [ValidateNotNullOrEmpty]
@@ -34,48 +32,13 @@ namespace Microsoft.Azure.Commands.Batch
         [ValidateNotNullOrEmpty]
         public string ResourceGroupName { get; set; }
 
-        //[Parameter(ParameterSetName = ParameterSetContext, Mandatory = true, ValueFromPipeline = true, 
-        //    HelpMessage = "An existing context that identifies the account to use for the key query.")]
-        //[ValidateNotNull]
-        //public BatchAccountContext Context { get; set; }
-
         /// <summary>
         /// Get the keys associated with the specified account. If only the account name is passed in, then
         /// look up its resource group and construct a new BatchAccountContext to hold everything.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string accountName = this.AccountName;
-            string resGroupName = this.ResourceGroupName;
-
-            //if (Context != null)
-            //{
-            //    accountName = Context.AccountName;
-            //    resGroupName = Context.ResourceGroupName;
-            //    context = Context;
-            //}
-
-            WriteVerboseWithTimestamp(Resources.GBAK_GettingKeys, accountName);
-
-            if (string.IsNullOrEmpty(resGroupName))
-            {
-                // use resource mgr to see if account exists and then use resource group name to do the actual lookup
-                WriteVerboseWithTimestamp(Resources.ResGroupLookup, accountName);
-                resGroupName = BatchClient.GetGroupForAccount(accountName);
-            }
-
-            var getResponse = BatchClient.GetAccount(resGroupName, accountName);
-            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(getResponse.Resource);
-            
-            WriteVerboseWithTimestamp(Resources.BeginMAMLCall, mamlRestName);
-
-            var keysResponse = BatchClient.ListKeys(resGroupName, accountName);
-            
-            WriteVerboseWithTimestamp(Resources.EndMAMLCall, mamlRestName);
-            
-            context.PrimaryAccountKey = keysResponse.PrimaryKey;
-            context.SecondaryAccountKey = keysResponse.SecondaryKey;
-
+            BatchAccountContext context = BatchClient.ListKeys(this.ResourceGroupName, this.AccountName);
             WriteObject(context);
         }
     }

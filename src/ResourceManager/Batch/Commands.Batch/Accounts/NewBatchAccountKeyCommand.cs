@@ -23,8 +23,6 @@ namespace Microsoft.Azure.Commands.Batch
         internal const string ParameterSetContext = "Use Context";
         internal const string ParameterSetCmdLine = "Use Command Line";
 
-        private const string mamlRestName = "NewKey";
-
         [Parameter(ParameterSetName = ParameterSetCmdLine, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The name of the Batch service account to regenerate the specified key for.")]
         [Alias("Name")]
         [ValidateNotNullOrEmpty]
@@ -54,42 +52,9 @@ namespace Microsoft.Azure.Commands.Batch
             }
         }
 
-        //[Parameter(ParameterSetName = ParameterSetContext, Mandatory = true, ValueFromPipeline = true, 
-        //    HelpMessage = "An existing context that identifies the account to use for the key regenration.")]
-        //[ValidateNotNull]
-        //public BatchAccountContext Context { get; set; }
-
         public override void ExecuteCmdlet()
         {
-            string accountName = this.AccountName;
-            string resGroupName = this.ResourceGroupName;
-
-            //if (Context != null)
-            //{
-            //    accountName = Context.AccountName;
-            //    resGroupName = Context.ResourceGroupName;
-            //    context = Context;
-            //}
-
-            if (string.IsNullOrEmpty(resGroupName))
-            {
-                // use resource mgr to see if account exists and then use resource group name to do the actual lookup
-                WriteVerboseWithTimestamp(Properties.Resources.ResGroupLookup, accountName);
-                resGroupName = BatchClient.GetGroupForAccount(accountName);
-            }
-
-            // build a new context to put the keys into
-            var getResponse = BatchClient.GetAccount(resGroupName, accountName);
-
-            var context = BatchAccountContext.ConvertAccountResourceToNewAccountContext(getResponse.Resource);
-
-            var regenResponse = BatchClient.RegenerateKeys(resGroupName, accountName, new BatchAccountRegenerateKeyParameters
-                {
-                    KeyName = this.keyType
-                });
-            
-            context.PrimaryAccountKey = regenResponse.PrimaryKey;
-            context.SecondaryAccountKey = regenResponse.SecondaryKey;
+            BatchAccountContext context = BatchClient.RegenerateKeys(this.ResourceGroupName, this.AccountName, this.keyType);
             WriteObject(context);
         }
     }

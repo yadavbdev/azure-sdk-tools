@@ -40,55 +40,27 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void RegenBatchAccountKeysWithResourceLookup()
+        public void RegenBatchAccountKeysTest()
         {
-            RegenBatchAccountKeysTest(true);
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void RegenBatchAccountKeysWithoutResourceLookup()
-        {
-            RegenBatchAccountKeysTest(false);
-        }
-
-        private void RegenBatchAccountKeysTest(bool lookupAccountResource)
-        {
-            List<BatchAccountContext> pipelineOutput = new List<BatchAccountContext>();
             string newPrimaryKey = "newPrimaryKey";
             string newSecondaryKey = "newSecondaryKey";
 
             string accountName = "account01";
             string resourceGroup = "resourceGroup";
+            AccountKeyType keyType = AccountKeyType.Primary;
             AccountResource accountResource = BatchTestHelpers.CreateAccountResource(accountName, resourceGroup);
-
-            BatchAccountGetResponse getResponse = new BatchAccountGetResponse() { Resource = accountResource };
-            batchClientMock.Setup(b => b.GetAccount(resourceGroup, accountName)).Returns(getResponse);
-
-            BatchAccountRegenerateKeyResponse keyResponse = new BatchAccountRegenerateKeyResponse() { PrimaryKey = newPrimaryKey, SecondaryKey = newSecondaryKey };
-            batchClientMock.Setup(b => b.RegenerateKeys(resourceGroup, accountName, It.IsAny<BatchAccountRegenerateKeyParameters>())).Returns(keyResponse);
-
             BatchAccountContext expected = BatchAccountContext.ConvertAccountResourceToNewAccountContext(accountResource);
             expected.PrimaryAccountKey = newPrimaryKey;
             expected.SecondaryAccountKey = newSecondaryKey;
 
+            batchClientMock.Setup(b => b.RegenerateKeys(resourceGroup, accountName, keyType)).Returns(expected);
+
             cmdlet.AccountName = accountName;
-
-            if (lookupAccountResource)
-            {
-                cmdlet.ResourceGroupName = null;
-                batchClientMock.Setup(b => b.GetGroupForAccountNoThrow(accountName)).Returns(resourceGroup);
-            }
-            else
-            {
-                cmdlet.ResourceGroupName = resourceGroup;
-            }
-            commandRuntimeMock.Setup(r => r.WriteObject(It.IsAny<BatchAccountContext>())).Callback<object>(o => BatchTestHelpers.WriteValueToPipeline<BatchAccountContext>((BatchAccountContext)o, pipelineOutput));
-
+            cmdlet.ResourceGroupName = resourceGroup;
+            cmdlet.KeyType = keyType.ToString();
             cmdlet.ExecuteCmdlet();
 
-            Assert.Equal<int>(1, pipelineOutput.Count);
-            BatchTestHelpers.AssertBatchAccountContextsAreEqual(expected, pipelineOutput[0]);
+            commandRuntimeMock.Verify(r => r.WriteObject(expected), Times.Once());
         }
     }
 }
