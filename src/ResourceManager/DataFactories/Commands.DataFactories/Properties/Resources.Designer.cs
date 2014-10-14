@@ -61,6 +61,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data factory object provided is invalid. Use Get-AzureDataFactory to retrieve a specific data factory object, or use New-AzureDataFactory to create a new data factory object..
+        /// </summary>
+        internal static string DataFactoryArgumentInvalid {
+            get {
+                return ResourceManager.GetString("DataFactoryArgumentInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove data factory &apos;{0}&apos; in resource group &apos;{1}&apos;?.
         /// </summary>
         internal static string DataFactoryConfirmationMessage {
@@ -126,6 +135,53 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         internal static string FormattedCloudExceptionMessageTemplate {
             get {
                 return ResourceManager.GetString("FormattedCloudExceptionMessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove hub &apos;{0}&apos; in data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string HubConfirmationMessage {
+            get {
+                return ResourceManager.GetString("HubConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating hub &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string HubCreating {
+            get {
+                return ResourceManager.GetString("HubCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A hub with the name {0} in the data factory {1} exists. 
+        ///Continuing execution may overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
+        /// </summary>
+        internal static string HubExists {
+            get {
+                return ResourceManager.GetString("HubExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hub &apos;{0}&apos; does not exist in the data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string HubNotFound {
+            get {
+                return ResourceManager.GetString("HubNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing hub &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string HubRemoving {
+            get {
+                return ResourceManager.GetString("HubRemoving", resourceCulture);
             }
         }
         

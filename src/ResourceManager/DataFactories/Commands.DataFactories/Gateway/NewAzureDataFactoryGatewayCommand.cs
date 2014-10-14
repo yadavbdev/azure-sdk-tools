@@ -46,37 +46,30 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         public override void ExecuteCmdlet()
         {
+            PSDataFactoryGateway gateway = null;
             try
             {
-                PSDataFactoryGateway gateway = null;
-                try
-                {
-                    gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
-                }
-                catch (CloudException ex)
-                {
-                    if (ex.Response.StatusCode != HttpStatusCode.NotFound) throw;
-                }
-
-                if (gateway != null)
-                {
-                    throw new PSInvalidOperationException(string.Format(GatewayExsited, Name, DataFactoryName));
-                }
-
-                var request = new PSDataFactoryGateway
-                {
-                    Name = Name,
-                    Location = NormalizeLocation(Location),
-                    Description = Description
-                };
-
-                PSDataFactoryGateway response = DataFactoryClient.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, request);
-                WriteObject(response);
+                gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
             }
-            catch (Exception ex)
+            catch (CloudException ex)
             {
-                WriteExceptionError(ex);
+                if (ex.Response.StatusCode != HttpStatusCode.NotFound) throw;
             }
+
+            if (gateway != null)
+            {
+                throw new PSInvalidOperationException(string.Format(GatewayExsited, Name, DataFactoryName));
+            }
+
+            var request = new PSDataFactoryGateway
+            {
+                Name = Name,
+                Location = NormalizeLocation(Location),
+                Description = Description
+            };
+
+            PSDataFactoryGateway response = DataFactoryClient.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, request);
+            WriteObject(response);
         }
 
         // As a nested resource of data factory, CSM will not normalize location when

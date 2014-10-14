@@ -41,5 +41,9 @@ namespace Microsoft.Azure.Commands.DataFactories
         public const string DataSlice = "AzureDataFactorySlice";
 
         public const string SliceStatus = "AzureDataFactorySliceStatus";
+
+        public const string RunLog = "AzureDataFactoryRunLog";
+
+        public const string Hub = "AzureDataFactoryHub";
     }
 }

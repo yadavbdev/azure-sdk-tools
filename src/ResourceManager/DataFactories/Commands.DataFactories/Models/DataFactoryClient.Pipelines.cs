@@ -34,35 +34,13 @@ namespace Microsoft.Azure.Commands.DataFactories
                 throw new ArgumentNullException("rawJsonContent");
             }
 
-			PipelineGetResponse pipeline;
-            try
-            {
-                pipeline = DataPipelineManagementClient.Pipelines.Get(resourceGroupName, dataFactoryName, pipelineName);
-            }
-            catch (CloudException e)
-            {
-                //Get throws Exception message with NotFound Status
-                if (e.Response.StatusCode == HttpStatusCode.NotFound)
-                {
-                    pipeline = null;
-                }
-                else
-                {
-                    throw;
-                }               
-            }
-
-			if (pipeline != null && pipeline.Pipeline != null)
-            {
-                DataPipelineManagementClient.Pipelines.Delete(resourceGroupName, dataFactoryName, pipelineName);
-			}
-
             // If create failed, the current behavior is to throw
-            var response = DataPipelineManagementClient.Pipelines.CreateWithRawJsonContent(
-                resourceGroupName,
-                dataFactoryName,
-                pipelineName,
-                new PipelineCreateWithRawJsonContentParameters() { Content = rawJsonContent });
+            var response =
+                DataPipelineManagementClient.Pipelines.CreateOrUpdateWithRawJsonContent(
+                    resourceGroupName,
+                    dataFactoryName,
+                    pipelineName,
+                    new PipelineCreateOrUpdateWithRawJsonContentParameters() { Content = rawJsonContent });
 
             return response.Pipeline;
         }
@@ -92,7 +70,7 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             var pipelineRuns = new List<PSDataSliceRun>();
 
-            var response = DataPipelineManagementClient.Pipelines.GetRuns(resourceGroupName, dataFactoryName, pipelineName,
+            var response = DataPipelineManagementClient.PipelineRuns.List(resourceGroupName, dataFactoryName, pipelineName,
                 new PipelineRunListParameters()
                 {
                     ActivityName = activityName,
@@ -251,7 +229,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         private bool CheckPipelineExists(string resourceGroupName, string dataFactoryName, string pipelineName)
         {
-            // ToDo: implement HEAD to check if the linked service exists
+            // ToDo: implement HEAD to check if the pipeline exists
             try
             {
                 PSPipeline pipeline = GetPipeline(resourceGroupName, dataFactoryName, pipelineName);

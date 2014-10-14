@@ -77,7 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Gateway
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void CanNotNewGatewayKey()
+        public void CanThrowWhenCreateKeyOnNonExistingGateway()
         {
             var gatewaykey = new PSDataFactoryGatewayKey("FakedKey");
 
@@ -94,8 +94,8 @@ namespace Microsoft.WindowsAzure.Commands.Test.Gateway
             _cmdlet.GatewayName = GatewayName;
             _cmdlet.DataFactoryName = DataFactoryName;
 
-            _cmdlet.ExecuteCmdlet();
-
+            Assert.Throws<CloudException>(() => _cmdlet.ExecuteCmdlet());
+            
             dataFactoriesClientMock.VerifyAll();
         }
 

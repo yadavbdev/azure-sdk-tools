@@ -39,17 +39,14 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            PSDataFactoryGateway gateway = new PSDataFactoryGateway
             {
-                PSDataFactoryGateway gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
-                gateway.Description = Description;
-                PSDataFactoryGateway response = DataFactoryClient.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, gateway);
-                WriteObject(response);
-            }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
-            }
+                Description = Description,
+                Name = Name
+            };
+
+            PSDataFactoryGateway response = DataFactoryClient.PatchGateway(ResourceGroupName, DataFactoryName, gateway);
+            WriteObject(response);
         }
     }
 }

@@ -14,6 +14,7 @@
 
 using Microsoft.Azure.Commands.DataFactories.Properties;
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Management.Automation;
 using System.Net;
@@ -30,29 +31,34 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            if (ParameterSetName == ByFactoryObject)
             {
-                ConfirmAction(
-                    Force.IsPresent,
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        Resources.PipelineConfirmationMessage,
-                        Name,
-                        DataFactoryName),
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        Resources.PipelineRemoving,
-                        Name,
-                        DataFactoryName),
-                    Name,
-                    ExecuteDelete);
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
 
-                WriteObject(true);
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
             }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
-            }
+
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    Resources.PipelineConfirmationMessage,
+                    Name,
+                    DataFactoryName),
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    Resources.PipelineRemoving,
+                    Name,
+                    DataFactoryName),
+                Name,
+                ExecuteDelete);
+
+            WriteObject(true);
+            
         }
 
         private void ExecuteDelete()

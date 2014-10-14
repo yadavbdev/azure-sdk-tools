@@ -22,11 +22,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
     /// </summary>
     public class PSDataSlice
     {
-        private DataSlice _dataSlice;
+        private DataSlice dataSlice;
 
         public PSDataSlice()
         {
-            this._dataSlice = new DataSlice();
+            dataSlice = new DataSlice();
         }
 
         public PSDataSlice(DataSlice dataSlice)
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("dataSlice");
             }
 
-            this._dataSlice = dataSlice;
+            this.dataSlice = dataSlice;
         }
 
         public string ResourceGroupName { get; set; }
@@ -49,11 +49,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.Start;
+                return dataSlice.Start;
             }
             internal set
             {
-                this._dataSlice.Start = value;
+                dataSlice.Start = value;
             }
         }
 
@@ -61,11 +61,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.End;
+                return dataSlice.End;
             }
             internal set
             {
-                this._dataSlice.End = value;
+                dataSlice.End = value;
             }
         }
 
@@ -73,11 +73,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.RetryCount;
+                return dataSlice.RetryCount;
             }
             internal set
             {
-                this._dataSlice.RetryCount = value;
+                dataSlice.RetryCount = value;
             }
         }
 
@@ -85,11 +85,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.Status;
+                return dataSlice.Status;
             }
             internal set
             {
-                this._dataSlice.Status = value;
+                dataSlice.Status = value;
             }
         }
 
@@ -97,11 +97,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.LatencyStatus;
+                return dataSlice.LatencyStatus;
             }
             internal set
             {
-                this._dataSlice.LatencyStatus = value;
+                dataSlice.LatencyStatus = value;
             }
         }
 
@@ -109,11 +109,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSlice.LongRetryCount;
+                return dataSlice.LongRetryCount;
             }
             internal set
             {
-                this._dataSlice.LongRetryCount = value;
+                dataSlice.LongRetryCount = value;
             }
         }
     }

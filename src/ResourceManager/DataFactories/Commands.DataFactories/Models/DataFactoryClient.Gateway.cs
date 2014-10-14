@@ -14,16 +14,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
 using System.Linq;
 using Microsoft.Azure.Commands.DataFactories.Models;
-using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Utilities;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
@@ -37,6 +31,19 @@ namespace Microsoft.Azure.Commands.DataFactories
             }
 
             var response = DataPipelineManagementClient.Gateways.CreateOrUpdate(
+                resourceGroupName, dataFactoryName, new GatewayCreateOrUpdateParameters { Gateway = gateway.ToGatewayDefinition() });
+
+            return new PSDataFactoryGateway(response.Gateway);
+        }
+
+        public virtual PSDataFactoryGateway PatchGateway(string resourceGroupName, string dataFactoryName, PSDataFactoryGateway gateway)
+        {
+            if (gateway == null)
+            {
+                throw new ArgumentNullException("gateway");
+            }
+
+            var response = DataPipelineManagementClient.Gateways.Update(
                 resourceGroupName, dataFactoryName, new GatewayCreateOrUpdateParameters { Gateway = gateway.ToGatewayDefinition() });
 
             return new PSDataFactoryGateway(response.Gateway);

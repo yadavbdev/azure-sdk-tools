@@ -38,29 +38,22 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
-            {
-                ConfirmAction(
-                    Force.IsPresent,
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        "Are you sure you want to remove the gateway '{0}' in the data factory '{1}'?",
-                        Name,
-                        DataFactoryName),
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        "Removing the gateway '{0}' in the data factory '{1}'.",
-                        Name,
-                        DataFactoryName),
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Are you sure you want to remove the gateway '{0}' in the data factory '{1}'?",
                     Name,
-                    () => DataFactoryClient.DeleteGateway(ResourceGroupName, DataFactoryName, Name));
+                    DataFactoryName),
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Removing the gateway '{0}' in the data factory '{1}'.",
+                    Name,
+                    DataFactoryName),
+                Name,
+                () => DataFactoryClient.DeleteGateway(ResourceGroupName, DataFactoryName, Name));
 
-                WriteObject(true);
-            }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
-            }
+            WriteObject(true);
         }
     }
 }

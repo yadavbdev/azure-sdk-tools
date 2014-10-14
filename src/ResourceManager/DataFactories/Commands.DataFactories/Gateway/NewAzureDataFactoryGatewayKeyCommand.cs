@@ -33,16 +33,8 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         public override void ExecuteCmdlet()
         {
-            try
-            {
-                PSDataFactoryGatewayKey gatewayKey = DataFactoryClient.RegenerateGatewayKey(ResourceGroupName, DataFactoryName, GatewayName);
-                WriteObject(gatewayKey);
-
-            }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
-            }
+            PSDataFactoryGatewayKey gatewayKey = DataFactoryClient.RegenerateGatewayKey(ResourceGroupName, DataFactoryName, GatewayName);
+            WriteObject(gatewayKey);
         }
     }
 }

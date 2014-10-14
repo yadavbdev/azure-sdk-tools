@@ -12,7 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.DataFactories.Properties;
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Management.Automation;
 using System.Security.Permissions;
@@ -28,29 +30,33 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            if (ParameterSetName == ByFactoryObject)
             {
-                ConfirmAction(
-                    Force.IsPresent,
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        "Are you sure you want to resume pipeline '{0}' in data factory '{1}'?",
-                        Name,
-                        DataFactoryName),
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        "Resuming pipeline '{0}' in data factory '{1}'.",
-                        Name,
-                        DataFactoryName),
-                    Name,
-                    () => DataFactoryClient.ResumePipeline(ResourceGroupName, DataFactoryName, Name));
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
 
-                WriteObject(true);
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
             }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
-            }
+
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Are you sure you want to resume pipeline '{0}' in data factory '{1}'?",
+                    Name,
+                    DataFactoryName),
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Resuming pipeline '{0}' in data factory '{1}'.",
+                    Name,
+                    DataFactoryName),
+                Name,
+                () => DataFactoryClient.ResumePipeline(ResourceGroupName, DataFactoryName, Name));
+
+            WriteObject(true);
         }
     }
 }
