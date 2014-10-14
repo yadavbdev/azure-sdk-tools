@@ -18,7 +18,7 @@ using Microsoft.Azure.Commands.Network.Properties;
 
 namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Subnet
 {
-    [Cmdlet(VerbsCommon.Remove, "AzureNetworkSecurityGroup"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "AzureNetworkSecurityGroupFromSubnet"), OutputType(typeof(bool))]
     public class RemoveAzureNetworkSecurityGroupFromSubnet : NetworkCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true)]

@@ -14,10 +14,11 @@
 
 using System.Management.Automation;
 using Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model;
+using Microsoft.Azure.Commands.Network.Properties;
 
 namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Subnet
 {
-    [Cmdlet(VerbsCommon.Get, "AzureNetworkSecurityGroup"), OutputType(typeof(INetworkSecurityGroup))]
+    [Cmdlet(VerbsCommon.Get, "AzureNetworkSecurityGroupForSubnet"), OutputType(typeof(INetworkSecurityGroup))]
     public class GetAzureNetworkSecurityGroupForSubnet : NetworkCmdletBase
     {
 
@@ -35,8 +36,16 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Subnet
 
         public override void ExecuteCmdlet()
         {
-            string securityGroupName = Client.GetNetworkSecurityGroupForSubnet(VirtualNetworkName, SubnetName);
-            INetworkSecurityGroup securityGroup = Client.GetNetworkSecurityGroup(securityGroupName, DetailLevel);
+            var getForSubnetResponse = Client.GetNetworkSecurityGroupForSubnet(VirtualNetworkName, SubnetName);
+
+            if (getForSubnetResponse.State != "Created")
+            {
+                WriteWarningWithTimestamp(
+                    string.Format(Resources.NetworkSecurityGroupNotActiveInSubnet, getForSubnetResponse.Name, VirtualNetworkName, SubnetName));
+
+            }
+
+            INetworkSecurityGroup securityGroup = Client.GetNetworkSecurityGroup(getForSubnetResponse.Name, DetailLevel);
             WriteObject(securityGroup);
         }
     }

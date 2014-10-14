@@ -230,7 +230,7 @@ namespace Microsoft.Azure.Commands.Network
             return AzureSession.ClientFactory.CreateClient<ClientType>(subscription, AzureEnvironment.Endpoint.ServiceManagement);
         }
 
-        public INetworkSecurityGroup CreateNetworkSecurityGroup(string name, string location, string label)
+        public void CreateNetworkSecurityGroup(string name, string location, string label)
         {
             NetworkSecurityGroupCreateParameters parameters = new NetworkSecurityGroupCreateParameters()
             {
@@ -238,20 +238,33 @@ namespace Microsoft.Azure.Commands.Network
                 Name = name,
                 Label = label
             };
-            client.NetworkSecurityGroups.Create(parameters);
 
-            return GetNetworkSecurityGroup(name, null);
+            client.NetworkSecurityGroups.Create(parameters);
         }
 
         public INetworkSecurityGroup GetNetworkSecurityGroup(string name, bool detailLevel)
         {
-            client.NetworkSecurityGroups.Get(name, detailLevel ? "Full" : null);
-            throw new NotImplementedException();
+            var getResponse = client.NetworkSecurityGroups.Get(name, detailLevel ? "Full" : null);
+            return detailLevel ? new NetworkSecurityGroupWithRules(getResponse) : new SimpleNetworkSecurityGroup(getResponse);
         }
 
-        public IEnumerable<INetworkSecurityGroup> ListNetworkSecurityGroups()
+        public IEnumerable<INetworkSecurityGroup> ListNetworkSecurityGroups(bool detailLevel)
         {
-            throw new NotImplementedException();
+            var networkSecurityGroupList = client.NetworkSecurityGroups.List();
+            IEnumerable<INetworkSecurityGroup> result;
+
+            if (detailLevel)
+            {
+                // to get the rules, need to specifically call Get for each group
+                result = networkSecurityGroupList.Select(nsg => GetNetworkSecurityGroup(nsg.Name, true));
+            }
+
+            else
+            {
+                result = networkSecurityGroupList.Select(nsg => new SimpleNetworkSecurityGroup(nsg.Name, nsg.Location, nsg.Label));
+            }
+
+            return result;
         }
 
         public void SetNetworkSecurityRule(
@@ -266,33 +279,49 @@ namespace Microsoft.Azure.Commands.Network
             string destinationPortRange,
             string protocol)
         {
-            throw new NotImplementedException();
-            return GetNetworkSecurityGroup(networkSecurityGroupName, null);
+            var setSecurityRuleParameters = new NetworkSecuritySetRuleParameters()
+            {
+                Type = type,
+                Priority = priority,
+                Action = action,
+                SourceAddressPrefix = sourceAddressPrefix,
+                SourcePortRange = sourcePortRange,
+                DestinationAddressPrefix = destinationAddressPrefix,
+                DestinationPortRange = destinationPortRange,
+                Protocol = protocol
+            };
+
+            client.NetworkSecurityGroups.SetRule(networkSecurityGroupName, ruleName, setSecurityRuleParameters);
         }
 
-        public void RemoveNetworkSecurityGroup(string Name)
+        public void RemoveNetworkSecurityGroup(string name)
         {
-            throw new NotImplementedException();
+            client.NetworkSecurityGroups.Delete(name);
         }
 
         public void RemoveNetworkSecurityRule(string securityGroupName, string securityRuleName)
         {
-            throw new NotImplementedException();
+            client.NetworkSecurityGroups.DeleteRule(securityGroupName, securityRuleName);
         }
 
-        public string GetNetworkSecurityGroupForSubnet(string VirtualNetworkName, string SubnetName)
+        public NetworkSecurityGroupGetForSubnetResponse GetNetworkSecurityGroupForSubnet(string virtualNetworkName, string subnetName)
         {
-            throw new NotImplementedException();
+            return client.NetworkSecurityGroups.GetForSubnet(virtualNetworkName, subnetName);
         }
 
-        public void RemoveNetworkSecurityGroupFromSubnet(string Name, string VirtualNetworkName, string SubnetName)
+        public void RemoveNetworkSecurityGroupFromSubnet(string networkSecurityGroupName, string virtualNetworkName, string subnetName)
         {
-            throw new NotImplementedException();
+            client.NetworkSecurityGroups.RemoveFromSubnet(virtualNetworkName, subnetName, networkSecurityGroupName);
         }
 
-        public void SetNetworkSecurityGroupForSubnet(string Name, string SubnetName, string VirtualNetworkName)
+        public void SetNetworkSecurityGroupForSubnet(string networkSecurityGroupName, string subnetName, string virtualNetworkName)
         {
-            throw new NotImplementedException();
+            var parameters = new NetworkSecurityGroupAddToSubnetParameters()
+            {
+                Name = networkSecurityGroupName
+            };
+
+            client.NetworkSecurityGroups.AddToSubnet(virtualNetworkName, subnetName, parameters);
         }
     }
 }

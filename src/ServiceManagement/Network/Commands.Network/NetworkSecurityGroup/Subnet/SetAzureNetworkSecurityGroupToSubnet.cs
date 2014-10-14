@@ -20,7 +20,7 @@ using Microsoft.WindowsAzure;
 
 namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Subnet
 {
-    [Cmdlet(VerbsCommon.Set, "AzureNetworkSecurityGroup"), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Set, "AzureNetworkSecurityGroupToSubnet"), OutputType(typeof(bool))]
     public class SetAzureNetworkSecurityGroupToSubnet : NetworkCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true)]
@@ -53,8 +53,7 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Subnet
             }
             catch (CloudException ce)
             {
-                // TODO
-                if (ce.ErrorMessage.Equals("TODO"))
+                if (ce.ErrorCode.Equals("BadRequest") && ce.ErrorMessage.Contains("already mapped to network"))
                 {
                     // there's already a NSG associated with this subnet, so confirm they want to replace it
                     ConfirmAction(

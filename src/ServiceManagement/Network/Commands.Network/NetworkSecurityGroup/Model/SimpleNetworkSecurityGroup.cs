@@ -18,11 +18,20 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model
 {
     public class SimpleNetworkSecurityGroup : INetworkSecurityGroup
     {
-        private Management.Network.Models.NetworkSecurityGroup networkSecurityGroup;
-
-        public SimpleNetworkSecurityGroup()
+        public SimpleNetworkSecurityGroup(string name, string location, string label)
         {
-            
+            this.Name = name;
+            this.Location = location;
+            this.Label = label;
+        }
+
+        public SimpleNetworkSecurityGroup(NetworkSecurityGroupGetResponse networkSecurityGroupAsGetResponse) :
+            this(
+            networkSecurityGroupAsGetResponse.Name,
+            networkSecurityGroupAsGetResponse.Location,
+            networkSecurityGroupAsGetResponse.Label)
+        {
+
         }
 
         public string Name { get; set; }

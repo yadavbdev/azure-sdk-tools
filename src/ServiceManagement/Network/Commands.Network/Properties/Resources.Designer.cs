@@ -169,6 +169,15 @@ namespace Microsoft.Azure.Commands.Network.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network SecurityGroup &quot;{0}&quot; is not active in Subnet &quot;{1}&quot; in Virtual Network &quot;{2}&quot;..
+        /// </summary>
+        internal static string NetworkSecurityGroupNotActiveInSubnet {
+            get {
+                return ResourceManager.GetString("NetworkSecurityGroupNotActiveInSubnet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to reduce the cache memory? Cache data will be lost..
         /// </summary>
         internal static string PromptOnCacheMemoryReduce {

@@ -28,6 +28,7 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
         public override void ExecuteCmdlet()
         {
             Client.RemoveNetworkSecurityRule(NetworkSecurityGroup.GetInstance().Name, Name);
+            WriteObject(Client.GetNetworkSecurityGroup(NetworkSecurityGroup.GetInstance().Name, true));
         }
     }
 }

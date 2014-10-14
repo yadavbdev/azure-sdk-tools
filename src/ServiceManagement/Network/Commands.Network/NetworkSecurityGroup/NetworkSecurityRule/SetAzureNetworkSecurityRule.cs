@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
 
         // TODO: Get the priotiy range right
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = false)]
-        [ValidateRange(400, 1000)]
+        [ValidateRange(100, 4096)]
         public int Priority { get; set; }
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = false)]
@@ -71,6 +71,8 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
                 DestinationAddressPrefix,
                 DestinationPortRange,
                 Protocol);
+
+            WriteObject(Client.GetNetworkSecurityGroup(NetworkSecurityGroup.GetInstance().Name, true));
         }
     }
 }

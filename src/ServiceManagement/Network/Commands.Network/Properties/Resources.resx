@@ -195,4 +195,7 @@
   <data name="ReplaceNetworkSecurityGroupInSubnetWarningSucceeded" xml:space="preserve">
     <value>Successfully set NetworkSecurityGroup "{0}" in Subnet "{1}" in Virtual Network "{1}"</value>
   </data>
+  <data name="NetworkSecurityGroupNotActiveInSubnet" xml:space="preserve">
+    <value>Network SecurityGroup "{0}" is not active in Subnet "{1}" in Virtual Network "{2}".</value>
+  </data>
 </root>

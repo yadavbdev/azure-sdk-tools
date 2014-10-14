@@ -34,7 +34,8 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
 
         public override void ExecuteCmdlet()
         {
-            var networkSecurityGroup = Client.CreateNetworkSecurityGroup(Name, Location, Label);
+            Client.CreateNetworkSecurityGroup(Name, Location, Label);
+            var networkSecurityGroup = Client.GetNetworkSecurityGroup(Name, false);
             WriteObject(networkSecurityGroup);
         }
     }

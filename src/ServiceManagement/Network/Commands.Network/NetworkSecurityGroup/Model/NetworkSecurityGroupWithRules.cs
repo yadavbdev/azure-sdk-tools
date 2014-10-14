@@ -13,11 +13,30 @@
 // ----------------------------------------------------------------------------------
 
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Management.Network.Models;
 
 namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model
 {
     public class NetworkSecurityGroupWithRules : SimpleNetworkSecurityGroup
     {
-        private IEnumerable<NetworkSecurityRule> rules;
+        private List<NetworkSecurityRule> rules = new List<NetworkSecurityRule>();
+
+        public IEnumerable<NetworkSecurityRule> Rules
+        {
+            get { return this.rules; }
+            set { this.rules = value.ToList(); }
+        }
+
+        public NetworkSecurityGroupWithRules(NetworkSecurityGroupGetResponse networkSecurityGroupAsGetResponse)
+            : base(networkSecurityGroupAsGetResponse)
+        {
+            if (networkSecurityGroupAsGetResponse.Rules != null)
+            {
+                rules.AddRange(networkSecurityGroupAsGetResponse.Rules);
+            }
+        }
+
     }
 }

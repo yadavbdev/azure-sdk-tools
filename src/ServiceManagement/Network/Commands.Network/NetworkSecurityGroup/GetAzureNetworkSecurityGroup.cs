@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
 
         private void GetNoName()
         {
-            IEnumerable<INetworkSecurityGroup> networkSecurityGroups = Client.ListNetworkSecurityGroups();
+            IEnumerable<INetworkSecurityGroup> networkSecurityGroups = Client.ListNetworkSecurityGroups(DetailLevel);
             WriteNetworkSecurityGroups(networkSecurityGroups);
         }
 
