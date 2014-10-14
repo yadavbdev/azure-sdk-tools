@@ -12,18 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Moq;
+using System.Management.Automation;
+using Xunit;
+
 namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.Batch;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.ScenarioTest;
-    using Moq;
-    using Xunit;
-
     public class RemoveBatchAccountCommandTests
     {
         private RemoveBatchAccountCommand cmdlet;
@@ -43,19 +39,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void RemoveBatchAccountWithResourceLookup()
-        {
-            RemoveBatchAccountTest(true);
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void RemoveBatchAccountWithoutResourceLookup()
-        {
-            RemoveBatchAccountTest(false);
-        }
-
-        private void RemoveBatchAccountTest(bool lookupAccountResource)
+        public void RemoveBatchAccountTest()
         {
             string accountName = "account01";
             string resourceGroup = "resourceGroup";
@@ -64,16 +48,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.Accounts
             batchClientMock.Setup(b => b.DeleteAccount(resourceGroup, accountName)).Returns(deleteResponse);
 
             cmdlet.AccountName = accountName;
-
-            if (lookupAccountResource)
-            {
-                cmdlet.ResourceGroupName = null;
-                batchClientMock.Setup(b => b.GetGroupForAccountNoThrow(accountName)).Returns(resourceGroup);
-            }
-            else
-            {
-                cmdlet.ResourceGroupName = resourceGroup;
-            }
+            cmdlet.ResourceGroupName = resourceGroup;
 
             cmdlet.Force = true;
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);

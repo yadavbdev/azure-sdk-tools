@@ -12,14 +12,11 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.Batch.Properties;
+using System.Management.Automation;
+
 namespace Microsoft.Azure.Commands.Batch
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Management.Batch.Models;
-    using Microsoft.Azure.Commands.Batch.Properties;
-
     [Cmdlet(VerbsCommon.Remove, "AzureBatchAccount")]
     public class RemoveBatchAccountCommand : BatchCmdletBase
     {
@@ -39,21 +36,12 @@ namespace Microsoft.Azure.Commands.Batch
 
         public override void ExecuteCmdlet()
         {
-            var resourceGroupName = this.ResourceGroupName;
-
-            if (string.IsNullOrEmpty(resourceGroupName))
-            {
-                // use resource mgr to see if account exists and then use resource group name to do the actual lookup
-                WriteVerboseWithTimestamp(Resources.ResGroupLookup, this.AccountName);
-                resourceGroupName = BatchClient.GetGroupForAccount(this.AccountName);
-            }
-
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Resources.RBA_RemoveConfirm, this.AccountName),
                 Resources.RBA_RemoveResource,
                 this.AccountName,
-                () => DeleteAction(resourceGroupName, this.AccountName));
+                () => DeleteAction(this.ResourceGroupName, this.AccountName));
         }
 
         private void DeleteAction(string resGroupName, string accountName)
