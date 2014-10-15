@@ -171,6 +171,7 @@
     <Compile Include="Extensions\MicrosoftAntimalware\RemoveAzureServiceAntimalwareExtension.cs" />
     <Compile Include="Extensions\MicrosoftAntimalware\SetAzureServiceAntimalwareExtension.cs" />
     <Compile Include="Helpers\SecureStringHelper.cs" />
+    <Compile Include="HostedServices\GetAzureDeploymentEvent.cs" />
     <Compile Include="IaaS\AvailabilitySets\RemoveAzureAvailabilitySet.cs" />
     <Compile Include="IaaS\DiskRepository\GetAzureVMImageDiskConfigSet.cs" />
     <Compile Include="IaaS\DiskRepository\RemoveAzureVMImageDataDiskConfig.cs" />
