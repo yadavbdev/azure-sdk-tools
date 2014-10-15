@@ -120,6 +120,15 @@
   <data name="DataFactoryArgumentInvalid" xml:space="preserve">
     <value>The data factory object provided is invalid. Use Get-AzureDataFactory to retrieve a specific data factory object, or use New-AzureDataFactory to create a new data factory object.</value>
   </data>
+  <data name="DataFactoryGatewayConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to remove the gateway '{0}' in the data factory '{1}'?</value>
+  </data>
+  <data name="DataFactoryGatewayExists" xml:space="preserve">
+    <value>A gateway with the name {0} already exsits in the data factory {1}.</value>
+  </data>
+  <data name="DataFactoryGatewayRemoving" xml:space="preserve">
+    <value>Removing the gateway '{0}' in the data factory '{1}'.</value>
+  </data>
   <data name="DataFactoryConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to remove data factory '{0}' in resource group '{1}'?</value>
   </data>

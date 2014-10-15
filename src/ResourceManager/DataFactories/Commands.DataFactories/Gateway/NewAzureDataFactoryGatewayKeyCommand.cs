@@ -13,26 +13,43 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
 using System.Management.Automation;
 using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
     [Cmdlet(VerbsCommon.New, Constants.GatewayKey), OutputType(typeof(PSDataFactoryGatewayKey))]
     public class NewAzureDataFactoryGatewayKeyCommand : DataFactoryBaseCmdlet
     {
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The data factory gateway name.")]
-        [ValidateNotNullOrEmpty]
-        public string GatewayName { get; set; }
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
 
-        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
         [ValidateNotNullOrEmpty]
         public string DataFactoryName { get; set; }
 
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+    HelpMessage = "The data factory gateway name.")]
+        [ValidateNotNullOrEmpty]
+        public string GatewayName { get; set; }
+
         public override void ExecuteCmdlet()
         {
+            if (ParameterSetName == ByFactoryObject)
+            {
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
+
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
+            }
+
             PSDataFactoryGatewayKey gatewayKey = DataFactoryClient.RegenerateGatewayKey(ResourceGroupName, DataFactoryName, GatewayName);
             WriteObject(gatewayKey);
         }

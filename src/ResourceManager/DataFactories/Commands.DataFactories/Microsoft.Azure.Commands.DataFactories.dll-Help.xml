@@ -825,7 +825,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Collections.Generic.List`1[[Microsoft.WindowsAzure.Commands.Utilities.PSDataFactoryGateway]], Microsoft.WindowsAzure.Commands.Utilities.PSDataFactoryGateway</maml:name>
+          <maml:name>System.Collections.Generic.List`1[[Microsoft.Azure.Commands.DataFactories.Models.PSDataFactoryGateway]], Microsoft.Azure.Commands.DataFactories.Models.PSDataFactoryGateway</maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
@@ -3287,7 +3287,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>Microsoft.WindowsAzure.Commands.Utilities.PSDataFactoryGatewayKey</maml:name>
+          <maml:name>Microsoft.Azure.Commands.DataFactories.Models.PSDataFactoryGatewayKey</maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
@@ -3734,7 +3734,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>Microsoft.WindowsAzure.Commands.Utilities.PSDataFactoryGatewayKey</maml:name>
+          <maml:name>Microsoft.Azure.Commands.DataFactories.Models.PSDataFactoryGateway</maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
@@ -4045,286 +4045,6 @@
     </maml:relatedLinks>
   </command:command>
   
-  
-  <!-- v 1.3.0.36 -->
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
-    <command:details>
-      <command:name>
-        Register-AzureDataFactoryGateway
-      </command:name>
-      <maml:description>
-        <maml:para>Creates a gateway (if not already exist) in the specified Azure data factory and register the gateway on the local computer.</maml:para>
-      </maml:description>
-      <maml:copyright>
-        <maml:para></maml:para>
-      </maml:copyright>
-      <command:verb>Register</command:verb>
-      <command:noun>AzureDataFactoryGateway</command:noun>
-      <dev:version></dev:version>
-    </command:details>
-    <maml:description>
-      <maml:para>The Register-AzureDataFactoryGateway cmdlet creates a gateway (if not already exist) in the specified Azure data factory and register the gateway on the local computer.</maml:para>
-    </maml:description>
-    <!-- Cmdlet syntax section-->
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Register-AzureDataFactoryGateway</maml:name>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
-          <maml:name>Name</maml:name>
-          <maml:description>
-            <maml:para>Name of the gateway.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="2">
-          <maml:name>DataFactoryName</maml:name>
-          <maml:description>
-            <maml:para>Name of the data factory.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
-          <maml:name>Location</maml:name>
-          <maml:description>
-            <maml:para>Location of the gateway such as &quot;westus&quot;</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-          <maml:name>ResourceGroupName</maml:name>
-          <maml:description>
-            <maml:para>Name of the resource group. </maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-          <maml:name>Description</maml:name>
-          <maml:description>
-            <maml:para>Description of the gateway.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-          <maml:name>Replace</maml:name>
-          <maml:description>
-            <maml:para>Replace any existing gateway with the same name. </maml:para>
-          </maml:description>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <!-- Cmdlet parameter section  -->
-    <command:parameters>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="2">
-        <maml:name>DataFactoryName</maml:name>
-        <maml:description>
-          <maml:para>Name of the data factory.</maml:para>
-
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-        <maml:name>Description</maml:name>
-        <maml:description>
-          <maml:para>Description of the gateway.</maml:para>
-
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="2">
-        <maml:name>Location</maml:name>
-        <maml:description>
-          <maml:para>Location of the gateway such as &quot;westus&quot;</maml:para>
-
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="1">
-        <maml:name>Name</maml:name>
-        <maml:description>
-          <maml:para>Name of the gateway.</maml:para>
-
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-        <maml:name>Replace</maml:name>
-        <maml:description>
-          <maml:para>Replace any existing gateway with the same name. </maml:para>
-
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
-        <maml:name>ResourceGroupName</maml:name>
-        <maml:description>
-          <maml:para>Name of the resource group. </maml:para>
-
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
-        <dev:type>
-          <maml:name>string</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <!-- Input - Output section-->
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name></maml:name>
-          <maml:uri/>
-          <maml:description />
-        </dev:type>
-        <maml:description>
-          <maml:para>
-            <!-- description  -->
-
-          </maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name></maml:name>
-          <maml:uri />
-          <maml:description />
-        </dev:type>
-        <maml:description>
-          <maml:para>
-            <!-- description  -->
-
-          </maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <!-- Error section-->
-    <command:terminatingErrors />
-    <command:nonTerminatingErrors />
-    <!-- Notes section  -->
-    <maml:alertSet>
-      <maml:title></maml:title>
-      <maml:alert>
-        <maml:para>
-
-        </maml:para>
-      </maml:alert>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <!-- Example section  -->
-    <command:examples>
-
-      <command:example>
-        <maml:title>
-          -------------------------- EXAMPLE 1 --------------------------
-        </maml:title>
-        <maml:introduction>
-          <maml:para>C:\PS&gt;</maml:para>
-        </maml:introduction>
-        <dev:code>
-          Register-AzureDataFactoryGateway -ResourceGroupName ADF -Name gatewaySample -DataFactoryName wikiADF -Location WestUs -Description &quot;my gateway&quot;
-
-          Name            : gatewaySample
-          Location        : West US
-          Description     : my gateway
-          Version         : 1.3.5338.1
-          Status          : Online
-          VersionStatus   : UpToDate
-          CreateTime      : 8/22/2014 1:40:34 AM
-          RegisterTime    : 8/22/2014 1:41:46 AM
-          LastConnectTime : 8/22/2014 1:44:56 AM
-          ExpiryTime      :
-        </dev:code>
-        <dev:remarks>
-          <maml:para>Description</maml:para>
-          <maml:para>-----------</maml:para>
-          <maml:para>Creates a gateway 'gatewaySample' in the Azure data factory 'wikiADF', and register an on-premise gateway on the local computer</maml:para>
-          <maml:para></maml:para>
-          <maml:para></maml:para>
-          <maml:para></maml:para>
-          <maml:para></maml:para>
-        </dev:remarks>
-        <command:commandLines>
-          <command:commandLine>
-            <command:commandText></command:commandText>
-          </command:commandLine>
-        </command:commandLines>
-      </command:example>
-
-      <command:example>
-        <maml:title>
-          -------------------------- EXAMPLE 2 --------------------------
-        </maml:title>
-        <maml:introduction>
-          <maml:para>C:\PS&gt;</maml:para>
-        </maml:introduction>
-        <dev:code>
-          Register-AzureDataFactoryGateway -ResourceGroupName ADF -Name gatewaySample -DataFactoryName wikiADF -Location WestUs -Replace
-
-          Name            : gatewaySample
-          Location        : West US
-          Description     :
-          Version         : 1.3.5338.1
-          Status          : Offline
-          VersionStatus   : UpToDate
-          CreateTime      : 8/22/2014 1:40:34 AM
-          RegisterTime    : 8/22/2014 1:41:46 AM
-          LastConnectTime : 8/22/2014 1:44:56 AM
-          ExpiryTime      :
-        </dev:code>
-        <dev:remarks>
-          <maml:para>Description</maml:para>
-          <maml:para>-----------</maml:para>
-          <maml:para>Register the on-premise gateway &quot;gatewaySample&quot; in the Azure data factory 'wikiADF' on the local computer.</maml:para>
-          <maml:para></maml:para>
-          <maml:para></maml:para>
-          <maml:para></maml:para>
-          <maml:para></maml:para>
-        </dev:remarks>
-        <command:commandLines>
-          <command:commandLine>
-            <command:commandText></command:commandText>
-          </command:commandLine>
-        </command:commandLines>
-      </command:example>
-    </command:examples>
-    <!-- Link section  -->
-    <maml:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText></maml:linkText>
-        <maml:uri/>
-      </maml:navigationLink>
-    </maml:relatedLinks>
-  </command:command>
-
   <!-- v 1.3.0.36 -->
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
     <command:details>
@@ -6735,7 +6455,7 @@
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>System.Collections.Generic.List`1[[Microsoft.WindowsAzure.Commands.Utilities.PSDataFactoryGateway]], Microsoft.WindowsAzure.Commands.Utilities.PSDataFactoryGateway</maml:name>
+          <maml:name>System.Collections.Generic.List`1[[Microsoft.Azure.Commands.DataFactories.Models.PSDataFactoryGateway]], Microsoft.Azure.Commands.DataFactories.Models.PSDataFactoryGateway</maml:name>
           <maml:uri />
           <maml:description />
         </dev:type>
