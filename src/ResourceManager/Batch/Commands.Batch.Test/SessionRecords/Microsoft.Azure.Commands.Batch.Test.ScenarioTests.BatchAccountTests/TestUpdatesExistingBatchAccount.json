@@ -25,16 +25,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31879"
+          "31869"
         ],
         "x-ms-request-id": [
-          "3ed7db22-d67e-4612-884c-d4221c4a09f1"
+          "9960a075-5e7d-45dd-8495-eeed8d403d7a"
         ],
         "x-ms-correlation-request-id": [
-          "3ed7db22-d67e-4612-884c-d4221c4a09f1"
+          "9960a075-5e7d-45dd-8495-eeed8d403d7a"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004954Z:3ed7db22-d67e-4612-884c-d4221c4a09f1"
+          "CENTRALUS:20141015T022836Z:9960a075-5e7d-45dd-8495-eeed8d403d7a"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -43,14 +43,14 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:54 GMT"
+          "Wed, 15 Oct 2014 02:28:36 GMT"
         ]
       },
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk5730?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazU3MzA/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk764?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazc2ND9hcGktdmVyc2lvbj0yMDE0LTA0LTAxLXByZXZpZXc=",
       "RequestMethod": "HEAD",
       "RequestBody": "",
       "RequestHeaders": {
@@ -61,7 +61,7 @@
       "ResponseBody": "",
       "ResponseHeaders": {
         "Content-Length": [
-          "102"
+          "101"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -73,16 +73,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31878"
+          "31868"
         ],
         "x-ms-request-id": [
-          "c8740ef6-ea21-4937-acbb-f11ab8fe4440"
+          "f757668c-90a1-40bf-8783-990e015480c2"
         ],
         "x-ms-correlation-request-id": [
-          "c8740ef6-ea21-4937-acbb-f11ab8fe4440"
+          "f757668c-90a1-40bf-8783-990e015480c2"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004954Z:c8740ef6-ea21-4937-acbb-f11ab8fe4440"
+          "CENTRALUS:20141015T022836Z:f757668c-90a1-40bf-8783-990e015480c2"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -91,14 +91,14 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:54 GMT"
+          "Wed, 15 Oct 2014 02:28:36 GMT"
         ]
       },
       "StatusCode": 404
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk5730?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazU3MzA/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk764?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazc2ND9hcGktdmVyc2lvbj0yMDE0LTA0LTAxLXByZXZpZXc=",
       "RequestMethod": "HEAD",
       "RequestBody": "",
       "RequestHeaders": {
@@ -118,16 +118,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31898"
+          "31859"
         ],
         "x-ms-request-id": [
-          "848ab097-b5a4-4258-99d6-f296b8783a15"
+          "0579a7e2-a3af-4093-b46f-275c6ab4dfac"
         ],
         "x-ms-correlation-request-id": [
-          "848ab097-b5a4-4258-99d6-f296b8783a15"
+          "0579a7e2-a3af-4093-b46f-275c6ab4dfac"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005102Z:848ab097-b5a4-4258-99d6-f296b8783a15"
+          "CENTRALUS:20141015T022912Z:0579a7e2-a3af-4093-b46f-275c6ab4dfac"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -136,14 +136,14 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:51:01 GMT"
+          "Wed, 15 Oct 2014 02:29:12 GMT"
         ]
       },
       "StatusCode": 204
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk5730?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazU3MzA/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk764?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazc2ND9hcGktdmVyc2lvbj0yMDE0LTA0LTAxLXByZXZpZXc=",
       "RequestMethod": "PUT",
       "RequestBody": "{\r\n  \"location\": \"West US\",\r\n  \"tags\": {}\r\n}",
       "RequestHeaders": {
@@ -157,10 +157,10 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ]
       },
-      "ResponseBody": "{\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730\",\r\n  \"name\": \"onesdk5730\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764\",\r\n  \"name\": \"onesdk764\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
-          "183"
+          "181"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -172,16 +172,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "1158"
+          "1162"
         ],
         "x-ms-request-id": [
-          "ef370a02-f3c7-43a6-bd7f-71f45ba3b248"
+          "f600fd98-521d-4b69-8fe7-c0aec473e645"
         ],
         "x-ms-correlation-request-id": [
-          "ef370a02-f3c7-43a6-bd7f-71f45ba3b248"
+          "f600fd98-521d-4b69-8fe7-c0aec473e645"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004954Z:ef370a02-f3c7-43a6-bd7f-71f45ba3b248"
+          "CENTRALUS:20141015T022836Z:f600fd98-521d-4b69-8fe7-c0aec473e645"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -190,14 +190,14 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:54 GMT"
+          "Wed, 15 Oct 2014 02:28:36 GMT"
         ]
       },
       "StatusCode": 201
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/resources?&api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcmVzb3VyY2VzPyZhcGktdmVyc2lvbj0yMDE0LTA0LTAxLXByZXZpZXc=",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/resources?&api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9yZXNvdXJjZXM/JmFwaS12ZXJzaW9uPTIwMTQtMDQtMDEtcHJldmlldw==",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -220,16 +220,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31877"
+          "31867"
         ],
         "x-ms-request-id": [
-          "d44d1656-51f8-4624-ad9b-dc1212160d83"
+          "3ea672b1-2e71-4d87-8f66-688fbdb0e9d8"
         ],
         "x-ms-correlation-request-id": [
-          "d44d1656-51f8-4624-ad9b-dc1212160d83"
+          "3ea672b1-2e71-4d87-8f66-688fbdb0e9d8"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004955Z:d44d1656-51f8-4624-ad9b-dc1212160d83"
+          "CENTRALUS:20141015T022837Z:3ea672b1-2e71-4d87-8f66-688fbdb0e9d8"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -238,14 +238,14 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:54 GMT"
+          "Wed, 15 Oct 2014 02:28:36 GMT"
         ]
       },
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk5730/providers/Microsoft.Authorization/permissions?api-version=2014-07-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5BdXRob3JpemF0aW9uL3Blcm1pc3Npb25zP2FwaS12ZXJzaW9uPTIwMTQtMDctMDEtcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk764/providers/Microsoft.Authorization/permissions?api-version=2014-07-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkF1dGhvcml6YXRpb24vcGVybWlzc2lvbnM/YXBpLXZlcnNpb249MjAxNC0wNy0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -271,16 +271,16 @@
           "Accept-Encoding"
         ],
         "x-ms-request-id": [
-          "centralus:10e94a38-3526-4dd1-83b6-2d84c1b67253"
+          "centralus:7b7d27e9-2698-4010-afb3-10537c404c14"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31755"
+          "31918"
         ],
         "x-ms-correlation-request-id": [
-          "9b03bc01-80bf-4cc3-b34c-ab5cd0db27d0"
+          "fb764e28-36e8-4f0e-af3c-28d064f38f12"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004955Z:9b03bc01-80bf-4cc3-b34c-ab5cd0db27d0"
+          "CENTRALUS:20141015T022837Z:fb764e28-36e8-4f0e-af3c-28d064f38f12"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -289,7 +289,7 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:55 GMT"
+          "Wed, 15 Oct 2014 02:28:37 GMT"
         ]
       },
       "StatusCode": 200
@@ -304,10 +304,10 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ]
       },
-      "ResponseBody": "{\r\n  \"value\": [\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-eus/providers/Microsoft.Batch/batchAccounts/azbacnhzf2\",\r\n      \"name\": \"azbacnhzf2\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"azbaccn0mf1juw5garhbk9q3vxl8d7i\": \"azbacr3u6l8ga5f1w7tjsd0cvqbz4knmhexpio92y\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-eus/providers/Microsoft.Batch/batchAccounts/aztest1\",\r\n      \"name\": \"aztest1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-eus/providers/Microsoft.Batch/batchAccounts/aztest11\",\r\n      \"name\": \"aztest11\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"k2\": \"v2\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-ne/providers/Microsoft.Batch/batchAccounts/azbacykf2li0g\",\r\n      \"name\": \"azbacykf2li0g\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"azbaczsgmy6p4a1c0il3b\": \"azbac9u1lydm6ebvs740kpgnowx8i52rctjf3qzah\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-we/providers/Microsoft.Batch/batchAccounts/azbac3mtkshf\",\r\n      \"name\": \"azbac3mtkshf\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"azbac1s4853u9twc0yx7ihq2ej6nzdarokpmvlgbf\": \"azbaccg3l82tkpyzjoasn1f4vmq0d7u5he96briwx\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-wus/providers/Microsoft.Batch/batchAccounts/adnanzh1\",\r\n      \"name\": \"adnanzh1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"adsdfgasujhd\": \"jdsfsdahgdfjheee\",\r\n        \"adsdfgasujssshd\": \"jdsfsdahgdfjheeefgff\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchwestus/providers/Microsoft.Batch/batchAccounts/wenwu1007a1\",\r\n      \"name\": \"wenwu1007a1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151135\",\r\n      \"name\": \"zfeng9151135\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151138\",\r\n      \"name\": \"zfeng9151138\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151141\",\r\n      \"name\": \"zfeng9151141\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151157\",\r\n      \"name\": \"zfeng9151157\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng916114\",\r\n      \"name\": \"zfeng916114\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161213\",\r\n      \"name\": \"zfeng9161213\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161247\",\r\n      \"name\": \"zfeng9161247\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161253\",\r\n      \"name\": \"zfeng9161253\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161254\",\r\n      \"name\": \"zfeng9161254\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng916159\",\r\n      \"name\": \"zfeng916159\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng916735\",\r\n      \"name\": \"zfeng916735\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/adnan\",\r\n      \"name\": \"adnan\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/c123\",\r\n      \"name\": \"c123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw\",\r\n      \"name\": \"clw\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"k3\": \"v3\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw1\",\r\n      \"name\": \"clw1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw2\",\r\n      \"name\": \"clw2\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw3\",\r\n      \"name\": \"clw3\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"k11\": \"v11\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-AzureBatch-WestUS/providers/Microsoft.Batch/batchAccounts/azbacjnkyz\",\r\n      \"name\": \"azbacjnkyz\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"azbac09duay1eb8ph5sloviz3crm4ngq7kjt6wx2f\": \"azbac5zjoxel6pb2yvsqh70dgmcu98t1r43nwkafi\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-AzureBatch-WestUS/providers/Microsoft.Batch/batchAccounts/clwtest1\",\r\n      \"name\": \"clwtest1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-AzureBatch-WestUS/providers/Microsoft.Batch/batchAccounts/clwtest2\",\r\n      \"name\": \"clwtest2\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-BatchService-WestUS/providers/Microsoft.Batch/batchAccounts/clw678\",\r\n      \"name\": \"clw678\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/testrpgroup/providers/Microsoft.Batch/batchAccounts/wenwu1007\",\r\n      \"name\": \"wenwu1007\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw567\",\r\n      \"name\": \"clw567\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"k1\": \"\",\r\n        \"k2\": \"v2\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5671\",\r\n      \"name\": \"clw5671\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw567123\",\r\n      \"name\": \"clw567123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw567123456\",\r\n      \"name\": \"clw567123456\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5672\",\r\n      \"name\": \"clw5672\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5673\",\r\n      \"name\": \"clw5673\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5674\",\r\n      \"name\": \"clw5674\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5675\",\r\n      \"name\": \"clw5675\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"k1\": \"\",\r\n        \"k2\": \"v2\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw789\",\r\n      \"name\": \"clw789\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clwtest\",\r\n      \"name\": \"clwtest\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clwtest123\",\r\n      \"name\": \"clwtest123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clwtest456\",\r\n      \"name\": \"clwtest456\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng123\",\r\n      \"name\": \"zfeng123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng234\",\r\n      \"name\": \"zfeng234\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng345\",\r\n      \"name\": \"zfeng345\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng456\",\r\n      \"name\": \"zfeng456\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng912118\",\r\n      \"name\": \"zfeng912118\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng9121231\",\r\n      \"name\": \"zfeng9121231\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng913306\",\r\n      \"name\": \"zfeng913306\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng915422\",\r\n      \"name\": \"zfeng915422\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng915619\",\r\n      \"name\": \"zfeng915619\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengabc\",\r\n      \"name\": \"zfengabc\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengbatch1\",\r\n      \"name\": \"zfengbatch1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengclw\",\r\n      \"name\": \"zfengclw\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengs607\",\r\n      \"name\": \"zfengs607\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    }\r\n  ]\r\n}",
+      "ResponseBody": "{\r\n  \"value\": [\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-eus/providers/Microsoft.Batch/batchAccounts/azbacnhzf2\",\r\n      \"name\": \"azbacnhzf2\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"azbaccn0mf1juw5garhbk9q3vxl8d7i\": \"azbacr3u6l8ga5f1w7tjsd0cvqbz4knmhexpio92y\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-eus/providers/Microsoft.Batch/batchAccounts/aztest1\",\r\n      \"name\": \"aztest1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-eus/providers/Microsoft.Batch/batchAccounts/aztest11\",\r\n      \"name\": \"aztest11\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"k2\": \"v2\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-ne/providers/Microsoft.Batch/batchAccounts/azbacykf2li0g\",\r\n      \"name\": \"azbacykf2li0g\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"azbaczsgmy6p4a1c0il3b\": \"azbac9u1lydm6ebvs740kpgnowx8i52rctjf3qzah\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-we/providers/Microsoft.Batch/batchAccounts/azbac3mtkshf\",\r\n      \"name\": \"azbac3mtkshf\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"azbac1s4853u9twc0yx7ihq2ej6nzdarokpmvlgbf\": \"azbaccg3l82tkpyzjoasn1f4vmq0d7u5he96briwx\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/azurebatch-wus/providers/Microsoft.Batch/batchAccounts/adnanzh1\",\r\n      \"name\": \"adnanzh1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"adsdfgasujhd\": \"jdsfsdahgdfjheee\",\r\n        \"adsdfgasujssshd\": \"jdsfsdahgdfjheeefgff\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchwestus/providers/Microsoft.Batch/batchAccounts/wenwu1007a1\",\r\n      \"name\": \"wenwu1007a1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151135\",\r\n      \"name\": \"zfeng9151135\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151138\",\r\n      \"name\": \"zfeng9151138\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151141\",\r\n      \"name\": \"zfeng9151141\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9151157\",\r\n      \"name\": \"zfeng9151157\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng916114\",\r\n      \"name\": \"zfeng916114\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161213\",\r\n      \"name\": \"zfeng9161213\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161247\",\r\n      \"name\": \"zfeng9161247\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161253\",\r\n      \"name\": \"zfeng9161253\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng9161254\",\r\n      \"name\": \"zfeng9161254\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng916159\",\r\n      \"name\": \"zfeng916159\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/batchWestUS/providers/Microsoft.Batch/batchAccounts/zfeng916735\",\r\n      \"name\": \"zfeng916735\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/adnan\",\r\n      \"name\": \"adnan\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/c123\",\r\n      \"name\": \"c123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw\",\r\n      \"name\": \"clw\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"k3\": \"v3\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw1\",\r\n      \"name\": \"clw1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw2\",\r\n      \"name\": \"clw2\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/clwtest/providers/Microsoft.Batch/batchAccounts/clw3\",\r\n      \"name\": \"clw3\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {\r\n        \"k11\": \"v11\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-AzureBatch-WestUS/providers/Microsoft.Batch/batchAccounts/azbacjnkyz\",\r\n      \"name\": \"azbacjnkyz\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"azbac09duay1eb8ph5sloviz3crm4ngq7kjt6wx2f\": \"azbac5zjoxel6pb2yvsqh70dgmcu98t1r43nwkafi\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-AzureBatch-WestUS/providers/Microsoft.Batch/batchAccounts/clwtest1\",\r\n      \"name\": \"clwtest1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-AzureBatch-WestUS/providers/Microsoft.Batch/batchAccounts/clwtest2\",\r\n      \"name\": \"clwtest2\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/Default-BatchService-WestUS/providers/Microsoft.Batch/batchAccounts/clw678\",\r\n      \"name\": \"clw678\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk9501/providers/Microsoft.Batch/batchAccounts/onesdk916\",\r\n      \"name\": \"onesdk916\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"testtag2\": \"testval2\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/testrpgroup/providers/Microsoft.Batch/batchAccounts/wenwu1007\",\r\n      \"name\": \"wenwu1007\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw567\",\r\n      \"name\": \"clw567\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"k1\": \"\",\r\n        \"k2\": \"v2\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5671\",\r\n      \"name\": \"clw5671\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw567123\",\r\n      \"name\": \"clw567123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw567123456\",\r\n      \"name\": \"clw567123456\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5672\",\r\n      \"name\": \"clw5672\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5673\",\r\n      \"name\": \"clw5673\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5674\",\r\n      \"name\": \"clw5674\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw5675\",\r\n      \"name\": \"clw5675\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"k1\": \"\",\r\n        \"k2\": \"v2\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clw789\",\r\n      \"name\": \"clw789\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clwtest\",\r\n      \"name\": \"clwtest\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\",\r\n      \"tags\": {}\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clwtest123\",\r\n      \"name\": \"clwtest123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/clwtest456\",\r\n      \"name\": \"clwtest456\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng123\",\r\n      \"name\": \"zfeng123\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng234\",\r\n      \"name\": \"zfeng234\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng345\",\r\n      \"name\": \"zfeng345\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng456\",\r\n      \"name\": \"zfeng456\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng912118\",\r\n      \"name\": \"zfeng912118\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng9121231\",\r\n      \"name\": \"zfeng9121231\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng913306\",\r\n      \"name\": \"zfeng913306\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng915422\",\r\n      \"name\": \"zfeng915422\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfeng915619\",\r\n      \"name\": \"zfeng915619\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengabc\",\r\n      \"name\": \"zfengabc\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengbatch1\",\r\n      \"name\": \"zfengbatch1\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengclw\",\r\n      \"name\": \"zfengclw\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/zfeng/providers/Microsoft.Batch/batchAccounts/zfengs607\",\r\n      \"name\": \"zfengs607\",\r\n      \"type\": \"Microsoft.Batch/batchAccounts\",\r\n      \"location\": \"westeurope\"\r\n    }\r\n  ]\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
-          "12288"
+          "12534"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -319,16 +319,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31876"
+          "31866"
         ],
         "x-ms-request-id": [
-          "e54a75f0-877c-4b03-8d5f-4f7d2cbf8376"
+          "f69281d4-8bfc-4f8c-9743-e8e5e017bbc0"
         ],
         "x-ms-correlation-request-id": [
-          "e54a75f0-877c-4b03-8d5f-4f7d2cbf8376"
+          "f69281d4-8bfc-4f8c-9743-e8e5e017bbc0"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004955Z:e54a75f0-877c-4b03-8d5f-4f7d2cbf8376"
+          "CENTRALUS:20141015T022837Z:f69281d4-8bfc-4f8c-9743-e8e5e017bbc0"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -337,28 +337,28 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:55 GMT"
+          "Wed, 15 Oct 2014 02:28:37 GMT"
         ]
       },
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDM/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxP2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
       "RequestMethod": "PUT",
-      "RequestBody": "{\r\n  \"location\": \"West US\",\r\n  \"tags\": {}\r\n}",
+      "RequestBody": "{\r\n  \"location\": \"West US\",\r\n  \"tags\": {\r\n    \"testtag1\": \"testval1\"\r\n  }\r\n}",
       "RequestHeaders": {
         "Content-Type": [
           "application/json; charset=utf-8"
         ],
         "Content-Length": [
-          "44"
+          "76"
         ],
         "User-Agent": [
           "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
         ],
         "client-tracking-id": [
-          "60"
+          "94"
         ]
       },
       "ResponseBody": "",
@@ -376,19 +376,19 @@
           "15"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "1157"
+          "1161"
         ],
         "request-id": [
-          "fa70a64f-3454-467c-87b4-e72224a24d0b"
+          "773d87a1-b969-4264-85c4-e86d681420cf"
         ],
         "x-ms-request-id": [
-          "82a8e1bd-27c1-4308-8102-e7b344eb20cf"
+          "b050a9c2-6d92-44f5-9fe9-13ebd1efc625"
         ],
         "x-ms-correlation-request-id": [
-          "82a8e1bd-27c1-4308-8102-e7b344eb20cf"
+          "b050a9c2-6d92-44f5-9fe9-13ebd1efc625"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004958Z:82a8e1bd-27c1-4308-8102-e7b344eb20cf"
+          "CENTRALUS:20141015T022839Z:b050a9c2-6d92-44f5-9fe9-13ebd1efc625"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -397,10 +397,10 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:57 GMT"
+          "Wed, 15 Oct 2014 02:28:38 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/fa70a64f-3454-467c-87b4-e72224a24d0b?api-version=2014-05-01-privatepreview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/773d87a1-b969-4264-85c4-e86d681420cf?api-version=2014-05-01-privatepreview"
         ],
         "Server": [
           "Microsoft-HTTPAPI/2.0"
@@ -409,8 +409,77 @@
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/fa70a64f-3454-467c-87b4-e72224a24d0b?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDMvb3BlcmF0aW9uUmVzdWx0cy9mYTcwYTY0Zi0zNDU0LTQ2N2MtODdiNC1lNzIyMjRhMjRkMGI/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxP2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
+      "RequestMethod": "PUT",
+      "RequestBody": "{\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"testtag2\": \"testval2\"\r\n  }\r\n}",
+      "RequestHeaders": {
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Content-Length": [
+          "75"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
+        ],
+        "client-tracking-id": [
+          "99"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"onesdk631\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"testtag2\": \"testval2\"\r\n  },\r\n  \"properties\": {\r\n    \"accountEndpoint\": \"onesdk631.batch-test.windows-int.net\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631\",\r\n  \"type\": \"Microsoft.Batch/batchAccounts\"\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "348"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Last-Modified": [
+          "Wed, 15 Oct 2014 02:28:56 GMT"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "request-id": [
+          "dcf760fa-b4ea-46e7-8426-863fc42852e4"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "1160"
+        ],
+        "x-ms-request-id": [
+          "0ba3f126-c15e-44b7-91cf-b5ea8d935ef9"
+        ],
+        "x-ms-correlation-request-id": [
+          "0ba3f126-c15e-44b7-91cf-b5ea8d935ef9"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141015T022856Z:0ba3f126-c15e-44b7-91cf-b5ea8d935ef9"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Wed, 15 Oct 2014 02:28:56 GMT"
+        ],
+        "ETag": [
+          "0x8D1B636E759EFBD"
+        ],
+        "Server": [
+          "Microsoft-HTTPAPI/2.0"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/773d87a1-b969-4264-85c4-e86d681420cf?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxL29wZXJhdGlvblJlc3VsdHMvNzczZDg3YTEtYjk2OS00MjY0LTg1YzQtZTg2ZDY4MTQyMGNmP2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -421,7 +490,7 @@
           "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
         ],
         "client-tracking-id": [
-          "60"
+          "94"
         ]
       },
       "ResponseBody": "",
@@ -439,19 +508,19 @@
           "15"
         ],
         "request-id": [
-          "3434edb9-65fd-4f35-b08e-4e5014df33f3"
+          "34f31333-4a01-4958-9fee-49e1aff92a1c"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31875"
+          "31865"
         ],
         "x-ms-request-id": [
-          "54873212-6295-4cb2-a466-13800f1e9100"
+          "1415d364-afa6-4223-afea-0e001cd67681"
         ],
         "x-ms-correlation-request-id": [
-          "54873212-6295-4cb2-a466-13800f1e9100"
+          "1415d364-afa6-4223-afea-0e001cd67681"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T004958Z:54873212-6295-4cb2-a466-13800f1e9100"
+          "CENTRALUS:20141015T022839Z:1415d364-afa6-4223-afea-0e001cd67681"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -460,10 +529,10 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:49:58 GMT"
+          "Wed, 15 Oct 2014 02:28:38 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/fa70a64f-3454-467c-87b4-e72224a24d0b?api-version=2014-05-01-privatepreview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/773d87a1-b969-4264-85c4-e86d681420cf?api-version=2014-05-01-privatepreview"
         ],
         "Server": [
           "Microsoft-HTTPAPI/2.0"
@@ -472,8 +541,8 @@
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/fa70a64f-3454-467c-87b4-e72224a24d0b?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDMvb3BlcmF0aW9uUmVzdWx0cy9mYTcwYTY0Zi0zNDU0LTQ2N2MtODdiNC1lNzIyMjRhMjRkMGI/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/773d87a1-b969-4264-85c4-e86d681420cf?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxL29wZXJhdGlvblJlc3VsdHMvNzczZDg3YTEtYjk2OS00MjY0LTg1YzQtZTg2ZDY4MTQyMGNmP2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -484,13 +553,13 @@
           "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
         ],
         "client-tracking-id": [
-          "60"
+          "94"
         ]
       },
-      "ResponseBody": "{\r\n  \"name\": \"onesdk8043\",\r\n  \"location\": \"westus\",\r\n  \"properties\": {\r\n    \"accountEndpoint\": \"onesdk8043.batch-test.windows-int.net\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043\",\r\n  \"type\": \"Microsoft.Batch/batchAccounts\"\r\n}",
+      "ResponseBody": "{\r\n  \"name\": \"onesdk631\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"testtag1\": \"testval1\"\r\n  },\r\n  \"properties\": {\r\n    \"accountEndpoint\": \"onesdk631.batch-test.windows-int.net\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631\",\r\n  \"type\": \"Microsoft.Batch/batchAccounts\"\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
-          "321"
+          "348"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -499,25 +568,25 @@
           "-1"
         ],
         "Last-Modified": [
-          "Tue, 14 Oct 2014 00:50:13 GMT"
+          "Wed, 15 Oct 2014 02:28:54 GMT"
         ],
         "Pragma": [
           "no-cache"
         ],
         "request-id": [
-          "af53a5f9-1453-4669-9a45-4d18ed3c6aa7"
+          "6a892784-caa9-4455-91d3-377c4930c0b7"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31902"
+          "31864"
         ],
         "x-ms-request-id": [
-          "32ab518d-9c24-4876-9113-646c7c8ce2e8"
+          "0339522f-725c-4464-899a-e2b60fa5257a"
         ],
         "x-ms-correlation-request-id": [
-          "32ab518d-9c24-4876-9113-646c7c8ce2e8"
+          "0339522f-725c-4464-899a-e2b60fa5257a"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005013Z:32ab518d-9c24-4876-9113-646c7c8ce2e8"
+          "CENTRALUS:20141015T022854Z:0339522f-725c-4464-899a-e2b60fa5257a"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -526,10 +595,10 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:50:13 GMT"
+          "Wed, 15 Oct 2014 02:28:54 GMT"
         ],
         "ETag": [
-          "0x8D1B55FF2F4B592"
+          "0x8D1B636E6753CAC"
         ],
         "Server": [
           "Microsoft-HTTPAPI/2.0"
@@ -538,77 +607,8 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDM/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
-      "RequestMethod": "PATCH",
-      "RequestBody": "{\r\n  \"tags\": {\r\n    \"testtag\": \"testval\"\r\n  }\r\n}",
-      "RequestHeaders": {
-        "Content-Type": [
-          "application/json; charset=utf-8"
-        ],
-        "Content-Length": [
-          "48"
-        ],
-        "x-ms-version": [
-          "2014-05-01-privatepreview"
-        ],
-        "User-Agent": [
-          "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
-        ]
-      },
-      "ResponseBody": "{\r\n  \"name\": \"onesdk8043\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"testtag\": \"testval\"\r\n  },\r\n  \"properties\": {\r\n    \"accountEndpoint\": \"onesdk8043.batch-test.windows-int.net\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043\",\r\n  \"type\": \"Microsoft.Batch/batchAccounts\"\r\n}",
-      "ResponseHeaders": {
-        "Content-Length": [
-          "350"
-        ],
-        "Content-Type": [
-          "application/json; charset=utf-8"
-        ],
-        "Expires": [
-          "-1"
-        ],
-        "Last-Modified": [
-          "Tue, 14 Oct 2014 00:50:45 GMT"
-        ],
-        "Pragma": [
-          "no-cache"
-        ],
-        "request-id": [
-          "ed02eb3b-d40c-4613-8fe1-6e1afd71f766"
-        ],
-        "x-ms-ratelimit-remaining-subscription-writes": [
-          "1167"
-        ],
-        "x-ms-request-id": [
-          "fc479cc8-fc10-4c0f-aacc-4a8ceb0a1cff"
-        ],
-        "x-ms-correlation-request-id": [
-          "fc479cc8-fc10-4c0f-aacc-4a8ceb0a1cff"
-        ],
-        "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005045Z:fc479cc8-fc10-4c0f-aacc-4a8ceb0a1cff"
-        ],
-        "Strict-Transport-Security": [
-          "max-age=31536000; includeSubDomains"
-        ],
-        "Cache-Control": [
-          "no-cache"
-        ],
-        "Date": [
-          "Tue, 14 Oct 2014 00:50:45 GMT"
-        ],
-        "ETag": [
-          "0x8D1B560058BB368"
-        ],
-        "Server": [
-          "Microsoft-HTTPAPI/2.0"
-        ]
-      },
-      "StatusCode": 200
-    },
-    {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDM/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxP2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -619,10 +619,10 @@
           "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
         ]
       },
-      "ResponseBody": "{\r\n  \"name\": \"onesdk8043\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"testtag\": \"testval\"\r\n  },\r\n  \"properties\": {\r\n    \"accountEndpoint\": \"onesdk8043.batch-test.windows-int.net\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043\",\r\n  \"type\": \"Microsoft.Batch/batchAccounts\"\r\n}",
+      "ResponseBody": "{\r\n  \"name\": \"onesdk631\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"testtag1\": \"testval1\"\r\n  },\r\n  \"properties\": {\r\n    \"accountEndpoint\": \"onesdk631.batch-test.windows-int.net\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631\",\r\n  \"type\": \"Microsoft.Batch/batchAccounts\"\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
-          "350"
+          "348"
         ],
         "Content-Type": [
           "application/json; charset=utf-8"
@@ -631,25 +631,25 @@
           "-1"
         ],
         "Last-Modified": [
-          "Tue, 14 Oct 2014 00:50:46 GMT"
+          "Wed, 15 Oct 2014 02:28:55 GMT"
         ],
         "Pragma": [
           "no-cache"
         ],
         "request-id": [
-          "6a012e64-c50c-43b7-8915-6537a3be8531"
+          "c29f2803-fde6-4950-b20a-49ee5ad8118d"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31901"
+          "31863"
         ],
         "x-ms-request-id": [
-          "2533db22-eb45-4474-8ee8-2952caac9693"
+          "d7bfe2c0-586d-4493-a406-47ec15867bc2"
         ],
         "x-ms-correlation-request-id": [
-          "2533db22-eb45-4474-8ee8-2952caac9693"
+          "d7bfe2c0-586d-4493-a406-47ec15867bc2"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005046Z:2533db22-eb45-4474-8ee8-2952caac9693"
+          "CENTRALUS:20141015T022855Z:d7bfe2c0-586d-4493-a406-47ec15867bc2"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -658,10 +658,10 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:50:45 GMT"
+          "Wed, 15 Oct 2014 02:28:54 GMT"
         ],
         "ETag": [
-          "0x8D1B5600654F6F6"
+          "0x8D1B636E6A80F34"
         ],
         "Server": [
           "Microsoft-HTTPAPI/2.0"
@@ -670,8 +670,71 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDM/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxP2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-version": [
+          "2014-05-01-privatepreview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"onesdk631\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"testtag2\": \"testval2\"\r\n  },\r\n  \"properties\": {\r\n    \"accountEndpoint\": \"onesdk631.batch-test.windows-int.net\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  },\r\n  \"id\": \"/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631\",\r\n  \"type\": \"Microsoft.Batch/batchAccounts\"\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "348"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Last-Modified": [
+          "Wed, 15 Oct 2014 02:28:56 GMT"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "request-id": [
+          "4c88dce8-e510-4071-9e7d-755929ae7dc7"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "31862"
+        ],
+        "x-ms-request-id": [
+          "2ce3e95e-afe3-48cb-a494-659a87146248"
+        ],
+        "x-ms-correlation-request-id": [
+          "2ce3e95e-afe3-48cb-a494-659a87146248"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141015T022856Z:2ce3e95e-afe3-48cb-a494-659a87146248"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Wed, 15 Oct 2014 02:28:56 GMT"
+        ],
+        "ETag": [
+          "0x8D1B636E7A0357E"
+        ],
+        "Server": [
+          "Microsoft-HTTPAPI/2.0"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxP2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
       "RequestMethod": "DELETE",
       "RequestBody": "",
       "RequestHeaders": {
@@ -679,7 +742,7 @@
           "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
         ],
         "client-tracking-id": [
-          "66"
+          "102"
         ]
       },
       "ResponseBody": "",
@@ -697,19 +760,19 @@
           "15"
         ],
         "request-id": [
-          "c06c5027-01a1-4022-98ca-9a9fc7447bc7"
+          "156ce073-e10d-41db-ba97-3cd2df1e5046"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "1166"
+          "1159"
         ],
         "x-ms-request-id": [
-          "49762e90-9b17-4290-ad1c-28488a8b0b25"
+          "f3ff98ed-8341-48f5-b9fe-3ec973422eca"
         ],
         "x-ms-correlation-request-id": [
-          "49762e90-9b17-4290-ad1c-28488a8b0b25"
+          "f3ff98ed-8341-48f5-b9fe-3ec973422eca"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005046Z:49762e90-9b17-4290-ad1c-28488a8b0b25"
+          "CENTRALUS:20141015T022857Z:f3ff98ed-8341-48f5-b9fe-3ec973422eca"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -718,10 +781,10 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:50:46 GMT"
+          "Wed, 15 Oct 2014 02:28:56 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/c06c5027-01a1-4022-98ca-9a9fc7447bc7?api-version=2014-05-01-privatepreview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/156ce073-e10d-41db-ba97-3cd2df1e5046?api-version=2014-05-01-privatepreview"
         ],
         "Server": [
           "Microsoft-HTTPAPI/2.0"
@@ -730,8 +793,8 @@
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/c06c5027-01a1-4022-98ca-9a9fc7447bc7?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDMvb3BlcmF0aW9uUmVzdWx0cy9jMDZjNTAyNy0wMWExLTQwMjItOThjYS05YTlmYzc0NDdiYzc/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/156ce073-e10d-41db-ba97-3cd2df1e5046?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxL29wZXJhdGlvblJlc3VsdHMvMTU2Y2UwNzMtZTEwZC00MWRiLWJhOTctM2NkMmRmMWU1MDQ2P2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -742,7 +805,7 @@
           "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
         ],
         "client-tracking-id": [
-          "66"
+          "102"
         ]
       },
       "ResponseBody": "",
@@ -760,19 +823,19 @@
           "15"
         ],
         "request-id": [
-          "60f4a43b-1732-4eee-911f-8d5f13a861f6"
+          "73eb703c-5de0-4606-ba24-6705c21f00b9"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31900"
+          "31861"
         ],
         "x-ms-request-id": [
-          "d19c68c2-6afe-4dbd-9b22-33afe2cf096a"
+          "bb8ccd81-35b9-4ecc-b82c-1d1cdf1a08d9"
         ],
         "x-ms-correlation-request-id": [
-          "d19c68c2-6afe-4dbd-9b22-33afe2cf096a"
+          "bb8ccd81-35b9-4ecc-b82c-1d1cdf1a08d9"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005047Z:d19c68c2-6afe-4dbd-9b22-33afe2cf096a"
+          "CENTRALUS:20141015T022857Z:bb8ccd81-35b9-4ecc-b82c-1d1cdf1a08d9"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -781,10 +844,10 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:50:46 GMT"
+          "Wed, 15 Oct 2014 02:28:57 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/c06c5027-01a1-4022-98ca-9a9fc7447bc7?api-version=2014-05-01-privatepreview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/156ce073-e10d-41db-ba97-3cd2df1e5046?api-version=2014-05-01-privatepreview"
         ],
         "Server": [
           "Microsoft-HTTPAPI/2.0"
@@ -793,8 +856,8 @@
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk5730/providers/Microsoft.Batch/batchAccounts/onesdk8043/operationResults/c06c5027-01a1-4022-98ca-9a9fc7447bc7?api-version=2014-05-01-privatepreview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazU3MzAvcHJvdmlkZXJzL01pY3Jvc29mdC5CYXRjaC9iYXRjaEFjY291bnRzL29uZXNkazgwNDMvb3BlcmF0aW9uUmVzdWx0cy9jMDZjNTAyNy0wMWExLTQwMjItOThjYS05YTlmYzc0NDdiYzc/YXBpLXZlcnNpb249MjAxNC0wNS0wMS1wcml2YXRlcHJldmlldw==",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourceGroups/onesdk764/providers/Microsoft.Batch/batchAccounts/onesdk631/operationResults/156ce073-e10d-41db-ba97-3cd2df1e5046?api-version=2014-05-01-privatepreview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlR3JvdXBzL29uZXNkazc2NC9wcm92aWRlcnMvTWljcm9zb2Z0LkJhdGNoL2JhdGNoQWNjb3VudHMvb25lc2RrNjMxL29wZXJhdGlvblJlc3VsdHMvMTU2Y2UwNzMtZTEwZC00MWRiLWJhOTctM2NkMmRmMWU1MDQ2P2FwaS12ZXJzaW9uPTIwMTQtMDUtMDEtcHJpdmF0ZXByZXZpZXc=",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -805,7 +868,7 @@
           "Microsoft.Azure.Management.Batch.BatchManagementClient/1.0.0.0"
         ],
         "client-tracking-id": [
-          "66"
+          "102"
         ]
       },
       "ResponseBody": "",
@@ -817,25 +880,25 @@
           "-1"
         ],
         "Last-Modified": [
-          "Tue, 14 Oct 2014 00:51:02 GMT"
+          "Wed, 15 Oct 2014 02:29:12 GMT"
         ],
         "Pragma": [
           "no-cache"
         ],
         "request-id": [
-          "67f4c45c-ca03-47a4-8acb-fb9e782a76c3"
+          "3ad0e717-84e5-495b-ae33-70bf0419a80c"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31899"
+          "31860"
         ],
         "x-ms-request-id": [
-          "3b697450-f03f-4e0f-843a-e1332564da30"
+          "1ab2a75f-7f35-4dc4-9ac3-e618aa2f4b54"
         ],
         "x-ms-correlation-request-id": [
-          "3b697450-f03f-4e0f-843a-e1332564da30"
+          "1ab2a75f-7f35-4dc4-9ac3-e618aa2f4b54"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005102Z:3b697450-f03f-4e0f-843a-e1332564da30"
+          "CENTRALUS:20141015T022912Z:1ab2a75f-7f35-4dc4-9ac3-e618aa2f4b54"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -844,10 +907,10 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:51:01 GMT"
+          "Wed, 15 Oct 2014 02:29:12 GMT"
         ],
         "ETag": [
-          "0x8D1B560102D3B80"
+          "0x8D1B636F134C0E6"
         ],
         "Server": [
           "Microsoft-HTTPAPI/2.0"
@@ -856,8 +919,8 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk5730?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazU3MzA/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/resourcegroups/onesdk764?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL3Jlc291cmNlZ3JvdXBzL29uZXNkazc2ND9hcGktdmVyc2lvbj0yMDE0LTA0LTAxLXByZXZpZXc=",
       "RequestMethod": "DELETE",
       "RequestBody": "",
       "RequestHeaders": {
@@ -865,7 +928,7 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ],
         "client-tracking-id": [
-          "71"
+          "107"
         ]
       },
       "ResponseBody": "",
@@ -883,16 +946,16 @@
           "15"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "1165"
+          "1158"
         ],
         "x-ms-request-id": [
-          "c907daf3-7185-450a-9359-3fa9125a2723"
+          "03f9a797-a4be-4fca-8979-3fd354171d9c"
         ],
         "x-ms-correlation-request-id": [
-          "c907daf3-7185-450a-9359-3fa9125a2723"
+          "03f9a797-a4be-4fca-8979-3fd354171d9c"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005103Z:c907daf3-7185-450a-9359-3fa9125a2723"
+          "CENTRALUS:20141015T022913Z:03f9a797-a4be-4fca-8979-3fd354171d9c"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -901,17 +964,17 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:51:03 GMT"
+          "Wed, 15 Oct 2014 02:29:13 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview"
         ]
       },
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczFOek13TFZkRlUxUlZVeUlzSW1wdllreHZZMkYwYVc5dUlqb2lkMlZ6ZEhWekluMD0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczNOalF0VjBWVFZGVlRJaXdpYW05aVRHOWpZWFJwYjI0aU9pSjNaWE4wZFhNaWZRPT0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -922,7 +985,7 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ],
         "client-tracking-id": [
-          "71"
+          "107"
         ]
       },
       "ResponseBody": "",
@@ -940,16 +1003,16 @@
           "15"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31897"
+          "31858"
         ],
         "x-ms-request-id": [
-          "47d504ee-5814-4948-98a8-3fb97e933eb0"
+          "ccfe4c14-6bb0-4c47-9380-fe4654ecae76"
         ],
         "x-ms-correlation-request-id": [
-          "47d504ee-5814-4948-98a8-3fb97e933eb0"
+          "ccfe4c14-6bb0-4c47-9380-fe4654ecae76"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005103Z:47d504ee-5814-4948-98a8-3fb97e933eb0"
+          "CENTRALUS:20141015T022913Z:ccfe4c14-6bb0-4c47-9380-fe4654ecae76"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -958,17 +1021,17 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:51:03 GMT"
+          "Wed, 15 Oct 2014 02:29:13 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview"
         ]
       },
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczFOek13TFZkRlUxUlZVeUlzSW1wdllreHZZMkYwYVc5dUlqb2lkMlZ6ZEhWekluMD0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczNOalF0VjBWVFZGVlRJaXdpYW05aVRHOWpZWFJwYjI0aU9pSjNaWE4wZFhNaWZRPT0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -979,7 +1042,7 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ],
         "client-tracking-id": [
-          "71"
+          "107"
         ]
       },
       "ResponseBody": "",
@@ -997,16 +1060,16 @@
           "15"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31896"
+          "31857"
         ],
         "x-ms-request-id": [
-          "66e5eb27-4002-459c-8945-5eb2fa36f7ba"
+          "3fecc4be-96da-46e6-bb76-d26b850458f3"
         ],
         "x-ms-correlation-request-id": [
-          "66e5eb27-4002-459c-8945-5eb2fa36f7ba"
+          "3fecc4be-96da-46e6-bb76-d26b850458f3"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005118Z:66e5eb27-4002-459c-8945-5eb2fa36f7ba"
+          "CENTRALUS:20141015T022928Z:3fecc4be-96da-46e6-bb76-d26b850458f3"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -1015,17 +1078,17 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:51:17 GMT"
+          "Wed, 15 Oct 2014 02:29:28 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview"
         ]
       },
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczFOek13TFZkRlUxUlZVeUlzSW1wdllreHZZMkYwYVc5dUlqb2lkMlZ6ZEhWekluMD0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczNOalF0VjBWVFZGVlRJaXdpYW05aVRHOWpZWFJwYjI0aU9pSjNaWE4wZFhNaWZRPT0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -1036,7 +1099,7 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ],
         "client-tracking-id": [
-          "71"
+          "107"
         ]
       },
       "ResponseBody": "",
@@ -1054,16 +1117,16 @@
           "15"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31895"
+          "31856"
         ],
         "x-ms-request-id": [
-          "c56d10ad-d068-4077-9db6-8f3763547222"
+          "7e968b87-e67b-40ff-a8e0-6f9e9b91c766"
         ],
         "x-ms-correlation-request-id": [
-          "c56d10ad-d068-4077-9db6-8f3763547222"
+          "7e968b87-e67b-40ff-a8e0-6f9e9b91c766"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005133Z:c56d10ad-d068-4077-9db6-8f3763547222"
+          "CENTRALUS:20141015T022943Z:7e968b87-e67b-40ff-a8e0-6f9e9b91c766"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -1072,17 +1135,17 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:51:32 GMT"
+          "Wed, 15 Oct 2014 02:29:42 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview"
+          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview"
         ]
       },
       "StatusCode": 202
     },
     {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczFOek13TFZkRlUxUlZVeUlzSW1wdllreHZZMkYwYVc5dUlqb2lkMlZ6ZEhWekluMD0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs3NjQtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ==?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczNOalF0VjBWVFZGVlRJaXdpYW05aVRHOWpZWFJwYjI0aU9pSjNaWE4wZFhNaWZRPT0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -1093,121 +1156,7 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ],
         "client-tracking-id": [
-          "71"
-        ]
-      },
-      "ResponseBody": "",
-      "ResponseHeaders": {
-        "Content-Length": [
-          "0"
-        ],
-        "Expires": [
-          "-1"
-        ],
-        "Pragma": [
-          "no-cache"
-        ],
-        "Retry-After": [
-          "15"
-        ],
-        "x-ms-ratelimit-remaining-subscription-reads": [
-          "31894"
-        ],
-        "x-ms-request-id": [
-          "b5b72510-c3fa-4e5a-90cb-7a883f59bb4f"
-        ],
-        "x-ms-correlation-request-id": [
-          "b5b72510-c3fa-4e5a-90cb-7a883f59bb4f"
-        ],
-        "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005148Z:b5b72510-c3fa-4e5a-90cb-7a883f59bb4f"
-        ],
-        "Strict-Transport-Security": [
-          "max-age=31536000; includeSubDomains"
-        ],
-        "Cache-Control": [
-          "no-cache"
-        ],
-        "Date": [
-          "Tue, 14 Oct 2014 00:51:48 GMT"
-        ],
-        "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview"
-        ]
-      },
-      "StatusCode": 202
-    },
-    {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczFOek13TFZkRlUxUlZVeUlzSW1wdllreHZZMkYwYVc5dUlqb2lkMlZ6ZEhWekluMD0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
-      "RequestMethod": "GET",
-      "RequestBody": "",
-      "RequestHeaders": {
-        "x-ms-version": [
-          "2014-04-01-preview"
-        ],
-        "User-Agent": [
-          "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
-        ],
-        "client-tracking-id": [
-          "71"
-        ]
-      },
-      "ResponseBody": "",
-      "ResponseHeaders": {
-        "Content-Length": [
-          "0"
-        ],
-        "Expires": [
-          "-1"
-        ],
-        "Pragma": [
-          "no-cache"
-        ],
-        "Retry-After": [
-          "15"
-        ],
-        "x-ms-ratelimit-remaining-subscription-reads": [
-          "31893"
-        ],
-        "x-ms-request-id": [
-          "16307315-12ef-4986-bf74-7618b425b527"
-        ],
-        "x-ms-correlation-request-id": [
-          "16307315-12ef-4986-bf74-7618b425b527"
-        ],
-        "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005203Z:16307315-12ef-4986-bf74-7618b425b527"
-        ],
-        "Strict-Transport-Security": [
-          "max-age=31536000; includeSubDomains"
-        ],
-        "Cache-Control": [
-          "no-cache"
-        ],
-        "Date": [
-          "Tue, 14 Oct 2014 00:52:03 GMT"
-        ],
-        "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview"
-        ]
-      },
-      "StatusCode": 202
-    },
-    {
-      "RequestUri": "/subscriptions/4a06fe24-c197-4353-adc1-058d1a51924e/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1PTkVTREs1NzMwLVdFU1RVUyIsImpvYkxvY2F0aW9uIjoid2VzdHVzIn0=?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvNGEwNmZlMjQtYzE5Ny00MzUzLWFkYzEtMDU4ZDFhNTE5MjRlL29wZXJhdGlvbnJlc3VsdHMvZXlKcWIySkpaQ0k2SWxKRlUwOVZVa05GUjFKUFZWQkVSVXhGVkVsUFRrcFBRaTFQVGtWVFJFczFOek13TFZkRlUxUlZVeUlzSW1wdllreHZZMkYwYVc5dUlqb2lkMlZ6ZEhWekluMD0/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
-      "RequestMethod": "GET",
-      "RequestBody": "",
-      "RequestHeaders": {
-        "x-ms-version": [
-          "2014-04-01-preview"
-        ],
-        "User-Agent": [
-          "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
-        ],
-        "client-tracking-id": [
-          "71"
+          "107"
         ]
       },
       "ResponseBody": "",
@@ -1222,16 +1171,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "31892"
+          "31855"
         ],
         "x-ms-request-id": [
-          "8733fd4f-c4de-41b9-abbd-9d7fcb659203"
+          "ae679df8-d434-4dc6-89a4-e87ea7bf199b"
         ],
         "x-ms-correlation-request-id": [
-          "8733fd4f-c4de-41b9-abbd-9d7fcb659203"
+          "ae679df8-d434-4dc6-89a4-e87ea7bf199b"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141014T005218Z:8733fd4f-c4de-41b9-abbd-9d7fcb659203"
+          "CENTRALUS:20141015T022958Z:ae679df8-d434-4dc6-89a4-e87ea7bf199b"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -1240,7 +1189,7 @@
           "no-cache"
         ],
         "Date": [
-          "Tue, 14 Oct 2014 00:52:18 GMT"
+          "Wed, 15 Oct 2014 02:29:58 GMT"
         ]
       },
       "StatusCode": 200
@@ -1248,8 +1197,8 @@
   ],
   "Names": {
     "Test-UpdatesExistingBatchAccount": [
-      "onesdk8043",
-      "onesdk5730"
+      "onesdk631",
+      "onesdk764"
     ]
   },
   "Variables": {

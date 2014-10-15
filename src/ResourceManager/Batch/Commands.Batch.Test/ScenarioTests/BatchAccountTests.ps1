@@ -30,7 +30,7 @@ function Test-CreatesNewBatchAccount
     # Setup
 	$account = Get-BatchAccountName
     $resourceGroup = Get-ResourceGroupName
-    $location = Get-ProviderLocation ResourceManagement
+    $location = Get-BatchAccountProviderLocation
 
     try 
     {
@@ -45,6 +45,7 @@ function Test-CreatesNewBatchAccount
         Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
 		Assert-AreEqual $expected.Location $actual.Location
         Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
+		Assert-AreEqual $expected.Tags[0]["Value"] $actual.Tags[0]["Value"]
     }
     finally
     {
@@ -62,7 +63,7 @@ function Test-CreateExistingBatchAccount
     # Setup
 	$account = Get-BatchAccountName
     $resourceGroup = Get-ResourceGroupName
-    $location = Get-ProviderLocation ResourceManagement
+    $location = Get-BatchAccountProviderLocation
 
     try 
     {
@@ -70,6 +71,7 @@ function Test-CreateExistingBatchAccount
 
         # Test
         New-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup -Location $location -Tag @{Name = "testtag"; Value = "testval"} 
+
         Assert-Throws { New-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup -Location $location }
     }
     finally
@@ -88,24 +90,23 @@ function Test-UpdatesExistingBatchAccount
     # Setup
 	$account = Get-BatchAccountName
     $resourceGroup = Get-ResourceGroupName
-    $location = Get-ProviderLocation ResourceManagement
+    $location = Get-BatchAccountProviderLocation
+
+	$tagName1 = "testtag1"
+	$tagValue1 = "testval1"
+	$tagName2 = "testtag2"
+	$tagValue2 = "testval2"
 
     try 
     {
         New-AzureResourceGroup -Name $resourceGroup -Location $location
 
 		#Test
-        $new = New-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup -Location $location 
-		Assert-AreEqual 0 $new.Tags.Count
-		
-		# TODO: Investigate need for delay. Sometimes get Resource Not Found error if Set cmdlet is called too soon, usually within a few seconds (30 is overkill to play it safe)
-		if ([Microsoft.Azure.Utilities.HttpRecorder.HttpMockServer]::Mode -ne [Microsoft.Azure.Utilities.HttpRecorder.HttpRecorderMode]::Playback) 
-		{
-			Start-Sleep -s 30
-		}
+        $new = New-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup -Location $location  -Tag @{Name = $tagName1; Value = $tagValue1} 
+		Assert-AreEqual 1 $new.Tags.Count
 
-		# Append Tag
-        $actual = Set-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup -Tag @{Name = "testtag"; Value = "testval"} 
+		# Update Tag
+        $actual = Set-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup -Tag @{Name = $tagName2; Value = $tagValue2} 
         $expected = Get-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup
 
         # Assert
@@ -113,7 +114,10 @@ function Test-UpdatesExistingBatchAccount
         Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName	
 		Assert-AreEqual $expected.Location $actual.Location
 		Assert-AreEqual 1 $expected.Tags.Count
+		Assert-AreEqual $tagName2 $expected.Tags[0]["Name"]
+		Assert-AreEqual $tagValue2 $expected.Tags[0]["Value"]
         Assert-AreEqual $expected.Tags[0]["Name"] $actual.Tags[0]["Name"]
+		Assert-AreEqual $expected.Tags[0]["Value"] $actual.Tags[0]["Value"]
     }
     finally
     {
@@ -121,6 +125,47 @@ function Test-UpdatesExistingBatchAccount
         Clean-BatchAccountAndResourceGroup $account $resourceGroup
     }
 }
+
+<#
+.SYNOPSIS
+Tests getting Batch accounts under resource groups
+#>
+function Test-GetBatchAccountsUnderResourceGroups
+{
+    # Setup
+    $resourceGroup1 = Get-ResourceGroupName
+	$resourceGroup2 = Get-ResourceGroupName
+	$account11 = Get-BatchAccountName
+	$account12 = Get-BatchAccountName
+	$account21 = Get-BatchAccountName
+    $location = Get-BatchAccountProviderLocation
+
+    try 
+    {
+        New-AzureResourceGroup -Name $resourceGroup1 -Location $location
+		New-AzureResourceGroup -Name $resourceGroup2 -Location $location
+		New-AzureBatchAccount -Name $account11 -ResourceGroupName $resourceGroup1 -Location $location 
+		New-AzureBatchAccount -Name $account12 -ResourceGroupName $resourceGroup1 -Location $location 
+		New-AzureBatchAccount -Name $account21 -ResourceGroupName $resourceGroup2 -Location $location 
+
+        # Test
+		$allAccounts = Get-AzureBatchAccount | Where-Object {$_.ResourceGroupName -eq $resourceGroup1 -or $_.ResourceGroupName -eq $resourceGroup2}
+		$resourceGroup1Accounts = Get-AzureBatchAccount -ResourceGroupName $resourceGroup1
+
+		# Assert
+		Assert-AreEqual 3 $allAccounts.Count
+		Assert-AreEqual 2 $resourceGroup1Accounts.Count
+		Assert-AreEqual 2 ($resourceGroup1Accounts | Where-Object {$_.ResourceGroupName -eq $resourceGroup1}).Count
+    }
+    finally
+    {
+        # Cleanup
+		Clean-BatchAccount $account11 $resourceGroup1
+		Clean-BatchAccountAndResourceGroup $account12 $resourceGroup1
+        Clean-BatchAccountAndResourceGroup $account21 $resourceGroup2
+    }
+}
+
 
 <#
 .SYNOPSIS
@@ -132,7 +177,7 @@ function Test-CreateAndRemoveBatchAccountViaPiping
     $account1 = Get-BatchAccountName
 	$account2 = Get-BatchAccountName
     $resourceGroup = Get-ResourceGroupName
-    $location = Get-ProviderLocation ResourceManagement
+    $location = Get-BatchAccountProviderLocation
 
 	try
 	{
@@ -162,7 +207,7 @@ function Test-BatchAccountKeys
     # Setup
 	$account = Get-BatchAccountName
     $resourceGroup = Get-ResourceGroupName
-    $location = Get-ProviderLocation ResourceManagement
+    $location = Get-BatchAccountProviderLocation
 
     try 
     {
@@ -170,15 +215,23 @@ function Test-BatchAccountKeys
 
         # Test
         $new = New-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup -Location $location -Tag @{Name = "testtag"; Value = "testval"} 
-		$actual = New-AzureBatchAccountKey -Name $account -ResourceGroupName $resourceGroup -KeyType Primary
-        $expected = Get-AzureBatchAccountKeys -Name $account -ResourceGroupName $resourceGroup
+		$originalKeys =  Get-AzureBatchAccountKeys -Name $account -ResourceGroupName $resourceGroup
+		$originalPrimaryKey = $originalKeys.PrimaryAccountKey
+		$originalSecondaryKey = $originalKeys.SecondaryAccountKey
+		$newPrimary = New-AzureBatchAccountKey -Name $account -ResourceGroupName $resourceGroup -KeyType Primary
+		$newSecondary = New-AzureBatchAccountKey -Name $account -ResourceGroupName $resourceGroup -KeyType Secondary
+        $finalKeys = Get-AzureBatchAccountKeys -Name $account -ResourceGroupName $resourceGroup
 		$getAccountResult = Get-AzureBatchAccount -Name $account -ResourceGroupName $resourceGroup
 
         # Assert
 		Assert-AreEqual $null $new.PrimaryAccountKey
         Assert-AreEqual $null $new.SecondaryAccountKey
-		Assert-AreEqual $actual.PrimaryAccountKey $expected.PrimaryAccountKey
-		Assert-AreEqual $actual.SecondaryAccountKey $expected.SecondaryAccountKey
+		Assert-AreEqual $originalSecondaryKey $newPrimary.SecondaryAccountKey 
+		Assert-AreEqual $newPrimary.PrimaryAccountKey $newSecondary.PrimaryAccountKey
+		Assert-AreEqual $newPrimary.PrimaryAccountKey $finalKeys.PrimaryAccountKey
+		Assert-AreEqual $newSecondary.SecondaryAccountKey $finalKeys.SecondaryAccountKey
+		Assert-AreNotEqual $originalPrimaryKey $newPrimary.PrimaryAccountKey
+		Assert-AreNotEqual $originalSecondaryKey $newSecondary.SecondaryAccountKey
 		Assert-AreEqual $null $getAccountResult.PrimaryAccountKey
 		Assert-AreEqual $null $getAccountResult.SecondaryAccountKey
     }

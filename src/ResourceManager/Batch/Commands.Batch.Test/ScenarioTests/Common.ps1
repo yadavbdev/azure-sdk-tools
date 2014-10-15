@@ -32,11 +32,11 @@ function Get-ResourceGroupName
 
 <#
 .SYNOPSIS
-Gets the default location for a provider.
+Gets the location for the Batch account provider. Default to West US if none found.
 #>
-function Get-ProviderLocation($provider)
+function Get-BatchAccountProviderLocation
 {
-    $location = Get-AzureLocation | where {$_.Name -eq $provider}
+    $location = Get-AzureLocation | where {$_.Name -eq "Microsoft.Batch/batchAccounts"}
     if ($location -eq $null) 
 	{
         "West US"
@@ -53,11 +53,20 @@ Cleans the created Batch account and resource group
 #>
 function Clean-BatchAccountAndResourceGroup($accountName,$resourceGroup)
 {
+    Clean-BatchAccount $accountName $resourceGroup
+	Clean-ResourceGroup $resourceGroup
+}
+
+<#
+.SYNOPSIS
+Cleans the created Batch account
+#>
+function Clean-BatchAccount($accountName,$resourceGroup)
+{
     if ([Microsoft.Azure.Utilities.HttpRecorder.HttpMockServer]::Mode -ne [Microsoft.Azure.Utilities.HttpRecorder.HttpRecorderMode]::Playback) 
 	{
         Remove-AzureBatchAccount -Name $accountName -ResourceGroupName $resourceGroup -Force
     }
-	Clean-ResourceGroup $resourceGroup
 }
 
 <#
