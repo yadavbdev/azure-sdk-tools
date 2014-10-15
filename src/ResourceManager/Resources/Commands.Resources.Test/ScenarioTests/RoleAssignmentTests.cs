@@ -152,8 +152,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 {
                     if (newUser != null)
                     {
-                        testFactory.CustomEnvValues[TestEnvironmentFactory.AADUserIdKey] = userName + "@" + controllerAdmin.UserDomain;
-                        testFactory.CustomEnvValues[TestEnvironmentFactory.AADPasswordKey] = userPass;
+                        testFactory.CustomEnvValues[TestEnvironment.UserIdKey] = userName + "@" + controllerAdmin.UserDomain;
+                        testFactory.CustomEnvValues[TestEnvironment.AADPasswordKey] = userPass;
                     }
                 },
                 // cleanup 
