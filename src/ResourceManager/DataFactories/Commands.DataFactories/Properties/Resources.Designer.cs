@@ -70,6 +70,42 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /// <summary>
+        ///   Looks up a localized string similar to A gateway with the name {0} already exsits in the data factory {1}. 
+        ///Continuing execution may overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
+        /// </summary>
+        internal static string DataFactoryGatewayExists
+        {
+            get
+            {
+                return ResourceManager.GetString("DataFactoryGatewayExists", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string DataFactoryGatewayConfirmationMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("DataFactoryGatewayConfirmationMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Removing the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataFactoryGatewayRemoving
+        {
+            get
+            {
+                return ResourceManager.GetString("DataFactoryGatewayRemoving", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove data factory &apos;{0}&apos; in resource group &apos;{1}&apos;?.
         /// </summary>
         internal static string DataFactoryConfirmationMessage {
