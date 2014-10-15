@@ -1,3 +1,16 @@
+2014.10.03 Version 0.8.9
+* Redis Cache cmdlets in AzureResourceManager mode
+    * New-AzureRedisCache
+    * Get-AzureRedisCache
+    * Set-AzureRedisCache
+    * Remove-AzureRedisCache
+    * New-AzureRedisCacheKey
+    * Get-AzureRedisCacheKey
+* Fixed Remove-AzureDataDisk regression
+* Fixed cloud service cmdlets to work with the latest Azure authoring tools
+* Fixed Get-AzureSubscription -ExtendedDetails regression
+* Added -CreateACSNamespace parameter to New-AzureSBNamespace cmdlet
+
 2014.09.10 Version 0.8.8
 * Role-based access control support
     * Query role definition
