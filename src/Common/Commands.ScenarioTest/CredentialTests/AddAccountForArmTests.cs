@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Xunit;
 using Xunit.Extensions;
 
 namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
@@ -24,7 +25,9 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest.CredentialTests
         {
         }
 
+        
         [Theory]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [InlineData("Test-AddOrgIdWithSingleSubscription")]
         [InlineData("Test-NonInteractiveFPOLoginFails")]
         [InlineData("Test-MicrosoftAccountNotSupportedForNonInteractiveLogin")]

@@ -12,28 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Management.Automation;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
+namespace Microsoft.Azure.Commands.Network.Gateway
 {
-    [Cmdlet(VerbsCommon.Remove, "AzureVNetGateway"), OutputType(typeof(ManagementOperationContext))]
-    public class RemoveAzureVNetGatewayCommand : ServiceManagementBaseCmdlet
+    using System.Management.Automation;
+    using WindowsAzure.Commands.Utilities.Common;
+
+    [Cmdlet(VerbsLifecycle.Stop, "AzureVNetGatewayDiagnostics"), OutputType(typeof(ManagementOperationContext))]
+    public class StopAzureVnetGatewayDiagnostics : NetworkCmdletBase
     {
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "Virtual network name.")]
-        public string VNetName
-        {
-            get;
-            set;
-        }
+        public string VNetName { get; set; }
 
-        protected override void OnProcessRecord()
+        public override void ExecuteCmdlet()
         {
-            ServiceManagementProfile.Initialize();
-            ExecuteClientActionNewSM(
-                null,
-                this.CommandRuntime.ToString(),
-                () => this.NetworkClient.Gateways.Delete(this.VNetName));
+            WriteObject(Client.StopDiagnostics(VNetName));
         }
     }
 }
