@@ -12,10 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
@@ -60,15 +63,40 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanCreateLinkedService()
         {
+            CreateLinkedService(rawJsonContent);
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void InvalidJsonLinkedService()
+        {
+            try
+            {
+                string malformedJson = rawJsonContent.Replace(":", "-");
+
+                CreateLinkedService(malformedJson);
+
+                throw new Exception(
+                    string.Format(CultureInfo.InvariantCulture,
+                    "Test case failed: Was able to deploy linked service with malformed json content {0}",
+                    malformedJson));
+            }
+            catch (JsonSerializationException)
+            {
+            }
+        }
+
+        private void CreateLinkedService(string rawLinkedServiceJsonContent)
+        {
             // Arrange
             LinkedService expected = new LinkedService()
             {
                 Name = linkedServiceName,
                 Properties = null
             };
-            
+
             dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
-                .Returns(rawJsonContent)
+                .Returns(rawLinkedServiceJsonContent)
                 .Verifiable();
 
             dataFactoriesClientMock.Setup(
@@ -84,10 +112,10 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
             dataFactoriesClientMock.Setup(
                 c =>
-                    c.CreateOrUpdateLinkedService(ResourceGroupName, DataFactoryName, linkedServiceName, rawJsonContent))
+                    c.CreateOrUpdateLinkedService(ResourceGroupName, DataFactoryName, linkedServiceName, rawLinkedServiceJsonContent))
                 .Returns(expected)
                 .Verifiable();
-            
+
             // Action
             cmdlet.File = filePath;
             cmdlet.Force = true;

@@ -130,6 +130,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to parse input JSON file. {0}. Please correct the error in the JSON file and re-deploy {1} again..
+        /// </summary>
+        internal static string InvalidJson {
+            get {
+                return ResourceManager.GetString("InvalidJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove linked service &apos;{0}&apos; in data factory &apos;{1}&apos;?.
         /// </summary>
         internal static string LinkedServiceConfirmationMessage {

@@ -60,7 +60,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         protected string ResolveResourceName(string rawJsonContent, string nameFromCmdletContext, string resourceType)
         {
-            string nameExtractedFromJson = DataFactoryCommonUtilities.ExtractNameFromJson(rawJsonContent); ;
+            string nameExtractedFromJson = DataFactoryCommonUtilities.ExtractNameFromJson(rawJsonContent, resourceType);
 
             // Read the name from the JSON content if user didn't provide name with -Name parameter
             string resolvedResourceName = string.IsNullOrWhiteSpace(nameFromCmdletContext)
