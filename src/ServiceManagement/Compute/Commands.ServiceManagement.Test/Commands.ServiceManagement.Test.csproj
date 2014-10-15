@@ -251,6 +251,7 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\ILB\GetAzurePublicIPCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\ILB\NewAzureInternalLoadBalancerConfigCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\ILB\SetAzurePublicIPCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\AddAzureEnvironmentCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\ImportAzureVMCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\MoveAzureDeploymentCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\NewAzureAclConfigCmdletInfo.cs" />
@@ -268,7 +269,7 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureDnsCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureEndpointCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureStaticVNetIPCmdletInfo.cs" />
-    <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureSubscriptionCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\SubscriptionCmdletInfo\RemoveAzureSubscriptionCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureVMCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureServiceCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureVMImageCmdletInfo.cs" />
@@ -352,14 +353,15 @@
     </Compile>
     <Compile Include="FunctionalTests\IaasCmdletInfo\GetAzureLocationCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\GetAzureStorageAccountCmdletInfo.cs" />
-    <Compile Include="FunctionalTests\IaasCmdletInfo\GetAzureSubscriptionCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\SubscriptionCmdletInfo\GetAzureEnvironment.cs" />
+    <Compile Include="FunctionalTests\SubscriptionCmdletInfo\GetAzureSubscriptionCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\GetAzureVMCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\GetAzureVMImageCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\GetModuleCmdletInfo.cs" />
-    <Compile Include="FunctionalTests\IaasCmdletInfo\ImportAzurePublishSettingsFileCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\SubscriptionCmdletInfo\ImportAzurePublishSettingsFileCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\NewAzureQuickVMCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\NewAzureStorageAccountCmdletInfo.cs" />
-    <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureSubscriptionCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\SubscriptionCmdletInfo\SetAzureSubscriptionCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\WindowsAzurePowershellCmdletSequence.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\WindowsAzurePowershellCmdlet.cs" />
     <Compile Include="FunctionalTests\PowershellCore\CmdletsInfo.cs" />
