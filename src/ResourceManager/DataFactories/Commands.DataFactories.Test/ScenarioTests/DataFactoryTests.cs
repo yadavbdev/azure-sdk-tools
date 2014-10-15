@@ -32,5 +32,26 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         {
             RunPowerShellTest("Test-CreateDataFactory");
         }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestDeleteDataFactoryWithDataFactoryParameter()
+        {
+            RunPowerShellTest("Test-DeleteDataFactoryWithDataFactoryParameter");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetDataFactoryWithEmptyName()
+        {
+            RunPowerShellTest("Test-GetDataFactoryWithEmptyName");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestGetDataFactoryWithWhiteSpaceName()
+        {
+            RunPowerShellTest("Test-GetDataFactoryWithWhiteSpaceName");
+        }
     }
 }

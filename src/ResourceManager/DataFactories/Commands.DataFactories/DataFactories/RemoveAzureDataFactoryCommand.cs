@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Management.Automation;
 using System.Net;
 using System.Security.Permissions;
+using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Commands.DataFactories.Properties;
 
 namespace Microsoft.Azure.Commands.DataFactories
@@ -23,9 +24,13 @@ namespace Microsoft.Azure.Commands.DataFactories
     [Cmdlet(VerbsCommon.Remove, Constants.DataFactory)]
     public class RemoveAzureDataFactoryCommand : DataFactoryBaseCmdlet
     {
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
         public string Name { get; set; }
+
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = "Don't ask for confirmation.")]
         public SwitchParameter Force { get; set; }
@@ -33,6 +38,17 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
+            if (ParameterSetName == ByFactoryObject)
+            {
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
+
+                Name = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
+            }
+
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(

@@ -13,7 +13,10 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using System.Collections;
+using System.Globalization;
 using System.Management.Automation;
 using System.Security.Permissions;
 
@@ -26,7 +29,12 @@ namespace Microsoft.Azure.Commands.DataFactories
         [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true, HelpMessage = "The pipeline name.")]
         public string Name { get; set; }
 
-        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage = "The data factory name.")]
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
+
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The data factory name.")]
         [ValidateNotNullOrEmpty]
         public string DataFactoryName { get; set; }
 
@@ -40,6 +48,17 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
+            if (ParameterSetName == ByFactoryObject)
+            {
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
+
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
+            }
+
             string rawJsonContent = DataFactoryClient.ReadJsonFileContent(this.TryResolvePath(File));
 
             Name = ResolveResourceName(rawJsonContent, Name, "Pipeline");

@@ -14,45 +14,55 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Management.Automation;
 using System.Security.Permissions;
 using Microsoft.Azure.Commands.DataFactories;
 using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
     [Cmdlet(VerbsCommon.Get, Constants.Gateway), OutputType(typeof(List<PSDataFactoryGateway>), typeof(PSDataFactoryGateway))]
     public class GetAzureDataFactoryGatewayCommand : DataFactoryBaseCmdlet
     {
-        [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The data factory gateway name.")]
-        [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
 
-        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
         [ValidateNotNullOrEmpty]
         public string DataFactoryName { get; set; }
 
+        [Parameter(Position = 2, Mandatory = false, ValueFromPipelineByPropertyName = true,
+    HelpMessage = "The data factory gateway name.")]
+        [ValidateNotNullOrEmpty]
+        public string Name { get; set; }
+
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            if (ParameterSetName == ByFactoryObject)
             {
-                if (String.IsNullOrWhiteSpace(Name))
+                if (DataFactory == null)
                 {
-                    IEnumerable<PSDataFactoryGateway> gateways = DataFactoryClient.ListGateways(ResourceGroupName, DataFactoryName);
-                    WriteObject(gateways, true);
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
                 }
-                else
-                {
-                    PSDataFactoryGateway gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
-                    WriteObject(gateway);
-                }
+
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
             }
-            catch (Exception ex)
+
+            if (String.IsNullOrWhiteSpace(Name))
             {
-                WriteExceptionError(ex);
+                IEnumerable<PSDataFactoryGateway> gateways = DataFactoryClient.ListGateways(ResourceGroupName, DataFactoryName);
+                WriteObject(gateways, true);
+            }
+            else
+            {
+                PSDataFactoryGateway gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
+                WriteObject(gateway);
             }
         }
     }

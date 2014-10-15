@@ -1,0 +1,11 @@
+{
+    "name": "HDILinkedService",
+    "properties": 
+    {
+        "type": "HDInsightBYOCLinkedService",
+        "clusterUri": "https://mdpprodhadoop.azurehdinsight.net/",
+        "userName": "admin",
+        "password": "ShakeRattleRoll!2012",
+        "linkedServiceName": "LinkedService-CuratedWikiData"
+    }
+}

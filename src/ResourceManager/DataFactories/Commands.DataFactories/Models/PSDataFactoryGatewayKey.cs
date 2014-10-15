@@ -12,10 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Microsoft.Azure.Management.DataFactories.Models;
-
 namespace Microsoft.Azure.Commands.DataFactories.Models
 {
     public class PSDataFactoryGatewayKey

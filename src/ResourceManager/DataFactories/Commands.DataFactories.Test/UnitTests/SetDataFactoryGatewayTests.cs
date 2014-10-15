@@ -43,20 +43,21 @@ namespace Microsoft.WindowsAzure.Commands.Test.Gateway
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanSetGateway()
         {
+            const string description = "New gateway description for test";
+
             var expectedOutput = new PSDataFactoryGateway
             {
                 Name = GatewayName,
                 Location = Location,
                 Status = GatewayStatus.NeedRegistration,
-                Description = "New gateway description for test"
+                Description = description
             };
 
-            dataFactoriesClientMock.Setup(f => f.GetGateway(ResourceGroupName, DataFactoryName, GatewayName))
-                                   .Returns(expectedOutput);
-
             dataFactoriesClientMock.Setup(
-                f => f.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, expectedOutput))
-                                   .Returns(expectedOutput);
+                f => f.PatchGateway(ResourceGroupName, DataFactoryName, 
+                    It.Is<PSDataFactoryGateway>
+                    (parameters => parameters.Name == GatewayName && parameters.Description == description)))
+                    .Returns(expectedOutput).Verifiable();
 
             _cmdlet.Name = GatewayName;
             _cmdlet.DataFactoryName = DataFactoryName;
@@ -64,9 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Gateway
 
             _cmdlet.ExecuteCmdlet();
 
-            dataFactoriesClientMock.Verify(f => f.GetGateway(ResourceGroupName, DataFactoryName, GatewayName), Times.Once());
-            dataFactoriesClientMock.Verify(f => f.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, expectedOutput), Times.Once());
-
+            dataFactoriesClientMock.VerifyAll();
             commandRuntimeMock.Verify(f => f.WriteObject(expectedOutput), Times.Once());
         }
     }

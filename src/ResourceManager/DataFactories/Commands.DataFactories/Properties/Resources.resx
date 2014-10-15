@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DataFactoryArgumentInvalid" xml:space="preserve">
+    <value>The data factory object provided is invalid. Use Get-AzureDataFactory to retrieve a specific data factory object, or use New-AzureDataFactory to create a new data factory object.</value>
+  </data>
+  <data name="DataFactoryGatewayConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to remove the gateway '{0}' in the data factory '{1}'?</value>
+  </data>
+  <data name="DataFactoryGatewayExists" xml:space="preserve">
+    <value>A gateway with the name {0} already exsits in the data factory {1}.</value>
+  </data>
+  <data name="DataFactoryGatewayRemoving" xml:space="preserve">
+    <value>Removing the gateway '{0}' in the data factory '{1}'.</value>
+  </data>
   <data name="DataFactoryConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to remove data factory '{0}' in resource group '{1}'?</value>
   </data>
@@ -152,6 +164,23 @@ Error Code: {1}
 Error Message: {2}
 Request Id: {3}
 Timestamp (Utc):{4}</value>
+  </data>
+  <data name="HubConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to remove hub '{0}' in data factory '{1}'?</value>
+  </data>
+  <data name="HubCreating" xml:space="preserve">
+    <value>Creating hub '{0}' in data factory '{1}'.</value>
+  </data>
+  <data name="HubExists" xml:space="preserve">
+    <value>A hub with the name {0} in the data factory {1} exists. 
+Continuing execution may overwrite the exisiting one. 
+Are you sure you want to continue?</value>
+  </data>
+  <data name="HubNotFound" xml:space="preserve">
+    <value>Hub '{0}' does not exist in the data factory '{1}'.</value>
+  </data>
+  <data name="HubRemoving" xml:space="preserve">
+    <value>Removing hub '{0}' in data factory '{1}'.</value>
   </data>
   <data name="LinkedServiceConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to remove linked service '{0}' in data factory '{1}'?</value>

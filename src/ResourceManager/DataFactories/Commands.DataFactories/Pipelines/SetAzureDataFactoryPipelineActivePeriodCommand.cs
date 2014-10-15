@@ -12,7 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Management.Automation;
 using System.Security.Permissions;
@@ -26,11 +29,15 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         [Alias("Name")]
         [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
-        HelpMessage = "The pipeline name.")]
+            HelpMessage = "The pipeline name.")]
         [ValidateNotNullOrEmpty]
         public string PipelineName { get; set; }
 
-        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
+
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
         [ValidateNotNullOrEmpty]
         public string DataFactoryName { get; set; }
@@ -65,36 +72,40 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            if (ParameterSetName == ByFactoryObject)
             {
-                DateTime startTime = StartDateTime;
-                DateTime endTime = EndDateTime;
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
 
-                ConfirmAction(
-                    Force.IsPresent,
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        "Are you sure you want to set pipeline '{0}' active period from '{1}' to '{2}'?",
-                        PipelineName,
-                        startTime,
-                        endTime),
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        "Set pipeline '{0}' active period from '{1}' to '{2}'",
-                        PipelineName,
-                        startTime,
-                        endTime),
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
+            }
+
+            DateTime startTime = StartDateTime;
+            DateTime endTime = EndDateTime;
+
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Are you sure you want to set pipeline '{0}' active period from '{1}' to '{2}'?",
                     PipelineName,
-                    () =>
-                    DataFactoryClient.SetPipelineActivePeriod(
-                        ResourceGroupName, DataFactoryName, PipelineName, startTime, endTime, AutoResolve.ToBool(), ForceRecalculate.ToBool()));
+                    startTime,
+                    endTime),
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Set pipeline '{0}' active period from '{1}' to '{2}'",
+                    PipelineName,
+                    startTime,
+                    endTime),
+                PipelineName,
+                () =>
+                DataFactoryClient.SetPipelineActivePeriod(
+                    ResourceGroupName, DataFactoryName, PipelineName, startTime, endTime, AutoResolve.ToBool(), ForceRecalculate.ToBool()));
 
-                WriteObject(true);
-            }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
-            }
+            WriteObject(true);
         }
     }
 }

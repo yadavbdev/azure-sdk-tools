@@ -81,7 +81,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Gateway
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void CanNotNewGateway()
+        public void CanThrowWhenCreateExistingGateway()
         {
             var expectedOutput = new PSDataFactoryGateway
             {
@@ -98,9 +98,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Gateway
             _cmdlet.Name = GatewayName;
             _cmdlet.DataFactoryName = DataFactoryName;
             _cmdlet.Location = Location;
-
-            _cmdlet.ExecuteCmdlet();
-
+            
+            Assert.Throws<PSInvalidOperationException>(() => _cmdlet.ExecuteCmdlet());
+            
             dataFactoriesClientMock.Verify(f => f.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, It.IsAny<PSDataFactoryGateway>()),
                                            Times.Never());
         }

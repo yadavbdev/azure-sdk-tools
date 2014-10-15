@@ -13,24 +13,30 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
 using System.Management.Automation;
 using System.Security.Permissions;
 using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
     [Cmdlet(VerbsCommon.Set, Constants.Gateway), OutputType(typeof(PSDataFactoryGateway))]
     public class SetAzureDataFactoryGatewayCommand : DataFactoryBaseCmdlet
     {
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
+
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+    HelpMessage = "The data factory name.")]
+        [ValidateNotNullOrEmpty]
+        public string DataFactoryName { get; set; }
+
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory gateway name.")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
-
-        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The data factory name.")]
-        [ValidateNotNullOrEmpty]
-        public string DataFactoryName { get; set; }
 
         [Parameter(Position = 3, Mandatory = true, HelpMessage = "The description to update.")]
         [ValidateNotNullOrEmpty]
@@ -39,17 +45,25 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            if (ParameterSetName == ByFactoryObject)
             {
-                PSDataFactoryGateway gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
-                gateway.Description = Description;
-                PSDataFactoryGateway response = DataFactoryClient.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, gateway);
-                WriteObject(response);
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
+
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
             }
-            catch (Exception ex)
+
+            PSDataFactoryGateway gateway = new PSDataFactoryGateway
             {
-                WriteExceptionError(ex);
-            }
+                Description = Description,
+                Name = Name
+            };
+
+            PSDataFactoryGateway response = DataFactoryClient.PatchGateway(ResourceGroupName, DataFactoryName, gateway);
+            WriteObject(response);
         }
     }
 }

@@ -47,11 +47,60 @@ function Test-CreateDataFactory
         $actual = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
         $expected = Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname
 
-        Assert-AreEqual $expected.ResourceGroupName $expected.ResourceGroupName
-        Assert-AreEqual $expected.DataFactoryName $expected.DataFactoryName
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName
+        Assert-AreEqual $expected.DataFactoryName $actual.DataFactoryName
     }
     finally
     {
         Clean-DataFactory $rgname $dfname
     }
+}
+
+<#
+.SYNOPSIS
+Create a data factory and then delete it with -DataFactory parameter.
+#>
+function Test-DeleteDataFactoryWithDataFactoryParameter
+{
+    $dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+
+    $df = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force        
+    Remove-AzureDataFactory -DataFactory $df -Force
+}
+
+<#
+.SYNOPSIS
+Nagative test. Get resources with an empty data factory name.
+#>
+function Test-GetDataFactoryWithEmptyName
+{	
+    $dfname = ""
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+    
+    # Test
+    Assert-ThrowsContains { Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname } "empty"    
+}
+
+<#
+.SYNOPSIS
+Nagative test. Get resources with a data factory name which only contains white space.
+#>
+function Test-GetDataFactoryWithWhiteSpaceName
+{	
+    $dfname = "   "
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+    
+    # Test
+    Assert-ThrowsContains { Get-AzureDataFactory -ResourceGroupName $rgname -Name $dfname } "Value cannot be null"    
 }

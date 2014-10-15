@@ -12,7 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Management.Automation;
+using System.Management.Automation.Language;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Moq;
@@ -39,9 +42,9 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanGetDataFactory()
         {
-            PSDataFactory expected = new PSDataFactory() {DataFactoryName = DataFactoryName, ResourceGroupName = ResourceGroupName};
-
             // Arrange
+            PSDataFactory expected = new PSDataFactory() {DataFactoryName = DataFactoryName, ResourceGroupName = ResourceGroupName};
+         
             dataFactoriesClientMock.Setup(
                 c =>
                     c.FilterPSDataFactories(
@@ -53,16 +56,22 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             dataFactoriesClientMock.Setup(c => c.GetDataFactory(ResourceGroupName, DataFactoryName))
                 .Returns(expected)
                 .Verifiable();
-
-            cmdlet.Name = DataFactoryName;
-            cmdlet.ResourceGroupName = ResourceGroupName;
             
             // Action
-            cmdlet.ExecuteCmdlet();
+            cmdlet.ResourceGroupName = ResourceGroupName;
+            cmdlet.Name = "  ";
+            Exception whiteSpace = Assert.Throws<PSArgumentNullException>(() => cmdlet.ExecuteCmdlet());
+
+            cmdlet.Name = "";
+            Exception empty = Assert.Throws<PSArgumentNullException>(() => cmdlet.ExecuteCmdlet());
+
+            cmdlet.Name = DataFactoryName;
+            cmdlet.ExecuteCmdlet();                      
 
             // Assert
             dataFactoriesClientMock.VerifyAll();
-
+            Assert.Contains("Value cannot be null", whiteSpace.Message);
+            Assert.Contains("Value cannot be null", empty.Message);
             commandRuntimeMock.Verify(f => f.WriteObject(expected), Times.Once());
         }
 
