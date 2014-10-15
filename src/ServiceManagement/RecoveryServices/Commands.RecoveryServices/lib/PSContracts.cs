@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.Serialization;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Hash functions which can be used to calculate CIK HMAC.
     /// </summary>
@@ -249,11 +247,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
 
 namespace Microsoft.Azure.Portal.RecoveryServices.Models.Common
 {
-    #region Using directives
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.Serialization;
-    #endregion
-
     /// <summary>
     /// Class to define Vault credentials
     /// </summary>
