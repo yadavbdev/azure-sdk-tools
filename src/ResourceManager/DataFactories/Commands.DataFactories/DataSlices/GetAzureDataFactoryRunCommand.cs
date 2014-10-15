@@ -56,27 +56,20 @@ namespace Microsoft.Azure.Commands.DataFactories
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            switch (ParameterSetName)
             {
-                switch (ParameterSetName)
-                {
-                    case ByTableName:
-                        var dataSliceRuns = DataFactoryClient.ListDataSliceRuns(
-                            ResourceGroupName, DataFactoryName, TableName, StartDateTime);
-                        WriteObject(dataSliceRuns);
-                        break;
+                case ByTableName:
+                    var dataSliceRuns = DataFactoryClient.ListDataSliceRuns(
+                        ResourceGroupName, DataFactoryName, TableName, StartDateTime);
+                    WriteObject(dataSliceRuns);
+                    break;
 
-                    case ByPipelineName:
-                        var pipelineRuns = DataFactoryClient.GetPipelineRuns(
-                            ResourceGroupName, DataFactoryName, PipelineName, ActivityName,
-                            StartDateTime, EndDateTime, null);
-                        WriteObject(pipelineRuns, true);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
+                case ByPipelineName:
+                    var pipelineRuns = DataFactoryClient.GetPipelineRuns(
+                        ResourceGroupName, DataFactoryName, PipelineName, ActivityName,
+                        StartDateTime, EndDateTime, null);
+                    WriteObject(pipelineRuns, true);
+                    break;
             }
         }
     }

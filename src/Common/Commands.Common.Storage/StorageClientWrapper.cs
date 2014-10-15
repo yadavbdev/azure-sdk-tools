@@ -21,6 +21,7 @@ using Microsoft.WindowsAzure.Management.Storage.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Commands.Common.Storage.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Storage
 {

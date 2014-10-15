@@ -94,6 +94,10 @@
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.2.0.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=3.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\WindowsAzure.Storage.4.0.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Testing, Version=1.0.5333.20807, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Hydra.SpecTestSupport.1.0.5366.29353-prerelease\lib\net45\Microsoft.WindowsAzure.Testing.dll</HintPath>
@@ -154,6 +158,7 @@
     <Compile Include="UnitTests\RemoveTableTests.cs" />
     <Compile Include="UnitTests\RemoveLinkedServiceTests.cs" />
     <Compile Include="UnitTests\RemoveDataFactoryTests.cs" />
+    <Compile Include="UnitTests\SaveAzureDataFactoryTests.cs" />
     <Compile Include="UnitTests\SetDataFactoryGatewayTests.cs" />
   </ItemGroup>
   <ItemGroup>
