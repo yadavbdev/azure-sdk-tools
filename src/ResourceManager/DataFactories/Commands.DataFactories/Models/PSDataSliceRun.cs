@@ -23,11 +23,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
     /// </summary>
     public class PSDataSliceRun
     {
-        private DataSliceRun _dataSliceRun;
+        private DataSliceRun dataSliceRun;
 
         public PSDataSliceRun()
         {
-            this._dataSliceRun = new DataSliceRun();
+            dataSliceRun = new DataSliceRun();
         }
 
         public PSDataSliceRun(DataSliceRun dataSliceRun)
@@ -37,18 +37,18 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("dataSliceRun");
             }
 
-            this._dataSliceRun = dataSliceRun;
+            this.dataSliceRun = dataSliceRun;
         }
 
         public string Id
         {
             get
             {
-                return this._dataSliceRun.Id;
+                return dataSliceRun.Id;
             }
             internal set
             {
-                this._dataSliceRun.Id = value;
+                dataSliceRun.Id = value;
             }
         }
 
@@ -58,39 +58,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 
         public string TableName { get; set; }
 
-        public string ResumptionToken
-        {
-            get
-            {
-                return this._dataSliceRun.ResumptionToken;
-            }
-            internal set
-            {
-                this._dataSliceRun.ResumptionToken = value;
-            }
-        }
-
-        public string ContinuationToken
-        {
-            get
-            {
-                return this._dataSliceRun.ContinuationToken;
-            }
-            internal set
-            {
-                this._dataSliceRun.ContinuationToken = value;
-            }
-        }
-
         public DateTime ProcessingStartTime
         {
             get
             {
-                return this._dataSliceRun.ProcessingStartTime;
+                return dataSliceRun.ProcessingStartTime;
             }
             internal set
             {
-                this._dataSliceRun.ProcessingStartTime = value;
+                dataSliceRun.ProcessingStartTime = value;
             }
         }
 
@@ -98,11 +74,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.ProcessingEndTime;
+                return dataSliceRun.ProcessingEndTime;
             }
             internal set
             {
-                this._dataSliceRun.ProcessingEndTime = value;
+                dataSliceRun.ProcessingEndTime = value;
             }
         }
 
@@ -110,11 +86,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.PercentComplete;
+                return dataSliceRun.PercentComplete;
             }
             internal set
             {
-                this._dataSliceRun.PercentComplete = value;
+                dataSliceRun.PercentComplete = value;
             }
         }
 
@@ -122,11 +98,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.DataSliceStart;
+                return dataSliceRun.DataSliceStart;
             }
             internal set
             {
-                this._dataSliceRun.DataSliceStart = value;
+                dataSliceRun.DataSliceStart = value;
             }
         }
 
@@ -134,11 +110,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.DataSliceEnd;
+                return dataSliceRun.DataSliceEnd;
             }
             internal set
             {
-                this._dataSliceRun.DataSliceEnd = value;
+                dataSliceRun.DataSliceEnd = value;
             }
         }
 
@@ -146,11 +122,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.Status;
+                return dataSliceRun.Status;
             }
             internal set
             {
-                this._dataSliceRun.Status = value;
+                dataSliceRun.Status = value;
             }
         }
 
@@ -158,11 +134,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.Timestamp;
+                return dataSliceRun.Timestamp;
             }
             internal set
             {
-                this._dataSliceRun.Timestamp = value;
+                dataSliceRun.Timestamp = value;
             }
         }
 
@@ -170,11 +146,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.RetryAttempt;
+                return dataSliceRun.RetryAttempt;
             }
             internal set
             {
-                this._dataSliceRun.RetryAttempt = value;
+                dataSliceRun.RetryAttempt = value;
             }
         }
 
@@ -182,11 +158,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.Properties;
+                return dataSliceRun.Properties;
             }
             internal set
             {
-                this._dataSliceRun.Properties = value;
+                dataSliceRun.Properties = value;
             }
         }
 
@@ -194,49 +170,48 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataSliceRun.ErrorMessage;
+                return dataSliceRun.ErrorMessage;
             }
             internal set
             {
-                this._dataSliceRun.ErrorMessage = value;
+                dataSliceRun.ErrorMessage = value;
             }
         }
 
-        public string ActivityId
+        public string ActivityName
         {
             get
             {
-                return this._dataSliceRun.ActivityId;
+                return dataSliceRun.ActivityName;
             }
             internal set
             {
-                this._dataSliceRun.ActivityId = value;
+                dataSliceRun.ActivityName = value;
             }
         }
-
-        public string TableId
+        
+        public string PipelineName
         {
             get
             {
-                return this._dataSliceRun.TableId;
+                return dataSliceRun.PipelineName;
             }
             internal set
             {
-                this._dataSliceRun.TableId = value;
+                dataSliceRun.PipelineName = value;
             }
         }
 
-        public string PipelineId
+        public string Type
         {
             get
             {
-                return this._dataSliceRun.PipelineId;
+                return dataSliceRun.Type;
             }
             internal set
             {
-                this._dataSliceRun.PipelineId = value;
+                dataSliceRun.Type = value;
             }
         }
-
     }
 }

@@ -20,11 +20,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
 {
     public class PSDataFactory
     {
-        private DataFactory _dataFactory;
+        private DataFactory dataFactory;
 
         public PSDataFactory()
         {
-            this._dataFactory = new DataFactory();
+            dataFactory = new DataFactory();
         }
 
         public PSDataFactory(DataFactory dataFactory)
@@ -34,18 +34,18 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
                 throw new ArgumentNullException("dataFactory");
             }
 
-            this._dataFactory = dataFactory;
+            this.dataFactory = dataFactory;
         }
 
         public string DataFactoryName
         {
             get
             {
-                return this._dataFactory.Name;
+                return dataFactory.Name;
             }
             set
             {
-                this._dataFactory.Name = value;
+                dataFactory.Name = value;
             }
         }
 
@@ -55,11 +55,11 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataFactory.Location;
+                return dataFactory.Location;
             }
             set
             {
-                this._dataFactory.Location = value;
+                dataFactory.Location = value;
             }
         }
 
@@ -67,11 +67,23 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
         {
             get
             {
-                return this._dataFactory.Tags;
+                return dataFactory.Tags;
             }
             set
             {
-                this._dataFactory.Tags = value;
+                dataFactory.Tags = value;
+            }
+        }
+
+        public DataFactoryProperties Properties
+        {
+            get
+            {
+                return dataFactory.Properties;
+            }
+            set
+            {
+                dataFactory.Properties = value;
             }
         }
     }

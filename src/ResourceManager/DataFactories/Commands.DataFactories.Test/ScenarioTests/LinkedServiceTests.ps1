@@ -35,9 +35,9 @@ function Test-LinkedService
         $actual = New-AzureDataFactoryLinkedService -ResourceGroupName $rgname -DataFactoryName $dfname -Name $lsname -File .\Resources\linkedService.json -Force
         $expected = Get-AzureDataFactoryLinkedService -ResourceGroupName $rgname -DataFactoryName $dfname -Name $lsname
 
-        Assert-AreEqual $expected.ResourceGroupName $expected.ResourceGroupName
-        Assert-AreEqual $expected.DataFactoryName $expected.DataFactoryName
-        Assert-AreEqual $expected.LinkedServiceName $expected.LinkedServiceName
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName
+        Assert-AreEqual $expected.DataFactoryName $actual.DataFactoryName
+        Assert-AreEqual $expected.LinkedServiceName $actual.LinkedServiceName
 
         Remove-AzureDataFactoryLinkedService -ResourceGroupName $rgname -DataFactoryName $dfname -Name $lsname -Force
     }
@@ -45,4 +45,78 @@ function Test-LinkedService
     {
         Clean-DataFactory $rgname $dfname
     }
+}
+
+<#
+.SYNOPSIS
+Create a linked service and then do a Get to compare the result are identical.
+Delete the created linked service after test finishes.
+Use -DataFactory parameter in all cmdlets.
+#>
+function Test-LinkedServiceWithDataFactoryParameter
+{
+    $dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+        
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+
+    try
+    {
+        $df = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+     
+        $lsname = "foo"
+   
+        $actual = New-AzureDataFactoryLinkedService -DataFactory $df -Name $lsname -File .\Resources\linkedService.json -Force
+        $expected = Get-AzureDataFactoryLinkedService -DataFactory $df -Name $lsname
+
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName
+        Assert-AreEqual $expected.DataFactoryName $actual.DataFactoryName
+        Assert-AreEqual $expected.LinkedServiceName $actual.LinkedServiceName
+
+        Remove-AzureDataFactoryLinkedService -DataFactory $df -Name $lsname -Force
+    }
+    finally
+    {
+        Clean-DataFactory $rgname $dfname
+    }
+}
+
+<#
+.SYNOPSIS
+Nagative test. Get resources with an empty linked service name.
+#>
+function Test-GetLinkedServiceWithEmptyName
+{	
+    $lsname = ""
+	$dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+    New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+
+    # Test
+    Assert-ThrowsContains { Get-AzureDataFactoryLinkedService -ResourceGroupName $rgname -DataFactoryName $dfname -Name $lsname } "null"    
+}
+
+<#
+.SYNOPSIS
+Nagative test. Get resources with a linked service name which only contains white space.
+#>
+function Test-GetLinkedServiceWithWhiteSpaceName
+{	
+    $lsname = "   "
+	$dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+    New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+
+    # Test
+    Assert-ThrowsContains { Get-AzureDataFactoryLinkedService -ResourceGroupName $rgname -DataFactoryName $dfname -Name $lsname } "null"    
 }

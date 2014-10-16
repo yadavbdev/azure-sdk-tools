@@ -51,9 +51,58 @@ namespace Microsoft.Azure.Commands.DataFactories
             return string.Empty;
         }
 
+        public static Dictionary<string, string> ExtractTagsFromJson(string jsonText)
+        {
+            Dictionary<string, object> jsonKeyValuePairs = JsonUtilities.DeserializeJson(jsonText);
+            const string TagsKeyInJson = "tags";
+
+            foreach (var key in jsonKeyValuePairs.Keys)
+            {
+                if (string.Compare(TagsKeyInJson, key, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    var tags = (jsonKeyValuePairs[key] as Dictionary<string, object>).ToDictionary(
+                        p => p.Key,
+                        p => (string)p.Value);
+
+                    return tags;
+                }
+            }
+
+            return null;
+        }
+
         public static Dictionary<string, string> ToDictionary(this Hashtable hashTable)
         {
             return hashTable.Cast<DictionaryEntry>().ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value.ToString());
+        }
+
+        public static bool TagsAreEqual(IDictionary<string, string> first, IDictionary<string, string> second)
+        {
+            bool equal = false;
+            if (first.Count == second.Count)
+            {
+                equal = true;
+                foreach (var pair in first)
+                {
+                    string value;
+                    if (second.TryGetValue(pair.Key, out value))
+                    {
+                        if (!value.Equals(pair.Value))
+                        {
+                            equal = false;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        // Require key be present.
+                        equal = false;
+                        break;
+                    }
+                }
+            }
+
+            return equal;
         }
     }
 }

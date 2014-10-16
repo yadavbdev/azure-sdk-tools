@@ -17,67 +17,49 @@ using System.Collections.Generic;
 using System.Management.Automation;
 using System.Security.Permissions;
 using Microsoft.Azure.Commands.DataFactories.Models;
+using System.Collections;
+using System.Globalization;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    [Cmdlet(VerbsCommon.Get, Constants.Run, DefaultParameterSetName = ByTableName), OutputType(typeof(List<PSDataSliceRun>))]
+    [Cmdlet(VerbsCommon.Get, Constants.Run, DefaultParameterSetName = ByFactoryName), OutputType(typeof(List<PSDataSliceRun>))]
     public class GetAzureDataFactoryRunCommand : DataFactoryBaseCmdlet
     {
-        private const string ByTableName = "ByTableName";
-        private const string ByPipelineName = "ByPipelineName";
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
 
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
         [ValidateNotNullOrEmpty]
         public string DataFactoryName { get; set; }
 
-        [Parameter(ParameterSetName = ByTableName, Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The table name.")]
         [ValidateNotNullOrEmpty]
         public string TableName { get; set; }
 
-        [Parameter(ParameterSetName = ByPipelineName, Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The pipeline name.")]
-        [ValidateNotNullOrEmpty]
-        public string PipelineName { get; set; }
-
-        [Parameter(ParameterSetName = ByPipelineName, Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The activity name.")]
-        [ValidateNotNullOrEmpty]
-        public string ActivityName { get; set; }
-
-        [Parameter(ParameterSetName = ByTableName, Position = 3, Mandatory = true, HelpMessage = "The start time of the data slice queried.")]
-        [Parameter(ParameterSetName = ByPipelineName, Position = 4, HelpMessage = "The start time of the data slice queried.")]
+        [Parameter(Position = 3, Mandatory = true, HelpMessage = "The start time of the data slice queried.")]
         public DateTime StartDateTime { get; set; }
-
-        [Parameter(ParameterSetName = ByPipelineName, Position = 5, Mandatory = false, HelpMessage = "The end time of the data slice queried.")]
-        public DateTime? EndDateTime { get; set; }
 
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
-            try
+            if (ParameterSetName == ByFactoryObject)
             {
-                switch (ParameterSetName)
+                if (DataFactory == null)
                 {
-                    case ByTableName:
-                        var dataSliceRuns = DataFactoryClient.ListDataSliceRuns(
-                            ResourceGroupName, DataFactoryName, TableName, StartDateTime);
-                        WriteObject(dataSliceRuns);
-                        break;
-
-                    case ByPipelineName:
-                        var pipelineRuns = DataFactoryClient.GetPipelineRuns(
-                            ResourceGroupName, DataFactoryName, PipelineName, ActivityName,
-                            StartDateTime, EndDateTime, null);
-                        WriteObject(pipelineRuns, true);
-                        break;
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
                 }
+
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
             }
-            catch (Exception ex)
-            {
-                WriteExceptionError(ex);
-            }
+
+            var dataSliceRuns = DataFactoryClient.ListDataSliceRuns(
+                ResourceGroupName, DataFactoryName, TableName, StartDateTime);
+            WriteObject(dataSliceRuns);
         }
     }
 }

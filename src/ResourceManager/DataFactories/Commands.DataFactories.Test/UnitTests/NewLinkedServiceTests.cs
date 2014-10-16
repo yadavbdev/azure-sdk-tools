@@ -63,31 +63,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanCreateLinkedService()
         {
-            CreateLinkedService(rawJsonContent);
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void InvalidJsonLinkedService()
-        {
-            try
-            {
-                string malformedJson = rawJsonContent.Replace(":", "-");
-
-                CreateLinkedService(malformedJson);
-
-                throw new Exception(
-                    string.Format(CultureInfo.InvariantCulture,
-                    "Test case failed: Was able to deploy linked service with malformed json content {0}",
-                    malformedJson));
-            }
-            catch (JsonSerializationException)
-            {
-            }
-        }
-
-        private void CreateLinkedService(string rawLinkedServiceJsonContent)
-        {
             // Arrange
             LinkedService expected = new LinkedService()
             {
@@ -96,7 +71,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
             };
 
             dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
-                .Returns(rawLinkedServiceJsonContent)
+                .Returns(rawJsonContent)
                 .Verifiable();
 
             dataFactoriesClientMock.Setup(
@@ -112,7 +87,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
             dataFactoriesClientMock.Setup(
                 c =>
-                    c.CreateOrUpdateLinkedService(ResourceGroupName, DataFactoryName, linkedServiceName, rawLinkedServiceJsonContent))
+                    c.CreateOrUpdateLinkedService(ResourceGroupName, DataFactoryName, linkedServiceName, rawJsonContent))
                 .Returns(expected)
                 .Verifiable();
 
@@ -134,6 +109,23 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
                                 expected.Name == ls.LinkedServiceName &&
                                 expected.Properties == ls.Properties)),
                 Times.Once());
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void InvalidJsonLinkedService()
+        {
+            string malformedJson = rawJsonContent.Replace(":", "-");
+
+             dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
+                .Returns(malformedJson)
+                .Verifiable();
+
+            // Action
+            cmdlet.File = filePath;
+            cmdlet.Force = true;
+
+            Assert.Throws<JsonSerializationException>(() => cmdlet.ExecuteCmdlet());
         }
     }
 }

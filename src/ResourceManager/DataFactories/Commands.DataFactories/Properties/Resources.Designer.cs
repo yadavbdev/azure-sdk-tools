@@ -61,6 +61,51 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data factory object provided is invalid. Use Get-AzureDataFactory to retrieve a specific data factory object, or use New-AzureDataFactory to create a new data factory object..
+        /// </summary>
+        internal static string DataFactoryArgumentInvalid {
+            get {
+                return ResourceManager.GetString("DataFactoryArgumentInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /// <summary>
+        ///   Looks up a localized string similar to A gateway with the name {0} already exsits in the data factory {1}. 
+        ///Continuing execution may overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
+        /// </summary>
+        internal static string DataFactoryGatewayExists
+        {
+            get
+            {
+                return ResourceManager.GetString("DataFactoryGatewayExists", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string DataFactoryGatewayConfirmationMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("DataFactoryGatewayConfirmationMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Removing the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataFactoryGatewayRemoving
+        {
+            get
+            {
+                return ResourceManager.GetString("DataFactoryGatewayRemoving", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove data factory &apos;{0}&apos; in resource group &apos;{1}&apos;?.
         /// </summary>
         internal static string DataFactoryConfirmationMessage {
@@ -108,6 +153,33 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The argument set for download method is incomplete..
+        /// </summary>
+        internal static string DownloadCredentialsNull {
+            get {
+                return ResourceManager.GetString("DownloadCredentialsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download failed. Please check if you have write permission to the path {0} or the url {1} is valid. .
+        /// </summary>
+        internal static string DownloadFailed {
+            get {
+                return ResourceManager.GetString("DownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download of the log is completed. Please find it in the directory {0}..
+        /// </summary>
+        internal static string DownloadLogCompleted {
+            get {
+                return ResourceManager.GetString("DownloadLogCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} name provided using -Name switch: &apos;{1}&apos; in cmdlet doesn&apos;t match with {0} name: &apos;{2}&apos; in JSON file. {0} will be created with name: &apos;{1}&apos;.
         /// </summary>
         internal static string ExtractedNameFromJsonMismatchWarning {
@@ -135,6 +207,52 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         internal static string InvalidJson {
             get {
                 return ResourceManager.GetString("InvalidJson", resourceCulture);
+            }
+        }
+
+        ///   Looks up a localized string similar to Are you sure you want to remove hub &apos;{0}&apos; in data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string HubConfirmationMessage {
+            get {
+                return ResourceManager.GetString("HubConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating hub &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string HubCreating {
+            get {
+                return ResourceManager.GetString("HubCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A hub with the name {0} in the data factory {1} exists. 
+        ///Continuing execution may overwrite the exisiting one. 
+        ///Are you sure you want to continue?.
+        /// </summary>
+        internal static string HubExists {
+            get {
+                return ResourceManager.GetString("HubExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hub &apos;{0}&apos; does not exist in the data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string HubNotFound {
+            get {
+                return ResourceManager.GetString("HubNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing hub &apos;{0}&apos; in data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string HubRemoving {
+            get {
+                return ResourceManager.GetString("HubRemoving", resourceCulture);
             }
         }
         
@@ -182,6 +300,15 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         internal static string LinkedServiceRemoving {
             get {
                 return ResourceManager.GetString("LinkedServiceRemoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No access to write for the specified directory {0}..
+        /// </summary>
+        internal static string NoWriteAccessToDirectory {
+            get {
+                return ResourceManager.GetString("NoWriteAccessToDirectory", resourceCulture);
             }
         }
         

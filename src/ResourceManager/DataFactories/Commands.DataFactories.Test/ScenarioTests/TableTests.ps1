@@ -36,9 +36,9 @@ function Test-Table
         $actual = New-AzureDataFactoryTable -ResourceGroupName $rgname -DataFactoryName $dfname -Name $tblname -File .\Resources\table.json -Force
         $expected = Get-AzureDataFactoryTable -ResourceGroupName $rgname -DataFactoryName $dfname -Name $tblname
 
-        Assert-AreEqual $expected.ResourceGroupName $expected.ResourceGroupName
-        Assert-AreEqual $expected.DataFactoryName $expected.DataFactoryName
-        Assert-AreEqual $expected.TableName $expected.TableName
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName
+        Assert-AreEqual $expected.DataFactoryName $actual.DataFactoryName
+        Assert-AreEqual $expected.TableName $actual.TableName
 
         Remove-AzureDataFactoryTable -ResourceGroupName $rgname -DataFactoryName $dfname -Name $tblname -Force
     }
@@ -46,4 +46,79 @@ function Test-Table
     {
         Clean-DataFactory $rgname $dfname
     }
+}
+
+<#
+.SYNOPSIS
+Create a table and the linked service which it depends on. Then do a Get to compare the result are identical.
+Delete the created table after test finishes.
+Use -DataFactory parameter in all cmdlets.
+#>
+function Test-TableWithDataFactoryParameter
+{
+    $dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+        
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+
+    try
+    {
+        $df = New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+     
+        New-AzureDataFactoryLinkedService -ResourceGroupName $rgname -DataFactoryName $dfname -File .\Resources\linkedService.json -Force
+   
+        $tblname = "foo2"
+        $actual = New-AzureDataFactoryTable -DataFactory $df -Name $tblname -File .\Resources\table.json -Force
+        $expected = Get-AzureDataFactoryTable -DataFactory $df -Name $tblname
+
+        Assert-AreEqual $expected.ResourceGroupName $actual.ResourceGroupName
+        Assert-AreEqual $expected.DataFactoryName $actual.DataFactoryName
+        Assert-AreEqual $expected.TableName $actual.TableName
+
+        Remove-AzureDataFactoryTable -DataFactory $df -Name $tblname -Force
+    }
+    finally
+    {
+        Clean-DataFactory $rgname $dfname
+    }
+}
+
+<#
+.SYNOPSIS
+Nagative test. Get resources with an empty table name.
+#>
+function Test-GetTableWithEmptyName
+{	
+    $tblname = ""
+	$dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+    New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+
+    # Test
+    Assert-ThrowsContains { Get-AzureDataFactoryTable -ResourceGroupName $rgname -DataFactoryName $dfname -Name $tblname } "null"    
+}
+
+<#
+.SYNOPSIS
+Nagative test. Get resources with a table name which only contains white space.
+#>
+function Test-GetTableWithWhiteSpaceName
+{	
+    $tblname = "     "
+	$dfname = Get-DataFactoryName
+    $rgname = Get-ResourceGroupName
+    $rglocation = Get-ProviderLocation ResourceManagement
+    $dflocation = Get-ProviderLocation DataFactoryManagement
+    
+    New-AzureResourceGroup -Name $rgname -Location $rglocation -Force
+    New-AzureDataFactory -ResourceGroupName $rgname -Name $dfname -Location $dflocation -Force
+
+    # Test
+    Assert-ThrowsContains { Get-AzureDataFactoryTable -ResourceGroupName $rgname -DataFactoryName $dfname -Name $tblname } "null"      
 }

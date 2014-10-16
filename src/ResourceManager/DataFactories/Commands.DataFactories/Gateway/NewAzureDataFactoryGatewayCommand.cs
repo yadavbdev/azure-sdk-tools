@@ -13,9 +13,11 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
 using System.Management.Automation;
 using System.Net;
 using Microsoft.Azure.Commands.DataFactories.Models;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.WindowsAzure;
 
 namespace Microsoft.Azure.Commands.DataFactories
@@ -23,17 +25,19 @@ namespace Microsoft.Azure.Commands.DataFactories
     [Cmdlet(VerbsCommon.New, Constants.Gateway), OutputType(typeof(PSDataFactoryGateway))]
     public class NewAzureDataFactoryGatewayCommand : DataFactoryBaseCmdlet
     {
-        private const string GatewayExsited = "A gateway with the name {0} already exsits in the data factory {1}.";
+        [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
+HelpMessage = "The data factory object.")]
+        public PSDataFactory DataFactory { get; set; }
 
-        [Parameter(Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The data factory gateway name.")]
-        [ValidateNotNullOrEmpty]
-        public string Name { get; set; }
-
-        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+        [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
         [ValidateNotNullOrEmpty]
         public string DataFactoryName { get; set; }
+
+        [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true,
+    HelpMessage = "The data factory gateway name.")]
+        [ValidateNotNullOrEmpty]
+        public string Name { get; set; }
 
         [Parameter(Position = 3, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The geographic region to create the data factory.")]
@@ -46,37 +50,41 @@ namespace Microsoft.Azure.Commands.DataFactories
 
         public override void ExecuteCmdlet()
         {
+            if (ParameterSetName == ByFactoryObject)
+            {
+                if (DataFactory == null)
+                {
+                    throw new PSArgumentNullException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryArgumentInvalid));
+                }
+
+                DataFactoryName = DataFactory.DataFactoryName;
+                ResourceGroupName = DataFactory.ResourceGroupName;
+            }
+
+            PSDataFactoryGateway gateway = null;
             try
             {
-                PSDataFactoryGateway gateway = null;
-                try
-                {
-                    gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
-                }
-                catch (CloudException ex)
-                {
-                    if (ex.Response.StatusCode != HttpStatusCode.NotFound) throw;
-                }
-
-                if (gateway != null)
-                {
-                    throw new PSInvalidOperationException(string.Format(GatewayExsited, Name, DataFactoryName));
-                }
-
-                var request = new PSDataFactoryGateway
-                {
-                    Name = Name,
-                    Location = NormalizeLocation(Location),
-                    Description = Description
-                };
-
-                PSDataFactoryGateway response = DataFactoryClient.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, request);
-                WriteObject(response);
+                gateway = DataFactoryClient.GetGateway(ResourceGroupName, DataFactoryName, Name);
             }
-            catch (Exception ex)
+            catch (CloudException ex)
             {
-                WriteExceptionError(ex);
+                if (ex.Response.StatusCode != HttpStatusCode.NotFound) throw;
             }
+
+            if (gateway != null)
+            {
+                throw new PSInvalidOperationException(string.Format(CultureInfo.InvariantCulture, Resources.DataFactoryGatewayExists, Name, DataFactoryName));
+            }
+
+            var request = new PSDataFactoryGateway
+            {
+                Name = Name,
+                Location = NormalizeLocation(Location),
+                Description = Description
+            };
+
+            PSDataFactoryGateway response = DataFactoryClient.CreateOrUpdateGateway(ResourceGroupName, DataFactoryName, request);
+            WriteObject(response);
         }
 
         // As a nested resource of data factory, CSM will not normalize location when

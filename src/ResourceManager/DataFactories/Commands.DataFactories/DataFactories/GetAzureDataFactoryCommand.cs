@@ -24,17 +24,24 @@ namespace Microsoft.Azure.Commands.DataFactories
     {
         [Parameter(Position = 1, Mandatory = false, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
+        [ValidateNotNullOrEmpty]
         public string Name { get; set; }
         
         [EnvironmentPermission(SecurityAction.Demand, Unrestricted = true)]
         public override void ExecuteCmdlet()
         {
+            // ValidationNotNullOrEmpty doesn't handle whitespaces well
+            if (Name != null && string.IsNullOrWhiteSpace(Name))
+            {
+                throw new PSArgumentNullException("Name");
+            }
+
             DataFactoryFilterOptions filterOptions = new DataFactoryFilterOptions()
             {
                 Name = Name,
                 ResourceGroupName = ResourceGroupName
             };
-
+            
             List<PSDataFactory> dataFactories = DataFactoryClient.FilterPSDataFactories(filterOptions);
 
             if (dataFactories != null)
