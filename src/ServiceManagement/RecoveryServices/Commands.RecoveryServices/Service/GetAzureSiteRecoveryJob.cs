@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
 using Microsoft.WindowsAzure;
@@ -176,10 +177,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="jobs">Job objects</param>
         private void WriteJobs(IList<Microsoft.WindowsAzure.Management.SiteRecovery.Models.Job> jobs)
         {
-            foreach (Microsoft.WindowsAzure.Management.SiteRecovery.Models.Job job in jobs)
-            {
-                this.WriteJob(job);
-            }
+            this.WriteObject(jobs.Select(j => new ASRJob(j)), true);
         }
     }
 }

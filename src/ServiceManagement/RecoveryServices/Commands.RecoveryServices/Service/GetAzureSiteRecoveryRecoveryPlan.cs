@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
+using System.Linq;
 using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
@@ -144,10 +145,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="recoveryPlans">List of Recovery Plans</param>
         private void WriteRecoveryPlans(IList<RecoveryPlan> recoveryPlans)
         {
-            foreach (RecoveryPlan recoveryPlan in recoveryPlans)
-            {
-                this.WriteRecoveryPlan(recoveryPlan);
-            }
+            this.WriteObject(recoveryPlans.Select(rp => new ASRRecoveryPlan(rp)), true);
         }
 
         /// <summary>
@@ -156,7 +154,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="recoveryPlan">Recovery Plan</param>
         private void WriteRecoveryPlan(RecoveryPlan recoveryPlan)
         {
-            this.WriteObject(new ASRRecoveryPlan(recoveryPlan), true);
+            this.WriteObject(new ASRRecoveryPlan(recoveryPlan));
         }
     }
 }

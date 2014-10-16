@@ -207,6 +207,26 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         {
         }
 
+        public ASRVirtualMachine(VirtualMachine vm)
+            : base(
+                vm.ID,
+                vm.ServerId,
+                vm.ProtectionContainerId,
+                vm.Name,
+                vm.Type,
+                vm.FabricObjectId,
+                vm.Protected,
+                vm.CanCommit,
+                vm.CanFailover,
+                vm.CanReverseReplicate,
+                vm.ActiveLocation,
+                vm.ProtectionStateDescription,
+                vm.TestFailoverStateDescription,
+                vm.ReplicationHealth,
+                vm.ReplicationProvider)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ASRVirtualMachine" /> class with required 
         /// parameters.

@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
 using Microsoft.WindowsAzure;
@@ -144,10 +145,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="servers">List of Servers</param>
         private void WriteServers(IList<Server> servers)
         {
-            foreach (Server server in servers)
-            {
-                this.WriteServer(server);
-            }
+            this.WriteObject(servers.Select(s => new ASRServer(s)), true);
         }
 
         /// <summary>
@@ -156,7 +154,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="server">Server object</param>
         private void WriteServer(Server server)
         {
-            this.WriteObject(new ASRServer(server), true);
+            this.WriteObject(new ASRServer(server));
         }
     }
 }

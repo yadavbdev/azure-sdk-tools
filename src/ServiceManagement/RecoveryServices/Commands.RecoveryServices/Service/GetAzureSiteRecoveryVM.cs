@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
 using Microsoft.WindowsAzure;
@@ -199,10 +200,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="vms">List of Virtual Machines</param>
         private void WriteVirtualMachines(IList<VirtualMachine> vms)
         {
-            foreach (VirtualMachine vm in vms)
-            {
-                this.WriteVirtualMachine(vm);
-            }
+            this.WriteObject(vms.Select(vm => new ASRVirtualMachine(vm)), true);
         }
 
         /// <summary>
@@ -211,24 +209,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="vm">Virtual Machine</param>
         private void WriteVirtualMachine(VirtualMachine vm)
         {
-            this.WriteObject(
-                new ASRVirtualMachine(
-                    vm.ID,
-                    vm.ServerId,
-                    vm.ProtectionContainerId,
-                    vm.Name,
-                    vm.Type,
-                    vm.FabricObjectId,
-                    vm.Protected,
-                    vm.CanCommit,
-                    vm.CanFailover,
-                    vm.CanReverseReplicate,
-                    vm.ActiveLocation,
-                    vm.ProtectionStateDescription,
-                    vm.TestFailoverStateDescription,
-                    vm.ReplicationHealth,
-                    vm.ReplicationProvider),
-                true);
+            this.WriteObject(new ASRVirtualMachine(vm));
         }
     }
 }

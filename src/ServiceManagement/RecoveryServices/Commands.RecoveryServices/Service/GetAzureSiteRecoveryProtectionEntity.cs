@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
 using Microsoft.WindowsAzure;
@@ -200,10 +201,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="protectionEntities">Protection Entities</param>
         private void WriteProtectionEntities(IList<ProtectionEntity> protectionEntities)
         {
-            foreach (ProtectionEntity pe in protectionEntities)
-            {
-                this.WriteProtectionEntity(pe);
-            }
+            this.WriteObject(protectionEntities.Select(pe => new ASRProtectionEntity(pe)), true);
         }
 
         /// <summary>
@@ -212,24 +210,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="pe">Protection Entity</param>
         private void WriteProtectionEntity(ProtectionEntity pe)
         {
-            this.WriteObject(
-                new ASRProtectionEntity(
-                    pe.ID,
-                    pe.ServerId,
-                    pe.ProtectionContainerId,
-                    pe.Name,
-                    pe.Type,
-                    pe.FabricObjectId,
-                    pe.Protected,
-                    pe.CanCommit,
-                    pe.CanFailover,
-                    pe.CanReverseReplicate,
-                    pe.ActiveLocation,
-                    pe.ProtectionStateDescription,
-                    pe.TestFailoverStateDescription,
-                    pe.ReplicationHealth,
-                    pe.ReplicationProvider),
-                true);
+            this.WriteObject(new ASRProtectionEntity(pe));
         }
     }
 }
