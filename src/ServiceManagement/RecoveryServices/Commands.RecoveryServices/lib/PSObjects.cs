@@ -94,14 +94,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
         #region Properties
         /// <summary>
-        /// Gets or sets Server ID.
-        /// </summary>
-        public string ID { get; set; }
-
-        /// <summary>
         /// Gets or sets Name of the Server.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets Server ID.
+        /// </summary>
+        public string ID { get; set; }
 
         /// <summary>
         /// Gets or sets Last communicated time.
@@ -147,12 +147,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             this.Name = pc.Name;
             this.ConfigurationStatus = pc.ConfigurationStatus;
             this.Role = pc.Role;
-            this.PairedTo = pc.PairedTo;
             this.ServerId = pc.ServerId;
             this.FabricObjectId = pc.FabricObjectId;
         }
 
         #region Properties
+        /// <summary>
+        /// Gets or sets name of the Protection container.
+        /// </summary>
+        public string Name { get; set; }
+
         /// <summary>
         /// Gets or sets Protection container ID.
         /// </summary>
@@ -164,9 +168,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public string FabricObjectId { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the Protection container.
+        /// Gets or sets Server ID.
         /// </summary>
-        public string Name { get; set; }
+        public string ServerId { get; set; }
 
         /// <summary>
         /// Gets or sets configuration status.
@@ -174,20 +178,10 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public string ConfigurationStatus { get; set; }
 
         /// <summary>
-        /// Gets or sets a PairedTo of protection container.
-        /// </summary>
-        [DataMember]
-        public string PairedTo { get; set; }
-
-        /// <summary>
         /// Gets or sets a role of the protection container.
         /// </summary>
         public string Role { get; set; }
 
-        /// <summary>
-        /// Gets or sets Server ID.
-        /// </summary>
-        public string ServerId { get; set; }
         #endregion
     }
 
@@ -480,14 +474,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         }
 
         /// <summary>
+        /// Gets or sets Name of the Protection entity.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Gets or sets Protection entity ID.
         /// </summary>
         public string ID { get; set; }
 
         /// <summary>
-        /// Gets or sets Server ID.
+        /// Gets or sets fabric object ID.
         /// </summary>
-        public string ServerId { get; set; }
+        public string FabricObjectId { get; set; }
 
         /// <summary>
         /// Gets or sets Protection container ID.
@@ -495,19 +494,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public string ProtectionContainerId { get; set; }
 
         /// <summary>
-        /// Gets or sets Name of the Protection entity.
+        /// Gets or sets Server ID.
         /// </summary>
-        public string Name { get; set; }
+        public string ServerId { get; set; }
 
         /// <summary>
         /// Gets or sets type of the Protection entity.
         /// </summary>
         public string Type { get; set; }
-
-        /// <summary>
-        /// Gets or sets fabric object ID.
-        /// </summary>
-        public string FabricObjectId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether it is protected or not.
@@ -579,23 +573,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
             this.StartTime = task.StartTime;
             this.State = task.State;
             this.StateDescription = task.StateDescription;
-            this.TaskType = task.TaskType;
         }
-
-        /// <summary>
-        /// Gets or sets Job ID.
-        /// </summary>
-        public string ID { get; set; }
-
-        /// <summary>
-        /// Gets or sets the start time.
-        /// </summary>
-        public DateTime StartTime { get; set; }
-
-        /// <summary>
-        /// Gets or sets the end time.
-        /// </summary>
-        public DateTime EndTime { get; set; }
 
         /// <summary>
         /// Gets or sets the task name.
@@ -603,10 +581,9 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the task type, which specifies what type of info is present
-        /// in extended details.
+        /// Gets or sets Job ID.
         /// </summary>
-        public string TaskType { get; set; }
+        public string ID { get; set; }
 
         /// <summary>
         /// Gets or sets the Status.
@@ -617,6 +594,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// Gets or sets the State description, which tells the exact internal state.
         /// </summary>
         public string StateDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets the start time.
+        /// </summary>
+        public DateTime StartTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end time.
+        /// </summary>
+        public DateTime EndTime { get; set; }
     }
     
     /// <summary>
@@ -669,6 +656,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
 
         #region Properties
         /// <summary>
+        /// Gets or sets Job display name.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Gets or sets Job ID.
         /// </summary>
         public string ID { get; set; }
@@ -702,11 +694,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices.SiteRecovery
         /// Gets or sets list of allowed actions.
         /// </summary>
         public List<string> AllowedActions { get; set; }
-
-        /// <summary>
-        /// Gets or sets Job display name.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets list of tasks.
