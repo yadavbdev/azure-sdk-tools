@@ -992,9 +992,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Setting: {0} as the default and current subscription. To view other subscriptions use Get-AzureSubscription.
         /// </summary>
-        public static string DefaultAndCurrentContext_Subscription {
+        public static string DefaultAndCurrentSubscription {
             get {
-                return ResourceManager.GetString("DefaultAndCurrentContext.Subscription", resourceCulture);
+                return ResourceManager.GetString("DefaultAndCurrentSubscription", resourceCulture);
             }
         }
         
@@ -2949,9 +2949,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The current subscription is being removed. Use Select-Subscription &lt;subscriptionName&gt; to select a new current subscription..
         /// </summary>
-        public static string RemoveCurrentContext_Subscription {
+        public static string RemoveCurrentSubscription {
             get {
-                return ResourceManager.GetString("RemoveCurrentContext.Subscription", resourceCulture);
+                return ResourceManager.GetString("RemoveCurrentSubscription", resourceCulture);
             }
         }
         
