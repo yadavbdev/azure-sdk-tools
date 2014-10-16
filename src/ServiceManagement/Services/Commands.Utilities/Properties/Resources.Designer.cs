@@ -992,7 +992,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Setting: {0} as the default and current subscription. To view other subscriptions use Get-AzureSubscription.
         /// </summary>
-        public static string DefaultAndCurrentSubscription {
+        public static string DefaultAndCurrentContext_Subscription {
             get {
                 return ResourceManager.GetString("DefaultAndCurrentContext.Subscription", resourceCulture);
             }
@@ -2949,9 +2949,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The current subscription is being removed. Use Select-Subscription &lt;subscriptionName&gt; to select a new current subscription..
         /// </summary>
-        public static string RemoveCurrentSubscription {
+        public static string RemoveCurrentContext_Subscription {
             get {
-                return ResourceManager.GetString("RemoveCurrentSubscription", resourceCulture);
+                return ResourceManager.GetString("RemoveCurrentContext.Subscription", resourceCulture);
             }
         }
         
@@ -3442,11 +3442,29 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A valid value for ClientCertificatePfx and ClientCertificatePassword parameters are required for Http scheduler jobs with ClientCertificate authentication type..
+        /// </summary>
+        public static string SchedulerInvalidClientCertAuthRequest {
+            get {
+                return ResourceManager.GetString("SchedulerInvalidClientCertAuthRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid location entered. Pick one of the locations from Get-AzureSchedulerLocation.
         /// </summary>
         public static string SchedulerInvalidLocation {
             get {
                 return ResourceManager.GetString("SchedulerInvalidLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For None authentication type, both ClientCertificatePfx and ClientCertificatePassword parameters should be null.
+        /// </summary>
+        public static string SchedulerInvalidNoneAuthRequest {
+            get {
+                return ResourceManager.GetString("SchedulerInvalidNoneAuthRequest", resourceCulture);
             }
         }
         
