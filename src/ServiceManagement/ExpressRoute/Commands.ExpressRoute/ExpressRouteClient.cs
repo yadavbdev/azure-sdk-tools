@@ -42,8 +42,7 @@ namespace Microsoft.WindowsAzure.Commands.ExpressRoute
         /// <param name="subscription">Subscription containing websites to manipulate</param>
         public ExpressRouteClient(AzureSubscription subscription)
             : this(CreateClient<ExpressRouteManagementClient>(subscription))
-        {
-            //Client = subscription.CreateClient<ExpressRouteManagementClient>(subscription);
+        {   
         }
 
         public ExpressRouteClient(ExpressRouteManagementClient client)
