@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
@@ -24,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
     /// View details of deployment events.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "AzureDeploymentEvent", DefaultParameterSetName = GetDeploymentEventBySlotParamSet)]
-    [OutputType(typeof(object))]
+    [OutputType(typeof(DeploymentRebootEventContext))]
     public class GetAzureDeploymentEventCommand : ServiceManagementBaseCmdlet
     {
         protected const string GetDeploymentEventByNameParamSet = "GetDeploymentEventByName";
@@ -51,12 +52,38 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
         {
             ServiceManagementProfile.Initialize();
 
-            if (string.IsNullOrEmpty(this.DeploymentName))
-            {
-            }
-            else
-            {
-            }
+            ExecuteClientActionNewSM(
+                null,
+                CommandRuntime.ToString(),
+                () =>
+                {
+                    if (!string.IsNullOrEmpty(this.DeploymentName))
+                    {
+                        return this.ComputeClient.Deployments.ListEvents(this.ServiceName, this.DeploymentName, this.StartTime, this.EndTime);
+                    }
+                    else
+                    {
+                        this.Slot = string.IsNullOrEmpty(this.Slot) ? DeploymentSlotType.Production : this.Slot;
+                        var slot = (DeploymentSlot)Enum.Parse(typeof(DeploymentSlot), this.Slot, true);
+                        return this.ComputeClient.Deployments.ListEventsBySlot(this.ServiceName, slot, this.StartTime, this.EndTime);
+                    }
+                },
+                (s, d) =>
+                {
+                    return d.DeploymentEvents.Select(e => new DeploymentRebootEventContext
+                    {
+                        OperationId = s.Id,
+                        OperationStatus = s.Status.ToString(),
+                        OperationDescription = CommandRuntime.ToString(),
+                        ServiceName = this.ServiceName,
+                        DeploymentName = this.DeploymentName,
+                        DeploymentSlot = this.Slot,
+                        InstanceName = e.InstanceName,
+                        RebootReason = e.RebootReason,
+                        RebootStartedTime = e.RebootStartedTime,
+                        RoleName = e.RoleName
+                    });
+                });
         }
     }
 }

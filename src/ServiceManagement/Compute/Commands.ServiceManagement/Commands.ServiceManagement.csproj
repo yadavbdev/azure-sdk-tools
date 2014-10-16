@@ -216,6 +216,7 @@
     <Compile Include="IaaS\Network\SetAzureDns.cs" />
     <Compile Include="IaaS\Network\SetAzureInternalLoadBalancer.cs" />
     <Compile Include="IaaS\Network\SetAzurePublicIP.cs" />
+    <Compile Include="Model\DeploymentRebootEventContext.cs" />
     <Compile Include="Model\InternalLoadBalancerSetting.cs" />
     <Compile Include="Model\InternalLoadBalancerContext.cs" />
     <Compile Include="Model\ProvisioningState.cs" />
