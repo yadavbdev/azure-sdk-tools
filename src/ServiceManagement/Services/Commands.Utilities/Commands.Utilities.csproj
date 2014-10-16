@@ -246,6 +246,7 @@
     </Compile>
     <Compile Include="Scheduler\Common\Constants.cs" />
     <Compile Include="Scheduler\Common\ExtensionMethods.cs" />
+    <Compile Include="Scheduler\Common\SchedulerUtils.cs" />
     <Compile Include="Scheduler\Model\PSCreateJobCollectionParams.cs" />
     <Compile Include="Scheduler\Model\PSCreateJobParams.cs" />
     <Compile Include="Scheduler\Model\PSHttpJobDetail.cs" />
