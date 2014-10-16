@@ -201,7 +201,7 @@
   
   <!-- Run live tests and record mocks -->
     <Target
-    Name="LiveTest"
+    Name="RunLiveTests"
     DependsOnTargets="ForceRestorePackages;Clean;BuildDebug;BuildRelease;LiveTestsFilter;BuildSetupDebug;BuildSetupRelease" />
 
     <Target Name="LiveTestsFilter" DependsOnTargets="BuildDebug;BeforeRunTests">
