@@ -269,6 +269,8 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureDnsCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureEndpointCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureStaticVNetIPCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\PaasCmdletInfo\GetAzureDeploymentEventBySlotCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\PaasCmdletInfo\GetAzureDeploymentEventCmdletInfo.cs" />
     <Compile Include="FunctionalTests\SubscriptionCmdletInfo\RemoveAzureSubscriptionCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureVMCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureServiceCmdletInfo.cs" />

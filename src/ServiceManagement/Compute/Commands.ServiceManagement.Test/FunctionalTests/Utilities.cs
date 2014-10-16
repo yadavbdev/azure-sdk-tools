@@ -85,6 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public const string SetAzureDeploymentCmdletName = "Set-AzureDeployment";
         public const string RemoveAzureDeploymentCmdletName = "Remove-AzureDeployment";
         public const string MoveAzureDeploymentCmdletName = "Move-AzureDeployment";
+        public const string GetAzureDeploymentEventCmdletName = "Get-AzureDeploymentEvent";
 
         // AzureDisk        
         public const string AddAzureDiskCmdletName = "Add-AzureDisk";

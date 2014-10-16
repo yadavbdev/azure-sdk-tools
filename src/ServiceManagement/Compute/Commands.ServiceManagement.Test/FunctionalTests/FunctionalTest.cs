@@ -312,6 +312,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass &= Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
 
+                var events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, DateTime.Now, DateTime.Now);
+                Assert.IsTrue(!events.Any()); 
+                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, DeploymentSlotType.Production, DateTime.Now, DateTime.Now);
+                Assert.IsTrue(!events.Any());
+                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, null, DateTime.Now, DateTime.Now);
+                Assert.IsTrue(!events.Any());
+
+                try
+                {
+                    // Negative test for invalid date range
+                    events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, DateTime.Now, DateTime.Now.AddDays(-1));
+                }
+                catch (CloudException ex)
+                {
+                    Assert.IsTrue(ex.Response.StatusCode == System.Net.HttpStatusCode.BadRequest);
+                    Assert.IsTrue(ex.Message.Contains("The date specified in parameter EndTime is not within the correct range."));
+                }
+
                 vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
 
                 pass &= Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName, DeploymentSlotType.Production);

@@ -393,6 +393,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return GetAzureDeployment(serviceName, SM.DeploymentSlotType.Production);
         }
 
+        public Collection<SM.DeploymentRebootEventContext> GetAzureDeploymentEvent(string serviceName, string deploymentName, DateTime startTime, DateTime endTime)
+        {
+            return RunPSCmdletAndReturnAll<SM.DeploymentRebootEventContext>(new GetAzureDeploymentEventCmdletInfo(serviceName, deploymentName, startTime, endTime));
+        }
+
+        public Collection<SM.DeploymentRebootEventContext> GetAzureDeploymentEventBySlot(string serviceName, string deploymentSlot, DateTime startTime, DateTime endTime)
+        {
+            return RunPSCmdletAndReturnAll<SM.DeploymentRebootEventContext>(new GetAzureDeploymentEventCmdletInfo(serviceName, deploymentSlot, startTime, endTime));
+        }
+
         private ManagementOperationContext SetAzureDeployment(SetAzureDeploymentCmdletInfo cmdletInfo)
         {
             return RunPSCmdletAndReturnFirst<ManagementOperationContext>(cmdletInfo);
