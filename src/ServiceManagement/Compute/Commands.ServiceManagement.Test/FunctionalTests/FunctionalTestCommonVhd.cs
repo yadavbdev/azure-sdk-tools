@@ -155,13 +155,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
                 OSImageContext resultReturned = vmPowershellCmdlets.GetAzureVMImage(newImageName)[0];
                 Assert.IsTrue(!string.IsNullOrEmpty(resultReturned.IOType));
-                result.IOType = resultReturned.IOType; // TODO: Need to return IOType in the AddAzureVMImage cmdlet
                 Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
                 result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, newLabel);
                 resultReturned = vmPowershellCmdlets.GetAzureVMImage(newImageName)[0];
                 Assert.IsTrue(!string.IsNullOrEmpty(resultReturned.IOType));
-                result.IOType = resultReturned.IOType; // TODO: Need to return IOType in the UpdateAzureVMImage cmdlet
                 Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
                 vmPowershellCmdlets.RemoveAzureVMImage(newImageName, false);
