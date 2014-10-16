@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Retrieves Azure Site Recovery Protection Container.
     /// </summary>
@@ -149,10 +148,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="protectionContainers">List of Protection Containers</param>
         private void WriteProtectionContainers(IList<ProtectionContainer> protectionContainers)
         {
-            foreach (ProtectionContainer protectionContainer in protectionContainers)
-            {
-                this.WriteProtectionContainer(protectionContainer);
-            }
+            this.WriteObject(protectionContainers.Select(pc => new ASRProtectionContainer(pc)), true);
         }
 
         /// <summary>
@@ -161,7 +157,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="protectionContainer">Protection Container</param>
         private void WriteProtectionContainer(ProtectionContainer protectionContainer)
         {
-            this.WriteObject(new ASRProtectionContainer(protectionContainer), true);
+            this.WriteObject(new ASRProtectionContainer(protectionContainer));
         }
     }
 }

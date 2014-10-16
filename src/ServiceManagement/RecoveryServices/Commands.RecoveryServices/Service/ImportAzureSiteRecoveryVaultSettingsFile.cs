@@ -12,22 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Runtime.Serialization;
+using System.Xml;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.Azure.Portal.RecoveryServices.Models.Common;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Management.Automation;
-    using System.Runtime.Serialization;
-    using System.Xml;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.Azure.Portal.RecoveryServices.Models.Common;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    #endregion
-
     /// <summary>
     /// Imports Azure Site Recovery Vault Settings.
     /// </summary>

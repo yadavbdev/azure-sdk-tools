@@ -12,33 +12,31 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Web.Script.Serialization;
+using System.Xml;
+using Microsoft.Azure.Portal.RecoveryServices.Models.Common;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Factories;
+using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.RecoveryServices;
+using Microsoft.WindowsAzure.Management.RecoveryServices.Models;
+using Microsoft.WindowsAzure.Management.SiteRecovery;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Net;
-    using System.Runtime.Serialization;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using System.Web.Script.Serialization;
-    using System.Xml;
-    using Microsoft.Azure.Portal.RecoveryServices.Models.Common;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Common;
-    using Microsoft.WindowsAzure.Commands.Common.Factories;
-    using Microsoft.WindowsAzure.Commands.Common.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.RecoveryServices;
-    using Microsoft.WindowsAzure.Management.RecoveryServices.Models;
-    using Microsoft.WindowsAzure.Management.SiteRecovery;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common.Authentication;
-    #endregion
-
     /// <summary>
     /// Recovery services convenience client.
     /// </summary>

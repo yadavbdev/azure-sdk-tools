@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Management.Automation;
+using System.Threading;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Diagnostics;
-    using System.Management.Automation;
-    using System.Threading;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Used to initiate a recovery plan create operation.
     /// </summary>
@@ -76,7 +75,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             try
             {
-                string recoveryPlanXml = System.IO.File.ReadAllText(this.File);
+                string recoveryPlanXml = FileUtilities.DataStore.ReadFileAsText(this.File);
                 this.jobResponse = RecoveryServicesClient.CreateAzureSiteRecoveryRecoveryPlan(
                     recoveryPlanXml);
                 this.WriteJob(this.jobResponse.Job);
