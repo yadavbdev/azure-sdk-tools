@@ -348,6 +348,12 @@
                 </ScriptBlock>
               </ListItem>
               <ListItem>
+                <Label>StorageAccountTypes</Label>
+                <ScriptBlock>
+                  "{" + (-Split $_.StorageAccountTypes -Join ", ") + "}"
+                </ScriptBlock>
+              </ListItem>
+              <ListItem>
                 <Label>OperationDescription</Label>
                 <PropertyName>OperationDescription</PropertyName>
               </ListItem>
