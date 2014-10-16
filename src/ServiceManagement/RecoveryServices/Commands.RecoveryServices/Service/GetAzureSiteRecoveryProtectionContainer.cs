@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Retrieves Azure Site Recovery Protection Container.
     /// </summary>
@@ -31,38 +30,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     public class GetAzureSiteRecoveryProtectionContainer : RecoveryServicesCmdletBase
     {
         #region Parameters
-
-        /// <summary>
-        /// Protection container ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Name of the Protection container.
-        /// </summary>
-        private string name;
-
         /// <summary>
         /// Gets or sets ID of the Protection Container.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ById, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id {get; set;}
 
         /// <summary>
         /// Gets or sets name of the Protection Container.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByName, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Name
-        {
-            get { return this.name; }
-            set { this.name = value; }
-        }
+        public string Name {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -104,7 +84,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 ProtectionContainer protectionContainer in 
                 protectionContainerListResponse.ProtectionContainers)
             {
-                if (0 == string.Compare(this.name, protectionContainer.Name, true))
+                if (0 == string.Compare(this.Name, protectionContainer.Name, true))
                 {
                     this.WriteProtectionContainer(protectionContainer);
                     found = true;
@@ -116,7 +96,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 throw new InvalidOperationException(
                     string.Format(
                     Properties.Resources.ProtectionContainerNotFound,
-                    this.name,
+                    this.Name,
                     PSRecoveryServicesClient.asrVaultCreds.ResourceName));
             }
         }
@@ -127,7 +107,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         private void GetById()
         {
             ProtectionContainerResponse protectionContainerResponse =
-                RecoveryServicesClient.GetAzureSiteRecoveryProtectionContainer(this.id);
+                RecoveryServicesClient.GetAzureSiteRecoveryProtectionContainer(this.Id);
 
             this.WriteProtectionContainer(protectionContainerResponse.ProtectionContainer);
         }
@@ -149,10 +129,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="protectionContainers">List of Protection Containers</param>
         private void WriteProtectionContainers(IList<ProtectionContainer> protectionContainers)
         {
-            foreach (ProtectionContainer protectionContainer in protectionContainers)
-            {
-                this.WriteProtectionContainer(protectionContainer);
-            }
+            this.WriteObject(protectionContainers.Select(pc => new ASRProtectionContainer(pc)), true);
         }
 
         /// <summary>
@@ -161,7 +138,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="protectionContainer">Protection Container</param>
         private void WriteProtectionContainer(ProtectionContainer protectionContainer)
         {
-            this.WriteObject(new ASRProtectionContainer(protectionContainer), true);
+            this.WriteObject(new ASRProtectionContainer(protectionContainer));
         }
     }
 }

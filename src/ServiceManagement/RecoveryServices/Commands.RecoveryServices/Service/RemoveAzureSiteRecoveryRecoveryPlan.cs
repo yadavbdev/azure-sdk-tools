@@ -12,18 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Management.Automation;
+using System.Threading;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Diagnostics;
-    using System.Management.Automation;
-    using System.Threading;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Remove a Recovery Plan from the current Azure Site Recovery Vault.
     /// </summary>
@@ -136,16 +134,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         this.HandleException(exception);
                     }
                 });
-        }
-
-        /// <summary>
-        /// Handles interrupts.
-        /// </summary>
-        protected override void StopProcessing()
-        {
-            // Ctrl + C and etc
-            base.StopProcessing();
-            this.StopProcessingFlag = true;
         }
 
         /// <summary>
