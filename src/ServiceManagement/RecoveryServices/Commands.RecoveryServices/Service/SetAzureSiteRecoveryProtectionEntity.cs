@@ -30,32 +30,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     public class SetAzureSiteRecoveryProtectionEntity : RecoveryServicesCmdletBase
     {
         #region Parameters
-
-        /// <summary>
-        /// Virtual Machine ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Protection container ID.
-        /// </summary>
-        private string protectionContainerId;
-
-        /// <summary>
-        /// Protection entity object.
-        /// </summary>
-        private ASRProtectionEntity protectionEntity;
-
-        /// <summary>
-        /// Protection state to set.
-        /// </summary>
-        private string protection;
-
-        /// <summary>
-        /// Switch parameter to wait for completion.
-        /// </summary>
-        private bool waitForCompletion;
-
         /// <summary>
         /// Job response.
         /// </summary>
@@ -71,33 +45,21 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByIDs, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id {get; set;}
 
         /// <summary>
         /// Gets or sets ID of the ProtectionContainer containing the Virtual Machine.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByIDs, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string ProtectionContianerId
-        {
-            get { return this.protectionContainerId; }
-            set { this.protectionContainerId = value; }
-        }
+        public string ProtectionContianerId {get; set;}
 
         /// <summary>
         /// Gets or sets Protection Entity Object.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByPEObject, Mandatory = true, ValueFromPipeline = true)]
         [ValidateNotNullOrEmpty]
-        public ASRProtectionEntity ProtectionEntity
-        {
-            get { return this.protectionEntity; }
-            set { this.protectionEntity = value; }
-        }
+        public ASRProtectionEntity ProtectionEntity {get; set;}
 
         /// <summary>
         /// Gets or sets Protection to set, either enable or disable.
@@ -107,21 +69,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [ValidateSet(
             PSRecoveryServicesClient.EnableProtection,
             PSRecoveryServicesClient.DisableProtection)]
-        public string Protection
-        {
-            get { return this.protection; }
-            set { this.protection = value; }
-        }
+        public string Protection {get; set;}
 
         /// <summary>
         /// Gets or sets switch parameter. On passing, command waits till completion.
         /// </summary>
         [Parameter]
-        public SwitchParameter WaitForCompletion
-        {
-            get { return this.waitForCompletion; }
-            set { this.waitForCompletion = value; }
-        }
+        public SwitchParameter WaitForCompletion {get; set;}
 
         /// <summary>
         /// Gets or sets switch parameter. On passing, command does not ask for confirmation.
@@ -138,19 +92,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             switch (this.ParameterSetName)
             {
                 case ASRParameterSets.ByPEObject:
-                    this.id = this.protectionEntity.ID;
-                    this.protectionContainerId = this.protectionEntity.ProtectionContainerId;
-                    this.targetNameOrId = this.protectionEntity.Name;
+                    this.Id = this.ProtectionEntity.ID;
+                    this.ProtectionContianerId = this.ProtectionEntity.ProtectionContainerId;
+                    this.targetNameOrId = this.ProtectionEntity.Name;
                     break;
                 case ASRParameterSets.ByIDs:
-                    this.targetNameOrId = this.id;
+                    this.targetNameOrId = this.Id;
                     break;
             }
 
             ConfirmAction(
-                Force.IsPresent || 0 != string.CompareOrdinal(protection, PSRecoveryServicesClient.DisableProtection),
+                Force.IsPresent || 0 != string.CompareOrdinal(this.Protection, PSRecoveryServicesClient.DisableProtection),
                 string.Format(Properties.Resources.DisableProtectionWarning, this.targetNameOrId),
-                string.Format(Properties.Resources.DisableProtectionWhatIfMessage, this.protection),
+                string.Format(Properties.Resources.DisableProtectionWhatIfMessage, this.Protection),
                 this.targetNameOrId,
                 () =>
                     {
@@ -158,13 +112,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         {
                             this.jobResponse =
                                 RecoveryServicesClient.SetProtectionOnProtectionEntity(
-                                this.protectionContainerId,
-                                this.id,
-                                this.protection);
+                                this.ProtectionContianerId,
+                                this.Id,
+                                this.Protection);
 
                             this.WriteJob(this.jobResponse.Job);
 
-                            if (this.waitForCompletion)
+                            if (this.WaitForCompletion.IsPresent)
                             {
                                 this.WaitForJobCompletion(this.jobResponse.Job.ID);
                             }

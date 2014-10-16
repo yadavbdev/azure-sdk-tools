@@ -31,36 +31,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// Recovery Plan ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Name of the Recovery Plan.
-        /// </summary>
-        private string name;
-
-        /// <summary>
         /// Gets or sets Recovery Plan ID.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ById, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets name of the Recovery Plan.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByName, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Name
-        {
-            get { return this.name; }
-            set { this.name = value; }
-        }
+        public string Name {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -100,7 +82,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             bool found = false;
             foreach (RecoveryPlan recoveryPlan in recoveryPlanListResponse.RecoveryPlans)
             {
-                if (0 == string.Compare(this.name, recoveryPlan.Name, true))
+                if (0 == string.Compare(this.Name, recoveryPlan.Name, true))
                 {
                     this.WriteRecoveryPlan(recoveryPlan);
                     found = true;
@@ -112,7 +94,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 throw new InvalidOperationException(
                     string.Format(
                     Properties.Resources.RecoveryPlanNotFound,
-                    this.name,
+                    this.Name,
                     PSRecoveryServicesClient.asrVaultCreds.ResourceName));
             }
         }
@@ -123,7 +105,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         private void GetById()
         {
             RecoveryPlanResponse recoveryPlanResponse =
-                RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(this.id);
+                RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(this.Id);
 
             this.WriteRecoveryPlan(recoveryPlanResponse.RecoveryPlan);
         }

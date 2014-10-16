@@ -30,38 +30,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     public class GetAzureSiteRecoveryProtectionEntity : RecoveryServicesCmdletBase
     {
         #region Parameters
-
-        /// <summary>
-        /// Protection entity ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Name of the Protection entity.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// Protection container ID.
-        /// </summary>
-        private string protectionContainerId;
-
-        /// <summary>
-        /// Protection container object.
-        /// </summary>
-        private ASRProtectionContainer protectionContainer;
-
         /// <summary>
         /// Gets or sets ID of the Virtual Machine.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByObjectWithId, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByIDsWithId, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id {get; set;}
 
         /// <summary>
         /// Gets or sets name of the Virtual Machine.
@@ -69,11 +44,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [Parameter(ParameterSetName = ASRParameterSets.ByObjectWithName, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByIDsWithName, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Name
-        {
-            get { return this.name; }
-            set { this.name = value; }
-        }
+        public string Name {get; set;}
 
         /// <summary>
         /// Gets or sets ID of the ProtectionContainer containing the Virtual Machine.
@@ -82,11 +53,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [Parameter(ParameterSetName = ASRParameterSets.ByIDsWithId, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByIDsWithName, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string ProtectionContainerId
-        {
-            get { return this.protectionContainerId; }
-            set { this.protectionContainerId = value; }
-        }
+        public string ProtectionContainerId {get; set;}
 
         /// <summary>
         /// Gets or sets Server Object.
@@ -95,11 +62,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [Parameter(ParameterSetName = ASRParameterSets.ByObjectWithId, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByObjectWithName, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public ASRProtectionContainer ProtectionContainer
-        {
-            get { return this.protectionContainer; }
-            set { this.protectionContainer = value; }
-        }
+        public ASRProtectionContainer ProtectionContainer {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -114,7 +77,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                     case ASRParameterSets.ByObject:
                     case ASRParameterSets.ByObjectWithId:
                     case ASRParameterSets.ByObjectWithName:
-                        this.protectionContainerId = this.ProtectionContainer.ID;
+                        this.ProtectionContainerId = this.ProtectionContainer.ID;
                         break;
                     case ASRParameterSets.ByIDs:
                     case ASRParameterSets.ByIDsWithId:
@@ -122,11 +85,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         break;
                 }
 
-                if (this.id != null)
+                if (this.Id != null)
                 {
                     this.GetById();
                 }
-                else if (this.name != null)
+                else if (this.Name != null)
                 {
                     this.GetByName();
                 }
@@ -148,12 +111,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             ProtectionEntityListResponse protectionEntityListResponse =
                 RecoveryServicesClient.GetAzureSiteRecoveryProtectionEntity(
-                this.protectionContainerId);
+                this.ProtectionContainerId);
 
             bool found = false;
             foreach (ProtectionEntity pe in protectionEntityListResponse.ProtectionEntities)
             {
-                if (0 == string.Compare(this.name, pe.Name, true))
+                if (0 == string.Compare(this.Name, pe.Name, true))
                 {
                     this.WriteProtectionEntity(pe);
                     found = true;
@@ -165,8 +128,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 throw new InvalidOperationException(
                     string.Format(
                     Properties.Resources.ProtectionEntityNotFound,
-                    this.name,
-                    this.protectionContainerId));
+                    this.Name,
+                    this.ProtectionContainerId));
             }
         }
 
@@ -177,8 +140,8 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             ProtectionEntityResponse protectionEntityResponse =
                 RecoveryServicesClient.GetAzureSiteRecoveryProtectionEntity(
-                this.protectionContainerId,
-                this.id);
+                this.ProtectionContainerId,
+                this.Id);
 
             this.WriteProtectionEntity(protectionEntityResponse.ProtectionEntity);
         }
@@ -190,7 +153,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             ProtectionEntityListResponse protectionEntityListResponse =
                 RecoveryServicesClient.GetAzureSiteRecoveryProtectionEntity(
-                this.protectionContainerId);
+                this.ProtectionContainerId);
 
             this.WriteProtectionEntities(protectionEntityListResponse.ProtectionEntities);
         }

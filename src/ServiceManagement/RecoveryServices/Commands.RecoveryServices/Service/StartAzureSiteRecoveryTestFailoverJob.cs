@@ -31,41 +31,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// ID of the Recovery Plan.
-        /// </summary>
-        private string recoveryPlanId;
-
-        /// <summary>
-        /// Recovery Plan object.
-        /// </summary>
-        private ASRRecoveryPlan recoveryPlan;
-
-        /// <summary>
-        /// Failover direction for the recovery plan.
-        /// </summary>
-        private string direction;
-
-        /// <summary>
-        /// ID of the PE object to start failover on.
-        /// </summary>
-        private string protectionEntityId;
-
-        /// <summary>
-        /// Protection container ID of the object to start failover on.
-        /// </summary>
-        private string protectionContainerId;
-
-        /// <summary>
-        /// Recovery Plan object.
-        /// </summary>
-        private ASRProtectionEntity protectionEntity;
-
-        /// <summary>
-        /// This is required to wait for job completion.
-        /// </summary>
-        private bool waitForCompletion;
-
-        /// <summary>
         /// Job response.
         /// </summary>
         private JobResponse jobResponse = null;
@@ -85,22 +50,14 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByRPId, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string RpId
-        {
-            get { return this.recoveryPlanId; }
-            set { this.recoveryPlanId = value; }
-        }
+        public string RpId {get; set;}
 
         /// <summary>
         /// Gets or sets Recovery Plan object.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByRPObject, Mandatory = true, ValueFromPipeline = true)]
         [ValidateNotNullOrEmpty]
-        public ASRRecoveryPlan RecoveryPlan
-        {
-            get { return this.recoveryPlan; }
-            set { this.recoveryPlan = value; }
-        }
+        public ASRRecoveryPlan RecoveryPlan {get; set;}
 
         /// <summary>
         /// Gets or sets failover direction for the recovery plan.
@@ -112,11 +69,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [ValidateSet(
           PSRecoveryServicesClient.PrimaryToRecovery,
           PSRecoveryServicesClient.RecoveryToPrimary)]
-        public string Direction
-        {
-            get { return this.direction; }
-            set { this.direction = value; }
-        }
+        public string Direction {get; set;}
 
         /// <summary>
         /// Gets or sets ID of the PE.
@@ -125,11 +78,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [Parameter(ParameterSetName = ASRParameterSets.ByPEIdWithLogicalNetworkID, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByPEIdWithVMNetworkID, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string ProtectionEntityId
-        {
-            get { return this.protectionEntityId; }
-            set { this.protectionEntityId = value; }
-        }
+        public string ProtectionEntityId {get; set;}
 
         /// <summary>
         /// Gets or sets ID of the Recovery Plan.
@@ -138,11 +87,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [Parameter(ParameterSetName = ASRParameterSets.ByPEIdWithLogicalNetworkID, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByPEIdWithVMNetworkID, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string ProtectionContainerId
-        {
-            get { return this.protectionContainerId; }
-            set { this.protectionContainerId = value; }
-        }
+        public string ProtectionContainerId {get; set;}
 
         /// <summary>
         /// Gets or sets Protection Entity object.
@@ -151,44 +96,27 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         [Parameter(ParameterSetName = ASRParameterSets.ByPEObjectWithLogicalNetworkID, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByPEObjectWithVMNetworkID, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public ASRProtectionEntity ProtectionEntity
-        {
-            get { return this.protectionEntity; }
-            set { this.protectionEntity = value; }
-        }
+        public ASRProtectionEntity ProtectionEntity {get; set;}
 
         /// <summary>
         /// Gets or sets switch parameter. This is required to wait for job completion.
         /// </summary>
         [Parameter]
-        public SwitchParameter WaitForCompletion
-        {
-            get { return this.waitForCompletion; }
-            set { this.waitForCompletion = value; }
-        }
+        public SwitchParameter WaitForCompletion {get; set;}
 
         /// <summary>
         /// Gets or sets Logical network ID.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByPEObjectWithLogicalNetworkID, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByPEIdWithLogicalNetworkID, Mandatory = true)]
-        public string LogicalNetworkId
-        {
-            get { return this.networkId; }
-            set { this.networkId = value; }
-        }
+        public string LogicalNetworkId {get; set;}
 
         /// <summary>
         /// Gets or sets VM network ID.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByPEObjectWithVMNetworkID, Mandatory = true)]
         [Parameter(ParameterSetName = ASRParameterSets.ByPEIdWithVMNetworkID, Mandatory = true)]
-        public string VmNetworkId
-        {
-            get { return this.networkId; }
-            set { this.networkId = value; }
-        }
-
+        public string VmNetworkId {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -201,7 +129,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 switch (this.ParameterSetName)
                 {
                     case ASRParameterSets.ByRPObject:
-                        this.recoveryPlanId = this.recoveryPlan.ID;
+                        this.RpId = this.RecoveryPlan.ID;
                         this.StartRpTestFailover();
                         break;
                     case ASRParameterSets.ByRPId:
@@ -213,10 +141,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         break;
                     case ASRParameterSets.ByPEObjectWithLogicalNetworkID:
                         this.networkType = "CreateVMNetworkTypeForTestFailover";
+                        this.networkId = this.LogicalNetworkId;
                         this.UpdateRequiredParametersAndStartFailover();
                         break;
                     case ASRParameterSets.ByPEObjectWithVMNetworkID:
                         this.networkType = "UseVMNetworkTypeForTestFailover";
+                        this.networkId = this.VmNetworkId;
                         this.UpdateRequiredParametersAndStartFailover();
                         break;
                     case ASRParameterSets.ByPEId:
@@ -224,10 +154,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                         break;
                     case ASRParameterSets.ByPEIdWithLogicalNetworkID:
                         this.networkType = "CreateVMNetworkTypeForTestFailover";
+                        this.networkId = this.LogicalNetworkId;
                         this.StartPETestFailover();
                         break;
                     case ASRParameterSets.ByPEIdWithVMNetworkID:
                         this.networkType = "UseVMNetworkTypeForTestFailover";
+                        this.networkId = this.VmNetworkId;
                         this.StartPETestFailover();
                         break;
                 }
@@ -251,7 +183,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
 
             this.WriteJob(this.jobResponse.Job);
 
-            if (this.waitForCompletion)
+            if (this.WaitForCompletion.IsPresent)
             {
                 this.WaitForJobCompletion(this.jobResponse.Job.ID);
             }
@@ -264,19 +196,19 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             var tfoReqeust = new TestFailoverRequest();
             tfoReqeust.NetworkID = this.networkId;
-            tfoReqeust.FailoverDirection = this.direction;
+            tfoReqeust.FailoverDirection = this.Direction;
             tfoReqeust.NetworkType = this.networkType;
             tfoReqeust.ReplicationProvider = string.Empty;
             tfoReqeust.ReplicationProviderSettings = string.Empty;
 
             this.jobResponse =
                 RecoveryServicesClient.StartAzureSiteRecoveryTestFailover(
-                this.protectionContainerId,
+                this.ProtectionContainerId,
                 this.ProtectionEntityId,
                 tfoReqeust);
             this.WriteJob(this.jobResponse.Job);
 
-            if (this.waitForCompletion)
+            if (this.WaitForCompletion.IsPresent)
             {
                 this.WaitForJobCompletion(this.jobResponse.Job.ID);
             }
@@ -287,16 +219,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         private void UpdateRequiredParametersAndStartFailover()
         {
-            if (!this.protectionEntity.Protected)
+            if (!this.ProtectionEntity.Protected)
             {
                 throw new InvalidOperationException(
                     string.Format(
                     Properties.Resources.ProtectionEntityNotProtected,
-                    this.protectionEntity.Name));
+                    this.ProtectionEntity.Name));
             }
 
-            this.protectionContainerId = this.protectionEntity.ProtectionContainerId;
-            this.protectionEntityId = this.protectionEntity.ID;
+            this.ProtectionContainerId = this.ProtectionEntity.ProtectionContainerId;
+            this.ProtectionEntityId = this.ProtectionEntity.ID;
             this.StartPETestFailover();
         }
 
