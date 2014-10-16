@@ -35,11 +35,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// Azure Site Recovery Vault settings file.
-        /// </summary>
-        private string path;
-
-        /// <summary>
         /// Gets or sets path to the Azure site Recovery Vault Settings file. This file can be 
         /// downloaded from Azure site recovery Vault portal and stored locally.
         /// </summary>
@@ -49,11 +44,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             HelpMessage = "AzureSiteRecovery vault settings file path", 
             ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public string Path
-        {
-            get { return this.path; }
-            set { this.path = value; }
-        }
+        public string Path {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -61,16 +52,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            this.WriteVerbose("Vault Settings File path: " + this.path);
+            this.WriteVerbose("Vault Settings File path: " + this.Path);
 
             ASRVaultCreds asrVaultCreds = null;
-            if (File.Exists(this.path))
+            if (File.Exists(this.Path))
             {
                 try
                 {
                     var serializer = new DataContractSerializer(typeof(ASRVaultCreds));
                     using (var s = new FileStream(
-                        this.path,
+                        this.Path,
                         FileMode.Open,
                         FileAccess.Read,
                         FileShare.Read))
@@ -93,7 +84,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             {
                 throw new FileNotFoundException(
                     Properties.Resources.VaultSettingFileNotFound,
-                    this.path);
+                    this.Path);
             }
 
             // Validate required parameters taken from the Vault settings file.

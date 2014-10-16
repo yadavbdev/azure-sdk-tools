@@ -31,36 +31,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// Server ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Name of the Server.
-        /// </summary>
-        private string name;
-
-        /// <summary>
         /// Gets or sets ID of the Server.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ById, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id {get; set;}
 
         /// <summary>
         /// Gets or sets name of the Server.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByName, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Name
-        {
-            get { return this.name; }
-            set { this.name = value; }
-        }
+        public string Name {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -100,7 +82,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             bool found = false;
             foreach (Server server in serverListResponse.Servers)
             {
-                if (0 == string.Compare(this.name, server.Name, true))
+                if (0 == string.Compare(this.Name, server.Name, true))
                 {
                     this.WriteServer(server);
                     found = true;
@@ -112,7 +94,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 throw new InvalidOperationException(
                     string.Format(
                     Properties.Resources.ServerNotFound,
-                    this.name,
+                    this.Name,
                     PSRecoveryServicesClient.asrVaultCreds.ResourceName));
             }
         }
@@ -123,7 +105,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         private void GetById()
         {
             ServerResponse serverResponse =
-                RecoveryServicesClient.GetAzureSiteRecoveryServer(this.id);
+                RecoveryServicesClient.GetAzureSiteRecoveryServer(this.Id);
 
             this.WriteServer(serverResponse.Server);
         }
