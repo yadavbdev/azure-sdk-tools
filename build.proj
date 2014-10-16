@@ -98,7 +98,7 @@
     <Exec Command="$(NuGetCommand) sources Update -Name Hydra -UserName $(PRIVATE_FEED_USER_NAME) -Password &quot;$(PRIVATE_FEED_PASSWORD)&quot; $(NuGetRestoreConfigSwitch)"
           EchoOff="true" />
 	<!-- Restore packages -->
-    <Exec Command="$(NuGetCommand) restore $(MSBuildProjectDirectory)\src\AzurePowerShell.sln $(NuGetRestoreConfigSwitch)" ContinueOnError="ErrorAndContinue" />
+    <Exec Command="$(NuGetCommand) restore $(MSBuildProjectDirectory)\src\AzurePowerShell.sln $(NuGetRestoreConfigSwitch)" ContinueOnError="false" />
     <!-- delete config file, don't want to leave passwords hanging around on the build server file system -->
     <Delete Files="$(NuGetRestoreConfigFile)" />
     <!--Restore the xunit runner needed to run unit tests-->
@@ -206,6 +206,6 @@
 
     <Target Name="LiveTestsFilter" DependsOnTargets="BuildDebug;BeforeRunTests">
     <Message Importance="high" Text="Running check in tests..." />
-    <CallTarget Targets="SqlTests"/>
+    <CallTarget Targets="RunLiveTests"/>
   </Target>
 </Project>
