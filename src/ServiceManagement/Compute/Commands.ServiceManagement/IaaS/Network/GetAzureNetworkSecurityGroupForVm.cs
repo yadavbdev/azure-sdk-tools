@@ -13,21 +13,25 @@
 // ----------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Management.Automation;
 using Microsoft.Azure.Commands.Network;
 using Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model;
 using Microsoft.WindowsAzure.Commands.Common;
-using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    [Cmdlet(VerbsCommon.Get, NetworkSecurityGroupNoun), OutputType(typeof(INetworkSecurityGroup))]
+    [Cmdlet(VerbsCommon.Get, NetworkSecurityGroupNoun), OutputType(typeof(IEnumerable<INetworkSecurityGroup>))]
     public class GetAzureNetworkSecurityGroupForVMCommand : VirtualMachineConfigurationCmdletBase
     {
         [Parameter(Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public SwitchParameter DetailLevel { get; set; }
+
+        [Parameter(Mandatory = false)]
+        [ValidateNotNullOrEmpty]
+        public SwitchParameter EffectiveRules { get; set; }
 
         protected override void ProcessRecord()
         {
@@ -42,13 +46,16 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             string networkSecurityGroupName = networkConfiguration.NetworkSecurityGroup;
             if (string.IsNullOrEmpty(networkSecurityGroupName))
             {
-                // fail
+                WriteWarningWithTimestamp(string.Format(Resources.WarningVmIsNotDirectlyAssociatedWithNetworkSecurityGroup, this.VM.GetInstance().RoleName));
             }
 
-            var networkClient = new NetworkClient(AzureSession.CurrentContext.Subscription, CommandRuntime);
-            INetworkSecurityGroup networkSecurityGroup = networkClient.GetNetworkSecurityGroup(networkSecurityGroupName, DetailLevel);
+            else
+            {
+                var networkClient = new NetworkClient(AzureSession.CurrentContext.Subscription, CommandRuntime);
+                INetworkSecurityGroup networkSecurityGroup = networkClient.GetNetworkSecurityGroup(networkSecurityGroupName, DetailLevel);
 
-            WriteObject(networkSecurityGroup);
+                WriteObject(networkSecurityGroup, true);
+            }
         }
     }
 }

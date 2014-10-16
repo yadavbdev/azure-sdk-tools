@@ -49,7 +49,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                 // the specified Network Security Group is not directly associated with this VM
                 WriteErrorWithTimestamp(
                     string.Format(
-                        Resources.ErrorVmIsNotDirectlyAssociatedWithNetworkSecurityGroup,
+                        Resources.CannotRemoveNetworkSecurityGroupBecauseNotDirectlyAssociatedwithVm,
                         NetworkSecurityGroupName,
                         VM.GetInstance().RoleName));
             }

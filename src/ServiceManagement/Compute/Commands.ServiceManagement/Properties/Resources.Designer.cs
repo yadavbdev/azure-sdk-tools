@@ -350,6 +350,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot remove Network Security Group &quot;{0}&quot; from Virtual Machine &quot;{1}&quot; because it is not directly..
+        /// </summary>
+        public static string CannotRemoveNetworkSecurityGroupBecauseNotDirectlyAssociatedwithVm {
+            get {
+                return ResourceManager.GetString("CannotRemoveNetworkSecurityGroupBecauseNotDirectlyAssociatedwithVm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to VM image capture operation is trigged while VM is still running. As this may cause data corruption while creating VMs from this image, we recommend using Stop-AzureVM to stop the VM before capturing..
         /// </summary>
         public static string CaptureVMImageOperationWhileVMIsStillRunning {
@@ -598,15 +607,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string ErrorAnotherImageTypeFoundWithTheSameName {
             get {
                 return ResourceManager.GetString("ErrorAnotherImageTypeFoundWithTheSameName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot remove Network Security Group &quot;{0}&quot; from Virtual Machine &quot;{1}&quot; because it is not directly..
-        /// </summary>
-        public static string ErrorVmIsNotDirectlyAssociatedWithNetworkSecurityGroup {
-            get {
-                return ResourceManager.GetString("ErrorVmIsNotDirectlyAssociatedWithNetworkSecurityGroup", resourceCulture);
             }
         }
         
@@ -1991,6 +1991,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string WaitForUploadingPackage {
             get {
                 return ResourceManager.GetString("WaitForUploadingPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VM &quot;{0}&quot; is not currently associated with a Network Security Group..
+        /// </summary>
+        public static string WarningVmIsNotDirectlyAssociatedWithNetworkSecurityGroup {
+            get {
+                return ResourceManager.GetString("WarningVmIsNotDirectlyAssociatedWithNetworkSecurityGroup", resourceCulture);
             }
         }
         

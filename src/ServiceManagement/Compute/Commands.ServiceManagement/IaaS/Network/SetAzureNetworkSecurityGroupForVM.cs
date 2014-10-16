@@ -20,7 +20,7 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    [Cmdlet(VerbsCommon.Set, NetworkSecurityGroupNoun), OutputType(typeof(IPersistentVM))]
+    [Cmdlet(VerbsCommon.Set, NetworkSecurityGroupNoun), OutputType(typeof(IPersistentVM)), Alias]
     public class SetAzureNetworkSecurityGroupForVMCommand : VirtualMachineConfigurationCmdletBase
     {
         [Parameter(Position = 1, Mandatory = true, HelpMessage = "The Network Security Group Name.")]
@@ -40,13 +40,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             networkConfiguration.NetworkSecurityGroup = NetworkSecurityGroupName;
 
             WriteObject(VM);
-        }
-
-        private bool ParameterSpecified(string parameterName)
-        {
-            // Check for parameters by name so we can tell the difference between 
-            // the user not specifying them, and the user specifying null/empty.
-            return this.MyInvocation.BoundParameters.ContainsKey(parameterName);
         }
     }
 }
