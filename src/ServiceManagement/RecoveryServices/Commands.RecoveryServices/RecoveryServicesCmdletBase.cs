@@ -12,19 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Threading;
+using System.Xml;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.IO;
-    using System.Runtime.Serialization;
-    using System.Threading;
-    using System.Xml;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Commands.Utilities.Common;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// The base class for all Windows Azure Recovery Services commands
     /// </summary>
@@ -152,6 +150,16 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                             jobResponse.Job.State == JobStatus.Suspended ||
                             jobResponse.Job.State == JobStatus.Succeeded ||
                         this.StopProcessingFlag));
+        }
+
+        /// <summary>
+        /// Handles interrupts.
+        /// </summary>
+        protected override void StopProcessing()
+        {
+            // Ctrl + C and etc
+            base.StopProcessing();
+            this.StopProcessingFlag = true;
         }
     }
 }

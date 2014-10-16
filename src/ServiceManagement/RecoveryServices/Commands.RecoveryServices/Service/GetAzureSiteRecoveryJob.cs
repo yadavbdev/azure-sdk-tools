@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Automation;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Retrieves Azure site Recovery Job.
     /// </summary>
@@ -32,47 +31,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// Job ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Represents start time of jobs to querying, jobs with the start time later than this
-        /// will be returned.
-        /// </summary>
-        private DateTime? startTime;
-
-        /// <summary>
-        /// Represents State of the Job for querying.
-        /// </summary>
-        private string state;
-
-        /// <summary>
-        /// Job object.
-        /// </summary>
-        private ASRJob job;
-
-        /// <summary>
         /// Gets or sets Job ID.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ById, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id {get; set;}
 
         /// <summary>
         /// Gets or sets Job Object.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByObject, Mandatory = true, ValueFromPipeline = true)]
         [ValidateNotNullOrEmpty]
-        public ASRJob Job
-        {
-            get { return this.job; }
-            set { this.job = value; }
-        }
+        public ASRJob Job { get; set; }
 
         /// <summary>
         /// Gets or sets start time. Allows to filter the list of jobs started after the given 
@@ -80,11 +50,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByParam, HelpMessage = "Represents start time of jobs to querying, jobs with the start time later than this will be returned")]
         [ValidateNotNullOrEmpty]
-        public DateTime? StartTime
-        {
-            get { return this.startTime; }
-            set { this.startTime = value; }
-        }
+        public DateTime? StartTime { get; set; }
 
         /// <summary>
         /// Gets or sets state. Take string input for possible States of ASR Job. Use this parameter 
@@ -101,11 +67,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             "Failed",
             "Cancelled",
             "Suspended")]
-        public string State
-        {
-            get { return this.state; }
-            set { this.state = value; }
-        }
+        public string State {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -118,7 +80,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 switch (this.ParameterSetName)
                 {
                     case ASRParameterSets.ByObject:
-                        this.id = this.job.ID;
+                        this.Id = this.Job.ID;
                         this.GetById();
                         break;
 
@@ -143,7 +105,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         private void GetById()
         {
-            this.WriteJob(RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(this.id).Job);
+            this.WriteJob(RecoveryServicesClient.GetAzureSiteRecoveryJobDetails(this.Id).Job);
         }
 
         /// <summary>
@@ -178,10 +140,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="jobs">Job objects</param>
         private void WriteJobs(IList<Microsoft.WindowsAzure.Management.SiteRecovery.Models.Job> jobs)
         {
-            foreach (Microsoft.WindowsAzure.Management.SiteRecovery.Models.Job job in jobs)
-            {
-                this.WriteJob(job);
-            }
+            this.WriteObject(jobs.Select(j => new ASRJob(j)), true);
         }
     }
 }
