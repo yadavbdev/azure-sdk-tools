@@ -54,6 +54,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     "successbricks.cleardb",
                     "microsoft.cache" };
             }
+            if (typeof(T).FullName.EndsWith("BatchManagementClient"))
+            {
+                return new[] {
+                    "microsoft.batch",
+                    "microsoft.cache" };
+            }
+
 
             return new string[0];
         }

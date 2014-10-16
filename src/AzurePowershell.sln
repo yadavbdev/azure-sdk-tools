@@ -1,4 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8531411A-0137-4E27-9C5E-49E07C245048}"
 	ProjectSection(SolutionItems) = preProject
@@ -74,6 +77,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Resources", "ResourceManager\Resources\Commands.Resources\Commands.Resources.csproj", "{E1F5201D-6067-430E-B303-4E367652991B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Resources.Test", "ResourceManager\Resources\Commands.Resources.Test\Commands.Resources.Test.csproj", "{4C2FE49A-09E1-4979-AD46-CD64FD04C8F7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D470E50A-9607-48D6-A924-4F9F86502704} = {D470E50A-9607-48D6-A924-4F9F86502704}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.TrafficManager", "ServiceManagement\TrafficManager\Commands.TrafficManager\Commands.TrafficManager.csproj", "{94E96A5C-B5AD-4E10-B13A-3BC16D102AED}"
 EndProject
@@ -122,6 +128,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.RedisCache", "ResourceManager\RedisCache\Commands.RedisCache\Commands.RedisCache.csproj", "{C972E3EF-4461-4758-BA31-93E0947B1253}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.RedisCache.Test", "ResourceManager\RedisCache\Commands.RedisCache.Test\Commands.RedisCache.Test.csproj", "{4AE5705F-62CF-461D-B72E-DD9DCD9B3609}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Batch", "ResourceManager\Batch\Commands.Batch\Commands.Batch.csproj", "{D470E50A-9607-48D6-A924-4F9F86502704}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Batch.Test", "ResourceManager\Batch\Commands.Batch.Test\Commands.Batch.Test.csproj", "{F4ABAD68-64A5-4B23-B09C-42559A7524DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands.Network", "ServiceManagement\Network\Commands.Network\Commands.Network.csproj", "{40FEE0BB-FD45-4EFC-85BC-0D602A6892C4}"
 EndProject
@@ -301,6 +311,14 @@ Global
 		{4AE5705F-62CF-461D-B72E-DD9DCD9B3609}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AE5705F-62CF-461D-B72E-DD9DCD9B3609}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AE5705F-62CF-461D-B72E-DD9DCD9B3609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D470E50A-9607-48D6-A924-4F9F86502704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D470E50A-9607-48D6-A924-4F9F86502704}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D470E50A-9607-48D6-A924-4F9F86502704}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D470E50A-9607-48D6-A924-4F9F86502704}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4ABAD68-64A5-4B23-B09C-42559A7524DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4ABAD68-64A5-4B23-B09C-42559A7524DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4ABAD68-64A5-4B23-B09C-42559A7524DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4ABAD68-64A5-4B23-B09C-42559A7524DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40FEE0BB-FD45-4EFC-85BC-0D602A6892C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40FEE0BB-FD45-4EFC-85BC-0D602A6892C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40FEE0BB-FD45-4EFC-85BC-0D602A6892C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -342,6 +360,7 @@ Global
 		{56ED8C97-53B9-4DF6-ACB5-7E6800105BF8} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 		{7A9D7758-A1AB-4BE8-BD09-3FAF446314F2} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 		{4AE5705F-62CF-461D-B72E-DD9DCD9B3609} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
+		{F4ABAD68-64A5-4B23-B09C-42559A7524DE} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 		{FDB897BD-FCB4-44A1-8D66-AC99F22EC737} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 		{A415F75B-EB6A-49A6-934E-5BA71B83D6EB} = {95C16AED-FD57-42A0-86C3-2CF4300A4817}
 	EndGlobalSection
