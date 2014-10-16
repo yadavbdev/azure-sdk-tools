@@ -151,5 +151,15 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                             jobResponse.Job.State == JobStatus.Succeeded ||
                         this.StopProcessingFlag));
         }
+
+        /// <summary>
+        /// Handles interrupts.
+        /// </summary>
+        protected override void StopProcessing()
+        {
+            // Ctrl + C and etc
+            base.StopProcessing();
+            this.StopProcessingFlag = true;
+        }
     }
 }
