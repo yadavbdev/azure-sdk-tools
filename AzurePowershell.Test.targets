@@ -237,10 +237,10 @@
   </Target>
 
   <ItemGroup>
-    <LiveTestDlls Include=".\**\bin\$(Configuration)\*.Tests.dll" />    
+    <LiveTestDlls Include="$(ResourceManagerTestDebug)" />    
   </ItemGroup>
-  
-  <Target Name="RunLiveTests"> 
+
+  <Target Name="LiveTests"> 
     <MakeDir Directories="TestResults"/> 
     <Exec Command="packages\xunit.runners.1.9.2\tools\xunit.console.clr4.exe  @(LiveTestDlls) /trait &quot;AcceptanceType=LiveBVT&quot; /html &quot;TestResults\LiveScenarioTest.%(Filename).html&quot;" />
   </Target> 

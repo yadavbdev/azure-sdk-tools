@@ -206,6 +206,6 @@
 
     <Target Name="LiveTestsFilter" DependsOnTargets="BuildDebug;BeforeRunTests">
     <Message Importance="high" Text="Running check in tests..." />
-    <CallTarget Targets="RunLiveTests"/>
+    <CallTarget Targets="LiveTests"/>
   </Target>
 </Project>
