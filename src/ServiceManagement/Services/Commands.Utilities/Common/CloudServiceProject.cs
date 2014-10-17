@@ -294,7 +294,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             packageTool.CreatePackage(Components.Definition, Paths, type, AzureTool.GetAzureSdkBinDirectory(), out standardOutput, out standardError);
             if (!string.IsNullOrWhiteSpace(standardError))
             {
-                throw new InvalidOperationException(string.Format(Properties.Resources.FailedToCreateLocalPackage, standardError));
+                throw new InvalidOperationException(string.Format(Properties.Resources.FailedToCreatePackage, standardError));
             }
         }
 

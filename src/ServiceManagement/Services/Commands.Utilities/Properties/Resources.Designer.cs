@@ -1361,9 +1361,9 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Failed to generate package. Error: {0}.&quot;.
         /// </summary>
-        public static string FailedToCreateLocalPackage {
+        public static string FailedToCreatePackage {
             get {
-                return ResourceManager.GetString("FailedToCreateLocalPackage", resourceCulture);
+                return ResourceManager.GetString("FailedToCreatePackage", resourceCulture);
             }
         }
         
