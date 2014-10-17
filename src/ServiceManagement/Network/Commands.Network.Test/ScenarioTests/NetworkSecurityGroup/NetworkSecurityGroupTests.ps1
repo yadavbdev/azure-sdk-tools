@@ -165,7 +165,7 @@ function Test-SetAndGetNetworkSecurityGroupForSubnet
     $securityRuleName = Get-SecurityRuleName
     $createdSecurityGroup = New-NetworkSecurityGroup $securityGroupName
     Set-AzureVNetConfig ($(Get-Location).Path +  "\TestData\SimpleNetworkConfiguration.xml")
-    Set-AzureNetworkSecurityGroupToSubnet -Name $securityGroupName -VirtualNetwork $VirtualNetworkName -Subnet $SubnetName
+    Set-AzureNetworkSecurityGroupToSubnet -Name $securityGroupName -VirtualNetwork $VirtualNetworkName -Subnet $SubnetName -Force
 
     # Test
     $securityGroupFromSubnet = Get-AzureNetworkSecurityGroupForSubnet -VirtualNetwork $VirtualNetworkName -Subnet $SubnetName
@@ -187,7 +187,7 @@ function Test-RemoveNetworkSecurityGroupFromSubnet
     $securityRuleName = Get-SecurityRuleName
     $createdSecurityGroup = New-NetworkSecurityGroup $securityGroupName
     Set-AzureVNetConfig ($(Get-Location).Path +  "\TestData\SimpleNetworkConfiguration.xml")
-    Set-AzureNetworkSecurityGroupToSubnet -Name $securityGroupName -VirtualNetwork $VirtualNetworkName -Subnet $SubnetName
+    Set-AzureNetworkSecurityGroupToSubnet -Name $securityGroupName -VirtualNetwork $VirtualNetworkName -Subnet $SubnetName -Force
 
     # Test
     Remove-AzureNetworkSecurityGroupFromSubnet -Name $securityGroupName -VirtualNetwork $VirtualNetworkName -Subnet $SubnetName -Force

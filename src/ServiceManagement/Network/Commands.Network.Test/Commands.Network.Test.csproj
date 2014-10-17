@@ -77,10 +77,36 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Common.1.4.0\lib\net45\Microsoft.WindowsAzure.Common.NetFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.2.0.0\lib\net40\Microsoft.WindowsAzure.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.Compute, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.5.0.0\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.MediaServices">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.MediaServices.2.0.0\lib\net40\Microsoft.WindowsAzure.Management.MediaServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.Monitoring">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Monitoring.1.0.0\lib\net40\Microsoft.WindowsAzure.Management.Monitoring.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Network, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Network.3.1.0\lib\net40\Microsoft.WindowsAzure.Management.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.Scheduler">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Scheduler.3.0.0\lib\net40\Microsoft.WindowsAzure.Management.Scheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.Sql">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Sql.3.0.0\lib\net40\Microsoft.WindowsAzure.Management.Sql.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.3.0.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.WebSites">
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.WebSites.3.0.0\lib\net40\Microsoft.WindowsAzure.Management.WebSites.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Testing, Version=1.0.5379.31313, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -166,6 +192,30 @@
     <Folder Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkTests\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestCreateAndRemoveNetworkSecurityGroup.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestGetMultipleNetworkSecurityGroups.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestRemoveNetworkSecurityGroupFromSubnet.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestRemoveNetworkSecurityGroupWithNonExistingName.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestRemoveNetworkSecurityRule.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestSetAndGetNetworkSecurityGroupForSubnet.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestSetNetworkSecurityRule.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestSetNetworkSecurityRuleWithInvalidParameter.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\EmptyNetworkConfiguration.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
