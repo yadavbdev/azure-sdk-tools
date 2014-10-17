@@ -914,6 +914,53 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             }
         }
 
+        [TestMethod(), TestCategory(Category.Functional), TestCategory(Category.BVT), TestProperty("Feature", "IAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((New,Get,Remove)-AzureStorageAccount)")]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\storageAccountTestData.csv", "storageAccountTestData#csv", DataAccessMethod.Sequential)]
+        public void AzureStorageAccountBVTTest()
+        {
+            StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
+
+            string storageAccountPrefix = Convert.ToString(TestContext.DataRow["NamePrefix"]);
+            string location = CheckLocation(Convert.ToString(TestContext.DataRow["Location1"]));
+            var storageName = Utilities.GetUniqueShortName(storageAccountPrefix);
+            var grsAccountType = "Standard_GRS";
+            string[] storageStaticProperties = new string[3] { storageName, location, null };
+
+            try
+            {
+                // New-AzureStorageAccount test for default 'Standard_GRS'
+                vmPowershellCmdlets.NewAzureStorageAccount(storageName, location, null, null, null);
+                Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName)[0],
+                    storageStaticProperties, storageName, null, true, grsAccountType));
+                Console.WriteLine("{0} is created", storageName);
+
+                vmPowershellCmdlets.SetAzureStorageAccount(storageName, "test", "test", (string)null);
+                Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName)[0],
+                    storageStaticProperties, "test", "test", true, grsAccountType));
+                Console.WriteLine("{0} is updated", storageName);
+
+                vmPowershellCmdlets.RemoveAzureStorageAccount(storageName);
+                Assert.IsTrue(Utilities.CheckRemove(vmPowershellCmdlets.GetAzureStorageAccount, storageName), "The storage account was not removed");
+                Console.WriteLine("{0} is removed", storageName);
+
+                pass = true;
+            }
+            catch (Exception e)
+            {
+                pass = false;
+                Assert.Fail("Exception occurred: {0}", e.ToString());
+            }
+            finally
+            {
+                Console.WriteLine("Starts cleaning up...");
+                // Clean-up storage if it is not removed.
+                if (!Utilities.CheckRemove(vmPowershellCmdlets.GetAzureStorageAccount, storageName))
+                {
+                    vmPowershellCmdlets.RemoveAzureStorageAccount(storageName);
+                }
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>
