@@ -14,12 +14,15 @@
 
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace Microsoft.WindowsAzure.Commands.Common.Interfaces
 {
     public interface IDataStore
     {
         void WriteFile(string path, string contents);
+
+        void WriteFile(string path, string content, Encoding encoding);
 
         void WriteFile(string path, byte[] contents);
 

@@ -52,6 +52,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     "microsoft.visualstudio",
                     "microsoft.insights",
                     "successbricks.cleardb",
+                    "microsoft.cache" };
+            }
+            if (typeof(T).FullName.EndsWith("BatchManagementClient"))
+            {
+                return new[] {
                     "microsoft.batch",
                     "microsoft.cache" };
             }
@@ -60,6 +65,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             {
                 return new[] { "Microsoft.DataFactory" };
             }
+
 
             return new string[0];
         }
