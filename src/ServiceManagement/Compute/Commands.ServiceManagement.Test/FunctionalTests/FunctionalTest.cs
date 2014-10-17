@@ -312,22 +312,35 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass &= Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
 
-                var events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, DateTime.Now, DateTime.Now);
-                Assert.IsTrue(!events.Any()); 
-                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, DeploymentSlotType.Production, DateTime.Now, DateTime.Now);
-                Assert.IsTrue(!events.Any());
-                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, null, DateTime.Now, DateTime.Now);
+                var date = new DateTime(2014, 10, 17);
+                // Get Deployment Events by Name
+                var events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, date, date.AddHours(1));
+                Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentName == deploymentName
+                    && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
+                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+                // Get Deployment Events by Slot
+                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, DeploymentSlotType.Production, date, date.AddHours(1));
+                Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentSlot == DeploymentSlotType.Production
+                    && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
+                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+                // Get Deployment Events default by Production Slot
+                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, null, date, date.AddHours(1));
+                Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentSlot == DeploymentSlotType.Production
+                    && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
+                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
                 Assert.IsTrue(!events.Any());
 
                 try
                 {
                     // Negative test for invalid date range
-                    events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, DateTime.Now, DateTime.Now.AddDays(-1));
+                    events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, date, date.AddHours(-1));
                 }
-                catch (CloudException ex)
+                catch (Exception ex)
                 {
-                    Assert.IsTrue(ex.Response.StatusCode == System.Net.HttpStatusCode.BadRequest);
-                    Assert.IsTrue(ex.Message.Contains("The date specified in parameter EndTime is not within the correct range."));
+                    Assert.IsNotNull(ex.InnerException);
+                    CloudException ce = (CloudException)ex.InnerException;
+                    Assert.IsTrue(ce.Response.StatusCode == System.Net.HttpStatusCode.BadRequest);
+                    Assert.IsTrue(ce.Message.Contains("The date specified in parameter EndTime is not within the correct range."));
                 }
 
                 vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
@@ -339,6 +352,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass = false;
                 Console.WriteLine("Exception occurred: {0}", e.ToString());
                 throw;
+            }
+            finally
+            {
+                if (!Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName, DeploymentSlotType.Production))
+                {
+                    vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
+                }
             }
         }
 
