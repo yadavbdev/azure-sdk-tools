@@ -328,7 +328,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentSlot == DeploymentSlotType.Production
                     && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
                     && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
-                Assert.IsTrue(!events.Any());
 
                 try
                 {
