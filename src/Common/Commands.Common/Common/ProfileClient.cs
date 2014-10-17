@@ -561,6 +561,16 @@ namespace Microsoft.WindowsAzure.Commands.Common
             return subscription;
         }
 
+        public void ClearAll()
+        {
+            Profile.Accounts.Clear();
+            Profile.DefaultSubscription = null;
+            Profile.Environments.Clear();
+            Profile.Subscriptions.Clear();
+            AzureSession.SetCurrentContext(null, null, null);
+            Profile.Save();
+        }
+
         public void ClearDefaultSubscription()
         {
             Profile.DefaultSubscription = null;
