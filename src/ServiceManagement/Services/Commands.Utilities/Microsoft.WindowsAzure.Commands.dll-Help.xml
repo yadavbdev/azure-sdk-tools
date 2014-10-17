@@ -17344,7 +17344,28 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)">
           <maml:name>ErrorActionQueueMessageBody</maml:name>
           <maml:description>
-            <maml:para>The body for storage job acitons.</maml:para>
+            <maml:para>The body for storage job actions.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false">
+          <maml:name>HttpAuthenticationType</maml:name>
+          <maml:description>
+            <maml:para>The Http Authentication type (None or ClientCertificate).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false">
+          <maml:name>ClientCertificatePfx</maml:name>
+          <maml:description>
+            <maml:para>The pfx of client certificate.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false">
+          <maml:name>ClientCertificatePassword</maml:name>
+          <maml:description>
+            <maml:para>The password for the pfx.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
@@ -17416,6 +17437,33 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
         <dev:code>New-AzureSchedulerHttpJob -Location "North Central US" -JobCollectionName jobCollection1 -JobName job1 -Method GET -URI http://www.bing.com -ExecutionCount 20</dev:code>
         <dev:remarks>
           <maml:para>Create a new scheduler http job under jobCollection1. The method is GET and Uri is http://www.bing.com. The job will execute 20 times with default schedule</maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Example 3 --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>New-AzureSchedulerHttpJob -Location "North Central US" -JobCollectionName jobCollection1 -JobName job1 -Method GET -URI http://www.bing.com -HttpAuthenticationType ClientCertificate -ClientCertificatePfx "C:\clientcert.pfx" -ClientCertificatePassword password1</dev:code>
+        <dev:remarks>
+          <maml:para>Create a new scheduler http job under jobCollection1. The method is GET and Uri is http://www.bing.com. The job will use the specified client certificate while executing.</maml:para>
           <maml:para>
           </maml:para>
           <maml:para>
@@ -17876,6 +17924,27 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
           </maml:description>
           <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false">
+          <maml:name>HttpAuthenticationType</maml:name>
+          <maml:description>
+            <maml:para>The Http Authentication type (None or ClientCertificate).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false">
+          <maml:name>ClientCertificatePfx</maml:name>
+          <maml:description>
+            <maml:para>The pfx of client certificate.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false">
+          <maml:name>ClientCertificatePassword</maml:name>
+          <maml:description>
+            <maml:para>The password for the pfx.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">string</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:returnValues>
@@ -17944,6 +18013,60 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
         <dev:code>Set-AzureSchedulerHttpJob -Location "North Central US" -JobCollectionName jobCollection1 -JobName job1 -URI http://www.bing.com</dev:code>
         <dev:remarks>
           <maml:para>Update job1 Uri to http://www.bing.com</maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Example 3 --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Set-AzureSchedulerHttpJob -Location "North Central US" -JobCollectionName jobCollection1 -JobName job1 -HttpAuthenticationType ClientCertificate -ClientCertificatePfx "C:\clientcert.pfx" -ClientCertificatePassword password1</dev:code>
+        <dev:remarks>
+          <maml:para>Update job1 authentication type to client certificate by specifying the path to pfx file and password.</maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+      <command:example>
+        <maml:title>
+          --------------  Example 4 --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+          C:\PS&gt;
+        </maml:introduction>
+        <dev:code>Set-AzureSchedulerHttpJob -Location "North Central US" -JobCollectionName jobCollection1 -JobName job1 -HttpAuthenticationType None</dev:code>
+        <dev:remarks>
+          <maml:para>Remove existing authentication from job1.</maml:para>
           <maml:para>
           </maml:para>
           <maml:para>
