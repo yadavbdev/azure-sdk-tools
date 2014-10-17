@@ -12,9 +12,9 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.WindowsAzure.Management.Network.Models;
 
 namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model
@@ -32,11 +32,11 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model
         public NetworkSecurityGroupWithRules(NetworkSecurityGroupGetResponse networkSecurityGroupAsGetResponse)
             : base(networkSecurityGroupAsGetResponse)
         {
+            Mapper.CreateMap<Microsoft.WindowsAzure.Management.Network.Models.NetworkSecurityRule, NetworkSecurityRule>();
             if (networkSecurityGroupAsGetResponse.Rules != null)
             {
-                rules.AddRange(networkSecurityGroupAsGetResponse.Rules);
+                rules.AddRange(networkSecurityGroupAsGetResponse.Rules.Select(Mapper.Map<NetworkSecurityRule>));
             }
         }
-
     }
 }

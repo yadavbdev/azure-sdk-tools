@@ -29,7 +29,6 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
         [ValidateSet("Inbound", "Outbound", IgnoreCase = false)]
         public string Type { get; set; }
 
-        // TODO: Get the priotiy range right
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = false)]
         [ValidateRange(100, 4096)]
         public int Priority { get; set; }
