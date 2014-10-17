@@ -12,17 +12,16 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management.Automation;
+using System.Linq;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Retrieves Azure Site Recovery Recovery Plan.
     /// </summary>
@@ -32,36 +31,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// Recovery Plan ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Name of the Recovery Plan.
-        /// </summary>
-        private string name;
-
-        /// <summary>
         /// Gets or sets Recovery Plan ID.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ById, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets name of the Recovery Plan.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByName, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Name
-        {
-            get { return this.name; }
-            set { this.name = value; }
-        }
+        public string Name {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -101,7 +82,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             bool found = false;
             foreach (RecoveryPlan recoveryPlan in recoveryPlanListResponse.RecoveryPlans)
             {
-                if (0 == string.Compare(this.name, recoveryPlan.Name, true))
+                if (0 == string.Compare(this.Name, recoveryPlan.Name, true))
                 {
                     this.WriteRecoveryPlan(recoveryPlan);
                     found = true;
@@ -113,7 +94,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 throw new InvalidOperationException(
                     string.Format(
                     Properties.Resources.RecoveryPlanNotFound,
-                    this.name,
+                    this.Name,
                     PSRecoveryServicesClient.asrVaultCreds.ResourceName));
             }
         }
@@ -124,7 +105,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         private void GetById()
         {
             RecoveryPlanResponse recoveryPlanResponse =
-                RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(this.id);
+                RecoveryServicesClient.GetAzureSiteRecoveryRecoveryPlan(this.Id);
 
             this.WriteRecoveryPlan(recoveryPlanResponse.RecoveryPlan);
         }
@@ -146,10 +127,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="recoveryPlans">List of Recovery Plans</param>
         private void WriteRecoveryPlans(IList<RecoveryPlan> recoveryPlans)
         {
-            foreach (RecoveryPlan recoveryPlan in recoveryPlans)
-            {
-                this.WriteRecoveryPlan(recoveryPlan);
-            }
+            this.WriteObject(recoveryPlans.Select(rp => new ASRRecoveryPlan(rp)), true);
         }
 
         /// <summary>
@@ -158,7 +136,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// <param name="recoveryPlan">Recovery Plan</param>
         private void WriteRecoveryPlan(RecoveryPlan recoveryPlan)
         {
-            this.WriteObject(new ASRRecoveryPlan(recoveryPlan), true);
+            this.WriteObject(new ASRRecoveryPlan(recoveryPlan));
         }
     }
 }

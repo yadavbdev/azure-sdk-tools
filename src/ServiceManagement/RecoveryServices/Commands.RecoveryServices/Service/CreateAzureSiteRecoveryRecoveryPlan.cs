@@ -12,18 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Management.Automation;
+using System.Threading;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Diagnostics;
-    using System.Management.Automation;
-    using System.Threading;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    using Microsoft.WindowsAzure.Management.SiteRecovery.Models;
-    #endregion
-
     /// <summary>
     /// Used to initiate a recovery plan create operation.
     /// </summary>
@@ -32,16 +31,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     public class CreateAzureSiteRecoveryRecoveryPlan : RecoveryServicesCmdletBase
     {
         #region Parameters
-        /// <summary>
-        /// Recovery Plan XML file path.
-        /// </summary>
-        private string file;
-
-        /// <summary>
-        /// Wait / hold prompt till the Job completes.
-        /// </summary>
-        private bool waitForCompletion;
-
         /// <summary>
         /// Job response.
         /// </summary>
@@ -52,21 +41,13 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         [Parameter(Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string File
-        {
-            get { return this.file; }
-            set { this.file = value; }
-        }
+        public string File {get; set;}
 
         /// <summary>
         /// Gets or sets switch parameter. This is required to wait for job completion.
         /// </summary>
         [Parameter]
-        public SwitchParameter WaitForCompletion
-        {
-            get { return this.waitForCompletion; }
-            set { this.waitForCompletion = value; }
-        }
+        public SwitchParameter WaitForCompletion { get; set; }
         #endregion Parameters
 
         /// <summary>
@@ -76,17 +57,12 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         {
             try
             {
-                string recoveryPlanXml = System.IO.File.ReadAllText(this.File);
+                string recoveryPlanXml = FileUtilities.DataStore.ReadFileAsText(this.File);
                 this.jobResponse = RecoveryServicesClient.CreateAzureSiteRecoveryRecoveryPlan(
                     recoveryPlanXml);
                 this.WriteJob(this.jobResponse.Job);
 
-                if (this.waitForCompletion)
-                {
-                    this.WaitForJobCompletion(this.jobResponse.Job.ID);
-                }
-
-                if (this.waitForCompletion)
+                if (this.WaitForCompletion.IsPresent)
                 {
                     this.WaitForJobCompletion(this.jobResponse.Job.ID);
                 }
@@ -95,16 +71,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             {
                 this.HandleException(exception);
             }
-        }
-
-        /// <summary>
-        /// Handles interrupts.
-        /// </summary>
-        protected override void StopProcessing()
-        {
-            // Ctrl + C and etc
-            base.StopProcessing();
-            this.StopProcessingFlag = true;
         }
 
         /// <summary>

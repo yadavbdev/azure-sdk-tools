@@ -13,24 +13,23 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
-namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Model
+namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler.Common
 {
-    public class PSHttpJobDetail : PSJobDetail
+    public static class SchedulerUtils
     {
-        public string Method { get; internal set; }
-
-        public Uri Uri { get; internal set; }
-
-        public string Body { get; internal set; }
-
-        public IDictionary<string, string> Headers { get; internal set; }
-
-        public string ClientCertSubjectName { get; internal set; }
-
-        public string ClientCertThumbprint { get; internal set; }
-
-        public string ClientCertExpiryDate { get; internal set; }
+        public static string GetCertData(string pfxPath, string password)
+        {
+            if (!string.IsNullOrEmpty(pfxPath))
+            {                
+                var cert = new X509Certificate2();
+                cert.Import(pfxPath, password, X509KeyStorageFlags.Exportable);
+                return cert.HasPrivateKey
+                    ? Convert.ToBase64String(cert.Export(X509ContentType.Pfx, password))
+                    : Convert.ToBase64String(cert.Export(X509ContentType.Pkcs12));
+            }
+            return null;
+        }
     }
 }
