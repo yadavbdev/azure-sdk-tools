@@ -82,6 +82,7 @@
     <Compile Include="Gateway\StopAzureVNetGatewayDiagnostics.cs" />
     <Compile Include="NetworkClient.cs" />
     <Compile Include="NetworkCmdletBase.cs" />
+    <None Include="app.config" />
     <None Include="MSSharedLibKey.snk" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
