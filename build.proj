@@ -205,7 +205,7 @@
     DependsOnTargets="ForceRestorePackages;Clean;BuildDebug;BuildRelease;LiveTestsFilter;BuildSetupDebug;BuildSetupRelease" />
 
     <Target Name="LiveTestsFilter" DependsOnTargets="BuildDebug;BeforeRunTests">
-    <Message Importance="high" Text="Running check in tests..." />
+    <Message Importance="high" Text="Running live tests..." />
     <CallTarget Targets="LiveTests"/>
   </Target>
 </Project>
