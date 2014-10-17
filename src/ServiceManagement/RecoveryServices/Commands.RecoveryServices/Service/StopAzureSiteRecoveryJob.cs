@@ -12,15 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Management.Automation;
+using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
+using Microsoft.WindowsAzure;
+
 namespace Microsoft.Azure.Commands.RecoveryServices
 {
-    #region Using directives
-    using System;
-    using System.Management.Automation;
-    using Microsoft.Azure.Commands.RecoveryServices.SiteRecovery;
-    using Microsoft.WindowsAzure;
-    #endregion
-
     /// <summary>
     /// Stops Azure Site Recovery Job.
     /// </summary>
@@ -30,36 +28,18 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// Job ID.
-        /// </summary>
-        private string id;
-
-        /// <summary>
-        /// Job object.
-        /// </summary>
-        private ASRJob job;
-
-        /// <summary>
         /// Gets or sets Job ID.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ById, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.id; }
-            set { this.id = value; }
-        }
+        public string Id {get; set;}
 
         /// <summary>
         /// Gets or sets Job Object.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByObject, Mandatory = true, ValueFromPipeline = true)]
         [ValidateNotNullOrEmpty]
-        public ASRJob Job
-        {
-            get { return this.job; }
-            set { this.job = value; }
-        }
+        public ASRJob Job {get; set;}
         #endregion Parameters
 
         /// <summary>
@@ -72,7 +52,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                 switch (this.ParameterSetName)
                 {
                     case ASRParameterSets.ByObject:
-                        this.id = this.job.ID;
+                        this.Id = this.Job.ID;
                         this.GetById();
                         break;
 
@@ -92,7 +72,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         private void GetById()
         {
-            RecoveryServicesClient.StopAzureSiteRecoveryJob(this.id);
+            RecoveryServicesClient.StopAzureSiteRecoveryJob(this.Id);
         }
     }
 }
