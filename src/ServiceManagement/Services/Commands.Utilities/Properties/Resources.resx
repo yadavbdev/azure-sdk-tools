@@ -394,6 +394,9 @@
   <data name="CsPackExe" xml:space="preserve">
     <value>cspack.exe</value>
   </data>
+  <data name="CsPackExeGenericFailure" xml:space="preserve">
+    <value>cspack.exe failed with no detail error information.</value>
+  </data>
   <data name="CsPackLocalArg" xml:space="preserve">
     <value>"{0}\ServiceDefinition.csdef" /out:"{0}\local_package.csx" {1} {2} /copyOnly</value>
   </data>
@@ -1391,6 +1394,9 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   </data>
   <data name="FailedToCleanUpLocalPackage" xml:space="preserve">
     <value>Could not delete emulator package '{0}' for the service. Please ensure that no files or folders in the package are open in other programs</value>
+  </data>
+  <data name="FailedToCreateLocalPackage" xml:space="preserve">
+    <value>Failed to generate package. Error: {0}."</value>
   </data>
   <data name="StopStorageEmulatorCommandArgument" xml:space="preserve">
     <value>stop</value>
