@@ -31,6 +31,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
             string serviceName = "AzureService";
             string sampleError = "error";
             string stagingFolder = FileSystemHelper.GetTemporaryDirectoryName();
+            string fakedSDKBinPath = @"c:\foobar";
             Directory.CreateDirectory(stagingFolder);
             try
             {
@@ -50,7 +51,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 packTool.ProcessUtil = commandRunner.Object;
 
                 //action
-                packTool.CreatePackage(service.Components.Definition, service.Paths, DevEnv.Local, AzureTool.GetAzureSdkBinDirectory(), out standardOutput, out standardError);
+                packTool.CreatePackage(service.Components.Definition, service.Paths, DevEnv.Local, fakedSDKBinPath, out standardOutput, out standardError);
 
                 //assert we take "standardoutput" as the error message
                 Assert.Equal(sampleError, standardError);
@@ -67,7 +68,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 packTool.ProcessUtil = commandRunner.Object;
 
                 //action
-                packTool.CreatePackage(service.Components.Definition, service.Paths, DevEnv.Local, AzureTool.GetAzureSdkBinDirectory(), out standardOutput, out standardError);
+                packTool.CreatePackage(service.Components.Definition, service.Paths, DevEnv.Local, fakedSDKBinPath, out standardOutput, out standardError);
 
                 //assert, we outputs no error
                 Assert.Equal(string.Empty, standardError);
@@ -84,7 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.CloudService.Utilities
                 packTool.ProcessUtil = commandRunner.Object;
 
                 //action
-                packTool.CreatePackage(service.Components.Definition, service.Paths, DevEnv.Local, AzureTool.GetAzureSdkBinDirectory(), out standardOutput, out standardError);
+                packTool.CreatePackage(service.Components.Definition, service.Paths, DevEnv.Local, fakedSDKBinPath, out standardOutput, out standardError);
 
                 //assert, we output a generic error message
                 Assert.Equal(Resources.CsPackExeGenericFailure, standardError);
