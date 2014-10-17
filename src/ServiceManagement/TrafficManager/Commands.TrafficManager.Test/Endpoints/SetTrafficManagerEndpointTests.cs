@@ -285,7 +285,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.TrafficManager.Endpoints
             Assert.AreEqual(EndpointStatus.Enabled, newEndpoint.Status);
 
             // Default weight is 1
-            Assert.AreEqual(1, newEndpoint.Weight);
+            Assert.AreEqual(null, newEndpoint.Weight);
             Assert.AreEqual(Location, newEndpoint.Location);
         }
 
