@@ -400,7 +400,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         public Collection<SM.DeploymentRebootEventContext> GetAzureDeploymentEventBySlot(string serviceName, string deploymentSlot, DateTime startTime, DateTime endTime)
         {
-            return RunPSCmdletAndReturnAll<SM.DeploymentRebootEventContext>(new GetAzureDeploymentEventCmdletInfo(serviceName, deploymentSlot, startTime, endTime));
+            return RunPSCmdletAndReturnAll<SM.DeploymentRebootEventContext>(new GetAzureDeploymentEventBySlotCmdletInfo(serviceName, deploymentSlot, startTime, endTime));
         }
 
         private ManagementOperationContext SetAzureDeployment(SetAzureDeploymentCmdletInfo cmdletInfo)
