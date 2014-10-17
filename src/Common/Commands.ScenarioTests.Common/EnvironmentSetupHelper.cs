@@ -86,8 +86,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 currentEnvironment.UserName = "fakeuser@microsoft.com";
             }
 
-            SetEndpointsToDefaults(rdfeEnvironment, csmEnvironment);
-
             SetAuthenticationFactory(mode, rdfeEnvironment, csmEnvironment);
 
             AzureEnvironment environment = new AzureEnvironment { Name = testEnvironmentName };
@@ -184,45 +182,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             {
                 AzureSession.AuthenticationFactory = new MockCertificateAuthenticationFactory(currentEnvironment.UserName,
                     certificate);
-            }
-        }
-
-        private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
-        {
-            if (rdfeEnvironment != null)
-            {
-                if (rdfeEnvironment.BaseUri == null)
-                {
-                    rdfeEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureServiceEndpoint);
-                }
-
-                if (rdfeEnvironment.Endpoints.GalleryUri == null)
-                {
-                    rdfeEnvironment.Endpoints.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
-                }
-
-                if (rdfeEnvironment.Endpoints.AADAuthUri == null)
-                {
-                    rdfeEnvironment.Endpoints.AADAuthUri = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
-                }
-            }
-
-            if (csmEnvironment != null)
-            {
-                if (csmEnvironment.BaseUri == null)
-                {
-                    csmEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureResourceManagerEndpoint);
-                }
-
-                if (csmEnvironment.Endpoints.GalleryUri == null)
-                {
-                    csmEnvironment.Endpoints.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
-                }
-
-                if (csmEnvironment.Endpoints.AADAuthUri == null)
-                {
-                    csmEnvironment.Endpoints.AADAuthUri = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
-                }
             }
         }
 
