@@ -93,8 +93,8 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             AzureEnvironment environment = new AzureEnvironment { Name = testEnvironmentName };
 
             Debug.Assert(currentEnvironment != null);
-            environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectory] = currentEnvironment.ActiveDirectoryEndpoint.AbsoluteUri;
-            environment.Endpoints[AzureEnvironment.Endpoint.Gallery] = currentEnvironment.GalleryUri.AbsoluteUri;
+            environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectory] = currentEnvironment.Endpoints.AADAuthUri.AbsoluteUri;
+            environment.Endpoints[AzureEnvironment.Endpoint.Gallery] = currentEnvironment.Endpoints.GalleryUri.AbsoluteUri;
 
             if (csmEnvironment != null)
             {
@@ -196,14 +196,14 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                     rdfeEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureServiceEndpoint);
                 }
 
-                if (rdfeEnvironment.GalleryUri == null)
+                if (rdfeEnvironment.Endpoints.GalleryUri == null)
                 {
-                    rdfeEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
+                    rdfeEnvironment.Endpoints.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
                 }
 
-                if (rdfeEnvironment.ActiveDirectoryEndpoint == null)
+                if (rdfeEnvironment.Endpoints.AADAuthUri == null)
                 {
-                    rdfeEnvironment.ActiveDirectoryEndpoint = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
+                    rdfeEnvironment.Endpoints.AADAuthUri = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
                 }
             }
 
@@ -214,14 +214,14 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                     csmEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureResourceManagerEndpoint);
                 }
 
-                if (csmEnvironment.GalleryUri == null)
+                if (csmEnvironment.Endpoints.GalleryUri == null)
                 {
-                    csmEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
+                    csmEnvironment.Endpoints.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
                 }
 
-                if (csmEnvironment.ActiveDirectoryEndpoint == null)
+                if (csmEnvironment.Endpoints.AADAuthUri == null)
                 {
-                    csmEnvironment.ActiveDirectoryEndpoint = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
+                    csmEnvironment.Endpoints.AADAuthUri = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
                 }
             }
         }

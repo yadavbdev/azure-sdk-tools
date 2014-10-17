@@ -22,6 +22,7 @@ using Microsoft.Azure.Management.Resources.Models;
 using Microsoft.Azure.Utilities.HttpRecorder;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Testing;
+using Microsoft.WindowsAzure.Testing.TestCategories;
 using System;
 using System.Linq;
 using Xunit;
@@ -32,6 +33,7 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
     {
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(LiveTests.Type, LiveTests.Name)]
         public void RaNegativeScenarios()
         {
             ResourcesController.NewInstance.RunPsTest("Test-RaNegativeScenarios");
@@ -152,8 +154,8 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
                 {
                     if (newUser != null)
                     {
-                        testFactory.CustomEnvValues[TestEnvironmentFactory.AADUserIdKey] = userName + "@" + controllerAdmin.UserDomain;
-                        testFactory.CustomEnvValues[TestEnvironmentFactory.AADPasswordKey] = userPass;
+                        testFactory.CustomEnvValues[TestEnvironment.UserIdKey] = userName + "@" + controllerAdmin.UserDomain;
+                        testFactory.CustomEnvValues[TestEnvironment.AADPasswordKey] = userPass;
                     }
                 },
                 // cleanup 

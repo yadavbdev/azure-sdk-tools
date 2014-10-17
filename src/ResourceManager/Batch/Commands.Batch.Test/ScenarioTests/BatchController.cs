@@ -27,8 +27,6 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 {
     public class BatchController
     {
-        private const string BaseUri = @"https://api-current.resources.windows-int.net";
-        private const string AADAuthEndpoint = @"https://login.windows-ppe.net";
         private const string AADTenant = @"de371010-e80c-4257-8fdc-4bfa4d6efe08";
 
         private CSMTestEnvironmentFactory csmTestFactory;
@@ -64,7 +62,7 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
 
             RunPsTestWorkflow(
                 () => scripts,
-                // no cutom initializer
+                // no custom initializer
                 null,
                 // no custom cleanup 
                 null,
@@ -127,10 +125,9 @@ namespace Microsoft.Azure.Commands.Batch.Test.ScenarioTests
         private CSMTestEnvironmentFactory SetupCSMTestEnvironmentFactory()
         {
             CSMTestEnvironmentFactory factory = new CSMTestEnvironmentFactory();
-            factory.CustomEnvValues[TestEnvironmentFactory.BaseUriKey] = BaseUri;
-            factory.CustomEnvValues[TestEnvironmentFactory.AADAuthEndpoint] = AADAuthEndpoint;
-            factory.CustomEnvValues[TestEnvironmentFactory.AADTenant] = AADTenant;
-
+            // to set test environment to Current add Environment=Current in TEST_CSM_ORGID_AUTHENTICATION env. variable
+            // available configurations are: Prod/Dogfood/Next/Current
+            factory.CustomEnvValues[TestEnvironment.AADTenantKey] = AADTenant;
             return factory;
         }
 
