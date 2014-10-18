@@ -1058,6 +1058,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                 base.SetValue("IdleTimeoutInMinutes", value);
             }
         }
+
+        [DataMember(Name = "LoadBalancerDistribution", EmitDefaultValue = false, Order = 11)]
+        public string LoadBalancerDistribution
+        {
+            get
+            {
+                return base.GetValue<string>("LoadBalancerDistribution");
+            }
+            set
+            {
+                base.SetValue("LoadBalancerDistribution", value);
+            }
+        }
     }
 
     [DataContract(Namespace = Constants.ServiceManagementNS)]
@@ -4046,6 +4059,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         [DataMember(Order = 4)]
         public int? IdleTimeoutInMinutes { get; set; }
+
+        [DataMember(Order = 5)]
+        public int? LoadBalancerDistribution { get; set; }
 
         public ExtensionDataObject ExtensionData { get; set; }
     }
