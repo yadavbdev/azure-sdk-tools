@@ -65,7 +65,8 @@
   </Target>
 
   <Target Name="TestDataFactoryManager">
-    <Xunit.Runner.MSBuild.xunit Assembly="$(DataFactoryManagerTestDebug)" Html="$(TestOutputDirectory)\DataFactoryManagerTestDebug.xunit.dll.html" Verbose="true"/>
+     <Xunit.Runner.MSBuild.xunit Assemblies="$(DataFactoryManagerTestDebug)" Html="$(TestOutputDirectory)\DataFactoryManagerTestDebug.xunit.dll.html" Verbose="false"
+       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
   </Target>
 
   <Target Name="TestServiceManagement">
