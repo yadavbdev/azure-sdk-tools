@@ -106,9 +106,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites.Services.WebEntitie
         public int IdleTimeoutInMinutes { get; set; }
 
         [DataMember]
-        public string LoadBalancerDistribution { get; set; }
-
-        [DataMember]
         public int IdlePriority { get; set; }
 
         [DataMember]

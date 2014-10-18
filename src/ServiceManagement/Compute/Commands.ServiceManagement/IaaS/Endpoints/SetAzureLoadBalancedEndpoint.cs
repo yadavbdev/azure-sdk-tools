@@ -82,8 +82,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
         [ValidateNotNullOrEmpty]
         public int IdleTimeoutInMinutes { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "LoadBalancerDistribution.")]
-        [ValidateNotNullOrEmpty]
+        [Parameter(HelpMessage = "LoadBalancerDistribution.")]
         public string LoadBalancerDistribution { get; set; }
 
         protected override void ExecuteCommand()

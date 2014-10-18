@@ -90,7 +90,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
             set;
         }
 
-        [Parameter(Mandatory = false, HelpMessage = "LoadBalancerDistribution.")]
+        [Parameter(HelpMessage = "LoadBalancerDistribution.")]
         public string LoadBalancerDistribution
         {
             get;

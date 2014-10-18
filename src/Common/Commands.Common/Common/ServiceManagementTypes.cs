@@ -4061,7 +4061,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public int? IdleTimeoutInMinutes { get; set; }
 
         [DataMember(Order = 5)]
-        public int? LoadBalancerDistribution { get; set; }
+        public string LoadBalancerDistribution { get; set; }
 
         public ExtensionDataObject ExtensionData { get; set; }
     }
