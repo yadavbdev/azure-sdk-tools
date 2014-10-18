@@ -84,6 +84,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
 
         [Parameter(HelpMessage = "LoadBalancerDistribution.")]
         [ValidateSet("sourceIP", "sourceIPPortocol", IgnoreCase = true)]
+        [ValidateNotNullOrEmpty]
         public string LoadBalancerDistribution { get; set; }
 
         protected override void ExecuteCommand()
