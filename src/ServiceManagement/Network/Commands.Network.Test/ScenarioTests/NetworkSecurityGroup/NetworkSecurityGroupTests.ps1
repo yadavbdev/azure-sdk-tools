@@ -145,8 +145,8 @@ function Test-RemoveNetworkSecurityRule
     $addedRuleGroup = Set-NetworkSecurityRule $securityRuleName $createdSecurityGroup
 
     # Test
-    Remove-AzureNetworkSecurityRule -Name $securityRuleName -NetworkSecurityGroup $addedRuleGroup
-    $NoRulesGroup = Get-AzureNetworkSecurityGroup -Name $securityGroupName -DetailLevel
+    Remove-AzureNetworkSecurityRule -Name $securityRuleName -NetworkSecurityGroup $addedRuleGroup -Force
+    $NoRulesGroup = Get-AzureNetworkSecurityGroup -Name $securityGroupName -Details
 
     # Assert
     Assert-AreEqual $addedRuleGroup.Rules.Count ($NoRulesGroup.Rules.Count + 1)

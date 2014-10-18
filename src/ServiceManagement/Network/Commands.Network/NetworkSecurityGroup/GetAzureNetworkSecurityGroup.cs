@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
 
         [Parameter(Mandatory = false)]
         [ValidateNotNullOrEmpty]
-        public SwitchParameter DetailLevel { get; set; }
+        public SwitchParameter Details { get; set; }
 
         public override void ExecuteCmdlet()
         {
@@ -43,13 +43,13 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
 
         private void GetByName()
         {
-            INetworkSecurityGroup networkSecurityGroup = Client.GetNetworkSecurityGroup(Name, DetailLevel);
+            INetworkSecurityGroup networkSecurityGroup = Client.GetNetworkSecurityGroup(Name, Details);
             WriteNetworkSecurityGroup(networkSecurityGroup);
         }
 
         private void GetNoName()
         {
-            IEnumerable<INetworkSecurityGroup> networkSecurityGroups = Client.ListNetworkSecurityGroups(DetailLevel);
+            IEnumerable<INetworkSecurityGroup> networkSecurityGroups = Client.ListNetworkSecurityGroups(Details);
             WriteNetworkSecurityGroups(networkSecurityGroups);
         }
 

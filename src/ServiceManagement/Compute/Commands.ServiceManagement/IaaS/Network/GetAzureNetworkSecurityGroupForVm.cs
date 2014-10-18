@@ -27,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
     {
         [Parameter(Mandatory = false)]
         [ValidateNotNullOrEmpty]
-        public SwitchParameter DetailLevel { get; set; }
+        public SwitchParameter Details { get; set; }
 
         [Parameter(Mandatory = false)]
         [ValidateNotNullOrEmpty]
@@ -52,7 +52,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             else
             {
                 var networkClient = new NetworkClient(AzureSession.CurrentContext.Subscription, CommandRuntime);
-                INetworkSecurityGroup networkSecurityGroup = networkClient.GetNetworkSecurityGroup(networkSecurityGroupName, DetailLevel);
+                INetworkSecurityGroup networkSecurityGroup = networkClient.GetNetworkSecurityGroup(networkSecurityGroupName, Details);
 
                 WriteObject(networkSecurityGroup, true);
             }
