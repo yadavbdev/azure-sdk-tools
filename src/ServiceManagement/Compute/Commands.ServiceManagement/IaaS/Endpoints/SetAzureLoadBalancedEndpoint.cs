@@ -82,6 +82,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
         [ValidateNotNullOrEmpty]
         public int IdleTimeoutInMinutes { get; set; }
 
+        [Parameter(HelpMessage = "LoadBalancerDistribution.")]
+        public string LoadBalancerDistribution { get; set; }
+
         protected override void ExecuteCommand()
         {
             ServiceManagementProfile.Initialize();
@@ -142,6 +145,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
                     VirtualIPAddress = endpoint.Vip,
                     LoadBalancerName = this.InternalLoadBalancerName,
                     IdleTimeoutInMinutes = endpoint.IdleTimeoutInMinutes,
+                    LoadBalancerDistribution = endpoint.LoadBalancerDistribution,
                 }).ToList()
             };
 
@@ -194,6 +198,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
             if (this.ParameterSpecified("IdleTimeoutInMinutes"))
             {
                 endpoint.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+            }
+
+            if (this.ParameterSpecified("LoadBalancerDistribution"))
+            {
+                endpoint.LoadBalancerDistribution = this.LoadBalancerDistribution;
             }
 
             if (this.ParameterSpecified("DirectServerReturn"))

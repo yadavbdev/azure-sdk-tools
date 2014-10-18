@@ -90,6 +90,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
             set;
         }
 
+        [Parameter(HelpMessage = "LoadBalancerDistribution.")]
+        public string LoadBalancerDistribution
+        {
+            get;
+            set;
+        }
+
         internal void ExecuteCommand()
         {
             ValidateParameters();
@@ -140,6 +147,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
             if (this.ParameterSpecified("IdleTimeoutInMinutes"))
             {
                 endpoint.IdleTimeoutInMinutes = this.IdleTimeoutInMinutes;
+            }
+
+            if (this.ParameterSpecified("LoadBalancerDistribution"))
+            {
+                endpoint.LoadBalancerDistribution = this.LoadBalancerDistribution;
             }
 
             WriteObject(VM, true);
