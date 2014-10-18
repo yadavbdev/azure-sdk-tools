@@ -198,4 +198,7 @@
   <data name="NetworkSecurityGroupNotActiveInSubnet" xml:space="preserve">
     <value>Network SecurityGroup "{0}" is not active in Subnet "{1}" in Virtual Network "{2}".</value>
   </data>
+  <data name="RemoveNetworkSecurityRuleWarning" xml:space="preserve">
+    <value>Are you sure you want to remove the Network Security Rule "{0}" from Network Security Group "{1}"?</value>
+  </data>
 </root>

@@ -15,6 +15,7 @@
 using System.Management.Automation;
 using Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model;
 using Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Utilities;
+using Microsoft.Azure.Commands.Network.Properties;
 
 namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
 {
@@ -25,10 +26,21 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
+        [Parameter(Mandatory = false, HelpMessage = "Do not confirm Network Security Group deletion")]
+        public SwitchParameter Force { get; set; }
+
         public override void ExecuteCmdlet()
         {
-            Client.RemoveNetworkSecurityRule(NetworkSecurityGroup.GetInstance().Name, Name);
-            WriteObject(Client.GetNetworkSecurityGroup(NetworkSecurityGroup.GetInstance().Name, true));
+            ConfirmAction(
+                Force.IsPresent,
+                string.Format(Resources.RemoveNetworkSecurityRuleWarning, Name, NetworkSecurityGroup.GetInstance().Name),
+                Resources.RemoveNetworkSecurityRuleWarning,
+                Name,
+                () =>
+                {
+                    Client.RemoveNetworkSecurityRule(NetworkSecurityGroup.GetInstance().Name, Name);
+                    WriteObject(Client.GetNetworkSecurityGroup(NetworkSecurityGroup.GetInstance().Name, true));
+                });
         }
     }
 }

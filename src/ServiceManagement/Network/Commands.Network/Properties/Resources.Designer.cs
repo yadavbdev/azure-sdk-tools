@@ -232,6 +232,15 @@ namespace Microsoft.Azure.Commands.Network.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove the Network Security Rule &quot;{0}&quot; from Network Security Group &quot;{1}&quot;?.
+        /// </summary>
+        internal static string RemoveNetworkSecurityRuleWarning {
+            get {
+                return ResourceManager.GetString("RemoveNetworkSecurityRuleWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Removing cache service.
         /// </summary>
         internal static string RemoveServiceMessage {
