@@ -1465,9 +1465,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return RunPSCmdletAndReturnFirst<ManagementOperationContext>(new NewAzureVNetGatewayCmdletInfo(vnetName));
         }
 
-        public Collection <SM.VirtualNetworkGatewayContext> GetAzureVNetGateway(string vnetName)
+        public Collection<Microsoft.Azure.Commands.Network.VirtualNetworkGatewayContext> GetAzureVNetGateway(string vnetName)
         {
-            return RunPSCmdletAndReturnAll<SM.VirtualNetworkGatewayContext>(new GetAzureVNetGatewayCmdletInfo(vnetName));
+            return RunPSCmdletAndReturnAll<Microsoft.Azure.Commands.Network.VirtualNetworkGatewayContext>(new GetAzureVNetGatewayCmdletInfo(vnetName));
         }
 
         public ManagementOperationContext SetAzureVNetGateway(string option, string vnetName, string localNetwork)
@@ -1480,18 +1480,18 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return RunPSCmdletAndReturnFirst<ManagementOperationContext>(new RemoveAzureVNetGatewayCmdletInfo(vnetName));
         }
 
-        public SM.SharedKeyContext GetAzureVNetGatewayKey(string vnetName, string localnet)
+        public Microsoft.Azure.Commands.Network.Gateway.Model.SharedKeyContext GetAzureVNetGatewayKey(string vnetName, string localnet)
         {
-            return RunPSCmdletAndReturnFirst<SM.SharedKeyContext>(new GetAzureVNetGatewayKeyCmdletInfo(vnetName, localnet));
+            return RunPSCmdletAndReturnFirst<Microsoft.Azure.Commands.Network.Gateway.Model.SharedKeyContext>(new GetAzureVNetGatewayKeyCmdletInfo(vnetName, localnet));
         }
 
         #endregion
 
         #region AzureVNet
 
-        public Collection<SM.GatewayConnectionContext> GetAzureVNetConnection(string vnetName)
+        public Collection<Microsoft.Azure.Commands.Network.Gateway.Model.GatewayConnectionContext> GetAzureVNetConnection(string vnetName)
         {
-            return RunPSCmdletAndReturnAll<SM.GatewayConnectionContext>(new GetAzureVNetConnectionCmdletInfo(vnetName));
+            return RunPSCmdletAndReturnAll<Microsoft.Azure.Commands.Network.Gateway.Model.GatewayConnectionContext>(new GetAzureVNetConnectionCmdletInfo(vnetName));
         }
 
         public Collection<SM.VirtualNetworkSiteContext> GetAzureVNetSite(string vnetName)
