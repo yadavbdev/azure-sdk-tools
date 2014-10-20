@@ -60,6 +60,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
                     "microsoft.batch",
                     "microsoft.cache" };
             }
+            
+            if (typeof(T).FullName.EndsWith("DataPipelineManagementClient"))
+            {
+                return new[] { "Microsoft.DataFactory" };
+            }
 
 
             return new string[0];
