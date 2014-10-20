@@ -1422,6 +1422,20 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                 this.SetValue("SourceMediaLink", value);
             }
         }
+
+
+        [DataMember(Name = "IOType", EmitDefaultValue = false, Order = 7)]
+        public string IOType
+        {
+            get
+            {
+                return this.GetValue<string>("IOType");
+            }
+            set
+            {
+                this.SetValue("IOType", value);
+            }
+        }
     }
     #endregion
 
@@ -1504,6 +1518,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             set
             {
                 this.SetValue("OS", value);
+            }
+        }
+
+        [DataMember(Name = "IOType", EmitDefaultValue = false, Order = 5)]
+        public string IOType
+        {
+            get
+            {
+                return this.GetValue<string>("IOType");
+            }
+            set
+            {
+                this.SetValue("IOType", value);
             }
         }
     }
@@ -2455,6 +2482,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             set;
         }
 
+        [DataMember(EmitDefaultValue = false, Order = 6)]
+        public string IOType
+        {
+            get;
+            set;
+        }
+
         public ExtensionDataObject ExtensionData { get; set; }
     }
 
@@ -2491,6 +2525,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         [DataMember(EmitDefaultValue = false, Order = 4)]
         public int LogicalDiskSizeInGB
+        {
+            get;
+            set;
+        }
+
+        [DataMember(EmitDefaultValue = false, Order = 5)]
+        public string IOType
         {
             get;
             set;

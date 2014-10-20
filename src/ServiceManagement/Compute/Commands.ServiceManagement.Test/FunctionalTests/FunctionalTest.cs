@@ -312,6 +312,36 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass &= Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, serviceName, DeploymentSlotType.Production, null, 4);
                 Console.WriteLine("successfully updated the deployment");
 
+                var date = new DateTime(2014, 10, 17);
+                // Get Deployment Events by Name
+                var events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, date, date.AddHours(1));
+                Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentName == deploymentName
+                    && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
+                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+                // Get Deployment Events by Slot
+                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, DeploymentSlotType.Production, date, date.AddHours(1));
+                Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentSlot == DeploymentSlotType.Production
+                    && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
+                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+                // Get Deployment Events default by Production Slot
+                events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, null, date, date.AddHours(1));
+                Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentSlot == DeploymentSlotType.Production
+                    && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
+                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+
+                try
+                {
+                    // Negative test for invalid date range
+                    events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, date, date.AddHours(-1));
+                }
+                catch (Exception ex)
+                {
+                    Assert.IsNotNull(ex.InnerException);
+                    CloudException ce = (CloudException)ex.InnerException;
+                    Assert.IsTrue(ce.Response.StatusCode == System.Net.HttpStatusCode.BadRequest);
+                    Assert.IsTrue(ce.Message.Contains("The date specified in parameter EndTime is not within the correct range."));
+                }
+
                 vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
 
                 pass &= Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName, DeploymentSlotType.Production);
@@ -321,6 +351,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 pass = false;
                 Console.WriteLine("Exception occurred: {0}", e.ToString());
                 throw;
+            }
+            finally
+            {
+                if (!Utilities.CheckRemove(vmPowershellCmdlets.GetAzureDeployment, serviceName, DeploymentSlotType.Production))
+                {
+                    vmPowershellCmdlets.RemoveAzureDeployment(serviceName, DeploymentSlotType.Production, true);
+                }
             }
         }
 
@@ -893,6 +930,53 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             {
                 pass = false;
                 Assert.Fail("Exception occurred: {0}", e.ToString());
+            }
+        }
+
+        [TestMethod(), TestCategory(Category.Functional), TestCategory(Category.BVT), TestProperty("Feature", "IAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet ((New,Get,Remove)-AzureStorageAccount)")]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV", "|DataDirectory|\\Resources\\storageAccountTestData.csv", "storageAccountTestData#csv", DataAccessMethod.Sequential)]
+        public void AzureStorageAccountBVTTest()
+        {
+            StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
+
+            string storageAccountPrefix = Convert.ToString(TestContext.DataRow["NamePrefix"]);
+            string location = CheckLocation(Convert.ToString(TestContext.DataRow["Location1"]));
+            var storageName = Utilities.GetUniqueShortName(storageAccountPrefix);
+            var grsAccountType = "Standard_GRS";
+            string[] storageStaticProperties = new string[3] { storageName, location, null };
+
+            try
+            {
+                // New-AzureStorageAccount test for default 'Standard_GRS'
+                vmPowershellCmdlets.NewAzureStorageAccount(storageName, location, null, null, null);
+                Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName)[0],
+                    storageStaticProperties, storageName, null, true, grsAccountType));
+                Console.WriteLine("{0} is created", storageName);
+
+                vmPowershellCmdlets.SetAzureStorageAccount(storageName, "test", "test", (string)null);
+                Assert.IsTrue(StorageAccountVerify(vmPowershellCmdlets.GetAzureStorageAccount(storageName)[0],
+                    storageStaticProperties, "test", "test", true, grsAccountType));
+                Console.WriteLine("{0} is updated", storageName);
+
+                vmPowershellCmdlets.RemoveAzureStorageAccount(storageName);
+                Assert.IsTrue(Utilities.CheckRemove(vmPowershellCmdlets.GetAzureStorageAccount, storageName), "The storage account was not removed");
+                Console.WriteLine("{0} is removed", storageName);
+
+                pass = true;
+            }
+            catch (Exception e)
+            {
+                pass = false;
+                Assert.Fail("Exception occurred: {0}", e.ToString());
+            }
+            finally
+            {
+                Console.WriteLine("Starts cleaning up...");
+                // Clean-up storage if it is not removed.
+                if (!Utilities.CheckRemove(vmPowershellCmdlets.GetAzureStorageAccount, storageName))
+                {
+                    vmPowershellCmdlets.RemoveAzureStorageAccount(storageName);
+                }
             }
         }
 

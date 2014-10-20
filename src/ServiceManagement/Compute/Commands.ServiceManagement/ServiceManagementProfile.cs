@@ -353,7 +353,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement
             //Location mapping
             Mapper.CreateMap<LocationsListResponse.Location, PVM.LocationsContext>()
                   .ForMember(c => c.VirtualMachineRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.VirtualMachinesRoleSizes))
-                  .ForMember(c => c.WebWorkerRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.WebWorkerRoleSizes));
+                  .ForMember(c => c.WebWorkerRoleSizes, o => o.MapFrom(r => r.ComputeCapabilities == null ? null : r.ComputeCapabilities.WebWorkerRoleSizes))
+                  .ForMember(c => c.StorageAccountTypes, o => o.MapFrom(r => r.StorageCapabilities == null ? null : r.StorageCapabilities.StorageAccountTypes));
             Mapper.CreateMap<OperationStatusResponse, PVM.LocationsContext>()
                   .ForMember(c => c.OperationId, o => o.MapFrom(r => r.Id))
                   .ForMember(c => c.OperationStatus, o => o.MapFrom(r => r.Status.ToString()));
