@@ -586,9 +586,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
             Utilities.SiteConfig configuration =
                 WebsiteManagementClient.WebSites.GetConfiguration(website.WebSpace, website.Name).ToSiteConfig();
 
-            var config = WebsiteManagementClient.WebSites.GetSlotConfigNames(website.WebSpace, name);
-            configuration.SlotStickyAppSettingNames = config.AppSettingNames;
-            configuration.SlotStickyConnectionStringNames = config.ConnectionStringNames;
+            string siteName, slotName;
+            SiteNameParser.ParseSiteWithSlotName(name, out siteName, out slotName);
+
+            // get slot config only for production
+            if (slotName.Equals(SiteNameParser.ProductionSlot, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var config = WebsiteManagementClient.WebSites.GetSlotConfigNames(website.WebSpace, name);
+                configuration.SlotStickyAppSettingNames = config.AppSettingNames;
+                configuration.SlotStickyConnectionStringNames = config.ConnectionStringNames;
+            }
 
             return configuration;
         }

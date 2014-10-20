@@ -321,6 +321,7 @@
     <Compile Include="Websites\PSContinuousWebJob.cs" />
     <Compile Include="Websites\PSTriggeredWebJob.cs" />
     <Compile Include="Websites\Services\WebEntities\WebHostingPlan.cs" />
+    <Compile Include="Websites\SiteNameParser.cs" />
     <Compile Include="Websites\WebsiteInstance.cs" />
     <Compile Include="Websites\IWebsitesClient.cs" />
     <Compile Include="Websites\KuduRemoteClientBase.cs" />
