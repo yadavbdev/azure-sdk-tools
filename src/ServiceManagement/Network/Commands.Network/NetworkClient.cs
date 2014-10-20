@@ -242,18 +242,18 @@ namespace Microsoft.Azure.Commands.Network
             client.NetworkSecurityGroups.Create(parameters);
         }
 
-        public INetworkSecurityGroup GetNetworkSecurityGroup(string name, bool detailLevel)
+        public INetworkSecurityGroup GetNetworkSecurityGroup(string name, bool details)
         {
-            var getResponse = client.NetworkSecurityGroups.Get(name, detailLevel ? "Full" : null);
-            return detailLevel ? new NetworkSecurityGroupWithRules(getResponse) : new SimpleNetworkSecurityGroup(getResponse);
+            var getResponse = client.NetworkSecurityGroups.Get(name, details ? "Full" : null);
+            return details ? new NetworkSecurityGroupWithRules(getResponse) : new SimpleNetworkSecurityGroup(getResponse);
         }
 
-        public IEnumerable<INetworkSecurityGroup> ListNetworkSecurityGroups(bool detailLevel)
+        public IEnumerable<INetworkSecurityGroup> ListNetworkSecurityGroups(bool details)
         {
             var networkSecurityGroupList = client.NetworkSecurityGroups.List();
             IEnumerable<INetworkSecurityGroup> result;
 
-            if (detailLevel)
+            if (details)
             {
                 // to get the rules, need to specifically call Get for each group
                 result = networkSecurityGroupList.Select(nsg => GetNetworkSecurityGroup(nsg.Name, true));

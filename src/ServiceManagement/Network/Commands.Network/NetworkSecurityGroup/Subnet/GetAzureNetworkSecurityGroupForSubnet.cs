@@ -32,7 +32,7 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Subnet
 
         [Parameter(Mandatory = false)]
         [ValidateNotNullOrEmpty]
-        public SwitchParameter DetailLevel { get; set; }
+        public SwitchParameter Details { get; set; }
 
         public override void ExecuteCmdlet()
         {
@@ -45,7 +45,7 @@ namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Subnet
 
             }
 
-            INetworkSecurityGroup securityGroup = Client.GetNetworkSecurityGroup(getForSubnetResponse.Name, DetailLevel);
+            INetworkSecurityGroup securityGroup = Client.GetNetworkSecurityGroup(getForSubnetResponse.Name, Details);
             WriteObject(securityGroup);
         }
     }
