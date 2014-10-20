@@ -316,7 +316,7 @@
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
           <maml:name>MaxMemoryPolicy</maml:name>
           <maml:description>
-            <maml:para>MaxMemoryPolicy used by the redis cache. The default value is null. Possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL</maml:para>
+            <maml:para>MaxMemoryPolicy used by the redis cache. The default value is VolatileLRU. Possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
@@ -401,7 +401,7 @@
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
         <maml:name>MaxMemoryPolicy</maml:name>
         <maml:description>
-          <maml:para>MaxMemoryPolicy used by the redis cache. By default the value is null. All possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL.</maml:para>
+          <maml:para>MaxMemoryPolicy used by the redis cache. By default the value is VolatileLRU. All possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -968,7 +968,7 @@
           </maml:description>
         </dev:type>
         <maml:description>
-          <maml:para>Returns primary and secondary access key of redis caches.</maml:para>
+          <maml:para>Returns the primary and secondary access key of redis caches.</maml:para>
         </maml:description>
       </command:returnValue>
     </command:returnValues>
@@ -1069,7 +1069,7 @@
         <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
           <maml:name>MaxMemoryPolicy</maml:name>
           <maml:description>
-            <maml:para>MaxMemoryPolicy used by the redis cache. The default value is null. Possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL.</maml:para>
+            <maml:para>MaxMemoryPolicy used by the redis cache. The default value is VolatileLRU. Possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         </command:parameter>
@@ -1105,7 +1105,7 @@
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="">
         <maml:name>MaxMemoryPolicy</maml:name>
         <maml:description>
-          <maml:para>MaxMemoryPolicy used by the redis cache. The default value is null. Possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL.</maml:para>
+          <maml:para>MaxMemoryPolicy used by the redis cache. The default value is VolatileLRU. Possible values are AllKeysLRU, AllKeysRandom, NoEviction, VolatileLRU, VolatileRandom, VolatileTTL.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
