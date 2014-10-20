@@ -1628,11 +1628,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public List<AzureEnvironment> GetAzureEnvironment(string name = null, string subscriptionDataFile = null, bool debug = false)
         {
             Collection<PSObject> result = (new WindowsAzurePowershellCmdlet(new GetAzureEnvironmentCmdletInfo(name, subscriptionDataFile))).Run(debug);
-
-            var listObject = (List<PSObject>) result[0].BaseObject;
             List<AzureEnvironment> envList = new List<AzureEnvironment>();
 
-            foreach(var element in listObject)
+            foreach(var element in result)
             {
                 var newEnv = new AzureEnvironment();
                 newEnv.Name = element.Properties.Match("Name")[0].Value.ToString();
