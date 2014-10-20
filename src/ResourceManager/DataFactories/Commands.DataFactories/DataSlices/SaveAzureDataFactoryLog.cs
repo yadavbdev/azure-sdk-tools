@@ -58,7 +58,7 @@ namespace Microsoft.Azure.Commands.DataFactories
 
                 if (!HaveWriteAccess(directory))
                 {
-                    throw new IOException(string.Format(CultureInfo.InvariantCulture, Resources.NoWriteAccessToDirectory));
+                    throw new IOException(string.Format(CultureInfo.InvariantCulture, Resources.NoWriteAccessToDirectory, directory));
                 }
 
                 try
@@ -72,10 +72,10 @@ namespace Microsoft.Azure.Commands.DataFactories
                 }
                 catch 
                 {
-                    throw new JobFailedException(string.Format(CultureInfo.InvariantCulture, Resources.DownloadFailed));
+                    throw new Exception(string.Format(CultureInfo.InvariantCulture, Resources.DownloadFailed, directory));
                 }
 
-                WriteVerbose(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
+                WriteWarning(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
             }
 
             WriteObject(runLog);
@@ -85,40 +85,47 @@ namespace Microsoft.Azure.Commands.DataFactories
         {
             bool writeAllow = false;
             bool writeDeny = false;
+            try
+            {
+                DirectorySecurity accessControlList = Directory.GetAccessControl(directory);
+                if (accessControlList == null)
+                {
+                    return false;
+                }
 
-            DirectorySecurity accessControlList = Directory.GetAccessControl(directory);
+                var rules = accessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
 
-            if (accessControlList == null)
+                if (rules == null)
+                {
+                    return false;
+                }
+
+                foreach (FileSystemAccessRule rule in rules)
+                {
+                    if ((FileSystemRights.Write & rule.FileSystemRights) != FileSystemRights.Write)
+                    {
+                        continue;
+                    }
+
+                    if (rule.AccessControlType == AccessControlType.Allow)
+                    {
+                        writeAllow = true;
+                    }
+
+                    else if (rule.AccessControlType == AccessControlType.Deny)
+                    {
+                        writeDeny = true;
+                    }
+                }
+
+                return writeAllow && !writeDeny;
+            }
+            catch
             {
                 return false;
             }
 
-            var rules = accessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
-
-            if (rules == null)
-            {
-                return false;
-            }
-
-            foreach (FileSystemAccessRule rule in rules)
-            {
-                if ((FileSystemRights.Write & rule.FileSystemRights) != FileSystemRights.Write)
-                {
-                    continue;
-                }
-
-                if (rule.AccessControlType == AccessControlType.Allow)
-                {
-                    writeAllow = true;
-                }
-
-                else if (rule.AccessControlType == AccessControlType.Deny)
-                {
-                    writeDeny = true;
-                }
-            }
-
-            return writeAllow && !writeDeny;
+            
         }
     }
 }

@@ -125,7 +125,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             CloudBlobContainer sascontainer = new CloudBlobContainer(parameters.SasUri);
 
             var bloblist = sascontainer.ListBlobs(null, true);
-            string downloadFolderPath = String.Format(CultureInfo.InvariantCulture, "{0}{1}\\", parameters.Directory, "m2mlogs");
+            string downloadFolderPath = parameters.Directory.Insert(parameters.Directory.Length, @"\");
 
             foreach (var blob in bloblist)
             {
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                 {
                     blobFolderPath = destBlob.Name.Substring(0, destBlob.Name.Length - blobFileName.Length - 1);
                 }
-
+                
                 if (!Directory.Exists(downloadFolderPath + blobFolderPath))
                 {
                     Directory.CreateDirectory(downloadFolderPath + blobFolderPath);
@@ -147,7 +147,6 @@ namespace Microsoft.Azure.Commands.DataFactories
                 // as part of the blob file name and thus it is possible to have a file and folder of the same name in the same location which is not acceptable for Windows file system
                 destBlob.DownloadToFile(downloadFolderPath + destBlob.Name + "_log", FileMode.Create);
             }
-
         }
     }
 }

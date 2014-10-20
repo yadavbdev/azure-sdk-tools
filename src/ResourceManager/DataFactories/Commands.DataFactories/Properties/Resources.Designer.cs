@@ -70,42 +70,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /// <summary>
-        ///   Looks up a localized string similar to A gateway with the name {0} already exsits in the data factory {1}. 
-        ///Continuing execution may overwrite the exisiting one. 
-        ///Are you sure you want to continue?.
-        /// </summary>
-        internal static string DataFactoryGatewayExists
-        {
-            get
-            {
-                return ResourceManager.GetString("DataFactoryGatewayExists", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to remove the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;?.
-        /// </summary>
-        internal static string DataFactoryGatewayConfirmationMessage
-        {
-            get
-            {
-                return ResourceManager.GetString("DataFactoryGatewayConfirmationMessage", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Removing the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;..
-        /// </summary>
-        internal static string DataFactoryGatewayRemoving
-        {
-            get
-            {
-                return ResourceManager.GetString("DataFactoryGatewayRemoving", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove data factory &apos;{0}&apos; in resource group &apos;{1}&apos;?.
         /// </summary>
         internal static string DataFactoryConfirmationMessage {
@@ -131,6 +95,33 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         internal static string DataFactoryExists {
             get {
                 return ResourceManager.GetString("DataFactoryExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;?.
+        /// </summary>
+        internal static string DataFactoryGatewayConfirmationMessage {
+            get {
+                return ResourceManager.GetString("DataFactoryGatewayConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A gateway with the name {0} already exsits in the data factory {1}..
+        /// </summary>
+        internal static string DataFactoryGatewayExists {
+            get {
+                return ResourceManager.GetString("DataFactoryGatewayExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataFactoryGatewayRemoving {
+            get {
+                return ResourceManager.GetString("DataFactoryGatewayRemoving", resourceCulture);
             }
         }
         
@@ -162,7 +153,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download failed. Please check if you have write permission to the path {0} or the url {1} is valid. .
+        ///   Looks up a localized string similar to Download failed. Please check if you have write permission to the path {0} or the sas url is valid. .
         /// </summary>
         internal static string DownloadFailed {
             get {
@@ -296,7 +287,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No access to write for the specified directory {0}..
+        ///   Looks up a localized string similar to No access to write for the specified directory {0} or the directory does not exist..
         /// </summary>
         internal static string NoWriteAccessToDirectory {
             get {
