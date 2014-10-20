@@ -70,16 +70,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
             }
         }
 
-        public string AvailabilityText
-        {
-            get
-            {
-                return table.Properties.Availability == null
-                    ? string.Empty
-                    : DataFactoryClientExtensions.ToFormattedString(table.Properties.Availability);
-            }
-        }
-
         public TableLocation Location
         {
             get
@@ -89,16 +79,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
             set
             {
                 table.Properties.Location = value;
-            }
-        }
-
-        public string LocationText
-        {
-            get
-            {
-                return table.Properties.Location == null
-                    ? string.Empty
-                    : DataFactoryClientExtensions.ToFormattedString(table.Properties.Location);
             }
         }
 
@@ -114,16 +94,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
             }
         }
 
-        public string PolicyText
-        {
-            get
-            {
-                return table.Properties.Policy == null
-                    ? string.Empty
-                    : DataFactoryClientExtensions.ToFormattedString(table.Properties.Policy);
-            }
-        }
-
         public IList<DataElement> Structure
         {
             get
@@ -133,16 +103,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Models
             set
             {
                 table.Properties.Structure = value;
-            }
-        }
-
-        public string StructureText
-        {
-            get
-            {
-                return table.Properties.Structure == null
-                    ? string.Empty
-                    : DataFactoryClientExtensions.ToFormattedString(table.Properties.Structure);
             }
         }
 

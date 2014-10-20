@@ -47,13 +47,13 @@ namespace Microsoft.WindowsAzure.Commands.Test.DataFactory
             };
 
             // Arrange
-            this.dataFactoriesClientMock.Setup(f => f.EncryptString(secureString, ResourceGroupName, DataFactoryName, GatewayName)).Returns(expectedOutput);
+            this.dataFactoriesClientMock.Setup(f => f.OnPremisesEncryptString(secureString, ResourceGroupName, DataFactoryName, GatewayName)).Returns(expectedOutput);
 
             // Action
             cmdlet.ExecuteCmdlet();
 
             // Assert
-            this.dataFactoriesClientMock.Verify(f => f.EncryptString(secureString, ResourceGroupName, DataFactoryName, GatewayName), Times.Once());
+            this.dataFactoriesClientMock.Verify(f => f.OnPremisesEncryptString(secureString, ResourceGroupName, DataFactoryName, GatewayName), Times.Once());
             this.commandRuntimeMock.Verify(f => f.WriteObject(expectedOutput), Times.Once());
         }
     }
