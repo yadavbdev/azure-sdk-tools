@@ -13,6 +13,7 @@
     <StorageScenarioTestDebug>src\ServiceManagement\Storage\Commands.Storage.ScenarioTest\bin\Debug\CLITest.dll</StorageScenarioTestDebug>
     <ManagementTestDebug>.\src\ServiceManagement\Services\Commands.Test\bin\Debug\Microsoft.WindowsAzure.Commands.Test.dll</ManagementTestDebug>
     <ResourceManagerTestDebug>.\src\ResourceManager\Resources\Commands.Resources.Test\bin\Debug\Microsoft.Azure.Commands.Resources.Test.dll</ResourceManagerTestDebug>
+    <DataFactoryManagerTestDebug>.\src\ResourceManager\DataFactories\Commands.DataFactories.Test\bin\Debug\Microsoft.Azure.Commands.DataFactories.Test.dll</DataFactoryManagerTestDebug>
     <BatchTestDebug>.\src\ResourceManager\Batch\Commands.Batch.Test\bin\Debug\Microsoft.Azure.Commands.Batch.Test.dll</BatchTestDebug>
     <ServiceManagementTestDebug>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Test.dll</ServiceManagementTestDebug>
     <ServiceManagementExtensionsTestDebug>.\src\ServiceManagement\Compute\Commands.ServiceManagement.Extensions.Test\bin\Debug\Microsoft.WindowsAzure.Commands.ServiceManagement.Extensions.Test.dll</ServiceManagementExtensionsTestDebug>
@@ -60,6 +61,11 @@
   
   <Target Name="TestBatch">
      <Xunit.Runner.MSBuild.xunit Assemblies="$(BatchTestDebug)" Html="$(TestOutputDirectory)\BatchTestDebug.xunit.dll.html" Verbose="false"
+       ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
+  </Target>
+
+  <Target Name="TestDataFactoryManager">
+     <Xunit.Runner.MSBuild.xunit Assemblies="$(DataFactoryManagerTestDebug)" Html="$(TestOutputDirectory)\DataFactoryManagerTestDebug.xunit.dll.html" Verbose="false"
        ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
   </Target>
 
