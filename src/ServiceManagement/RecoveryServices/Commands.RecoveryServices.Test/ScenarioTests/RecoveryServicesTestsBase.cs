@@ -26,6 +26,8 @@ using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.RecoveryServices;
 using Microsoft.WindowsAzure.Management.SiteRecovery;
 using Microsoft.WindowsAzure.Testing;
+using Microsoft.WindowsAzure.Commands.Common;
+using Microsoft.WindowsAzure.Commands.Common.Models;
 
 namespace Microsoft.Azure.Commands.RecoveryServices.Test.ScenarioTests
 {
@@ -41,6 +43,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Test.ScenarioTests
 
         protected RecoveryServicesTestsBase()
         {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("VAULT_SETTINGS_FILE_PATH")))
+            {
+                Environment.SetEnvironmentVariable("VAULT_SETTINGS_FILE_PATH", "ScenarioTests\\vaultSettings.vaultcredentials");
+            }
+
             this.vaultSettingsFilePath = Environment.GetEnvironmentVariable("VAULT_SETTINGS_FILE_PATH");
             if (string.IsNullOrEmpty(vaultSettingsFilePath))
             {
@@ -126,7 +133,7 @@ namespace Microsoft.Azure.Commands.RecoveryServices.Test.ScenarioTests
                 asrVaultCreds.CloudServiceName,
                 asrVaultCreds.ResourceName,
                 (SubscriptionCloudCredentials)environment.Credentials,
-                environment.BaseUri).WithHandler(HttpMockServer.CreateInstance());
+                AzureSession.CurrentContext.Environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement)).WithHandler(HttpMockServer.CreateInstance());
         }
 
         private static bool IgnoreCertificateErrorHandler
