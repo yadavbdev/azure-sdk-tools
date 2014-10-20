@@ -93,6 +93,14 @@
         Projects="build.proj"/>
   </Target>
 
+  <Target Name="TestRecoveryServices">
+    <PropertyGroup>
+      <_RecoveryServicesTestAssembly>.\src\ServiceManagement\RecoveryServices\Commands.RecoveryServices.Test\bin\Debug\Microsoft.Azure.Commands.RecoveryServices.Test.dll</_RecoveryServicesTestAssembly>
+    </PropertyGroup>
+    <Xunit.Runner.MSBuild.xunit Assemblies="$(_RecoveryServicesTestAssembly)" Html="$(TestOutputDirectory)\RecoveryServices.xunit.dll.html" Verbose="false"
+      ExcludeTraits="$(XUnitExcludedTrait)" MaxParallelThreads="0" ParallelizeAssemblies="false" ParallelizeTestCollections="false" />
+  </Target>
+
   <!-- Run the scenario tests -->
   <Target Name="ScenarioTest" DependsOnTargets="Clean;BuildDebug;BeforeRunTests">
     <Message Importance="high" Text="Running scenario tests..." />
