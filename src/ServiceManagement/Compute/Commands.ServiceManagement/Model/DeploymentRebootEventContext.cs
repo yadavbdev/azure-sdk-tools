@@ -12,13 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Service.Gateway
+using System;
+
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 {
-    public enum ProvisioningState
+    public class DeploymentRebootEventContext : ServiceOperationContext
     {
-        NotProvisioned,
-        Provisioning,
-        Provisioned,
-        Deprovisioning
+        public string DeploymentName { get; set; }
+        public string DeploymentSlot { get; set; }
+        public string InstanceName { get; set; }
+        public string RebootReason { get; set; }
+        public DateTime? RebootStartedTime { get; set; }
+        public string RoleName { get; set; }
     }
 }

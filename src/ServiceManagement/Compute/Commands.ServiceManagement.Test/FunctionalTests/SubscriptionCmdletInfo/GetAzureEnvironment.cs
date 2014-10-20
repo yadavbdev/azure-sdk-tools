@@ -14,21 +14,21 @@
 
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.SubscriptionCmdletInfo
 {
-    public class RemoveAzureSubscriptionCmdletInfo : CmdletsInfo
+    public class GetAzureEnvironmentCmdletInfo : CmdletsInfo
     {
-        public RemoveAzureSubscriptionCmdletInfo(string subscriptionName, string dataFile, bool force = false)
+        public GetAzureEnvironmentCmdletInfo(string name, string subscriptionDataFile)
         {
-            cmdletName = Utilities.RemoveAzureSubscriptionCmdletName;
-            cmdletParams.Add(new CmdletParam("SubscriptionName", subscriptionName));
-            if (dataFile != null)
+            cmdletName = Utilities.GetAzureEnvironmentCmdletName;
+
+            if (!string.IsNullOrEmpty(name))
             {
-                cmdletParams.Add(new CmdletParam("SubscriptionDataFile", dataFile));
+                this.cmdletParams.Add(new CmdletParam("Name", name));
             }
-            if (force)
+            if (!string.IsNullOrEmpty(subscriptionDataFile))
             {
-                cmdletParams.Add(new CmdletParam("Force", force));
+                this.cmdletParams.Add(new CmdletParam("SubscriptionDataFile", subscriptionDataFile));
             }
         }
     }

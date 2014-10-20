@@ -13,15 +13,20 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+using System;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo
 {
-    public class ImportAzurePublishSettingsFileCmdletInfo : CmdletsInfo
+    public class GetAzureDeploymentEventCmdletInfo : CmdletsInfo
     {
-        public ImportAzurePublishSettingsFileCmdletInfo(string publishSettingsFile)
+        public GetAzureDeploymentEventCmdletInfo(string serviceName, string deploymentName, DateTime startTime, DateTime endTime)
         {
-            cmdletName = Utilities.ImportAzurePublishSettingsFileCmdletName;
-            cmdletParams.Add(new CmdletParam("PublishSettingsFile", publishSettingsFile));
+            cmdletName = Utilities.GetAzureDeploymentEventCmdletName;
+
+            cmdletParams.Add(new CmdletParam("ServiceName", serviceName));
+            cmdletParams.Add(new CmdletParam("DeploymentName", deploymentName));
+            cmdletParams.Add(new CmdletParam("StartTime", startTime));
+            cmdletParams.Add(new CmdletParam("EndTime", endTime));
         }
     }
 }

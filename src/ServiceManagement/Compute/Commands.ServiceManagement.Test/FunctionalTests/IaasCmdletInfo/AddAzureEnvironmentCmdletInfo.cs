@@ -1,4 +1,4 @@
-﻿// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,17 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.WindowsAzure.Commands.Service.Gateway;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo
 {
-    public class VirtualNetworkGatewayContext : ManagementOperationContext
+    public class AddAzureEnvironmentCmdletInfo : CmdletsInfo
     {
-        public string LastEventData { get; set; }
-
-        public DateTime? LastEventTimeStamp { get; set; }
-
-        public string LastEventMessage { get; set; }
-
-        public int LastEventID { get; set; } 
-
-        public ProvisioningState State { get;  set; }
-
-        public string VIPAddress { get;  set; }
+        public AddAzureEnvironmentCmdletInfo(string name, string serviceEndpoint)
+        {
+            cmdletName = Utilities.AddAzureEnvironmentCmdletName;
+            cmdletParams.Add(new CmdletParam("Name", name));
+            cmdletParams.Add(new CmdletParam("ServiceEndpoint", serviceEndpoint));
+        }
     }
 }
