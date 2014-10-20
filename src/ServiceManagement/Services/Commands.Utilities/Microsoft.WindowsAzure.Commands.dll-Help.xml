@@ -11979,6 +11979,27 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
           </maml:description>
           <command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
         </command:parameter>
+       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AutoSwapSlotName</maml:name>
+          <maml:description>
+            <maml:para>Sets the slot name to swap with after successful deployment. To remove set to null or empty string.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>SlotStickyAppSettingNames</maml:name>
+          <maml:description>
+            <maml:para>Sets the list of application setting names to be bound to slot and not swapped on swap operation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+        </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>SlotStickyConnectionStringNames</maml:name>
+          <maml:description>
+            <maml:para>Sets the list of connection string names to be bound to slot and not swapped on swap operation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -12206,6 +12227,39 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
         </maml:description>
         <command:parameterValue required="false" variableLength="false">Boolean</command:parameterValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AutoSwapSlotName</maml:name>
+          <maml:description>
+            <maml:para>Sets the slot name to swap with after successful deployment. To remove set to null or empty string.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>SlotStickyAppSettingNames</maml:name>
+          <maml:description>
+            <maml:para>Sets the list of application setting names to be bound to slot and not swapped on swap operation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>
+          </dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>SlotStickyConnectionStringNames</maml:name>
+          <maml:description>
+            <maml:para>Sets the list of connection string names to be bound to slot and not swapped on swap operation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>
+          </dev:defaultValue>
+        </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -12347,6 +12401,66 @@ PS C:\&gt;(Get-AzureWebsite -Name ContosoWeb).Instances.Count
         </dev:code>
         <dev:remarks>
           <maml:para>Sets up a routing for 10 percent of the traffic to staging slot.</maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    <command:example>
+        <maml:title>
+          --------------  Set target slot for Auto swap after successful deployment --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+        </maml:introduction>
+        <dev:code> 
+          Set-AzureWebsite mysite -Slot staging -AutoSwapSlotName production
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Sets up a staging slot to be swapped with production. This is same operation as if it triggered from Azure portal. Status can be seen
+          from Azure portal-> Management services -> Operation logs.</maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+          <maml:para>
+          </maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText>
+            </command:commandText>
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    <command:example>
+        <maml:title>
+          --------------  Set slot sticky application settings and connections trings --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para>C:\PS&gt;</maml:para>
+        </maml:introduction>
+        <dev:code> 
+          Set-AzureWebsite mysite -Slot production -SlotStickyAppSettingNames "VerboseLogging","ContosoPaymentsSandbox" -SlotStickyConnectionStringNames "UsersDb","OrdersDb"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Sets up app settings VerboseLogging and ContosoPaymentsSandbox and connection string UsersDb and OrderDb to be sticky to the slot. 
+          For example - staging slot will have test settings while production site will have live settings. Before swap Azure Websites will change the settings
+        to make sure live environment settings stays in live (same for staging), warm up the staging and then swap the live traffic to it. After that will apply staging 
+      slot settings to former production(now staging) slot.</maml:para>
           <maml:para>
           </maml:para>
           <maml:para>
