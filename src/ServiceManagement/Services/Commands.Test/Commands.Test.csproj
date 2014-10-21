@@ -116,8 +116,9 @@
     <Reference Include="Microsoft.WindowsAzure.Management.TrafficManager">
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.TrafficManager.0.11.0-preview\lib\net40\Microsoft.WindowsAzure.Management.TrafficManager.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Management.WebSites">
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.WebSites.3.1.1-prerelease\lib\net40\Microsoft.WindowsAzure.Management.WebSites.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.Management.WebSites, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.WebSites.4.0.1-prerelease\lib\net40\Microsoft.WindowsAzure.Management.WebSites.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage">
       <HintPath>..\..\..\packages\WindowsAzure.Storage.4.0.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
