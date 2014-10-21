@@ -20,11 +20,10 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    [Cmdlet(VerbsCommon.Set, NetworkSecurityGroupNoun), OutputType(typeof(IPersistentVM)), Alias]
-    public class SetAzureNetworkSecurityGroupForVMCommand : VirtualMachineConfigurationCmdletBase
+    [Cmdlet(VerbsCommon.Set, NetworkSecurityGroupConfig), OutputType(typeof(IPersistentVM)), Alias]
+    public class SetAzureNetworkSecurityGroupConfigCommand : VirtualMachineConfigurationCmdletBase
     {
         [Parameter(Position = 1, Mandatory = true, HelpMessage = "The Network Security Group Name.")]
-        [ValidateNotNullOrEmpty]
         public string NetworkSecurityGroupName { get; set; }
 
         protected override void ProcessRecord()

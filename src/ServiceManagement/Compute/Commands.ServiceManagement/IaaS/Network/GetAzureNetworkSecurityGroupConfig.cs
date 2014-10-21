@@ -22,16 +22,12 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    [Cmdlet(VerbsCommon.Get, NetworkSecurityGroupNoun), OutputType(typeof(IEnumerable<INetworkSecurityGroup>))]
-    public class GetAzureNetworkSecurityGroupForVMCommand : VirtualMachineConfigurationCmdletBase
+    [Cmdlet(VerbsCommon.Get, NetworkSecurityGroupConfig), OutputType(typeof(IEnumerable<INetworkSecurityGroup>))]
+    public class GetAzureNetworkSecurityGroupConfigCommand : VirtualMachineConfigurationCmdletBase
     {
         [Parameter(Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public SwitchParameter Details { get; set; }
-
-        [Parameter(Mandatory = false)]
-        [ValidateNotNullOrEmpty]
-        public SwitchParameter EffectiveRules { get; set; }
 
         protected override void ProcessRecord()
         {

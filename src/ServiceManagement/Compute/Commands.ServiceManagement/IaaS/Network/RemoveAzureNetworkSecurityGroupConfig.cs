@@ -19,8 +19,8 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    [Cmdlet(VerbsCommon.Remove, NetworkSecurityGroupNoun), OutputType(typeof(IPersistentVM))]
-    public class RemoveAzureNetworkSecurityGroupFromVMCommand : VirtualMachineConfigurationCmdletBase
+    [Cmdlet(VerbsCommon.Remove, NetworkSecurityGroupConfig), OutputType(typeof(IPersistentVM))]
+    public class RemoveAzureNetworkSecurityGroupConfigCommand : VirtualMachineConfigurationCmdletBase
     {
         [Parameter(Position = 1, Mandatory = false, HelpMessage = "The Network Security Group Name.")]
         [ValidateNotNullOrEmpty]
