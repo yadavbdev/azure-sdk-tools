@@ -3,9 +3,9 @@
     "properties": 
     {
         "type": "HDInsightBYOCLinkedService",
-        "clusterUri": "https://mdpprodhadoop.azurehdinsight.net/",
+        "clusterUri": "https://myhadoopcluster.azurehdinsight.net/",
         "userName": "admin",
-        "password": "ShakeRattleRoll!2012",
+        "password": "mypassword",
         "linkedServiceName": "LinkedService-CuratedWikiData"
     }
 }

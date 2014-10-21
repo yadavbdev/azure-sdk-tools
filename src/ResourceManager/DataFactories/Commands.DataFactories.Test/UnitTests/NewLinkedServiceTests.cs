@@ -12,10 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
+using System.Globalization;
 using Microsoft.Azure.Commands.DataFactories.Models;
 using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
@@ -66,7 +69,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
                 Name = linkedServiceName,
                 Properties = null
             };
-            
+
             dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
                 .Returns(rawJsonContent)
                 .Verifiable();
@@ -87,7 +90,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
                     c.CreateOrUpdateLinkedService(ResourceGroupName, DataFactoryName, linkedServiceName, rawJsonContent))
                 .Returns(expected)
                 .Verifiable();
-            
+
             // Action
             cmdlet.File = filePath;
             cmdlet.Force = true;
@@ -106,6 +109,23 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
                                 expected.Name == ls.LinkedServiceName &&
                                 expected.Properties == ls.Properties)),
                 Times.Once());
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void InvalidJsonLinkedService()
+        {
+            string malformedJson = rawJsonContent.Replace(":", "-");
+
+             dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
+                .Returns(malformedJson)
+                .Verifiable();
+
+            // Action
+            cmdlet.File = filePath;
+            cmdlet.Force = true;
+
+            Assert.Throws<JsonSerializationException>(() => cmdlet.ExecuteCmdlet());
         }
     }
 }
