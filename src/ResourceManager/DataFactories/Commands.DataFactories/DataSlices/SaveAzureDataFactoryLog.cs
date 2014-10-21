@@ -64,11 +64,10 @@ namespace Microsoft.Azure.Commands.DataFactories
             PSRunLogInfo runLog =
                 DataFactoryClient.GetDataSliceRunLogsSharedAccessSignature(
                     ResourceGroupName, DataFactoryName, Id);
-            string defaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (DownloadLogs.IsPresent)
             {
                 string directory = string.IsNullOrWhiteSpace(Output)
-                    ? defaultDirectory
+                    ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                     : Output;
 
                 if (!HaveWriteAccess(directory))
@@ -90,7 +89,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     throw new Exception(string.Format(CultureInfo.InvariantCulture, Resources.DownloadFailed, directory));
                 }
 
-                WriteWarning(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
+                WriteVerbose(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
             }
 
             WriteObject(runLog);
