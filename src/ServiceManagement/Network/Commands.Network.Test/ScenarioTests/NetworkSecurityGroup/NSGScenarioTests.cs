@@ -26,9 +26,9 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
     using Xunit;
     using Microsoft.WindowsAzure.Management;
 
-    public class NetworkSecurityGroupScenarioTests
+    public class NSGScenarioTests
     {
-        public NetworkSecurityGroupScenarioTests()
+        public NSGScenarioTests()
         {
             this.RunPowerShellTest("Initialize-NetworkSecurityGroupTest");
         }
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestCreateAndRemoveNetworkSecurityGroup()
+        public void TestCreateAndRemoveNSG()
         {
             this.RunPowerShellTest("Test-CreateAndRemoveNetworkSecurityGroup");
         }
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestRemoveNetworkSecurityGroupWithNonExistingName()
+        public void TestRemoveNSGWithNonExistingName()
         {
             this.RunPowerShellTest("Test-RemoveNetworkSecurityGroupWithNonExistingName");
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestGetMultipleNetworkSecurityGroups()
+        public void TestGetMultipleNSGs()
         {
             this.RunPowerShellTest("Test-GetMultipleNetworkSecurityGroups");
         }
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestSetNetworkSecurityRule()
+        public void TestSetNSR()
         {
             this.RunPowerShellTest("Test-SetNetworkSecurityRule");
         }
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestSetNetworkSecurityRuleWithInvalidParameter()
+        public void TestSetNSRWithInvalidParameter()
         {
             this.RunPowerShellTest("Test-SetNetworkSecurityRuleWithInvalidParameter");
         }
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestRemoveNetworkSecurityRule()
+        public void TestRemoveNSR()
         {
             this.RunPowerShellTest("Test-RemoveNetworkSecurityRule");
         }
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestSetAndGetNetworkSecurityGroupForSubnet()
+        public void TestSetAndGetNSGForSubnet()
         {
             this.RunPowerShellTest("Test-SetAndGetNetworkSecurityGroupForSubnet");
         }
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.Service, Category.Network)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestRemoveNetworkSecurityGroupFromSubnet()
+        public void TestRemoveNSGFromSubnet()
         {
             this.RunPowerShellTest("Test-RemoveNetworkSecurityGroupFromSubnet");
         }

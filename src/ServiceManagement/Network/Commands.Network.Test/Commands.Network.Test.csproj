@@ -155,7 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScenarioTests\NetworkSecurityGroup\NetworkSecurityGroupScenarioTests.cs" />
+    <Compile Include="ScenarioTests\NetworkSecurityGroup\NSGScenarioTests.cs" />
     <Compile Include="ScenarioTests\NetworkTests.cs" />
     <Compile Include="ScenarioTests\NetworkTestsBase.cs" />
   </ItemGroup>
@@ -193,28 +193,28 @@
     <Folder Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkTests\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestCreateAndRemoveNetworkSecurityGroup.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestCreateAndRemoveNSG.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestGetMultipleNetworkSecurityGroups.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestGetMultipleNSGs.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestRemoveNetworkSecurityGroupFromSubnet.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestRemoveNSGFromSubnet.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestRemoveNetworkSecurityGroupWithNonExistingName.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestRemoveNSGWithNonExistingName.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestRemoveNetworkSecurityRule.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestRemoveNSR.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestSetAndGetNetworkSecurityGroupForSubnet.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestSetAndGetNSGForSubnet.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestSetNetworkSecurityRule.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestSetNSR.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NetworkSecurityGroupScenarioTests\TestSetNetworkSecurityRuleWithInvalidParameter.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.Network.Test.ScenarioTests.NSGScenarioTests\TestSetNSRWithInvalidParameter.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\EmptyNetworkConfiguration.xml">
