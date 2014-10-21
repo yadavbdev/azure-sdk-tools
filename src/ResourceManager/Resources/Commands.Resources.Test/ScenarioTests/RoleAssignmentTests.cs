@@ -33,7 +33,6 @@ namespace Microsoft.Azure.Commands.Resources.Test.ScenarioTests
     {
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        [Trait(LiveTests.Type, LiveTests.Name)]
         public void RaNegativeScenarios()
         {
             ResourcesController.NewInstance.RunPsTest("Test-RaNegativeScenarios");
