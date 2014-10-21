@@ -569,6 +569,8 @@ namespace Microsoft.WindowsAzure.Commands.Common
             Profile.Subscriptions.Clear();
             AzureSession.SetCurrentContext(null, null, null);
             Profile.Save();
+
+            ProtectedFileTokenCache.Instance.Clear();
         }
 
         public void ClearDefaultSubscription()
