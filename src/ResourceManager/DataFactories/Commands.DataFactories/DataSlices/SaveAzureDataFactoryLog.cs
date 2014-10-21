@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.DataFactories
             PSRunLogInfo runLog =
                 DataFactoryClient.GetDataSliceRunLogsSharedAccessSignature(
                     ResourceGroupName, DataFactoryName, Id);
-            string defaultDirectory = @"C:\";
+            string defaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             if (DownloadLogs.IsPresent)
             {
                 string directory = string.IsNullOrWhiteSpace(Output)
