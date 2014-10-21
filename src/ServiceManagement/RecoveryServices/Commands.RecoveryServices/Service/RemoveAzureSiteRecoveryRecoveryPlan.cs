@@ -31,21 +31,6 @@ namespace Microsoft.Azure.Commands.RecoveryServices
     {
         #region Parameters
         /// <summary>
-        /// ID of the Recovery Plan.
-        /// </summary>
-        private string recoveryPlanId;
-
-        /// <summary>
-        /// Recovery Plan object.
-        /// </summary>
-        private ASRRecoveryPlan recoveryPlan;
-
-        /// <summary>
-        /// Wait / hold prompt till the Job completes.
-        /// </summary>
-        private bool waitForCompletion;
-
-        /// <summary>
         /// Job response.
         /// </summary>
         private JobResponse jobResponse = null;
@@ -60,32 +45,20 @@ namespace Microsoft.Azure.Commands.RecoveryServices
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ById, Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string Id
-        {
-            get { return this.recoveryPlanId; }
-            set { this.recoveryPlanId = value; }
-        }
+        public string Id {get; set;}
 
         /// <summary>
         /// Gets or sets Recovery Plan object.
         /// </summary>
         [Parameter(ParameterSetName = ASRParameterSets.ByRPObject, Mandatory = true, ValueFromPipeline = true)]
         [ValidateNotNullOrEmpty]
-        public ASRRecoveryPlan RecoveryPlan
-        {
-            get { return this.recoveryPlan; }
-            set { this.recoveryPlan = value; }
-        }
+        public ASRRecoveryPlan RecoveryPlan {get; set;}
 
         /// <summary>
         /// Gets or sets switch parameter. This is required to wait for job completion.
         /// </summary>
         [Parameter]
-        public SwitchParameter WaitForCompletion
-        {
-            get { return this.waitForCompletion; }
-            set { this.waitForCompletion = value; }
-        }
+        public SwitchParameter WaitForCompletion {get; set;}
 
         /// <summary>
         /// Gets or sets switch parameter. On passing, command does not ask for confirmation.
@@ -102,11 +75,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices
             switch (this.ParameterSetName)
             {
                 case ASRParameterSets.ByRPObject:
-                    this.recoveryPlanId = this.recoveryPlan.ID;
-                    this.targetNameOrId = this.recoveryPlan.Name;
+                    this.Id = this.RecoveryPlan.ID;
+                    this.targetNameOrId = this.RecoveryPlan.Name;
                     break;
                 case ASRParameterSets.ById:
-                    this.targetNameOrId = this.recoveryPlanId;
+                    this.targetNameOrId = this.Id;
                     break;
             }
 
@@ -120,11 +93,11 @@ namespace Microsoft.Azure.Commands.RecoveryServices
                     try
                     {
                         this.jobResponse = RecoveryServicesClient.RemoveAzureSiteRecoveryRecoveryPlan(
-                           this.recoveryPlanId);
+                           this.Id);
                         this.WriteJob(this.jobResponse.Job);
 
                         string jobId = this.jobResponse.Job.ID;
-                        if (this.waitForCompletion)
+                        if (this.WaitForCompletion.IsPresent)
                         {
                             this.WaitForJobCompletion(this.jobResponse.Job.ID);
                         }

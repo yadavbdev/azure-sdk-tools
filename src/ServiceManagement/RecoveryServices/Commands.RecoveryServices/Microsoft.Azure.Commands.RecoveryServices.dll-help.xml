@@ -1656,7 +1656,7 @@
 
           ResourceName                                                CloudServiceName
           ------------                                                ----------------
-          Contosovault                                              RecoveryServices-6JP23WE3SKKOM5AFQG2YQAI22MNOWK52QDKWMUP...
+          Contosovault                                                RecoveryServices-6JP23WE3SKKOM5AFQG2YQAI22MNOWK52QDKWMUP...
         </dev:code>
         <dev:remarks>
           <maml:para>Description</maml:para>
