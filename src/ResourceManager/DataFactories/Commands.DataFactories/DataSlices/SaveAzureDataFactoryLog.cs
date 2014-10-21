@@ -89,7 +89,7 @@ namespace Microsoft.Azure.Commands.DataFactories
                     throw new Exception(string.Format(CultureInfo.InvariantCulture, Resources.DownloadFailed, directory));
                 }
 
-                WriteVerbose(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
+                WriteWarning(string.Format(CultureInfo.InvariantCulture, Resources.DownloadLogCompleted, directory));
             }
 
             WriteObject(runLog);
