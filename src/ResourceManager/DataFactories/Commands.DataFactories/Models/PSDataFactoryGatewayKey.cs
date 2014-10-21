@@ -12,12 +12,21 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
+namespace Microsoft.Azure.Commands.DataFactories.Models
 {
-    public class SharedKeyContext : ManagementOperationContext
+    public class PSDataFactoryGatewayKey
     {
-        public string Value { get; set; } 
+        private string _gatewayKey;
+
+        public PSDataFactoryGatewayKey(string key)
+        {
+            _gatewayKey = key;
+        }
+
+        public string GatewayKey
+        {
+            get { return _gatewayKey; }
+            set { _gatewayKey = value; }
+        }
     }
 }

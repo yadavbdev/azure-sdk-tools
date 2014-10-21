@@ -12,24 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.WindowsAzure.Commands.Service.Gateway;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
+namespace Microsoft.Azure.Commands.DataFactories
 {
-    public class VirtualNetworkGatewayContext : ManagementOperationContext
+    public class PipelineFilterOptions
     {
-        public string LastEventData { get; set; }
+        public string Name { get; set; }
 
-        public DateTime? LastEventTimeStamp { get; set; }
+        public string ResourceGroupName { get; set; }
 
-        public string LastEventMessage { get; set; }
-
-        public int LastEventID { get; set; } 
-
-        public ProvisioningState State { get;  set; }
-
-        public string VIPAddress { get;  set; }
+        public string DataFactoryName { get; set; }
     }
 }

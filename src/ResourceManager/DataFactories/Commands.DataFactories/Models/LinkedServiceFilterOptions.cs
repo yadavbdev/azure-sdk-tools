@@ -12,13 +12,14 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.WindowsAzure.Commands.Service.Gateway
+namespace Microsoft.Azure.Commands.DataFactories
 {
-    public enum ProvisioningState
+    public class LinkedServiceFilterOptions
     {
-        NotProvisioned,
-        Provisioning,
-        Provisioned,
-        Deprovisioning
+        public string Name { get; set; }
+
+        public string ResourceGroupName { get; set; }
+
+        public string DataFactoryName { get; set; }
     }
 }

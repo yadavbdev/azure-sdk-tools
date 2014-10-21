@@ -83,7 +83,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Endpoints
         public int IdleTimeoutInMinutes { get; set; }
 
         [Parameter(HelpMessage = "LoadBalancerDistribution.")]
-        [ValidateSet("sourceIP", "sourceIPPortocol", IgnoreCase = true)]
+        [ValidateSet("sourceIP", "sourceIPProtocol", "none", IgnoreCase = true)]
+        [ValidateNotNullOrEmpty]
         public string LoadBalancerDistribution { get; set; }
 
         protected override void ExecuteCommand()

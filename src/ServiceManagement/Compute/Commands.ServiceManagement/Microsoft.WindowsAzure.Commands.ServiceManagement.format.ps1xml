@@ -470,6 +470,10 @@
                 <PropertyName>Location</PropertyName>
               </ListItem>
               <ListItem>
+                <Label>AffinityGroup</Label>
+                <PropertyName>AffinityGroup</PropertyName>
+              </ListItem>
+              <ListItem>
                 <Label>Status</Label>
                 <PropertyName>Status</PropertyName>
               </ListItem>

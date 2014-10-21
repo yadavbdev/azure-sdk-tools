@@ -219,7 +219,6 @@
     <Compile Include="Model\DeploymentRebootEventContext.cs" />
     <Compile Include="Model\InternalLoadBalancerSetting.cs" />
     <Compile Include="Model\InternalLoadBalancerContext.cs" />
-    <Compile Include="Model\ProvisioningState.cs" />
     <Compile Include="Model\VirtualMachineImageDiskConfigSet.cs" />
     <Compile Include="Model\VirtualMachineImageType.cs" />
     <Compile Include="Helpers\VirtualMachineImageHelper.cs" />
@@ -411,7 +410,6 @@
     <Compile Include="Model\CertificateContext.cs" />
     <Compile Include="Model\DeploymentInfoContext.cs" />
     <Compile Include="Model\DiskContext.cs" />
-    <Compile Include="Model\GatewayConnectionContext.cs" />
     <Compile Include="Model\HostedServiceContext.cs" />
     <Compile Include="Model\HostedServiceDetailedContext.cs" />
     <Compile Include="Model\InputEndpointContext.cs" />
@@ -430,7 +428,6 @@
     <Compile Include="Model\RoleInstanceStatusInfo.cs" />
     <Compile Include="Model\RoleInstanceStatusInfoContext.cs" />
     <Compile Include="Model\ServiceOperationContext.cs" />
-    <Compile Include="Model\SharedKeyContext.cs" />
     <Compile Include="Model\StorageServiceKeyOperationContext.cs" />
     <Compile Include="Model\StorageServiceOperationContext.cs" />
     <Compile Include="Model\StorageServicePropertiesOperationContext.cs" />
@@ -439,7 +436,6 @@
     <Compile Include="Model\VhdDownloaderModel.cs" />
     <Compile Include="Model\VhdUploadContext.cs" />
     <Compile Include="Model\VirtualNetworkConfigContext.cs" />
-    <Compile Include="Model\VirtualNetworkGatewayContext.cs" />
     <Compile Include="Model\VirtualNetworkSiteContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageServices\AddAzureVhdCommand.cs" />

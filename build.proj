@@ -97,7 +97,7 @@
     <Exec Command="$(NuGetCommand) sources add -Name Hydra -Source &quot;$(PRIVATE_FEED_URL)&quot; $(NuGetRestoreConfigSwitch)" />
     <Exec Command="$(NuGetCommand) sources Update -Name Hydra -UserName $(PRIVATE_FEED_USER_NAME) -Password &quot;$(PRIVATE_FEED_PASSWORD)&quot; $(NuGetRestoreConfigSwitch)"
           EchoOff="true" />
-	<!-- Restore packages -->
+    <!-- Restore packages -->
     <Exec Command="$(NuGetCommand) restore $(MSBuildProjectDirectory)\src\AzurePowerShell.sln $(NuGetRestoreConfigSwitch)" ContinueOnError="false" />
     <!-- delete config file, don't want to leave passwords hanging around on the build server file system -->
     <Delete Files="$(NuGetRestoreConfigFile)" />
@@ -191,7 +191,7 @@
   <!-- Run checkin tests for each pull request -->
   <Target Name="Test" DependsOnTargets="BuildDebug;BeforeRunTests">
     <Message Importance="high" Text="Running check in tests..." />
-    <CallTarget Targets="SqlTests; CommonTests; TestManagement; TestHDInsight; TestManagedCache; TestServiceManagement; TestServiceManagementExtensions; TestSqlDatabase; TestStorage; TestResourceManager; MockedScenarioTests; TestDSCExtension_x64; TestBatch"/>
+    <CallTarget Targets="SqlTests; CommonTests; TestManagement; TestHDInsight; TestManagedCache; TestServiceManagement; TestServiceManagementExtensions; TestSqlDatabase; TestStorage; TestResourceManager; MockedScenarioTests; TestDSCExtension_x64; TestBatch; TestDataFactoryManager; TestRecoveryServices"/>
   </Target>
   
   <!-- Run Full switch with scenario tests -->

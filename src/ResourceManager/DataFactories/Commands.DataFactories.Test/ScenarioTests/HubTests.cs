@@ -12,26 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
+using Xunit;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
+namespace Microsoft.Azure.Commands.DataFactories.Test
 {
-    public class GatewayConnectionContext : ManagementOperationContext
+    public class HubTests : DataFactoriesScenarioTestsBase
     {
-        public string ConnectivityState { get; set; }
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestHub()
+        {
+            RunPowerShellTest("Test-Hub");
+        }
 
-        public ulong EgressBytesTransferred { get; set; }
-
-        public ulong IngressBytesTransferred { get; set; }
-
-        public string LastConnectionEstablished { get; set; }
-
-        public string LastEventID { get; set; } 
-
-        public string LastEventMessage { get; set; }
-
-        public string LastEventTimeStamp { get; set; } 
-
-        public string LocalNetworkSiteName { get; set; }
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestHubWithDataFactoryParameter()
+        {
+            RunPowerShellTest("Test-HubWithDataFactoryParameter");
+        }
     }
 }
