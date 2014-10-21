@@ -239,4 +239,7 @@ Are you sure you want to continue?</value>
   <data name="TableRemoving" xml:space="preserve">
     <value>Removing table '{0}' in data factory '{1}'.</value>
   </data>
+  <data name="NoDataSliceFound" xml:space="preserve">
+    <value>No Slices were found in the time range specified. </value>
+  </data>
 </root>
