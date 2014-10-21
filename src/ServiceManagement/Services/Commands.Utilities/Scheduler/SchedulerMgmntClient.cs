@@ -416,7 +416,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
                                 jobDetail.Status = j.State.ToString();
                                 jobDetail.StartTime = j.StartTime;
                                 jobDetail.EndSchedule = GetEndTime(j);
-                                jobDetail.Recurrence = j.Recurrence == null ? string.Empty : j.Recurrence.Interval.ToString() + " per " + j.Recurrence.Frequency.ToString();
+                                jobDetail.Recurrence = j.Recurrence == null ? string.Empty : j.Recurrence.Interval.ToString() + " (" + j.Recurrence.Frequency.ToString() + "s)";
                                 if (j.Status != null)
                                 {
                                     jobDetail.Failures = j.Status.FailureCount;
@@ -448,7 +448,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Scheduler
                                     Status = j.State.ToString(),
                                     EndSchedule = GetEndTime(j),
                                     StartTime = j.StartTime,
-                                    Recurrence = j.Recurrence == null ? string.Empty : j.Recurrence.Interval.ToString() + " per " + j.Recurrence.Frequency.ToString(),
+                                    Recurrence = j.Recurrence == null ? string.Empty : j.Recurrence.Interval.ToString() + " (" + j.Recurrence.Frequency.ToString() + "s)",
                                     Failures = j.Status == null ? default(int?) : j.Status.FailureCount,
                                     Faults = j.Status == null ? default(int?) : j.Status.FaultedCount,
                                     Executions = j.Status == null ? default(int?) : j.Status.ExecutionCount,
