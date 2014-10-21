@@ -59,6 +59,14 @@ namespace Microsoft.Azure.Commands.DataFactories
 
             var dataSliceRuns = DataFactoryClient.ListDataSliceRuns(
                 ResourceGroupName, DataFactoryName, TableName, StartDateTime);
+
+            if (dataSliceRuns == null || dataSliceRuns.Count == 0)
+            {
+                WriteWarning(string.Format(
+                    CultureInfo.InvariantCulture,
+                    Resources.NoDataSliceFound));
+            }
+
             WriteObject(dataSliceRuns);
         }
     }

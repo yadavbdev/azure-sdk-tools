@@ -62,13 +62,13 @@ namespace Microsoft.Azure.Commands.DataFactories
 
             if (String.IsNullOrWhiteSpace(GatewayName))
             {
-                // Cloud encryption scenario requires a new ADF Runtime Nuget
-                throw new PSNotImplementedException("Cloud encrypt not implemented.");
+                // Cloud encryption without Gateway
+                encryptedValue = DataFactoryClient.CloudEncryptString(Value, ResourceGroupName, DataFactoryName);
             }
             else
             {
-                // Encrypt the connectionString of SQL Server datasource if both GatewayName and Location are non-empty strings.
-                encryptedValue = DataFactoryClient.EncryptString(Value, ResourceGroupName, DataFactoryName, GatewayName);
+                // On-premises encryption with Gateway
+                encryptedValue = DataFactoryClient.OnPremisesEncryptString(Value, ResourceGroupName, DataFactoryName, GatewayName);
             }
             
             WriteObject(encryptedValue);

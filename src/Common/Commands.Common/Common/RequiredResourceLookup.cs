@@ -56,9 +56,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
             }
             if (typeof(T).FullName.EndsWith("BatchManagementClient"))
             {
-                return new[] {
-                    "microsoft.batch",
-                    "microsoft.cache" };
+                return new[] { "microsoft.batch" };
             }
             
             if (typeof(T).FullName.EndsWith("DataPipelineManagementClient"))

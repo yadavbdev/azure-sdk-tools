@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
                 return ResourceManager.GetString("DataFactoryConfirmationMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Creating data factory &apos;{0}&apos; in resource group &apos;{1}&apos;..
         /// </summary>
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
                 return ResourceManager.GetString("DataFactoryCreating", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to A data factory with the name {0} in the resource group {1} exists. 
         ///Continuing execution may overwrite the exisiting one. 
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
                 return ResourceManager.GetString("DataFactoryExists", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;?.
         /// </summary>
@@ -193,6 +193,14 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to parse input JSON file. {0}. Please correct the error in the JSON file and re-deploy {1} again..
+        /// </summary>
+        internal static string InvalidJson {
+            get {
+                return ResourceManager.GetString("InvalidJson", resourceCulture);
+            }
+        }
+
         ///   Looks up a localized string similar to Are you sure you want to remove hub &apos;{0}&apos; in data factory &apos;{1}&apos;?.
         /// </summary>
         internal static string HubConfirmationMessage {
@@ -287,7 +295,16 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No access to write for the specified directory {0} or the directory does not exist..
+        ///   Looks up a localized string similar to No Slices were found in the time range specified. .
+        /// </summary>
+        internal static string NoDataSliceFound {
+            get {
+                return ResourceManager.GetString("NoDataSliceFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No access to write for the specified directory {0}..
         /// </summary>
         internal static string NoWriteAccessToDirectory {
             get {
