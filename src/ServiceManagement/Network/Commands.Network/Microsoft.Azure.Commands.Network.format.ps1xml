@@ -16,7 +16,7 @@
               </ListItem>
               <ListItem>
                 <Label>Rules</Label>
-                <ScriptBlock>$_.Rules | Sort-Object -Property Type,Priority | Format-Table | Out-String </ScriptBlock>
+                <ScriptBlock>$_.Rules | Sort-Object -Property Type,Priority | Format-Table -GroupBy Type | Out-String </ScriptBlock>
               </ListItem>
             </ListItems>
           </ListEntry>
@@ -30,9 +30,6 @@
       <ViewSelectedBy>
         <TypeName>Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model.NetworkSecurityRule</TypeName>
       </ViewSelectedBy>
-      <GroupBy>
-        <PropertyName>Type</PropertyName>
-      </GroupBy>
       <TableControl>
         <TableHeaders>
           <TableColumnHeader>
