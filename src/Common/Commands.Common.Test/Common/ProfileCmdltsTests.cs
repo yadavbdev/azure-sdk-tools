@@ -20,6 +20,7 @@ using System.Management.Automation;
 using System.Management.Automation.Language;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.WindowsAzure.Commands.Common.Models;
 using Microsoft.WindowsAzure.Commands.Common.Test.Mocks;
@@ -113,29 +114,10 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         {
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             string cacheFileName = Path.Combine(AzurePowerShell.ProfileDirectory, "TokenCache.dat");
+            // Fake serialized data for token cache
+            dataStore.WriteFile(cacheFileName, Convert.FromBase64String("AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA45Sc0XhYakmzrM191uK9XgAAAAACAAAAAAADZgAAwAAAABAAAADoM/wWCwFlxAVFESjWuF03AAAAAASAAACgAAAAEAAAAJZm2C8ecQ8VeE3rdljIuoEAAQAAuksoOVO35RaqglVlsbtAbT9h1lU8djK82STb9ubbMwEs+q+KSrqnOoGPvXL928Qjm+5VMYbmFF5y1OaCvMKpyf6Xn5rb7nslMBV/jm8HbrfeiGXL9hX2QRKXI1ejXXwksEpoezRjny0aZaKru8xtUBeGLkPmB3r5llv3Gh8cuO/3NrrLTWLJmxV4JZ0jrAAWnzPaZ8zEjqOpU6fJta/Z/AGS1gD7D7yda9PTG+J48DarF6tnSHhR4uKDqPNygjwmpiAqsGhdF0jYeU1ACb9o2pEeG0mlyMaZmZ/Sz7M/o9btLXs2vY+VrLBaZNIzuqHHbrXQ03kMuw3lEn9jHl1wuBQAAABZIS9d5Vr+yMyhPtlVsACBnqNXAQ=="));
             ProtectedFileTokenCache tokenCache = ProtectedFileTokenCache.Instance;
-            tokenCache.HasStateChanged = true;
-
-            // HACK: Do not look at this code
-            TokenCacheNotificationArgs args = new TokenCacheNotificationArgs();
-            typeof(TokenCacheNotificationArgs).GetProperty("ClientId").SetValue(args, "123");
-            typeof(TokenCacheNotificationArgs).GetProperty("Resource").SetValue(args, "123");
-            typeof(TokenCacheNotificationArgs).GetProperty("TokenCache").SetValue(args, tokenCache);
-            typeof(TokenCacheNotificationArgs).GetProperty("UniqueId").SetValue(args, "test@live.com");
-            typeof(TokenCacheNotificationArgs).GetProperty("DisplayableId").SetValue(args, "test@live.com");
-            AuthenticationResult authenticationResult =
-                typeof (AuthenticationResult).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance,
-                    null, new Type[] {typeof(string), typeof(string), typeof(string), typeof(DateTimeOffset)}, null).Invoke(new object[]
-                    {
-                        "foo", "123", "123",
-                        new DateTimeOffset(DateTime.Now.AddDays(1))
-                    }) as AuthenticationResult;
-            var storeToCache = typeof(TokenCache).GetMethod("StoreToCache", BindingFlags.Instance | BindingFlags.NonPublic);
-            storeToCache.Invoke(tokenCache, 
-                new object[] {authenticationResult, "Common", "123", "123", 0});
             
-            tokenCache.AfterAccess.Invoke(args);
-
             Assert.Equal(1, tokenCache.ReadItems().Count());
 
             ClearAzureProfileCommand cmdlt = new ClearAzureProfileCommand();
