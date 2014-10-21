@@ -39,7 +39,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             var dataPipelineManagementClient = GetDataPipelineManagementClient();
             var resourceManagementClient = GetResourceManagementClient();
             var subscriptionsClient = GetSubscriptionClient();
-            var storageClient = GetStorageManagementClient();
             var galleryClient = GetGalleryClient();
             var eventsClient = GetEventsClient();
             var authorizationManagementClient = GetAuthorizationManagementClient();
@@ -47,7 +46,6 @@ namespace Microsoft.Azure.Commands.DataFactories.Test
             helper.SetupManagementClients(dataPipelineManagementClient,
                 resourceManagementClient,
                 subscriptionsClient,
-                storageClient,
                 galleryClient,
                 eventsClient,
                 authorizationManagementClient);
