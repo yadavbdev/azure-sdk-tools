@@ -27,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
     {
         [Parameter(Mandatory = false)]
         [ValidateNotNullOrEmpty]
-        public SwitchParameter Details { get; set; }
+        public SwitchParameter Detailed { get; set; }
 
         protected override void ProcessRecord()
         {
@@ -48,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             else
             {
                 var networkClient = new NetworkClient(AzureSession.CurrentContext.Subscription, CommandRuntime);
-                INetworkSecurityGroup networkSecurityGroup = networkClient.GetNetworkSecurityGroup(networkSecurityGroupName, Details);
+                INetworkSecurityGroup networkSecurityGroup = networkClient.GetNetworkSecurityGroup(networkSecurityGroupName, Detailed);
 
                 WriteObject(networkSecurityGroup, true);
             }
