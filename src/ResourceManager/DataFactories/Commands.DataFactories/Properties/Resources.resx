@@ -146,6 +146,9 @@ Are you sure you want to continue?</value>
   <data name="DataFactoryRemoving" xml:space="preserve">
     <value>Removing data factory '{0}' in resource group '{1}'.</value>
   </data>
+   <data name="InvalidJson" xml:space="preserve">
+    <value>Failed to parse input JSON file. {0}. Please correct the error in the JSON file and re-deploy {1} again.</value>
+  </data>
   <data name="DownloadCredentialsNull" xml:space="preserve">
     <value>The argument set for download method is incomplete.</value>
   </data>

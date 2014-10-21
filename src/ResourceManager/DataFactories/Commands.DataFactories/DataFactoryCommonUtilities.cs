@@ -15,16 +15,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Newtonsoft.Json;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
     public static class DataFactoryCommonUtilities
     {
-        public static string ExtractNameFromJson(string jsonText)
+        public static string ExtractNameFromJson(string jsonText, string resourceType)
         {
-            Dictionary<string, object> jsonKeyValuePairs = JsonUtilities.DeserializeJson(jsonText);
+            Dictionary<string, object> jsonKeyValuePairs;
+
+            try
+            {
+                jsonKeyValuePairs = JsonUtilities.DeserializeJson(jsonText, true);
+            }
+            catch (Exception exception)
+            {
+                throw new JsonSerializationException(string.Format(CultureInfo.InvariantCulture, Resources.InvalidJson, exception.Message, resourceType));
+            }
+
             const string NameTagInJson = "Name";
 
             foreach (var key in jsonKeyValuePairs.Keys)
