@@ -2052,5 +2052,35 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         {
             return RunPSCmdletAndReturnFirst<SM.AssignPublicIP>(new GetAzurePublicIPCmdletInfo(publicIpName, vm));
         }
+
+        internal SM.IPersistentVM AddAzureNetworkInterfaceConfig(string name, string subnetName, string staticVnetIpAddress, SM.IPersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.IPersistentVM>(new AddAzureNetworkInterfaceConfigCmdletInfo(name, subnetName, staticVnetIpAddress, vm));
+        }
+
+        internal SM.IPersistentVM AddAzureNetworkInterfaceConfig(string name, string subnetName, SM.IPersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.IPersistentVM>(new AddAzureNetworkInterfaceConfigCmdletInfo(name, subnetName, null, vm));
+        }
+
+        internal SM.IPersistentVM SetAzureNetworkInterfaceConfig(string name, string subnetName, string staticVnetIpAddress, SM.IPersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.IPersistentVM>(new SetAzureNetworkInterfaceConfigCmdletInfo(name, subnetName, staticVnetIpAddress, vm));
+        }
+
+        internal SM.IPersistentVM SetAzureNetworkInterfaceConfig(string name, string subnetName, SM.IPersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.IPersistentVM>(new SetAzureNetworkInterfaceConfigCmdletInfo(name, subnetName, null, vm));
+        }
+
+        internal SM.NetworkInterface GetAzureNetworkInterfaceConfig(string name, SM.PersistentVMRoleContext vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.NetworkInterface>(new GetAzureNetworkInterfaceConfigCmdletInfo(name, vm));
+        }
+
+        internal SM.IPersistentVM RemoveAzureNetworkInterfaceConfig(string name, SM.IPersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.IPersistentVM>(new RemoveAzureNetworkInterfaceConfigCmdletInfo(name, vm));
+        }
     }
 }

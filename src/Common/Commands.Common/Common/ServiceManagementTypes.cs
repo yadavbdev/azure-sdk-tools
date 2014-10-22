@@ -863,7 +863,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                 this.SetValue("PublicIPs", value);
             }
         }
-
         [DataMember(Name = "NetworkSecurityGroup", EmitDefaultValue = false, Order = 7)]
         public string NetworkSecurityGroup
         {
@@ -874,6 +873,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             set
             {
                 this.SetValue("NetworkSecurityGroup", value);
+            }
+        }
+
+        [DataMember(Name = "NetworkInterfaces", EmitDefaultValue = false, Order = 7)]
+        public AssignNetworkInterfaceCollection NetworkInterfaces
+        {
+            get
+            {
+                return this.GetValue<AssignNetworkInterfaceCollection>("NetworkInterfaces");
+            }
+            set
+            {
+                this.SetValue("NetworkInterfaces", value);
             }
         }
     }
@@ -900,6 +912,63 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         [DataMember(Name = "IdleTimeoutInMinutes", EmitDefaultValue = false, Order = 2)]
         public int? IdleTimeoutInMinutes { get; set; }
 
+    }
+
+    [CollectionDataContract(Name = "NetworkInterfaces", ItemName = "NetworkInterface", Namespace = Constants.ServiceManagementNS)]
+    public class AssignNetworkInterfaceCollection : List<AssignNetworkInterface>
+    {
+        public AssignNetworkInterfaceCollection()
+        {
+        }
+
+        public AssignNetworkInterfaceCollection(IEnumerable<AssignNetworkInterface> assignNetworkInterface)
+            : base(assignNetworkInterface)
+        {
+        }
+    }
+
+    [DataContract(Name = "NetworkInterface", Namespace = Constants.ServiceManagementNS)]
+    public class AssignNetworkInterface : Mergable<AssignNetworkInterface>
+    {
+        [DataMember(Name = "Name", EmitDefaultValue = false, Order = 1)]
+        public string Name { get; set; }
+
+        [DataMember(Name = "IPConfigurations", EmitDefaultValue = false, Order = 2)]
+        public AssignIPConfigurationCollection IPConfigurations
+        {
+            get
+            {
+                return this.GetValue<AssignIPConfigurationCollection>("IPConfigurations");
+            }
+            set
+            {
+                this.SetValue("IPConfigurations", value);
+            }
+        }
+
+    }
+
+    [CollectionDataContract(Name = "IPConfigurations", ItemName = "IPConfiguration", Namespace = Constants.ServiceManagementNS)]
+    public class AssignIPConfigurationCollection : List<AssignIPConfiguration>
+    {
+        public AssignIPConfigurationCollection()
+        {
+        }
+
+        public AssignIPConfigurationCollection(IEnumerable<AssignIPConfiguration> assignIPConfigurations)
+            : base(assignIPConfigurations)
+        {
+        }
+    }
+
+    [DataContract(Name = "IPConfiguration", Namespace = Constants.ServiceManagementNS)]
+    public class AssignIPConfiguration
+    {
+        [DataMember(Name = "SubnetName", EmitDefaultValue = false, Order = 1)]
+        public string SubnetName { get; set; }
+
+        [DataMember(Name = "StaticVirtualNetworkIPAddress", EmitDefaultValue = false, Order = 2)]
+        public string StaticVirtualNetworkIPAddress { get; set; }
     }
 
     [CollectionDataContract(Name = "LoadBalancedEndpointList", Namespace = Constants.ServiceManagementNS)]
@@ -2439,6 +2508,45 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
 
         [DataMember(EmitDefaultValue = false, Order = 6)]
         public int? IdleTimeoutInMinutes { get; set; }
+
+        public ExtensionDataObject ExtensionData { get; set; }
+    }
+
+    [CollectionDataContract(Namespace = Constants.ServiceManagementNS, Name = "NetworkInterfaces", ItemName = "NetworkInterface")]
+    public class NetworkInterfaceList : List<NetworkInterface>, IExtensibleDataObject
+    {
+        public ExtensionDataObject ExtensionData { get; set; }
+    }
+
+    [DataContract(Namespace = Constants.ServiceManagementNS)]
+    public class NetworkInterface : IExtensibleDataObject
+    {
+        [DataMember(EmitDefaultValue = false, Order = 1)]
+        public string Name { get; set; }
+
+        [DataMember(EmitDefaultValue = false, Order = 2)]
+        public string MacAddress { get; set; }
+
+        [DataMember(EmitDefaultValue = false, Order = 3)]
+        public IPConfigurationList IpConfigurations { get; set; }
+
+        public ExtensionDataObject ExtensionData { get; set; }
+    }
+
+    [CollectionDataContract(Namespace = Constants.ServiceManagementNS, Name = "IPConfigurations", ItemName = "IPConfiguration")]
+    public class IPConfigurationList : List<IPConfiguration>, IExtensibleDataObject
+    {
+        public ExtensionDataObject ExtensionData { get; set; }
+    }
+
+    [DataContract(Namespace = Constants.ServiceManagementNS)]
+    public class IPConfiguration : IExtensibleDataObject
+    {
+        [DataMember(EmitDefaultValue = false, Order = 1)]
+        public string SubnetName { get; set; }
+
+        [DataMember(EmitDefaultValue = false, Order = 2)]
+        public string Address { get; set; }
 
         public ExtensionDataObject ExtensionData { get; set; }
     }
