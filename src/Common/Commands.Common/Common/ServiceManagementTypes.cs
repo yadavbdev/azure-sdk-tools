@@ -888,7 +888,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                 this.SetValue("NetworkInterfaces", value);
             }
         }
-	}
+    }
 
     [CollectionDataContract(Name = "PublicIPs", ItemName = "PublicIP", Namespace = Constants.ServiceManagementNS)]
     public class AssignPublicIPCollection : List<AssignPublicIP>
