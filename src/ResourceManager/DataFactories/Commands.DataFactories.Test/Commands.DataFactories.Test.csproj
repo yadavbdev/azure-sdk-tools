@@ -94,8 +94,8 @@
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Common.1.4.0\lib\net45\Microsoft.WindowsAzure.Common.NetFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-        <SpecificVersion>False</SpecificVersion>
-        <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.3.1.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Storage.3.1.0\lib\net40\Microsoft.WindowsAzure.Management.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=3.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -118,6 +118,12 @@
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
