@@ -796,4 +796,9 @@ The file needs to be a PowerShell script (.ps1 or .psm1).</value>
   <data name="NetworkInterfaceNotFound" xml:space="preserve">
     <value>The specified NetworkInterface is not found</value>
   </data>
-</root>
+  <data name="CannotRemoveNetworkSecurityGroupBecauseNotDirectlyAssociatedwithVm" xml:space="preserve">
+    <value>Cannot remove Network Security Group "{0}" from Virtual Machine "{1}" because it is not directly.</value>
+  </data>
+  <data name="WarningVmIsNotDirectlyAssociatedWithNetworkSecurityGroup" xml:space="preserve">
+    <value>VM "{0}" is not currently associated with a Network Security Group.</value>
+  </data></root>

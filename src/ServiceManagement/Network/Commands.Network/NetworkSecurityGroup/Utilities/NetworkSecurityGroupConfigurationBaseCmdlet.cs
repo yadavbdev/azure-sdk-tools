@@ -12,18 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Network.Test.ScenarioTests
-{
-    using WindowsAzure.Commands.ScenarioTest;
-    using Xunit;
+using System.Management.Automation;
+using Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model;
 
-    public class NetworkTests : NetworkTestsBase
+namespace Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Utilities
+{
+    public class NetworkSecurityGroupConfigurationBaseCmdlet : NetworkCmdletBase
     {
-        [Fact(Skip = "Exploratory test by someone else not passing")]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void GetGatewayWhenGatewayDoesntExist()
-        {
-            this.RunPowerShellTest("GetGateway-WhenGatewayDoesntExist");
-        }
+        [Parameter(
+            Position = 0,
+            Mandatory = true,
+            ValueFromPipeline = true,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Network Security Group to update.")]
+        public INetworkSecurityGroup NetworkSecurityGroup { get; set; }
     }
 }

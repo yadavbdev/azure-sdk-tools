@@ -21,6 +21,8 @@ using Microsoft.Azure.Commands.DataFactories.Properties;
 using Microsoft.Azure.Management.DataFactories;
 using Microsoft.Azure.Management.DataFactories.Models;
 using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
@@ -111,6 +113,40 @@ namespace Microsoft.Azure.Commands.DataFactories
                 resourceGroupName, dataFactoryName, dataSliceRunId);
 
             return new PSRunLogInfo(response.DataSliceRunLogsSASUri);
+        }
+
+        public virtual void DownloadFileToBlob(BlobDownloadParameters parameters)
+        {
+            if (parameters == null || parameters.Credentials == null || string.IsNullOrWhiteSpace(parameters.SasUri.ToString()))
+            {
+                throw new ArgumentNullException(Resources.DownloadCredentialsNull);
+            }
+
+            CloudBlobContainer sascontainer = new CloudBlobContainer(parameters.SasUri);
+
+            var bloblist = sascontainer.ListBlobs(null, true);
+            string downloadFolderPath = parameters.Directory.Insert(parameters.Directory.Length, @"\");
+
+            foreach (var blob in bloblist)
+            {
+                ICloudBlob destBlob = blob as ICloudBlob;
+                int length =  destBlob.Name.Split('/').Length;
+                string blobFileName = destBlob.Name.Split('/')[length-1];
+                // the folder structure of run logs changed from flat listing to nesting under time directory
+                string blobFolderPath = String.Empty;
+                if (destBlob.Name.Length > blobFileName.Length)
+                {
+                    blobFolderPath = destBlob.Name.Substring(0, destBlob.Name.Length - blobFileName.Length - 1);
+                }
+                
+                if (!Directory.Exists(downloadFolderPath + blobFolderPath))
+                {
+                    Directory.CreateDirectory(downloadFolderPath + blobFolderPath);
+                }
+                // adding _log suffix to differentiate between files and folders of the same name. Azure blob storage only knows about blob files. We could use nested folder structure
+                // as part of the blob file name and thus it is possible to have a file and folder of the same name in the same location which is not acceptable for Windows file system
+                destBlob.DownloadToFile(downloadFolderPath + destBlob.Name + "_log", FileMode.Create);
+            }
         }
     }
 }
