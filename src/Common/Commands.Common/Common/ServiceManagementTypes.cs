@@ -863,6 +863,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
                 this.SetValue("PublicIPs", value);
             }
         }
+
+        [DataMember(Name = "NetworkSecurityGroup", EmitDefaultValue = false, Order = 7)]
+        public string NetworkSecurityGroup
+        {
+            get
+            {
+                return this.GetValue<string>("NetworkSecurityGroup");
+            }
+            set
+            {
+                this.SetValue("NetworkSecurityGroup", value);
+            }
+        }
     }
 
     [CollectionDataContract(Name = "PublicIPs", ItemName = "PublicIP", Namespace = Constants.ServiceManagementNS)]
