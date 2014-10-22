@@ -114,9 +114,28 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
         {
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             string cacheFileName = Path.Combine(AzurePowerShell.ProfileDirectory, "TokenCache.dat");
-            // Fake serialized data for token cache
-            dataStore.WriteFile(cacheFileName, Convert.FromBase64String("AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYrxpHyLZyEaeNDTHjp0CcAAAAAACAAAAAAADZgAAwAAAABAAAABTXG8FXq06b7s3TWTiQZesAAAAAASAAACgAAAAEAAAAMuunhfBMRfVkErjNYfX8aEAAQAAYzUDwOU9uqzlvS1w8mkbrodsILX6yR1xmfnAfcXLKg7HW4MrXQnHlTNVYVzeveanUHBusefwsc+viOVLbcKikCmPskMLnNAymotwzHouFc2fJA7r691vxVdkp2/5kFMN3Xe8/UJbKCH1f4LdSVF2wGkcIjUPw6z70INT42Q63C5jnp6dU5BXXV95FdNMgfCiOQVqPUJisXqzxE003U6JCCIVgrYTFv0yxcHRxhujnLhAIxYurK+V9Zr2wWtE9KMMy7dKwbfjXB8+cq+GkxByI4e6wLUQFnN1BjtpgVW0DYEiQxA8dDHk2S1ED+AGpCm5DD1PqiNrLXeWEgheZfIE3BQAAAAWB95PzbZkouApTL78xOhQMcf5zw=="));
             ProtectedFileTokenCache tokenCache = ProtectedFileTokenCache.Instance;
+            tokenCache.HasStateChanged = true;
+
+            // HACK: Do not look at this code
+            TokenCacheNotificationArgs args = new TokenCacheNotificationArgs();
+            typeof(TokenCacheNotificationArgs).GetProperty("ClientId").SetValue(args, "123");
+            typeof(TokenCacheNotificationArgs).GetProperty("Resource").SetValue(args, "123");
+            typeof(TokenCacheNotificationArgs).GetProperty("TokenCache").SetValue(args, tokenCache);
+            typeof(TokenCacheNotificationArgs).GetProperty("UniqueId").SetValue(args, "test@live.com");
+            typeof(TokenCacheNotificationArgs).GetProperty("DisplayableId").SetValue(args, "test@live.com");
+            AuthenticationResult authenticationResult =
+                typeof(AuthenticationResult).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance,
+                    null, new Type[] { typeof(string), typeof(string), typeof(string), typeof(DateTimeOffset) }, null).Invoke(new object[]
+                    {
+                        "foo", "123", "123",
+                        new DateTimeOffset(DateTime.Now.AddDays(1))
+                    }) as AuthenticationResult;
+            var storeToCache = typeof(TokenCache).GetMethod("StoreToCache", BindingFlags.Instance | BindingFlags.NonPublic);
+            storeToCache.Invoke(tokenCache,
+                new object[] { authenticationResult, "Common", "123", "123", 0 });
+
+            tokenCache.AfterAccess.Invoke(args);
             
             Assert.Equal(1, tokenCache.ReadItems().Count());
 
