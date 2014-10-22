@@ -146,11 +146,14 @@ Are you sure you want to continue?</value>
   <data name="DataFactoryRemoving" xml:space="preserve">
     <value>Removing data factory '{0}' in resource group '{1}'.</value>
   </data>
+   <data name="InvalidJson" xml:space="preserve">
+    <value>Failed to parse input JSON file. {0}. Please correct the error in the JSON file and re-deploy {1} again.</value>
+  </data>
   <data name="DownloadCredentialsNull" xml:space="preserve">
     <value>The argument set for download method is incomplete.</value>
   </data>
   <data name="DownloadFailed" xml:space="preserve">
-    <value>Download failed. Please check if you have write permission to the path {0} or the url {1} is valid. </value>
+    <value>Download failed. Please check if you have write permission to the path {0} or the sas url is valid. </value>
   </data>
   <data name="DownloadLogCompleted" xml:space="preserve">
     <value>Download of the log is completed. Please find it in the directory {0}.</value>
@@ -200,7 +203,7 @@ Are you sure you want to continue?</value>
     <value>Removing linked service '{0}' in data factory '{1}'.</value>
   </data>
   <data name="NoWriteAccessToDirectory" xml:space="preserve">
-    <value>No access to write for the specified directory {0}.</value>
+    <value>No access to write for the specified directory {0} or the directory does not exist.</value>
   </data>
   <data name="PipelineConfirmationMessage" xml:space="preserve">
     <value>Are you sure you want to remove pipeline '{0}' in data factory '{1}'?</value>
@@ -238,5 +241,8 @@ Are you sure you want to continue?</value>
   </data>
   <data name="TableRemoving" xml:space="preserve">
     <value>Removing table '{0}' in data factory '{1}'.</value>
+  </data>
+  <data name="NoDataSliceFound" xml:space="preserve">
+    <value>No Slices were found in the time range specified. </value>
   </data>
 </root>

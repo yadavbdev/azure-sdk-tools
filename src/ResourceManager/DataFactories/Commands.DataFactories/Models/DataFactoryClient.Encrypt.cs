@@ -13,25 +13,26 @@
 // ----------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
-using System.Linq;
-using Microsoft.Azure.Commands.DataFactories.Models;
-using Microsoft.Azure.Commands.DataFactories.Properties;
-using Microsoft.Azure.Management.DataFactories.Models;
+using System.Security;
 using Microsoft.Azure.Management.DataFactories;
 using Microsoft.DataTransfer.Gateway.Encryption;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
-using Microsoft.WindowsAzure.Commands.Utilities;
-using System.Security;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
     public partial class DataFactoryClient
     {
-        public virtual string EncryptString(SecureString value, string resourceGroupName, string dataFactoryName, string gatewayName)
+        public virtual string CloudEncryptString(SecureString value, string resourceGroupName, string dataFactoryName)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            
+            return Extensions.Encrypt((DataPipelineManagementClient) DataPipelineManagementClient, value,
+                resourceGroupName, dataFactoryName);
+        }
+
+        public virtual string OnPremisesEncryptString(SecureString value, string resourceGroupName, string dataFactoryName, string gatewayName)
         {
             if (value == null)
             {

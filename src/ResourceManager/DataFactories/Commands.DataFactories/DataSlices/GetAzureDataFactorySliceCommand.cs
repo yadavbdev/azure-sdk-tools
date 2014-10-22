@@ -43,6 +43,13 @@ namespace Microsoft.Azure.Commands.DataFactories
                 ResourceGroupName, DataFactoryName, TableName, StartDateTime,
                 EndDateTime);
 
+            if (dataSlices == null || dataSlices.Count == 0)
+            {
+                WriteWarning(string.Format(
+                     CultureInfo.InvariantCulture,
+                     Resources.NoDataSliceFound));
+            }
+
             WriteObject(dataSlices, true);
         }
     }

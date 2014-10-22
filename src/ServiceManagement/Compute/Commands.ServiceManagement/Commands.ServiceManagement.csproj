@@ -207,14 +207,17 @@
     <Compile Include="IaaS\Extensions\MicrosoftAntimalware\VirtualMachineMicrosoftAntimalwareExtensionContext.cs" />
     <Compile Include="IaaS\Network\AddAzureDns.cs" />
     <Compile Include="IaaS\Network\GetAzureInternalLoadBalancer.cs" />
+    <Compile Include="IaaS\Network\GetAzureNetworkSecurityGroupConfig.cs" />
     <Compile Include="IaaS\Network\NewAzureInternalLoadBalancerConfig.cs" />
     <Compile Include="IaaS\Network\RemoveAzureDns.cs" />
     <Compile Include="IaaS\Network\RemoveAzureInternalLoadBalancer.cs" />
     <Compile Include="IaaS\Network\AddAzureInternalLoadBalancer.cs" />
+    <Compile Include="IaaS\Network\RemoveAzureNetworkSecurityGroupConfig.cs" />
     <Compile Include="IaaS\Network\RemoveAzurePublicIP.cs" />
     <Compile Include="IaaS\Network\GetAzurePublicIP.cs" />
     <Compile Include="IaaS\Network\SetAzureDns.cs" />
     <Compile Include="IaaS\Network\SetAzureInternalLoadBalancer.cs" />
+    <Compile Include="IaaS\Network\SetAzureNetworkSecurityGroupConfig.cs" />
     <Compile Include="IaaS\Network\SetAzurePublicIP.cs" />
     <Compile Include="Model\DeploymentRebootEventContext.cs" />
     <Compile Include="Model\InternalLoadBalancerSetting.cs" />
@@ -488,6 +491,10 @@
     <ProjectReference Include="..\..\..\Common\Commands.Common\Commands.Common.csproj">
       <Project>{5ee72c53-1720-4309-b54b-5fb79703195f}</Project>
       <Name>Commands.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Network\Commands.Network\Commands.Network.csproj">
+      <Project>{40fee0bb-fd45-4efc-85bc-0d602a6892c4}</Project>
+      <Name>Commands.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\Commands.Utilities\Commands.Utilities.csproj">
       <Project>{4900ec4e-8deb-4412-9108-0bc52f81d457}</Project>
