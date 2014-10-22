@@ -876,7 +876,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
             }
         }
 
-        DataMember(Name = "NetworkInterfaces", EmitDefaultValue = false, Order = 7)]
+        [DataMember(Name = "NetworkInterfaces", EmitDefaultValue = false, Order = 7)]
         public AssignNetworkInterfaceCollection NetworkInterfaces
         {
             get
