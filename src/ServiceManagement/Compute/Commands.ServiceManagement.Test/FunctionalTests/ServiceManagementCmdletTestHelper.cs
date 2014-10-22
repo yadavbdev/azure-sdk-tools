@@ -2073,11 +2073,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return RunPSCmdletAndReturnFirst<SM.IPersistentVM>(new SetAzureNetworkInterfaceConfigCmdletInfo(name, subnetName, null, vm));
         }
 
-        internal SM.NetworkInterfaceList GetAzureNetworkInterfaceConfig(SM.PersistentVMRoleContext vm)
-        {
-            return RunPSCmdletAndReturnFirst<SM.NetworkInterfaceList>(new GetAzureNetworkInterfaceConfigCmdletInfo(null, vm));
-        }
-
         internal SM.NetworkInterface GetAzureNetworkInterfaceConfig(string name, SM.PersistentVMRoleContext vm)
         {
             return RunPSCmdletAndReturnFirst<SM.NetworkInterface>(new GetAzureNetworkInterfaceConfigCmdletInfo(name, vm));

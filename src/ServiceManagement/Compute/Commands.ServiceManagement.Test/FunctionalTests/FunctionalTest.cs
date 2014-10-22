@@ -462,8 +462,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 var nic1 = "eth1";
                 var nic2 = "eth2";
 
-                var nic1Address = "10.0.1.49";
-                var nic2Address = "10.0.1.48";
+                var nic1Address = "10.0.1.40";
+                var nic2Address = "10.0.1.39";
 
                 // Create a VNet
                 var vnetConfig = vmPowershellCmdlets.GetAzureVNetConfig(null);
@@ -481,10 +481,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.NewAzureService(serviceName, locationName);
 
                 // Create the VM
-                var azureVMConfigInfo = new AzureVMConfigInfo(vmName, InstanceSize.ExtraSmall.ToString(), imageName);
+                var azureVMConfigInfo = new AzureVMConfigInfo(vmName, InstanceSize.Large.ToString(), imageName);
                 var azureProvisioningConfig = new AzureProvisioningConfigInfo(OS.Windows, username, password);
                 var persistentVMConfigInfo = new PersistentVMConfigInfo(azureVMConfigInfo, azureProvisioningConfig, null, null);
                 PersistentVM vm = vmPowershellCmdlets.GetPersistentVM(persistentVMConfigInfo);
+                vm = (PersistentVM)vmPowershellCmdlets.SetAzureSubnet(vm, new string[] {subnet});
 
                 // AddNetworkInterfaceConfig
                 vm = (PersistentVM)vmPowershellCmdlets.AddAzureNetworkInterfaceConfig(nic1, subnet, nic1Address, vm);
@@ -519,6 +520,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Assert.AreEqual(getVM.NetworkInterfaces[0].Name, nic1);
                 Assert.AreEqual(getVM.NetworkInterfaces[0].IpConfigurations[0].SubnetName, subnet);
                 Assert.IsNotNull(getVM.NetworkInterfaces[0].MacAddress);
+
+                var getNic = vmPowershellCmdlets.GetAzureNetworkInterfaceConfig(nic1, getVM);
+                Assert.AreEqual(getNic.Name, nic1);
+                Assert.AreEqual(getNic.IpConfigurations[0].SubnetName, subnet);
+                Assert.IsNotNull(getNic.MacAddress);
 
                 pass = true;
             }
