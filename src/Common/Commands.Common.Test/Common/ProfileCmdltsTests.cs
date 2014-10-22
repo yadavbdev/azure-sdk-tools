@@ -115,7 +115,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Test.Common
             commandRuntimeMock.Setup(f => f.ShouldProcess(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             string cacheFileName = Path.Combine(AzurePowerShell.ProfileDirectory, "TokenCache.dat");
             // Fake serialized data for token cache
-            dataStore.WriteFile(cacheFileName, Convert.FromBase64String("AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA45Sc0XhYakmzrM191uK9XgAAAAACAAAAAAADZgAAwAAAABAAAADoM/wWCwFlxAVFESjWuF03AAAAAASAAACgAAAAEAAAAJZm2C8ecQ8VeE3rdljIuoEAAQAAuksoOVO35RaqglVlsbtAbT9h1lU8djK82STb9ubbMwEs+q+KSrqnOoGPvXL928Qjm+5VMYbmFF5y1OaCvMKpyf6Xn5rb7nslMBV/jm8HbrfeiGXL9hX2QRKXI1ejXXwksEpoezRjny0aZaKru8xtUBeGLkPmB3r5llv3Gh8cuO/3NrrLTWLJmxV4JZ0jrAAWnzPaZ8zEjqOpU6fJta/Z/AGS1gD7D7yda9PTG+J48DarF6tnSHhR4uKDqPNygjwmpiAqsGhdF0jYeU1ACb9o2pEeG0mlyMaZmZ/Sz7M/o9btLXs2vY+VrLBaZNIzuqHHbrXQ03kMuw3lEn9jHl1wuBQAAABZIS9d5Vr+yMyhPtlVsACBnqNXAQ=="));
+            dataStore.WriteFile(cacheFileName, Convert.FromBase64String("AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYrxpHyLZyEaeNDTHjp0CcAAAAAACAAAAAAADZgAAwAAAABAAAABTXG8FXq06b7s3TWTiQZesAAAAAASAAACgAAAAEAAAAMuunhfBMRfVkErjNYfX8aEAAQAAYzUDwOU9uqzlvS1w8mkbrodsILX6yR1xmfnAfcXLKg7HW4MrXQnHlTNVYVzeveanUHBusefwsc+viOVLbcKikCmPskMLnNAymotwzHouFc2fJA7r691vxVdkp2/5kFMN3Xe8/UJbKCH1f4LdSVF2wGkcIjUPw6z70INT42Q63C5jnp6dU5BXXV95FdNMgfCiOQVqPUJisXqzxE003U6JCCIVgrYTFv0yxcHRxhujnLhAIxYurK+V9Zr2wWtE9KMMy7dKwbfjXB8+cq+GkxByI4e6wLUQFnN1BjtpgVW0DYEiQxA8dDHk2S1ED+AGpCm5DD1PqiNrLXeWEgheZfIE3BQAAAAWB95PzbZkouApTL78xOhQMcf5zw=="));
             ProtectedFileTokenCache tokenCache = ProtectedFileTokenCache.Instance;
             
             Assert.Equal(1, tokenCache.ReadItems().Count());
