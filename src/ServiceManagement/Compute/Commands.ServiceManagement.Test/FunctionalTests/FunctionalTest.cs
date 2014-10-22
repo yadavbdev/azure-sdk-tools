@@ -451,6 +451,86 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         }
 
         /// <summary>
+        /// Test to validate creation of multiple network interfaces on a vm
+        /// </summary>
+        [TestMethod(), TestCategory(Category.Functional), TestProperty("Feature", "IAAS"), Priority(1), Owner("derajen"), Description("Test the cmdlet ((Add,Set,Remove)-AzureNetworkInterfaceConfig)")]
+        public void AzureMultiNicTest()
+        {
+            StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);
+            try
+            {
+                var nic1 = "eth1";
+                var nic2 = "eth2";
+
+                var nic1Address = "10.0.1.49";
+                var nic2Address = "10.0.1.48";
+
+                // Create a VNet
+                var vnetConfig = vmPowershellCmdlets.GetAzureVNetConfig(null);
+                if (vnetConfig.Count > 0)
+                {
+                    vmPowershellCmdlets.RunPSScript("Get-AzureService | Remove-AzureService -Force");
+                    Utilities.RetryActionUntilSuccess(() => vmPowershellCmdlets.RemoveAzureVNetConfig(), "in use", 5, 30);
+                }
+                vmPowershellCmdlets.SetAzureVNetConfig(Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg");
+                var sites = vmPowershellCmdlets.GetAzureVNetSite(null);
+                var subnet = sites[0].Subnets.First().Name;
+                var vnetName = sites[0].Name;
+
+                // Create a new service
+                vmPowershellCmdlets.NewAzureService(serviceName, locationName);
+
+                // Create the VM
+                var azureVMConfigInfo = new AzureVMConfigInfo(vmName, InstanceSize.ExtraSmall.ToString(), imageName);
+                var azureProvisioningConfig = new AzureProvisioningConfigInfo(OS.Windows, username, password);
+                var persistentVMConfigInfo = new PersistentVMConfigInfo(azureVMConfigInfo, azureProvisioningConfig, null, null);
+                PersistentVM vm = vmPowershellCmdlets.GetPersistentVM(persistentVMConfigInfo);
+
+                // AddNetworkInterfaceConfig
+                vm = (PersistentVM)vmPowershellCmdlets.AddAzureNetworkInterfaceConfig(nic1, subnet, nic1Address, vm);
+                vm = (PersistentVM)vmPowershellCmdlets.AddAzureNetworkInterfaceConfig(nic2, subnet, vm);
+
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces.Count, 2);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[0].Name, nic1);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[0].IPConfigurations[0].SubnetName, subnet);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[0].IPConfigurations[0].StaticVirtualNetworkIPAddress, nic1Address);
+
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[1].Name, nic2);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[1].IPConfigurations[0].SubnetName, subnet);
+                Assert.IsNull(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[1].IPConfigurations[0].StaticVirtualNetworkIPAddress);
+
+                // Verify SetNetworkInterfaceConfig
+                vm = (PersistentVM)vmPowershellCmdlets.SetAzureNetworkInterfaceConfig(nic2, subnet, nic2Address, vm);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[1].Name, nic2);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[1].IPConfigurations[0].SubnetName, subnet);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[1].IPConfigurations[0].StaticVirtualNetworkIPAddress, nic2Address);
+
+                // Verify RemoveNetworkInterfaceConfig
+                vm = (PersistentVM)vmPowershellCmdlets.RemoveAzureNetworkInterfaceConfig(nic2, vm);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces.Count, 1);
+                Assert.AreEqual(((NetworkConfigurationSet)vm.ConfigurationSets[1]).NetworkInterfaces[0].Name, nic1);
+
+                // Verify the create vm using NIC
+                vmPowershellCmdlets.NewAzureVM(serviceName, new[] { vm }, vnetName, null, null, null, null, null, null, null, null, null, false );
+
+                // Verify GetNetworkInterfaceConfig
+                var getVM = vmPowershellCmdlets.GetAzureVM(vmName, serviceName);
+
+                Assert.AreEqual(getVM.NetworkInterfaces[0].Name, nic1);
+                Assert.AreEqual(getVM.NetworkInterfaces[0].IpConfigurations[0].SubnetName, subnet);
+                Assert.IsNotNull(getVM.NetworkInterfaces[0].MacAddress);
+
+                pass = true;
+            }
+            catch (Exception e)
+            {
+                pass = false;
+                Console.WriteLine("Exception occurred: {0}", e.ToString());
+                throw;
+            }
+        }
+
+        /// <summary>
         ///
         /// </summary>
         [TestMethod(), TestCategory(Category.Functional), TestCategory(Category.BVT), TestProperty("Feature", "IAAS"), Priority(1), Owner("hylee"), Description("Test the cmdlet (Get-AzureLocation)")]
