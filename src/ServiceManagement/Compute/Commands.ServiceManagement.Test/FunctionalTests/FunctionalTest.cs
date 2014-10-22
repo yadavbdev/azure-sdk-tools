@@ -453,7 +453,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         /// <summary>
         /// Test to validate creation of multiple network interfaces on a vm
         /// </summary>
-        [TestMethod(), TestCategory(Category.Functional), TestProperty("Feature", "IAAS"), Priority(1), Owner("derajen"), Description("Test the cmdlet ((Add,Set,Remove)-AzureNetworkInterfaceConfig)")]
+        [TestMethod(), TestCategory(Category.Preview), TestProperty("Feature", "IAAS"), Priority(1), Owner("derajen"), Description("Test the cmdlet ((Add,Set,Remove)-AzureNetworkInterfaceConfig)")]
         public void AzureMultiNicTest()
         {
             StartTest(MethodBase.GetCurrentMethod().Name, testStartTime);

@@ -27,7 +27,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             if (!string.IsNullOrEmpty(name))
             {
-                this.parameters.Add(new CmdletParam("name", name));
+                this.parameters.Add(new CmdletParam("Name", name));
             }
 
             this.parameters.Add(new CmdletParam("VM", vm));
