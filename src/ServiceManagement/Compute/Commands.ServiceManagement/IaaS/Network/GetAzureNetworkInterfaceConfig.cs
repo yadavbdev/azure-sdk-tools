@@ -1,4 +1,5 @@
-﻿// ----------------------------------------------------------------------------------
+﻿
+// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +13,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
 
-namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Network
 {
-    public class VirtualMachineConfigurationCmdletBase : ServiceManagementBaseCmdlet
+    [Cmdlet(VerbsCommon.Get, NetworkInterfaceConfig), OutputType(typeof(NetworkInterface))]
+    public class GetAzureNetworkInterfaceConfig : PSCmdlet
     {
-        protected const string StaticVNetIPNoun = "AzureStaticVNetIP";
-        protected const string PublicIPNoun = "AzurePublicIP";
         protected const string NetworkInterfaceConfig = "AzureNetworkInterfaceConfig";
+
+        [Parameter(Position = 1, Mandatory = false, HelpMessage = "The NetworkInterface Name.")]
+        public string Name { get; set; }
 
         [Parameter(
             Mandatory = true,
@@ -32,21 +35,33 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
             HelpMessage = "Virtual Machine to update.")]
         [ValidateNotNullOrEmpty]
         [Alias("InputObject")]
-        public IPersistentVM VM
+        public PersistentVMRoleContext VM
         {
             get;
             set;
         }
 
-        protected NetworkConfigurationSet GetNetworkConfiguration()
+        protected override void ProcessRecord()
         {
-            var vm = VM.GetInstance();
-            if (vm != null & vm.ConfigurationSets != null)
-            {
-                return vm.ConfigurationSets.OfType<NetworkConfigurationSet>().SingleOrDefault();
-            }
+            var networkInterfaces = VM.NetworkInterfaces;
 
-            return null;
+            if (networkInterfaces != null)
+            {
+                if (string.IsNullOrEmpty(Name))
+                {
+                    WriteObject(networkInterfaces, true);
+                }
+                else
+                {
+                    var nics = networkInterfaces.Where(
+                        n => string.Equals(n.Name, this.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                    if (nics.Count != 0)
+                    {
+                        WriteObject(nics.First());
+                    }
+                }
+            }
         }
     }
 }

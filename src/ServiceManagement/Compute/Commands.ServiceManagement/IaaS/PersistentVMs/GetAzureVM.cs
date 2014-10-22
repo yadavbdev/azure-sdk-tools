@@ -169,6 +169,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
                 OperationId                 = deployment == null ? string.Empty : deployment.RequestId,
                 OperationStatus             = deployment == null ? string.Empty : deployment.StatusCode.ToString(),
                 OperationDescription        = CommandRuntime.ToString(),
+                NetworkInterfaces           = roleInstance == null ? null : Mapper.Map<PVM.NetworkInterfaceList>(roleInstance.NetworkInterfaces),
                 VM = new PVM.PersistentVM
                 {
                     AvailabilitySetName               = vmRole == null ? string.Empty : vmRole.AvailabilitySetName,
