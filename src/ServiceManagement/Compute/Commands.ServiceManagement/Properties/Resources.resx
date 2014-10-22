@@ -801,4 +801,5 @@ The file needs to be a PowerShell script (.ps1 or .psm1).</value>
   </data>
   <data name="WarningVmIsNotDirectlyAssociatedWithNetworkSecurityGroup" xml:space="preserve">
     <value>VM "{0}" is not currently associated with a Network Security Group.</value>
-  </data></root>
+  </data>
+</root>
