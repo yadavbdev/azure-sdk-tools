@@ -12,41 +12,33 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
-using Microsoft.WindowsAzure.Commands.Utilities.Common;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS
 {
-    public class VirtualMachineConfigurationCmdletBase : ServiceManagementBaseCmdlet
+    [Cmdlet(VerbsCommon.Set, NetworkSecurityGroupConfig), OutputType(typeof(IPersistentVM)), Alias]
+    public class SetAzureNetworkSecurityGroupConfigCommand : VirtualMachineConfigurationCmdletBase
     {
-        protected const string StaticVNetIPNoun = "AzureStaticVNetIP";
-        protected const string PublicIPNoun = "AzurePublicIP";
-        protected const string NetworkSecurityGroupConfig = "AzureNetworkSecurityGroupConfig";
+        [Parameter(Position = 1, Mandatory = true, HelpMessage = "The Network Security Group Name.")]
+        public string NetworkSecurityGroupName { get; set; }
 
-        [Parameter(
-            Mandatory = true,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Virtual Machine to update.")]
-        [ValidateNotNullOrEmpty]
-        [Alias("InputObject")]
-        public IPersistentVM VM
+        protected override void ProcessRecord()
         {
-            get;
-            set;
-        }
+            base.ProcessRecord();
 
-        protected NetworkConfigurationSet GetNetworkConfiguration()
-        {
-            var vm = VM.GetInstance();
-            if (vm != null & vm.ConfigurationSets != null)
+            var networkConfiguration = GetNetworkConfiguration();
+            if (networkConfiguration == null)
             {
-                return vm.ConfigurationSets.OfType<NetworkConfigurationSet>().SingleOrDefault();
+                throw new ArgumentOutOfRangeException(Resources.NetworkConfigurationNotFoundOnPersistentVM);
             }
 
-            return null;
+            networkConfiguration.NetworkSecurityGroup = NetworkSecurityGroupName;
+
+            WriteObject(VM);
         }
     }
 }

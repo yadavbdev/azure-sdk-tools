@@ -77,7 +77,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
                 return ResourceManager.GetString("DataFactoryConfirmationMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Creating data factory &apos;{0}&apos; in resource group &apos;{1}&apos;..
         /// </summary>
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
                 return ResourceManager.GetString("DataFactoryCreating", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to A data factory with the name {0} in the resource group {1} exists. 
         ///Continuing execution may overwrite the exisiting one. 
@@ -97,7 +97,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
                 return ResourceManager.GetString("DataFactoryExists", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove the gateway &apos;{0}&apos; in the data factory &apos;{1}&apos;?.
         /// </summary>
@@ -153,7 +153,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download failed. Please check if you have write permission to the path {0} or the url {1} is valid. .
+        ///   Looks up a localized string similar to Download failed. Please check if you have write permission to the path {0} or the sas url is valid. .
         /// </summary>
         internal static string DownloadFailed {
             get {
