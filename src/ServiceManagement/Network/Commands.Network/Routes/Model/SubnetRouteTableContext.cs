@@ -12,28 +12,10 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Network
+namespace Microsoft.Azure.Commands.Network.Routes.Model
 {
-    using System;
-    using WindowsAzure.Commands.Utilities.Common;
-    using WindowsAzure.Management.Network.Models;
-
-    public class VirtualNetworkGatewayContext : ManagementOperationContext
+    public class SubnetRouteTableContext
     {
-        public string LastEventData { get; set; }
-
-        public DateTime? LastEventTimeStamp { get; set; }
-
-        public string LastEventMessage { get; set; }
-
-        public int LastEventID { get; set; }
-
-        public ProvisioningState State { get; set; }
-
-        public string VIPAddress { get; set; }
-
-        public string DefaultSite { get; set; }
-
-        public GatewaySKU GatewaySKU { get; set; }
+        public string RouteTableName { get; set; }
     }
 }
