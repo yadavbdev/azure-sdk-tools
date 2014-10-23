@@ -317,17 +317,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 var events = vmPowershellCmdlets.GetAzureDeploymentEvent(serviceName, deploymentName, date, date.AddHours(1));
                 Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentName == deploymentName
                     && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
-                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+                    && (!e.RebootStartTime.HasValue || (e.RebootStartTime >= date && e.RebootStartTime <= date.AddHours(1)))));
                 // Get Deployment Events by Slot
                 events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, DeploymentSlotType.Production, date, date.AddHours(1));
                 Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentSlot == DeploymentSlotType.Production
                     && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
-                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+                    && (!e.RebootStartTime.HasValue || (e.RebootStartTime >= date && e.RebootStartTime <= date.AddHours(1)))));
                 // Get Deployment Events default by Production Slot
                 events = vmPowershellCmdlets.GetAzureDeploymentEventBySlot(serviceName, null, date, date.AddHours(1));
                 Assert.IsTrue(!events.Any() || events.All(e => e.DeploymentSlot == DeploymentSlotType.Production
                     && !string.IsNullOrEmpty(e.InstanceName) && !string.IsNullOrEmpty(e.RebootReason) && !string.IsNullOrEmpty(e.RoleName)
-                    && (!e.RebootStartedTime.HasValue || (e.RebootStartedTime >= date && e.RebootStartedTime <= date.AddHours(1)))));
+                    && (!e.RebootStartTime.HasValue || (e.RebootStartTime >= date && e.RebootStartTime <= date.AddHours(1)))));
 
                 try
                 {
