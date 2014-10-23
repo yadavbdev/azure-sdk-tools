@@ -16,23 +16,22 @@ namespace Microsoft.Azure.Commands.Network.Gateway
 {
     using System.Management.Automation;
     using WindowsAzure.Commands.Utilities.Common;
-    using WindowsAzure.Management.Network.Models;
 
-    [Cmdlet(VerbsCommon.New, "AzureVNetGateway"), OutputType(typeof(ManagementOperationContext))]
-    public class NewAzureVNetGatewayCommand : NetworkCmdletBase
+    [Cmdlet(VerbsCommon.New, "AzureRouteTable"), OutputType(typeof(ManagementOperationContext))]
+    public class NewAzureRouteTable : NetworkCmdletBase
     {
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Virtual network name.")]
-        public string VNetName { get; set; }
+        [Parameter(Position = 0, Mandatory = true, HelpMessage = "The new route table's name.")]
+        public string Name { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, HelpMessage = "The type of routing that the gateway will use. This will default to StaticRouting if no value is provided.")]
-        public GatewayType GatewayType { get; set; }
+        [Parameter(Position = 1, Mandatory = true, HelpMessage = "The new route table's label.")]
+        public string Label { get; set; }
 
-        [Parameter(Position = 2, Mandatory = false, HelpMessage = "The Gateway SKU for the new gateway.")]
-        public GatewaySKU GatewaySKU { get; set; }
+        [Parameter(Position = 1, Mandatory = true, HelpMessage = "The new route table's location.")]
+        public string Location { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            WriteObject(Client.CreateGateway(VNetName, GatewayType, GatewaySKU));
+            WriteObject(Client.CreateRouteTable(Name, Label, Location));
         }
     }
 }
