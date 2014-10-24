@@ -21,11 +21,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
     public class SqlServerPublicSettings
     {
         /// <summary>
-        /// Azure region where this VM is currently running
-        /// </summary>
-        public string Region { get; set; }
-
-        /// <summary>
         /// auto patching settings
         /// </summary>
         public AutoPatchingSettings AutoPatchingSettings { get; set; }

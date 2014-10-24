@@ -20,7 +20,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         protected const string AzureVMSqlServerAutoPatchingConfigNoun = "AzureVMSqlServerAutoPatchingConfig";
 
         [Parameter]
-        public bool Enable { get; set; }
+        public SwitchParameter Enable { get; set; }
 
         [Parameter]
         public string DayOfWeek { get; set; }
@@ -33,7 +33,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
         [Parameter]
         public string PatchCategory { get; set; }
-
 
         /// <summary>
         /// Initialzies a new instance of the <see cref="NewSqlServerAutoPatchingConfigCommand"/> class.
@@ -49,7 +48,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         {
             AutoPatchingSettings autoPatchingSettings = new AutoPatchingSettings();
 
-            autoPatchingSettings.Enable = Enable;
+            autoPatchingSettings.Enable = (Enable.IsPresent) ? Enable.ToBool() : false;
             autoPatchingSettings.DayOfWeek = DayOfWeek;
             autoPatchingSettings.MaintenanceWindowStartingHour = MaintenanceWindowStartingHour;
             autoPatchingSettings.MaintenanceWindowDuration = MaintenanceWindowDuration;

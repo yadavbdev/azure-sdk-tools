@@ -51,13 +51,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                         Version              = r.Version,
                         State                = r.State,
                         PublicConfiguration  = PublicConfiguration,
-                        Region               = pubSettings == null ? null : pubSettings.Region,
                         PrivateConfiguration = SecureStringHelper.GetSecureString(PrivateConfiguration),
                         AutoPatchingSettings = pubSettings == null ? null : pubSettings.AutoPatchingSettings,
-                        AutoBackupSettings = pubSettings == null ? null : pubSettings.AutoBackupSettings,
+                        AutoBackupSettings   = pubSettings == null ? null : pubSettings.AutoBackupSettings,
                         RoleName             = VM.GetInstance().RoleName
                     };
                 }), true);
+
         }
 
         protected override void ProcessRecord()

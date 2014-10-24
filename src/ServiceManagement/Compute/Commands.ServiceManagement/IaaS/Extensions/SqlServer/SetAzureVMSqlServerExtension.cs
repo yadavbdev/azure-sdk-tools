@@ -15,8 +15,7 @@
 using System;
 using System.Linq;
 using System.Management.Automation;
-using Microsoft.WindowsAzure.Commands.Common;
-using Microsoft.WindowsAzure.Commands.Common.Models;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 
@@ -59,7 +58,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             Mandatory = false,
             Position = 2,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Disable VM Sql Server Extension")]
+            HelpMessage = "Disable Sql Server Extension")]
         public override SwitchParameter Disable { get; set; }
 
         [Parameter(
@@ -67,7 +66,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             Mandatory = false,
             Position = 2,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Uninstall Sql Server Script Extension")]
+            HelpMessage = "Uninstall Sql Server Extension")]
         public override SwitchParameter Uninstall { get; set; }
 
         [Parameter]

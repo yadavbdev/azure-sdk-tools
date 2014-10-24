@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Management.Automation;
-
 using System.Security;
+using Microsoft.WindowsAzure.Commands.Common.Storage;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
+using Microsoft.WindowsAzure.Commands.Utilities.Common;
+
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
@@ -17,24 +21,28 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         AzureVMSqlServerAutoBackupConfigNoun),
     OutputType(
         typeof(AutoBackupSettings))]
-    public class NewAzureVMSqlServerAutoBackupConfigCommand : PSCmdlet
+    public class NewAzureVMSqlServerAutoBackupConfigCommand : ServiceManagementBaseCmdlet
     {
         protected const string AzureVMSqlServerAutoBackupConfigNoun = "AzureVMSqlServerAutoBackupConfig";
 
-        [Parameter]
-        public bool Enable { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true,
+         Mandatory = true,
+         HelpMessage = "The storage connection context")]
+        [ValidateNotNullOrEmpty]
+        public AzureStorageContext StorageContext
+        {
+            get;
+            set;
+        }
 
         [Parameter]
-        public bool EnableEncryption { get; set; }
+        public SwitchParameter Enable { get; set; }
+
+        [Parameter]
+        public SwitchParameter EnableEncryption { get; set; }
 
         [Parameter]
         public int RetentionPeriod { get; set; }
-
-        [Parameter]
-        public string StorageUrl { get; set; }
-
-        [Parameter]
-        public string StorageAccessKey { get; set; }
 
         [Parameter]
         public string Password { get; set; }
@@ -53,15 +61,35 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         {
             AutoBackupSettings autoBackupSettings = new AutoBackupSettings();
 
-            autoBackupSettings.Enable = Enable;
-            autoBackupSettings.EnableEncryption = EnableEncryption;
+            autoBackupSettings.Enable = (Enable.IsPresent) ? Enable.ToBool() : false;
+            autoBackupSettings.EnableEncryption = (EnableEncryption.IsPresent) ? EnableEncryption.ToBool() : false;
             autoBackupSettings.RetentionPeriod = RetentionPeriod;
-            autoBackupSettings.StorageUrl = StorageUrl;
-            autoBackupSettings.StorageAccessKey = StorageAccessKey;
+            autoBackupSettings.StorageUrl = this.StorageContext.BlobEndPoint;
+            autoBackupSettings.StorageAccessKey = this.GetStorageKey();
             autoBackupSettings.Password = Password;
 
             WriteObject(autoBackupSettings);
         }
-        
+
+        protected string GetStorageKey()
+        {
+            string storageKey = string.Empty;
+            string storageAccountName = this.StorageContext.StorageAccountName;
+
+            if (!string.IsNullOrEmpty(storageAccountName))
+            {
+                var storageAccount = this.StorageClient.StorageAccounts.Get(storageAccountName);
+                if (storageAccount != null)
+                {
+                    var keys = this.StorageClient.StorageAccounts.GetKeys(storageAccountName);
+                    if (keys != null)
+                    {
+                        storageKey = !string.IsNullOrEmpty(keys.PrimaryKey) ? keys.PrimaryKey : keys.SecondaryKey;
+                    }
+                }
+            }
+
+            return storageKey;
+        }
     }
 }

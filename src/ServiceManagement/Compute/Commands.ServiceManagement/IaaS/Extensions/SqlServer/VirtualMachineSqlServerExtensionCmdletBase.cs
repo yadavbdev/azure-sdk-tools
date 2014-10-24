@@ -25,7 +25,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         protected const string VirtualMachineSqlServerExtensionNoun = "AzureVMSqlServerExtension";
 
         /// <summary>
-        /// Extension's publisher name - $TODO- update name after publishing sqlvm extension as public
+        /// Extension's publisher name - $TODO- update name after marking sqlvm extension as public
         /// </summary>
         protected const string ExtensionDefaultPublisher = "Microsoft.SqlServer.Managability.IaaS.Test";
 
@@ -35,7 +35,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         protected const string ExtensionDefaultName = "SqlIaaSAgentExtension";
 
         /// <summary>
-        /// Extension's default version - $TODO- update name after publishing sqlvm extension as public
+        /// Extension's default version - $TODO- update name after marking sqlvm extension as public
         /// </summary>
         protected const string ExtensionDefaultVersion = "1.21";
 

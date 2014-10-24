@@ -37,12 +37,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         public int RetentionPeriod { get; set; }
 
         /// <summary>
-        /// Name of storage account where backup will be stored
+        /// storage url where databases will be backed up
         /// </summary>
         public string StorageUrl { get; set; }
 
         /// <summary>
-        /// Key of storage account where backup will be stored
+        /// Key of storage account used by managed backup
         /// </summary>
         public string StorageAccessKey { get; set; }
 
