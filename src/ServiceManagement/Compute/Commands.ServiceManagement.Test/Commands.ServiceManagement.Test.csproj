@@ -406,6 +406,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FunctionalTests\ExtensionTests\MicrosoftAntimalware\AzureVMMicrosoftAntimalwareExtensionFunctionalTests.ps1" />
+    <None Include="AzureRTBVTs.playlist" />
+    <None Include="AzureRTExtensions.playlist" />
+    <None Include="AzureRTFull.playlist" />
     <None Include="MSSharedLibKey.snk" />
     <None Include="packages.config" />
     <None Include="Resources\affinityGroupData.csv" />
