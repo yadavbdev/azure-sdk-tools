@@ -204,6 +204,17 @@
     <Compile Include="IaaS\Extensions\MicrosoftAntimalware\SetAzureVMMicrosoftAntimalwareExtension.cs" />
     <Compile Include="IaaS\Extensions\MicrosoftAntimalware\VirtualMachineMicrosoftAntimalwareExtensionCmdletBase.cs" />
     <Compile Include="IaaS\Extensions\MicrosoftAntimalware\VirtualMachineMicrosoftAntimalwareExtensionContext.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\GetAzureVMSqlServerExtension.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\NewAzureVMSqlServerAutoBackupConfig.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\NewAzureVMSqlServerAutoPatchingConfig.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\RemoveAzureVMSqlServerExtension.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\SetAzureVMSqlServerExtension.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\SqlServerAutoBackupSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\SqlServerAutoPatchingSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\SqlServerPrivateSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\SqlServerPublicSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\VirtualMachineSqlServerExtensionCmdletBase.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\VirtualMachineSqlServerExtensionContext.cs" />
     <Compile Include="IaaS\Network\AddAzureDns.cs" />
     <Compile Include="IaaS\Network\GetAzureInternalLoadBalancer.cs" />
     <Compile Include="IaaS\Network\NewAzureInternalLoadBalancerConfig.cs" />
