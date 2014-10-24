@@ -12,28 +12,25 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Network
+
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.ILB
 {
-    using System;
-    using WindowsAzure.Commands.Utilities.Common;
-    using WindowsAzure.Management.Network.Models;
-
-    public class VirtualNetworkGatewayContext : ManagementOperationContext
+    public class GetAzureNetworkInterfaceConfigCmdletInfo: CmdletsInfo
     {
-        public string LastEventData { get; set; }
 
-        public DateTime? LastEventTimeStamp { get; set; }
+        public GetAzureNetworkInterfaceConfigCmdletInfo(string name, PersistentVMRoleContext vm)
+        {
+            this.cmdletName = Utilities.GetAzureNetworkInterfaceConfig;
 
-        public string LastEventMessage { get; set; }
+            if (!string.IsNullOrEmpty(name))
+            {
+                this.parameters.Add(new CmdletParam("Name", name));
+            }
 
-        public int LastEventID { get; set; }
-
-        public ProvisioningState State { get; set; }
-
-        public string VIPAddress { get; set; }
-
-        public string DefaultSite { get; set; }
-
-        public GatewaySKU GatewaySKU { get; set; }
+            this.parameters.Add(new CmdletParam("VM", vm));
+        }
     }
 }

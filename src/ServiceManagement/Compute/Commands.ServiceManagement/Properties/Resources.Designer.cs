@@ -539,6 +539,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate NetworkInterface found on the VM.
+        /// </summary>
+        public static string DuplicateNetworkInterfaceFound {
+            get {
+                return ResourceManager.GetString("DuplicateNetworkInterfaceFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diagnostics Configuration Xml or File Path, only one of them needs to be specified..
         /// </summary>
         public static string EitherDiagnosticsConfigurationXmlOrFilePathBeSpecified {
@@ -868,6 +877,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Properties {
         public static string NetworkConfigurationNotFoundOnPersistentVM {
             get {
                 return ResourceManager.GetString("NetworkConfigurationNotFoundOnPersistentVM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified NetworkInterface is not found.
+        /// </summary>
+        public static string NetworkInterfaceNotFound {
+            get {
+                return ResourceManager.GetString("NetworkInterfaceNotFound", resourceCulture);
             }
         }
         

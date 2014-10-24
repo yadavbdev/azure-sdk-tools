@@ -97,9 +97,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.2.1.0\lib\net40\Microsoft.WindowsAzure.Management.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Management.Compute, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.WindowsAzure.Management.Compute, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.5.2.0\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
+      <HintPath>..\..\..\packages\Microsoft.WindowsAzure.Management.Compute.6.0.0\lib\net40\Microsoft.WindowsAzure.Management.Compute.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.Storage, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -187,6 +187,9 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\AddAzureCertificateCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\AddAzureDiskCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\AddAzureDnsCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\GetAzureNetworkInterfaceConfigCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureNetworkInterfaceConfigCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\SetAzureNetworkInterfaceConfigCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\AddAzureVMImageCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\DiskRepository\GetAzureVMImageDiskConfigSetCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\DiskRepository\NewAzureVMImageDiskConfigSetCmdletInfo.cs" />
@@ -269,6 +272,7 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureDnsCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureEndpointCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\RemoveAzureStaticVNetIPCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\AddAzureNetworkInterfaceConfigCmdletInfo.cs" />
     <Compile Include="FunctionalTests\PaasCmdletInfo\GetAzureDeploymentEventBySlotCmdletInfo.cs" />
     <Compile Include="FunctionalTests\PaasCmdletInfo\GetAzureDeploymentEventCmdletInfo.cs" />
     <Compile Include="FunctionalTests\SubscriptionCmdletInfo\RemoveAzureSubscriptionCmdletInfo.cs" />

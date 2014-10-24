@@ -22,7 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Model
         public string DeploymentSlot { get; set; }
         public string InstanceName { get; set; }
         public string RebootReason { get; set; }
-        public DateTime? RebootStartedTime { get; set; }
+        public DateTime? RebootStartTime { get; set; }
         public string RoleName { get; set; }
     }
 }

@@ -16,23 +16,19 @@ namespace Microsoft.Azure.Commands.Network.Gateway
 {
     using System.Management.Automation;
     using WindowsAzure.Commands.Utilities.Common;
-    using WindowsAzure.Management.Network.Models;
 
-    [Cmdlet(VerbsCommon.New, "AzureVNetGateway"), OutputType(typeof(ManagementOperationContext))]
-    public class NewAzureVNetGatewayCommand : NetworkCmdletBase
+    [Cmdlet(VerbsCommon.Remove, "AzureSubnetRouteTable"), OutputType(typeof(ManagementOperationContext))]
+    public class RemoveAzureSubnetRouteTable : NetworkCmdletBase
     {
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Virtual network name.")]
+        [Parameter(Position = 0, Mandatory = true, HelpMessage = "The name of the virtual network.")]
         public string VNetName { get; set; }
 
-        [Parameter(Position = 1, Mandatory = false, HelpMessage = "The type of routing that the gateway will use. This will default to StaticRouting if no value is provided.")]
-        public GatewayType GatewayType { get; set; }
-
-        [Parameter(Position = 2, Mandatory = false, HelpMessage = "The Gateway SKU for the new gateway.")]
-        public GatewaySKU GatewaySKU { get; set; }
+        [Parameter(Position = 1, Mandatory = true, HelpMessage = "The name of the subnet that will have its route table removed.")]
+        public string SubnetName { get; set; }
 
         public override void ExecuteCmdlet()
         {
-            WriteObject(Client.CreateGateway(VNetName, GatewayType, GatewaySKU));
+            WriteObject(Client.RemoveRouteTableFromSubnet(VNetName, SubnetName));
         }
     }
 }

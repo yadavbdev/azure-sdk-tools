@@ -12,28 +12,20 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-namespace Microsoft.Azure.Commands.Network
+
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PowershellCore;
+
+namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.ILB
 {
-    using System;
-    using WindowsAzure.Commands.Utilities.Common;
-    using WindowsAzure.Management.Network.Models;
-
-    public class VirtualNetworkGatewayContext : ManagementOperationContext
+    public class RemoveAzureNetworkInterfaceConfigCmdletInfo: CmdletsInfo
     {
-        public string LastEventData { get; set; }
 
-        public DateTime? LastEventTimeStamp { get; set; }
-
-        public string LastEventMessage { get; set; }
-
-        public int LastEventID { get; set; }
-
-        public ProvisioningState State { get; set; }
-
-        public string VIPAddress { get; set; }
-
-        public string DefaultSite { get; set; }
-
-        public GatewaySKU GatewaySKU { get; set; }
+        public RemoveAzureNetworkInterfaceConfigCmdletInfo(string name, IPersistentVM vm)
+        {
+            this.cmdletName = Utilities.RemoveAzureNetworkInterfaceConfig;
+            this.parameters.Add(new CmdletParam("Name", name));
+            this.parameters.Add(new CmdletParam("VM", vm));
+        }
     }
 }

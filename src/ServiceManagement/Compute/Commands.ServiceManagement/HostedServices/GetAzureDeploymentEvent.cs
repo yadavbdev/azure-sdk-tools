@@ -80,7 +80,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.HostedServices
                         DeploymentSlot = this.Slot,
                         InstanceName = e.InstanceName,
                         RebootReason = e.RebootReason,
-                        RebootStartedTime = e.RebootStartedTime,
+                        RebootStartTime = e.RebootStartTime,
                         RoleName = e.RoleName
                     });
                 });

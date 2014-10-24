@@ -15,16 +15,18 @@
 
 namespace Microsoft.Azure.Commands.Network
 {
-    using Gateway.Model;
-    using Microsoft.Azure.Commands.Network.NetworkSecurityGroup.Model;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
+    using Gateway.Model;
+    using NetworkSecurityGroup.Model;
+    using Routes.Model;
     using WindowsAzure;
     using WindowsAzure.Commands.Common;
     using WindowsAzure.Commands.Common.Models;
     using WindowsAzure.Commands.Common.Storage;
+    using WindowsAzure.Commands.Utilities.Common;
     using WindowsAzure.Common;
     using WindowsAzure.Management;
     using WindowsAzure.Management.Network;
@@ -58,20 +60,19 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             GatewayGetResponse response = client.Gateways.Get(vnetName);
-            OperationStatusResponse operationStatus = managementClient.GetOperationStatus(response.RequestId);
             
             VirtualNetworkGatewayContext gatewayContext = new VirtualNetworkGatewayContext()
             {
-                OperationId = operationStatus.Id,
-                OperationStatus = operationStatus.Status.ToString(),
-                OperationDescription = commandRuntime.ToString(),
                 LastEventData = (response.LastEvent != null) ? response.LastEvent.Data : null,
                 LastEventMessage = (response.LastEvent != null) ? response.LastEvent.Message : null,
                 LastEventID = GetEventId(response.LastEvent),
                 LastEventTimeStamp = (response.LastEvent != null) ? (DateTime?)response.LastEvent.Timestamp : null,
                 State = (ProvisioningState)Enum.Parse(typeof(ProvisioningState), response.State, true),
                 VIPAddress = response.VipAddress,
+                DefaultSite = (response.DefaultSite != null ? response.DefaultSite.Name : null),
+                GatewaySKU = response.GatewaySKU,
             };
+            PopulateOperationContext(response.RequestId, gatewayContext);
 
             return gatewayContext;
         }
@@ -79,16 +80,12 @@ namespace Microsoft.Azure.Commands.Network
         public IEnumerable<GatewayConnectionContext> ListConnections(string vnetName)
         {
             GatewayListConnectionsResponse response = client.Gateways.ListConnections(vnetName);
-            OperationStatusResponse operationStatus = managementClient.GetOperationStatus(response.RequestId);
-
+            
             IEnumerable<GatewayConnectionContext> connections = response.Connections.Select(
                 (GatewayListConnectionsResponse.GatewayConnection connection) =>
                 {
                     return new GatewayConnectionContext()
                     {
-                        OperationId               = operationStatus.Id,
-                        OperationDescription      = commandRuntime.ToString(),
-                        OperationStatus           = operationStatus.Status.ToString(),
                         ConnectivityState         = connection.ConnectivityState.ToString(),
                         EgressBytesTransferred    = (ulong)connection.EgressBytesTransferred,
                         IngressBytesTransferred   = (ulong)connection.IngressBytesTransferred,
@@ -99,6 +96,7 @@ namespace Microsoft.Azure.Commands.Network
                         LocalNetworkSiteName      = connection.LocalNetworkSiteName
                     };
                 });
+            PopulateOperationContext(response.RequestId, connections);
 
             return connections;
         }
@@ -106,16 +104,13 @@ namespace Microsoft.Azure.Commands.Network
         public VirtualNetworkDiagnosticsContext GetDiagnostics(string vnetName)
         {
             GatewayDiagnosticsStatus diagnosticsStatus = client.Gateways.GetDiagnostics(vnetName);
-            OperationStatusResponse operationStatus = managementClient.GetOperationStatus(diagnosticsStatus.RequestId);
-
+            
             VirtualNetworkDiagnosticsContext diagnosticsContext = new VirtualNetworkDiagnosticsContext()
             {
-                OperationId = operationStatus.Id,
-                OperationStatus = operationStatus.Status.ToString(),
-                OperationDescription = commandRuntime.ToString(),
                 DiagnosticsUrl = diagnosticsStatus.DiagnosticsUrl,
                 State = diagnosticsStatus.State,
             };
+            PopulateOperationContext(diagnosticsStatus.RequestId, diagnosticsContext);
 
             return diagnosticsContext;
         }
@@ -123,15 +118,12 @@ namespace Microsoft.Azure.Commands.Network
         public SharedKeyContext GetSharedKey(string vnetName, string localNetworkSiteName)
         {
             GatewayGetSharedKeyResponse response = client.Gateways.GetSharedKey(vnetName, localNetworkSiteName);
-            OperationStatusResponse operationStatus = managementClient.GetOperationStatus(response.RequestId);
-
+            
             SharedKeyContext sharedKeyContext = new SharedKeyContext()
             {
-                OperationId = operationStatus.Id,
-                OperationDescription = commandRuntime.ToString(),
-                OperationStatus = operationStatus.Status.ToString(),
                 Value = response.SharedKey
             };
+            PopulateOperationContext(response.RequestId, sharedKeyContext);
 
             return sharedKeyContext;
         }
@@ -143,28 +135,32 @@ namespace Microsoft.Azure.Commands.Network
                 Value = sharedKey,
             };
 
-            GatewayGetOperationStatusResponse response = client.Gateways.SetSharedKey(vnetName, localNetworkSiteName, sharedKeyParameters);
-
-            return response;
+            return client.Gateways.SetSharedKey(vnetName, localNetworkSiteName, sharedKeyParameters);
         }
 
-        public GatewayGetOperationStatusResponse CreateGateway(string vnetName, GatewayType gatewayType)
+        public GatewayGetOperationStatusResponse CreateGateway(string vnetName, GatewayType gatewayType, GatewaySKU gatewaySKU)
         {
             GatewayCreateParameters parameters = new GatewayCreateParameters()
             {
                 GatewayType = gatewayType,
+                GatewaySKU = gatewaySKU,
             };
 
-            GatewayGetOperationStatusResponse response = client.Gateways.Create(vnetName, parameters);
-
-            return response;
+            return client.Gateways.Create(vnetName, parameters);
         }
 
         public GatewayGetOperationStatusResponse DeleteGateway(string vnetName)
         {
-            GatewayGetOperationStatusResponse response = client.Gateways.Delete(vnetName);
+            return client.Gateways.Delete(vnetName);
+        }
 
-            return response;
+        public GatewayGetOperationStatusResponse ResizeGateway(string vnetName, GatewaySKU gatewaySKU)
+        {
+            ResizeGatewayParameters parameters = new ResizeGatewayParameters()
+            {
+                GatewaySKU = gatewaySKU,
+            };
+            return client.Gateways.Resize(vnetName, parameters);
         }
 
         public GatewayGetOperationStatusResponse ConnectDisconnectOrTest(string vnetName, string localNetworkSiteName, bool isConnect)
@@ -174,9 +170,7 @@ namespace Microsoft.Azure.Commands.Network
                 Operation = isConnect ? GatewayConnectionUpdateOperation.Connect : GatewayConnectionUpdateOperation.Disconnect
             };
 
-            GatewayGetOperationStatusResponse response = client.Gateways.ConnectDisconnectOrTest(vnetName, localNetworkSiteName, connParams);
-
-            return response;
+            return client.Gateways.ConnectDisconnectOrTest(vnetName, localNetworkSiteName, connParams);
         }
 
         public GatewayGetOperationStatusResponse StartDiagnostics(string vnetName, int captureDurationInSeconds, string containerName, AzureStorageContext storageContext)
@@ -197,9 +191,7 @@ namespace Microsoft.Azure.Commands.Network
                 Operation = UpdateGatewayPublicDiagnosticsOperation.StartDiagnostics,
             };
 
-            GatewayGetOperationStatusResponse response = client.Gateways.UpdateDiagnostics(vnetName, parameters);
-
-            return response;
+            return client.Gateways.UpdateDiagnostics(vnetName, parameters);
         }
 
         public GatewayGetOperationStatusResponse StopDiagnostics(string vnetName)
@@ -209,9 +201,105 @@ namespace Microsoft.Azure.Commands.Network
                 Operation = UpdateGatewayPublicDiagnosticsOperation.StopDiagnostics,
             };
 
-            GatewayGetOperationStatusResponse response = client.Gateways.UpdateDiagnostics(vnetName, parameters);
+            return client.Gateways.UpdateDiagnostics(vnetName, parameters);
+        }
 
-            return response;
+        public GatewayGetOperationStatusResponse SetDefaultSite(string vnetName, string defaultSiteName)
+        {
+            GatewaySetDefaultSiteListParameters parameters = new GatewaySetDefaultSiteListParameters()
+            {
+                DefaultSite = defaultSiteName,
+            };
+            
+            return client.Gateways.SetDefaultSites(vnetName, parameters);
+        }
+
+        public GatewayGetOperationStatusResponse RemoveDefaultSite(string vnetName)
+        {
+            return client.Gateways.RemoveDefaultSites(vnetName);
+        }
+
+        public RouteTable GetRouteTable(string routeTableName, string detailLevel)
+        {
+            RouteTable result;
+            if (string.IsNullOrEmpty(detailLevel))
+            {
+                result = client.Routes.GetRouteTable(routeTableName).RouteTable;
+            }
+            else
+            {
+                result = client.Routes.GetRouteTableWithDetails(routeTableName, detailLevel).RouteTable;
+            }
+            return result;
+        }
+
+        public IEnumerable<RouteTable> ListRouteTables()
+        {
+            return client.Routes.ListRouteTables().RouteTables;
+        }
+
+        public OperationResponse CreateRouteTable(string routeTableName, string label, string location)
+        {
+            CreateRouteTableParameters parameters = new CreateRouteTableParameters()
+            {
+                Name = routeTableName,
+                Label = label,
+                Location = location,
+            };
+
+            return client.Routes.CreateRouteTable(parameters);
+        }
+
+        public OperationResponse DeleteRouteTable(string routeTableName)
+        {
+            return client.Routes.DeleteRouteTable(routeTableName);
+        }
+
+        public OperationResponse SetRoute(string routeTableName, string routeName, string addressPrefix, string nextHopType)
+        {
+            NextHop nextHop = new NextHop()
+            {
+                Type = nextHopType,
+            };
+            SetRouteParameters parameters = new SetRouteParameters()
+            {
+                Name = routeName,
+                AddressPrefix = addressPrefix,
+                NextHop = nextHop,
+            };
+
+            return client.Routes.SetRoute(routeTableName, routeName, parameters);
+        }
+
+        public OperationResponse DeleteRoute(string routeTableName, string routeName)
+        {
+            return client.Routes.DeleteRoute(routeTableName, routeName);
+        }
+
+        public SubnetRouteTableContext GetRouteTableForSubnet(string vnetName, string subnetName)
+        {
+            GetRouteTableForSubnetResponse response = client.Routes.GetRouteTableForSubnet(vnetName, subnetName);
+            SubnetRouteTableContext context = new SubnetRouteTableContext()
+            {
+                RouteTableName = response.RouteTableName,
+            };
+
+            return context;
+        }
+
+        public OperationResponse AddRouteTableToSubnet(string vnetName, string subnetName, string routeTableName)
+        {
+            AddRouteTableToSubnetParameters parameters = new AddRouteTableToSubnetParameters()
+            {
+                RouteTableName = routeTableName,
+            };
+
+            return client.Routes.AddRouteTableToSubnet(vnetName, subnetName, parameters);
+        }
+
+        public OperationResponse RemoveRouteTableFromSubnet(string vnetName, string subnetName)
+        {
+            return client.Routes.RemoveRouteTableFromSubnet(vnetName, subnetName);
         }
 
         private int GetEventId(GatewayEvent gatewayEvent)
@@ -223,6 +311,26 @@ namespace Microsoft.Azure.Commands.Network
             }
 
             return val;
+        }
+
+        private void PopulateOperationContext(string requestId, ManagementOperationContext operationContext)
+        {
+            OperationStatusResponse operationStatus = managementClient.GetOperationStatus(requestId);
+            PopulateOperationContext(operationStatus, operationContext);
+        }
+        private void PopulateOperationContext(string requestId, IEnumerable<ManagementOperationContext> operationContexts)
+        {
+            OperationStatusResponse operationStatus = managementClient.GetOperationStatus(requestId);
+            foreach (ManagementOperationContext operationContext in operationContexts)
+            {
+                PopulateOperationContext(operationStatus, operationContext);
+            }
+        }
+        private void PopulateOperationContext(OperationStatusResponse operationStatus, ManagementOperationContext operationContext)
+        {
+            operationContext.OperationId = operationStatus.Id;
+            operationContext.OperationStatus = operationStatus.Status.ToString();
+            operationContext.OperationDescription = commandRuntime.ToString();
         }
 
         private static ClientType CreateClient<ClientType>(AzureSubscription subscription) where ClientType : ServiceClient<ClientType>
