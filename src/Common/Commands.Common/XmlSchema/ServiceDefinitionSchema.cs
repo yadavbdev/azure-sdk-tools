@@ -15,9 +15,6 @@
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema
 {
-    using System.Xml.Serialization;
-
-
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
@@ -2751,7 +2748,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefi
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition")]
     public enum SchemaVersion
     {
-
         /// <remarks/>
         unspecified,
 
