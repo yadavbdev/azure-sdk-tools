@@ -86,15 +86,13 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 currentEnvironment.UserName = "fakeuser@microsoft.com";
             }
 
-            SetEndpointsToDefaults(rdfeEnvironment, csmEnvironment);
-
             SetAuthenticationFactory(mode, rdfeEnvironment, csmEnvironment);
 
             AzureEnvironment environment = new AzureEnvironment { Name = testEnvironmentName };
 
             Debug.Assert(currentEnvironment != null);
-            environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectory] = currentEnvironment.ActiveDirectoryEndpoint.AbsoluteUri;
-            environment.Endpoints[AzureEnvironment.Endpoint.Gallery] = currentEnvironment.GalleryUri.AbsoluteUri;
+            environment.Endpoints[AzureEnvironment.Endpoint.ActiveDirectory] = currentEnvironment.Endpoints.AADAuthUri.AbsoluteUri;
+            environment.Endpoints[AzureEnvironment.Endpoint.Gallery] = currentEnvironment.Endpoints.GalleryUri.AbsoluteUri;
 
             if (csmEnvironment != null)
             {
@@ -111,32 +109,38 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
                 client.AddOrSetEnvironment(environment);
             }
 
-            testSubscription = new AzureSubscription()
+            if (currentEnvironment.SubscriptionId != null)
             {
-                Id = new Guid(currentEnvironment.SubscriptionId),
-                Name = testSubscriptionName,
-                Environment = testEnvironmentName,
-                Account = currentEnvironment.UserName,
-                Properties = new Dictionary<AzureSubscription.Property,string> 
+                testSubscription = new AzureSubscription()
                 {
-                     { AzureSubscription.Property.Default, "True"},
-                     { AzureSubscription.Property.StorageAccount, Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")},
-                }
-            };
+                    Id = new Guid(currentEnvironment.SubscriptionId),
+                    Name = testSubscriptionName,
+                    Environment = testEnvironmentName,
+                    Account = currentEnvironment.UserName,
+                    Properties = new Dictionary<AzureSubscription.Property, string>
+                    {
+                        {AzureSubscription.Property.Default, "True"},
+                        {
+                            AzureSubscription.Property.StorageAccount,
+                            Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT")
+                        },
+                    }
+                };
 
-            testAccount = new AzureAccount()
-            {
-                Id = currentEnvironment.UserName,
-                Type = AzureAccount.AccountType.User,
-                Properties = new Dictionary<AzureAccount.Property, string> 
+                testAccount = new AzureAccount()
                 {
-                     { AzureAccount.Property.Subscriptions, currentEnvironment.SubscriptionId},
-                }
-            };
+                    Id = currentEnvironment.UserName,
+                    Type = AzureAccount.AccountType.User,
+                    Properties = new Dictionary<AzureAccount.Property, string>
+                    {
+                        {AzureAccount.Property.Subscriptions, currentEnvironment.SubscriptionId},
+                    }
+                };
 
-            client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
-            client.Profile.Accounts[testAccount.Id] = testAccount;
-            client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
+                client.Profile.Subscriptions[testSubscription.Id] = testSubscription;
+                client.Profile.Accounts[testAccount.Id] = testAccount;
+                client.SetSubscriptionAsCurrent(testSubscription.Name, testSubscription.Account);
+            }
         }
 
         private void SetAuthenticationFactory(AzureModule mode, TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
@@ -178,45 +182,6 @@ namespace Microsoft.WindowsAzure.Commands.ScenarioTest
             {
                 AzureSession.AuthenticationFactory = new MockCertificateAuthenticationFactory(currentEnvironment.UserName,
                     certificate);
-            }
-        }
-
-        private void SetEndpointsToDefaults(TestEnvironment rdfeEnvironment, TestEnvironment csmEnvironment)
-        {
-            if (rdfeEnvironment != null)
-            {
-                if (rdfeEnvironment.BaseUri == null)
-                {
-                    rdfeEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureServiceEndpoint);
-                }
-
-                if (rdfeEnvironment.GalleryUri == null)
-                {
-                    rdfeEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
-                }
-
-                if (rdfeEnvironment.ActiveDirectoryEndpoint == null)
-                {
-                    rdfeEnvironment.ActiveDirectoryEndpoint = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
-                }
-            }
-
-            if (csmEnvironment != null)
-            {
-                if (csmEnvironment.BaseUri == null)
-                {
-                    csmEnvironment.BaseUri = new Uri(AzureEnvironmentConstants.AzureResourceManagerEndpoint);
-                }
-
-                if (csmEnvironment.GalleryUri == null)
-                {
-                    csmEnvironment.GalleryUri = new Uri(AzureEnvironmentConstants.GalleryEndpoint);
-                }
-
-                if (csmEnvironment.ActiveDirectoryEndpoint == null)
-                {
-                    csmEnvironment.ActiveDirectoryEndpoint = new Uri(AzureEnvironmentConstants.AzureActiveDirectoryEndpoint);
-                }
             }
         }
 

@@ -20,161 +20,144 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
 {
     public class SecurityTests : SqlTestsBase
     {
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithStorage()
         {
             RunPowerShellTest("Test-DatabaseUpdatePolicyWithStorage");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyWithStorage");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithEventTypes()
         {
             RunPowerShellTest("Test-DatabaseUpdatePolicyWithEventTypes");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypes()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyWithEventTypes");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableDatabaseAuditing()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DisableDatabaseAuditing");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableServerAuditing()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DisableServerAuditing");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseDisableEnableKeepProperties()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DatabaseDisableEnableKeepProperties");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerDisableEnableKeepProperties()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerDisableEnableKeepProperties");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestUseServerDefault()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-UseServerDefault");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedDatabaseUpdatePolicyWithNoStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailedDatabaseUpdatePolicyWithNoStorage");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedServerUpdatePolicyWithNoStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailedServerUpdatePolicyWithNoStorage");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedUseServerDefault()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailedUseServerDefault");
         }
-        
-        [Fact]
+
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithEventTypeShortcuts()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DatabaseUpdatePolicyWithEventTypeShortcuts");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypeShortcuts()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyWithEventTypeShortcuts");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyKeepPreviousStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-DatabaseUpdatePolicyKeepPreviousStorage");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyKeepPreviousStorage()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-ServerUpdatePolicyKeepPreviousStorage");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadDatabaseIndentity()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailWithBadDatabaseIndentity");
         }
 
-        [Fact]
+        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadServerIndentity()
         {
-            if (XUnitHelper.IsCheckin()) return;
-
             RunPowerShellTest("Test-FailWithBadServerIndentity");
         }
     }
