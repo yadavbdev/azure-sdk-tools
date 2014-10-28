@@ -25,6 +25,7 @@ using Microsoft.WindowsAzure.Commands.Utilities.CloudService.AzureTools;
 using Microsoft.WindowsAzure.Commands.Utilities.CloudService.Scaffolding;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Commands.Utilities.Common.XmlSchema.ServiceDefinitionSchema;
+using Microsoft.WindowsAzure.Commands.Utilities;
 
 namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
 {
@@ -291,6 +292,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             VerifyCloudServiceProjectComponents();
             CsPack packageTool = new CsPack();
             packageTool.CreatePackage(Components.Definition, Paths, type, AzureTool.GetAzureSdkBinDirectory(), out standardOutput, out standardError);
+            if (!string.IsNullOrWhiteSpace(standardError))
+            {
+                throw new InvalidOperationException(string.Format(Properties.Resources.FailedToCreatePackage, standardError));
+            }
         }
 
         private void VerifyCloudServiceProjectComponents()
