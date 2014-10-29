@@ -2973,6 +2973,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removing the Azure profile will remove all associated environments, subscriptions, and accounts. Are you sure you want to remove the Azure profile?.
+        /// </summary>
+        public static string RemoveProfileConfirmation {
+            get {
+                return ResourceManager.GetString("RemoveProfileConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing the Azure profile.
+        /// </summary>
+        public static string RemoveProfileMessage {
+            get {
+                return ResourceManager.GetString("RemoveProfileMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the namespace &apos;{0}&apos;?.
         /// </summary>
         public static string RemoveServiceBusNamespaceConfirmation {
