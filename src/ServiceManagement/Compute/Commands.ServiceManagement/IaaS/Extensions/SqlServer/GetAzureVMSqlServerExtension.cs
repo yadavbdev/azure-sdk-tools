@@ -101,14 +101,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                                 // get current auto patching and auto backup config from extension status message
                                 if (status.Name.Equals(AutoPatchingStatusMessageName, System.StringComparison.InvariantCulture))
                                 {
-                                    context.AutoPatchingSettings = string.IsNullOrEmpty(formattedMessage) ? null
-                                        : JsonConvert.DeserializeObject<AutoPatchingSettings>(formattedMessage);
+                                    context.AutoPatchingSettings = DeSerializeAutoPatchingSettings(formattedMessage);
                                 }
 
                                 if (status.Name.Equals(AutoBackupStatusMessageName, System.StringComparison.InvariantCulture))
                                 {
-                                    context.AutoBackupSettings = string.IsNullOrEmpty(formattedMessage) ? null
-                                        : JsonConvert.DeserializeObject<AutoBackupSettings>(formattedMessage);
+                                    context.AutoBackupSettings = DeSerializeAutoBackupSettings(formattedMessage);
                                 }
 
                                 statusMessageList.Add(formattedMessage);
@@ -120,6 +118,44 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
             context.StatusMessages = statusMessageList;
             return context;
+        }
+
+        private AutoPatchingSettings DeSerializeAutoPatchingSettings(string input)
+        {
+            AutoPatchingSettings aps = new AutoPatchingSettings();
+            
+            if (string.IsNullOrEmpty(input))
+            {
+                try
+                {
+                    aps = JsonConvert.DeserializeObject<AutoPatchingSettings>(input);
+                }
+                catch (JsonReaderException jre)
+                {
+                    WriteVerboseWithTimestamp(jre.ToString());
+                }
+            }
+
+            return aps;
+        }
+
+        private AutoBackupSettings DeSerializeAutoBackupSettings(string input)
+        {
+            AutoBackupSettings abs = new AutoBackupSettings();
+
+            if (string.IsNullOrEmpty(input))
+            {
+                try
+                {
+                    abs = JsonConvert.DeserializeObject<AutoBackupSettings>(input);
+                }
+                catch (JsonReaderException jre)
+                {
+                    WriteVerboseWithTimestamp(jre.ToString());
+                }
+            }
+
+            return abs;
         }
     }
 }
