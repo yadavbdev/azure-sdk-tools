@@ -21,7 +21,7 @@ using Microsoft.Azure.Commands.DataFactories.Properties;
 
 namespace Microsoft.Azure.Commands.DataFactories
 {
-    [Cmdlet(VerbsCommon.Remove, Constants.DataFactory)]
+    [Cmdlet(VerbsCommon.Remove, Constants.DataFactory, DefaultParameterSetName = ByFactoryName)]
     public class RemoveAzureDataFactoryCommand : DataFactoryBaseCmdlet
     {
         [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
