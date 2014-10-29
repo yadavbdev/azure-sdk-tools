@@ -9,7 +9,7 @@ using Microsoft.WindowsAzure.Commands.Common.Storage;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Properties;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
-
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
@@ -45,7 +45,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         public int RetentionPeriod { get; set; }
 
         [Parameter]
-        public string Password { get; set; }
+        public SecureString CertificatePassword { get; set; }
 
         /// <summary>
         /// Initialzies a new instance of the <see cref="NewAzureVMSqlServerAutoBackupConfigCommand"/> class.
@@ -66,7 +66,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             autoBackupSettings.RetentionPeriod = RetentionPeriod;
             autoBackupSettings.StorageUrl = this.StorageContext.BlobEndPoint;
             autoBackupSettings.StorageAccessKey = this.GetStorageKey();
-            autoBackupSettings.Password = Password;
+            autoBackupSettings.Password = SecureStringHelper.ConvertToUnsecureString(CertificatePassword);
 
             WriteObject(autoBackupSettings);
         }

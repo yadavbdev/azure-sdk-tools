@@ -23,6 +23,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         public SwitchParameter Enable { get; set; }
 
         [Parameter]
+        [ValidateSetAttribute(new string[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Everyday" })]
         public string DayOfWeek { get; set; }
 
         [Parameter]
@@ -32,6 +33,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         public int MaintenanceWindowDuration { get; set; }
 
         [Parameter]
+        [ValidateSetAttribute(new string[] { "Important", "Optional" })]
         public string PatchCategory { get; set; }
 
         /// <summary>
@@ -52,9 +54,39 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             autoPatchingSettings.DayOfWeek = DayOfWeek;
             autoPatchingSettings.MaintenanceWindowStartingHour = MaintenanceWindowStartingHour;
             autoPatchingSettings.MaintenanceWindowDuration = MaintenanceWindowDuration;
-            autoPatchingSettings.PatchCategory = PatchCategory;
+            autoPatchingSettings.PatchCategory = this.ResolvePatchCategoryString(PatchCategory);
 
             WriteObject(autoPatchingSettings);
+        }
+
+        /// <summary>
+        /// map strings Powershell API -> Auto-patching public settings
+        ///      Important -> "WindowsMandatoryUpdates "
+        ///      Optional ->  "MicrosoftOptionalUpdates"
+        /// 
+        /// </summary>
+        /// <param name="patchCategory"></param>
+        /// <returns></returns>
+        private string ResolvePatchCategoryString(string category)
+        {
+            string patchCategory = String.Empty;
+
+            switch(category.ToLower())
+            {
+                case "important":
+                    patchCategory = "WindowsMandatoryUpdates";
+                    break;
+
+                case "optional":
+                    patchCategory = "MicrosoftOptionalUpdates";
+                    break;
+
+                default:
+                    patchCategory = "Unknown";
+                    break;
+            }
+
+            return patchCategory;
         }
     }
 }

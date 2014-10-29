@@ -53,7 +53,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                         PublicConfiguration  = PublicConfiguration,
                         PrivateConfiguration = SecureStringHelper.GetSecureString(PrivateConfiguration),
                         AutoPatchingSettings = pubSettings == null ? null : pubSettings.AutoPatchingSettings,
-                        AutoBackupSettings   = pubSettings == null ? null : pubSettings.AutoBackupSettings,
+                        AutoBackupSettings = pubSettings == null ? null : this.MaskSecrets(pubSettings.AutoBackupSettings),
                         RoleName             = VM.GetInstance().RoleName
                     };
                 }), true);
@@ -64,6 +64,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         {
             base.ProcessRecord();
             ExecuteCommand();
+        }
+
+        /// <summary>
+        /// strip of secrets in autobackup settings object 
+        /// </summary>
+        /// <param name="abs"></param>
+        /// <returns></returns>
+        private AutoBackupSettings MaskSecrets(AutoBackupSettings abs)
+        {
+            AutoBackupSettings autoBackupSettings = new AutoBackupSettings();
+            if (null != abs)
+            {
+                autoBackupSettings.Enable = abs.Enable;
+                autoBackupSettings.EnableEncryption = abs.EnableEncryption;
+                autoBackupSettings.RetentionPeriod = abs.RetentionPeriod;
+            }
+
+            return autoBackupSettings;
         }
     }
 }
