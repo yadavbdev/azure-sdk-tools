@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ----------------------------------------------------------------------------------
+using System.Collections.Generic;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
@@ -28,5 +30,15 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         /// auto-backup settings
         /// </summary>
         public AutoBackupSettings AutoBackupSettings;
+
+        /// <summary>
+        /// status messages reported by extension
+        /// </summary>
+        public List<string> StatusMessages;
+
+        /// <summary>
+        /// resource extension substatus list
+        /// </summary>
+        public ResourceExtensionSubStatusList SubStatusList { get; set; }
     }
 }

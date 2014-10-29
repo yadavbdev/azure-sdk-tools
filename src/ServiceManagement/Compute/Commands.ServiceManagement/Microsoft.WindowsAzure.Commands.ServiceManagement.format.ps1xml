@@ -559,6 +559,12 @@
               <TableColumnItem>
                 <PropertyName>RoleName</PropertyName>
               </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AutoPatchingSettings</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>AutoBackupSettings</PropertyName>
+              </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
         </TableRowEntries>

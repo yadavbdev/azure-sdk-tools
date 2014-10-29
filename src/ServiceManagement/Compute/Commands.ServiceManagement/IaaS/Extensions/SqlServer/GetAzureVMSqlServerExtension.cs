@@ -16,6 +16,8 @@ using System.Linq;
 using System.Management.Automation;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
 using Newtonsoft.Json;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
+using System.Collections.Generic;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
@@ -31,6 +33,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
     public class GetAzureVMSqlServerExtensionCommand : VirtualMachineSqlServerExtensionCmdletBase
     {
         protected const string GetSqlServerExtensionParamSetName = "GetSqlServerExtension";
+        protected const string AutoPatchingStatusMessageName = "Automatic Patching";
+        protected const string AutoBackupStatusMessageName = "Automatic Backup";
 
         internal void ExecuteCommand()
         {
@@ -40,22 +44,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 r =>
                 {
                     GetExtensionValues(r);
-                    var pubSettings = string.IsNullOrEmpty(PublicConfiguration) ? null
-                                    : JsonConvert.DeserializeObject<SqlServerPublicSettings>(PublicConfiguration);
 
-                    return new VirtualMachineSqlServerExtensionContext
-                    {
-                        ExtensionName        = r.Name,
-                        Publisher            = r.Publisher,
-                        ReferenceName        = r.ReferenceName,
-                        Version              = r.Version,
-                        State                = r.State,
-                        PublicConfiguration  = PublicConfiguration,
-                        PrivateConfiguration = SecureStringHelper.GetSecureString(PrivateConfiguration),
-                        AutoPatchingSettings = pubSettings == null ? null : pubSettings.AutoPatchingSettings,
-                        AutoBackupSettings = pubSettings == null ? null : this.MaskSecrets(pubSettings.AutoBackupSettings),
-                        RoleName             = VM.GetInstance().RoleName
-                    };
+                    return this.GetExtensionContext(r);
                 }), true);
 
         }
@@ -67,21 +57,69 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         }
 
         /// <summary>
-        /// strip of secrets in autobackup settings object 
+        /// Get the SQL Extension's context
         /// </summary>
-        /// <param name="abs"></param>
         /// <returns></returns>
-        private AutoBackupSettings MaskSecrets(AutoBackupSettings abs)
+        private VirtualMachineSqlServerExtensionContext GetExtensionContext(ResourceExtensionReference r)
         {
-            AutoBackupSettings autoBackupSettings = new AutoBackupSettings();
-            if (null != abs)
+            VirtualMachineSqlServerExtensionContext context = new VirtualMachineSqlServerExtensionContext
             {
-                autoBackupSettings.Enable = abs.Enable;
-                autoBackupSettings.EnableEncryption = abs.EnableEncryption;
-                autoBackupSettings.RetentionPeriod = abs.RetentionPeriod;
+                ExtensionName = r.Name,
+                Publisher = r.Publisher,
+                ReferenceName = r.ReferenceName,
+                Version = r.Version,
+                State = r.State,
+                PublicConfiguration = PublicConfiguration,
+                PrivateConfiguration = SecureStringHelper.GetSecureString(PrivateConfiguration),
+                RoleName = VM.GetInstance().RoleName,
+            };
+            
+            // gather extension status messages
+            List<string> statusMessageList = new List<string>();
+
+            PersistentVMRoleContext pvr = (PersistentVMRoleContext)VM;
+            if (null != pvr)
+            {
+                foreach (ResourceExtensionStatus res in pvr.ResourceExtensionStatusList)
+                {
+                    // skip all non-sql extensions
+                    if (res.HandlerName.Equals(r.Publisher, System.StringComparison.InvariantCulture))
+                    {
+                        continue;
+                    }
+
+                    if (null != res.ExtensionSettingStatus)
+                    {
+                        context.SubStatusList = res.ExtensionSettingStatus.SubStatusList;
+
+                        foreach (ResourceExtensionSubStatus status in res.ExtensionSettingStatus.SubStatusList)
+                        {
+                            if (null != status.FormattedMessage)
+                            {
+                                string formattedMessage = status.FormattedMessage.Message;
+
+                                // get current auto patching and auto backup config from extension status message
+                                if (status.Name.Equals(AutoPatchingStatusMessageName, System.StringComparison.InvariantCulture))
+                                {
+                                    context.AutoPatchingSettings = string.IsNullOrEmpty(formattedMessage) ? null
+                                        : JsonConvert.DeserializeObject<AutoPatchingSettings>(formattedMessage);
+                                }
+
+                                if (status.Name.Equals(AutoBackupStatusMessageName, System.StringComparison.InvariantCulture))
+                                {
+                                    context.AutoBackupSettings = string.IsNullOrEmpty(formattedMessage) ? null
+                                        : JsonConvert.DeserializeObject<AutoBackupSettings>(formattedMessage);
+                                }
+
+                                statusMessageList.Add(formattedMessage);
+                            }
+                        }
+                    }
+                }
             }
 
-            return autoBackupSettings;
+            context.StatusMessages = statusMessageList;
+            return context;
         }
     }
 }
