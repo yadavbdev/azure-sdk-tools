@@ -26,6 +26,7 @@ namespace Microsoft.Azure.Commands.DataFactories
     {
         [Parameter(ParameterSetName = ByFactoryName, Position = 1, Mandatory = true, ValueFromPipelineByPropertyName = true,
             HelpMessage = "The data factory name.")]
+        [Alias("DataFactoryName")]
         public string Name { get; set; }
 
         [Parameter(ParameterSetName = ByFactoryObject, Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true,
