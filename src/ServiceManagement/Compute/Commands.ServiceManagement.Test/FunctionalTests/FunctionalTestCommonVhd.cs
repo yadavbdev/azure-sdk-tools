@@ -193,21 +193,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             try
             {
-                var instanceSizes = vmPowershellCmdlets.GetAzureRoleSize().Where(r => r.Cores <= 1).ToArray();
-                int arrayLength = instanceSizes.Count();
+                var instanceSizes = vmPowershellCmdlets.GetAzureRoleSize().Where(r => r.Cores <= 2 && !r.InstanceSize.StartsWith("Standard_"));
+                const int numOfMinimumInstSize = 3;
+                Assert.IsTrue(instanceSizes.Count() >= numOfMinimumInstSize);
+                var instanceSizesArr = instanceSizes.Take(numOfMinimumInstSize).ToArray();
+                int arrayLength = instanceSizesArr.Count();
 
                 for (int i = 0; i < arrayLength; i++)
                 {
-                    Utilities.PrintContext(instanceSizes[i]);
+                    Utilities.PrintContext(instanceSizesArr[i]);
                     // Add-AzureVMImage test for VM size
-                    OSImageContext result = vmPowershellCmdlets.AddAzureVMImage(newImageName, mediaLocation, OS.Windows, null, instanceSizes[i].InstanceSize);
+                    OSImageContext result = vmPowershellCmdlets.AddAzureVMImage(newImageName, mediaLocation, OS.Windows, null, instanceSizesArr[i].InstanceSize);
                     OSImageContext resultReturned = vmPowershellCmdlets.GetAzureVMImage(newImageName)[0];
                     Assert.IsTrue(!string.IsNullOrEmpty(resultReturned.IOType));
                     Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
                     // Update-AzureVMImage test for VM size
                     System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
-                    result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, resultReturned.ImageName, instanceSizes[Math.Max((i + 1) % arrayLength, 1)].InstanceSize);
+                    result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, resultReturned.ImageName, instanceSizesArr[Math.Max((i + 1) % arrayLength, 1)].InstanceSize);
                     resultReturned = vmPowershellCmdlets.GetAzureVMImage(newImageName)[0];
                     Assert.IsTrue(!string.IsNullOrEmpty(resultReturned.IOType));
                     Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
