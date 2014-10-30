@@ -106,7 +106,7 @@ function Test-HubPiping
         
         Get-AzureDataFactoryHub -ResourceGroupName $rgname -DataFactoryName $dfname -Name $hubname | Remove-AzureDataFactoryHub -Force
 
-        # Test the linked service no longer exists
+        # Test the hub no longer exists
         Assert-ThrowsContains { Get-AzureDataFactoryHub -ResourceGroupName $rgname -DataFactoryName $dfname -Name $hubname } "HubNotFound"
     }
     finally
