@@ -18,16 +18,54 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
     /// </summary>
    [Cmdlet(
         VerbsCommon.New,
-        AzureVMSqlServerAutoBackupConfigNoun),
+        AzureVMSqlServerAutoBackupConfigNoun,
+        DefaultParameterSetName = StorageUriParamSetName),
     OutputType(
         typeof(AutoBackupSettings))]
     public class NewAzureVMSqlServerAutoBackupConfigCommand : ServiceManagementBaseCmdlet
     {
         protected const string AzureVMSqlServerAutoBackupConfigNoun = "AzureVMSqlServerAutoBackupConfig";
 
-        [Parameter(ValueFromPipelineByPropertyName = true,
-         Mandatory = true,
-         HelpMessage = "The storage connection context")]
+        protected const string StorageContextParamSetName            = "StorageContextSqlServerAutoBackup";
+        protected const string StorageUriParamSetName                = "StorageUriSqlServerAutoBackup";
+
+        [Parameter(
+            Mandatory = false,
+            Position = 0,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Enable Automatic Backup.")]
+        [ValidateNotNullOrEmpty]
+        public SwitchParameter Enable { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            Position = 1,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Backup Retention period in days.")]
+        [ValidateNotNullOrEmpty]
+        public int RetentionPeriodInDays { get; set; }
+
+        [Parameter(
+             Mandatory = false,
+             Position = 2,
+             ValueFromPipelineByPropertyName = true,
+             HelpMessage = "Enable Backup Encryption.")]
+        [ValidateNotNullOrEmpty]
+        public SwitchParameter EnableEncryption { get; set; }
+
+        [Parameter(
+             Mandatory = false,
+             Position = 3,
+             ValueFromPipelineByPropertyName = false,
+             HelpMessage = "Certificate password.")]
+        public SecureString CertificatePassword { get; set; }
+
+        [Parameter(
+            ParameterSetName = StorageContextParamSetName,
+            Mandatory = false,
+            Position = 4,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The storage connection context")]
         [ValidateNotNullOrEmpty]
         public AzureStorageContext StorageContext
         {
@@ -35,17 +73,29 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             set;
         }
 
-        [Parameter]
-        public SwitchParameter Enable { get; set; }
+        [Parameter(
+             Mandatory = false,
+             Position = 4,
+             ValueFromPipelineByPropertyName = true,
+             HelpMessage = "The storage uri")]
+        [ValidateNotNullOrEmpty]
+        public Uri StorageUri
+        {
+            get;
+            set;
+        }
 
-        [Parameter]
-        public SwitchParameter EnableEncryption { get; set; }
-
-        [Parameter]
-        public int RetentionPeriod { get; set; }
-
-        [Parameter]
-        public SecureString CertificatePassword { get; set; }
+        [Parameter(
+          Mandatory = false,
+          Position = 5,
+          ValueFromPipelineByPropertyName = true,
+          HelpMessage = "The storage access key")]
+        [ValidateNotNullOrEmpty]
+        public SecureString StorageKey
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initialzies a new instance of the <see cref="NewAzureVMSqlServerAutoBackupConfigCommand"/> class.
@@ -60,13 +110,29 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         protected override void ProcessRecord()
         {
             AutoBackupSettings autoBackupSettings = new AutoBackupSettings();
-
+            
             autoBackupSettings.Enable = (Enable.IsPresent) ? Enable.ToBool() : false;
             autoBackupSettings.EnableEncryption = (EnableEncryption.IsPresent) ? EnableEncryption.ToBool() : false;
-            autoBackupSettings.RetentionPeriod = RetentionPeriod;
-            autoBackupSettings.StorageUrl = this.StorageContext.BlobEndPoint;
-            autoBackupSettings.StorageAccessKey = this.GetStorageKey();
-            autoBackupSettings.Password = SecureStringHelper.ConvertToUnsecureString(CertificatePassword);
+            autoBackupSettings.RetentionPeriod = RetentionPeriodInDays;
+
+            switch(ParameterSetName)
+            {
+                case StorageContextParamSetName:
+                    autoBackupSettings.StorageUrl = StorageContext.BlobEndPoint;
+                    autoBackupSettings.StorageAccessKey = this.GetStorageKey();
+                break;
+
+                case StorageUriParamSetName:
+                    autoBackupSettings.StorageUrl = this.StorageUri.ToString();
+                    autoBackupSettings.StorageAccessKey = SecureStringHelper.ConvertToUnsecureString(StorageKey);
+                break;
+            }
+
+            // Check if certificate password was set
+            if (CertificatePassword != null)
+            {
+                autoBackupSettings.Password = SecureStringHelper.ConvertToUnsecureString(CertificatePassword);
+            }
 
             WriteObject(autoBackupSettings);
         }

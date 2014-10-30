@@ -517,58 +517,72 @@
       <ViewSelectedBy>
         <TypeName>Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.AutoBackupSettings</TypeName>
       </ViewSelectedBy>
-      <TableControl>
-        <TableRowEntries>
-          <TableRowEntry>
-            <TableColumnItems>
-              <TableColumnItem>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>Enable</Label>
                 <PropertyName>Enable</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>EnableEncryption</Label>
                 <PropertyName>EnableEncryption</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>RetentionPeriodInDays</Label>
                 <PropertyName>RetentionPeriod</PropertyName>
-              </TableColumnItem>
-            </TableColumnItems>
-          </TableRowEntry>
-        </TableRowEntries>
-      </TableControl>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
     </View>
     <View>
       <Name>Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.VirtualMachineSqlServerExtensionContext</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions.VirtualMachineSqlServerExtensionContext</TypeName>
       </ViewSelectedBy>
-      <TableControl>
-        <TableRowEntries>
-          <TableRowEntry>
-            <TableColumnItems>
-              <TableColumnItem>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <Label>ExtensionName</Label>
                 <PropertyName>ExtensionName</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>Publisher</Label>
                 <PropertyName>Publisher</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>Version</Label>
                 <PropertyName>Version</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>State</Label>
                 <PropertyName>State</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>RoleName</Label>
                 <PropertyName>RoleName</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>RoleName</Label>
+                <PropertyName>RoleName</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>AutoPatchingSettings</Label>
                 <PropertyName>AutoPatchingSettings</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
+              </ListItem>
+              <ListItem>
+                <Label>AutoBackupSettings</Label>
                 <PropertyName>AutoBackupSettings</PropertyName>
-              </TableColumnItem>
-            </TableColumnItems>
-          </TableRowEntry>
-        </TableRowEntries>
-      </TableControl>
-    </View>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+     </View>
   </ViewDefinitions>
 </Configuration>

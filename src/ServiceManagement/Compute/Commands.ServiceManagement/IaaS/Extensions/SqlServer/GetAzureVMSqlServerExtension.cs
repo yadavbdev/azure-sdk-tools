@@ -124,7 +124,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         {
             AutoPatchingSettings aps = new AutoPatchingSettings();
             
-            if (string.IsNullOrEmpty(input))
+            if (!string.IsNullOrEmpty(input))
             {
                 try
                 {
@@ -143,7 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         {
             AutoBackupSettings abs = new AutoBackupSettings();
 
-            if (string.IsNullOrEmpty(input))
+            if (!string.IsNullOrEmpty(input))
             {
                 try
                 {

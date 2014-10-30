@@ -33,8 +33,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         typeof(IPersistentVM))]
     public class SetAzureVMSqlServerExtensionCommand : VirtualMachineSqlServerExtensionCmdletBase
     {
-        protected const string EnableExtensionParamSetName = "EnableSqlServerExtension";
-        protected const string DisableSqlServerExtensionParamSetName = "DisableSqlServerExtension";
+        protected const string EnableExtensionParamSetName             = "EnableSqlServerExtension";
+        protected const string DisableSqlServerExtensionParamSetName   = "DisableSqlServerExtension";
         protected const string UninstallSqlServerExtensionParamSetName = "UninstallSqlServerExtension";
 
         [Parameter(
@@ -69,10 +69,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             HelpMessage = "Uninstall Sql Server Extension")]
         public override SwitchParameter Uninstall { get; set; }
 
-        [Parameter]
+        [Parameter(
+            ParameterSetName = EnableExtensionParamSetName,
+            Mandatory = false,
+            Position = 3,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The Automatic Patching configuration.")]
+        [ValidateNotNullOrEmpty]
         public override AutoPatchingSettings AutoPatchingSettings { get; set; }
 
-        [Parameter]
+        [Parameter(
+            ParameterSetName = EnableExtensionParamSetName,
+            Mandatory = false,
+            Position = 4,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The Automatic Backup configuration.")]
+        [ValidateNotNullOrEmpty]
         public override AutoBackupSettings AutoBackupSettings { get; set; }
 
         protected override void ProcessRecord()
