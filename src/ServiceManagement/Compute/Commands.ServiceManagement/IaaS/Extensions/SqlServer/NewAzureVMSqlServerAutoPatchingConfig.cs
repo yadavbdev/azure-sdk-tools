@@ -69,21 +69,24 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         /// <returns></returns>
         private string ResolvePatchCategoryString(string category)
         {
-            string patchCategory = String.Empty;
+            string patchCategory = null;
 
-            switch(category.ToLower())
+            if (!string.IsNullOrEmpty(category))
             {
-                case "important":
-                    patchCategory = "WindowsMandatoryUpdates";
-                    break;
+                switch (category.ToLower())
+                {
+                    case "important":
+                        patchCategory = "WindowsMandatoryUpdates";
+                        break;
 
-                case "optional":
-                    patchCategory = "MicrosoftOptionalUpdates";
-                    break;
+                    case "optional":
+                        patchCategory = "MicrosoftOptionalUpdates";
+                        break;
 
-                default:
-                    patchCategory = "Unknown";
-                    break;
+                    default:
+                        patchCategory = "Unknown";
+                        break;
+                }
             }
 
             return patchCategory;

@@ -123,16 +123,13 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 break;
 
                 case StorageUriParamSetName:
-                    autoBackupSettings.StorageUrl = this.StorageUri.ToString();
-                    autoBackupSettings.StorageAccessKey = SecureStringHelper.ConvertToUnsecureString(StorageKey);
+                    autoBackupSettings.StorageUrl = (StorageUri == null)? null: StorageUri.ToString();
+                    autoBackupSettings.StorageAccessKey = (StorageKey == null)? null: SecureStringHelper.ConvertToUnsecureString(StorageKey);
                 break;
             }
 
             // Check if certificate password was set
-            if (CertificatePassword != null)
-            {
-                autoBackupSettings.Password = SecureStringHelper.ConvertToUnsecureString(CertificatePassword);
-            }
+            autoBackupSettings.Password = (CertificatePassword == null) ? null : SecureStringHelper.ConvertToUnsecureString(CertificatePassword);
 
             WriteObject(autoBackupSettings);
         }
@@ -140,7 +137,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         protected string GetStorageKey()
         {
             string storageKey = string.Empty;
-            string storageAccountName = this.StorageContext.StorageAccountName;
+            string storageAccountName = (this.StorageContext == null)? null: this.StorageContext.StorageAccountName;
 
             if (!string.IsNullOrEmpty(storageAccountName))
             {
