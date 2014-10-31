@@ -25,16 +25,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799830"
+          "799911"
         ],
         "x-ms-request-id": [
-          "4161b11a-8c97-448c-bd32-36bc9545a118"
+          "0eb5e558-4432-4f8a-b20a-0b749c641b62"
         ],
         "x-ms-correlation-request-id": [
-          "4161b11a-8c97-448c-bd32-36bc9545a118"
+          "0eb5e558-4432-4f8a-b20a-0b749c641b62"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020726Z:4161b11a-8c97-448c-bd32-36bc9545a118"
+          "CENTRALUS:20141030T015129Z:0eb5e558-4432-4f8a-b20a-0b749c641b62"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -43,7 +43,7 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:26 GMT"
+          "Thu, 30 Oct 2014 01:51:29 GMT"
         ]
       },
       "StatusCode": 200
@@ -73,16 +73,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799829"
+          "799910"
         ],
         "x-ms-request-id": [
-          "edb6528a-d2e1-44bd-8131-3e342a81ce9f"
+          "efddc63f-79c3-4cee-95f8-19d9f1ffb4c4"
         ],
         "x-ms-correlation-request-id": [
-          "edb6528a-d2e1-44bd-8131-3e342a81ce9f"
+          "efddc63f-79c3-4cee-95f8-19d9f1ffb4c4"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020726Z:edb6528a-d2e1-44bd-8131-3e342a81ce9f"
+          "CENTRALUS:20141030T015129Z:efddc63f-79c3-4cee-95f8-19d9f1ffb4c4"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -91,14 +91,14 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:26 GMT"
+          "Thu, 30 Oct 2014 01:51:29 GMT"
         ]
       },
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjg/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTY/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
       "RequestMethod": "HEAD",
       "RequestBody": "",
       "RequestHeaders": {
@@ -121,16 +121,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799828"
+          "799909"
         ],
         "x-ms-request-id": [
-          "fbc02213-6ee5-4805-bfcd-af8f739f7295"
+          "562aa535-c6d9-46cd-ba5c-69e60175844a"
         ],
         "x-ms-correlation-request-id": [
-          "fbc02213-6ee5-4805-bfcd-af8f739f7295"
+          "562aa535-c6d9-46cd-ba5c-69e60175844a"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020727Z:fbc02213-6ee5-4805-bfcd-af8f739f7295"
+          "CENTRALUS:20141030T015129Z:562aa535-c6d9-46cd-ba5c-69e60175844a"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -139,14 +139,14 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:26 GMT"
+          "Thu, 30 Oct 2014 01:51:29 GMT"
         ]
       },
       "StatusCode": 404
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328?api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjg/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396?api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTY/YXBpLXZlcnNpb249MjAxNC0wNC0wMS1wcmV2aWV3",
       "RequestMethod": "PUT",
       "RequestBody": "{\r\n  \"location\": \"West US\",\r\n  \"tags\": {}\r\n}",
       "RequestHeaders": {
@@ -160,7 +160,7 @@
           "Microsoft.Azure.Management.Resources.ResourceManagementClient/2.0.0.0"
         ]
       },
-      "ResponseBody": "{\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourceGroups/onesdk4328\",\r\n  \"name\": \"onesdk4328\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourceGroups/onesdk2396\",\r\n  \"name\": \"onesdk2396\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
           "183"
@@ -175,16 +175,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "11915"
+          "11951"
         ],
         "x-ms-request-id": [
-          "71a71051-bb20-4abc-bc6f-415e649f13c2"
+          "89aba95c-42ac-4482-b61e-e0914fc54a2b"
         ],
         "x-ms-correlation-request-id": [
-          "71a71051-bb20-4abc-bc6f-415e649f13c2"
+          "89aba95c-42ac-4482-b61e-e0914fc54a2b"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020727Z:71a71051-bb20-4abc-bc6f-415e649f13c2"
+          "CENTRALUS:20141030T015130Z:89aba95c-42ac-4482-b61e-e0914fc54a2b"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -193,14 +193,14 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:27 GMT"
+          "Thu, 30 Oct 2014 01:51:29 GMT"
         ]
       },
       "StatusCode": 201
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourceGroups/onesdk4328/resources?&api-version=2014-04-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlR3JvdXBzL29uZXNkazQzMjgvcmVzb3VyY2VzPyZhcGktdmVyc2lvbj0yMDE0LTA0LTAxLXByZXZpZXc=",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourceGroups/onesdk2396/resources?&api-version=2014-04-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlR3JvdXBzL29uZXNkazIzOTYvcmVzb3VyY2VzPyZhcGktdmVyc2lvbj0yMDE0LTA0LTAxLXByZXZpZXc=",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -223,16 +223,16 @@
           "no-cache"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799827"
+          "799908"
         ],
         "x-ms-request-id": [
-          "e16cf6ec-da44-4c08-a2ac-fbbcf616908c"
+          "09ea82da-5b3b-40c8-80ef-401ddca89e19"
         ],
         "x-ms-correlation-request-id": [
-          "e16cf6ec-da44-4c08-a2ac-fbbcf616908c"
+          "09ea82da-5b3b-40c8-80ef-401ddca89e19"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020727Z:e16cf6ec-da44-4c08-a2ac-fbbcf616908c"
+          "CENTRALUS:20141030T015130Z:09ea82da-5b3b-40c8-80ef-401ddca89e19"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -241,14 +241,14 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:27 GMT"
+          "Thu, 30 Oct 2014 01:51:29 GMT"
         ]
       },
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.Authorization/permissions?api-version=2014-07-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjgvcHJvdmlkZXJzL01pY3Jvc29mdC5BdXRob3JpemF0aW9uL3Blcm1pc3Npb25zP2FwaS12ZXJzaW9uPTIwMTQtMDctMDEtcHJldmlldw==",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.Authorization/permissions?api-version=2014-07-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5BdXRob3JpemF0aW9uL3Blcm1pc3Npb25zP2FwaS12ZXJzaW9uPTIwMTQtMDctMDEtcHJldmlldw==",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
@@ -274,16 +274,16 @@
           "Accept-Encoding"
         ],
         "x-ms-request-id": [
-          "centralus:1b7307c0-54f9-49d1-ae2a-0522bede5bc0"
+          "centralus:2d348d57-25d4-4bc1-989d-0c806c5bd47a"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799822"
+          "799906"
         ],
         "x-ms-correlation-request-id": [
-          "476e5642-d345-404f-b261-09cb9f2f51f6"
+          "deacad68-726f-4a95-a16f-071f34834aa6"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020727Z:476e5642-d345-404f-b261-09cb9f2f51f6"
+          "CENTRALUS:20141030T015130Z:deacad68-726f-4a95-a16f-071f34834aa6"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -292,16 +292,16 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:27 GMT"
+          "Thu, 30 Oct 2014 01:51:29 GMT"
         ]
       },
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514?api-version=2014-10-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjgvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazQ1MTQ/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTI/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
       "RequestMethod": "PUT",
-      "RequestBody": "{\r\n  \"name\": \"onesdk4514\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {}\r\n}",
+      "RequestBody": "{\r\n  \"name\": \"onesdk3812\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {}\r\n}",
       "RequestHeaders": {
         "Content-Type": [
           "application/json"
@@ -310,16 +310,16 @@
           "69"
         ],
         "x-ms-client-request-id": [
-          "225cf1d6-7a8e-4edb-b3c3-97f988ac9ccb"
+          "01c73b54-5e0e-4566-893b-4951c5fde99c"
         ],
         "User-Agent": [
           "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
         ],
         "client-tracking-id": [
-          "397"
+          "63"
         ]
       },
-      "ResponseBody": "{\r\n  \"name\": \"onesdk4514\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"e34c33e1-17ab-4231-8151-3153042a2e4c\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"PendingCreation\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"name\": \"onesdk3812\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"ed7b215c-310e-4d83-bff2-e2336a6e49a1\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"PendingCreation\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
           "478"
@@ -334,16 +334,16 @@
           "no-cache"
         ],
         "x-ms-request-id": [
-          "4a3654e5-cc51-47c1-aa8a-d2b0e37dff12"
+          "60e6166e-fafc-4c6d-aed4-41b38649a156"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "11914"
+          "11950"
         ],
         "x-ms-correlation-request-id": [
-          "372e862d-bc04-4421-988c-df87a0cd11d9"
+          "9c95f4b9-9d1f-41be-b1cc-051c068a1b9a"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020728Z:372e862d-bc04-4421-988c-df87a0cd11d9"
+          "CENTRALUS:20141030T015131Z:9c95f4b9-9d1f-41be-b1cc-051c068a1b9a"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -352,10 +352,10 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:28 GMT"
+          "Thu, 30 Oct 2014 01:51:31 GMT"
         ],
         "Location": [
-          "https://api-current.resources.windows-int.net/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514?api-version=2014-10-01-preview"
+          "https://api-current.resources.windows-int.net/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812?api-version=2014-10-01-preview"
         ],
         "Server": [
           "Microsoft-IIS/8.0"
@@ -367,13 +367,13 @@
       "StatusCode": 201
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514?api-version=2014-10-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjgvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazQ1MTQ/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTI/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "993005c7-e4dc-4ff2-963a-dde24623ae05"
+          "a356170e-f32e-4468-b1cc-504ff5c62fe2"
         ],
         "x-ms-version": [
           "2014-10-01-preview"
@@ -382,10 +382,10 @@
           "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
         ],
         "client-tracking-id": [
-          "397"
+          "63"
         ]
       },
-      "ResponseBody": "{\r\n  \"name\": \"onesdk4514\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"e34c33e1-17ab-4231-8151-3153042a2e4c\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"PendingCreation\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"name\": \"onesdk3812\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"ed7b215c-310e-4d83-bff2-e2336a6e49a1\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"PendingCreation\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
           "478"
@@ -400,16 +400,16 @@
           "no-cache"
         ],
         "x-ms-request-id": [
-          "242b0f23-7e6d-4903-a823-55bf8048c408"
+          "62c683c4-7f5c-4797-9f25-ae6a29eea7d0"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799826"
+          "799907"
         ],
         "x-ms-correlation-request-id": [
-          "28e9d932-1754-4d02-83c0-b99c83ff9e3e"
+          "9c32fdac-b21b-4129-9b9d-d6be8d5be12f"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020729Z:28e9d932-1754-4d02-83c0-b99c83ff9e3e"
+          "CENTRALUS:20141030T015131Z:9c32fdac-b21b-4129-9b9d-d6be8d5be12f"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -418,7 +418,7 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:28 GMT"
+          "Thu, 30 Oct 2014 01:51:31 GMT"
         ],
         "Server": [
           "Microsoft-IIS/8.0"
@@ -430,13 +430,13 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514?api-version=2014-10-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjgvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazQ1MTQ/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTI/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "c90b52fa-98b2-4e41-bcf6-df704850d9ba"
+          "eba41d8f-83fa-490f-a98e-864f2e67015c"
         ],
         "x-ms-version": [
           "2014-10-01-preview"
@@ -445,10 +445,10 @@
           "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
         ],
         "client-tracking-id": [
-          "397"
+          "63"
         ]
       },
-      "ResponseBody": "{\r\n  \"name\": \"onesdk4514\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"e34c33e1-17ab-4231-8151-3153042a2e4c\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"PendingCreation\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"name\": \"onesdk3812\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"ed7b215c-310e-4d83-bff2-e2336a6e49a1\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"PendingCreation\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
           "478"
@@ -463,16 +463,16 @@
           "no-cache"
         ],
         "x-ms-request-id": [
-          "4753948f-d324-487d-9d2d-710f39e25840"
+          "f534e2b2-359d-4a80-b5de-7d40014944a4"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799825"
+          "799906"
         ],
         "x-ms-correlation-request-id": [
-          "53172b6d-d3a4-4fe8-baa7-b7e8c92a8320"
+          "756bab41-70ac-494d-9e94-d6c333f0e1ff"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020734Z:53172b6d-d3a4-4fe8-baa7-b7e8c92a8320"
+          "CENTRALUS:20141030T015137Z:756bab41-70ac-494d-9e94-d6c333f0e1ff"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -481,7 +481,7 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:33 GMT"
+          "Thu, 30 Oct 2014 01:51:36 GMT"
         ],
         "Server": [
           "Microsoft-IIS/8.0"
@@ -493,13 +493,13 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514?api-version=2014-10-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjgvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazQ1MTQ/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTI/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
       "RequestMethod": "GET",
       "RequestBody": "",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "f065f16d-4715-4e64-b5f7-495eab7dc7fc"
+          "fc36e1df-fcde-47fb-8cdc-7966b3a55c67"
         ],
         "x-ms-version": [
           "2014-10-01-preview"
@@ -508,10 +508,10 @@
           "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
         ],
         "client-tracking-id": [
-          "397"
+          "63"
         ]
       },
-      "ResponseBody": "{\r\n  \"name\": \"onesdk4514\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"e34c33e1-17ab-4231-8151-3153042a2e4c\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
+      "ResponseBody": "{\r\n  \"name\": \"onesdk3812\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812\",\r\n  \"type\": \"Microsoft.DataFactory/datafactories\",\r\n  \"location\": \"West US\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"dataFactoryId\": \"ed7b215c-310e-4d83-bff2-e2336a6e49a1\",\r\n    \"hCatalogDescription\": null,\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"error\": null,\r\n    \"errorMessage\": null\r\n  }\r\n}",
       "ResponseHeaders": {
         "Content-Length": [
           "472"
@@ -526,16 +526,16 @@
           "no-cache"
         ],
         "x-ms-request-id": [
-          "77f9c1d0-5001-4f68-a246-52f63c56960c"
+          "deea0c6c-55dc-4bdd-ac32-0ac15db26c41"
         ],
         "x-ms-ratelimit-remaining-subscription-reads": [
-          "799824"
+          "799905"
         ],
         "x-ms-correlation-request-id": [
-          "a8ead41d-5e71-4faf-be34-610af7c320ba"
+          "227b2df9-769f-4694-afce-70a27d7b6713"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020739Z:a8ead41d-5e71-4faf-be34-610af7c320ba"
+          "CENTRALUS:20141030T015142Z:227b2df9-769f-4694-afce-70a27d7b6713"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -544,7 +544,7 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:39 GMT"
+          "Thu, 30 Oct 2014 01:51:41 GMT"
         ],
         "Server": [
           "Microsoft-IIS/8.0"
@@ -556,13 +556,1384 @@
       "StatusCode": 200
     },
     {
-      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk4328/providers/Microsoft.DataFactory/datafactories/onesdk4514?api-version=2014-10-01-preview",
-      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazQzMjgvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazQ1MTQ/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/linkedservices/foo2?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvbGlua2Vkc2VydmljZXMvZm9vMj9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "PUT",
+      "RequestBody": "{\r\n  \"name\": \"foo2\",\r\n  \"properties\": {\r\n    \"type\": \"CustomLinkedService\",\r\n    \"extendedProperties\": {\r\n      \"PropertyBagPropertyName1\": \"PropertyBagPropertyValue1\",\r\n      \"propertyBagPropertyName2\": \"PropertyBagPropertyValue2\"\r\n    }\r\n  }\r\n}",
+      "RequestHeaders": {
+        "Content-Type": [
+          "application/json"
+        ],
+        "Content-Length": [
+          "278"
+        ],
+        "x-ms-client-request-id": [
+          "37dc3e10-12ce-4390-886b-661df7716096"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "68"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/linkedservices/foo2\",\r\n  \"name\": \"foo2\",\r\n  \"properties\": {\r\n    \"extendedProperties\": {\r\n      \"PropertyBagPropertyName1\": \"PropertyBagPropertyValue1\",\r\n      \"propertyBagPropertyName2\": \"PropertyBagPropertyValue2\"\r\n    },\r\n    \"hubName\": \"onesdk3812_hub\",\r\n    \"type\": \"CustomLinkedService\",\r\n    \"provisioningState\": \"PendingCreation\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "419"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "fe0e21fd-16bf-402b-82e0-f3cb4fcd3bd1"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11949"
+        ],
+        "x-ms-correlation-request-id": [
+          "fd9275c6-187e-4ed6-bfa9-fa5d21b45885"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015142Z:fd9275c6-187e-4ed6-bfa9-fa5d21b45885"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:41 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/linkedservices/foo2?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvbGlua2Vkc2VydmljZXMvZm9vMj9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "5c07e2fb-0342-47b2-bcfc-5e19226eefc1"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "68"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/linkedservices/foo2\",\r\n  \"name\": \"foo2\",\r\n  \"properties\": {\r\n    \"extendedProperties\": {\r\n      \"PropertyBagPropertyName1\": \"PropertyBagPropertyValue1\",\r\n      \"propertyBagPropertyName2\": \"PropertyBagPropertyValue2\"\r\n    },\r\n    \"hubName\": \"onesdk3812_hub\",\r\n    \"type\": \"CustomLinkedService\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "413"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "0834a870-4631-40d0-8f2c-2a79a6d40599"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799904"
+        ],
+        "x-ms-correlation-request-id": [
+          "32007f0b-b14d-42b0-9d14-37e960801353"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015143Z:32007f0b-b14d-42b0-9d14-37e960801353"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:42 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL2lucHV0VGFibGU/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "PUT",
+      "RequestBody": "{\r\n  \"name\": \"foo1\",\r\n  \"properties\": {\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1\r\n    }\r\n  }\r\n}",
+      "RequestHeaders": {
+        "Content-Type": [
+          "application/json"
+        ],
+        "Content-Length": [
+          "284"
+        ],
+        "x-ms-client-request-id": [
+          "5ef121a2-5cab-4c1f-8a30-de7311fc634d"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "71"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"inputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:43.0196128Z\",\r\n    \"provisioningState\": \"PendingCreation\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "431"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "e80c5e7e-2ec0-4e33-9e6a-782b180315ac"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11948"
+        ],
+        "x-ms-correlation-request-id": [
+          "7e961eb3-f5f4-4c20-b244-8d80d1c5a503"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015143Z:7e961eb3-f5f4-4c20-b244-8d80d1c5a503"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:42 GMT"
+        ],
+        "Location": [
+          "https://api-current.resources.windows-int.net/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable?api-version=2014-10-01-preview"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 201
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL2lucHV0VGFibGU/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "5e571d27-8325-40d5-aa8e-6398a9823066"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "71"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"inputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:43.0196128Z\",\r\n    \"provisioningState\": \"PendingCreation\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "431"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "1b44aa0c-4e58-43b0-ab57-bcea14eb73eb"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799903"
+        ],
+        "x-ms-correlation-request-id": [
+          "6156e714-2ad0-42aa-92c9-ee805c329bf9"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015143Z:6156e714-2ad0-42aa-92c9-ee805c329bf9"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:42 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL2lucHV0VGFibGU/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "eb799d2f-1176-4cf7-aaea-fad0c49f9962"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "71"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"inputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:43.0196128Z\",\r\n    \"provisioningState\": \"PendingCreation\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "431"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "7558115f-848d-4ca4-8cda-4745a617c792"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799902"
+        ],
+        "x-ms-correlation-request-id": [
+          "b286794b-1217-4633-a264-e3702fb855bc"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015148Z:b286794b-1217-4633-a264-e3702fb855bc"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:48 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL2lucHV0VGFibGU/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "03e2e537-3c4e-4c63-b81c-0eefafa0b778"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "71"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"inputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/inputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:43.0031126Z\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "425"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "89ee4754-7ed5-4cf7-9849-1d5d79fde1ea"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799901"
+        ],
+        "x-ms-correlation-request-id": [
+          "2f3dba2f-dea1-4db5-bb89-6ce1f521982f"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015153Z:2f3dba2f-dea1-4db5-bb89-6ce1f521982f"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:53 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL291dHB1dFRhYmxlP2FwaS12ZXJzaW9uPTIwMTQtMTAtMDEtcHJldmlldw==",
+      "RequestMethod": "PUT",
+      "RequestBody": "{\r\n  \"name\": \"foo1\",\r\n  \"properties\": {\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1\r\n    }\r\n  }\r\n}",
+      "RequestHeaders": {
+        "Content-Type": [
+          "application/json"
+        ],
+        "Content-Length": [
+          "284"
+        ],
+        "x-ms-client-request-id": [
+          "c55a539d-62d8-402b-aa8d-c24687e10c56"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "76"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"outputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:53.8768785Z\",\r\n    \"provisioningState\": \"PendingCreation\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "433"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "049c2b1f-cabd-4fdb-a2d8-dcc1d305157d"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11947"
+        ],
+        "x-ms-correlation-request-id": [
+          "15ac2256-7739-4764-b1a9-de6c63b60946"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015154Z:15ac2256-7739-4764-b1a9-de6c63b60946"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:53 GMT"
+        ],
+        "Location": [
+          "https://api-current.resources.windows-int.net/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable?api-version=2014-10-01-preview"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 201
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL291dHB1dFRhYmxlP2FwaS12ZXJzaW9uPTIwMTQtMTAtMDEtcHJldmlldw==",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "fa5fcb10-3e1d-43d9-803d-f81b11f406d5"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "76"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"outputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:53.8768785Z\",\r\n    \"provisioningState\": \"PendingCreation\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "433"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "a50411cd-3bfa-49de-a94e-594ef3cbfa80"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799900"
+        ],
+        "x-ms-correlation-request-id": [
+          "e6d63c7f-d132-4290-aa66-9b6c4774b583"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015154Z:e6d63c7f-d132-4290-aa66-9b6c4774b583"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:53 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL291dHB1dFRhYmxlP2FwaS12ZXJzaW9uPTIwMTQtMTAtMDEtcHJldmlldw==",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "90865a97-4444-42fe-a4d6-ea3e901906bc"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "76"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"outputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:53.8768785Z\",\r\n    \"provisioningState\": \"PendingCreation\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "433"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "08800d41-0a2c-4dbb-8fc7-2d931cd0bd08"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799899"
+        ],
+        "x-ms-correlation-request-id": [
+          "43c5816d-90a2-4eb4-828b-a2c0b6ee751c"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015159Z:43c5816d-90a2-4eb4-828b-a2c0b6ee751c"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:51:59 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvdGFibGVzL291dHB1dFRhYmxlP2FwaS12ZXJzaW9uPTIwMTQtMTAtMDEtcHJldmlldw==",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "026ba914-e824-4ea2-8731-1f8d856f8ea4"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "76"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"outputTable\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/tables/outputTable\",\r\n  \"properties\": {\r\n    \"published\": false,\r\n    \"location\": {\r\n      \"type\": \"CustomLocation\",\r\n      \"linkedServiceName\": \"foo2\"\r\n    },\r\n    \"availability\": {\r\n      \"frequency\": \"Hour\",\r\n      \"interval\": 1,\r\n      \"waitOnExternal\": null\r\n    },\r\n    \"createTime\": \"2014-10-30T01:51:53.8619487Z\",\r\n    \"provisioningState\": \"Succeeded\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "427"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "8adb8f4b-ec8b-45ac-beba-404967301d19"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799898"
+        ],
+        "x-ms-correlation-request-id": [
+          "8562e128-20f2-4932-b1bc-39b6e05eac54"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015204Z:8562e128-20f2-4932-b1bc-39b6e05eac54"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:04 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "PUT",
+      "RequestBody": "{\r\n  \"name\": \"foo\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"name\": \"CustomActivity\",\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"linkedServiceName\": \"foo2\",\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"policy\": {\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2,\r\n          \"timeout\": \"01:00:00\"\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "RequestHeaders": {
+        "Content-Type": [
+          "application/json"
+        ],
+        "Content-Length": [
+          "1152"
+        ],
+        "x-ms-client-request-id": [
+          "cbc6dd16-ccdd-4d04-bc54-59a33d98858a"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "81"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"samplePipeline\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"policy\": {\r\n          \"timeout\": \"01:00:00\",\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2\r\n        },\r\n        \"name\": \"CustomActivity\",\r\n        \"linkedServiceName\": \"foo2\"\r\n      }\r\n    ],\r\n    \"isPaused\": false,\r\n    \"runtimeInfo\": {\r\n      \"deploymentTime\": \"2014-10-30T01:52:04.8349556Z\",\r\n      \"activityPeriods\": {\r\n        \"customActivity\": {\r\n          \"start\": \"1601-01-01T00:00:00Z\",\r\n          \"end\": \"1601-01-01T00:00:00Z\"\r\n        }\r\n      }\r\n    },\r\n    \"provisioningState\": \"PendingCreation\",\r\n    \"hubName\": \"onesdk3812_hub\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "1026"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "e00245c2-15f4-44af-b11c-8f6fa33e072b"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11946"
+        ],
+        "x-ms-correlation-request-id": [
+          "538878b1-899c-4899-92a6-b001eac3bfd4"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015205Z:538878b1-899c-4899-92a6-b001eac3bfd4"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:04 GMT"
+        ],
+        "Location": [
+          "https://api-current.resources.windows-int.net/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 201
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "d0ac8731-2f1d-476c-93e3-772c3c172a0f"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "81"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"samplePipeline\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"policy\": {\r\n          \"timeout\": \"01:00:00\",\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2\r\n        },\r\n        \"name\": \"CustomActivity\",\r\n        \"linkedServiceName\": \"foo2\"\r\n      }\r\n    ],\r\n    \"isPaused\": false,\r\n    \"runtimeInfo\": {\r\n      \"deploymentTime\": \"2014-10-30T01:52:04.8349556Z\",\r\n      \"activityPeriods\": {\r\n        \"customActivity\": {\r\n          \"start\": \"1601-01-01T00:00:00Z\",\r\n          \"end\": \"1601-01-01T00:00:00Z\"\r\n        }\r\n      }\r\n    },\r\n    \"provisioningState\": \"Failed\",\r\n    \"errorMessage\": \"Parameter not specified: assetName\",\r\n    \"hubName\": \"onesdk3812_hub\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "1069"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "5e7f970b-f6bb-43ca-8114-e5499185d301"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799897"
+        ],
+        "x-ms-correlation-request-id": [
+          "294ccea7-3ecb-4790-be2f-e1e9c234bd56"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015205Z:294ccea7-3ecb-4790-be2f-e1e9c234bd56"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:05 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "4905e7c6-541a-4f20-9b6a-90b83e95fc30"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"samplePipeline\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"policy\": {\r\n          \"timeout\": \"01:00:00\",\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2\r\n        },\r\n        \"name\": \"CustomActivity\",\r\n        \"linkedServiceName\": \"foo2\"\r\n      }\r\n    ],\r\n    \"isPaused\": false,\r\n    \"runtimeInfo\": {\r\n      \"deploymentTime\": \"2014-10-30T01:52:04.8349556Z\",\r\n      \"activityPeriods\": {\r\n        \"customActivity\": {\r\n          \"start\": \"1601-01-01T00:00:00Z\",\r\n          \"end\": \"1601-01-01T00:00:00Z\"\r\n        }\r\n      }\r\n    },\r\n    \"provisioningState\": \"Failed\",\r\n    \"errorMessage\": \"Parameter not specified: assetName\",\r\n    \"hubName\": \"onesdk3812_hub\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "1069"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "af026984-1d62-43b9-9d9a-2b77daf84bf3"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799896"
+        ],
+        "x-ms-correlation-request-id": [
+          "4cd61a15-71c5-4b6e-874e-3116e1e356a7"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015205Z:4cd61a15-71c5-4b6e-874e-3116e1e356a7"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:05 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "063f122c-7d93-46b0-870b-29ec4a24e2d7"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"samplePipeline\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"policy\": {\r\n          \"timeout\": \"01:00:00\",\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2\r\n        },\r\n        \"name\": \"CustomActivity\",\r\n        \"linkedServiceName\": \"foo2\"\r\n      }\r\n    ],\r\n    \"isPaused\": false,\r\n    \"runtimeInfo\": {\r\n      \"deploymentTime\": \"2014-10-30T01:52:04.8349556Z\",\r\n      \"activityPeriods\": {\r\n        \"customActivity\": {\r\n          \"start\": \"1601-01-01T00:00:00Z\",\r\n          \"end\": \"1601-01-01T00:00:00Z\"\r\n        }\r\n      }\r\n    },\r\n    \"provisioningState\": \"Failed\",\r\n    \"errorMessage\": \"Parameter not specified: assetName\",\r\n    \"hubName\": \"onesdk3812_hub\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "1069"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "b29e7826-59a2-4e86-bab2-d1f90fe61fc4"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799893"
+        ],
+        "x-ms-correlation-request-id": [
+          "7b3ee5e1-62ca-42e8-8fd9-6cf34c44c4b5"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015206Z:7b3ee5e1-62ca-42e8-8fd9-6cf34c44c4b5"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:06 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "6b5994f6-de0c-417a-85e4-ec64bc93a545"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"message\": \"Pipeline samplePipeline not found.\",\r\n  \"code\": \"PipelineNotFound\"\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "74"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "3595d5ea-1956-460e-b587-353a40c3e28a"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799891"
+        ],
+        "x-ms-correlation-request-id": [
+          "21b72d78-29c1-4fdf-af51-f17ca709f3f8"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015207Z:21b72d78-29c1-4fdf-af51-f17ca709f3f8"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:06 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 404
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/foo?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9mb28/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "PUT",
+      "RequestBody": "{\r\n  \"name\": \"foo\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"name\": \"CustomActivity\",\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"linkedServiceName\": \"foo2\",\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"policy\": {\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2,\r\n          \"timeout\": \"01:00:00\"\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+      "RequestHeaders": {
+        "Content-Type": [
+          "application/json"
+        ],
+        "Content-Length": [
+          "1152"
+        ],
+        "x-ms-client-request-id": [
+          "f2a4e4f4-dbca-4705-a190-7ed7b0ed3a23"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "85"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"foo\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/foo\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"policy\": {\r\n          \"timeout\": \"01:00:00\",\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2\r\n        },\r\n        \"name\": \"CustomActivity\",\r\n        \"linkedServiceName\": \"foo2\"\r\n      }\r\n    ],\r\n    \"isPaused\": false,\r\n    \"runtimeInfo\": {\r\n      \"deploymentTime\": \"2014-10-30T01:52:05.6687951Z\",\r\n      \"activityPeriods\": {\r\n        \"customActivity\": {\r\n          \"start\": \"1601-01-01T00:00:00Z\",\r\n          \"end\": \"1601-01-01T00:00:00Z\"\r\n        }\r\n      }\r\n    },\r\n    \"provisioningState\": \"Failed\",\r\n    \"error\": {\r\n      \"errorCode\": 88,\r\n      \"httpStatusCode\": 400,\r\n      \"parameters\": [\r\n        \"assetName\"\r\n      ]\r\n    },\r\n    \"hubName\": \"onesdk3812_hub\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "1068"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "eb70ed70-f81c-45e1-b77e-e0b6b53f5e87"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11945"
+        ],
+        "x-ms-correlation-request-id": [
+          "de5c5d03-cbb1-48d0-8379-5fe932055e18"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015206Z:de5c5d03-cbb1-48d0-8379-5fe932055e18"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:05 GMT"
+        ],
+        "Location": [
+          "https://api-current.resources.windows-int.net/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/foo?api-version=2014-10-01-preview"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 201
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/foo?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9mb28/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "14074e7b-5837-4845-b06c-e7720faab415"
+        ],
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "85"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"foo\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/foo\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"policy\": {\r\n          \"timeout\": \"01:00:00\",\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2\r\n        },\r\n        \"name\": \"CustomActivity\",\r\n        \"linkedServiceName\": \"foo2\"\r\n      }\r\n    ],\r\n    \"isPaused\": false,\r\n    \"runtimeInfo\": {\r\n      \"deploymentTime\": \"2014-10-30T01:52:05.6687951Z\",\r\n      \"activityPeriods\": {\r\n        \"customActivity\": {\r\n          \"start\": \"1601-01-01T00:00:00Z\",\r\n          \"end\": \"1601-01-01T00:00:00Z\"\r\n        }\r\n      }\r\n    },\r\n    \"provisioningState\": \"Failed\",\r\n    \"errorMessage\": \"Parameter not specified: assetName\",\r\n    \"hubName\": \"onesdk3812_hub\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "1047"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "b7bd567a-1bcc-4432-a437-9776bc47d5f2"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799895"
+        ],
+        "x-ms-correlation-request-id": [
+          "7f21a80e-0eab-4b90-afe0-fa5b4ef0a382"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015206Z:7f21a80e-0eab-4b90-afe0-fa5b4ef0a382"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:05 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/foo?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9mb28/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "2ffe6bfd-515c-45a8-9a7e-b3e5eb46d2fb"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ]
+      },
+      "ResponseBody": "{\r\n  \"name\": \"foo\",\r\n  \"id\": \"/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/foo\",\r\n  \"properties\": {\r\n    \"description\": \"Sample Data Pipeline\",\r\n    \"activities\": [\r\n      {\r\n        \"type\": \"CustomActivity\",\r\n        \"transformation\": {\r\n          \"assemblyName\": \"mycode.dll\",\r\n          \"entryPoint\": \"myclassname\",\r\n          \"packageLinkedService\": \"imagestoreLinkedService\",\r\n          \"packageFile\": \"images/assembly.zip\",\r\n          \"extendedProperties\": {\r\n            \"PropertyBagPropertyName1\": \"PropertyBagValue1\",\r\n            \"propertyBagPropertyName2\": \"PropertyBagValue2\"\r\n          }\r\n        },\r\n        \"inputs\": [\r\n          {\r\n            \"name\": \"inputTable\"\r\n          }\r\n        ],\r\n        \"outputs\": [\r\n          {\r\n            \"name\": \"outputTable\"\r\n          }\r\n        ],\r\n        \"policy\": {\r\n          \"timeout\": \"01:00:00\",\r\n          \"concurrency\": 1,\r\n          \"executionPriorityOrder\": \"NewestFirst\",\r\n          \"retry\": 2\r\n        },\r\n        \"name\": \"CustomActivity\",\r\n        \"linkedServiceName\": \"foo2\"\r\n      }\r\n    ],\r\n    \"isPaused\": false,\r\n    \"runtimeInfo\": {\r\n      \"deploymentTime\": \"2014-10-30T01:52:05.6687951Z\",\r\n      \"activityPeriods\": {\r\n        \"customActivity\": {\r\n          \"start\": \"1601-01-01T00:00:00Z\",\r\n          \"end\": \"1601-01-01T00:00:00Z\"\r\n        }\r\n      }\r\n    },\r\n    \"provisioningState\": \"Failed\",\r\n    \"errorMessage\": \"Parameter not specified: assetName\",\r\n    \"hubName\": \"onesdk3812_hub\"\r\n  }\r\n}",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "1047"
+        ],
+        "Content-Type": [
+          "application/json; charset=utf-8"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "f6312179-dad8-471d-b333-13286648d15c"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799894"
+        ],
+        "x-ms-correlation-request-id": [
+          "3cfe6fcb-71aa-4a28-9e1d-311d89d29a32"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015206Z:3cfe6fcb-71aa-4a28-9e1d-311d89d29a32"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:06 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
       "RequestMethod": "DELETE",
       "RequestBody": "",
       "RequestHeaders": {
         "x-ms-client-request-id": [
-          "de23aa81-2ca1-41f7-b6da-3ef2cd86a4c8"
+          "22d14a51-8fda-4737-8b90-f60a1e3637d4"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "90"
+        ]
+      },
+      "ResponseBody": "",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "0"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "Retry-After": [
+          "15"
+        ],
+        "x-ms-request-id": [
+          "29519b2a-6852-4ae3-a0be-08c4550afb30"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11944"
+        ],
+        "x-ms-correlation-request-id": [
+          "b47dfc34-5119-454d-8a67-bbfee5cffa18"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015206Z:b47dfc34-5119-454d-8a67-bbfee5cffa18"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:06 GMT"
+        ],
+        "Location": [
+          "https://api-current.resources.windows-int.net/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline/operationresults/61852030dfe24043add02e1487480e00?api-version=2014-10-01-preview"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 202
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "DELETE",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "9cbd30ee-85a8-49a9-a38b-d31d243b281e"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "94"
+        ]
+      },
+      "ResponseBody": "",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "0"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "e22ebf22-9592-4b50-a2ea-25cc7a59101e"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11943"
+        ],
+        "x-ms-correlation-request-id": [
+          "db434028-9283-48f4-ae6f-2c75fe9f495b"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015207Z:db434028-9283-48f4-ae6f-2c75fe9f495b"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:06 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 204
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZT9hcGktdmVyc2lvbj0yMDE0LTEwLTAxLXByZXZpZXc=",
+      "RequestMethod": "DELETE",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "bbee00d3-83a6-46a0-88d8-de29c11eb92a"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "96"
+        ]
+      },
+      "ResponseBody": "",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "0"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "2ac7b802-b908-4e3a-adfb-074e2f309fa0"
+        ],
+        "x-ms-ratelimit-remaining-subscription-writes": [
+          "11942"
+        ],
+        "x-ms-correlation-request-id": [
+          "3a2b7fe2-b03d-4d6f-8288-c436b14282df"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015207Z:3a2b7fe2-b03d-4d6f-8288-c436b14282df"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:07 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 204
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812/datapipelines/samplePipeline/operationresults/61852030dfe24043add02e1487480e00?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTIvZGF0YXBpcGVsaW5lcy9zYW1wbGVQaXBlbGluZS9vcGVyYXRpb25yZXN1bHRzLzYxODUyMDMwZGZlMjQwNDNhZGQwMmUxNDg3NDgwZTAwP2FwaS12ZXJzaW9uPTIwMTQtMTAtMDEtcHJldmlldw==",
+      "RequestMethod": "GET",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-version": [
+          "2014-10-01-preview"
+        ],
+        "User-Agent": [
+          "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
+        ],
+        "client-tracking-id": [
+          "90"
+        ]
+      },
+      "ResponseBody": "",
+      "ResponseHeaders": {
+        "Content-Length": [
+          "0"
+        ],
+        "Expires": [
+          "-1"
+        ],
+        "Pragma": [
+          "no-cache"
+        ],
+        "x-ms-request-id": [
+          "28d1bc03-3461-4dd1-8e04-1a93673cd059"
+        ],
+        "x-ms-ratelimit-remaining-subscription-reads": [
+          "799892"
+        ],
+        "x-ms-correlation-request-id": [
+          "8b662259-126a-4724-82b3-e81fba5ffa76"
+        ],
+        "x-ms-routing-request-id": [
+          "CENTRALUS:20141030T015207Z:8b662259-126a-4724-82b3-e81fba5ffa76"
+        ],
+        "Strict-Transport-Security": [
+          "max-age=31536000; includeSubDomains"
+        ],
+        "Cache-Control": [
+          "no-cache"
+        ],
+        "Date": [
+          "Thu, 30 Oct 2014 01:52:06 GMT"
+        ],
+        "Server": [
+          "Microsoft-IIS/8.0"
+        ],
+        "X-Powered-By": [
+          "ASP.NET"
+        ]
+      },
+      "StatusCode": 200
+    },
+    {
+      "RequestUri": "/subscriptions/8d88dc98-ab0c-4b80-825b-123b2cf8443c/resourcegroups/onesdk2396/providers/Microsoft.DataFactory/datafactories/onesdk3812?api-version=2014-10-01-preview",
+      "EncodedRequestUri": "L3N1YnNjcmlwdGlvbnMvOGQ4OGRjOTgtYWIwYy00YjgwLTgyNWItMTIzYjJjZjg0NDNjL3Jlc291cmNlZ3JvdXBzL29uZXNkazIzOTYvcHJvdmlkZXJzL01pY3Jvc29mdC5EYXRhRmFjdG9yeS9kYXRhZmFjdG9yaWVzL29uZXNkazM4MTI/YXBpLXZlcnNpb249MjAxNC0xMC0wMS1wcmV2aWV3",
+      "RequestMethod": "DELETE",
+      "RequestBody": "",
+      "RequestHeaders": {
+        "x-ms-client-request-id": [
+          "b905e0db-39a3-4e98-bee3-ab932aa23813"
         ],
         "User-Agent": [
           "Microsoft.Azure.Management.DataFactories.DataPipelineManagementClient/0.9.0.0"
@@ -580,16 +1951,16 @@
           "no-cache"
         ],
         "x-ms-request-id": [
-          "0b900f32-750a-4c4a-a192-8c37758b9c62"
+          "bf982bda-b40e-450d-a254-b2c9e5b189a3"
         ],
         "x-ms-ratelimit-remaining-subscription-writes": [
-          "11913"
+          "11941"
         ],
         "x-ms-correlation-request-id": [
-          "b2f32672-2d65-4e97-b83a-5125215205b5"
+          "44d5ac49-1e9b-4160-8da7-3c1533be2d59"
         ],
         "x-ms-routing-request-id": [
-          "CENTRALUS:20141030T020739Z:b2f32672-2d65-4e97-b83a-5125215205b5"
+          "CENTRALUS:20141030T015207Z:44d5ac49-1e9b-4160-8da7-3c1533be2d59"
         ],
         "Strict-Transport-Security": [
           "max-age=31536000; includeSubDomains"
@@ -598,7 +1969,7 @@
           "no-cache"
         ],
         "Date": [
-          "Thu, 30 Oct 2014 02:07:39 GMT"
+          "Thu, 30 Oct 2014 01:52:07 GMT"
         ],
         "Server": [
           "Microsoft-IIS/8.0"
@@ -611,9 +1982,9 @@
     }
   ],
   "Names": {
-    "Test-DeleteDataFactoryWithDataFactoryParameter": [
-      "onesdk4514",
-      "onesdk4328"
+    "Test-Pipeline": [
+      "onesdk3812",
+      "onesdk2396"
     ]
   },
   "Variables": {

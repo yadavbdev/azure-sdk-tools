@@ -186,30 +186,6 @@
     <None Include="Resources\table.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\WikiSamplePipeline\DA_CuratedWikiData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\WikiSamplePipeline\DA_WikiAggregatedData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\WikiSamplePipeline\DA_WikipediaClickEvents.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\WikiSamplePipeline\DP_Wikisamplev2json.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\WikiSamplePipeline\LinkedService_CuratedWikiData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\WikiSamplePipeline\LinkedService_HDIBYOC.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\WikiSamplePipeline\LinkedService_WikiAggregatedData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\WikiSamplePipeline\LinkedService_WikipediaClickEvents.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="ScenarioTests\Common.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -243,6 +219,9 @@
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.DataFactoryTests\TestCreateDataFactory.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.DataFactoryTests\TestDataFactoryPiping.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.DataFactoryTests\TestDeleteDataFactoryWithDataFactoryParameter.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -258,6 +237,9 @@
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.HubTests\TestHub.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.HubTests\TestHubPiping.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.HubTests\TestHubWithDataFactoryParameter.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -270,10 +252,13 @@
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.LinkedServiceTests\TestLinkedService.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.LinkedServiceTests\TestLinkedServicePiping.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.LinkedServiceTests\TestLinkedServiceWithDataFactoryParameter.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.PipelineTests\TestWikipediaSamplePipeline.json">
+    <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.PipelineTests\TestPipeline.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.TableTests\TestGetTableWithEmptyName.json">
@@ -283,6 +268,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.TableTests\TestTable.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.TableTests\TestTablePiping.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SessionRecords\Microsoft.Azure.Commands.DataFactories.Test.TableTests\TestTableWithDataFactoryParameter.json">

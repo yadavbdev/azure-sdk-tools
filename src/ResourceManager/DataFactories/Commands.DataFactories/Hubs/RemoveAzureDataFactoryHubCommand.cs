@@ -25,6 +25,7 @@ namespace Microsoft.Azure.Commands.DataFactories
     {
         [Parameter(Position = 2, Mandatory = true, ValueFromPipelineByPropertyName = true, 
             HelpMessage = "The hub name.")]
+        [Alias("HubName")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
