@@ -98,10 +98,6 @@
     <command:terminatingErrors />
     <command:nonTerminatingErrors />
     <maml:alertSet>
-      <maml:title />
-      <maml:alert>
-        <maml:para>The Get-AzureRedisCache cmdlet is included in the Azure Resource Manager module beginning in module version 0.8.10.</maml:para>
-      </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
@@ -444,10 +440,6 @@
     <command:terminatingErrors />
     <command:nonTerminatingErrors />
     <maml:alertSet>
-      <maml:title />
-      <maml:alert>
-        <maml:para>The New-AzureRedisCache cmdlet is included in the Azure Resource Manager module beginning in module version 0.8.10.</maml:para>
-      </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
@@ -658,10 +650,6 @@
     <command:terminatingErrors />
     <command:nonTerminatingErrors />
     <maml:alertSet>
-      <maml:title />
-      <maml:alert>
-        <maml:para>The Remove-AzureRedisCache cmdlet is included in the Azure Resource Manager module beginning in module version 0.8.10.</maml:para>
-      </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
@@ -806,10 +794,6 @@
     <command:terminatingErrors />
     <command:nonTerminatingErrors />
     <maml:alertSet>
-      <maml:title />
-      <maml:alert>
-        <maml:para>The Get-AzureRedisCacheKey cmdlet is included in the Azure Resource Manager module beginning in module version 0.8.10.</maml:para>
-      </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
@@ -975,10 +959,6 @@
     <command:terminatingErrors />
     <command:nonTerminatingErrors />
     <maml:alertSet>
-      <maml:title />
-      <maml:alert>
-        <maml:para>The New-AzureRedisCacheKey cmdlet is included in the Azure Resource Manager module beginning in module version 0.8.10.</maml:para>
-      </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
@@ -1148,10 +1128,6 @@
     <command:terminatingErrors />
     <command:nonTerminatingErrors />
     <maml:alertSet>
-      <maml:title />
-      <maml:alert>
-        <maml:para>The Set-AzureRedisCache cmdlet is included in the Azure Resource Manager module beginning in module version 0.8.10.</maml:para>
-      </maml:alert>
     </maml:alertSet>
     <command:examples>
       <command:example>
