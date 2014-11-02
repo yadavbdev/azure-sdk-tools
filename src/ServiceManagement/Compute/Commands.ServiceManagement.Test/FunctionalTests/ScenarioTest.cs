@@ -162,7 +162,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 if (string.IsNullOrEmpty(imageName))
                     imageName = vmPowershellCmdlets.GetAzureVMImageName(new[] { "Windows" }, false);
 
-                vmPowershellCmdlets.NewAzureQuickVM(OS.Windows, newAzureQuickVMName, serviceName, imageName, username, password, locationName);
+                Utilities.RetryActionUntilSuccess(() =>
+                {
+                    if (vmPowershellCmdlets.TestAzureServiceName(serviceName))
+                    {
+                        var op = vmPowershellCmdlets.RemoveAzureService(serviceName);
+                    }
+                    vmPowershellCmdlets.NewAzureQuickVM(OS.Windows, newAzureQuickVMName, serviceName, imageName, username, password, locationName);
+                }, "Windows Azure is currently performing an operation on this hosted service that requires exclusive access.", 10, 30);
 
                 // Verify the VM
                 var vmRoleCtxt = vmPowershellCmdlets.GetAzureVM(newAzureQuickVMName, serviceName);
