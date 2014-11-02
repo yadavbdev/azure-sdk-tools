@@ -20,14 +20,16 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
 {
     public class SecurityTests : SqlTestsBase
     {
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithStorage()
         {
             RunPowerShellTest("Test-DatabaseUpdatePolicyWithStorage");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithStorage()
@@ -35,14 +37,16 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-ServerUpdatePolicyWithStorage");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithEventTypes()
         {
             RunPowerShellTest("Test-DatabaseUpdatePolicyWithEventTypes");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypes()
@@ -50,7 +54,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-ServerUpdatePolicyWithEventTypes");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableDatabaseAuditing()
@@ -58,7 +63,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-DisableDatabaseAuditing");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDisableServerAuditing()
@@ -66,7 +72,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-DisableServerAuditing");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseDisableEnableKeepProperties()
@@ -74,7 +81,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-DatabaseDisableEnableKeepProperties");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerDisableEnableKeepProperties()
@@ -82,7 +90,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-ServerDisableEnableKeepProperties");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestUseServerDefault()
@@ -90,14 +99,16 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-UseServerDefault");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedDatabaseUpdatePolicyWithNoStorage()
         {
             RunPowerShellTest("Test-FailedDatabaseUpdatePolicyWithNoStorage");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedServerUpdatePolicyWithNoStorage()
@@ -105,7 +116,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-FailedServerUpdatePolicyWithNoStorage");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailedUseServerDefault()
@@ -113,7 +125,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-FailedUseServerDefault");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyWithEventTypeShortcuts()
@@ -121,7 +134,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-DatabaseUpdatePolicyWithEventTypeShortcuts");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyWithEventTypeShortcuts()
@@ -129,7 +143,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-ServerUpdatePolicyWithEventTypeShortcuts");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestDatabaseUpdatePolicyKeepPreviousStorage()
@@ -137,7 +152,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-DatabaseUpdatePolicyKeepPreviousStorage");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestServerUpdatePolicyKeepPreviousStorage()
@@ -145,7 +161,8 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-ServerUpdatePolicyKeepPreviousStorage");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadDatabaseIndentity()
@@ -153,12 +170,47 @@ namespace Microsoft.Azure.Commands.ScenarioTest.SqlTests
             RunPowerShellTest("Test-FailWithBadDatabaseIndentity");
         }
 
-        [Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        //[Fact(Skip = "Skip for the version header upgrade on Storage library.")]
+        [Fact]
         [Trait(Category.RunType, Category.LiveOnly)]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestFailWithBadServerIndentity()
         {
             RunPowerShellTest("Test-FailWithBadServerIndentity");
         }
+
+        [Fact]
+        [Trait(Category.RunType, Category.LiveOnly)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestDatabaseDirectAccess()
+        {
+            RunPowerShellTest("Test-DatabaseDirectAccess");
+        }
+
+        [Fact]
+        [Trait(Category.RunType, Category.LiveOnly)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestServerDirectAccess()
+        {
+            RunPowerShellTest("Test-ServerDirectAccess");
+        }
+
+        [Fact]
+        [Trait(Category.RunType, Category.LiveOnly)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestDatabaseStorageKeyRotation()
+        {
+            RunPowerShellTest("Test-DatabaseStorageKeyRotation");
+        }
+
+        [Fact]
+        [Trait(Category.RunType, Category.LiveOnly)]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestServerStorageKeyRotation()
+        {
+            RunPowerShellTest("Test-ServerStorageKeyRotation");
+        }
+
+
     }
 }
