@@ -37,7 +37,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         /// <summary>
         /// Extension's default version - $TODO- update name after marking sqlvm extension as public
         /// </summary>
-        protected const string ExtensionDefaultVersion = "1.24";
+        protected const string ExtensionDefaultVersion = "1.25";
 
         /// <summary>
         /// value of Auto-patching settings object that can be set by derived classes

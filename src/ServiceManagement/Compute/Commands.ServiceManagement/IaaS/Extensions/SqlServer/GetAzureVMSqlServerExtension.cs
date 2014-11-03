@@ -101,12 +101,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                                 // get current auto patching and auto backup config from extension status message
                                 if (status.Name.Equals(AutoPatchingStatusMessageName, System.StringComparison.InvariantCulture))
                                 {
-                                    context.AutoPatchingSettings = DeSerializeAutoPatchingSettings(formattedMessage);
+                                    context.AutoPatchingSettings = DeSerializeAutoPatchingSettings(status.Name, formattedMessage);
                                 }
 
                                 if (status.Name.Equals(AutoBackupStatusMessageName, System.StringComparison.InvariantCulture))
                                 {
-                                    context.AutoBackupSettings = DeSerializeAutoBackupSettings(formattedMessage);
+                                    context.AutoBackupSettings = DeSerializeAutoBackupSettings(status.Name, formattedMessage);
                                 }
 
                                 statusMessageList.Add(formattedMessage);
@@ -120,7 +120,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             return context;
         }
 
-        private AutoPatchingSettings DeSerializeAutoPatchingSettings(string input)
+        private AutoPatchingSettings DeSerializeAutoPatchingSettings(string category, string input)
         {
             AutoPatchingSettings aps = new AutoPatchingSettings();
             
@@ -129,9 +129,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 try
                 {
                     aps = JsonConvert.DeserializeObject<AutoPatchingSettings>(input);
+                    aps.UpdatePatchingCategory(this.ResolvePatchCategoryStringforPowerShell(aps.PatchCategory));
                 }
                 catch (JsonReaderException jre)
                 {
+                    WriteVerboseWithTimestamp("Category:" + category);
+                    WriteVerboseWithTimestamp("Message:" + input);
                     WriteVerboseWithTimestamp(jre.ToString());
                 }
             }
@@ -139,7 +142,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             return aps;
         }
 
-        private AutoBackupSettings DeSerializeAutoBackupSettings(string input)
+        private AutoBackupSettings DeSerializeAutoBackupSettings(string category, string input)
         {
             AutoBackupSettings abs = new AutoBackupSettings();
 
@@ -151,11 +154,46 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
                 }
                 catch (JsonReaderException jre)
                 {
+                    WriteVerboseWithTimestamp("Category:" + category);
+                    WriteVerboseWithTimestamp("Message:" + input);
                     WriteVerboseWithTimestamp(jre.ToString());
                 }
             }
 
             return abs;
+        }
+
+        /// <summary>
+        /// map strings Auto-patching public settings -> Powershell API
+        ///      "WindowsMandatoryUpdates" -> "Important"
+        ///       "MicrosoftOptionalUpdates" -> "Optional"
+        /// 
+        /// </summary>
+        /// <param name="patchCategory"></param>
+        /// <returns></returns>
+        private AzureVMSqlServerAutoPatchingPatchCategoryEnum ResolvePatchCategoryStringforPowerShell(string category)
+        {
+            AzureVMSqlServerAutoPatchingPatchCategoryEnum patchCategory = AzureVMSqlServerAutoPatchingPatchCategoryEnum.Important;
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                switch (category.ToLower())
+                {
+                    case "windowsmandatoryupdates":
+                        patchCategory = AzureVMSqlServerAutoPatchingPatchCategoryEnum.Important;
+                        break;
+
+                    case "microsoftoptionalupdates":
+                        patchCategory = AzureVMSqlServerAutoPatchingPatchCategoryEnum.Optional;
+                        break;
+
+                    default:
+                        patchCategory = AzureVMSqlServerAutoPatchingPatchCategoryEnum.Unknown;
+                        break;
+                }
+            }
+
+            return patchCategory;
         }
     }
 }

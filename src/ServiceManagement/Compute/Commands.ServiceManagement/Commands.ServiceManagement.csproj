@@ -210,10 +210,11 @@
     <Compile Include="IaaS\Extensions\SqlServer\NewAzureVMSqlServerAutoPatchingConfig.cs" />
     <Compile Include="IaaS\Extensions\SqlServer\RemoveAzureVMSqlServerExtension.cs" />
     <Compile Include="IaaS\Extensions\SqlServer\SetAzureVMSqlServerExtension.cs" />
-    <Compile Include="IaaS\Extensions\SqlServer\SqlServerAutoBackupSettings.cs" />
-    <Compile Include="IaaS\Extensions\SqlServer\SqlServerAutoPatchingSettings.cs" />
-    <Compile Include="IaaS\Extensions\SqlServer\SqlServerPrivateSettings.cs" />
-    <Compile Include="IaaS\Extensions\SqlServer\SqlServerPublicSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\AzureVMSqlServerAutoBackupSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\AzureVMSqlServerAutoPatchingPatchCategoryEnum.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\AzureVMSqlServerAutoPatchingSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\AzureVMSqlServerPrivateSettings.cs" />
+    <Compile Include="IaaS\Extensions\SqlServer\AzureVMSqlServerPublicSettings.cs" />
     <Compile Include="IaaS\Extensions\SqlServer\VirtualMachineSqlServerExtensionCmdletBase.cs" />
     <Compile Include="IaaS\Extensions\SqlServer\VirtualMachineSqlServerExtensionContext.cs" />
     <Compile Include="IaaS\Network\AddAzureDns.cs" />

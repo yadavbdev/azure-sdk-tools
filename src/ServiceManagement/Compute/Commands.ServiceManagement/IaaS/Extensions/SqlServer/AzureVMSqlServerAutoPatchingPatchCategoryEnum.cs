@@ -16,14 +16,23 @@
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
     /// <summary>
-    /// AutoPatching settings to configure auto-patching on SQL VM
+    /// Enum for Patching categories
     /// </summary>
-    public class AutoPatchingSettings
+    public enum AzureVMSqlServerAutoPatchingPatchCategoryEnum
     {
-        public bool Enable { get; set; }
-        public string DayOfWeek { get; set; }
-        public int MaintenanceWindowStartingHour { get; set; }
-        public int MaintenanceWindowDuration { get; set; }
-        public string PatchCategory { get; set; }
+        /// <summary>
+        /// Unknown - not defined
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
+        /// Important patches
+        /// </summary>
+        Important = 0,
+
+        /// <summary>
+        /// Optional patches
+        /// </summary>
+        Optional = 1
     }
 }

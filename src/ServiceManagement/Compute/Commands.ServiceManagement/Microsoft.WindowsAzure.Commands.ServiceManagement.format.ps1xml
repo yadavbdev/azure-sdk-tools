@@ -578,10 +578,6 @@
                 <PropertyName>RoleName</PropertyName>
               </ListItem>
               <ListItem>
-                <Label>RoleName</Label>
-                <PropertyName>RoleName</PropertyName>
-              </ListItem>
-              <ListItem>
                 <Label>AutoPatchingSettings</Label>
                 <PropertyName>AutoPatchingSettings</PropertyName>
               </ListItem>

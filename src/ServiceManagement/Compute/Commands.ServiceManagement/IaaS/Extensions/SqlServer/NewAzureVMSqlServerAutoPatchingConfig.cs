@@ -54,42 +54,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             autoPatchingSettings.DayOfWeek = DayOfWeek;
             autoPatchingSettings.MaintenanceWindowStartingHour = MaintenanceWindowStartingHour;
             autoPatchingSettings.MaintenanceWindowDuration = MaintenanceWindowDuration;
-            autoPatchingSettings.PatchCategory = this.ResolvePatchCategoryString(PatchCategory);
+            autoPatchingSettings.UpdatePatchingCategory(PatchCategory);
 
             WriteObject(autoPatchingSettings);
-        }
-
-        /// <summary>
-        /// map strings Powershell API -> Auto-patching public settings
-        ///      Important -> "WindowsMandatoryUpdates "
-        ///      Optional ->  "MicrosoftOptionalUpdates"
-        /// 
-        /// </summary>
-        /// <param name="patchCategory"></param>
-        /// <returns></returns>
-        private string ResolvePatchCategoryString(string category)
-        {
-            string patchCategory = null;
-
-            if (!string.IsNullOrEmpty(category))
-            {
-                switch (category.ToLower())
-                {
-                    case "important":
-                        patchCategory = "WindowsMandatoryUpdates";
-                        break;
-
-                    case "optional":
-                        patchCategory = "MicrosoftOptionalUpdates";
-                        break;
-
-                    default:
-                        patchCategory = "Unknown";
-                        break;
-                }
-            }
-
-            return patchCategory;
         }
     }
 }
