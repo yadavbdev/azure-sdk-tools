@@ -129,5 +129,10 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         {
             return Help.SafeCreate<WaitAzureHDInsightJobCommand>();
         }
+
+        public IUpdateAzureHDInsightClusterCommand UpdateCluster()
+        {
+            return Help.SafeCreate<UpdateAzureHDInsightClusterCommand>();
+        }
     }
 }

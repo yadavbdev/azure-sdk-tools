@@ -146,6 +146,7 @@
     <Compile Include="Cmdlet\SetAzureHDInsightDefaultStorageCmdlet.cs" />
     <Compile Include="Cmdlet\StartAzureHDInsightJobCmdlet.cs" />
     <Compile Include="Cmdlet\StopAzureHDInsightJobCmdlet.cs" />
+    <Compile Include="Cmdlet\UpdateAzureHDInsightClusterCmdlet.cs" />
     <Compile Include="Cmdlet\UseAzureHDInsightClusterCmdlet.cs" />
     <Compile Include="Cmdlet\WaitAzureHDInsightJobCmdlet.cs" />
     <Compile Include="Model\Commands\BaseCommandInterfaces\IAddAzureHDInsightConfigValuesBase.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Model\Commands\CommandImplementations\SetAzureHDInsightDefaultStorageCommand.cs" />
     <Compile Include="Model\Commands\CommandImplementations\StartAzureHDInsightJobCommand.cs" />
     <Compile Include="Model\Commands\CommandImplementations\StopAzureHDInsightJobCommand.cs" />
+    <Compile Include="Model\Commands\CommandImplementations\UpdateAzureHDInsightClusterCommand.cs" />
     <Compile Include="Model\Commands\CommandImplementations\UseAzureHDInsightClusterCommand.cs" />
     <Compile Include="Model\Commands\CommandImplementations\WaitAzureHDInsightJobCommand.cs" />
     <Compile Include="Model\Commands\CommandInterfaces\IAddAzureHDInsightConfigValuesCommand.cs" />
@@ -214,6 +216,7 @@
     <Compile Include="Model\Commands\CommandInterfaces\ISetAzureHDInsightDefaultStorageCommand.cs" />
     <Compile Include="Model\Commands\CommandInterfaces\IStartAzureHDInsightJobCommand.cs" />
     <Compile Include="Model\Commands\CommandInterfaces\IStopAzureHDInsightJobCommand.cs" />
+    <Compile Include="Model\Commands\CommandInterfaces\IUpdateAzureHDInsightClusterCommand.cs" />
     <Compile Include="Model\Commands\CommandInterfaces\IUseAzureHDInsightClusterCommand.cs" />
     <Compile Include="Model\Commands\CommandInterfaces\IWaitAzureHDInsightJobCommand.cs" />
     <Compile Include="Model\DataObjects\AzureHDInsightCapabilities.cs" />
