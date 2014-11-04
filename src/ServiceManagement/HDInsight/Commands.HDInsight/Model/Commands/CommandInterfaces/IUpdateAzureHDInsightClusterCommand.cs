@@ -6,5 +6,8 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInt
 {
     internal interface IUpdateAzureHDInsightClusterCommand : IAzureHDInsightCommand<AzureHDInsightCluster>, IAzureHDInsightClusterCommandBase
     {
+        SwitchParameter Force { get; set; }
+
+        int ClusterSizeInNodes { get; set; }
     }
 }

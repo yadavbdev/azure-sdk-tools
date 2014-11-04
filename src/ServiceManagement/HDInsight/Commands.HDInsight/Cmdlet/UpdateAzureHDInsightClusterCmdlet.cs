@@ -50,12 +50,29 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 
         /// <inheritdoc />
         [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to update.", ValueFromPipeline = true,
-            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterByNameWithSpecificSubscriptionCredentials)]
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterByNameWithSpecificSubscriptionCredentials,
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
         [Alias(AzureHdInsightPowerShellConstants.AliasClusterName, AzureHdInsightPowerShellConstants.AliasDnsName)]
         public string Name
         {
             get { return command.Name; }
             set { command.Name = value; }
+        }
+
+        [Parameter(Mandatory = false, HelpMessage = "Do not ask for confirmation.",
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
+        public SwitchParameter Force
+        {
+            get { return command.Force; }
+            set { command.Force = value; }
+        }
+
+        [Parameter(Mandatory = true, HelpMessage = "Do not ask for confirmation.",
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
+        public int ClusterSizeInNodes
+        {
+            get { return command.ClusterSizeInNodes; }
+            set { command.ClusterSizeInNodes = value; }
         }
 
         public UpdateAzureHDInsightClusterCmdlet()
@@ -105,7 +122,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 
         protected override void StopProcessing()
         {
-            this.command.Cancel();
+            command.Cancel();
         }
     }
 }
