@@ -819,6 +819,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 foreach (VirtualNetworkSiteContext site in vmPowershellCmdlets.GetAzureVNetSite(null))
                 {
                     Console.WriteLine("Name: {0}, AffinityGroup: {1}", site.Name, site.AffinityGroup);
+                    Console.WriteLine("Name: {0}, Location: {1}", site.Name, site.Location);
                 }
 
                 foreach (string vnet in virtualNets)

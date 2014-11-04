@@ -1284,6 +1284,25 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
             try
             {
+                // Test Wide VNet
+                string wideVnetConfigFilePathCopy = Directory.GetCurrentDirectory() + "\\VnetconfigWithLocation.netcfg";
+                Console.WriteLine("Test wide VNet using the following config:");
+                Console.WriteLine(File.ReadAllText(wideVnetConfigFilePathCopy));
+                vmPowershellCmdlets.SetAzureVNetConfig(wideVnetConfigFilePathCopy);
+
+                var locations = vmPowershellCmdlets.GetAzureLocation();
+                var wideVnetSites = vmPowershellCmdlets.GetAzureVNetSite(null);
+
+                foreach (var re in wideVnetSites)
+                {
+                    Assert.IsTrue(string.IsNullOrEmpty(re.AffinityGroup));
+                    Assert.IsTrue(!string.IsNullOrEmpty(re.Location));
+                    Assert.IsTrue(locations.Any(t => string.Equals(t.Name, re.Location, StringComparison.OrdinalIgnoreCase)));
+                }
+                
+                vmPowershellCmdlets.RemoveAzureVNetConfig();
+
+                // Test Narrow VNet
                 if (Utilities.CheckRemove(vmPowershellCmdlets.GetAzureAffinityGroup, affinityGroup))
                 {
                     vmPowershellCmdlets.NewAzureAffinityGroup(affinityGroup, locationName, null, null);
