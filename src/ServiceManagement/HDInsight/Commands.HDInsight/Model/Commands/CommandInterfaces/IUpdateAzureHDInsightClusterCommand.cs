@@ -11,5 +11,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInt
         SwitchParameter ChangeClusterSize { get; set; }
 
         int ClusterSizeInNodes { get; set; }
+
+        string Location { get; set; }
     }
 }

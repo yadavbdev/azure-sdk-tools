@@ -97,6 +97,10 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
             Name.ArgumentNotNull("Name");
             if (ChangeClusterSize.IsPresent)
             {
+                if (ClusterSizeInNodes < 1)
+                {
+                    throw new ArgumentOutOfRangeException("ClusterSizeInNodes", "The requested cluster size in nodes must be at least 1.");
+                }
                 try
                 {
                     command.Logger = Logger;
@@ -105,6 +109,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
                     Func<Task> action = () => command.EndProcessing();
                     var token = command.CancellationToken;
 
+                    //get cluster
                     var getCommand = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateGet();
                     getCommand.CurrentSubscription = currentSubscription;
                     getCommand.Name = Name;
@@ -118,7 +123,14 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
                     {
                         throw new AggregateException(getTask.Exception);
                     }
+                    if (getCommand.Output == null || getCommand.Output.Count == 0)
+                    {
+                        throw new NullReferenceException(string.Format("Could not find cluster {0}", Name));
+                    }
                     var cluster = getCommand.Output.First();
+
+                    //prep cluster resize operation
+                    command.Location = cluster.Location;
                     if (ClusterSizeInNodes < cluster.ClusterSizeInNodes)
                     {
                         var task = ConfirmUpdateAction(
@@ -149,11 +161,12 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
                             throw new AggregateException(task.Exception);
                         }
                     }
+                    //print cluster details
                     foreach (var output in command.Output)
-                        {
-                            WriteObject(output);
-                        }
-                        WriteDebugLog();
+                    {
+                        WriteObject(output);
+                    }
+                    WriteDebugLog();
                 }
                 catch (Exception ex)
                 {
