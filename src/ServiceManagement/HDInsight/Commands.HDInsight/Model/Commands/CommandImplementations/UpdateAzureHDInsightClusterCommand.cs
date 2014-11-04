@@ -13,7 +13,8 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
         IUpdateAzureHDInsightClusterCommand
     {
         private SwitchParameter force;
-        private int clusterSizeInNodes;
+        private SwitchParameter changeClusterSize;
+        private string location;
 
         public SwitchParameter Force
         {
@@ -21,23 +22,21 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
             set { force = value; }
         }
 
-        public int ClusterSizeInNodes { 
-            get { return clusterSizeInNodes; }
-            set { clusterSizeInNodes = value; }
+        public SwitchParameter ChangeClusterSize
+        {
+            get { return changeClusterSize; }
+            set { changeClusterSize = value; }
         }
 
-        public override async Task EndProcessing()
+        public int ClusterSizeInNodes { get; set; }
+
+        public override Task EndProcessing()
         {
             Name.ArgumentNotNull("Name");
-            IHDInsightClient client = GetClient();
-            var getCommand = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateGet();
-            getCommand.CurrentSubscription = CurrentSubscription;
-            getCommand.Name = Name;
-            await getCommand.EndProcessing();
-            var cluster = getCommand.Output.First();
-            if (true)
+            if (ChangeClusterSize.IsPresent)
             {
-                var currentSize = cluster.ClusterSizeInNodes;
+                var client = GetClient();
+                //client.ChangeClusterSize()
             }
         }
     }
