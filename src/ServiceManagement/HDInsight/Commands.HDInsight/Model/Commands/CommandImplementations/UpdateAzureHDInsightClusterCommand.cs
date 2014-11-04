@@ -34,6 +34,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
         public override async Task EndProcessing()
         {
             Name.ArgumentNotNull("Name");
+            Location.ArgumentNotNull("Location");
             if (ChangeClusterSize.IsPresent)
             {
                 var client = GetClient();

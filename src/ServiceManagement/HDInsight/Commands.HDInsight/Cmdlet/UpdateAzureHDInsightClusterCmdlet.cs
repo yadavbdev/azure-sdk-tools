@@ -22,7 +22,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
     {
         private readonly IUpdateAzureHDInsightClusterCommand command;
 
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Do not ask for confirmation.",
+        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies a Change Cluster Size operation..",
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
         public SwitchParameter ChangeClusterSize
         {
@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
             set { command.ChangeClusterSize = value; }
         }
 
-        [Parameter(Position = 1, Mandatory = true, HelpMessage = "Do not ask for confirmation.",
+        [Parameter(Position = 1, Mandatory = true, HelpMessage = "The new cluster size in nodes requested.",
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
         public int ClusterSizeInNodes
         {
@@ -89,7 +89,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 
         public UpdateAzureHDInsightClusterCmdlet()
         {
-            command = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().UpdateCluster();
+            command = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateUpdate();
         }
 
         protected override void EndProcessing()
@@ -125,7 +125,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
                     }
                     if (getCommand.Output == null || getCommand.Output.Count == 0)
                     {
-                        throw new NullReferenceException(string.Format("Could not find cluster {0}", Name));
+                        throw new InvalidOperationException(string.Format("Could not find cluster {0}", Name));
                     }
                     var cluster = getCommand.Output.First();
 
@@ -134,10 +134,14 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
                     if (ClusterSizeInNodes < cluster.ClusterSizeInNodes)
                     {
                         var task = ConfirmUpdateAction(
-                            "You are requesting a cluster size that is less than the current cluster size. We recommend not running jobs till the operation is complete as all running Jobs will fail at end of resize operation and may impact the health of your cluster. Do you want to continue?",
+                            "You are requesting a cluster size that is less than the current cluster size. We recommend not running jobs till the operation is complete as all running jobs will fail at end of resize operation and may impact the health of your cluster. Do you want to continue?",
                             "Continuing with update cluster operation.",
                             ClusterSizeInNodes.ToString(CultureInfo.InvariantCulture),
                             action);
+                        if (task == null)
+                        {
+                            throw new OperationCanceledException("The change cluster size operation was aborted.");
+                        }
                         while (!task.IsCompleted)
                         {
                             WriteDebugLog();

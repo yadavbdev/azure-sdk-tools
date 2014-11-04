@@ -60,8 +60,8 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
         IUseAzureHDInsightClusterCommand CreateUseCluster();
 
-        IWaitAzureHDInsightJobCommand CreateWaitJobs();
+        IUpdateAzureHDInsightClusterCommand CreateUpdate();
 
-        IUpdateAzureHDInsightClusterCommand UpdateCluster();
+        IWaitAzureHDInsightJobCommand CreateWaitJobs();
     }
 }
