@@ -52,6 +52,8 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
         INewAzureHDInsightStreamingJobDefinitionCommand CreateNewStreamingMapReduceDefinition();
 
+        ISetAzureHDInsightClusterCommand CreateSet();
+
         ISetAzureHDInsightDefaultStorageCommand CreateSetDefaultStorage();
 
         IStartAzureHDInsightJobCommand CreateStartJob();
@@ -59,9 +61,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         IStopAzureHDInsightJobCommand CreateStopJob();
 
         IUseAzureHDInsightClusterCommand CreateUseCluster();
-
-        IUpdateAzureHDInsightClusterCommand CreateUpdate();
-
+        
         IWaitAzureHDInsightJobCommand CreateWaitJobs();
     }
 }

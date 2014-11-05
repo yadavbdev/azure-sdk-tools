@@ -9,8 +9,8 @@ using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
-    internal class UpdateAzureHDInsightClusterCommand : AzureHDInsightClusterCommand<AzureHDInsightCluster>,
-        IUpdateAzureHDInsightClusterCommand
+    internal class SetAzureHDInsightClusterCommand : AzureHDInsightClusterCommand<AzureHDInsightCluster>,
+        ISetAzureHDInsightClusterCommand
     {
         private SwitchParameter force;
         private SwitchParameter changeClusterSize;

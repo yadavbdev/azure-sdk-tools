@@ -85,7 +85,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
         public const string ParameterSetJobHistoryByName = "Get jobDetails History of a HDInsight Cluster";
         public const string ParameterSetJobHistoryByNameAndJobId = "Get jobDetails History for a specific jobDetails in a HDInsight Cluster";
 
-        public const string ParameterSetClusterResize = "Update cluster size in nodes.";
+        public const string ParameterSetClusterResize = "Set cluster size in nodes.";
 
         public const string ParameterSetJobHistoryByNameWithSpecificSubscriptionCredentials =
             "Get jobDetails History of a HDInsight Cluster (with Specific Subscription Credential)";

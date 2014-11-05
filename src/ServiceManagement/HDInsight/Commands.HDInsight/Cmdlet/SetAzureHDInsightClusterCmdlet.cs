@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Management.Automation;
-using System.Management.Automation.Runspaces;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -16,11 +15,11 @@ using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 {
-    [Cmdlet(VerbsData.Update, "AzureHDInsightCluster")]
+    [Cmdlet(VerbsData.Set, "AzureHDInsightCluster")]
     [OutputType(typeof(AzureHDInsightCluster))]
-    public class UpdateAzureHDInsightClusterCmdlet : AzureHDInsightCmdlet
+    public class SetAzureHDInsightClusterCmdlet : AzureHDInsightCmdlet
     {
-        private readonly IUpdateAzureHDInsightClusterCommand command;
+        private readonly ISetAzureHDInsightClusterCommand command;
 
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies a Change Cluster Size operation..",
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
@@ -68,9 +67,9 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
         }
 
         /// <inheritdoc />
-        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to update.", ValueFromPipeline = true,
+        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set.", ValueFromPipeline = true,
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterByNameWithSpecificSubscriptionCredentials)]
-        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to update.", ValueFromPipeline = true,
+        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set.", ValueFromPipeline = true,
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
         [Alias(AzureHdInsightPowerShellConstants.AliasClusterName, AzureHdInsightPowerShellConstants.AliasDnsName)]
         public string Name
@@ -87,9 +86,9 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
             set { command.Force = value; }
         }
 
-        public UpdateAzureHDInsightClusterCmdlet()
+        public SetAzureHDInsightClusterCmdlet()
         {
-            command = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateUpdate();
+            command = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateSet();
         }
 
         protected override void EndProcessing()
@@ -99,7 +98,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
             {
                 if (ClusterSizeInNodes < 1)
                 {
-                    throw new ArgumentOutOfRangeException("ClusterSizeInNodes", "The requested cluster size in nodes must be at least 1.");
+                    throw new ArgumentOutOfRangeException("ClusterSizeInNodes", "The requested ClusterSizeInNodes must be at least 1.");
                 }
                 try
                 {
@@ -133,9 +132,9 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
                     command.Location = cluster.Location;
                     if (ClusterSizeInNodes < cluster.ClusterSizeInNodes)
                     {
-                        var task = ConfirmUpdateAction(
+                        var task = ConfirmSetAction(
                             "You are requesting a cluster size that is less than the current cluster size. We recommend not running jobs till the operation is complete as all running jobs will fail at end of resize operation and may impact the health of your cluster. Do you want to continue?",
-                            "Continuing with update cluster operation.",
+                            "Continuing with set cluster operation.",
                             ClusterSizeInNodes.ToString(CultureInfo.InvariantCulture),
                             action);
                         if (task == null)
@@ -191,7 +190,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
             WriteDebugLog();
         }
 
-        protected Task ConfirmUpdateAction(string actionMessage, string processMessage, string target,
+        protected Task ConfirmSetAction(string actionMessage, string processMessage, string target,
             Func<Task> action)
         {
             if (Force.IsPresent || ShouldContinue(actionMessage, ""))

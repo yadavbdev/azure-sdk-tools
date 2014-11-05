@@ -105,6 +105,11 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             return Help.SafeCreate<NewAzureHDInsightStreamingJobDefinitionCommand>();
         }
 
+        public ISetAzureHDInsightClusterCommand CreateSet()
+        {
+            return Help.SafeCreate<SetAzureHDInsightClusterCommand>();
+        }
+        
         public ISetAzureHDInsightDefaultStorageCommand CreateSetDefaultStorage()
         {
             return Help.SafeCreate<SetAzureHDInsightDefaultStorageCommand>();
@@ -123,11 +128,6 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
         public IUseAzureHDInsightClusterCommand CreateUseCluster()
         {
             return Help.SafeCreate<UseAzureHDInsightClusterCommand>();
-        }
-
-        public IUpdateAzureHDInsightClusterCommand CreateUpdate()
-        {
-            return Help.SafeCreate<UpdateAzureHDInsightClusterCommand>();
         }
 
         public IWaitAzureHDInsightJobCommand CreateWaitJobs()
