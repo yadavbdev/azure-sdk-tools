@@ -25,19 +25,19 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         protected const string VirtualMachineSqlServerExtensionNoun = "AzureVMSqlServerExtension";
 
         /// <summary>
-        /// Extension's publisher name - $TODO- update name after marking sqlvm extension as public
+        /// Extension's publisher name 
         /// </summary>
-        protected const string ExtensionDefaultPublisher = "Microsoft.SqlServer.Managability.IaaS.Test";
+        protected const string ExtensionDefaultPublisher = "Microsoft.SqlServer.Management";
 
         /// <summary>
-        /// Extension's name - $TODO- update name after publishing sqlvm extension as public
+        /// Extension's name - 
         /// </summary>
-        protected const string ExtensionDefaultName = "SqlIaaSAgentExtension";
+        protected const string ExtensionDefaultName = "SqlIaaSAgent";
 
         /// <summary>
-        /// Extension's default version - $TODO- update name after marking sqlvm extension as public
+        /// Extension's default version 
         /// </summary>
-        protected const string ExtensionDefaultVersion = "1.25";
+        protected const string ExtensionDefaultVersion = "1.0";
 
         /// <summary>
         /// value of Auto-patching settings object that can be set by derived classes
