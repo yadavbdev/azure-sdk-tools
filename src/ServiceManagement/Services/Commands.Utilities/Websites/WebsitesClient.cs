@@ -45,7 +45,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
 {
     using Utilities = Services.WebEntities;
 
-
     public class WebsitesClient : IWebsitesClient
     {
         private const int UploadJobWaitTime = 2000;
@@ -946,7 +945,6 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
                 .Users.Select(u => u.Name).Where(n => !string.IsNullOrEmpty(n)).ToList();
         }
 
-
         /// <summary>
         /// Get a list of historic metrics for the site.
         /// </summary>
@@ -957,7 +955,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="endTime">End date of the requested period</param>
         /// <param name="timeGrain">Time grains for the metrics.</param>
         /// <param name="instanceDetails">Include details for the server instances in which the site is running.</param>
-        /// <param name="slotView">Represent the metrics for the hostnames that receive the traffic at the current slot. 
+        /// <param name="slotView">Represent the metrics for the hostnames that receive the traffic at the current slot.
         /// If swap occured in the middle of the period mereics will be merged</param>
         /// <returns>The list of site metrics for the specified period.</returns>
         public IList<Utilities.MetricResponse> GetHistoricalUsageMetrics(string siteName, string slot, IList<string> metricNames,
@@ -1176,15 +1174,17 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slot">The name of the slot.</param>
         /// <param name="package">The WebDeploy package.</param>
         /// <param name="connectionStrings">The connection strings to overwrite the ones in the Web.config file.</param>
-        public void PublishWebProject(string websiteName, string slot, string package, Hashtable connectionStrings)
+        /// <param name="skipAppData">Skip app data</param>
+        /// <param name="doNotDelete">Do not delete files at destination</param>
+        public void PublishWebProject(string websiteName, string slot, string package, Hashtable connectionStrings, bool skipAppData, bool doNotDelete)
         {
             if (File.GetAttributes(package).HasFlag(FileAttributes.Directory))
             {
-                PublishWebProjectFromPackagePath(websiteName, slot, package, connectionStrings);
+                PublishWebProjectFromPackagePath(websiteName, slot, package, connectionStrings, skipAppData, doNotDelete);
             }
             else
             {
-                PublishWebProjectFromPackageFile(websiteName, slot, package, connectionStrings);
+                PublishWebProjectFromPackageFile(websiteName, slot, package, connectionStrings, skipAppData, doNotDelete);
             }
         }
 
@@ -1195,10 +1195,14 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slot">The name of the slot.</param>
         /// <param name="package">The WebDeploy package zip file.</param>
         /// <param name="connectionStrings">The connection strings to overwrite the ones in the Web.config file.</param>
-        private void PublishWebProjectFromPackageFile(string websiteName, string slot, string package, Hashtable connectionStrings)
+        /// <param name="skipAppData">Skip app data</param>
+        /// <param name="doNotDelete">Do not delete files at destination</param>
+        private void PublishWebProjectFromPackageFile(string websiteName, string slot, string package, Hashtable connectionStrings, bool skipAppData, bool doNotDelete)
         {
             DeploymentBaseOptions remoteBaseOptions = CreateRemoteDeploymentBaseOptions(websiteName, slot);
             DeploymentBaseOptions localBaseOptions = new DeploymentBaseOptions();
+
+            SetWebDeployToSkipAppData(skipAppData, localBaseOptions, remoteBaseOptions);
 
             DeploymentProviderOptions remoteProviderOptions = new DeploymentProviderOptions(DeploymentWellKnownProvider.Auto);
 
@@ -1226,7 +1230,10 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
                 // Replace the connection strings in Web.config with the ones user specifies from the cmdlet.
                 ReplaceConnectionStrings(deployment, connectionStrings);
 
-                DeploymentSyncOptions syncOptions = new DeploymentSyncOptions();
+                DeploymentSyncOptions syncOptions = new DeploymentSyncOptions
+                {
+                    DoNotDelete = doNotDelete
+                };
 
                 deployment.SyncTo(remoteProviderOptions, remoteBaseOptions, syncOptions);
             }
@@ -1239,16 +1246,33 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
         /// <param name="slot">The name of the slot.</param>
         /// <param name="package">The WebDeploy package zip file.</param>
         /// <param name="connectionStrings">The connection strings to overwrite the ones in the Web.config file.</param>
-        private void PublishWebProjectFromPackagePath(string websiteName, string slot, string package, Hashtable connectionStrings)
+        /// <param name="skipAppData">Skip app data</param>
+        /// <param name="doNotDelete">Do not delete files at destination</param>
+        private void PublishWebProjectFromPackagePath(string websiteName, string slot, string package, Hashtable connectionStrings, bool skipAppData, bool doNotDelete)
         {
             DeploymentBaseOptions remoteBaseOptions = CreateRemoteDeploymentBaseOptions(websiteName, slot);
             DeploymentBaseOptions localBaseOptions = new DeploymentBaseOptions();
 
+            SetWebDeployToSkipAppData(skipAppData, localBaseOptions, remoteBaseOptions);
+
             using (var deployment = DeploymentManager.CreateObject(DeploymentWellKnownProvider.ContentPath, package, localBaseOptions))
             {
                 ReplaceConnectionStrings(deployment, connectionStrings);
-                DeploymentSyncOptions syncOptions = new DeploymentSyncOptions();
+                DeploymentSyncOptions syncOptions = new DeploymentSyncOptions
+                {
+                    DoNotDelete = doNotDelete
+                };
                 deployment.SyncTo(DeploymentWellKnownProvider.ContentPath, SetWebsiteNameForWebDeploy(websiteName, slot), remoteBaseOptions, syncOptions);
+            }
+        }
+
+        private static void SetWebDeployToSkipAppData(bool skipAppData, DeploymentBaseOptions localBaseOptions, DeploymentBaseOptions remoteBaseOptions)
+        {
+            if (skipAppData)
+            {
+                var skipAppDataDirective = new DeploymentSkipDirective("skipAppData", @"objectName=dirPath,absolutePath=.*app_data", true);
+                localBaseOptions.SkipDirectives.Add(skipAppDataDirective);
+                remoteBaseOptions.SkipDirectives.Add(skipAppDataDirective);
             }
         }
 
@@ -1667,6 +1691,7 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
                     IncludeInstanceBreakdown = instanceDetails,
                 }).ToMetricResponses();
         }
-        #endregion
+
+        #endregion WebHosting Plans
     }
 }
