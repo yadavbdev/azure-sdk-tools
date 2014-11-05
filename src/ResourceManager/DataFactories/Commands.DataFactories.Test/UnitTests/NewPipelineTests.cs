@@ -20,49 +20,31 @@ using Xunit;
 
 namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 {
-    public class NewTableTests : DataFactoryUnitTestBase
+    public class NewPipelineTests : DataFactoryUnitTestBase
     {
-        private const string tableName = "foo1";
+        private const string pipelineName = "foo1";
 
-        private const string filePath = "table.json";
+        private const string filePath = "pipeline.json";
 
-        private const string rawJsonContent = @"
-{
-    name: ""foo2"",
+        private const string rawJsonContent = @"{
+    name: ""foo"",
     properties:
     {
-        structure:  
-        [ 
-            { name: ""slicetimestamp"", position: 0, type: ""String""},
-            { name: ""projectname"", position: 1, type: ""String""},
-            { name: ""pageviews"", position: 2, type: ""Decimal""}
-        ],
-        location: 
-        {
-            type: ""AzureBlobLocation"",
-            blobPath: ""$$Text.Format('wikidatagateway/wikisampledataout/{0:yyyyMMddHH}', SliceStart)"",
-            tableName: ""LinkedService-CuratedWikiData""
-        },
-        availability: 
-        {
-            frequency: ""Hour"",
-            interval: 1
-        }
+        description : ""Sample Data Pipeline""        
     }
-}
-";
+}";
 
-        private NewAzureDataFactoryTableCommand cmdlet;
+        private NewAzureDataFactoryPipelineCommand cmdlet;
         
-        public NewTableTests()
+        public NewPipelineTests()
         {
             base.SetupTest();
 
-            cmdlet = new NewAzureDataFactoryTableCommand()
+            cmdlet = new NewAzureDataFactoryPipelineCommand()
             {
                 CommandRuntime = commandRuntimeMock.Object,
                 DataFactoryClient = dataFactoriesClientMock.Object,
-                Name = tableName,
+                Name = pipelineName,
                 DataFactoryName = DataFactoryName,
                 ResourceGroupName = ResourceGroupName
             };
@@ -70,13 +52,13 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void CanCreateTable()
+        public void CanCreatePipeline()
         {
             // Arrange
-            Table expected = new Table()
+            Pipeline expected = new Pipeline()
             {
-                Name = tableName,
-                Properties = new TableProperties() { ProvisioningState = "Succeeded" }
+                Name = pipelineName,
+                Properties = new PipelineProperties() { ProvisioningState = "Succeeded" }
             };
 
             dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
@@ -85,10 +67,10 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
             dataFactoriesClientMock.Setup(
                 c =>
-                    c.CreatePSTable(
-                        It.Is<CreatePSTableParameters>(
+                    c.CreatePSPipeline(
+                        It.Is<CreatePSPipelineParameters>(
                             parameters =>
-                                parameters.Name == tableName &&
+                                parameters.Name == pipelineName &&
                                 parameters.ResourceGroupName == ResourceGroupName &&
                                 parameters.DataFactoryName == DataFactoryName)))
                 .CallBase()
@@ -96,7 +78,7 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
             dataFactoriesClientMock.Setup(
                 c =>
-                    c.CreateOrUpdateTable(ResourceGroupName, DataFactoryName, tableName, rawJsonContent))
+                    c.CreateOrUpdatePipeline(ResourceGroupName, DataFactoryName, pipelineName, rawJsonContent))
                 .Returns(expected)
                 .Verifiable();
             
@@ -111,23 +93,23 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
             commandRuntimeMock.Verify(
                 f =>
                     f.WriteObject(
-                        It.Is<PSTable>(
-                            tbl =>
-                                ResourceGroupName == tbl.ResourceGroupName &&
-                                DataFactoryName == tbl.DataFactoryName &&
-                                expected.Name == tbl.TableName)),
+                        It.Is<PSPipeline>(
+                            p =>
+                                ResourceGroupName == p.ResourceGroupName &&
+                                DataFactoryName == p.DataFactoryName &&
+                                expected.Name == p.PipelineName)),
                 Times.Once());
         }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void CanThrowIfTableProvisioningFailed()
+        public void CanThrowIfPipelineProvisioningFailed()
         {
             // Arrange
-            Table expected = new Table()
+            Pipeline expected = new Pipeline()
             {
-                Name = tableName,
-                Properties = new TableProperties() { ProvisioningState = "Failed" }
+                Name = pipelineName,
+                Properties = new PipelineProperties() { ProvisioningState = "Failed" }
             };
 
             dataFactoriesClientMock.Setup(c => c.ReadJsonFileContent(It.IsAny<string>()))
@@ -136,10 +118,10 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
             dataFactoriesClientMock.Setup(
                 c =>
-                    c.CreatePSTable(
-                        It.Is<CreatePSTableParameters>(
+                    c.CreatePSPipeline(
+                        It.Is<CreatePSPipelineParameters>(
                             parameters =>
-                                parameters.Name == tableName &&
+                                parameters.Name == pipelineName &&
                                 parameters.ResourceGroupName == ResourceGroupName &&
                                 parameters.DataFactoryName == DataFactoryName)))
                 .CallBase()
@@ -147,14 +129,14 @@ namespace Microsoft.Azure.Commands.DataFactories.Test.UnitTests
 
             dataFactoriesClientMock.Setup(
                 c =>
-                    c.CreateOrUpdateTable(ResourceGroupName, DataFactoryName, tableName, rawJsonContent))
+                    c.CreateOrUpdatePipeline(ResourceGroupName, DataFactoryName, pipelineName, rawJsonContent))
                 .Returns(expected)
                 .Verifiable();
 
             // Action
             cmdlet.File = filePath;
             cmdlet.Force = true;
-            
+
             // Assert
             Assert.Throws<ProvisioningFailedException>(() => cmdlet.ExecuteCmdlet());
         }

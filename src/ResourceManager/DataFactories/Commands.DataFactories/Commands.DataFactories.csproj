@@ -144,6 +144,7 @@
     <Compile Include="Models\HubFilterOptions.cs" />
     <Compile Include="Models\PatchPSDataFactoryParameters.cs" />
     <Compile Include="Models\PipelineFilterOptions.cs" />
+    <Compile Include="ProvisioningFailedException.cs" />
     <Compile Include="Models\PSDataSlice.cs" />
     <Compile Include="Models\PSDataSliceRun.cs" />
     <Compile Include="Models\PSHub.cs" />
