@@ -15,7 +15,7 @@ using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 {
-    [Cmdlet(VerbsData.Set, "AzureHDInsightCluster")]
+    [Cmdlet(VerbsCommon.Set, "AzureHDInsightCluster")]
     [OutputType(typeof(AzureHDInsightCluster))]
     public class SetAzureHDInsightClusterCmdlet : AzureHDInsightCmdlet
     {
