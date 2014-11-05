@@ -105,9 +105,9 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             return Help.SafeCreate<NewAzureHDInsightStreamingJobDefinitionCommand>();
         }
 
-        public ISetAzureHDInsightClusterCommand CreateSet()
+        public ISetAzureHDInsightClusterSizeCommand CreateSetClusterSize()
         {
-            return Help.SafeCreate<SetAzureHDInsightClusterCommand>();
+            return Help.SafeCreate<SetAzureHdInsightClusterSizeCommand>();
         }
         
         public ISetAzureHDInsightDefaultStorageCommand CreateSetDefaultStorage()

@@ -52,7 +52,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
 
         INewAzureHDInsightStreamingJobDefinitionCommand CreateNewStreamingMapReduceDefinition();
 
-        ISetAzureHDInsightClusterCommand CreateSet();
+        ISetAzureHDInsightClusterSizeCommand CreateSetClusterSize();
 
         ISetAzureHDInsightDefaultStorageCommand CreateSetDefaultStorage();
 

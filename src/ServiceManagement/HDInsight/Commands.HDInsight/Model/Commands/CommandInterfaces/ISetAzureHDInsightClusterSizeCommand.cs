@@ -4,7 +4,7 @@ using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCluste
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInterfaces
 {
-    internal interface ISetAzureHDInsightClusterCommand : IAzureHDInsightCommand<AzureHDInsightCluster>, IAzureHDInsightClusterCommandBase
+    internal interface ISetAzureHDInsightClusterSizeCommand : IAzureHDInsightCommand<AzureHDInsightCluster>, IAzureHDInsightClusterCommandBase
     {
         SwitchParameter Force { get; set; }
 

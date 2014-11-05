@@ -15,11 +15,11 @@ using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 {
-    [Cmdlet(VerbsCommon.Set, "AzureHDInsightCluster")]
+    [Cmdlet(VerbsCommon.Set, "AzureHDInsightClusterSize")]
     [OutputType(typeof(AzureHDInsightCluster))]
-    public class SetAzureHDInsightClusterCmdlet : AzureHDInsightCmdlet
+    public class SetAzureHDInsightClusterSizeCmdlet : AzureHDInsightCmdlet
     {
-        private readonly ISetAzureHDInsightClusterCommand command;
+        private readonly ISetAzureHDInsightClusterSizeCommand command;
 
         [Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies a Change Cluster Size operation..",
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
@@ -86,9 +86,9 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
             set { command.Force = value; }
         }
 
-        public SetAzureHDInsightClusterCmdlet()
+        public SetAzureHDInsightClusterSizeCmdlet()
         {
-            command = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateSet();
+            command = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateSetClusterSize();
         }
 
         protected override void EndProcessing()
