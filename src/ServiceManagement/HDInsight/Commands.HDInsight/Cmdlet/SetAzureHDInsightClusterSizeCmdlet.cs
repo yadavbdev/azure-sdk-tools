@@ -115,24 +115,28 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
                 var token = command.CancellationToken;
 
                 //get cluster
-                var getCommand = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateGet();
-                getCommand.CurrentSubscription = currentSubscription;
-                getCommand.Name = Name;
-                var getTask = getCommand.EndProcessing();
-                while (!getTask.IsCompleted)
+                AzureHDInsightCluster cluster = Cluster;
+                if (cluster == null)
                 {
-                    WriteDebugLog();
-                    getTask.Wait(1000, token);
+                    var getCommand = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateGet();
+                    getCommand.CurrentSubscription = currentSubscription;
+                    getCommand.Name = Name;
+                    var getTask = getCommand.EndProcessing();
+                    while (!getTask.IsCompleted)
+                    {
+                        WriteDebugLog();
+                        getTask.Wait(1000, token);
+                    }
+                    if (getTask.IsFaulted)
+                    {
+                        throw new AggregateException(getTask.Exception);
+                    }
+                    if (getCommand.Output == null || getCommand.Output.Count == 0)
+                    {
+                        throw new InvalidOperationException(string.Format("Could not find cluster {0}", Name));
+                    }
+                    cluster = getCommand.Output.First();
                 }
-                if (getTask.IsFaulted)
-                {
-                    throw new AggregateException(getTask.Exception);
-                }
-                if (getCommand.Output == null || getCommand.Output.Count == 0)
-                {
-                    throw new InvalidOperationException(string.Format("Could not find cluster {0}", Name));
-                }
-                var cluster = getCommand.Output.First();
 
                 //prep cluster resize operation
                 command.Location = cluster.Location;
