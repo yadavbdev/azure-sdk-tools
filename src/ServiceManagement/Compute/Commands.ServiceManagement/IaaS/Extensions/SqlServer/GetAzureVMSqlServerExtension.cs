@@ -135,7 +135,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
             // List all hosted services
             WriteVerboseWithTimestamp("Listing hosted services...");
-            foreach (var service in this.ComputeClient.HostedServices.List())
+            NSM.HostedServiceListResponse response = this.ComputeClient.HostedServices.List();
+            WriteVerboseWithTimestamp("Listing hosted services completed.");
+
+            foreach (var service in response)
             {
                 NSM.DeploymentGetResponse deployment = null;
 
