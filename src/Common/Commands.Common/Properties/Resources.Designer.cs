@@ -1858,7 +1858,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://az413943.vo.msecnd.net/node/runtimemanifest_0.7.5.xml.
+        ///   Looks up a localized string similar to http://az413943.vo.msecnd.net/node/runtimemanifest_0.7.5.2.xml.
         /// </summary>
         public static string ManifestUri {
             get {
