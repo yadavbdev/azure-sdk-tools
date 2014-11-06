@@ -11,5 +11,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandInt
         int ClusterSizeInNodes { get; set; }
 
         string Location { get; set; }
+
+        AzureHDInsightCluster Cluster { get; set; }
     }
 }

@@ -22,6 +22,8 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
         
         public string Location { get; set; }
 
+        public AzureHDInsightCluster Cluster { get; set; }
+
         public int ClusterSizeInNodes { get; set; }
 
         public override async Task EndProcessing()

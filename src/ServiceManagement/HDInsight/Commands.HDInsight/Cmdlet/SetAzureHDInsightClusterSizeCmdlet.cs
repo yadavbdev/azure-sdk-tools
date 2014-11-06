@@ -22,7 +22,9 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
         private readonly ISetAzureHDInsightClusterSizeCommand command;
         
         [Parameter(Position = 1, Mandatory = true, HelpMessage = "The new cluster size in nodes requested.",
-            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetResizingWithName)]
+        [Parameter(Mandatory = true, HelpMessage = "The new cluster size in nodes requested.", ValueFromPipeline = true,
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetResizingWithPiping)]
         public int ClusterSizeInNodes
         {
             get { return command.ClusterSizeInNodes; }
@@ -59,10 +61,10 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
         }
 
         /// <inheritdoc />
-        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set.", ValueFromPipeline = false,
+        [Parameter(Mandatory = false, HelpMessage = "The name of the HDInsight cluster to set the size of.", ValueFromPipeline = false,
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterByNameWithSpecificSubscriptionCredentials)]
-        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set.", ValueFromPipeline = true,
-            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
+        [Parameter(Position = 0, Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set the size of", ValueFromPipeline = false,
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetResizingWithName)]
         [Alias(AzureHdInsightPowerShellConstants.AliasClusterName, AzureHdInsightPowerShellConstants.AliasDnsName)]
         public string Name
         {
@@ -71,11 +73,21 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
         }
 
         [Parameter(Mandatory = false, HelpMessage = "Do not ask for confirmation.",
-            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetResizingWithName)]
+        [Parameter(Mandatory = false, HelpMessage = "Do not ask for confirmation.",
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetResizingWithPiping)]
         public SwitchParameter Force
         {
             get { return command.Force; }
             set { command.Force = value; }
+        }
+
+        [Parameter(Mandatory=true, HelpMessage = "The HDInsight cluster to set the size of.", ValueFromPipeline = true,
+            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetResizingWithPiping)]
+        public AzureHDInsightCluster Cluster
+        {
+            get { return command.Cluster; }
+            set { command.Cluster = value; }
         }
 
         public SetAzureHDInsightClusterSizeCmdlet()
@@ -85,6 +97,10 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 
         protected override void EndProcessing()
         {
+            if (Cluster != null)
+            {
+                Name = Cluster.Name;
+            }
             Name.ArgumentNotNull("Name");
             if (ClusterSizeInNodes < 1)
             {
