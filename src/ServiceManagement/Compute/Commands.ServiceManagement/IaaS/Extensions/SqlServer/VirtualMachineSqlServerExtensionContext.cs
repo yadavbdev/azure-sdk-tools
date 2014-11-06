@@ -14,8 +14,11 @@
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 
+
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
+    using NSM = Management.Compute.Models;
+
     /// <summary>
     /// SQL Extension's context object used by Get-AzureVMSqlServerExtension
     /// </summary>
@@ -39,6 +42,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         /// <summary>
         /// resource extension substatus list
         /// </summary>
-        public ResourceExtensionSubStatusList SubStatusList { get; set; }
+        public IList<NSM.ResourceExtensionSubStatus> SubStatusList { get; set; }
     }
 }

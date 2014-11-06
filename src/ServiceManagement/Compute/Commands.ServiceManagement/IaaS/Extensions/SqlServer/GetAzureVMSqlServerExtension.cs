@@ -18,9 +18,12 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Helpers;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
+    using NSM = Management.Compute.Models;
+
     /// <summary>
     /// Get-AzureVMSqlServerExtension implementation
     /// </summary>
@@ -77,40 +80,40 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             // gather extension status messages
             List<string> statusMessageList = new List<string>();
 
-            PersistentVMRoleContext pvr = (PersistentVMRoleContext)VM;
-            if (null != pvr)
+            List<NSM.ResourceExtensionStatus> extensionStatusList = this.GetResourceExtensionStatusList(context);
+
+            // enumerate over extension status list and gather status for autopatching and autobackup
+            // Note: valid reference to an extension status list is returned by GetResourceExtensionStatusList()
+            foreach (NSM.ResourceExtensionStatus res in extensionStatusList)
             {
-                foreach (ResourceExtensionStatus res in pvr.ResourceExtensionStatusList)
+                // skip all non-sql extensions
+                if (res.HandlerName.Equals(r.Publisher, System.StringComparison.InvariantCulture))
                 {
-                    // skip all non-sql extensions
-                    if (res.HandlerName.Equals(r.Publisher, System.StringComparison.InvariantCulture))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    if (null != res.ExtensionSettingStatus)
-                    {
-                        context.SubStatusList = res.ExtensionSettingStatus.SubStatusList;
+                if (null != res.ExtensionSettingStatus)
+                {
+                    context.SubStatusList = res.ExtensionSettingStatus.SubStatusList;
 
-                        foreach (ResourceExtensionSubStatus status in res.ExtensionSettingStatus.SubStatusList)
+                    foreach (NSM.ResourceExtensionSubStatus status in res.ExtensionSettingStatus.SubStatusList)
+                    {
+                        if (null != status.FormattedMessage)
                         {
-                            if (null != status.FormattedMessage)
+                            string formattedMessage = status.FormattedMessage.Message;
+
+                            // get current auto patching and auto backup config from extension status message
+                            if (status.Name.Equals(AutoPatchingStatusMessageName, System.StringComparison.InvariantCulture))
                             {
-                                string formattedMessage = status.FormattedMessage.Message;
-
-                                // get current auto patching and auto backup config from extension status message
-                                if (status.Name.Equals(AutoPatchingStatusMessageName, System.StringComparison.InvariantCulture))
-                                {
-                                    context.AutoPatchingSettings = DeSerializeAutoPatchingSettings(status.Name, formattedMessage);
-                                }
-
-                                if (status.Name.Equals(AutoBackupStatusMessageName, System.StringComparison.InvariantCulture))
-                                {
-                                    context.AutoBackupSettings = DeSerializeAutoBackupSettings(status.Name, formattedMessage);
-                                }
-
-                                statusMessageList.Add(formattedMessage);
+                                context.AutoPatchingSettings = DeSerializeAutoPatchingSettings(status.Name, formattedMessage);
                             }
+
+                            if (status.Name.Equals(AutoBackupStatusMessageName, System.StringComparison.InvariantCulture))
+                            {
+                                context.AutoBackupSettings = DeSerializeAutoBackupSettings(status.Name, formattedMessage);
+                            }
+
+                            statusMessageList.Add(formattedMessage);
                         }
                     }
                 }
@@ -118,6 +121,59 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
             context.StatusMessages = statusMessageList;
             return context;
+        }
+
+
+        /// <summary>
+        /// walks through hosted services and returns back the ResourceExtensionStatus reported by Azure guest agent
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private List<NSM.ResourceExtensionStatus> GetResourceExtensionStatusList(VirtualMachineSqlServerExtensionContext context)
+        {
+            List<NSM.ResourceExtensionStatus> extensionStatusList = new List<NSM.ResourceExtensionStatus>();
+
+            // List all hosted services
+            WriteVerboseWithTimestamp("Listing hosted services...");
+            foreach (var service in this.ComputeClient.HostedServices.List())
+            {
+                NSM.DeploymentGetResponse deployment = null;
+
+                try
+                {
+                    deployment = this.ComputeClient.Deployments.GetBySlot(
+                        service.ServiceName,
+                        NSM.DeploymentSlot.Production);
+                }
+                catch (CloudException e)
+                {
+                    if (e.Response.StatusCode != HttpStatusCode.NotFound)
+                    {
+                        throw;
+                    }
+                }
+
+                if (deployment != null)
+                {
+                    // Enumerate Role instances , check if role name exists
+                    foreach (NSM.RoleInstance ri in deployment.RoleInstances)
+                    {
+                        if (ri.RoleName.Equals(context.RoleName, System.StringComparison.InvariantCulture))
+                        {
+                            WriteVerboseWithTimestamp("Found Role Instance:" + context.RoleName);
+                            extensionStatusList = new List<NSM.ResourceExtensionStatus>(ri.ResourceExtensionStatusList);
+                            return extensionStatusList;
+                        }
+                    }
+                }
+            }
+
+            if (extensionStatusList.Count == 0)
+            {
+                WriteVerboseWithTimestamp("Could not locate role instance for role name:" + context.RoleName);
+            }
+
+            return extensionStatusList;
         }
 
         private AutoPatchingSettings DeSerializeAutoPatchingSettings(string category, string input)
