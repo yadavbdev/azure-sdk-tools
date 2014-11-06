@@ -147,8 +147,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                         vmAccessExtension.Version,
                         referenceName,
                         publicConfiguration,
-                        privateConfiguration);
+                        privateConfiguration,
+                        "pubkey1",
+                        "prikey1");
                     vmPowershellCmdlets.UpdateAzureVM(vmName, serviceName, vm);
+
+                    var updatedVM = vmPowershellCmdlets.GetAzureVM(vmName, serviceName);
+                    var updatedExt = updatedVM.VM.ResourceExtensionReferences.First(
+                        e => e.Name == vmAccessExtension.ExtensionName &&
+                             e.Publisher == vmAccessExtension.Publisher &&
+                             e.Version == vmAccessExtension.Version);
+                    Assert.IsTrue(updatedExt.ResourceExtensionParameterValues.Any(r => r.Type == "Public" && r.Key == "pubkey1"));
 
                     ValidateVMAccessExtension(vmName, serviceName, true);
 

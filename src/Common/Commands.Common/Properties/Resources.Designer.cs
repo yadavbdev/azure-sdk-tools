@@ -1669,7 +1669,7 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The provided subscription if {0} is not valid.
+        ///   Looks up a localized string similar to The provided subscription id {0} is not valid.
         /// </summary>
         public static string InvalidSubscriptionId {
             get {
@@ -2969,6 +2969,24 @@ namespace Microsoft.WindowsAzure.Commands.Common.Properties {
         public static string RemovePackage {
             get {
                 return ResourceManager.GetString("RemovePackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing the Azure profile will remove all associated environments, subscriptions, and accounts. Are you sure you want to remove the Azure profile?.
+        /// </summary>
+        public static string RemoveProfileConfirmation {
+            get {
+                return ResourceManager.GetString("RemoveProfileConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing the Azure profile.
+        /// </summary>
+        public static string RemoveProfileMessage {
+            get {
+                return ResourceManager.GetString("RemoveProfileMessage", resourceCulture);
             }
         }
         

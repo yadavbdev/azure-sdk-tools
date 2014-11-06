@@ -85,6 +85,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public const string SetAzureDeploymentCmdletName = "Set-AzureDeployment";
         public const string RemoveAzureDeploymentCmdletName = "Remove-AzureDeployment";
         public const string MoveAzureDeploymentCmdletName = "Move-AzureDeployment";
+        public const string GetAzureDeploymentEventCmdletName = "Get-AzureDeploymentEvent";
 
         // AzureDisk        
         public const string AddAzureDiskCmdletName = "Add-AzureDisk";
@@ -120,6 +121,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         // AzurePublishSettingsFile
         public const string ImportAzurePublishSettingsFileCmdletName = "Import-AzurePublishSettingsFile";
         public const string GetAzurePublishSettingsFileCmdletName = "Get-AzurePublishSettingsFile";
+        public const string AddAzureEnvironmentCmdletName = "Add-AzureEnvironment";
 
         // AzureQuickVM
         public const string NewAzureQuickVMCmdletName = "New-AzureQuickVM";
@@ -323,6 +325,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         public const string SetAzurePublicIPCmdletName = "Set-AzurePublicIP";
         public const string GetAzurePublicIPCmdletName = "Get-AzurePublicIP";
         
+        // NetworkInterface config
+        public const string AddAzureNetworkInterfaceConfig = "Add-AzureNetworkInterfaceConfig";
+        public const string SetAzureNetworkInterfaceConfig = "Set-AzureNetworkInterfaceConfig";
+        public const string RemoveAzureNetworkInterfaceConfig = "Remove-AzureNetworkInterfaceConfig";
+        public const string GetAzureNetworkInterfaceConfig = "Get-AzureNetworkInterfaceConfig";
+
         // Custom script extension
         public const string SetAzureVMDscExtensionCmdletName = "Set-AzureVMDscExtension";
         public const string GetAzureVMDscExtensionCmdletName = "Get-AzureVMDscExtension";

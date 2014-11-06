@@ -650,7 +650,7 @@ Please follow these steps in the portal:
     <value>The subscription named '{0}' cannot be found. Use Set-AzureSubscription to initialize the subscription data.</value>
   </data>
   <data name="InvalidSubscriptionId" xml:space="preserve">
-    <value>The provided subscription if {0} is not valid</value>
+    <value>The provided subscription id {0} is not valid</value>
   </data>
   <data name="InvalidSubscriptionName" xml:space="preserve">
     <value>Must specify a non-null subscription name.</value>
@@ -1566,5 +1566,11 @@ use and privacy statement at &lt;url&gt; and (c) agree to sharing my contact inf
   </data>
   <data name="ServiceKeyNotFound" xml:space="preserve">
     <value>Unable to retrieve service key for ServicePrincipal account {0}. Please run the Add-AzureAccount cmdlet to supply the credentials for this service principal.</value>
+  </data>
+  <data name="RemoveProfileConfirmation" xml:space="preserve">
+    <value>Removing the Azure profile will remove all associated environments, subscriptions, and accounts. Are you sure you want to remove the Azure profile?</value>
+  </data>
+  <data name="RemoveProfileMessage" xml:space="preserve">
+    <value>Removing the Azure profile</value>
   </data>
 </root>
