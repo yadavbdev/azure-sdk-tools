@@ -278,7 +278,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.NewAzureService(serviceName, serviceName, locationName);
                 Console.WriteLine("service, {0}, is created.", serviceName);
 
-                vmPowershellCmdlets.NewAzureDeployment(serviceName, packagePath1.FullName, configPath1.FullName, DeploymentSlotType.Staging, deploymentLabel, deploymentName, false, false);
+                Utilities.RetryActionUntilSuccess(() =>
+                {
+                    vmPowershellCmdlets.NewAzureDeployment(serviceName, packagePath1.FullName, configPath1.FullName, DeploymentSlotType.Staging, deploymentLabel, deploymentName, false, false);
+                }, "Windows Azure is currently performing an operation on this hosted service that requires exclusive access.", 10, 30);
+
                 result = vmPowershellCmdlets.GetAzureDeployment(serviceName, DeploymentSlotType.Staging);
                 pass = Utilities.PrintAndCompareDeployment(result, serviceName, deploymentName, deploymentLabel, DeploymentSlotType.Staging, null, 1);
                 Console.WriteLine("successfully deployed the package");
