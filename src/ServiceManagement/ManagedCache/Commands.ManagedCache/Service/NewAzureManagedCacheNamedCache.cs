@@ -12,12 +12,12 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System.Management.Automation;
-using Microsoft.Azure.Commands.ManagedCache.Models;
-using Microsoft.Azure.Management.ManagedCache.Models;
-
 namespace Microsoft.Azure.Commands.ManagedCache
 {
+    using System.Management.Automation;
+    using Microsoft.Azure.Commands.ManagedCache.Models;
+    using Microsoft.Azure.Management.ManagedCache.Models;
+
     [Cmdlet(VerbsCommon.New, "AzureManagedCacheNamedCache"), OutputType(typeof(PSCacheServiceWithNamedCaches))]
     public class NewAzureManagedCacheNamedCache : ManagedCacheCmdletBase
     {
