@@ -30,7 +30,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         private const string referenceNamePrefix = "Reference";
         private string version;
         private string referenceName;
-        private const string extensionName = "SqlIaaSAgentExtension";
+        private const string extensionName = "SqlIaaSAgent";
         private const string DisabledState = "Disable";
         private const string EnableState = "Enable";
 
@@ -74,8 +74,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Console.WriteLine("Deployed a vm {0}with SQL Server extension.", vmName);
 
                 
-                var extesnion = GetSqlServer(vmName, serviceName);
-                VerifyExtension(extesnion);
+                var extension = GetSqlServer(vmName, serviceName);
+                VerifyExtension(extension);
 
                 //Disable the extension
                 Console.WriteLine("Disable SQL Server extension and update VM.");
@@ -83,8 +83,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.UpdateAzureVM(vmName, serviceName, vm);
                 Console.WriteLine("Sql Server extension disabled");
 
-                extesnion = GetSqlServer(vmName, serviceName);
-                VerifyExtension(extesnion,true);
+                extension = GetSqlServer(vmName, serviceName);
+                VerifyExtension(extension,true);
 
                 var vmRoleContext = vmPowershellCmdlets.GetAzureVM(vmName, serviceName);
                 vmPowershellCmdlets.RemoveAzureVMSqlServerExtension(vmRoleContext.VM);
@@ -119,8 +119,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.UpdateAzureVM(vmName, serviceName, vm);
                 Console.WriteLine("SqlServer extension set and updated vm {0}.", vmName);
 
-                var extesnion = GetSqlServer(vmName, serviceName);
-                VerifyExtension(extesnion);
+                var extension = GetSqlServer(vmName, serviceName);
+                VerifyExtension(extension);
                 
                 pass = true;
             }
@@ -186,8 +186,8 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 vmPowershellCmdlets.UpdateAzureVM(vmName2, serviceName, vm2);
                 Console.WriteLine("SqlServer extension set and updated vm {0}.", vmName2);
 
-                var extesnion = GetSqlServer(vmName2, serviceName);
-                VerifyExtension(extesnion);
+                var extension = GetSqlServer(vmName2, serviceName);
+                VerifyExtension(extension);
 
                 vmRoleContext = vmPowershellCmdlets.GetAzureVM(vmName2,serviceName);
                 vmPowershellCmdlets.RemoveAzureVMSqlServerExtension(vmRoleContext.VM);
@@ -240,6 +240,10 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         private PersistentVM CreateIaaSVMObject(string vmName)
         {
+            defaultAzureSubscription = vmPowershellCmdlets.SetAzureSubscription(defaultAzureSubscription.SubscriptionName, defaultAzureSubscription.SubscriptionId, CredentialHelper.DefaultStorageName);
+            vmPowershellCmdlets.SelectAzureSubscription(defaultAzureSubscription.SubscriptionName, true);
+
+
             //Create an IaaS VM with a static CA.
             var azureVMConfigInfo = new AzureVMConfigInfo(vmName, InstanceSize.Small.ToString(), imageName);
             var azureProvisioningConfig = new AzureProvisioningConfigInfo(OS.Windows, username, password);
