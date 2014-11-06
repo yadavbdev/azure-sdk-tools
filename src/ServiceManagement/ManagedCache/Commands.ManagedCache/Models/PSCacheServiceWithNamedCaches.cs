@@ -15,10 +15,11 @@
 namespace Microsoft.Azure.Commands.ManagedCache.Models
 {
     using Microsoft.Azure.Management.ManagedCache.Models;
+    using System.Collections.Generic;
 
-    public class PSCacheService
+    public class PSCacheServiceWithNamedCaches
     {
-        public PSCacheService(CloudServiceResource resource)
+        public PSCacheServiceWithNamedCaches(CloudServiceResource resource)
         {
             Name = resource.Name;
             State = resource.SubState;
@@ -27,6 +28,11 @@ namespace Microsoft.Azure.Commands.ManagedCache.Models
             int skuCount = resource.IntrinsicSettingsSection.CacheServiceInputSection.SkuCount;
             CacheSkuCountConvert convert = new CacheSkuCountConvert(Sku);
             Memory = convert.ToMemorySize(skuCount);
+            NamedCaches = new List<PSNamedCachesAttributes>();
+            foreach (IntrinsicSettings.CacheServiceInput.NamedCache namedCache in resource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches)
+            {
+                NamedCaches.Add(new PSNamedCachesAttributes(namedCache));
+            }
         }
 
         public string Name { get; private set; }
@@ -39,5 +45,11 @@ namespace Microsoft.Azure.Commands.ManagedCache.Models
 
         public string Memory { get; private set; }
 
+        public List<PSNamedCachesAttributes> NamedCaches { get; private set; }
+
+        public string NamedCachesTable
+        {
+            get { return PSCacheExtensions.ConstructNamedCachesTable(NamedCaches); }
+        }
     }
 }

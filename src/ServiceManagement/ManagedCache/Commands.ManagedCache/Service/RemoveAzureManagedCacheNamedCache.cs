@@ -18,36 +18,32 @@ namespace Microsoft.Azure.Commands.ManagedCache
     using Microsoft.Azure.Commands.ManagedCache.Models;
     using Microsoft.Azure.Management.ManagedCache.Models;
 
-    /// <summary>
-    /// Retrieves a list of Microsoft Azure SQL Database servers in the selected subscription.
-    /// </summary>
-    [Cmdlet(VerbsCommon.Set, "AzureManagedCache"), OutputType(typeof(PSCacheService))]
-    public class SetAzureManagedCache : ManagedCacheCmdletBase, IDynamicParameters
+    [Cmdlet(VerbsCommon.Remove, "AzureManagedCacheNamedCache"), OutputType(typeof(bool))]
+    public class RemoveAzureManagedCacheNamedCache : ManagedCacheCmdletBase
     {
-        private MemoryDynamicParameterSet memoryDynamicParameterSet = new MemoryDynamicParameterSet();
-
-        [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
-        [Parameter]
-        public CacheServiceSkuType Sku { get; set; }
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public string NamedCache { get; set; }
 
-        [Parameter]
+        [Parameter(Mandatory = false)]
         public SwitchParameter Force { get; set; }
 
+        [Parameter]
+        public SwitchParameter PassThru { get; set; }
+        
         public override void ExecuteCmdlet()
         {
-            CacheClient.ProgressRecorder = (message) => { WriteVerbose(message); };
-            string memory = memoryDynamicParameterSet.GetMemoryValue(Sku);
-            PSCacheService cacheService = new PSCacheService(
-                CacheClient.UpdateCacheService(Name, Sku, memory, ConfirmAction, Force.IsPresent));
-            WriteObject(cacheService);
-        }
-
-        public object GetDynamicParameters()
-        {
-            return memoryDynamicParameterSet.GetDynamicParameters(Sku);
+            string cacheServiceName = CacheClient.NormalizeCacheServiceName(Name);
+            CacheClient.ProgressRecorder = (p) => { WriteVerbose(p); };
+            CacheClient.RemoveNamedCache(cacheServiceName, NamedCache, ConfirmAction, Force.IsPresent);
+            if (PassThru)
+            {
+                WriteObject(true);
+            }
         }
     }
 }
