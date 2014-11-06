@@ -1333,12 +1333,17 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         public SM.OSImageContext UpdateAzureVMImage(string imageName, string label, string recommendedSize = null)
         {
-            return RunPSCmdletAndReturnFirst<SM.OSImageContext>(new UpdateAzureVMImageCmdletInfo(imageName, label, recommendedSize,null));
+            return RunPSCmdletAndReturnFirst<SM.OSImageContext>(new UpdateAzureVMImageCmdletInfo(imageName, label, recommendedSize, null, null));
+        }
+        
+        public SM.OSImageContext UpdateAzureVMImage(string imageName, string label, bool dontShowInGui)
+        {
+            return RunPSCmdletAndReturnFirst<SM.OSImageContext>(new UpdateAzureVMImageCmdletInfo(imageName, label, null, null, dontShowInGui));
         }
 
         public void UpdateAzureVMImage(string imageName, string label, SM.VirtualMachineImageDiskConfigSet diskConfig, string recommendedSize = null)
         {
-            RunPSCmdletAndReturnFirst<ManagementOperationContext>(new UpdateAzureVMImageCmdletInfo(imageName, label, recommendedSize, diskConfig));
+            RunPSCmdletAndReturnFirst<ManagementOperationContext>(new UpdateAzureVMImageCmdletInfo(imageName, label, recommendedSize, diskConfig, null));
         }
 
         public void UpdateAzureVMImage(string imageName, string label, string imageFamily, bool showInGui = false, string recommendedSize = null,

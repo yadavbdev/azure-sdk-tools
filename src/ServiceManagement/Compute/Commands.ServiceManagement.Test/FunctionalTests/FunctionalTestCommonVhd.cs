@@ -162,6 +162,11 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
                 Assert.IsTrue(!string.IsNullOrEmpty(resultReturned.IOType));
                 Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
 
+                result = vmPowershellCmdlets.UpdateAzureVMImage(newImageName, newLabel, true);
+                resultReturned = vmPowershellCmdlets.GetAzureVMImage(newImageName)[0];
+                Assert.IsTrue(resultReturned.ShowInGui.HasValue && !resultReturned.ShowInGui.Value);
+                Assert.IsTrue(CompareContext<OSImageContext>(result, resultReturned));
+
                 vmPowershellCmdlets.RemoveAzureVMImage(newImageName, false);
                 Assert.IsTrue(Utilities.CheckRemove(vmPowershellCmdlets.GetAzureVMImage, newImageName));
 
