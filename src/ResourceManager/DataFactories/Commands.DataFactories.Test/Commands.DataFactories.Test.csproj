@@ -159,6 +159,7 @@
     <Compile Include="UnitTests\NewDataFactoryGatewayTests.cs" />
     <Compile Include="UnitTests\NewLinkedServiceTests.cs" />
     <Compile Include="UnitTests\NewDataFactoryTests.cs" />
+    <Compile Include="UnitTests\NewPipelineTests.cs" />
     <Compile Include="UnitTests\RemoveAzureDataFactoryGatewayTests.cs" />
     <Compile Include="UnitTests\NewTableTests.cs" />
     <Compile Include="UnitTests\RemoveHubTests.cs" />
