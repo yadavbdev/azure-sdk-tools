@@ -20,15 +20,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
     public class SetAzureHDInsightClusterSizeCmdlet : AzureHDInsightCmdlet
     {
         private readonly ISetAzureHDInsightClusterSizeCommand command;
-
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "Specifies a Change Cluster Size operation..",
-            ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
-        public SwitchParameter ChangeClusterSize
-        {
-            get { return command.ChangeClusterSize; }
-            set { command.ChangeClusterSize = value; }
-        }
-
+        
         [Parameter(Position = 1, Mandatory = true, HelpMessage = "The new cluster size in nodes requested.",
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
         public int ClusterSizeInNodes
@@ -67,7 +59,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
         }
 
         /// <inheritdoc />
-        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set.", ValueFromPipeline = true,
+        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set.", ValueFromPipeline = false,
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterByNameWithSpecificSubscriptionCredentials)]
         [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set.", ValueFromPipeline = true,
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterResize)]
@@ -94,99 +86,97 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
         protected override void EndProcessing()
         {
             Name.ArgumentNotNull("Name");
-            if (ChangeClusterSize.IsPresent)
+            if (ClusterSizeInNodes < 1)
             {
-                if (ClusterSizeInNodes < 1)
-                {
-                    throw new ArgumentOutOfRangeException("ClusterSizeInNodes", "The requested ClusterSizeInNodes must be at least 1.");
-                }
-                try
-                {
-                    command.Logger = Logger;
-                    var currentSubscription = GetCurrentSubscription(Subscription, Certificate);
-                    command.CurrentSubscription = currentSubscription;
-                    Func<Task> action = () => command.EndProcessing();
-                    var token = command.CancellationToken;
+                throw new ArgumentOutOfRangeException("ClusterSizeInNodes", "The requested ClusterSizeInNodes must be at least 1.");
+            }
+            try
+            {
+                command.Logger = Logger;
+                var currentSubscription = GetCurrentSubscription(Subscription, Certificate);
+                command.CurrentSubscription = currentSubscription;
+                Func<Task> action = () => command.EndProcessing();
+                var token = command.CancellationToken;
 
-                    //get cluster
-                    var getCommand = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateGet();
-                    getCommand.CurrentSubscription = currentSubscription;
-                    getCommand.Name = Name;
-                    var getTask = getCommand.EndProcessing();
-                    while (!getTask.IsCompleted)
+                //get cluster
+                var getCommand = ServiceLocator.Instance.Locate<IAzureHDInsightCommandFactory>().CreateGet();
+                getCommand.CurrentSubscription = currentSubscription;
+                getCommand.Name = Name;
+                var getTask = getCommand.EndProcessing();
+                while (!getTask.IsCompleted)
+                {
+                    WriteDebugLog();
+                    getTask.Wait(1000, token);
+                }
+                if (getTask.IsFaulted)
+                {
+                    throw new AggregateException(getTask.Exception);
+                }
+                if (getCommand.Output == null || getCommand.Output.Count == 0)
+                {
+                    throw new InvalidOperationException(string.Format("Could not find cluster {0}", Name));
+                }
+                var cluster = getCommand.Output.First();
+
+                //prep cluster resize operation
+                command.Location = cluster.Location;
+                if (ClusterSizeInNodes < cluster.ClusterSizeInNodes)
+                {
+                    var task = ConfirmSetAction(
+                        "You are requesting a cluster size that is less than the current cluster size. We recommend not running jobs till the operation is complete as all running jobs will fail at end of resize operation and may impact the health of your cluster. Do you want to continue?",
+                        "Continuing with set cluster operation.",
+                        ClusterSizeInNodes.ToString(CultureInfo.InvariantCulture),
+                        action);
+                    if (task == null)
+                    {
+                        throw new OperationCanceledException("The change cluster size operation was aborted.");
+                    }
+                    while (!task.IsCompleted)
                     {
                         WriteDebugLog();
-                        getTask.Wait(1000, token);
+                        task.Wait(1000, token);
                     }
-                    if (getTask.IsFaulted)
+                    if (task.IsFaulted)
                     {
-                        throw new AggregateException(getTask.Exception);
+                        throw new AggregateException(task.Exception);
                     }
-                    if (getCommand.Output == null || getCommand.Output.Count == 0)
-                    {
-                        throw new InvalidOperationException(string.Format("Could not find cluster {0}", Name));
-                    }
-                    var cluster = getCommand.Output.First();
-
-                    //prep cluster resize operation
-                    command.Location = cluster.Location;
-                    if (ClusterSizeInNodes < cluster.ClusterSizeInNodes)
-                    {
-                        var task = ConfirmSetAction(
-                            "You are requesting a cluster size that is less than the current cluster size. We recommend not running jobs till the operation is complete as all running jobs will fail at end of resize operation and may impact the health of your cluster. Do you want to continue?",
-                            "Continuing with set cluster operation.",
-                            ClusterSizeInNodes.ToString(CultureInfo.InvariantCulture),
-                            action);
-                        if (task == null)
-                        {
-                            throw new OperationCanceledException("The change cluster size operation was aborted.");
-                        }
-                        while (!task.IsCompleted)
-                        {
-                            WriteDebugLog();
-                            task.Wait(1000, token);
-                        }
-                        if (task.IsFaulted)
-                        {
-                            throw new AggregateException(task.Exception);
-                        }
-                    }
-                    else
-                    {
-                        var task = action();
-                        while (!task.IsCompleted)
-                        {
-                            WriteDebugLog();
-                            task.Wait(1000, token);
-                        }
-                        if (task.IsFaulted)
-                        {
-                            throw new AggregateException(task.Exception);
-                        }
-                    }
-                    //print cluster details
-                    foreach (var output in command.Output)
-                    {
-                        WriteObject(output);
-                    }
-                    WriteDebugLog();
                 }
-                catch (Exception ex)
+                else
                 {
-                    var type = ex.GetType();
-                    Logger.Log(Severity.Error, Verbosity.Normal, FormatException(ex));
-                    WriteDebugLog();
-                    if (type == typeof (AggregateException) || type == typeof (TargetInvocationException) ||
-                        type == typeof (TaskCanceledException))
+                    var task = action();
+                    while (!task.IsCompleted)
                     {
-                        ex.Rethrow();
+                        WriteDebugLog();
+                        task.Wait(1000, token);
                     }
-                    else
+                    if (task.IsFaulted)
                     {
-                        throw;
+                        throw new AggregateException(task.Exception);
                     }
+                }
+                //print cluster details
+                foreach (var output in command.Output)
+                {
+                    WriteObject(output);
+                }
+                WriteDebugLog();
+            }
+            catch (Exception ex)
+            {
+                var type = ex.GetType();
+                Logger.Log(Severity.Error, Verbosity.Normal, FormatException(ex));
+                WriteDebugLog();
+                if (type == typeof (AggregateException) || type == typeof (TargetInvocationException) ||
+                    type == typeof (TaskCanceledException))
+                {
+                    ex.Rethrow();
+                }
+                else
+                {
+                    throw;
                 }
             }
+            
             WriteDebugLog();
         }
 

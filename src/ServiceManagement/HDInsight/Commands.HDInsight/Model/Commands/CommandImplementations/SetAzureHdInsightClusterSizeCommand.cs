@@ -13,20 +13,13 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
         ISetAzureHDInsightClusterSizeCommand
     {
         private SwitchParameter force;
-        private SwitchParameter changeClusterSize;
 
         public SwitchParameter Force
         {
             get { return force; }
             set { force = value; }
         }
-
-        public SwitchParameter ChangeClusterSize
-        {
-            get { return changeClusterSize; }
-            set { changeClusterSize = value; }
-        }
-
+        
         public string Location { get; set; }
 
         public int ClusterSizeInNodes { get; set; }
@@ -35,14 +28,11 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImp
         {
             Name.ArgumentNotNull("Name");
             Location.ArgumentNotNull("Location");
-            if (ChangeClusterSize.IsPresent)
+            var client = GetClient();
+            var cluster = await client.ChangeClusterSizeAsync(Name, Location, ClusterSizeInNodes);
+            if (cluster != null)
             {
-                var client = GetClient();
-                var cluster = await client.ChangeClusterSizeAsync(Name, Location, ClusterSizeInNodes);
-                if (cluster != null)
-                {
-                    Output.Add(new AzureHDInsightCluster(cluster));
-                }
+                Output.Add(new AzureHDInsightCluster(cluster));
             }
         }
     }
