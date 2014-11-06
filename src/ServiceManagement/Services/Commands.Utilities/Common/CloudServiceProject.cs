@@ -294,7 +294,11 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.CloudService
             packageTool.CreatePackage(Components.Definition, Paths, type, AzureTool.GetAzureSdkBinDirectory(), out standardOutput, out standardError);
             if (!string.IsNullOrWhiteSpace(standardError))
             {
-                throw new InvalidOperationException(string.Format(Properties.Resources.FailedToCreatePackage, standardError));
+                //The error of invalid xpath expression about endpoint in the configuration file is expected. Hence, we do not throw.
+                if (!standardError.Contains("/RoleEnvironment/CurrentInstance/Endpoints/Endpoint[@name='HttpIn']/@port"))
+                {
+                    throw new InvalidOperationException(string.Format(Properties.Resources.FailedToCreatePackage, standardError));
+                }
             }
         }
 
