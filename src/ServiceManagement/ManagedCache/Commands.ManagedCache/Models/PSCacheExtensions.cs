@@ -22,22 +22,6 @@ namespace Microsoft.Azure.Commands.ManagedCache.Models
 
     public class PSCacheExtensions
     {
-        private static PSNamedCachesAttributes EmptyNamedCaches
-        {
-            get
-            {
-                return new PSNamedCachesAttributes
-                {
-                    CacheName = string.Empty,
-                    ExpiryPolicy = string.Empty,
-                    TimeToLiveInMinutes = 0,
-                    Eviction = string.Empty,
-                    Notifications = string.Empty,
-                    HighAvailability = string.Empty
-                };
-            }
-        }
-
         public static string ConstructNamedCachesTable(List<PSNamedCachesAttributes> namedCaches)
         {
             StringBuilder namedCachesTable = new StringBuilder();
@@ -46,7 +30,6 @@ namespace Microsoft.Azure.Commands.ManagedCache.Models
             {
                 int maxCacheNameLength = Math.Max("CacheName".Length, namedCaches.Where(r => r.CacheName != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.CacheName.Length));
                 int maxExpiryPolicyLength = Math.Max("ExpiryPolicy".Length, namedCaches.Where(r => r.ExpiryPolicy != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.ExpiryPolicy.Length));
-                // TODO: where r != null
                 int maxTimeToLiveInMinutesLength = Math.Max("TimeToLiveInMinutes".Length, namedCaches.Where(r => r != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.TimeToLiveInMinutes.ToString().Length));
                 int maxEvictionLength = Math.Max("Eviction".Length, namedCaches.Where(r => r.Eviction != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.Eviction.Length));
                 int maxNotificationsLength = Math.Max("Notifications".Length, namedCaches.Where(r => r.Notifications != null).DefaultIfEmpty(EmptyNamedCaches).Max(r => r.Notifications.Length));
@@ -69,6 +52,22 @@ namespace Microsoft.Azure.Commands.ManagedCache.Models
                 }
             }
             return namedCachesTable.ToString();
+        }
+
+        private static PSNamedCachesAttributes EmptyNamedCaches
+        {
+            get
+            {
+                return new PSNamedCachesAttributes
+                {
+                    CacheName = string.Empty,
+                    ExpiryPolicy = string.Empty,
+                    TimeToLiveInMinutes = 0,
+                    Eviction = string.Empty,
+                    Notifications = string.Empty,
+                    HighAvailability = string.Empty
+                };
+            }
         }
 
         private static string GenerateSeparator(int amount, string separator)

@@ -51,6 +51,5 @@ namespace Microsoft.Azure.Commands.ManagedCache.Models
         {
             get { return PSCacheExtensions.ConstructNamedCachesTable(NamedCaches); }
         }
-
     }
 }

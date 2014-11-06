@@ -33,6 +33,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
     {
         private const string CacheResourceType = "Caching";
         private const string CacheServiceReadyState = "Active";
+        private const int MaxNamedCacheCount = 10;
 
         private ManagedCacheClient client;
         public PSCacheClient(AzureSubscription currentSubscription)
@@ -173,7 +174,7 @@ namespace Microsoft.Azure.Commands.ManagedCache
             {
                 throw new ArgumentException(Properties.Resources.NoAddInBasicSku);
             }
-            else if (cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches.Count == 10)
+            else if (cacheResource.IntrinsicSettingsSection.CacheServiceInputSection.NamedCaches.Count == MaxNamedCacheCount)
             {
                 throw new ArgumentException(Properties.Resources.NoAddInAllSku);
             }
