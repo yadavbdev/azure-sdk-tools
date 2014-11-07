@@ -49,7 +49,7 @@ function Test-Pipeline
 	    Assert-AreEqual $pipelineName $expectedPipeline.PipelineName
         Assert-AreEqual "Failed" $expectedPipeline.ProvisioningState
                 
-        #overwrite the pipeline again with -DataFactory parameter (provisioning will still failed as we are not using valid credentials)
+        #overwrite the pipeline again with -DataFactory parameter (provisioning will still fail as we are not using valid credentials)
         Assert-Throws { New-AzureDataFactoryPipeline -DataFactory $df -File ".\Resources\pipeline.json" -Force }
         $expectedPipeline = Get-AzureDataFactoryPipeline -DataFactory $df -Name $pipelineName
 
