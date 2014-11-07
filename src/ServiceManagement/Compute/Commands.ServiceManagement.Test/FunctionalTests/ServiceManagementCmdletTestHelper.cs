@@ -36,6 +36,7 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.Iaa
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.Extesnions.CustomScript;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.Extesnions.Dsc;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.Extesnions.VMAccess;
+using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.Extensions.SqlServer;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.IaasCmdletInfo.ILB;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PaasCmdletInfo;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.PIRCmdletInfo;
@@ -1996,6 +1997,25 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
         }
 
         #endregion AzureVMDscExtensionCmdlets
+
+        #region AzureVMSqlServerExtensionCmdlets
+
+        public VirtualMachineSqlServerExtensionContext GetAzureVMSqlServerExtension(SM.IPersistentVM vm, string version = null, string referenceName = null)
+        {
+            return RunPSCmdletAndReturnFirst<VirtualMachineSqlServerExtensionContext>(new GetAzureVMSqlServerExtensionCmdletInfo(vm, version, referenceName));
+        }
+
+        public SM.PersistentVM SetAzureVMSqlServerExtension(SM.IPersistentVM vm, string version = null, string referenceName = null, bool disable = false)
+        {
+            return RunPSCmdletAndReturnFirst<SM.PersistentVM>(new SetAzureVMSqlServerExtensionCmdletInfo(vm, version, referenceName, disable));
+        }
+
+        public SM.PersistentVM RemoveAzureVMSqlServerExtension(SM.IPersistentVM vm)
+        {
+            return RunPSCmdletAndReturnFirst<SM.PersistentVM>(new RemoveAzureVMSqlServerExtensionCmdletInfo(vm));
+        }
+
+        #endregion AzureVMAccessExtension cmdlets
 
         internal SM.LinuxProvisioningConfigurationSet.SSHPublicKey NewAzureSSHKey(NewAzureSshKeyType option, string fingerprint, string path)
         {

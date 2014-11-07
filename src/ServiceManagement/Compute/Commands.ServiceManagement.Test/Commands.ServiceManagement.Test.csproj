@@ -178,6 +178,7 @@
     <Compile Include="FunctionalTests\Constants.cs" />
     <Compile Include="FunctionalTests\CredentialHelper.cs" />
     <Compile Include="FunctionalTests\ExtensionTests\AzureVMAccessExtensionTests.cs" />
+    <Compile Include="FunctionalTests\ExtensionTests\AzureVMSqlServerExtensionTests.cs" />
     <Compile Include="FunctionalTests\ExtensionTests\AzureVMBGInfoExtensionTests.cs" />
     <Compile Include="FunctionalTests\ExtensionTests\CustomScriptExtensionTests.cs" />
     <Compile Include="FunctionalTests\ExtensionTests\DscExtensionTests.cs" />
@@ -205,6 +206,9 @@
     <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\CustomScript\SetAzureVMCustomScriptExtensionCmdletParmaterSetType.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\Dsc\GetAzureVMDscExtensionCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\Dsc\RemoveAzureVMDscExtensionCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\SqlServer\GetAzureVMSqlServerExtensionCmdletInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\SqlServer\RemoveAzureVMSqlServerExtensionCmdleteInfo.cs" />
+    <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\SqlServer\SetAzureVMSqlServerExtensionCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\VMAccess\GetAzureVMAccessExtensionCmdletInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\VMAccess\RemoveAzureVMAccessExtensionCmdleteInfo.cs" />
     <Compile Include="FunctionalTests\IaasCmdletInfo\Extesnions\VMAccess\SetAzureVMAccessExtensionCmdletInfo.cs" />
