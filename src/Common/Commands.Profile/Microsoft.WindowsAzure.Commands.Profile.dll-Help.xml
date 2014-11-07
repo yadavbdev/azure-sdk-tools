@@ -20,7 +20,6 @@
       <maml:para>When you run Add-AzureAccount, it displays an interactive window that prompts you to sign into your Azure account. This sign-in is valid until the access token expires. When it expires, cmdlets that require access to your account prompt you to run Add-AzureAccount again.</maml:para>
       <maml:para>If you have a Microsoft Organizational account, you can use the -Credential parameter to add the subscriptions associated with your account to Windows PowerShell without an interactive dialog.</maml:para>
       <maml:para>When specifying -ServicePrincipal switch a -Credential parameter is used to authenticate a Service Principal.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.10 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -305,7 +304,6 @@ PS C:\&gt;Add-AzureAccount -Credential $credential -ServicePrincipal -Tenant &qu
       <maml:para>An Azure environment an independent deployment of Microsoft Azure, such as AzureCloud for global Azure and AzureChinaCloud for Azure operated by 21Vianet in China. You can also create on-premises Azure environments by using Azure Pack and the WAPack cmdlets. For more information, see <maml:navigationLink><maml:linkText>Azure Pack</maml:linkText><maml:uri></maml:uri></maml:navigationLink> (http://www.microsoft.com/en-us/server-cloud/products/windows-azure-pack/default.aspx).</maml:para>
       <maml:para>Only the Name parameter of this cmdlet is mandatory. If you omit a parameter, its value is null ($null), and the service that uses that endpoint might not function properly. To add or change the value of an environment property, use the Set-AzureEnvironment cmdlet.</maml:para>
       <maml:para>NOTE: Changing your environment can cause your account to fail. Typically, environments are added only for testing or troubleshooting.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.10 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -802,7 +800,7 @@ contosoadmin@outlook.com     {{ ActiveDirectoryTenantId = abcde5cd-bcc3-441a-bd8
 	</command:details>
 	<maml:description>
 	<!--This is the Description section-->
-		<maml:para>The Get-AzureEnvironment cmdlet gets the Azure environments that are available to Windows PowerShell.An Azure environment an independent deployment of Microsoft Azure, such as AzureCloud for global Azure and AzureChinaCloud for Azure operated by 21Vianet in China. You can also create on-premises Azure environments by using Azure Pack and the WAPack cmdlets. For more information, see Azure Pack (http://www.microsoft.com/en-us/server-cloud/products/windows-azure-pack/default.aspx).The Get-AzureEnvironment cmdlet gets environments from your subscription data file, not from Azure. If the subscription data file is outdated, run the Add-AzureAccount or Import-PublishSettingsFile cmdlet to refresh it.This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you&#39;re using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+		<maml:para>The Get-AzureEnvironment cmdlet gets the Azure environments that are available to Windows PowerShell.An Azure environment an independent deployment of Microsoft Azure, such as AzureCloud for global Azure and AzureChinaCloud for Azure operated by 21Vianet in China. You can also create on-premises Azure environments by using Azure Pack and the WAPack cmdlets. For more information, see Azure Pack (http://www.microsoft.com/en-us/server-cloud/products/windows-azure-pack/default.aspx).The Get-AzureEnvironment cmdlet gets environments from your subscription data file, not from Azure. If the subscription data file is outdated, run the Add-AzureAccount or Import-PublishSettingsFile cmdlet to refresh it.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -1003,7 +1001,7 @@ GalleryEndpoint               : https://gallery.azure.com/</dev:code>
 	</command:details>
 	<maml:description>
 	<!--This is the Description section-->
-		<maml:para>The Get-AzurePublishSettingsFile cmdlet downloads a publish settings file for a subscription in your account. When the command completes, you can use the Import-PublishSettingsFile cmdlet to make the settings in the file available to Windows PowerShell.To make your Azure account available to Windows PowerShell, you can use a publish settings file or the Add-AzureAccount cmdlet. Publish settings files let you prepare the session in advance so you can run scripts and background jobs unattended. However, not all services support publish settings files. For example, the AzureResourceManager module does not support publish settings files.When you run Get-AzurePublishSettingsFile, it opens your default browser and prompts you to sign into your Azure account, select a subscription, and select a file system location for the publish settings file. Then, it downloads the publish settings file for your subscription into the file that you selected.A &quot;publish settings file&quot; is an XML file with a .publishsettings file name extension. The file contains an encoded certificate that provides management credentials for your Azure subscriptions.Security Note: Publish settings files contains credentials that are used to administer your Azure subscriptions and services. If  malicious users access your publish settings file,  they can edit, create, and delete your Azure services. As a security best practice, save the file to a location in your Downloads or Documents folder and then delete it after using Import-AzurePublishSettingsFile cmdlet to import the settings.This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you&#39;re using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+		<maml:para>The Get-AzurePublishSettingsFile cmdlet downloads a publish settings file for a subscription in your account. When the command completes, you can use the Import-PublishSettingsFile cmdlet to make the settings in the file available to Windows PowerShell.To make your Azure account available to Windows PowerShell, you can use a publish settings file or the Add-AzureAccount cmdlet. Publish settings files let you prepare the session in advance so you can run scripts and background jobs unattended. However, not all services support publish settings files. For example, the AzureResourceManager module does not support publish settings files.When you run Get-AzurePublishSettingsFile, it opens your default browser and prompts you to sign into your Azure account, select a subscription, and select a file system location for the publish settings file. Then, it downloads the publish settings file for your subscription into the file that you selected.A &quot;publish settings file&quot; is an XML file with a .publishsettings file name extension. The file contains an encoded certificate that provides management credentials for your Azure subscriptions.Security Note: Publish settings files contains credentials that are used to administer your Azure subscriptions and services. If  malicious users access your publish settings file,  they can edit, create, and delete your Azure services. As a security best practice, save the file to a location in your Downloads or Documents folder and then delete it after using Import-AzurePublishSettingsFile cmdlet to import the settings.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -1183,7 +1181,7 @@ GalleryEndpoint               : https://gallery.azure.com/</dev:code>
 	</command:details>
 	<maml:description>
 	<!--This is the Description section-->
-		<maml:para>The Get-AzureSubscription cmdlet gets the subscriptions in your Azure account. You can use this cmdlet to get information about the subscription and to pipe the subscription to other cmdlets.Get-AzureSubscription requires access to your Azure accounts. Before you run Get-AzureSubscription, you must run the Add-AzureAccount cmdlet or the cmdlets that download and install a publish settings file (Get-AzurePublishSettingsFile, Import-AzurePublishSettingsFile.This topic describes the cmdlet in the 0.8.8 version of the Microsoft Azure PowerShell module. To find out the version of the module you&#39;re using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
+		<maml:para>The Get-AzureSubscription cmdlet gets the subscriptions in your Azure account. You can use this cmdlet to get information about the subscription and to pipe the subscription to other cmdlets.Get-AzureSubscription requires access to your Azure accounts. Before you run Get-AzureSubscription, you must run the Add-AzureAccount cmdlet or the cmdlets that download and install a publish settings file (Get-AzurePublishSettingsFile, Import-AzurePublishSettingsFile.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -1691,7 +1689,6 @@ GalleryEndpoint               : https://gallery.azure.com/</dev:code>
       <maml:para>The Remove-AzureAccount cmdlet deletes an Azure account and its subscriptions from the subscription data file in your roaming user profile. It does not delete the account from Microsoft Azure, or change the actual account in any way.</maml:para>
       <maml:para>Using this cmdlet is a lot like logging out of your Azure account. And, if you want to log into the account again, use the Add-AzureAccount or Import-AzurePublishSettingsFile to add the account to Windows PowerShell again. </maml:para>
       <maml:para>You can also use Remove-AzureAccount cmdlet to change the way the Azure PowerShell cmdlets sign into your Azure account. If your account has both a management certificate from Import-AzurePublishSettingsFile and an access token from Add-AzureAccount, the Azure PowerShell cmdlets use only the access token; they ignore the management certificate. To use the management certificate, run Remove-AzureAccount. When Remove-AzureAccount finds both a management certificate and an access token, it deletes only the access token, instead of deleting the account. The management certificate is still there, so account is still available to Windows PowerShell.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.10 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -2071,7 +2068,6 @@ GalleryEndpoint               : https://gallery.azure.com/</dev:code>
 	</command:details>
 	<maml:description>
       <maml:para>The Remove-AzureSubscription cmdlet deletes an Azure subscription from your subscription data file so Windows PowerShell can't find it. This cmdlet does not delete the subscription from Microsoft Azure, or change the actual subscription in any way. </maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.10 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -2371,7 +2367,6 @@ Are you sure you want to perform this action?
       <maml:para>The Select-AzureSubscription cmdlet sets and clears the current and default Azure subscriptions.</maml:para>
       <maml:para>The "current subscription" is the subscription that is used by default in the current Windows PowerShell session. The "default subscription" is used by default in all Windows PowerShell sessions. The "current subscription" label lets you specify a different subscription to be used by default for the current session without changing the "default subscription" for all other sessions.</maml:para>
       <maml:para>The "default" subscription designation is saved in your subscription data file. The session-specific "current" designation is not saved.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.10 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -3015,7 +3010,6 @@ Are you sure you want to perform this action?
       <maml:para>The Set-AzureSubscription cmdlet establishes and changes the properties of an Azure subscription. You can use this cmdlet to create a new subscription or change the properties of an existing subscription.</maml:para>
       <maml:para>To create a new subscription, select a unique name for the value of the SubscriptionName parameter. To change an existing subscription, use the SubscriptionName parameter to identify the subscription.</maml:para>
       <maml:para>This cmdlet changes the data in the subscription data file that you create when you use the Add-AzureAccount or Import-AzurePublishSettingsFile cmdlet to add an Azure account to Windows PowerShell.</maml:para>
-      <maml:para>This topic describes the cmdlet in the 0.8.10 version of the Microsoft Azure PowerShell module. To find out the version of the module you're using, from the Azure PowerShell console, type (get-module azure).version.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -3469,7 +3463,7 @@ C:\PS&gt; Set-AzureSubscription –SubscriptionName ContosoEngineering -Certific
 	</command:details>
 	<maml:description>
 	<!--This is the Description section-->
-		<maml:para>The Switch-AzureMode cmdlet switches between the Azure and Azure Resource Manager (AzureResourceManager) modules. These modules are not designed to be used in the same session. To determine which module is in your current session, use the Get-Module cmdlet.NOTE: The AzureResourceManager module is currently in preview. It might not provide the same management capabilities as the Azure module. Beginning in version 0.8,0, the Azure PowerShell installation includes both Azure modules and Azure Profile, a module of commands common to both modules. When you use the Azure PowerShell cmdlets, the Azure and Azure Profile modules are imported into the session by default. To remove the Azure module from the session and import the Azure Resource Manager module, use Switch-AzureMode. And, to switch back to the Azure module, just use Switch-AzureMode again. The Azure module includes cmdlets that help you to manage your Azure account in the traditional way. The cmdlets get, create, change, and remove individual resources such as storage accounts, virtual machines, SQL databases, web sites, media services, and cloud services.The new Azure Resource Manager module, introduced in Azure PowerShell version 0.8.0, lets you manage your resources in an entirely new way. Instead of creating individual resources and trying to use them together, begin by imagining the service you want to create, such as a web portal, a blog, a photo gallery, a commerce site, or a wiki. Select a resource group template, including one of dozens in the Azure template gallery, or create your own. Each template provides a model of a complex service, complete with the resources that you need to support the service. Then use the template to create a resource group and its resources, and deploy and manage the related resources as a unit.You can use Switch-AzureMode to switch between Azure modules as often as you like. To set an Azure module as the default for all sessions, use the Global parameter when switching between modes.</maml:para>
+		<maml:para>The Switch-AzureMode cmdlet switches between the Azure and Azure Resource Manager (AzureResourceManager) modules. These modules are not designed to be used in the same session. To determine which module is in your current session, use the Get-Module cmdlet.NOTE: The AzureResourceManager module is currently in preview. It might not provide the same management capabilities as the Azure module. Beginning in version 0.8,0, the Azure PowerShell installation includes both Azure modules and Azure Profile, a module of commands common to both modules. When you use the Azure PowerShell cmdlets, the Azure and Azure Profile modules are imported into the session by default. To remove the Azure module from the session and import the Azure Resource Manager module, use Switch-AzureMode. And, to switch back to the Azure module, just use Switch-AzureMode again. The Azure module includes cmdlets that help you to manage your Azure account in the traditional way. The cmdlets get, create, change, and remove individual resources such as storage accounts, virtual machines, SQL databases, web sites, media services, and cloud services.The new Azure Resource Manager module lets you manage your resources in an entirely new way. Instead of creating individual resources and trying to use them together, begin by imagining the service you want to create, such as a web portal, a blog, a photo gallery, a commerce site, or a wiki. Select a resource group template, including one of dozens in the Azure template gallery, or create your own. Each template provides a model of a complex service, complete with the resources that you need to support the service. Then use the template to create a resource group and its resources, and deploy and manage the related resources as a unit.You can use Switch-AzureMode to switch between Azure modules as often as you like. To set an Azure module as the default for all sessions, use the Global parameter when switching between modes.</maml:para>
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -3543,10 +3537,6 @@ C:\PS&gt; Set-AzureSubscription –SubscriptionName ContosoEngineering -Certific
 	<command:terminatingErrors></command:terminatingErrors>
 	<command:nonTerminatingErrors></command:nonTerminatingErrors>
 	<maml:alertSet>
-		<maml:title></maml:title>
-		<maml:alert>
-			<maml:para>Switch-AzureMode is introduced in version 0.8.0 of the Azure modules. To get the version of your module, type: (Get-Module &lt;ModuleName&gt;).Version</maml:para>
-		</maml:alert>
 	</maml:alertSet>
 	<command:examples>
 		<command:example>
