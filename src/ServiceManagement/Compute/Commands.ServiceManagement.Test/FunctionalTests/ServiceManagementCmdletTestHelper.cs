@@ -44,6 +44,7 @@ using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.Pre
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests.SubscriptionCmdletInfo;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.WindowsAzure.Management.Network;
+using Microsoft.Azure.Commands.Network.Gateway.Model;
 using Microsoft.WindowsAzure.Management.Network.Models;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -1467,9 +1468,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
 
         #region AzureVNetGateway
 
-        public Microsoft.WindowsAzure.Management.Network.Models.GatewayGetOperationStatusResponse NewAzureVNetGateway(string vnetName)
+        public GatewayGetOperationStatusResponse NewAzureVNetGateway(string vnetName)
         {
-            return RunPSCmdletAndReturnFirst<Microsoft.WindowsAzure.Management.Network.Models.GatewayGetOperationStatusResponse>(new NewAzureVNetGatewayCmdletInfo(vnetName));
+            return RunPSCmdletAndReturnFirst<GatewayGetOperationStatusResponse>(new NewAzureVNetGatewayCmdletInfo(vnetName));
         }
 
         public Collection<Microsoft.Azure.Commands.Network.VirtualNetworkGatewayContext> GetAzureVNetGateway(string vnetName)
@@ -1477,28 +1478,28 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.Test.FunctionalTests
             return RunPSCmdletAndReturnAll<Microsoft.Azure.Commands.Network.VirtualNetworkGatewayContext>(new GetAzureVNetGatewayCmdletInfo(vnetName));
         }
 
-        public Microsoft.WindowsAzure.Management.Network.Models.GatewayGetOperationStatusResponse SetAzureVNetGateway(string option, string vnetName, string localNetwork)
+        public GatewayGetOperationStatusResponse SetAzureVNetGateway(string option, string vnetName, string localNetwork)
         {
-            return RunPSCmdletAndReturnFirst<Microsoft.WindowsAzure.Management.Network.Models.GatewayGetOperationStatusResponse>(new SetAzureVNetGatewayCmdletInfo(option, vnetName, localNetwork));
+            return RunPSCmdletAndReturnFirst<GatewayGetOperationStatusResponse>(new SetAzureVNetGatewayCmdletInfo(option, vnetName, localNetwork));
         }
 
-        public Microsoft.WindowsAzure.Management.Network.Models.GatewayGetOperationStatusResponse RemoveAzureVNetGateway(string vnetName)
+        public GatewayGetOperationStatusResponse RemoveAzureVNetGateway(string vnetName)
         {
-            return RunPSCmdletAndReturnFirst<Microsoft.WindowsAzure.Management.Network.Models.GatewayGetOperationStatusResponse>(new RemoveAzureVNetGatewayCmdletInfo(vnetName));
+            return RunPSCmdletAndReturnFirst<GatewayGetOperationStatusResponse>(new RemoveAzureVNetGatewayCmdletInfo(vnetName));
         }
 
-        public Microsoft.Azure.Commands.Network.Gateway.Model.SharedKeyContext GetAzureVNetGatewayKey(string vnetName, string localnet)
+        public SharedKeyContext GetAzureVNetGatewayKey(string vnetName, string localnet)
         {
-            return RunPSCmdletAndReturnFirst<Microsoft.Azure.Commands.Network.Gateway.Model.SharedKeyContext>(new GetAzureVNetGatewayKeyCmdletInfo(vnetName, localnet));
+            return RunPSCmdletAndReturnFirst<SharedKeyContext>(new GetAzureVNetGatewayKeyCmdletInfo(vnetName, localnet));
         }
 
         #endregion
 
         #region AzureVNet
 
-        public System.Collections.Generic.IEnumerable<Microsoft.Azure.Commands.Network.Gateway.Model.GatewayConnectionContext> GetAzureVNetConnection(string vnetName)
+        public IEnumerable<GatewayConnectionContext> GetAzureVNetConnection(string vnetName)
         {
-            return RunPSCmdletAndReturnFirst<System.Collections.Generic.IEnumerable<Microsoft.Azure.Commands.Network.Gateway.Model.GatewayConnectionContext>>(new GetAzureVNetConnectionCmdletInfo(vnetName));
+            return RunPSCmdletAndReturnFirst<IEnumerable<GatewayConnectionContext>>(new GetAzureVNetConnectionCmdletInfo(vnetName));
         }
 
         public Collection<SM.VirtualNetworkSiteContext> GetAzureVNetSite(string vnetName)
