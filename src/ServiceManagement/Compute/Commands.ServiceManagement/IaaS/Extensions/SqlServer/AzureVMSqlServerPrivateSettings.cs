@@ -16,12 +16,23 @@ using System.Security;
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
     /// <summary>
-    /// SQL Server extension's private settings
+    /// SQL Server extension's private settings - Guest agent infrastructure owns securing these private settings
     /// </summary>
     public class SqlServerPrivateSettings
     {
+        /// <summary>
+        /// Azure blob store URL
+        /// </summary>
         public string StorageUrl;
+
+        /// <summary>
+        /// Storage account access key
+        /// </summary>
         public string StorageAccessKey;
+
+        /// <summary>
+        ///  Password required for certification when encryption is enabled
+        /// </summary>
         public string Password;
     }
 }

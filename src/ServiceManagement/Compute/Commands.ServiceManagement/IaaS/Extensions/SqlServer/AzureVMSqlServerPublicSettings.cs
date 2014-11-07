@@ -12,7 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
     /// <summary>
@@ -21,12 +20,12 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
     public class SqlServerPublicSettings
     {
         /// <summary>
-        /// auto patching settings
+        /// Auto patching settings
         /// </summary>
         public AutoPatchingSettings AutoPatchingSettings { get; set; }
 
         /// <summary>
-        /// auto-backup settings
+        /// Auto-backup settings
         /// </summary>
         public AutoBackupSettings AutoBackupSettings { get; set; }
     }

@@ -14,7 +14,6 @@
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 
-
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
     using NSM = Management.Compute.Models;
@@ -25,22 +24,22 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
     public class VirtualMachineSqlServerExtensionContext : VirtualMachineExtensionContext
     {
         /// <summary>
-        /// auto-patching settings
+        /// Auto-patching settings
         /// </summary>
         public AutoPatchingSettings AutoPatchingSettings;
 
         /// <summary>
-        /// auto-backup settings
+        /// Auto-backup settings
         /// </summary>
         public AutoBackupSettings AutoBackupSettings;
 
         /// <summary>
-        /// status messages reported by extension
+        /// Status messages reported by extension
         /// </summary>
         public List<string> StatusMessages;
 
         /// <summary>
-        /// resource extension substatus list
+        /// Resource extension substatus list
         /// </summary>
         public IList<NSM.ResourceExtensionSubStatus> SubStatusList { get; set; }
     }

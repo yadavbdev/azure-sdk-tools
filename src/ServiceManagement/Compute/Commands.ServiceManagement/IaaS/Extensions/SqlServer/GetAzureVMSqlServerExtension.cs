@@ -50,7 +50,6 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
                     return this.GetExtensionContext(r);
                 }), true);
-
         }
 
         protected override void ProcessRecord()
@@ -125,7 +124,7 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 
 
         /// <summary>
-        /// walks through hosted services and returns back the ResourceExtensionStatus reported by Azure guest agent
+        /// Walks through hosted services and returns back the ResourceExtensionStatus reported by Azure guest agent
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -223,10 +222,9 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
         }
 
         /// <summary>
-        /// map strings Auto-patching public settings -> Powershell API
+        /// Map strings Auto-patching public settings -> Powershell API
         ///      "WindowsMandatoryUpdates" -> "Important"
         ///       "MicrosoftOptionalUpdates" -> "Optional"
-        /// 
         /// </summary>
         /// <param name="patchCategory"></param>
         /// <returns></returns>
