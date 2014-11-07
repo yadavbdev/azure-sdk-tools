@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Commands.ServiceManagement.Model;
 using System.Collections.Generic;
 using System.Net;
+using System.Globalization;
 
 namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
 {
@@ -85,8 +86,14 @@ namespace Microsoft.WindowsAzure.Commands.ServiceManagement.IaaS.Extensions
             // Note: valid reference to an extension status list is returned by GetResourceExtensionStatusList()
             foreach (NSM.ResourceExtensionStatus res in extensionStatusList)
             {
+                // Extension handler name  in format publisher.ReferenceName
+                string extensionHandlerName = string.Format(CultureInfo.InvariantCulture,
+                    "{0}.{1}",
+                    r.Publisher,
+                    r.ReferenceName);
+
                 // skip all non-sql extensions
-                if (res.HandlerName.Equals(r.Publisher, System.StringComparison.InvariantCulture))
+                if (!res.HandlerName.Equals(extensionHandlerName, System.StringComparison.InvariantCulture))
                 {
                     continue;
                 }
