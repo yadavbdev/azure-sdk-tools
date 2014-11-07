@@ -604,13 +604,16 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Websites
     public enum WebsiteDiagnosticOutput
     {
         FileSystem,
-        StorageTable
+        StorageTable,
+        StorageBlob
     }
 
     public enum DiagnosticProperties
     {
         StorageAccountName,
-        LogLevel
+        LogLevel,
+        StorageTableName,
+        StorageBlobContainerName
     }
 
     public enum WebsiteSlotName
