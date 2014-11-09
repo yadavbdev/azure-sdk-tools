@@ -63,7 +63,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
         /// <inheritdoc />
         [Parameter(Mandatory = false, HelpMessage = "The name of the HDInsight cluster to set the size of.", ValueFromPipeline = false,
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetClusterByNameWithSpecificSubscriptionCredentials)]
-        [Parameter(Position = 0, Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set the size of", ValueFromPipeline = false,
+        [Parameter(Mandatory = true, HelpMessage = "The name of the HDInsight cluster to set the size of", ValueFromPipeline = false,
             ParameterSetName = AzureHdInsightPowerShellConstants.ParameterSetResizingWithName)]
         [Alias(AzureHdInsightPowerShellConstants.AliasClusterName, AzureHdInsightPowerShellConstants.AliasDnsName)]
         public string Name
@@ -140,35 +140,40 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 
                 //prep cluster resize operation
                 command.Location = cluster.Location;
-                Task task;
                 if (ClusterSizeInNodes < cluster.ClusterSizeInNodes)
                 {
-                    task = ConfirmSetAction(
-                        "You are requesting a cluster size that is less than the current cluster size. We recommend not running jobs until the operation is complete as all running jobs will fail at the end of resize operation and may impact the health of your cluster. Do you want to continue?",
+                    var task = ConfirmSetAction(
+                        "You are requesting a cluster size that is less than the current cluster size. We recommend not running jobs till the operation is complete as all running jobs will fail at end of resize operation and may impact the health of your cluster. Do you want to continue?",
                         "Continuing with set cluster operation.",
                         ClusterSizeInNodes.ToString(CultureInfo.InvariantCulture),
                         action);
+                    if (task == null)
+                    {
+                        throw new OperationCanceledException("The change cluster size operation was aborted.");
+                    }
+                    while (!task.IsCompleted)
+                    {
+                        WriteDebugLog();
+                        task.Wait(1000, token);
+                    }
+                    if (task.IsFaulted)
+                    {
+                        throw new AggregateException(task.Exception);
+                    }
                 }
                 else
                 {
-                    task = action();
+                    var task = action();
+                    while (!task.IsCompleted)
+                    {
+                        WriteDebugLog();
+                        task.Wait(1000, token);
+                    }
+                    if (task.IsFaulted)
+                    {
+                        throw new AggregateException(task.Exception);
+                    }
                 }
-
-                //wait for task if exists
-                if (task == null)
-                {
-                    throw new OperationCanceledException("The change cluster size operation was aborted.");
-                }
-                while (!task.IsCompleted)
-                {
-                    WriteDebugLog();
-                    task.Wait(1000, token);
-                }
-                if (task.IsFaulted)
-                {
-                    throw new AggregateException(task.Exception);
-                }
-
                 //print cluster details
                 foreach (var output in command.Output)
                 {
@@ -199,7 +204,7 @@ namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
             Func<Task> action)
         {
             if (Force.IsPresent || ShouldContinue(actionMessage, ""))
-            {
+           {
                 if (ShouldProcess(target, processMessage))
                 {
                     return action();
