@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Hadoop.Client;
@@ -268,6 +269,24 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
             this.LogMessage("Getting hdinsight clusters for subscriptionid : {0}", this.credentials.SubscriptionId.ToString());
             ICollection<ClusterDetails> knownClusters = await this.ListClustersAsync();
             ClusterDetails cluster = knownClusters.FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
+            return cluster;
+        }
+
+        public void ChangeClusterSize(string dnsName, string location, int newSize)
+        {
+            ChangeClusterSizeAsync(dnsName, location, newSize).Wait();
+        }
+
+        public async Task<ClusterDetails> ChangeClusterSizeAsync(string dnsName, string location, int newSize)
+        {
+            LogMessage("Getting hdinsight clusters for subscriptionid : {0}", credentials.SubscriptionId.ToString());
+            var knownClusters = await ListClustersAsync();
+            var cluster = knownClusters.FirstOrDefault(c => string.Equals(c.Name, dnsName, StringComparison.OrdinalIgnoreCase));
+            if (cluster == null)
+            {
+                return null;
+            }
+            cluster.ClusterSizeInNodes = newSize;
             return cluster;
         }
 

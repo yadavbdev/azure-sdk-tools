@@ -77,6 +77,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.HDInsight.CmdLetTests
         public const string Reducer = "Reducer";
         public const string RemoveAzureHDInsightCluster = "Remove-AzureHDInsightCluster";
         public const string RevokeAzureHDInsightHttpAccess = "Revoke-AzureHDInsightHttpServicesAccess";
+        public const string SetAzureHDInsightClusterSize = "Set-AzureHDInsightClusterSize";
         public const string SetAzureHDInsightDefaultStorage = "Set-AzureHDInsightDefaultStorage";
         public const string Show = "Show";
         public const string Skip = "Skip";
