@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using Microsoft.Hadoop.Client;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Utilities;
 using Microsoft.WindowsAzure.Management.HDInsight;
+using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightClusters.Extensions;
 using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
@@ -272,9 +273,9 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
             return cluster;
         }
 
-        public void ChangeClusterSize(string dnsName, string location, int newSize)
+        public ClusterDetails ChangeClusterSize(string dnsName, string location, int newSize)
         {
-            ChangeClusterSizeAsync(dnsName, location, newSize).Wait();
+            return ChangeClusterSizeAsync(dnsName, location, newSize).WaitForResult();
         }
 
         public async Task<ClusterDetails> ChangeClusterSizeAsync(string dnsName, string location, int newSize)
