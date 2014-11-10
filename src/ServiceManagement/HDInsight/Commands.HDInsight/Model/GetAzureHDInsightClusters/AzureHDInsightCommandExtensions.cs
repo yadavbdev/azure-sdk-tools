@@ -61,7 +61,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.GetAzureHDInsightCl
             {
                 SubscriptionId = currentSubscription.Id,
                 Certificate = ProfileClient.DataStore.GetCertificate(currentSubscription.Account),
-                Endpoint = new Uri("https://umapi.rdfetest.dnsdemo4.com:8443")//environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement),
+                Endpoint = environment.GetEndpointAsUri(AzureEnvironment.Endpoint.ServiceManagement),
             };
         }
 
