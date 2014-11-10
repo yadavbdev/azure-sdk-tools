@@ -31,7 +31,7 @@ using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 {
-    internal class AzureHDInsightJobSubmissionClientSimulator : IJobSubmissionClient
+    internal class AzureHDInsightJobSubmissionClientSimulator : ClientBase, IJobSubmissionClient
     {
         internal const string JobFailed = "jobDetails failed";
         internal const string JobSuccesful = "jobDetails succeeded";
@@ -81,6 +81,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 
         public JobCreationResults CreateHiveJob(HiveJobCreateParameters hiveJobCreateParameters)
         {
+            this.PrepareQueryJob(hiveJobCreateParameters);
             return this.CreateHiveJobAsync(hiveJobCreateParameters).WaitForResult();
         }
 
@@ -94,6 +95,10 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
                 {
                     throw new InvalidOperationException("Invalid file protocol : " + hiveJobCreateParameters.File);
                 }
+            }
+            else
+            {
+                this.PrepareQueryJob(hiveJobCreateParameters);
             }
 
             JobCreationResults retval =
@@ -127,6 +132,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 
         public JobCreationResults CreatePigJob(PigJobCreateParameters pigJobCreateParameters)
         {
+            this.PrepareQueryJob(pigJobCreateParameters);
             return this.CreatePigJobAsync(pigJobCreateParameters).WaitForResult();
         }
 
@@ -137,6 +143,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
                 throw new ArgumentNullException("pigJobCreateParameters");
             }
 
+            this.PrepareQueryJob(pigJobCreateParameters);
             JobCreationResults retval =
                 this.CreateJobSuccessResult(
                     new JobDetails { Query = pigJobCreateParameters.Query, StatusDirectory = pigJobCreateParameters.StatusFolder }, string.Empty);
@@ -145,6 +152,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
 
         public JobCreationResults CreateSqoopJob(SqoopJobCreateParameters sqoopJobCreateParameters)
         {
+            this.PrepareQueryJob(sqoopJobCreateParameters);
             return this.CreateSqoopJobAsync(sqoopJobCreateParameters).WaitForResult();
         }
 
@@ -155,6 +163,7 @@ namespace Microsoft.WindowsAzure.Commands.Test.Utilities.HDInsight.Simulators
                 throw new ArgumentNullException("sqoopJobCreateParameters");
             }
 
+            this.PrepareQueryJob(sqoopJobCreateParameters);
             JobCreationResults retval =
                 this.CreateJobSuccessResult(
                     new JobDetails { Query = sqoopJobCreateParameters.Command, StatusDirectory = sqoopJobCreateParameters.StatusFolder }, string.Empty);
