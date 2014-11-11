@@ -15,6 +15,9 @@ using Microsoft.WindowsAzure.Management.HDInsight.Logging;
 
 namespace Microsoft.WindowsAzure.Commands.HDInsight.Cmdlet.PSCmdlets
 {
+    /// <summary>
+    ///     Cmdlet that allows a user to change the size of a cluster.
+    /// </summary>
     [Cmdlet(VerbsCommon.Set, "AzureHDInsightClusterSize")]
     [OutputType(typeof(AzureHDInsightCluster))]
     public class SetAzureHDInsightClusterSizeCmdlet : AzureHDInsightCmdlet

@@ -9,6 +9,9 @@ using Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.ServiceLocation;
 
 namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.Commands.CommandImplementations
 {
+    /// <summary>
+    ///     Command referenced by the cmdlet that allows a user to change the size of a cluster.
+    /// </summary>
     internal class SetAzureHdInsightClusterSizeCommand : AzureHDInsightClusterCommand<AzureHDInsightCluster>,
         ISetAzureHDInsightClusterSizeCommand
     {
