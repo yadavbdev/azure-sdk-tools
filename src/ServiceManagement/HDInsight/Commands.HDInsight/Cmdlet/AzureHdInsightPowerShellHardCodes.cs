@@ -58,6 +58,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
         public const string AzureHDInsightMapReduceJobDefinition = "AzureHDInsightMapReduceJobDefinition";
         public const string AzureHDInsightMetastore = "AzureHDInsightMetastore";
         public const string AzureHDInsightPigJobDefinition = "AzureHDInsightPigJobDefinition";
+        public const string AzureHDInsightScriptAction = "AzureHDInsightScriptAction";
         public const string AzureHDInsightProperties = "AzureHDInsightProperties";
         public const string AzureHDInsightSqoopJobDefinition = "AzureHDInsightSqoopJobDefinition";
         public const string AzureHDInsightStorage = "AzureHDInsightStorage";
@@ -75,6 +76,7 @@ namespace Microsoft.WindowsAzure.Management.HDInsight.Cmdlet.PSCmdlets
 
         public const string ParameterSetAddMetastore = "Add Metastore";
         public const string ParameterSetAddStorageAccount = "Add Storage Account";
+        public const string ParameterSetAddScriptAction = "Add Script Action";
 
         public const string ParameterSetClusterByConfigWithSpecificSubscriptionCredentials =
             "Cluster By Config (with Specific Subscription Credential)";
