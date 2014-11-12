@@ -54,6 +54,10 @@ namespace Microsoft.Azure.Commands.RedisCache
             MaxMemoryPolicyStrings.VolatileLRU, MaxMemoryPolicyStrings.VolatileRandom, MaxMemoryPolicyStrings.VolatileTTL, IgnoreCase = false)]
         public string MaxMemoryPolicy { get; set;}
 
+        [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = false, HelpMessage = "EnableNonSslPort property of redis cache. Valid values: true, false")]
+        [ValidateSet("true", "false")]
+        public string EnableNonSslPort { get; set; }
+
         private const string redisDefaultVersion = "2.8";
 
         public override void ExecuteCmdlet()
@@ -110,7 +114,7 @@ namespace Microsoft.Azure.Commands.RedisCache
                     throw;
                 }
             }
-            WriteObject(new RedisCacheAttributesWithAccessKeys(CacheClient.CreateOrUpdateCache(ResourceGroupName, Name, Location, RedisVersion, skuFamily, skuCapacity, Sku, MaxMemoryPolicy), ResourceGroupName));
+            WriteObject(new RedisCacheAttributesWithAccessKeys(CacheClient.CreateOrUpdateCache(ResourceGroupName, Name, Location, RedisVersion, skuFamily, skuCapacity, Sku, MaxMemoryPolicy, EnableNonSslPort), ResourceGroupName));
         }
     }
 }
