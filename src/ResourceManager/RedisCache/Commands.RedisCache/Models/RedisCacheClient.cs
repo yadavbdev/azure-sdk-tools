@@ -29,7 +29,7 @@ namespace Microsoft.Azure.Commands.RedisCache
         }
         public RedisCacheClient() { }
 
-        public RedisCreateOrUpdateResponse CreateOrUpdateCache(string resourceGroupName, string cacheName, string location, string redisVersion, string skuFamily, int skuCapacity, string skuName, string maxMemoryPolicy, string enableNonSslPort)
+        public RedisCreateOrUpdateResponse CreateOrUpdateCache(string resourceGroupName, string cacheName, string location, string redisVersion, string skuFamily, int skuCapacity, string skuName, string maxMemoryPolicy, bool? enableNonSslPort)
         {
             RedisCreateOrUpdateParameters parameters = new RedisCreateOrUpdateParameters
                                                     {
@@ -50,13 +50,9 @@ namespace Microsoft.Azure.Commands.RedisCache
                 parameters.Properties.MaxMemoryPolicy = maxMemoryPolicy;
             }
 
-            if (!string.IsNullOrEmpty(enableNonSslPort))
+            if (enableNonSslPort.HasValue)
             {
-                bool result;
-                if(bool.TryParse(enableNonSslPort, out result))
-                {
-                    parameters.Properties.EnableNonSslPort = result;
-                }
+                parameters.Properties.EnableNonSslPort = enableNonSslPort.Value;
             }
             RedisCreateOrUpdateResponse response = _client.Redis.CreateOrUpdate(resourceGroupName: resourceGroupName, name: cacheName, parameters: parameters);
             return response;

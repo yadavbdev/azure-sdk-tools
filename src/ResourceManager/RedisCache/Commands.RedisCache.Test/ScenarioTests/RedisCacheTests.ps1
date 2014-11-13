@@ -52,7 +52,7 @@ function Test-RedisCache
     }
 
     # Updating Cache
-    $cacheUpdated = Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU -EnableNonSslPort false
+    $cacheUpdated = Set-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -MaxMemoryPolicy AllKeysLRU -EnableNonSslPort $false
     
     Assert-AreEqual $cacheName $cacheUpdated.Name
     Assert-AreEqual $location $cacheUpdated.Location
@@ -182,7 +182,7 @@ function Test-RedisCachePipeline
     $location = "North Central US"
 	
     # Creating Cache
-    $cacheCreated = New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Basic -EnableNonSslPort false
+    $cacheCreated = New-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName -Location $location -Size 250MB -Sku Basic -EnableNonSslPort $false
     
     Assert-AreEqual $cacheName $cacheCreated.Name
     Assert-AreEqual $location $cacheCreated.Location
@@ -224,7 +224,7 @@ function Test-RedisCachePipeline
     }
 	
     # Updating Cache using pipeline
-    Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Set-AzureRedisCache -MaxMemoryPolicy AllKeysRandom -EnableNonSslPort true
+    Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Set-AzureRedisCache -MaxMemoryPolicy AllKeysRandom -EnableNonSslPort $true
     $cacheUpdatedPiped = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName 
     
     Assert-AreEqual $cacheName $cacheUpdatedPiped.Name

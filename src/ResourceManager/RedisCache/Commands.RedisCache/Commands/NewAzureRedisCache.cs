@@ -55,8 +55,7 @@ namespace Microsoft.Azure.Commands.RedisCache
         public string MaxMemoryPolicy { get; set;}
 
         [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = false, HelpMessage = "EnableNonSslPort property of redis cache. Valid values: true, false")]
-        [ValidateSet("true", "false")]
-        public string EnableNonSslPort { get; set; }
+        public bool? EnableNonSslPort { get; set; }
 
         private const string redisDefaultVersion = "2.8";
 
