@@ -195,7 +195,7 @@ function Test-RedisCachePipeline
     Assert-AreEqual "2.8" $cacheCreated.RedisVersion
     Assert-AreEqual "250MB" $cacheCreated.Size
     Assert-AreEqual "Basic" $cacheCreated.Sku
-	Assert-False { $cacheCreated.EnableNonSslPort }
+    Assert-False { $cacheCreated.EnableNonSslPort }
     
     Assert-NotNull $cacheCreated.PrimaryKey "PrimaryKey do not exists"
     Assert-NotNull $cacheCreated.SecondaryKey "SecondaryKey do not exists"
@@ -239,7 +239,7 @@ function Test-RedisCachePipeline
     Assert-AreEqual "250MB" $cacheUpdatedPiped.Size
     Assert-AreEqual "Basic" $cacheUpdatedPiped.Sku
     Assert-AreEqual "AllKeysRandom" $cacheUpdatedPiped.MaxMemoryPolicy.Replace("-", "")
-	Assert-True  { $cacheUpdatedPiped.EnableNonSslPort } 
+    Assert-True  { $cacheUpdatedPiped.EnableNonSslPort } 
     
     # Get cache keys
     $cacheKeysBeforeUpdate = Get-AzureRedisCache -ResourceGroupName $resourceGroupName -Name $cacheName | Get-AzureRedisCacheKey
