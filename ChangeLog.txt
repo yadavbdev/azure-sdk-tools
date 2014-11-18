@@ -1,41 +1,41 @@
 2014.11.14 Version 0.8.11
 * Profile
-  * ClearAzureProfile: remove all subscription and credential data from the user store
-  * Select*AzureSubscription: fixed output types in default and PassThru mode
+  * Clear-AzureProfile: remove all subscription and credential data from the user store
+  * Select-AzureSubscription: fixed output types in default and PassThru mode
 * Compute
-  * Get*AzureVMSqlServerExtension
-  * New*AzureVMSqlServerExtension
-  * Set*AzureVMSqlServerExtension
-  * Remove*AzureVMSqlServerExtension
+  * Get-AzureVMSqlServerExtension
+  * New-AzureVMSqlServerExtension
+  * Set-AzureVMSqlServerExtension
+  * Remove-AzureVMSqlServerExtension
 * HDInsight
   * New cmdlets
-    * AddAzureHDInisghtScriptAction
-    * SetAzureHDInsightClusterSize
+    * Add-AzureHDInisghtScriptAction
+    * Set-AzureHDInsightClusterSize
   * Changed cmdlets
   	*Added ConfigActions parameter
 * Managed Cache
-  * Get*AzureManagedCacheNamedCache
-  * New*AzureManagedCacheNamedCache
-  * Set*AzureManagedCacheNamedCache
-  * Remove*AzureManagedCacheNamedCache
+  * Get-AzureManagedCacheNamedCache
+  * New-AzureManagedCacheNamedCache
+  * Set-AzureManagedCacheNamedCache
+  * Remove-AzureManagedCacheNamedCache
 * Websites
   * Fixes for webjobs and site creation
-  * Additional settings for Publish*AzureWebsiteProject cmdlet
+  * Additional settings for Publish-AzureWebsiteProject cmdlet
   * Enable use of SAS URLs in ApplicationDiagnostics storage
 * Sql Database (AzureResourceManager)
   * New cmdlets to manage direct access to Sql databases:
-    * Enable*AzureSqlDatabaseDirectAccess
-    * Disable*AzureSqlDatabaseDirectAccess
-    * Enable*AzureSqlDatabaseServerDirectAccess
-    * Enable*AzureSqlDatabaseServerDirectAccess
+    * Enable-AzureSqlDatabaseDirectAccess
+    * Disable-AzureSqlDatabaseDirectAccess
+    * Enable-AzureSqlDatabaseServerDirectAccess
+    * Enable-AzureSqlDatabaseServerDirectAccess
   * Rename previous cmdlets to use the term audit policy instead of audit setting
-    * Get*AzureSqlDatabaseAuditingPolicy
-    * Set* AzureSqlDatabaseAuditingPolicy
-    * Get*AzureSqlDatabaseServerAuditingPolicy
-    * Set* AzureSqlDatabaseServerAuditingPolicy
-    * Remove*AzureSqlDatabaseAuditing
-    * Remove*AzureSqlDatabaseServerAuditing
-    * Use*AzureSqlDatabaseServerAuditingPolicy
+    * Get-AzureSqlDatabaseAuditingPolicy
+    * Set-AzureSqlDatabaseAuditingPolicy
+    * Get-AzureSqlDatabaseServerAuditingPolicy
+    * Set-AzureSqlDatabaseServerAuditingPolicy
+    * Remove-AzureSqlDatabaseAuditing
+    * Remove-AzureSqlDatabaseServerAuditing
+    * Use-AzureSqlDatabaseServerAuditingPolicy
   * Allow users to define which storage account key (Primary or Secondary) to use when defining audit policy, using the “StorageKeyType” parameter.
   
 2014.10.27 Version 0.8.10
